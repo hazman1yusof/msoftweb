@@ -509,6 +509,10 @@
                         <div class="col-md-4">
                                 <input id="np_postcode" name="np_postcode" type="text" maxlength="100" class="form-control input-sm text-uppercase">
                         </div>
+                        <label class="col-md-2 control-label" for="np_postcode">I/C</label>  
+                        <div class="col-md-4">
+                                <input id="np_newic" name="np_newic" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+                        </div>
                     </div>
                 </form>
         </div>
@@ -605,7 +609,7 @@
 			});
 		</script>
 
-		<script src="js/finance/Quotation_SO/Quotation_SO.js?v=1.12"></script>
+		<script src="js/finance/Quotation_SO/Quotation_SO.js?v=1.13"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 @endsection
