@@ -95,6 +95,7 @@ $(document).ready(function (){
         }else{
             button_state_cardiorespAssessment('add');
         }
+        $('#cardiorespAssessment_chart').attr('disabled',false);
         
         // getdata_cardiorespAssessment();
         $("#idno_cardiorespAssessment").val(data.idno);
@@ -131,6 +132,7 @@ $(document).ready(function (){
     $('a.ui.card.bodydia_cardio').click(function (){
         let mrn = $('#mrn_physio').val();
         let episno = $('#episno_physio').val();
+        let entereddate = $('#cardiorespAssessment_entereddate').val();
         let type = $(this).data('type');
         let istablet = $(window).width() <= 1024;
         
@@ -144,7 +146,7 @@ $(document).ready(function (){
                 let url = $('#urltodiagram').val() + filename;
                 var win = window.open(url, '_blank');
             }else{
-                var win = window.open('http://localhost:8443/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&type='+type+'&from=cardiorespAssessment', '_blank');
+                var win = window.open('http://localhost:8443/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&entereddate='+entereddate+'&type='+type+'&from=cardiorespAssessment', '_blank');
             }
             
             if(win){
@@ -155,6 +157,10 @@ $(document).ready(function (){
         }
     });
     ///////////////////////////////////////body diagram ends///////////////////////////////////////
+    
+    $("#cardiorespAssessment_chart").click(function (){
+        window.open('./cardiorespAssessment/cardiorespassessment_chart?mrn='+$('#mrn_physio').val()+'&episno='+$("#episno_physio").val()+'&entereddate='+$("#cardiorespAssessment_entereddate").val()+'&type=DIAG_CARDIO', '_blank');
+    });
     
 });
 
@@ -204,7 +210,7 @@ function button_state_cardiorespAssessment(state){
         case 'empty':
             $("#toggle_physio").removeAttr('data-toggle');
             $('#cancel_cardiorespAssessment').data('oper','add');
-            $('#new_cardiorespAssessment,#save_cardiorespAssessment,#cancel_cardiorespAssessment,#edit_cardiorespAssessment').attr('disabled',true);
+            $('#new_cardiorespAssessment,#save_cardiorespAssessment,#cancel_cardiorespAssessment,#edit_cardiorespAssessment,#cardiorespAssessment_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_physio").attr('data-toggle','collapse');
@@ -221,7 +227,7 @@ function button_state_cardiorespAssessment(state){
         case 'wait':
             $("#toggle_physio").attr('data-toggle','collapse');
             $("#save_cardiorespAssessment,#cancel_cardiorespAssessment").attr('disabled',false);
-            $('#edit_cardiorespAssessment,#new_cardiorespAssessment').attr('disabled',true);
+            $('#edit_cardiorespAssessment,#new_cardiorespAssessment,#cardiorespAssessment_chart').attr('disabled',true);
             break;
     }
 }
@@ -351,8 +357,10 @@ function getdata_cardiorespAssessment(){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formCardiorespAssessment",data.cardiorespassessment);
             button_state_cardiorespAssessment('edit');
+            $('#cardiorespAssessment_chart').attr('disabled',false);
         }else{
             button_state_cardiorespAssessment('add');
+            $('#cardiorespAssessment_chart').attr('disabled',true);
         }
         
         // textarea_init_cardiorespAssessment();

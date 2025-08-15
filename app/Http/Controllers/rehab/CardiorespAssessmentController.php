@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Auth;
 use Session;
 use App\Http\Controllers\defaultController;
+use Storage;
 
 class CardiorespAssessmentController extends defaultController
 {
@@ -253,6 +254,83 @@ class CardiorespAssessmentController extends defaultController
         }
         
         return json_encode($responce);
+        
+    }
+    
+    public function cardiorespassessment_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        $entereddate = $request->entereddate;
+        $type = $request->type;
+        if(!$mrn || !$episno || !$entereddate){
+            abort(404);
+        }
+        
+        $cardiorespassessment = DB::table('hisdb.phy_cardiorespassessment as c')
+                                ->select('c.idno as c_idno','c.compcode','c.mrn','c.episno','c.entereddate','c.subjectiveAssessmt','c.objectiveAssessmt','c.analysis','c.intervention','c.homeEducation','c.evaluation','c.review','c.additionalNotes','c.adduser','c.adddate','c.upduser','c.upddate','c.lastuser','c.lastupdate','c.computerid','pm.Name','pm.Newic')
+                                ->leftjoin('hisdb.pat_mast as pm', function ($join){
+                                    $join = $join->on('pm.MRN','=','c.mrn');
+                                    $join = $join->on('pm.Episno','=','c.episno');
+                                    $join = $join->where('pm.compcode','=',session('compcode'));
+                                })
+                                ->where('c.compcode','=',session('compcode'))
+                                ->where('c.mrn','=',$mrn)
+                                ->where('c.episno','=',$episno)
+                                ->where('c.entereddate','=',$entereddate)
+                                ->first();
+        // dd($cardiorespassessment);
+        
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+        $attachment_files = $this->get_attachment_files($mrn,$episno,$entereddate,$type);
+        // dd($attachment_files);
+        
+        return view('rehab.cardiorespAssessmentChart_pdfmake',compact('cardiorespassessment','company','attachment_files'));
+        
+    }
+    
+    public function get_attachment_files($mrn,$episno,$entereddate,$type){
+        
+        $mrn = $mrn;
+        $episno = $episno;
+        $entereddate = $entereddate;
+        $type = $type;
+        
+        // $foxitpath1 = "C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\FoxitPDFReader.exe";
+        // $foxitpath2 = "C:\Program Files (x86)\Foxit Software\Foxit Reader\FoxitReader.exe";
+        
+        // $foxitpath = "C:\laragon\www\pdf\open.bat  > /dev/null";
+        $filename = $type."_".$mrn."_".$episno."_".$entereddate.".pdf";
+        $blankpath = 'blank/'.$type.'.pdf';
+        $filepath = public_path().'/uploads/ftp/'.$filename;
+        $ftppath = "/patientcare_upload/pdf/".$filename;
+        
+        $exists = Storage::disk('ftp')->exists($ftppath);
+        
+        if($exists){
+            $file = Storage::disk('ftp')->get($ftppath);
+            Storage::disk('ftp_uploads')->put($filename, $file);
+            
+            return '../uploads/ftp/'.$filename;
+            
+            // exec('start /B "" "C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\FoxitPDFReader.exe" '.$filepath);
+            
+            // $localfile = Storage::disk('ftp_uploads')->get($filename);
+            // Storage::disk('ftp')->put($ftppath, $localfile);
+        }else{
+            // $blankfile = Storage::disk('ftp_uploads')->get($blankpath);
+            // Storage::disk('ftp_uploads')->put($filename, $blankfile);
+            
+            return '';
+            
+            // exec('start /B "" "C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\FoxitPDFReader.exe" '.$filepath);
+            
+            // $localfile = Storage::disk('ftp_uploads')->get($filename);
+            // Storage::disk('ftp')->put($ftppath, $localfile);
+        }
         
     }
     
