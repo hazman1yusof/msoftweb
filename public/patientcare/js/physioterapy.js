@@ -158,9 +158,11 @@ $(document).ready(function () {
 				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.musclepower);
 				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.patrehabperkeso);
 				button_state_phys_ncase('edit');
+				$('#perkeso_chart').attr('disabled',false);
 			}else{
 				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.pat_physio);
 				button_state_phys_ncase('add');
+				$('#perkeso_chart').attr('disabled',true);
 			}
 		});
 	});
@@ -283,6 +285,10 @@ $(document).ready(function () {
 
 	    });
 
+	});
+	
+	$("#perkeso_chart").click(function (){
+		window.open('./ptcare_phys/rehabperkeso_chart?mrn='+$('#mrn_phys').val()+'&episno='+$("#episno_phys").val()+'&type1=BB_PERKESO'+'&type2=BF_PERKESO', '_blank');
 	});
 });
 

@@ -4,6 +4,8 @@
             <input id="phy_type" name="type" value="perkeso" type="hidden">
             
             <div class="sixteen wide column">
+                <button class="btn btn-default btn-sm" type="button" id="perkeso_chart" style="float: right; margin-right: 40px; margin-bottom: 10px;">Print</button>
+                
                 <table class="ui celled table">
                     <tbody>
                         <tr>
