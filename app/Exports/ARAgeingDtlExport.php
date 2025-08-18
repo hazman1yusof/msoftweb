@@ -163,6 +163,8 @@ class ARAgeingDtlExport implements FromView, ShouldQueue, WithEvents, WithColumn
 
                         if($debtorcode_from == $debtorcode_to){
                             $debtormast = $debtormast->where('dm.debtorcode',$debtorcode_from);
+                        }else if(empty($debtorcode_from) && $debtorcode_to == 'ZZZ'){
+
                         }else{
                             $debtormast = $debtormast->whereBetween('dm.debtorcode', [$debtorcode_from,$debtorcode_to.'%']);
                         }
