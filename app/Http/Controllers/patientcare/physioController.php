@@ -2210,7 +2210,7 @@ class physioController extends defaultController
         // $foxitpath2 = "C:\Program Files (x86)\Foxit Software\Foxit Reader\FoxitReader.exe";
         
         // $foxitpath = "C:\laragon\www\pdf\open.bat  > /dev/null";
-        $filename = $type."_".$mrn."_".$episno.".pdf";
+        $filename = $type."_".$mrn."_".$episno."_undefined.pdf"; // sebab tak perlu entereddate
         $blankpath = 'blank/'.$type.'.pdf';
         $filepath = public_path().'/uploads/ftp/'.$filename;
         $ftppath = "/patientcare_upload/pdf/".$filename;
@@ -2252,7 +2252,7 @@ class physioController extends defaultController
         // $foxitpath2 = "C:\Program Files (x86)\Foxit Software\Foxit Reader\FoxitReader.exe";
         
         // $foxitpath = "C:\laragon\www\pdf\open.bat  > /dev/null";
-        $filename = $type."_".$mrn."_".$episno.".pdf";
+        $filename = $type."_".$mrn."_".$episno."_undefined.pdf"; // sebab tak perlu entereddate
         $blankpath = 'blank/'.$type.'.pdf';
         $filepath = public_path().'/uploads/ftp/'.$filename;
         $ftppath = "/patientcare_upload/pdf/".$filename;
