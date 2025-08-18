@@ -1902,7 +1902,7 @@
             </div>
             @endif
             @if($attachment_files2 != '')
-            <div class="ui segment canclick" style="cursor: pointer;" data-goto='#pdfiframe_1'>
+            <div class="ui segment canclick" style="cursor: pointer;" data-goto='#pdfiframe_2'>
                 <p>IMAGE<input type="checkbox" data-src="{{$attachment_files2}}" name="1" style="float: right; margin-right: 5px;"></p>
             </div>
             @endif
@@ -1916,7 +1916,7 @@
         <iframe id="pdfiframe_1" width="100%" height="100%" src="{{$attachment_files1}}" frameborder="0" style="width: 79vw; height: 100vh; float: right;"></iframe>
         @endif
         @if($attachment_files2 != '')
-        <iframe id="pdfiframe_1" width="100%" height="100%" src="{{$attachment_files2}}" frameborder="0" style="width: 79vw; height: 100vh; float: right;"></iframe>
+        <iframe id="pdfiframe_2" width="100%" height="100%" src="{{$attachment_files2}}" frameborder="0" style="width: 79vw; height: 100vh; float: right;"></iframe>
         @endif
         <iframe id="pdfiframe_merge" width="100%" height="100%" src="" frameborder="0" style="width: 79vw; height: 100vh; float: right; display: none;"></iframe>
         

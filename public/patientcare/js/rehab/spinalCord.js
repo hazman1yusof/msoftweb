@@ -238,6 +238,10 @@ $(document).ready(function (){
     });
     ///////////////////////////////////////////////////////////////////////////////////////////////
     
+    $("#spinalCord_chart").click(function (){
+        window.open('./spinalCord/spinalcord_chart?mrn='+$('#mrn_physio').val()+'&episno='+$("#episno_physio").val()+'&entereddate='+$("#spinalCord_entereddate").val(), '_blank');
+    });
+    
 });
 
 ///////////////////////spinalCord starts///////////////////////
