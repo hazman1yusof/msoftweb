@@ -24,7 +24,7 @@ class ARAgeingDtl_ReportController extends defaultController
     
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
     
     public function show(Request $request)

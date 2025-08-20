@@ -14,6 +14,7 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         '/diagnose',
         '/save_mykad_local',
-        '/nocsrf'
+        '/nocsrf',
+        '/ARAgeingDtl_Report'
     ];
 }
