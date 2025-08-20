@@ -230,23 +230,23 @@ class ARAgeingDtl_ReportController extends defaultController
 
         $debtormast = DB::table('debtor.debtormast as dm')
                         ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'pm.Name as pm_name','dm.debtortype','dt.debtortycode','dt.description','dm.name','st.description as unit_desc')
-                        ->join('debtor.debtortype as dt', function($join) use ($debtortype){
+                        ->join('debtor.debtortype as dt', function($join) use ($debtortype,$compcode){
                             $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
                                          ->where('dt.compcode', '=', $compcode);
                             if(strtoupper($debtortype)!='ALL'){
                                 $join = $join->where('dt.debtortycode',$debtortype);
                             }
                         })
-                        ->join('debtor.dbacthdr as dh', function($join) use ($date){
+                        ->join('debtor.dbacthdr as dh', function($join) use ($date,$compcode){
                             $join = $join->on('dh.debtorcode', '=', 'dm.debtorcode')
                                          ->whereDate('dh.posteddate', '<=', $date)
                                          ->where('dh.recstatus', 'POSTED')
                                          ->where('dh.compcode', '=', $compcode);
                         })
-                        ->join('sysdb.sector as st', function($join) use ($date){
+                        ->join('sysdb.sector as st', function($join) use ($date,$compcode){
                             $join = $join->on('st.sectorcode', '=', 'dh.unit')
                                          ->where('st.compcode', '=', $compcode);
-                        })->leftJoin('hisdb.pat_mast as pm', function($join){
+                        })->leftJoin('hisdb.pat_mast as pm', function($join) use ($$compcode){
                             $join = $join->on('pm.NewMrn', '=', 'dh.mrn')
                                          ->where('pm.compcode', '=', $compcode);
                         })
