@@ -41,6 +41,8 @@ class ARAgeingDtl_ReportController extends defaultController
                 return $this->job_queue($request);
             case 'download':
                 return $this->download2($request);
+            case 'process_excel':
+                return $this->process_excel($request);
             default:
                 return 'error happen..';
         }
@@ -57,8 +59,6 @@ class ARAgeingDtl_ReportController extends defaultController
             //     return $this->defaultDel($request);
             case 'showExcel':
                 return $this->process_excel_link($request);
-            case 'process_excel':
-                return $this->process_excel($request);
             default:
                 return 'error happen..';
         }
@@ -127,7 +127,7 @@ class ARAgeingDtl_ReportController extends defaultController
     public function process_excel_link(Request $request){
         $client = new \GuzzleHttp\Client();
 
-        $url='http://192.168.0.13:8443/msoftweb/public/form?action=process_excel&type='.$request->type.'&debtortype='.$request->debtortype.'&debtorcode_from='.$request->debtorcode_from.'&debtorcode_to='.$request->debtorcode_to.'&date='.$request->date.'&groupOne='.$request->groupOne.'&groupTwo='.$request->groupTwo.'&groupThree='.$request->groupThree.'&groupFour='.$request->groupFour.'&groupFive='.$request->groupFive.'&groupSix='.$request->groupSix.'&groupby='.$request->groupby;
+        $url='http://192.168.0.13:8443/msoftweb/public/ARAgeingDtl_Report/table?action=process_excel&type='.$request->type.'&debtortype='.$request->debtortype.'&debtorcode_from='.$request->debtorcode_from.'&debtorcode_to='.$request->debtorcode_to.'&date='.$request->date.'&groupOne='.$request->groupOne.'&groupTwo='.$request->groupTwo.'&groupThree='.$request->groupThree.'&groupFour='.$request->groupFour.'&groupFive='.$request->groupFive.'&groupSix='.$request->groupSix.'&groupby='.$request->groupby;
 
         $response = $client->request('GET', $url, [
           'headers' => [
