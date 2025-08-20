@@ -127,10 +127,11 @@ class ARAgeingDtl_ReportController extends defaultController
     public function process_excel_link(Request $request){
         $client = new \GuzzleHttp\Client();
 
-        $response = $client->request('GET', 'https://chup.online/api/v1/user/users', [
+        $url='http://192.168.0.13:8443/msoftweb/public/form?action=process_excel&type='.$request->type.'&debtortype='.$request->debtortype.'&debtorcode_from='.$request->debtorcode_from.'&debtorcode_to='.$request->debtorcode_to.'&date='.$request->date.'&groupOne='.$request->groupOne.'&groupTwo='.$request->groupTwo.'&groupThree='.$request->groupThree.'&groupFour='.$request->groupFour.'&groupFive='.$request->groupFive.'&groupSix='.$request->groupSix.'&groupby='.$request->groupby;
+
+        $response = $client->request('GET', $url, [
           'headers' => [
             'accept' => 'application/json',
-            'authorization' => $bearer,
           ],
         ]);
     }
