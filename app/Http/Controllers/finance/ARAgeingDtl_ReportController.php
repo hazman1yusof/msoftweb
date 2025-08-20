@@ -29,7 +29,7 @@ class ARAgeingDtl_ReportController extends defaultController
     
     public function show(Request $request)
     {
-        $comp = DB::table('sysdb.company')->where('compcode','=','9B')->first();
+        $comp = DB::table('sysdb.company')->where('compcode','=',session('compcode'))->first();
         return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report',[
             'company_name' => $comp->name
         ]);
@@ -68,7 +68,7 @@ class ARAgeingDtl_ReportController extends defaultController
         $responce = new stdClass();
 
         $table_ = DB::table('sysdb.job_queue')
-                        ->where('compcode', '9B')
+                        ->where('compcode', session('compcode'))
                         ->where('page', 'ARAgeing')
                         ->orderBy('idno','desc');
 
@@ -127,7 +127,7 @@ class ARAgeingDtl_ReportController extends defaultController
     public function process_excel_link(Request $request){
         $client = new \GuzzleHttp\Client();
 
-        $url='http://192.168.0.13:8443/msoftweb/public/ARAgeingDtl_Report/table?action=process_excel&type='.$request->type.'&debtortype='.$request->debtortype.'&debtorcode_from='.$request->debtorcode_from.'&debtorcode_to='.$request->debtorcode_to.'&date='.$request->date.'&groupOne='.$request->groupOne.'&groupTwo='.$request->groupTwo.'&groupThree='.$request->groupThree.'&groupFour='.$request->groupFour.'&groupFive='.$request->groupFive.'&groupSix='.$request->groupSix.'&groupby='.$request->groupby;
+        $url='http://192.168.0.13:8443/msoftweb/public/ARAgeingDtl_Report/table?action=process_excel&type='.$request->type.'&debtortype='.$request->debtortype.'&debtorcode_from='.$request->debtorcode_from.'&debtorcode_to='.$request->debtorcode_to.'&date='.$request->date.'&groupOne='.$request->groupOne.'&groupTwo='.$request->groupTwo.'&groupThree='.$request->groupThree.'&groupFour='.$request->groupFour.'&groupFive='.$request->groupFive.'&groupSix='.$request->groupSix.'&groupby='.$request->groupby.'&username='.session('username').'&compcode='.session('compcode');
 
         $response = $client->request('GET', $url, [
           'headers' => [
@@ -147,6 +147,8 @@ class ARAgeingDtl_ReportController extends defaultController
         $bytes = random_bytes(20);
         $process = bin2hex($bytes).'.xlsx';
 
+        $username = $request->username;
+        $compcode = $request->compcode;
         $type = $request->type;
         $date = $request->date;
         $debtortype = $request->debtortype;
@@ -182,6 +184,8 @@ class ARAgeingDtl_ReportController extends defaultController
             $grouping[6] = $groupSix;
         }
 
+        $this->username = $username;
+        $this->compcode = $compcode;
         $this->process = $process;
         $this->filename = $filename;
         $this->type = $type;
@@ -228,7 +232,7 @@ class ARAgeingDtl_ReportController extends defaultController
                         ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'pm.Name as pm_name','dm.debtortype','dt.debtortycode','dt.description','dm.name','st.description as unit_desc')
                         ->join('debtor.debtortype as dt', function($join) use ($debtortype){
                             $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
-                                         ->where('dt.compcode', '=', '9B');
+                                         ->where('dt.compcode', '=', $compcode);
                             if(strtoupper($debtortype)!='ALL'){
                                 $join = $join->where('dt.debtortycode',$debtortype);
                             }
@@ -237,16 +241,16 @@ class ARAgeingDtl_ReportController extends defaultController
                             $join = $join->on('dh.debtorcode', '=', 'dm.debtorcode')
                                          ->whereDate('dh.posteddate', '<=', $date)
                                          ->where('dh.recstatus', 'POSTED')
-                                         ->where('dh.compcode', '=', '9B');
+                                         ->where('dh.compcode', '=', $compcode);
                         })
                         ->join('sysdb.sector as st', function($join) use ($date){
                             $join = $join->on('st.sectorcode', '=', 'dh.unit')
-                                         ->where('st.compcode', '=', '9B');
+                                         ->where('st.compcode', '=', $compcode);
                         })->leftJoin('hisdb.pat_mast as pm', function($join){
                             $join = $join->on('pm.NewMrn', '=', 'dh.mrn')
-                                         ->where('pm.compcode', '=', '9B');
+                                         ->where('pm.compcode', '=', $compcode);
                         })
-                        ->where('dm.compcode', '=', '9B');
+                        ->where('dm.compcode', '=', $compcode);
 
                         if($debtorcode_from == $debtorcode_to){
                             $debtormast = $debtormast->where('dm.debtorcode',$debtorcode_from);
@@ -280,7 +284,7 @@ class ARAgeingDtl_ReportController extends defaultController
             
             if($value->trantype == 'IN' || $value->trantype =='DN') {
                 $alloc_sum = DB::table('debtor.dballoc as da')
-                        ->where('da.compcode', '=', '9B')
+                        ->where('da.compcode', '=', $compcode)
                         ->where('da.recstatus', '=', "POSTED")
                         // ->where('da.debtorcode', '=', $value->debtorcode)
                         ->where('da.refsource', '=', $value->source)
@@ -293,7 +297,7 @@ class ARAgeingDtl_ReportController extends defaultController
                 $newamt = $hdr_amount - $alloc_sum;
             }else{
                 $doc_sum = DB::table('debtor.dballoc as da')
-                        ->where('da.compcode', '=', '9B')
+                        ->where('da.compcode', '=', $compcode)
                         ->where('da.recstatus', '=', "POSTED")
                         // ->where('da.debtorcode', '=', $value->debtorcode)
                         ->where('da.docsource', '=', $value->source)
@@ -303,7 +307,7 @@ class ARAgeingDtl_ReportController extends defaultController
                         ->sum('da.amount');
                 
                 $ref_sum = DB::table('debtor.dballoc as da')
-                        ->where('da.compcode', '=', '9B')
+                        ->where('da.compcode', '=', $compcode)
                         ->where('da.recstatus', '=', "POSTED")
                         // ->where('da.debtorcode', '=', $value->debtorcode)
                         ->where('da.refsource', '=', $value->source)
@@ -417,11 +421,11 @@ class ARAgeingDtl_ReportController extends defaultController
 
         $idno_job_queue = DB::table('sysdb.job_queue')
                             ->insertGetId([
-                                'compcode' => '9B',
+                                'compcode' => $this->compcode,
                                 'page' => $page,
                                 'filename' => $this->filename,
                                 'process' => $this->process,
-                                'adduser' => '-',
+                                'adduser' => $this->username,
                                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                                 'status' => 'PENDING',
                                 'remarks' => 'AR Ageing '.$this->type.' as of '.$this->date.', debtortype: '.$this->debtortype.', debtorcode from:"'.$this->debtorcode_from.'" to "'.$this->debtorcode_to.'"',
@@ -522,5 +526,4 @@ class ARAgeingDtl_ReportController extends defaultController
                 ]);
         }
     }
-    
 }
