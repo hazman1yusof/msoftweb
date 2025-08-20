@@ -246,7 +246,7 @@ class ARAgeingDtl_ReportController extends defaultController
                         ->join('sysdb.sector as st', function($join) use ($date,$compcode){
                             $join = $join->on('st.sectorcode', '=', 'dh.unit')
                                          ->where('st.compcode', '=', $compcode);
-                        })->leftJoin('hisdb.pat_mast as pm', function($join) use ($$compcode){
+                        })->leftJoin('hisdb.pat_mast as pm', function($join) use ($compcode){
                             $join = $join->on('pm.NewMrn', '=', 'dh.mrn')
                                          ->where('pm.compcode', '=', $compcode);
                         })
