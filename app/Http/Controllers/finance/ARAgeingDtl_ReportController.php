@@ -517,7 +517,8 @@ class ARAgeingDtl_ReportController extends defaultController
                     'name' => $obj->name,
                     'unit_desc' => $obj->unit_desc,
                     'doc_no' => $obj->doc_no,
-                    'newamt' => $obj->newamt
+                    'newamt' => $obj->newamt,
+                    'group' => $obj->group
                 ]);
         }
     }
