@@ -30,12 +30,15 @@ class ExecController extends defaultController
         $period = $request->period;
 
         $exec_path = \config('get_config.EXEC_PATH').'';
+        $exe_file = 'test.exe';
 
-        $exec = "start /B '' '".$exec_path."'";
+        $exec = 'start /B "" "'.$exec_path.'" ';
 
-        dd($exec);
+        // dd($exec);
 
-        exec('start /B "" "C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\FoxitPDFReader.exe" '.$filepath);
+        shell_exec($exec);
+
+        // exec('start /B "" "C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\FoxitPDFReader.exe" '.$filepath);
     }
 
 }

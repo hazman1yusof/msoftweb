@@ -42,6 +42,8 @@ class TestController extends defaultController
 
     public function table(Request $request){  
         switch($request->action){
+            case 'test_email':
+                return $this->test_email($request);
             case 'check_netmvqty_netmvval_allitem':
                 return $this->check_netmvqty_netmvval_allitem($request);
             case 'btlkan_thqty_stocktake':
@@ -838,46 +840,58 @@ class TestController extends defaultController
     }
 
     public function test_email(Request $request){
-        $trantype = 'VERIFIED';
-        $recno = '145';
+        // $trantype = 'VERIFIED';
+        // $recno = '145';
         
-        $qpv = DB::table('finance.queuepv as qpv')
-                    ->select('qpv.trantype','prdtl.authorid','ap.pvno','qpv.recno','ap.recdate','qpv.recstatus','ap.amount','ap.payto','ap.adduser','users.email')
-                    ->join('finance.permissiondtl as prdtl', function($join){
-                        $join = $join
-                            ->where('prdtl.compcode',session('compcode'))
-                            // ->where('adtl.authorid',session('username'))
-                            ->where('prdtl.trantype','PV')
-                            ->where('prdtl.cando','ACTIVE')
-                            // ->on('adtl.prtype','qpo.prtype')
-                            ->on('prdtl.recstatus','qpv.trantype');
-                    })
-                    ->join('finance.apacthdr as ap', function($join){
-                        $join = $join
-                            ->where('ap.compcode',session('compcode'))
-                            ->where('ap.trantype','PV')
-                            ->on('ap.auditno','qpv.recno')
-                            ->on('ap.recstatus','qpv.recstatus')
-                            ->where(function ($query) {
-                                $query
-                                    ->on('ap.amount','>=','prdtl.minlimit')
-                                    ->on('ap.amount','<=', 'prdtl.maxlimit');
-                            });;
-                    })
-                    ->join('sysdb.users as users', function($join){
-                        $join = $join
-                            ->where('users.compcode',session('compcode'))
-                            ->where('users.email','HAZMAN.YUSOF@GMAIL.COM')
-                            ->on('users.username','prdtl.authorid');
-                    })
-                    ->where('qpv.compcode',session('compcode'))
-                    ->where('qpv.trantype',$trantype)
-                    ->where('qpv.recno',$recno)
-                    ->get();
+        // $qpv = DB::table('finance.queuepv as qpv')
+        //             ->select('qpv.trantype','prdtl.authorid','ap.pvno','qpv.recno','ap.recdate','qpv.recstatus','ap.amount','ap.payto','ap.adduser','users.email')
+        //             ->join('finance.permissiondtl as prdtl', function($join){
+        //                 $join = $join
+        //                     ->where('prdtl.compcode',session('compcode'))
+        //                     // ->where('adtl.authorid',session('username'))
+        //                     ->where('prdtl.trantype','PV')
+        //                     ->where('prdtl.cando','ACTIVE')
+        //                     // ->on('adtl.prtype','qpo.prtype')
+        //                     ->on('prdtl.recstatus','qpv.trantype');
+        //             })
+        //             ->join('finance.apacthdr as ap', function($join){
+        //                 $join = $join
+        //                     ->where('ap.compcode',session('compcode'))
+        //                     ->where('ap.trantype','PV')
+        //                     ->on('ap.auditno','qpv.recno')
+        //                     ->on('ap.recstatus','qpv.recstatus')
+        //                     ->where(function ($query) {
+        //                         $query
+        //                             ->on('ap.amount','>=','prdtl.minlimit')
+        //                             ->on('ap.amount','<=', 'prdtl.maxlimit');
+        //                     });;
+        //             })
+        //             ->join('sysdb.users as users', function($join){
+        //                 $join = $join
+        //                     ->where('users.compcode',session('compcode'))
+        //                     ->where('users.email','HAZMAN.YUSOF@GMAIL.COM')
+        //                     ->on('users.username','prdtl.authorid');
+        //             })
+        //             ->where('qpv.compcode',session('compcode'))
+        //             ->where('qpv.trantype',$trantype)
+        //             ->where('qpv.recno',$recno)
+        //             ->get();
 
-        // dd($qpv);
+        $data = new stdClass();
+        $data->email = 'HAZMAN.YUSOF@GMAIL.COM';
+        $data->trantype = 'PV';
+        $data->recno = '111';
+        $data->recstatus = 'ACTIVE';
+        $data->authorid = 'HAZMAN';
+        $data->payto = 'HAZMAN';
+        $data->recdate = '2025-01-01';
+        $data->adduser = 'HAZMAN';
+
+        $array = [];
+        array_push($array, $data);
+        $collection = collect($array);
                     
-        SendEmailPV::dispatch($qpv);
+        SendEmailPV::dispatch($collection);
     }
 
     public function update_supplier(Request $request){

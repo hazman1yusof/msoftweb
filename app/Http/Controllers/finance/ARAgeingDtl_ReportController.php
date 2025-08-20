@@ -9,8 +9,10 @@ use DB;
 use DateTime;
 use Carbon\Carbon;
 use App\Exports\ARAgeingDtlExport;
+use App\Exports\ARAgeingDtlExport_2;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
+use GuzzleHttp\Client;
 use Response;
 
 class ARAgeingDtl_ReportController extends defaultController
@@ -38,7 +40,7 @@ class ARAgeingDtl_ReportController extends defaultController
             case 'job_queue':
                 return $this->job_queue($request);
             case 'download':
-                return $this->download($request);
+                return $this->download2($request);
             default:
                 return 'error happen..';
         }
@@ -54,7 +56,9 @@ class ARAgeingDtl_ReportController extends defaultController
             // case 'del':
             //     return $this->defaultDel($request);
             case 'showExcel':
-                return $this->showExcel($request);
+                return $this->process_excel_link($request);
+            case 'process_excel':
+                return $this->process_excel($request);
             default:
                 return 'error happen..';
         }
@@ -94,6 +98,11 @@ class ARAgeingDtl_ReportController extends defaultController
         // dump($file);
         return Response::download($file,$job_queue->filename);
     }
+
+    public function download2(Request $request){
+
+        return Excel::download(new ARAgeingDtlExport_2($request->idno), 'ItemEnquiryExport.xlsx');
+    }
     
     public function showExcel(Request $request){
 
@@ -114,17 +123,34 @@ class ARAgeingDtl_ReportController extends defaultController
 
         // return Excel::download(new ARAgeingDtlExport($request->type,$request->date,$request->debtortype,$request->debtorcode_from,$request->debtorcode_to,$request->groupOne,$request->groupTwo,$request->groupThree,$request->groupFour,$request->groupFive,$request->groupSix), $filename);
     }
-    
-    public function showpdf(Request $request){
-        
-        $date = Carbon::parse($request->date)->format('Y-m-d');
-        $date_title = Carbon::parse($request->date)->format('d-m-Y');
-        $debtortype = $request->debtortype;
-        $debtorcode_from = $request->debtorcode_from;
-        if(empty($request->debtorcode_from)){
-            $debtorcode_from = '%';
+
+    public function process_excel_link(Request $request){
+        $client = new \GuzzleHttp\Client();
+
+        $response = $client->request('GET', 'https://chup.online/api/v1/user/users', [
+          'headers' => [
+            'accept' => 'application/json',
+            'authorization' => $bearer,
+          ],
+        ]);
+    }
+
+    public function process_excel(Request $request){
+
+        if($request->type == 'detail'){
+            $filename = 'ARAgeingDetail '.Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d g:i A').'.xlsx';
+        }else{
+            $filename = 'ARAgeingSummary '.Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d g:i A').'.xlsx';
         }
-        $debtorcode_to = $request->debtorcode_to;
+
+        $bytes = random_bytes(20);
+        $process = bin2hex($bytes).'.xlsx';
+
+        $type = $request->type;
+        $date = $request->date;
+        $debtortype = $request->debtortype;
+        $debtorcode_from = strtoupper($request->debtorcode_from);
+        $debtorcode_to = strtoupper($request->debtorcode_to);
 
         $groupOne = $request->groupOne;
         $groupTwo = $request->groupTwo;
@@ -132,6 +158,7 @@ class ARAgeingDtl_ReportController extends defaultController
         $groupFour = $request->groupFour;
         $groupFive = $request->groupFive;
         $groupSix = $request->groupSix;
+        $groupby = $request->groupby;
 
         $grouping = [];
         $grouping[0] = 0;
@@ -153,9 +180,51 @@ class ARAgeingDtl_ReportController extends defaultController
         if(!empty($groupSix)){
             $grouping[6] = $groupSix;
         }
-        
+
+        $this->process = $process;
+        $this->filename = $filename;
+        $this->type = $type;
+        $this->date = Carbon::parse($date)->format('Y-m-d');
+        $this->debtortype = $debtortype;
+        $this->debtorcode_from = $debtorcode_from;
+        if(empty($debtorcode_from)){
+            $this->debtorcode_from = '%';
+        }
+        $this->debtorcode_to = $debtorcode_to;
+
+        $this->groupOne = $groupOne;
+        $this->groupTwo = $groupTwo;
+        $this->groupThree = $groupThree;
+        $this->groupFour = $groupFour;
+        $this->groupFive = $groupFive;
+        $this->groupSix = $groupSix;
+        $this->groupby = $groupby;
+
+        $this->grouping = [];
+        $this->grouping[0] = 0;
+        if(!empty($this->groupOne)){
+            $this->grouping[1] = $this->groupOne;
+        }
+        if(!empty($this->groupTwo)){
+            $this->grouping[2] = $this->groupTwo;
+        }
+        if(!empty($this->groupThree)){
+            $this->grouping[3] = $this->groupThree;
+        }
+        if(!empty($this->groupFour)){
+            $this->grouping[4] = $this->groupFour;
+        }
+        if(!empty($this->groupFive)){
+            $this->grouping[5] = $this->groupFive;
+        }
+        if(!empty($this->groupSix)){
+            $this->grouping[6] = $this->groupSix;
+        }
+
+        $idno_job_queue = $this->start_job_queue('ARAgeing');
+
         $debtormast = DB::table('debtor.debtormast as dm')
-                        ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'pm.Name as pm_name','dm.debtortype','dt.debtortycode','dt.description','dm.name')
+                        ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'pm.Name as pm_name','dm.debtortype','dt.debtortycode','dt.description','dm.name','st.description as unit_desc')
                         ->join('debtor.debtortype as dt', function($join) use ($debtortype){
                             $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
                                          ->where('dt.compcode', '=', session('compcode'));
@@ -166,16 +235,29 @@ class ARAgeingDtl_ReportController extends defaultController
                         ->join('debtor.dbacthdr as dh', function($join) use ($date){
                             $join = $join->on('dh.debtorcode', '=', 'dm.debtorcode')
                                          ->whereDate('dh.posteddate', '<=', $date)
+                                         ->where('dh.recstatus', 'POSTED')
                                          ->where('dh.compcode', '=', session('compcode'));
+                        })
+                        ->join('sysdb.sector as st', function($join) use ($date){
+                            $join = $join->on('st.sectorcode', '=', 'dh.unit')
+                                         ->where('st.compcode', '=', session('compcode'));
                         })->leftJoin('hisdb.pat_mast as pm', function($join){
-                            $join = $join->on('pm.MRN', '=', 'dh.mrn')
-                                         ->where('pm.NewMrn', '<>', '')
+                            $join = $join->on('pm.NewMrn', '=', 'dh.mrn')
                                          ->where('pm.compcode', '=', session('compcode'));
                         })
-                        ->where('dm.compcode', '=', session('compcode'))
-                        ->whereBetween('dm.debtorcode', [$debtorcode_from,$debtorcode_to.'%'])
-                        ->orderBy('dm.debtorcode', 'ASC')
-                        ->get();
+                        ->where('dm.compcode', '=', session('compcode'));
+
+                        if($debtorcode_from == $debtorcode_to){
+                            $debtormast = $debtormast->where('dm.debtorcode',$debtorcode_from);
+                        }else if(empty($debtorcode_from) && $debtorcode_to == 'ZZZ'){
+
+                        }else{
+                            $debtormast = $debtormast->whereBetween('dm.debtorcode', [$debtorcode_from,$debtorcode_to.'%']);
+                        }
+
+                        $debtormast = $debtormast
+                            ->orderBy('dm.debtorcode', 'ASC')
+                            ->get();
 
         $array_report = [];
 
@@ -198,11 +280,12 @@ class ARAgeingDtl_ReportController extends defaultController
             if($value->trantype == 'IN' || $value->trantype =='DN') {
                 $alloc_sum = DB::table('debtor.dballoc as da')
                         ->where('da.compcode', '=', session('compcode'))
-                        ->where('da.debtorcode', '=', $value->debtorcode)
+                        ->where('da.recstatus', '=', "POSTED")
+                        // ->where('da.debtorcode', '=', $value->debtorcode)
                         ->where('da.refsource', '=', $value->source)
                         ->where('da.reftrantype', '=', $value->trantype)
                         ->where('da.refauditno', '=', $value->auditno)
-                        ->where('da.recstatus', '=', "POSTED")
+                        ->where('da.reflineno', '=', $value->lineno_)
                         ->whereDate('da.allocdate', '<=', $date)
                         ->sum('da.amount');
                 
@@ -210,21 +293,21 @@ class ARAgeingDtl_ReportController extends defaultController
             }else{
                 $doc_sum = DB::table('debtor.dballoc as da')
                         ->where('da.compcode', '=', session('compcode'))
-                        ->where('da.debtorcode', '=', $value->debtorcode)
+                        ->where('da.recstatus', '=', "POSTED")
+                        // ->where('da.debtorcode', '=', $value->debtorcode)
                         ->where('da.docsource', '=', $value->source)
                         ->where('da.doctrantype', '=', $value->trantype)
                         ->where('da.docauditno', '=', $value->auditno)
-                        ->where('da.recstatus', '=', "POSTED")
                         ->whereDate('da.allocdate', '<=', $date)
                         ->sum('da.amount');
                 
                 $ref_sum = DB::table('debtor.dballoc as da')
                         ->where('da.compcode', '=', session('compcode'))
-                        ->where('da.debtorcode', '=', $value->debtorcode)
+                        ->where('da.recstatus', '=', "POSTED")
+                        // ->where('da.debtorcode', '=', $value->debtorcode)
                         ->where('da.refsource', '=', $value->source)
                         ->where('da.reftrantype', '=', $value->trantype)
                         ->where('da.refauditno', '=', $value->auditno)
-                        ->where('da.recstatus', '=', "POSTED")
                         ->whereDate('da.allocdate', '<=', $date)
                         ->sum('da.amount');
                 
@@ -238,7 +321,13 @@ class ARAgeingDtl_ReportController extends defaultController
                     }else{
                         $value->remark = $value->pm_name;
                     }
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->invno, 5, "0", STR_PAD_LEFT);
+
+                    if(!empty($value->invno)){
+                        $value->doc_no = $value->trantype.'/'.str_pad($value->invno, 7, "0", STR_PAD_LEFT);
+                    }else{
+                        $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
+                    }
+
                     $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
@@ -246,7 +335,7 @@ class ARAgeingDtl_ReportController extends defaultController
                     break;
                 case 'DN':
                     $value->remark = $value->remark;
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
                     $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
@@ -254,7 +343,7 @@ class ARAgeingDtl_ReportController extends defaultController
                     break;
                 case 'BC':
                     // $value->remark
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
                     $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
@@ -270,7 +359,7 @@ class ARAgeingDtl_ReportController extends defaultController
                     break;
                 case 'CN':
                     $value->remark = $value->remark;
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
                     $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
@@ -294,7 +383,7 @@ class ARAgeingDtl_ReportController extends defaultController
                     break;
                 case 'RT':
                     // $value->remark
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
                     $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
@@ -303,56 +392,12 @@ class ARAgeingDtl_ReportController extends defaultController
                 default:
                     // code...
                     break;
-            }
-            
+            }            
         }
-        
-        // dd($array_report);
 
-        $debtortype = collect($array_report)->unique('debtortycode');
-        $debtorcode = collect($array_report)->unique('debtorcode');
-        
-        $title = "AR AGEING DETAILS as at ".$date_title;
-        
-        $company = DB::table('sysdb.company')
-                    ->where('compcode', '=', session('compcode'))
-                    ->first();
-        
-        return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report_pdfmake', compact('debtortype','debtorcode','array_report','title','company','grouping'));
-        
-    }
-    
-    public function calc_ageing($newamt,$days,$groupOne,$groupTwo,$groupThree,$groupFour,$groupFive,$groupSix){
-        $groupOne = range(1, $groupOne);
-        $groupOne_last = $groupOne[count($groupOne) - 1];
-        $groupOne_text = '1 - '.$groupOne_last.' days';
-        
-        $groupTwo_first = $groupOne_last + 1;
-        $groupTwo = range($groupTwo_first, $groupTwo);
-        $groupTwo_last = $groupTwo[count($groupTwo) - 1];
-        $groupTwo_text = $groupTwo_first.' - '.$groupTwo_last.' days';
-        
-        $groupThree_first = $groupTwo_last + 1;
-        $groupThree = range($groupThree_first, $groupThree);
-        $groupThree_last = $groupThree[count($groupThree) - 1];
-        $groupThree_text = $groupThree_first.' - '.$groupThree_last.' days';
-        
-        $groupFour_first = $groupThree_last + 1;
-        $groupFour = range($groupFour_first, $groupFour);
-        $groupFour_last = $groupFour[count($groupFour) - 1];
-        $groupFour_text = $groupFour_first.' - '.$groupFour_last.' days';
-        
-        $groupFive_first = $groupFour_last + 1;
-        $groupFive = range($groupFive_first, $groupFive);
-        $groupFive_last = $groupFive[count($groupFive) - 1];
-        $groupFive_text = $groupFive_first.' - '.$groupFive_last.' days';
-        
-        $groupSix_first = $groupFive_last + 1;
-        $groupSix = range($groupSix_first, $groupSix);
-        $groupSix_last = $groupSix[count($groupSix) - 1];
-        $groupSix_text = '> '.$groupFive_last.' days';
-        
-        // dd($groupOne_text,$groupTwo_text,$groupThree_text,$groupFour_text,$groupFive_text,$groupSix_text);
+        $this->store_to_db($array_report,$idno_job_queue);
+
+        $this->stop_job_queue($idno_job_queue);
     }
 
     public function assign_grouping($grouping,$days){
@@ -365,6 +410,113 @@ class ARAgeingDtl_ReportController extends defaultController
         }
 
         return $group;
+    }
+
+    public function start_job_queue($page){
+
+        $idno_job_queue = DB::table('sysdb.job_queue')
+                            ->insertGetId([
+                                'compcode' => session('compcode'),
+                                'page' => $page,
+                                'filename' => $this->filename,
+                                'process' => $this->process,
+                                'adduser' => session('username'),
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'status' => 'PENDING',
+                                'remarks' => 'AR Ageing '.$this->type.' as of '.$this->date.', debtortype: '.$this->debtortype.', debtorcode from:"'.$this->debtorcode_from.'" to "'.$this->debtorcode_to.'"',
+                                'type' => $this->type,
+                                'date' => $this->date,
+                                'debtortype' => $this->debtortype,
+                                'debtorcode_from' => $this->debtorcode_from,
+                                'debtorcode_to' => $this->debtorcode_to,
+                                'groupOne' => $this->groupOne,
+                                'groupTwo' => $this->groupTwo,
+                                'groupThree' => $this->groupThree,
+                                'groupFour' => $this->groupFour,
+                                'groupFive' => $this->groupFive,
+                                'groupSix' => $this->groupSix,
+                                'groupby' => $this->groupby
+                            ]);
+
+        return $idno_job_queue;
+    }
+
+    public function stop_job_queue($idno_job_queue){
+        DB::table('sysdb.job_queue')
+                ->where('idno',$idno_job_queue)
+                ->update([
+                    'finishdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'status' => 'DONE'
+                ]);
+    }
+
+    public function store_to_db($array_report,$idno_job_queue){
+        foreach ($array_report as $obj){
+            DB::table('debtor.ARAgeing')
+                ->insert([
+                    'job_id' => $idno_job_queue,
+                    'idno' => $obj->idno,
+                    'source' => $obj->source,
+                    'trantype' => $obj->trantype,
+                    'auditno' => $obj->auditno,
+                    'lineno_' => $obj->lineno_,
+                    'amount' => $obj->amount,
+                    'outamount' => $obj->outamount,
+                    'recstatus' => $obj->recstatus,
+                    'entrydate' => $obj->entrydate,
+                    'entrytime' => $obj->entrytime,
+                    'entryuser' => $obj->entryuser,
+                    'reference' => $obj->reference,
+                    'recptno' => $obj->recptno,
+                    'paymode' => $obj->paymode,
+                    'tillcode' => $obj->tillcode,
+                    'tillno' => $obj->tillno,
+                    'debtortype' => $obj->debtortype,
+                    'debtorcode' => $obj->debtorcode,
+                    'payercode' => $obj->payercode,
+                    'billdebtor' => $obj->billdebtor,
+                    'remark' => $obj->remark,
+                    'mrn' => $obj->mrn,
+                    'episno' => $obj->episno,
+                    'authno' => $obj->authno,
+                    'expdate' => $obj->expdate,
+                    'adddate' => $obj->adddate,
+                    'adduser' => $obj->adduser,
+                    'upddate' => $obj->upddate,
+                    'upduser' => $obj->upduser,
+                    'deldate' => $obj->deldate,
+                    'deluser' => $obj->deluser,
+                    'epistype' => $obj->epistype,
+                    'cbflag' => $obj->cbflag,
+                    'conversion' => $obj->conversion,
+                    'payername' => $obj->payername,
+                    'hdrtype' => $obj->hdrtype,
+                    'currency' => $obj->currency,
+                    'rate' => $obj->rate,
+                    'unit' => $obj->unit,
+                    'invno' => $obj->invno,
+                    'paytype' => $obj->paytype,
+                    'bankcharges' => $obj->bankcharges,
+                    'RCCASHbalance' => $obj->RCCASHbalance,
+                    'RCOSbalance' => $obj->RCOSbalance,
+                    'RCFinalbalance' => $obj->RCFinalbalance,
+                    'PymtDescription' => $obj->PymtDescription,
+                    'orderno' => $obj->orderno,
+                    'ponum' => $obj->ponum,
+                    'podate' => $obj->podate,
+                    'termdays' => $obj->termdays,
+                    'termmode' => $obj->termmode,
+                    'deptcode' => $obj->deptcode,
+                    'posteddate' => $obj->posteddate,
+                    'approvedby' => $obj->approvedby,
+                    'approveddate' => $obj->approveddate,
+                    'pm_name' => $obj->pm_name,
+                    'debtortycode' => $obj->debtortycode,
+                    'description' => $obj->description,
+                    'name' => $obj->name,
+                    'unit_desc' => $obj->unit_desc,
+                ]);
+        }
     }
     
 }
