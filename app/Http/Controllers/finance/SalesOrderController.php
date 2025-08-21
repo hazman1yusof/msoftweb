@@ -1907,7 +1907,7 @@ class SalesOrderController extends defaultController
         //     ->get();
         
         if($dbacthdr->recstatus == "OPEN"){
-            $title = "DELIVERY ORDER";
+            $title = "INVOICE";
         }else{
             $title = " INVOICE";
         }
@@ -2016,9 +2016,9 @@ class SalesOrderController extends defaultController
         //     ->get();
         
         if($dbacthdr->recstatus == "OPEN"){
-            $title = "DELIVERY ORDER";
+            $title = "INVOICE";
         }else{
-            $title = " INVOICE";
+            $title = "INVOICE";
         }
 
         $company = DB::table('sysdb.company')
@@ -2184,11 +2184,12 @@ class SalesOrderController extends defaultController
         //     ->where('b.billno','=',$dbacthdr->auditno)
         //     ->get();
         
-        if($dbacthdr->recstatus == "OPEN"){
-            $title = "DELIVERY ORDER";
-        }else{
-            $title = " INVOICE";
-        }
+        $title = "DELIVERY ORDER";
+        // if($dbacthdr->recstatus == "OPEN"){
+        //     $title = "DELIVERY ORDER";
+        // }else{
+        //     $title = " INVOICE";
+        // }
 
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
@@ -2216,7 +2217,7 @@ class SalesOrderController extends defaultController
     
         // return $pdf->stream();
 
-        return view('material.deliveryOrder.deliveryOrder_pdfmake',compact('delordhd','delorddt','totamt_eng', 'company', 'total_tax', 'total_discamt', 'total_amt','cr_acc','db_acc'));    
+        return view('material.deliveryOrder.deliveryOrder_pdfmake',compact('delordhd','delorddt','totamt_eng', 'company', 'total_tax', 'total_discamt', 'total_amt','cr_acc','db_acc','title'));    
         
         // return view('finance.SalesOrder.SalesOrder_pdfmake',compact('dbacthdr','billsum','totamt_bm','company', 'title','sum_billsum'));
     }

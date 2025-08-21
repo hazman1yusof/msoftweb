@@ -31,7 +31,7 @@
                     image: 'letterhead',width:175, style: 'tableHeader', colSpan: 5, alignment: 'center'
                 },
 				{
-                    text: 'GOOD RECEIVED NOTE',
+                    text: "{{$title}}",
                     style: 'header',
                     alignment: 'center'
 				},

@@ -1363,10 +1363,11 @@ class DeliveryOrderController extends defaultController
             $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
+        $title = 'GOOD RECEIVED NOTE';
 
         // dd($delorddt);
         
-        return view('material.deliveryOrder.deliveryOrder_pdfmake',compact('delordhd','delorddt','totamt_eng', 'company', 'total_tax', 'total_discamt', 'total_amt','cr_acc','db_acc'));        
+        return view('material.deliveryOrder.deliveryOrder_pdfmake',compact('delordhd','delorddt','totamt_eng', 'company', 'total_tax', 'total_discamt', 'total_amt','cr_acc','db_acc','title'));        
     }
 
     public function do_posted_report(Request $request){
