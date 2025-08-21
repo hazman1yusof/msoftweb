@@ -223,6 +223,6 @@
 @endsection
 
 @section('scripts')
-    <script src="js/finance/AR/ARAgeingDtl_Report/ARAgeingDtl_Report.js?v=1.5"></script>
+    <script src="js/finance/AR/ARAgeingDtl_Report/ARAgeingDtl_Report.js?v=1.6"></script>
     <script src="plugins/datatables/js/jquery.datatables.min.js"></script>
 @endsection

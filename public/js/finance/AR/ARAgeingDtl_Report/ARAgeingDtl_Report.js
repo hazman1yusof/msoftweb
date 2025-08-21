@@ -137,6 +137,8 @@ $(document).ready(function () {
                 filterVal: ['session.compcode','ACTIVE']
             },
             ondblClickRow: function () {
+                let data = selrowData('#'+dialog_debtorFrom.gridname);
+                $("#genreport input[name = debtorcode_to]").val(data['debtorcode']);
             },
             gridComplete: function(obj){
                 var gridname = '#'+obj.gridname;

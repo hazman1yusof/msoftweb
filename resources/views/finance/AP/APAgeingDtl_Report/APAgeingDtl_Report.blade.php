@@ -193,5 +193,5 @@
 @endsection
 
 @section('scripts')
-	<script src="js/finance/AP/APAgeingDtl_Report/APAgeingDtl_Report.js?v=1.4"></script>
+	<script src="js/finance/AP/APAgeingDtl_Report/APAgeingDtl_Report.js?v=1.5"></script>
 @endsection

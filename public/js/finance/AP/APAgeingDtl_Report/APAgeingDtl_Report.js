@@ -87,6 +87,8 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
+                let data = selrowData('#'+suppcode_from.gridname);
+                $("#suppcode_to").val(data['suppcode']);
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
