@@ -46,7 +46,7 @@
         <td></td>
         <td></td>
     </tr>
-    <tr>
+    <tr></tr>
     <tr>
         <td style="font-weight:bold; text-align: left">Code</td>
         <td style="font-weight:bold; text-align: left">Company</td>
@@ -66,8 +66,9 @@
         <td style="font-weight:bold; text-align: left">Poliklinik</td>
     </tr>      
 
+    @php($grandtotal = 0)
     @foreach ($debtortype as $obj_dt)
-    <tr>
+    <tr></tr>
     <tr>
         <td style="font-weight:bold; text-align: left">{{$obj_dt->debtortycode}}</td>
         <td style="font-weight:bold; text-align: left">{{$obj_dt->description}}</td>
@@ -130,7 +131,25 @@
                     <td></td>
                     <td></td>
                 </tr>
+
+                @php($grandtotal = $grandtotal + $total)
             @endif
         @endforeach
     @endforeach
+
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td style="font-weight:bold; text-align: left">GRAND TOTAL</td>
+
+        @foreach ($grouping as $key => $group)
+            <td></td>
+        @endforeach
+
+        <td>{{$grandtotal}}</td>
+        <td></td>
+        <td></td>
+    </tr>
+
 </table>
