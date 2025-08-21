@@ -45,10 +45,10 @@
         $grandtotal = 0;
     @endphp
     @foreach ($debtortype as $obj_dt)
-    <tr>
-        <td style="font-weight:bold; text-align: left">{{$obj_dt->debtortycode}}</td>
-        <td style="font-weight:bold; text-align: left">{{$obj_dt->description}}</td>
-    </tr>
+        <tr>
+            <td style="font-weight:bold; text-align: left">{{$obj_dt->debtortycode}}</td>
+            <td style="font-weight:bold; text-align: left">{{$obj_dt->description}}</td>
+        </tr>
         @php
             $grouping_type_total = [];
             foreach ($grouping as $key => $value) {
@@ -97,18 +97,18 @@
             @endif
         @endforeach
 
-    <tr>
-        <td ></td>
-        <td style="font-weight:bold; text-align: left">SUB TOTAL</td>
-        @php($type_total = 0)
-        @foreach ($grouping_type_total as $key => $obj)
-            @php($type_total = $type_total + $grouping_type_total[$key])
-            <td>{{$grouping_type_total[$key]}}</td>
-        @endforeach
-        <td>{{$type_total}}</td>
+        <tr>
+            <td ></td>
+            <td style="font-weight:bold; text-align: left">SUB TOTAL</td>
+            @php($type_total = 0)
+            @foreach ($grouping_type_total as $key => $obj)
+                @php($type_total = $type_total + $grouping_type_total[$key])
+                <td>{{$grouping_type_total[$key]}}</td>
+            @endforeach
+            <td>{{$type_total}}</td>
+        </tr>
+        <tr></tr>
         @php($grandtotal = $grandtotal + $type_total)
-    </tr>
-    <tr></tr>
     @endforeach
     <tr>
         <td ></td>
