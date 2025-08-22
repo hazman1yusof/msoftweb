@@ -177,7 +177,7 @@
 								{text:'{{number_format($dbacthdr->amount,2)}}', alignment: 'right',colSpan: 2},{}
 							],
 							[
-								{text:'PAID/CREDIT NOTE', style: 'totalbold', colSpan: 8,fontSize: 9},{},{},{},{},{},{},{},
+								{text:'TOTAL PAID/CREDIT NOTE', style: 'totalbold', colSpan: 8,fontSize: 9},{},{},{},{},{},{},{},
 								{text:'- {{number_format($paid,2)}}', alignment: 'right',colSpan: 2},{}
 							],
 							[
