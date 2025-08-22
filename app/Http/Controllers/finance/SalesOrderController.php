@@ -1931,7 +1931,7 @@ class SalesOrderController extends defaultController
                             ->where('recstatus','POSTED')
                             ->sum('outamount');
 
-            $paid = $paid - $pdeposit;
+            $paid = $paid + $pdeposit;
             $totalamount = $dbacthdr->amount - $paid;
         }
 
