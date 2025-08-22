@@ -1909,7 +1909,7 @@ class SalesOrderController extends defaultController
         if($dbacthdr->recstatus == "OPEN"){
             $title = "INVOICE";
         }else{
-            $title = " INVOICE";
+            $title = "INVOICE";
         }
 
         $company = DB::table('sysdb.company')
@@ -1918,7 +1918,9 @@ class SalesOrderController extends defaultController
 
         $sum_billsum = $billsum->sum('amount');
 
-        $totamount_expld = explode(".", (float)$sum_billsum);
+        $paid = $dbacthdr->amount - $dbacthdr->outamount;
+
+        $totamount_expld = explode(".", (float)$dbacthdr->outamount);
 
         $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
         $totamt_bm = $totamt_bm_rm." SAHAJA";
@@ -1932,7 +1934,7 @@ class SalesOrderController extends defaultController
     
         // return $pdf->stream();
         
-        return view('finance.SalesOrder.SalesOrder_pdfmake',compact('dbacthdr','billsum','totamt_bm','company', 'title','sum_billsum'));
+        return view('finance.SalesOrder.SalesOrder_pdfmake',compact('dbacthdr','billsum','totamt_bm','company', 'title','sum_billsum','paid'));
     }
 
     //function sendmeail($data) -- nak kena ada atau tak

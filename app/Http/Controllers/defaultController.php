@@ -942,7 +942,7 @@ abstract class defaultController extends Controller{
     {
         $num = str_replace(array(',', ' '), '' , trim($num));
         if(! $num) {
-            return false;
+            return 'KOSONG';
         }
         $neg_val = false;
         if($num < 0){

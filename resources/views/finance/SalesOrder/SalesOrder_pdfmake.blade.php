@@ -170,19 +170,27 @@
 				{
 					style: 'tableExample',
 					table: {
-						widths: [50,30,30,25,48,40,38,40,46,40], //515
+						widths: [50,30,30,25,40,40,38,40,46,40], //515
 						body: [
 							[
-								{text:'TOTAL', style: 'totalbold', colSpan: 9},{},{},{},{},{},{},{},{},
-								{text:'{{number_format($sum_billsum,2)}}', alignment: 'right'}
+								{text:'TOTAL', style: 'totalbold', colSpan: 9,fontSize: 9},{},{},{},{},{},{},{},{},
+								{text:'{{number_format($dbacthdr->amount,2)}}', alignment: 'right'}
 							],
 							[
-								{text:'RINGGIT MALAYSIA: {{$totamt_bm}}', style: 'totalbold',  italics: true, colSpan: 10}
+								{text:'PAID/CREDIT NOTE', style: 'totalbold', colSpan: 9,fontSize: 9},{},{},{},{},{},{},{},{},
+								{text:'- {{number_format($paid,2)}}', alignment: 'right'}
+							],
+							[
+								{text:'BALANCE', style: 'totalbold', colSpan: 9,fontSize: 9},{},{},{},{},{},{},{},{},
+								{text:'{{number_format($dbacthdr->outamount,2)}}', alignment: 'right'}
+							],
+							[
+								{text:'RINGGIT MALAYSIA: {{$totamt_bm}}', style: 'totalbold',  italics: true, colSpan: 10,fontSize: 9}
 							],
 							[
 								@if(($dbacthdr->deptcode) == 'IMP')
 								{text:
-									`ATTENTION:\n\n1. Please quote invoice number when making payments.\n
+									`\nATTENTION:\n\n1. Please quote invoice number when making payments.\n
 									2. All cheque/money order should be crossed and payable to UKM MEDICARE SDN BHD/COMPANY ACCOUNT NO: MAYBANK 564137536420.\n
 									3. Please ignore this invoice if payment has been made.\n
 									4. Please inform us with payment proof for EFT/direct payment.\n`,
