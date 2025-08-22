@@ -82,7 +82,7 @@ class ARAgeingColl_ReportController extends defaultController
     public function process_excel_link(Request $request){
         $client = new \GuzzleHttp\Client();
 
-        $url='http://192.168.0.13:8443/msoftweb/public/ARAgeingColl_Report_Report/table?action=process_excel&debtorcode_from='.$request->debtorcode_from.'&debtorcode_to='.$request->debtorcode_to.'&date_from='.$request->date_from.'&date_to='.$request->date_to.'&groupOne='.$request->groupOne.'&groupTwo='.$request->groupTwo.'&groupThree='.$request->groupThree.'&groupFour='.$request->groupFour.'&groupFive='.$request->groupFive.'&groupSix='.$request->groupSix.'&groupby='.$request->groupby.'&username='.session('username').'&compcode='.session('compcode');
+        $url='http://192.168.0.13:8443/msoftweb/public/ARAgeingColl_Report/table?action=process_excel&debtorcode_from='.$request->debtorcode_from.'&debtorcode_to='.$request->debtorcode_to.'&date_from='.$request->date_from.'&date_to='.$request->date_to.'&groupOne='.$request->groupOne.'&groupTwo='.$request->groupTwo.'&groupThree='.$request->groupThree.'&groupFour='.$request->groupFour.'&groupFive='.$request->groupFive.'&groupSix='.$request->groupSix.'&groupby='.$request->groupby.'&username='.session('username').'&compcode='.session('compcode');
 
         $response = $client->request('GET', $url, [
           'headers' => [
