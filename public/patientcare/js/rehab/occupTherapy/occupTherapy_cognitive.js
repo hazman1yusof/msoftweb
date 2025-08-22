@@ -4,6 +4,28 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
 
 $(document).ready(function (){
+
+    //////////////////////////////////////upload file/////////////////////////////////////////
+    $("#click").on("click",function(){
+        $("#file").click();
+    });
+
+    $('#file').on("change", function(){
+        let filename = $(this).val();
+        uploadfile();
+    });
+
+    $('#ot_mmse_file tbody').on('click', 'tr', function () {
+    	$('#ot_mmse_file tr').removeClass('active');
+    	$(this).addClass('active');
+    });
+
+    $('#ot_mmse_file tbody').on('dblclick', 'tr', function () {
+    	$('#ot_mmse_file tr').removeClass('active');
+    	$(this).addClass('active');
+        mmse_data = mmsetbl.row( this ).data();
+        oper = 'edit';
+    });
     
     //////////////////////////////////////mmse starts//////////////////////////////////////
 
@@ -15,6 +37,7 @@ $(document).ready(function (){
         rdonly('#formOccupTherapyMMSE');
         emptyFormdata_div("#formOccupTherapyMMSE",['#mrn_occupTherapy','#episno_occupTherapy']);
 
+        mmsetbl.clear().draw();
         document.getElementById("idno_mmse").value = "";
     });
     
@@ -88,7 +111,16 @@ $(document).ready(function (){
     });
 
     //////////////////////////////////////mmse ends//////////////////////////////////////
-    
+
+    /////////////////////////////////////////print button starts/////////////////////////////////////////
+    $("#mmse_chart").click(function (){
+        window.open('./occupTherapy_cognitive/mmse_chart?mrn='+$('#mrn_occupTherapy').val()+'&episno='+$("#episno_occupTherapy").val()+'&dateofexam='+$("#dateofexam").val(), '_blank');
+    });
+
+     $("#moca_chart").click(function (){
+        window.open('./occupTherapy_cognitive/moca_chart?mrn='+$('#mrn_occupTherapy').val()+'&episno='+$("#episno_occupTherapy").val()+'&dateAssessment='+$("#dateAssessment").val(), '_blank');
+    });
+
     // to format number input to two decimal places (0.00)
     $(".floatNumberField").change(function (){
         $(this).val(parseFloat($(this).val()).toFixed(2));
@@ -129,6 +161,8 @@ $(document).ready(function (){
         $(this).addClass('active');
         
         $("#idno_mmse").val(data.idno);
+        
+        $('#ot_mmse_file').DataTable().ajax.url('./occupTherapy_cognitive/table?action=ot_mmse_file&idno_mmse='+data.idno).load();
         
         var saveParam={
             action: 'get_table_mmse',
@@ -209,6 +243,66 @@ $(document).ready(function (){
     });
     
 });
+
+var mmse_data = null;
+var oper = null;
+var mmsetbl = $('#ot_mmse_file').DataTable( {
+	columns: [
+		{'data': 'idno', "width": "10%"},
+        {'data': 'idno_mmse', "width": "10%"},
+    	{'data': 'compcode'},
+        {'data': 'mrn'},
+        {'data': 'episno'},
+    	{'data': 'filename', "width": "100%"},
+    	{'data': 'path', "width": "40%"},
+	],
+    columnDefs: [
+		{targets: [1,2,3,4], orderable: false },
+        {targets: [0,2,3,4], visible: false},
+        {targets: 5,
+        	createdCell: function (td, cellData, rowData, row, col) {
+                console.log(rowData)
+				$(td).html(`<a class="ui circular blue2 button right floated all_attach" href="../uploads/`+rowData.path+`" target="_blank">OPEN</a>`);
+   			}
+   		}
+    ],
+    sDom: 't',
+    ajax: './occupTherapy_cognitive/table?action=ot_mmse_file&idno_mmse='+$('#idno_mmse').val()
+});
+
+function uploadfile(){
+	var formData = new FormData();
+	formData.append('file', $('#file')[0].files[0]);
+	formData.append('_token', $("#_token").val());
+    
+	if($('#idno_mmse').val() != ''){
+		formData.append('idno', $("#idno_mmse").val());
+	}
+
+	$.ajax({
+	  	url: './occupTherapy_cognitive/form?action=uploadfile',
+		type: 'POST',
+		data: formData,
+		dataType: 'json', 
+		async: false,
+		cache: false,
+		contentType: false,
+		enctype: 'multipart/form-data',
+		processData: false,
+	}).done(function(msg) {
+		// make_all_attachment(msg.all_attach);
+    	// $('#idno_mmse').val(msg.idno);
+        $('#ot_mmse_file').DataTable().ajax.url('./occupTherapy_cognitive/table?action=ot_mmse_file&idno_mmse='+$('#idno_mmse').val()).load();
+  	});
+}
+
+function make_all_attachment(all_attach){
+	$('#all_attach').html('');
+
+	all_attach.forEach(function(o,i){
+		$('#all_attach').append(`<a class="ui circular blue2 button all_attach" target="_blank" href="./uploads/`+o.path+`">`+o.filename+`</a>`);
+	});
+}
 
 ///////////////////////calculate tot mmse////////////////////////////
 function findTotalMMSE(){
@@ -308,24 +402,24 @@ function button_state_mmse(state){
         case 'empty':
             $("#toggle_occupTherapy").removeAttr('data-toggle');
             $('#cancel_mmse').data('oper','add');
-            $('#new_mmse,#save_mmse,#cancel_mmse,#edit_mmse').attr('disabled',true);
+            $('#new_mmse,#save_mmse,#cancel_mmse,#edit_mmse,#click').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
             $('#cancel_mmse').data('oper','add');
             $("#new_mmse").attr('disabled',false);
-            $('#save_mmse,#cancel_mmse,#edit_mmse').attr('disabled',true);
+            $('#save_mmse,#cancel_mmse,#edit_mmse,#click').attr('disabled',true);
             break;
         case 'edit':
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
             $('#cancel_mmse').data('oper','edit');
-            $("#new_mmse,#edit_mmse").attr('disabled',false);
+            $("#new_mmse,#edit_mmse,#click").attr('disabled',false);
             $('#save_mmse,#cancel_mmse').attr('disabled',true);
             break;
         case 'wait':
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
             $("#save_mmse,#cancel_mmse").attr('disabled',false);
-            $('#edit_mmse,#new_mmse').attr('disabled',true);
+            $('#edit_mmse,#new_mmse,#click').attr('disabled',true);
             break;
     }
 }
@@ -435,7 +529,9 @@ function saveForm_mmse(callback){
        
         callback(data);
     }).fail(function (data){
-        alert(data.responseText);
+        if(data.responseText !== ''){
+            alert(data.responseText);
+        }
         callback(data);
     });
 }
@@ -515,7 +611,8 @@ function populate_mmse_getdata(){
     var postobj = {
         _token: $('#_token').val(),
         mrn: $('#mrn_occupTherapy').val(),
-        episno: $("#episno_occupTherapy").val()
+        episno: $("#episno_occupTherapy").val(),
+
     };
     
     $.post("./occupTherapy_cognitive/form?"+$.param(saveParam), $.param(postobj), function (data){

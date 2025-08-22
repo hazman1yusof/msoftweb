@@ -68,6 +68,17 @@ class QuotationController extends defaultController
 
     }
 
+    public function uploadfile_2(Request $request){
+        $type = $request->file('file')->getClientMimeType();
+        $filename = $request->file('file')->getClientOriginalName();
+        $file_path = $request->file('file')->store('quote', 'public_uploads');
+
+        
+        $responce = new stdClass();
+        $responce->file_path = $file_path;
+        return json_encode($responce);
+    }
+
     public function uploadfile(Request $request){
         $type = $request->file('file')->getClientMimeType();
         $filename = $request->file('file')->getClientOriginalName();

@@ -31,7 +31,12 @@ class OccupTherapyCognitiveController extends defaultController
 
             case 'get_table_datetimeMOCA': // MOCA
                 return $this->get_table_datetimeMOCA($request);
-            
+
+            case 'maintable':
+                return $this->maintable($request);
+            case 'ot_mmse_file':
+                return $this->ot_mmse_file($request);
+                
             default:
                 return 'error happen..';
         }
@@ -66,7 +71,9 @@ class OccupTherapyCognitiveController extends defaultController
             
             case 'get_table_moca':
                 return $this->get_table_moca($request);   
-            
+
+            case 'uploadfile':
+                return $this->uploadfile($request);
             default:
                 return 'error happen..';
         }
@@ -442,6 +449,157 @@ class OccupTherapyCognitiveController extends defaultController
         
         return json_encode($responce);
         
+    }
+
+    public function mmse_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        $dateofexam = $request->dateofexam;
+
+        if(!$mrn || !$episno){
+            abort(404);
+        }
+        
+        $mmse = DB::table('hisdb.ot_mmse as m')
+                ->select('m.mrn','m.episno','m.dateofexam','m.examiner','m.orientation1','m.orientation2','m.registration','m.registrationTrials','m.attnCalc','m.recall','m.language1','m.language2','m.language3','m.language4','m.language5','m.language6','m.tot_mmse','m.assess_lvl','pm.Name','pm.Newic')
+                ->leftjoin('hisdb.pat_mast as pm', function ($join){
+                    $join = $join->on('pm.MRN','=','m.mrn');
+                    $join = $join->on('pm.Episno','=','m.episno');
+                    $join = $join->where('pm.compcode','=',session('compcode'));
+                })
+                ->where('m.compcode','=',session('compcode'))
+                ->where('m.mrn','=',$mrn)
+                ->where('m.episno','=',$episno)
+                ->where('m.dateofexam','=',$dateofexam)
+                ->first();
+        // dd($mmse);
+
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+        return view('rehab.occupTherapy.mmseChart_pdfmake',compact('mmse'));
+        
+    }
+
+    public function moca_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        $dateAssessment = $request->dateAssessment;
+
+        if(!$mrn || !$episno){
+            abort(404);
+        }
+        
+        $moca = DB::table('hisdb.ot_moca as c')
+                ->select('c.mrn','c.episno','c.dateAssessment','c.education','c.visuospatial','c.naming','c.attention1','c.attention2','c.attention3','c.languageRepeat','c.languageFluency','c.abstraction','c.delayed','c.orientation','c.tot_moca','pm.Name','pm.Newic')
+                ->leftjoin('hisdb.pat_mast as pm', function ($join){
+                    $join = $join->on('pm.MRN','=','c.mrn');
+                    $join = $join->on('pm.Episno','=','c.episno');
+                    $join = $join->where('pm.compcode','=',session('compcode'));
+                })
+                ->where('c.compcode','=',session('compcode'))
+                ->where('c.mrn','=',$mrn)
+                ->where('c.episno','=',$episno)
+                ->where('c.dateAssessment','=',$dateAssessment)
+                ->first();
+        // dd($moca);
+
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+        return view('rehab.occupTherapy.mocaChart_pdfmake',compact('moca'));
+        
+    }
+
+    public function maintable(Request $request){
+        $table = DB::table('hisdb.ot_mmse')
+                    ->where('compcode',session('compcode'))
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno)
+                    ->where('dateofexam','=',$request->dateofexam)
+                    ->get();
+
+        foreach ($table as $key => $value) {
+            $all_attach = DB::table('hisdb.ot_mmse_file')
+                ->where('idno','=',$request->idno)
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->where('dateofexam','=',$request->dateofexam)
+                ->get();
+
+            $value->all_attach = $all_attach;
+        }
+
+        $responce = new stdClass();
+        $responce->data = $table;
+        return json_encode($responce);
+
+    }
+
+    public function ot_mmse_file(Request $request){
+        $responce = new stdClass();
+        $ot_mmse_file = DB::table('hisdb.ot_mmse_file')
+                    ->where('compcode',session('compcode'))
+                    ->where('idno_mmse','=',$request->idno_mmse);
+
+        if($ot_mmse_file->exists()){
+            $ot_mmse_file = $ot_mmse_file->get();
+            
+            $data = [];
+            
+            foreach($ot_mmse_file as $key => $value){
+                $date = [];
+                
+                $date['idno'] = $value->idno;
+                $date['idno_mmse'] = $value->idno_mmse;
+                $date['compcode'] = $value->compcode;
+                $date['mrn'] = $value->mrn;
+                $date['episno'] = $value->episno;
+                $date['path'] = $value->path;
+                $date['filename'] = $value->filename;
+                
+                array_push($data,$date);
+            }
+            
+            $responce->data = $data;
+        }else{
+            $responce->data = [];
+        }
+        
+        return json_encode($responce);
+
+    }
+
+    public function uploadfile(Request $request){
+        $type = $request->file('file')->getClientMimeType();
+        $filename = $request->file('file')->getClientOriginalName();
+        $file_path = $request->file('file')->store('mmse', 'public_uploads');
+
+        $ot_mmse = DB::table('hisdb.ot_mmse')
+                    ->where('compcode',session('compcode'))
+                    ->where('idno','=',$request->idno)
+                    ->first();
+
+        DB::table('hisdb.ot_mmse_file')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $ot_mmse->mrn,
+                    'idno_mmse' => $request->idno,
+                    'episno' => $ot_mmse->episno,
+                    'filename' => $filename,
+                    'path' => $file_path,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+
+        $responce = new stdClass();
+        $responce->file_path = $file_path;
+        return json_encode($responce);
     }
     
 }

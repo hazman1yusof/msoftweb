@@ -5,7 +5,7 @@ var editedRow = 0;
 $(document).ready(function (){
     
     //////////////////////////////////////barthel starts//////////////////////////////////////
-    textarea_init_barthel();
+    // textarea_init_barthel();
 
     disableForm('#formOccupTherapyBarthel');
     
@@ -22,7 +22,7 @@ $(document).ready(function (){
         button_state_barthel('wait');
         enableForm('#formOccupTherapyBarthel');
         rdonly('#formOccupTherapyBarthel');
-        $("#dateAssessment, #timeAssessment").attr("readonly", true);
+        $("#dateofAssessment, #timeAssessment").attr("readonly", true);
 
     });
     
@@ -46,7 +46,12 @@ $(document).ready(function (){
     });
 
     //////////////////////////////////////barthel ends//////////////////////////////////////
-    
+
+    /////////////////////////////////////////print button starts/////////////////////////////////////////
+    $("#barthel_chart").click(function (){
+        window.open('./occupTherapy_barthel/barthel_chart?mrn='+$('#mrn_occupTherapy').val()+'&episno='+$("#episno_occupTherapy").val()+'&dateofAssessment='+$("#dateofAssessment").val(), '_blank');
+    });
+
     // to format number input to two decimal places (0.00)
     $(".floatNumberField").change(function (){
         $(this).val(parseFloat($(this).val()).toFixed(2));
@@ -113,7 +118,7 @@ $(document).ready(function (){
             }else{
                 button_state_barthel('add');
             }
-            textarea_init_barthel();
+            // textarea_init_barthel();
 
         });
     });
@@ -158,7 +163,7 @@ $(document).ready(function (){
 		var score = $("input[name=tot_score]").val();
 		
         if ((score <= 40)) {
-            $("textarea[name=prediction]").val('Unlikely to go home. - Dependent in Mobility - Dependent in Self Care')
+            $("textarea[name=prediction]").val('Unlikely to go home.\n- Dependent in Mobility\n- Dependent in Self Care')
 
         } else if ((score == 60)) {
             $("textarea[name=prediction]").val('Pivotal score where patients move from dependency to assisted independence.')
@@ -167,7 +172,7 @@ $(document).ready(function (){
             $("textarea[name=prediction]").val('If living alone will probably need a number of community services to cope.')
 
         } else if ((score >= 85)) {
-            $("textarea[name=prediction]").val('Likely to be discharged to community living - Independent in transfers and able to walk or use wheelchair independently.')
+            $("textarea[name=prediction]").val('Likely to be discharged to community living\n - Independent in transfers and able to walk or use wheelchair independently.')
 
         }
 	}
@@ -183,7 +188,7 @@ var datetimeBarthel_tbl = $('#datetimeBarthel_tbl').DataTable({
         { 'data': 'idno', 'width': '5%' },
         { 'data': 'mrn' },
         { 'data': 'episno' },
-        { 'data': 'dateAssessment', 'width': '10%' },
+        { 'data': 'dateofAssessment', 'width': '10%' },
         // { 'data': 'timeAssessment', 'width': '20%' },
 
     ],
@@ -317,7 +322,9 @@ function saveForm_barthel(callback){
     },'json').done(function (data){
         callback(data);
     }).fail(function (data){
-        alert(data.responseText);
+        if(data.responseText !== ''){
+            alert(data.responseText);
+        }
         callback(data);
     });
 }
@@ -348,7 +355,7 @@ function populate_barthel_getdata(){
         }else{
             button_state_barthel('add');
         }
-        textarea_init_barthel();
+        // textarea_init_barthel();
     });
 }
 
