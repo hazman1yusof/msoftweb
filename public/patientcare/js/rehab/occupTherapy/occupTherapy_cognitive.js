@@ -248,21 +248,21 @@ var mmse_data = null;
 var oper = null;
 var mmsetbl = $('#ot_mmse_file').DataTable( {
 	columns: [
-		{'data': 'idno', "width": "10%"},
-        {'data': 'idno_mmse', "width": "10%"},
+		{'data': 'idno'},
+        {'data': 'idno_mmse'},
     	{'data': 'compcode'},
         {'data': 'mrn'},
         {'data': 'episno'},
-    	{'data': 'filename', "width": "100%"},
-    	{'data': 'path', "width": "40%"},
+    	{'data': 'filename'},
+    	{'data': 'path'},
 	],
     columnDefs: [
-		{targets: [1,2,3,4], orderable: false },
-        {targets: [0,2,3,4], visible: false},
-        {targets: 5,
+		{targets: [1,2,3,4,5,6], orderable: false },
+        {targets: [0,1,2,3,4], visible: false},
+        {targets: 6,
         	createdCell: function (td, cellData, rowData, row, col) {
                 console.log(rowData)
-				$(td).html(`<a class="ui circular blue2 button right floated all_attach" href="../uploads/`+rowData.path+`" target="_blank">OPEN</a>`);
+				$(td).html(`<a class="ui circular blue2 button centre floated all_attach" href="../uploads/`+rowData.path+`" target="_blank">OPEN</a>`);
    			}
    		}
     ],
