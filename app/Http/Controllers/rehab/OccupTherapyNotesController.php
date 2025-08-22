@@ -205,4 +205,37 @@ class OccupTherapyNotesController extends defaultController
         return json_encode($responce);
         
     }
+
+    public function notes_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        $dateNotes = $request->dateNotes;
+
+        if(!$mrn || !$episno){
+            abort(404);
+        }
+        
+        $notes = DB::table('hisdb.ot_notes as n')
+                ->select('n.mrn','n.episno','n.dateNotes','n.notes','pm.Name','pm.Newic')
+                ->leftjoin('hisdb.pat_mast as pm', function ($join){
+                    $join = $join->on('pm.MRN','=','n.mrn');
+                    $join = $join->on('pm.Episno','=','n.episno');
+                    $join = $join->where('pm.compcode','=',session('compcode'));
+                })
+                ->where('n.compcode','=',session('compcode'))
+                ->where('n.mrn','=',$mrn)
+                ->where('n.episno','=',$episno)
+                ->where('n.dateNotes','=',$dateNotes)
+                ->first();
+        // dd($notes);
+
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+        return view('rehab.occupTherapy.notesChart_pdfmake',compact('notes'));
+        
+    }
+    
 }

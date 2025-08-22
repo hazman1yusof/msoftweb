@@ -10,7 +10,7 @@
             <button class="ui button" id="edit_barthel"><span class="fa fa-edit fa-lg"></span>Edit</button>
             <button class="ui button" id="save_barthel"><span class="fa fa-save fa-lg"></span>Save</button>
             <button class="ui button" id="cancel_barthel"><span class="fa fa-ban fa-lg"></span>Cancel</button>
-            <!-- <button class="ui button" id="barthel_chart"><span class="fa fa-print fa-lg"></span>Print</button> -->
+            <button class="ui button" id="barthel_chart"><span class="fa fa-print fa-lg"></span>Print</button>
         </div>
     </div>
     <div class="ui segment">
@@ -45,8 +45,8 @@
                                     <div class="sixteen wide column" style="padding: 10px 0px 0px 3px;">
                                         <div class="inline fields">
                                             <div class="field">
-                                                <label for="dateAssessment" style="padding-right: 5px;">Date</label>
-                                                <input id="dateAssessment" name="dateAssessment" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" data-validation="required" data-validation-error-msg-required="Please enter information.">
+                                                <label for="dateofAssessment" style="padding-right: 5px;">Date</label>
+                                                <input id="dateofAssessment" name="dateofAssessment" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                             </div>
                                             <!-- <div class="field">
                                                 <label for="timeAssessment" style="padding-left: 15px; padding-right: 5px;">Time</label>

@@ -1,3 +1,26 @@
+@section('style')
+  a.all_attach{
+    margin:2px !important;
+  }
+  label.error{
+    color:darkred !important;
+  }
+  input.error{
+    border-color: darkred !important;
+  }
+  #mmse tr.active{
+    background: #e6f9ff;
+  }
+  .ui.blue2.button{
+    background-color: #d9efff !important;
+    color: #000 !important;
+    box-shadow: 1px 1px 0 0 #bdbdbd, 0 0 0 0 rgba(34,36,38,.15) inset;
+  }
+  .ui.action.input input[type="file"] {
+    display: none;
+}
+@endsection
+
 <div id="cognitives" class="ui bottom attached tab raised segment" data-tab="cognitive">
     <div class="ui top attached tabular menu">
         <a class="item active" data-tab="mmse" id="navtab_mmse">MMSE</a>
@@ -17,7 +40,7 @@
                     <button class="ui button" id="edit_mmse"><span class="fa fa-edit fa-lg"></span>Edit</button>
                     <button class="ui button" id="save_mmse"><span class="fa fa-save fa-lg"></span>Save</button>
                     <button class="ui button" id="cancel_mmse"><span class="fa fa-ban fa-lg"></span>Cancel</button>
-                    <!-- <button class="ui button" id="mmse_chart"><span class="fa fa-print fa-lg"></span>Print</button> -->
+                    <button class="ui button" id="mmse_chart"><span class="fa fa-print fa-lg"></span>Print</button>
                 </div>
             </div>
 
@@ -256,6 +279,29 @@
                                                             <div class="image">
                                                                 <img src="{{ asset('img/mmse.jpg') }}">
                                                             </div>
+                                                            <div class="ui form">
+                                                                <div class="field">
+                                                                    <div class="ui action input">
+                                                                        <button type="button" id='click' class='ui icon button btn' ><i class="paperclip icon"></i> Upload File</button>
+                                                                        <input type="file" name="file" id="file" accept="audio/*,image/*,video/*,application/pdf" style="display:none;">
+                                                                    </div>
+                                                                    <div class="ui segment" id="all_attach" style="display:none;"></div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                                                            <table class="ui celled table" id="ot_mmse_file">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>ID</th>
+                                                                    <th>IDMMSE</th>
+                                                                    <th>compcode</th>
+                                                                    <th>mrn</th>
+                                                                    <th>episno</th>
+                                                                    <th>File</th>
+                                                                    <th>Open</th>
+                                                                </tr>
+                                                                </thead>
+                                                            </table>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -304,7 +350,7 @@
                     <button class="ui button" id="edit_moca"><span class="fa fa-edit fa-lg"></span>Edit</button>
                     <button class="ui button" id="save_moca"><span class="fa fa-save fa-lg"></span>Save</button>
                     <button class="ui button" id="cancel_moca"><span class="fa fa-ban fa-lg"></span>Cancel</button>
-                    <!-- <button class="ui button" id="moca_chart"><span class="fa fa-print fa-lg"></span>Print</button> -->
+                    <button class="ui button" id="moca_chart"><span class="fa fa-print fa-lg"></span>Print</button>
                 </div>
             </div>
 

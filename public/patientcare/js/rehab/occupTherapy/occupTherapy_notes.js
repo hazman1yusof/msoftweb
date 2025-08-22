@@ -45,7 +45,12 @@ $(document).ready(function (){
     });
 
     //////////////////////////////////////notes ends//////////////////////////////////////
-    
+
+    /////////////////////////////////////////print button starts/////////////////////////////////////////
+    $("#notes_chart").click(function (){
+        window.open('./occupTherapy_notes/notes_chart?mrn='+$('#mrn_occupTherapy').val()+'&episno='+$("#episno_occupTherapy").val()+'&dateNotes='+$("#dateNotes").val(), '_blank');
+    });
+
     // to format number input to two decimal places (0.00)
     $(".floatNumberField").change(function (){
         $(this).val(parseFloat($(this).val()).toFixed(2));
@@ -161,7 +166,7 @@ function button_state_notes(state){
         case 'empty':
             $("#toggle_occupTherapy").removeAttr('data-toggle');
             $('#cancel_notes').data('oper','add');
-            $('#new_notes,#save_notes,#cancel_notes,#edit_notes').attr('disabled',true);
+            $('#new_notes,#save_notes,#cancel_notes,#edit_notes,#notes_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
@@ -172,7 +177,7 @@ function button_state_notes(state){
         case 'edit':
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
             $('#cancel_notes').data('oper','edit');
-            $("#edit_notes,#new_notes").attr('disabled',false);
+            $("#edit_notes,#new_notes,#notes_chart").attr('disabled',false);
             $('#save_notes,#cancel_notes').attr('disabled',true);
             break;
         case 'wait':
@@ -259,7 +264,9 @@ function saveForm_notes(callback){
     },'json').done(function (data){
         callback(data);
     }).fail(function (data){
-        alert(data.responseText);
+        if(data.responseText !== ''){
+            alert(data.responseText);
+        }
         callback(data);
     });
 }
