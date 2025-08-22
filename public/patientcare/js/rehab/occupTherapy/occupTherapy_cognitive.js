@@ -257,7 +257,7 @@ var mmsetbl = $('#ot_mmse_file').DataTable( {
     	{'data': 'path'},
 	],
     columnDefs: [
-		{targets: [1,2,3,4], orderable: false },
+		{targets: [1,2,3,4,5,6], orderable: false },
         {targets: [0,1,2,3,4], visible: false},
         {targets: 6,
         	createdCell: function (td, cellData, rowData, row, col) {
