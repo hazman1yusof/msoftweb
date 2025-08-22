@@ -100,8 +100,11 @@ class ARAgeingDtl_ReportController extends defaultController
     }
 
     public function download2(Request $request){
+        $job_queue = DB::table('sysdb.job_queue')
+                        ->where('idno',$request->idno)
+                        ->first();
 
-        return Excel::download(new ARAgeingDtlExport_2($request->idno), 'ItemEnquiryExport.xlsx');
+        return Excel::download(new ARAgeingDtlExport_2($request->idno), $job_queue->filename);
     }
     
     public function showExcel(Request $request){

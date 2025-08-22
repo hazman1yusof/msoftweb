@@ -1295,6 +1295,11 @@ Route::post('/APAgeingDtl_Report/form','finance\APAgeingDtl_ReportController@for
 Route::get('/APAgeingDtl_Report/showExcel','finance\APAgeingDtl_ReportController@showExcel');
 Route::get('/APAgeingDtl_Report/showpdf','finance\APAgeingDtl_ReportController@showpdf');
 
+//// AP Ageing Details -- Report
+Route::get('/ARAgeingColl_Report','finance\ARAgeingColl_ReportController@show');
+Route::get('/ARAgeingColl_Report/table','finance\ARAgeingColl_ReportController@table');
+Route::post('/ARAgeingColl_Report/form','finance\ARAgeingColl_ReportController@form');
+
 //// Supp List -- Report
 Route::get('/SuppList_Report','finance\SuppList_ReportController@show');
 Route::get('/SuppList_Report/table','finance\SuppList_ReportController@table');
