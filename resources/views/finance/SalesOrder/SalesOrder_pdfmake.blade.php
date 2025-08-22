@@ -178,11 +178,11 @@
 							],
 							[
 								{text:'TOTAL PAID/CREDIT NOTE', style: 'totalbold', colSpan: 8,fontSize: 9},{},{},{},{},{},{},{},
-								{text:'- {{number_format($paid,2)}}', alignment: 'right',colSpan: 2},{}
+								{text:'@if($paid!=0) - {{number_format($paid,2)}} @else 0.00 @endif', alignment: 'right',colSpan: 2},{}
 							],
 							[
 								{text:'BALANCE', style: 'totalbold', colSpan: 8,fontSize: 9},{},{},{},{},{},{},{},
-								{text:'{{number_format($dbacthdr->outamount,2)}}', alignment: 'right',colSpan: 2},{}
+								{text:'{{number_format($totalamount,2)}}', alignment: 'right',colSpan: 2},{}
 							],
 							[
 								{text:'RINGGIT MALAYSIA: {{$totamt_bm}}', style: 'totalbold',  italics: true, colSpan: 10,fontSize: 9}

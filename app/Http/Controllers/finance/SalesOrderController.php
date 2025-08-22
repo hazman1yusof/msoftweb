@@ -1920,7 +1920,22 @@ class SalesOrderController extends defaultController
 
         $paid = $dbacthdr->amount - $dbacthdr->outamount;
 
-        $totamount_expld = explode(".", (float)$dbacthdr->outamount);
+        $totalamount = $dbacthdr->outamount;
+
+        if(strtoupper($dbacthdr->debtortype) == 'PR' || strtoupper($dbacthdr->debtortype) == 'PT' ){
+            $pdeposit = DB::table('debtor.dbacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','PB')
+                            ->where('trantype','RD')
+                            ->where('debtorcode',$dbacthdr->debtorcode)
+                            ->where('recstatus','POSTED')
+                            ->sum('outamount');
+
+            $paid = $paid - $pdeposit;
+            $totalamount = $dbacthdr->amount - $paid;
+        }
+
+        $totamount_expld = explode(".", (float)$totalamount);
 
         $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
         $totamt_bm = $totamt_bm_rm." SAHAJA";
@@ -1934,7 +1949,7 @@ class SalesOrderController extends defaultController
     
         // return $pdf->stream();
         
-        return view('finance.SalesOrder.SalesOrder_pdfmake',compact('dbacthdr','billsum','totamt_bm','company', 'title','sum_billsum','paid'));
+        return view('finance.SalesOrder.SalesOrder_pdfmake',compact('dbacthdr','billsum','totamt_bm','company', 'title','sum_billsum','paid','totalamount'));
     }
 
     //function sendmeail($data) -- nak kena ada atau tak
