@@ -173,16 +173,16 @@
 						widths: [50,30,30,25,40,40,38,40,46,40], //515
 						body: [
 							[
-								{text:'TOTAL', style: 'totalbold', colSpan: 9,fontSize: 9},{},{},{},{},{},{},{},{},
-								{text:'{{number_format($dbacthdr->amount,2)}}', alignment: 'right'}
+								{text:'TOTAL', style: 'totalbold', colSpan: 8,fontSize: 9},{},{},{},{},{},{},{},
+								{text:'{{number_format($dbacthdr->amount,2)}}', alignment: 'right',colSpan: 2},{}
 							],
 							[
-								{text:'PAID/CREDIT NOTE', style: 'totalbold', colSpan: 9,fontSize: 9},{},{},{},{},{},{},{},{},
-								{text:'- {{number_format($paid,2)}}', alignment: 'right'}
+								{text:'PAID/CREDIT NOTE', style: 'totalbold', colSpan: 8,fontSize: 9},{},{},{},{},{},{},{},
+								{text:'- {{number_format($paid,2)}}', alignment: 'right',colSpan: 2},{}
 							],
 							[
-								{text:'BALANCE', style: 'totalbold', colSpan: 9,fontSize: 9},{},{},{},{},{},{},{},{},
-								{text:'{{number_format($dbacthdr->outamount,2)}}', alignment: 'right'}
+								{text:'BALANCE', style: 'totalbold', colSpan: 8,fontSize: 9},{},{},{},{},{},{},{},
+								{text:'{{number_format($dbacthdr->outamount,2)}}', alignment: 'right',colSpan: 2},{}
 							],
 							[
 								{text:'RINGGIT MALAYSIA: {{$totamt_bm}}', style: 'totalbold',  italics: true, colSpan: 10,fontSize: 9}
