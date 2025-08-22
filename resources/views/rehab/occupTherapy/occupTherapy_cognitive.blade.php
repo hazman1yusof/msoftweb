@@ -289,7 +289,7 @@
                                                                 </div>
                                                             </div>
                                                             <br>
-                                                            <table class="ui celled table" id="ot_mmse_file">
+                                                            <table class="ui celled table" id="ot_mmse_file" style="width:150%">
                                                             <thead>
                                                                 <tr>
                                                                     <th>ID</th>
@@ -297,8 +297,8 @@
                                                                     <th>compcode</th>
                                                                     <th>mrn</th>
                                                                     <th>episno</th>
-                                                                    <th>File</th>
-                                                                    <th>Open</th>
+                                                                    <th style="width:80%">File</th>
+                                                                    <th style="width:20%">Open</th>
                                                                 </tr>
                                                                 </thead>
                                                             </table>
