@@ -786,7 +786,11 @@ class SalesOrderController extends defaultController
                         $billsum_obj->uom = $chgmast_->uom;
                     }
 
-                    $chgmast = $chgmast->first();
+                    $chgmast = DB::table("hisdb.chgmast")
+                            ->where('compcode','=',session('compcode'))
+                            ->where('chgcode','=',$billsum_obj->chggroup)
+                            ->where('uom','=',$billsum_obj->uom)
+                            ->first();
                     
                     $updinv = ($chgmast->invflag == '1') ? 1 : 0;
 
