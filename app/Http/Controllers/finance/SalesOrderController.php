@@ -768,8 +768,25 @@ class SalesOrderController extends defaultController
                     $chgmast = DB::table("hisdb.chgmast")
                             ->where('compcode','=',session('compcode'))
                             ->where('chgcode','=',$billsum_obj->chggroup)
-                            ->where('uom','=',$billsum_obj->uom)
-                            ->first();
+                            ->where('uom','=',$billsum_obj->uom);
+
+                    if(!$chgmast->exists()){
+                        $chgmast_ = DB::table("hisdb.chgmast")
+                                        ->where('compcode','=',session('compcode'))
+                                        ->where('chgcode','=',$billsum_obj->chggroup)
+                                        ->first();
+
+                        DB::table('debtor.billsum')
+                                ->where('idno',$billsum_obj->idno)
+                                ->where('chggroup',$chgmast_->uom)
+                                ->update([
+                                    'uom' => $chgmast_->uom
+                                ]);
+
+                        $billsum_obj->uom = $chgmast_->uom;
+                    }
+
+                    $chgmast = $chgmast->first();
                     
                     $updinv = ($chgmast->invflag == '1') ? 1 : 0;
 
