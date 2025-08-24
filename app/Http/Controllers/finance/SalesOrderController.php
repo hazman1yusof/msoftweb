@@ -799,10 +799,10 @@ class SalesOrderController extends defaultController
                         
                         if($ivdspdt->exists()){
                             $this->updivdspdt($billsum_obj,$dbacthdr);
-                            $this->updgltran($ivdspdt->first()->idno,$dbacthdr);
+                            // $this->updgltran($ivdspdt->first()->idno,$dbacthdr);
                         }else{
                             $ivdspdt_idno = $this->crtivdspdt($billsum_obj,$dbacthdr);
-                            $this->crtgltran($ivdspdt_idno,$dbacthdr);
+                            // $this->crtgltran($ivdspdt_idno,$dbacthdr);
                         }
                     }
         
