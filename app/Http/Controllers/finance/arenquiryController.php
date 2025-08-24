@@ -192,7 +192,8 @@ class arenquiryController extends defaultController
             }
 
             if($request->searchCol[0] == 'db_mrn'){
-                $table = $table->whereIn('db.compcode',['xx',session('compcode')]);
+                $table = $table->where('db.compcode','=',session('compcode'));
+                // $table = $table->whereIn('db.compcode',['xx',session('compcode')]);
             }else{
                 $table = $table->where('db.compcode','=',session('compcode'));
             }
