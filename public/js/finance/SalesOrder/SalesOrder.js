@@ -406,7 +406,7 @@ $(document).ready(function () {
 			let rowsdata = data.rows;
 
 			rowsdata.forEach(function(e,i){
-				if(e.db_compcode != $('#session_compcode').val()){
+				if(e.db_compcode.toUpperCase(); != $('#session_compcode').val().toUpperCase();){
 					$('table#jqGrid tr#'+e.db_idno).addClass('history_tr');
 					$('table#jqGrid tr#'+e.db_idno+' td[aria-describedby=jqGrid_db_payercode]').append('<span class="orig_td">Original</span>');
 				}else{
