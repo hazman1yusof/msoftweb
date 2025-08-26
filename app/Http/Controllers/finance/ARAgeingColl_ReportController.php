@@ -260,7 +260,7 @@ class ARAgeingColl_ReportController extends defaultController
                             ->get();
 
                 foreach ($ref_db as $obj_ref_db) {
-                    $datetime1 = new DateTime($date_to);
+                    $datetime1 = new DateTime($value->posteddate);
                     $datetime2 = new DateTime($obj_ref_db->posteddate);
                 
                     $interval = $datetime1->diff($datetime2);
