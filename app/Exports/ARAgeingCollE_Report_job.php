@@ -202,7 +202,8 @@ class ARAgeingCollE_Report_job implements FromView, ShouldQueue, WithEvents
                             ->where('da.docsource', '=', $value->source)
                             ->where('da.doctrantype', '=', $value->trantype)
                             ->where('da.docauditno', '=', $value->auditno)
-                            // ->whereDate('da.allocdate', '<=', $date_to)
+                            ->whereDate('da.allocdate', '<=', $date_to)
+                            ->forceIndex('dballoc_docaudit')
                             ->get();
 
             foreach ($dballoc as $obj_dballoc) {
