@@ -186,7 +186,7 @@ class ARAgeingColl_ReportController extends defaultController
                                          ->whereDate('dh.posteddate', '<=', $date_to)
                                          ->whereIn('dh.trantype', ['RC','RD'])
                                          ->where('dh.recstatus', 'POSTED')
-                                         // ->where('dh.auditno','5209785')
+                                         ->where('dh.auditno','5209785')
                                          ->where('dh.compcode', '=', $compcode);
                         })
                         ->join('sysdb.sector as st', function($join) use ($compcode){
