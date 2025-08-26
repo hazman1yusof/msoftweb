@@ -1229,6 +1229,11 @@ Route::post('/ARAgeingDtl_Report/form','finance\ARAgeingDtl_ReportController@for
 Route::get('/ARAgeingDtl_Report/showExcel','finance\ARAgeingDtl_ReportController@showExcel');
 Route::get('/ARAgeingDtl_Report/showpdf','finance\ARAgeingDtl_ReportController@showpdf');
 
+//// AR Ageing Details -- Report
+Route::get('/ARAgeingColl_Report','finance\ARAgeingColl_ReportController@show');
+Route::get('/ARAgeingColl_Report/table','finance\ARAgeingColl_ReportController@table');
+Route::post('/ARAgeingColl_Report/form','finance\ARAgeingColl_ReportController@form');
+
 //// Unallocated Receipt -- Report
 Route::get('/unallocated_receipt','finance\unallocated_receiptController@show');
 Route::get('/unallocated_receipt/table','finance\unallocated_receiptController@table');
@@ -1294,11 +1299,6 @@ Route::get('/APAgeingDtl_Report/table','finance\APAgeingDtl_ReportController@tab
 Route::post('/APAgeingDtl_Report/form','finance\APAgeingDtl_ReportController@form');
 Route::get('/APAgeingDtl_Report/showExcel','finance\APAgeingDtl_ReportController@showExcel');
 Route::get('/APAgeingDtl_Report/showpdf','finance\APAgeingDtl_ReportController@showpdf');
-
-//// AP Ageing Details -- Report
-Route::get('/ARAgeingColl_Report','finance\ARAgeingColl_ReportController@show');
-Route::get('/ARAgeingColl_Report/table','finance\ARAgeingColl_ReportController@table');
-Route::post('/ARAgeingColl_Report/form','finance\ARAgeingColl_ReportController@form');
 
 //// Supp List -- Report
 Route::get('/SuppList_Report','finance\SuppList_ReportController@show');

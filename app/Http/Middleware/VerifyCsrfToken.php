@@ -15,6 +15,7 @@ class VerifyCsrfToken extends Middleware
         '/diagnose',
         '/save_mykad_local',
         '/nocsrf',
-        '/ARAgeingDtl_Report'
+        '/ARAgeingDtl_Report',
+        '/ARAgeingColl_Report'
     ];
 }

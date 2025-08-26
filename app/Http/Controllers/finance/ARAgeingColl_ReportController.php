@@ -178,7 +178,7 @@ class ARAgeingColl_ReportController extends defaultController
 
         $idno_job_queue = $this->start_job_queue('ARAgeingColl');
 
-        $array_report = DB::table('debtor.debtormast as dm')
+        $debtormast = DB::table('debtor.debtormast as dm')
                         ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'pm.Name as pm_name','dm.debtortype','dm.name','st.description as unit_desc')
                         ->join('debtor.dbacthdr as dh', function($join) use ($date_from,$date_to,$compcode){
                             $join = $join->on('dh.debtorcode', '=', 'dm.debtorcode')
@@ -199,36 +199,92 @@ class ARAgeingColl_ReportController extends defaultController
                         ->where('dm.compcode', '=', $compcode);
 
                         if($debtorcode_from == $debtorcode_to){
-                            $array_report = $array_report->where('dm.debtorcode',$debtorcode_from);
+                            $debtormast = $debtormast->where('dm.debtorcode',$debtorcode_from);
                         }else if(empty($debtorcode_from) && $debtorcode_to == 'ZZZ'){
 
                         }else{
-                            $array_report = $array_report->whereBetween('dm.debtorcode', [$debtorcode_from,$debtorcode_to.'%']);
+                            $debtormast = $debtormast->whereBetween('dm.debtorcode', [$debtorcode_from,$debtorcode_to.'%']);
                         }
 
-                        $array_report = $array_report
+                        $debtormast = $debtormast
                             ->orderBy('dm.debtorcode', 'ASC')
                             ->get();
 
-
-        foreach ($array_report as $key => $value){
+        $array_report_1 = [];
+        $array_report_2 = [];
+        foreach ($debtormast as $key => $value){
             $value->remark = '';
             $value->doc_no = '';
             $value->newamt = $value->amount;
+            $value->group = '';
+            $value->group_type = 1;
+            $value->days = '';
+            $value->link_idno = '';
 
             $hdr_amount = $value->amount;
-            
-            // to calculate interval (days)
-            $datetime1 = new DateTime($date_to);
-            $datetime2 = new DateTime($value->posteddate);
-            
-            $interval = $datetime1->diff($datetime2);
-            $days = $interval->format('%a');
-            $value->group = $this->assign_grouping($grouping,$days);
-            $value->days = $days;       
+            $punallocamt = $value->amount;
+
+            $dballoc = DB::table('debtor.dballoc as da')
+                            ->where('da.compcode', '=', session('compcode'))
+                            ->where('da.recstatus', '=', "POSTED")
+                            // ->where('da.debtorcode', '=', $value->debtorcode)
+                            ->where('da.docsource', '=', $value->source)
+                            ->where('da.doctrantype', '=', $value->trantype)
+                            ->where('da.docauditno', '=', $value->auditno)
+                            ->whereDate('da.allocdate', '<=', $date_to)
+                            ->get();
+
+            foreach ($dballoc as $obj_dballoc) {
+
+                $punallocamt = $punallocamt - $obj_dballoc->amount;
+
+                $ref_db = DB::table('debtor.debtormast as dm')
+                            ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'pm.Name as pm_name','dm.debtortype','dm.name','st.description as unit_desc')
+                            ->join('debtor.dbacthdr as dh', function($join) use ($compcode,$obj_dballoc){
+                                $join = $join->on('dh.debtorcode', '=', 'dm.debtorcode')
+                                            ->where('dh.source', '=', $obj_dballoc->refsource)
+                                            ->where('dh.trantype', '=', $obj_dballoc->reftrantype)
+                                            ->where('dh.auditno', '=', $obj_dballoc->refauditno)
+                                            ->where('dh.recstatus', 'POSTED')
+                                            ->where('dh.compcode', '=', $compcode);
+                            })
+                            ->join('sysdb.sector as st', function($join) use ($compcode){
+                                $join = $join->on('st.sectorcode', '=', 'dh.unit')
+                                             ->where('st.compcode', '=', $compcode);
+                            })
+                            ->leftJoin('hisdb.pat_mast as pm', function($join) use ($compcode){
+                                $join = $join->on('pm.NewMrn', '=', 'dh.mrn')
+                                             ->where('pm.compcode', '=', $compcode);
+                            })
+                            ->where('dm.compcode', '=', $compcode)
+                            ->get();
+
+                foreach ($ref_db as $obj_ref_db) {
+                    $datetime1 = new DateTime($date_to);
+                    $datetime2 = new DateTime($obj_ref_db->posteddate);
+                
+                    $interval = $datetime1->diff($datetime2);
+                    $days = $interval->format('%a');
+                    $obj_ref_db->remark = $obj_ref_db->remark;
+                    $obj_ref_db->doc_no = $obj_ref_db->invno;
+                    $obj_ref_db->newamt = $obj_ref_db->amount;
+                    $obj_ref_db->group = $this->assign_grouping($grouping,$days);
+                    $obj_ref_db->group_type = 2;
+                    $obj_ref_db->days = $days;
+                    $obj_ref_db->punallocamt = '';
+                    $obj_ref_db->link_idno = $value->idno;
+
+                    array_push($array_report_2, $obj_ref_db);
+                }
+            }
+            $value->punallocamt = $punallocamt;
+            array_push($array_report_1, $value);
         }
 
-        $this->store_to_db($array_report,$idno_job_queue);
+        // dd($array_report_1);
+
+        $this->store_to_db($array_report_1,$idno_job_queue);
+        $this->store_to_db($array_report_2,$idno_job_queue);
 
         $this->stop_job_queue($idno_job_queue);
     }
@@ -351,7 +407,10 @@ class ARAgeingColl_ReportController extends defaultController
                     'unit_desc' => $obj->unit_desc,
                     'doc_no' => $obj->doc_no,
                     'newamt' => $obj->newamt,
-                    'group' => $obj->group
+                    'group' => $obj->group,
+                    'group_type' => $obj->group_type,
+                    'punallocamt' => $obj->punallocamt,
+                    'link_idno' => $obj->link_idno
                 ]);
         }
     }

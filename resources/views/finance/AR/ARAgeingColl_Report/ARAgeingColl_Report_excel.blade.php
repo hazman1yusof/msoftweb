@@ -31,6 +31,7 @@
     <tr>
         <td style="font-weight:bold; text-align: left">Payer Code</td>
         <td style="font-weight:bold; text-align: left">Payer Name</td>
+        <td style="font-weight:bold; text-align: left">Unallocated Amount</td>
         @foreach ($grouping as $key => $group)
             @if($key+1 < count($grouping))
             <td style="font-weight:bold; text-align: left">{{$group+1}}-{{$grouping[$key+1]}} Days</td>
@@ -39,16 +40,20 @@
             @endif
         @endforeach
         <td style="font-weight:bold; text-align: left">Total</td>
+        <td style="font-weight:bold; text-align: left">Receipt No.</td>
+        <td style="font-weight:bold; text-align: left">Date</td>
+        <td style="font-weight:bold; text-align: left">Unit</td>
     </tr>      
 
     @php
         $grandtotal = 0;
     @endphp
 
-    @foreach ($debtorcode as $obj_dc)
+    @foreach ($array_report_1 as $ar_1)
         <tr>
-            <td style="text-align: left">{{$obj_dc->debtorcode}}</td>
-            <td style="text-align: left">{{$obj_dc->name}}</td>
+            <td style="text-align: left">{{$ar_1->debtorcode}}</td>
+            <td style="text-align: left">{{$ar_1->name}}</td>
+            <td style="text-align: left">{{$ar_1->punallocamt}}</td>
 
         @php
 
@@ -58,11 +63,11 @@
                 $grouping_total[$key] = 0;
             }
 
-            foreach ($array_report as $obj_ar) {
-                if($obj_ar->debtorcode == $obj_dc->debtorcode){
+            foreach ($array_report_2 as $ar_2) {
+                if($ar_2->link_idno == $ar_1->idno){
                     foreach ($grouping as $key => $value) {
-                        if($obj_ar->group == $key){
-                            $grouping_total[$key] = $grouping_total[$key] + $obj_ar->newamt;
+                        if($ar_2->group == $key){
+                            $grouping_total[$key] = $grouping_total[$key] + $ar_2->newamt;
                         }
                     }
                 }
@@ -76,6 +81,9 @@
             <td>{{$grouping_total[$key]}}</td>
         @endforeach
             <td>{{$total}}</td>
+            <td style="text-align: left">{{$ar_1->recptno}}</td>
+            <td style="text-align: left">{{$ar_1->posteddate}}</td>
+            <td style="text-align: left">{{$ar_1->unit}}</td>
 
         </tr>
 
