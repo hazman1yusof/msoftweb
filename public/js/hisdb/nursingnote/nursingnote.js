@@ -364,6 +364,29 @@ $(document).ready(function (){
     /////////////////////////////////////othersChart2 ends/////////////////////////////////////
     
     ///////////////////////////////////InvChartDialog starts///////////////////////////////////
+    ////////////////////////////////////upload file starts////////////////////////////////////
+    $("#invChart_click").on("click", function (){
+        $("#invChrt_file").click();
+    });
+    
+    $('#invChrt_file').on("change", function (){
+        let filename = $(this).val();
+        uploadfile();
+    });
+    
+    $('#invChart_file tbody').on('click', 'tr', function (){
+        $('#invChart_file tr').removeClass('active');
+        $(this).addClass('active');
+    });
+    
+    $('#invChart_file tbody').on('dblclick', 'tr', function (){
+        $('#invChart_file tr').removeClass('active');
+        $(this).addClass('active');
+        invChart_data = invChart_tbl.row( this ).data();
+        oper = 'edit';
+    });
+    /////////////////////////////////////upload file ends/////////////////////////////////////
+    
     $("#InvChartDialog").dialog({
         autoOpen: false,
         width: 5/10 * $(window).width(),
@@ -448,7 +471,7 @@ $(document).ready(function (){
         button_state_othersChart2('empty');
         button_state_glasgow('empty');
         button_state_pivc('empty');
-
+        
         disableForm('#formProgress');
         disableForm('#formIntake');
         disableForm('#formTreatmentP');
@@ -482,6 +505,8 @@ $(document).ready(function (){
         switch(type){
             case 'invChart':
                 // reload first tab dulu
+                $('#invChart_file').DataTable().ajax.url('./nursingnote/table?action=invChart_file&mrn='+$('#mrn_nursNote').val()+'&episno='+$("#episno_nursNote").val()).load();
+                
                 var urlparam_tbl_invcat_FBC = {
                     action: 'get_invcat',
                     inv_code: 'FBC',
@@ -4127,6 +4152,69 @@ var tbl_careplan_date = $('#tbl_careplan_date').DataTable({
 ///////////////////////careplan ends///////////////////////
 
 //////////////////////InvChart starts//////////////////////
+var invChart_data = null;
+var oper = null;
+var invChart_tbl = $('#invChart_file').DataTable({
+    columns: [
+        { 'data': 'idno', "width": "10%" },
+        { 'data': 'compcode' },
+        { 'data': 'mrn' },
+        { 'data': 'episno' },
+        { 'data': 'filename', "width": "100%" },
+        { 'data': 'path', "width": "40%" },
+    ],
+    columnDefs: [
+        { targets: [1,2,3,4,5], orderable: false },
+        { targets: [0,1,2,3], visible: false },
+        { targets: 5, 
+            createdCell: function (td, cellData, rowData, row, col){
+                console.log(rowData)
+                $(td).html(`<a class="ui circular blue2 button right floated invChart_allAttach" href="../uploads/`+rowData.path+`" target="_blank">OPEN</a>`);
+            }
+        }
+    ],
+    sDom: 't',
+    ajax: './nursingnote/table?action=invChart_file&mrn='+$('#mrn_nursNote').val()+'&episno='+$("#episno_nursNote").val()
+});
+
+function uploadfile(){
+    var formData = new FormData();
+    formData.append('file', $('#invChrt_file')[0].files[0]);
+    formData.append('_token', $("#csrf_token").val());
+    
+    if($('#mrn_nursNote').val() != ''){
+        formData.append('mrn', $("#mrn_nursNote").val());
+    }
+    
+    if($('#episno_nursNote').val() != ''){
+        formData.append('episno', $("#episno_nursNote").val());
+    }
+    
+    $.ajax({
+        url: './nursingnote/form?action=uploadfile',
+        type: 'POST',
+        data: formData,
+        dataType: 'json',
+        async: false,
+        cache: false,
+        contentType: false,
+        enctype: 'multipart/form-data',
+        processData: false,
+    }).done(function (msg){
+        // make_all_attachment(msg.invChart_allAttach);
+        // $('#idno_mmse').val(msg.idno);
+        $('#invChart_file').DataTable().ajax.url('./nursingnote/table?action=invChart_file&mrn='+$('#mrn_nursNote').val()+'&episno='+$("#episno_nursNote").val()).load();
+    });
+}
+
+function make_all_attachment(invChart_allAttach){
+    $('#invChart_allAttach').html('');
+    
+    invChart_allAttach.forEach(function (o,i){
+        $('#invChart_allAttach').append(`<a class="ui circular blue2 button invChart_allAttach" target="_blank" href="./uploads/`+o.path+`">`+o.filename+`</a>`);
+    });
+}
+
 var tbl_invcat_FBC = $('#tbl_invcat_FBC').DataTable({
     "ajax": "",
     "sDom": "",

@@ -34,9 +34,32 @@
                     <div class="panel panel-info">
                         <div class="panel-body">
                             <div class="form-group">
-                                <label class="col-md-4 control-label" for="reg_date">Date of Admission</label>
-                                <div class="col-md-3">
-                                    <input id="reg_date" name="reg_date" type="date" class="form-control input-sm" readonly>
+                                <div class='col-md-6' style="padding-top: 20px;">
+                                    <label class="col-md-5 control-label" for="reg_date">Date of Admission</label>
+                                    <div class="col-md-5">
+                                        <input id="reg_date" name="reg_date" type="date" class="form-control input-sm" readonly>
+                                    </div>
+                                </div>
+                                
+                                <div class='col-md-6'>
+                                    <div class="ui action input">
+                                        <button type="button" id='invChart_click' class='ui icon button'><i class="paperclip icon"></i>Upload File</button>
+                                        <input type="file" name="file" id="invChrt_file" accept="audio/*,image/*,video/*,application/pdf" style="display: none;">
+                                    </div>
+                                    <div class="ui segment" id="invChart_allAttach" style="display: none;"></div>
+                                    
+                                    <table class="ui celled table" id="invChart_file" style="width: 150%">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>compcode</th>
+                                                <th>mrn</th>
+                                                <th>episno</th>
+                                                <th style="width: 80%;">File</th>
+                                                <th style="width: 20%;">Open</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
                                 </div>
                             </div>
                         </div>

@@ -41,12 +41,15 @@ class NursingNoteController extends defaultController
             case 'get_datetime_careplan': // Care Plan
                 return $this->get_datetime_careplan($request);
             
+            case 'invChart_file': // Investigation - Upload file
+                return $this->invChart_file($request);
+            
             case 'get_invcat': // Investigation - DataTable
                 return $this->get_invcat($request);
-
+            
             case 'get_table_datetimeGCS': // Glasgow
                 return $this->get_table_datetimeGCS($request);
-
+            
             case 'get_table_datetimePIVC': // PIVC
                 return $this->get_table_datetimePIVC($request);
             
@@ -140,7 +143,7 @@ class NursingNoteController extends defaultController
                     default:
                         return 'error happen..';
                 }
-
+            
             case 'save_table_glasgow':
                 switch($request->oper){
                     case 'add':
@@ -150,7 +153,7 @@ class NursingNoteController extends defaultController
                     default:
                         return 'error happen..';
                 }
-
+            
             case 'save_table_pivc':
                 switch($request->oper){
                     case 'add':
@@ -196,7 +199,7 @@ class NursingNoteController extends defaultController
             
             case 'OthersChart_del':
                 return $this->del_OthersChart($request);
-
+            
             case 'Bladder_save':
                 return $this->add_Bladder($request);
             
@@ -229,21 +232,25 @@ class NursingNoteController extends defaultController
             
             case 'get_table_formInvHeader':
                 return $this->get_table_formInvHeader($request);
-
+            
+            case 'uploadfile':
+                return $this->uploadfile($request);
+            
             case 'get_table_bladder1':
                 return $this->get_table_bladder1($request);
-
+            
             case 'get_table_bladder2':
                 return $this->get_table_bladder2($request);
-
+            
             case 'get_table_bladder3':
                 return $this->get_table_bladder3($request);
-
+            
             case 'get_table_glasgow':
                 return $this->get_table_glasgow($request);
             
             case 'get_table_pivc':
                 return $this->get_table_pivc($request);
+            
             default:
                 return 'error happen..';
         }
@@ -480,6 +487,42 @@ class NursingNoteController extends defaultController
                 }else{
                     $date['enteredtime'] =  '-';
                 }
+                
+                array_push($data,$date);
+            }
+            
+            $responce->data = $data;
+        }else{
+            $responce->data = [];
+        }
+        
+        return json_encode($responce);
+        
+    }
+    
+    public function invChart_file(Request $request){
+        
+        $responce = new stdClass();
+        
+        $nurs_invest_file = DB::table('nursing.nurs_invest_file')
+                            ->where('compcode',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno);
+        
+        if($nurs_invest_file->exists()){
+            $nurs_invest_file = $nurs_invest_file->get();
+            
+            $data = [];
+            
+            foreach($nurs_invest_file as $key => $value){
+                $date = [];
+                
+                $date['idno'] = $value->idno;
+                $date['compcode'] = $value->compcode;
+                $date['mrn'] = $value->mrn;
+                $date['episno'] = $value->episno;
+                $date['path'] = $value->path;
+                $date['filename'] = $value->filename;
                 
                 array_push($data,$date);
             }
@@ -3229,7 +3272,7 @@ class NursingNoteController extends defaultController
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno);
-
+        
         $responce = new stdClass();
         
         if($episode_obj->exists()){
@@ -3237,11 +3280,35 @@ class NursingNoteController extends defaultController
             // dd($episode_obj);
             $responce->episode = $episode_obj;
         }
-
+        
         return json_encode($responce);
         
     }
-
+    
+    public function uploadfile(Request $request){
+        
+        $type = $request->file('file')->getClientMimeType();
+        $filename = $request->file('file')->getClientOriginalName();
+        $file_path = $request->file('file')->store('invChart', 'public_uploads');
+        
+        DB::table('nursing.nurs_invest_file')
+            ->insert([
+                'compcode' => session('compcode'),
+                'mrn' => $request->mrn,
+                'episno' => $request->episno,
+                'filename' => $filename,
+                'path' => $file_path,
+                'adduser'  => session('username'),
+                'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => session('computerid'),
+            ]);
+        
+        $responce = new stdClass();
+        $responce->file_path = $file_path;
+        return json_encode($responce);
+        
+    }
+    
     public function get_table_bladder1(Request $request){
         
         $bladder_obj = DB::table('nursing.nurs_bladder')
