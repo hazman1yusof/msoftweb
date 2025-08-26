@@ -41,8 +41,8 @@ class ARAgeingColl_ReportController extends defaultController
     {   
         switch($request->action){
             case 'showExcel':
-                return $this->process_excel_link($request);
-                // return $this->process_excel($request);
+                // return $this->process_excel_link($request);
+                return $this->process_excel($request);
             default:
                 return 'error happen..';
         }
@@ -186,6 +186,7 @@ class ARAgeingColl_ReportController extends defaultController
                                          ->whereDate('dh.posteddate', '<=', $date_to)
                                          ->whereIn('dh.trantype', ['RC','RD'])
                                          ->where('dh.recstatus', 'POSTED')
+                                         // ->where('dh.auditno','5209785')
                                          ->where('dh.compcode', '=', $compcode);
                         })
                         ->join('sysdb.sector as st', function($join) use ($compcode){
@@ -233,6 +234,7 @@ class ARAgeingColl_ReportController extends defaultController
                             ->where('da.docauditno', '=', $value->auditno)
                             ->whereDate('da.allocdate', '<=', $date_to)
                             ->get();
+        // dd($dballoc);
 
             foreach ($dballoc as $obj_dballoc) {
 
@@ -260,7 +262,7 @@ class ARAgeingColl_ReportController extends defaultController
                             ->get();
 
                 foreach ($ref_db as $obj_ref_db) {
-                    $datetime1 = new DateTime($value->posteddate);
+                    $datetime1 = new DateTime($date_to);
                     $datetime2 = new DateTime($obj_ref_db->posteddate);
                 
                     $interval = $datetime1->diff($datetime2);
