@@ -41,8 +41,8 @@ class ARAgeingColl_ReportController extends defaultController
     {   
         switch($request->action){
             case 'showExcel':
-                // return $this->process_excel_link($request);
-                return $this->process_excel($request);
+                return $this->process_excel_link($request);
+                // return $this->process_excel($request);
             default:
                 return 'error happen..';
         }
