@@ -195,16 +195,19 @@ class ARAgeingCollE_Report_job implements FromView, ShouldQueue, WithEvents
             $hdr_amount = $value->amount;
             $punallocamt = $value->amount;
 
-            $dballoc = DB::table('debtor.dballoc as da')
+            $query = DB::table('debtor.dballoc as da')
                             ->where('da.compcode', '=', $compcode)
                             ->where('da.recstatus', '=', "POSTED")
                             // ->where('da.debtorcode', '=', $value->debtorcode)
                             ->where('da.docsource', '=', $value->source)
                             ->where('da.doctrantype', '=', $value->trantype)
                             ->where('da.docauditno', '=', $value->auditno)
-                            ->whereDate('da.allocdate', '<=', $date_to)
-                            ->forceIndex('dballoc_docaudit')
-                            ->get();
+                            ->whereDate('da.allocdate', '<=', $date_to);
+
+
+            $query->getQuery()->from(DB::raw($query->dballoc()->from . ' USE INDEX (`dballoc_docaudit`)'));
+                            
+            $dballoc = $query->get();
 
             foreach ($dballoc as $obj_dballoc) {
 
