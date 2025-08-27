@@ -224,7 +224,7 @@ function button_state_barthel(state){
         case 'empty':
             $("#toggle_occupTherapy").removeAttr('data-toggle');
             $('#cancel_barthel').data('oper','add');
-            $('#new_barthel,#save_barthel,#cancel_barthel,#edit_barthel').attr('disabled',true);
+            $('#new_barthel,#save_barthel,#cancel_barthel,#edit_barthel,#barthel_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
@@ -235,7 +235,7 @@ function button_state_barthel(state){
         case 'edit':
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
             $('#cancel_barthel').data('oper','edit');
-            $("#edit_barthel,#new_barthel").attr('disabled',false);
+            $("#edit_barthel,#new_barthel,#barthel_chart").attr('disabled',false);
             $('#save_barthel,#cancel_barthel').attr('disabled',true);
             break;
         case 'wait':

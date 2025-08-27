@@ -402,7 +402,7 @@ function button_state_mmse(state){
         case 'empty':
             $("#toggle_occupTherapy").removeAttr('data-toggle');
             $('#cancel_mmse').data('oper','add');
-            $('#new_mmse,#save_mmse,#cancel_mmse,#edit_mmse,#click').attr('disabled',true);
+            $('#new_mmse,#save_mmse,#cancel_mmse,#edit_mmse,#mmse_chart,#click').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
@@ -413,7 +413,7 @@ function button_state_mmse(state){
         case 'edit':
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
             $('#cancel_mmse').data('oper','edit');
-            $("#new_mmse,#edit_mmse,#click").attr('disabled',false);
+            $("#new_mmse,#edit_mmse,#mmse_chart,#click").attr('disabled',false);
             $('#save_mmse,#cancel_mmse').attr('disabled',true);
             break;
         case 'wait':
@@ -430,7 +430,7 @@ function button_state_moca(state){
         case 'empty':
             $("#toggle_occupTherapy").removeAttr('data-toggle');
             $('#cancel_moca').data('oper','add');
-            $('#new_moca,#save_moca,#cancel_moca,#edit_moca').attr('disabled',true);
+            $('#new_moca,#save_moca,#cancel_moca,#edit_moca,#moca_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
@@ -441,7 +441,7 @@ function button_state_moca(state){
         case 'edit':
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
             $('#cancel_moca').data('oper','edit');
-            $("#new_moca,#edit_moca").attr('disabled',false);
+            $("#new_moca,#edit_moca,#moca_chart").attr('disabled',false);
             $('#save_moca,#cancel_moca').attr('disabled',true);
             break;
         case 'wait':
