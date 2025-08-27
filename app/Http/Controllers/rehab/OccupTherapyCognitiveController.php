@@ -577,7 +577,7 @@ class OccupTherapyCognitiveController extends defaultController
     public function uploadfile(Request $request){
         $type = $request->file('file')->getClientMimeType();
         $filename = $request->file('file')->getClientOriginalName();
-        $file_path = $request->file('file')->store('mmse', 'hisweb_uploads');
+        $file_path = $request->file('file')->store('mmse', 'public_uploads');
 
         $ot_mmse = DB::table('hisdb.ot_mmse')
                     ->where('compcode',session('compcode'))
