@@ -131,6 +131,7 @@ class ItemEnquiryController extends defaultController
                 $item->amount = 0.00;
             }
             $item->det_mov = 'deptcode';
+            $item->sortdate = $item->trandate.' '.$item->trantime;
             // $item->sndrcv = '-';
         });
 
