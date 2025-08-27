@@ -757,7 +757,6 @@ class InventoryTransactionController extends defaultController
                     continue;
                 }
 
-
                 $this->check_sequence_backdated($ivtmphd);
 
                 DB::table("material.IvTxnHd")
