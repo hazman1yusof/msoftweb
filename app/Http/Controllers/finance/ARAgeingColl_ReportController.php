@@ -126,27 +126,30 @@ class ARAgeingColl_ReportController extends defaultController
         file_put_contents($path, $iniString);
 
         if($this->block_if_job_pending()){
-            throw new \Exception('Other job still pending', 500);
+            return response()->json([
+                'status' => 'Other job still pending'
+            ]);
+        }else{
+            // Path to your Python script
+            $scriptPath = \config('get_config.EXEC_PATH').'\\arageingcollection.py'; // double backslashes for Windows paths
+            $pythonPath = \config('get_config.PYTHON_PATH');
+
+            // Create a process (use 'python' on Windows)
+            $process = new Process([$pythonPath, $scriptPath]);
+
+            // Don’t wait for it
+            $process->setTimeout(null);
+
+            // Force detached mode on Windows
+            $process->setOptions(['create_new_console' => true]);
+
+            $process->start();
+
+            return response()->json([
+                'status' => 'Python script started in background (Windows)'
+            ]);
         }
-
-        // Path to your Python script
-        $scriptPath = \config('get_config.EXEC_PATH').'\\arageingcollection.py'; // double backslashes for Windows paths
-        $pythonPath = 'C:\\Python312\\python.exe';
-
-        // Create a process (use 'python' on Windows)
-        $process = new Process([$pythonPath, $scriptPath]);
-
-        // Don’t wait for it
-        $process->setTimeout(null);
-
-        // Force detached mode on Windows
-        $process->setOptions(['create_new_console' => true]);
-
-        $process->start();
-
-        return response()->json([
-            'status' => 'Python script started in background (Windows)'
-        ]);
+        
     }
 
     public function assign_grouping($grouping,$days){
