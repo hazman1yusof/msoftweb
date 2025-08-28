@@ -254,8 +254,7 @@ class ARAgeingCollE_Report_job implements FromView, ShouldQueue, WithEvents
 
         // dd($array_report_1);
 
-        $this->store_to_db($array_report_1,$idno_job_queue);
-        $this->store_to_db($array_report_2,$idno_job_queue);
+        $this->store_to_db($array_report_1,$array_report_2,$idno_job_queue);
 
         $this->stop_job_queue($idno_job_queue);
     }
@@ -318,7 +317,7 @@ class ARAgeingCollE_Report_job implements FromView, ShouldQueue, WithEvents
                 ]);
     }
 
-    public function store_to_db($array_report,$idno_job_queue){
+    public function store_to_db($array_report_1,$array_report_2,$idno_job_queue){
         foreach ($array_report as $obj){
             DB::table('debtor.ARAgeing')
                 ->insert([

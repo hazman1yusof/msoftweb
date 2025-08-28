@@ -74,7 +74,7 @@ return [
 
         'public_uploads' => [
             'driver' => 'local',
-            'root'   => public_path() . '/uploads',
+            'root'   => env('ATTACHMENT_PATH'). '/uploads',
         ],
 
         'ftp_uploads' => [

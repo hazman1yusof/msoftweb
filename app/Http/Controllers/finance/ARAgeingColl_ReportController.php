@@ -42,8 +42,8 @@ class ARAgeingColl_ReportController extends defaultController
     {   
         switch($request->action){
             case 'showExcel':
-                return $this->process_excel_link($request);
-                // return $this->process_excel($request);
+                // return $this->process_excel_link($request);
+                return $this->process_excel($request);
             default:
                 return 'error happen..';
         }
@@ -93,7 +93,7 @@ class ARAgeingColl_ReportController extends defaultController
     }
 
     public function process_excel(Request $request){
-        (new ARAgeingCollE_Report_job($request))->store('test.xlsx', \config('get_config.ATTACHMENT_UPLOAD'));
+        // (new ARAgeingCollE_Report_job($request))->store('test.xlsx', \config('get_config.ATTACHMENT_UPLOAD'));
     }
 
     public function assign_grouping($grouping,$days){
