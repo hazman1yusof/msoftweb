@@ -55,30 +55,23 @@
             <td style="text-align: left">{{$ar_1->name}}</td>
             <td style="text-align: left">{{$ar_1->punallocamt}}</td>
 
-        @php
-
-            $grouping_total = [];
-
-            foreach ($grouping as $key => $value) {
-                $grouping_total[$key] = 0;
-            }
-
-            foreach ($array_report_2 as $ar_2) {
-                if($ar_2->link_idno == $ar_1->idno){
-                    foreach ($grouping as $key => $value) {
-                        if($ar_2->group == $key){
-                            $grouping_total[$key] = $grouping_total[$key] + $ar_2->newamt;
-                        }
-                    }
-                }
-            }
-        @endphp
-
-        @php($total = 0)
-        @foreach ($grouping_total as $key => $obj)
-
-            @php($total = $total + $grouping_total[$key])
-            <td>{{$grouping_total[$key]}}</td>
+        @php($total = $ar_1->groupOne + $ar_1->groupTwo + $ar_1->groupThree + $ar_1->groupFour + $ar_1->groupFive + $ar_1->groupSix)
+        @foreach ($grouping as $key => $obj)
+            @if($key == 0)
+                <td>{{$ar_1->groupOne}}</td>
+            @elseif($key == 1)
+                <td>{{$ar_1->groupTwo}}</td>
+            @elseif($key == 2)
+                <td>{{$ar_1->groupThree}}</td>
+            @elseif($key == 3)
+                <td>{{$ar_1->groupFour}}</td>
+            @elseif($key == 4)
+                <td>{{$ar_1->groupFive}}</td>
+            @elseif($key == 5)
+                <td>{{$ar_1->groupSix}}</td>
+            @else
+                <td></td>
+            @endif 
         @endforeach
             <td>{{$total}}</td>
             <td style="text-align: left">{{$ar_1->recptno}}</td>

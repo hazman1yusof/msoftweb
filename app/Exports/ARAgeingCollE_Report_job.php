@@ -318,7 +318,45 @@ class ARAgeingCollE_Report_job implements FromView, ShouldQueue, WithEvents
     }
 
     public function store_to_db($array_report_1,$array_report_2,$idno_job_queue){
-        foreach ($array_report as $obj){
+        foreach ($array_report_1 as $ar_1) {
+            $ar_1->groupOne = 0;
+            $ar_1->groupTwo = 0;
+            $ar_1->groupThree = 0;
+            $ar_1->groupFour = 0;
+            $ar_1->groupFive = 0;
+            $ar_1->groupSix = 0;
+
+            foreach ($array_report_2 as $ar_2) {
+                if($ar_2->link_idno == $ar_1->idno){
+                    switch ($ar_2->group) {
+                        case 0:
+                            $ar_1->groupOne = $ar_1->groupOne + $ar_2->newamt;
+                            break;
+                        case 1:
+                            $ar_1->groupTwo = $ar_1->groupTwo + $ar_2->newamt;
+                            break;
+                        case 2:
+                            $ar_1->groupThree = $ar_1->groupThree + $ar_2->newamt;
+                            break;
+                        case 3:
+                            $ar_1->groupFour = $ar_1->groupFour + $ar_2->newamt;
+                            break;
+                        case 4:
+                            $ar_1->groupFive = $ar_1->groupFive + $ar_2->newamt;
+                            break;
+                        case 5:
+                            $ar_1->groupSix = $ar_1->groupSix + $ar_2->newamt;
+                            break;
+                        
+                        default:
+                            // code...
+                            break;
+                    }
+                }
+            }
+        }
+
+        foreach ($array_report_1 as $obj){
             DB::table('debtor.ARAgeing')
                 ->insert([
                     'job_id' => $idno_job_queue,
@@ -387,7 +425,13 @@ class ARAgeingCollE_Report_job implements FromView, ShouldQueue, WithEvents
                     'group' => $obj->group,
                     'group_type' => $obj->group_type,
                     'punallocamt' => $obj->punallocamt,
-                    'link_idno' => $obj->link_idno
+                    'link_idno' => $obj->link_idno,
+                    'groupOne' => $obj->groupOne,
+                    'groupTwo' => $obj->groupTwo,
+                    'groupThree' => $obj->groupThree,
+                    'groupFour' => $obj->groupFour,
+                    'groupFive' => $obj->groupFive,
+                    'groupSix' => $obj->groupSix,
                 ]);
         }
     }

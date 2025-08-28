@@ -151,17 +151,12 @@ class ARAgeingCollExport_sheets implements FromView, WithEvents, WithColumnWidth
 
         $unit = $array_report_1->unique('unit');
 
-        $array_report_2 = DB::table('debtor.ARAgeing')
-                            ->where('job_id',$this->job_id)
-                            ->where('group_type','2')
-                            ->get();
-
         $comp_name = $this->comp->name;
 
         if($groupby == 'unit'){
-            return view('finance.AR.ARAgeingColl_Report.ARAgeingColl_Report_units_excel',compact('unit','array_report_1','array_report_2','grouping','date_from','date_to','comp_name'));
+            return view('finance.AR.ARAgeingColl_Report.ARAgeingColl_Report_units_excel',compact('unit','array_report_1','grouping','date_from','date_to','comp_name'));
         }else{
-            return view('finance.AR.ARAgeingColl_Report.ARAgeingColl_Report_excel',compact('unit','array_report_1','array_report_2','grouping','date_from','date_to','comp_name'));
+            return view('finance.AR.ARAgeingColl_Report.ARAgeingColl_Report_excel',compact('unit','array_report_1','grouping','date_from','date_to','comp_name'));
         }
 
     }
