@@ -424,7 +424,7 @@ class PosturalAssessmentController extends defaultController
         // $foxitpath = "C:\laragon\www\pdf\open.bat  > /dev/null";
         $filename = $type."_".$mrn."_".$episno."_".$entereddate.".pdf";
         $blankpath = 'blank/'.$type.'.pdf';
-        $filepath = public_path().'/uploads/ftp/'.$filename;
+        $filepath = public_path().'/hisweb/uploads/ftp/'.$filename;
         $ftppath = "/patientcare_upload/pdf/".$filename;
         
         $exists = Storage::disk('ftp')->exists($ftppath);
@@ -433,7 +433,7 @@ class PosturalAssessmentController extends defaultController
             $file = Storage::disk('ftp')->get($ftppath);
             Storage::disk('ftp_uploads')->put($filename, $file);
             
-            return '../uploads/ftp/'.$filename;
+            return '../hisweb/uploads/ftp/'.$filename;
             
             // exec('start /B "" "C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\FoxitPDFReader.exe" '.$filepath);
             
@@ -466,7 +466,7 @@ class PosturalAssessmentController extends defaultController
         // $foxitpath = "C:\laragon\www\pdf\open.bat  > /dev/null";
         $filename = $type."_".$mrn."_".$episno."_".$entereddate.".pdf";
         $blankpath = 'blank/'.$type.'.pdf';
-        $filepath = public_path().'/uploads/ftp/'.$filename;
+        $filepath = public_path().'/hisweb/uploads/ftp/'.$filename;
         $ftppath = "/patientcare_upload/pdf/".$filename;
         
         $exists = Storage::disk('ftp')->exists($ftppath);
@@ -475,7 +475,7 @@ class PosturalAssessmentController extends defaultController
             $file = Storage::disk('ftp')->get($ftppath);
             Storage::disk('ftp_uploads')->put($filename, $file);
             
-            return '../uploads/ftp/'.$filename;
+            return '../hisweb/uploads/ftp/'.$filename;
             
             // exec('start /B "" "C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\FoxitPDFReader.exe" '.$filepath);
             
