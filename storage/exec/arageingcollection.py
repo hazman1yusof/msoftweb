@@ -19,12 +19,12 @@ class ARAgeingCollE_Report_job:
         self.debtorcode_to = request["debtorcode_to"]
 
         # grouping values
-        self.groupOne = request["groupOne"]
-        self.groupTwo = request["groupTwo"]
-        self.groupThree = request["groupThree"]
-        self.groupFour = request["groupFour"]
-        self.groupFive = request["groupFive"]
-        self.groupSix = request["groupSix"]
+        self.groupOne = request["groupone"]
+        self.groupTwo = request["grouptwo"]
+        self.groupThree = request["groupthree"]
+        self.groupFour = request["groupfour"]
+        self.groupFive = request["groupfive"]
+        self.groupSix = request["groupsix"]
         self.groupby = request["groupby"]
 
         self.grouping = {0: 0}
@@ -277,7 +277,7 @@ class ARAgeingCollE_Report_job:
 
 if __name__ == "__main__":
     config = configparser.ConfigParser()
-    config.read("D:\\hazman\\python_dist\\medicare\\arageingcollection.ini")
+    config.read("D:\\laragon\\www\\msoftweb\\storage\\exec\\arageingcollection.ini")
 
     # Convert section DATA1 into dict (similar to Laravel $request)
     request = dict(config["DATA1"])
