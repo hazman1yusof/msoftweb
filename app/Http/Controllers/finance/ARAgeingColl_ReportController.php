@@ -104,7 +104,7 @@ class ARAgeingColl_ReportController extends defaultController
         $data = [
             'DATA1' => [
                 'username' => ($request->username)?$request->username:'-',
-                'compcode' => ($request->username)?$request->username:'9B',
+                'compcode' => ($request->compcode)?$request->compcode:'9B',
                 'date_from' => $request->date_from,
                 'date_to' => $request->date_to,
                 'debtorcode_from' => $request->debtorcode_from,
