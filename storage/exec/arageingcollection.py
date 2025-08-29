@@ -1,4 +1,4 @@
-import mysql.connector
+import pymysql
 import json
 import random, binascii
 import configparser
@@ -35,14 +35,15 @@ class ARAgeingCollE_Report_job:
             if g:
                 self.grouping[idx] = g
 
-        # --- connect DB ---
-        self.conn = mysql.connector.connect(
+        # --- connect DB using PyMySQL ---
+        self.conn = pymysql.connect(
             host="localhost",
             user="root",
             password="",
-            database="sysdb"
+            database="sysdb",
+            cursorclass=pymysql.cursors.DictCursor
         )
-        self.cursor = self.conn.cursor(dictionary=True)
+        self.cursor = self.conn.cursor()
 
     def assign_grouping(self, days):
         group = 0
@@ -77,32 +78,32 @@ class ARAgeingCollE_Report_job:
         self.conn.commit()
 
     def store_to_db(self, array_report_1, array_report_2, idno_job_queue):
-      # ---- Process group sums ----
-      for ar_1 in array_report_1:
-          ar_1["groupOne"] = 0
-          ar_1["groupTwo"] = 0
-          ar_1["groupThree"] = 0
-          ar_1["groupFour"] = 0
-          ar_1["groupFive"] = 0
-          ar_1["groupSix"] = 0
+        # ---- Process group sums ----
+        for ar_1 in array_report_1:
+            ar_1["groupOne"] = 0
+            ar_1["groupTwo"] = 0
+            ar_1["groupThree"] = 0
+            ar_1["groupFour"] = 0
+            ar_1["groupFive"] = 0
+            ar_1["groupSix"] = 0
 
-          for ar_2 in array_report_2:
-              if ar_2["link_idno"] == ar_1["idno"]:
-                  if ar_2["group"] == 0:
-                      ar_1["groupOne"] += ar_2["newamt"]
-                  elif ar_2["group"] == 1:
-                      ar_1["groupTwo"] += ar_2["newamt"]
-                  elif ar_2["group"] == 2:
-                      ar_1["groupThree"] += ar_2["newamt"]
-                  elif ar_2["group"] == 3:
-                      ar_1["groupFour"] += ar_2["newamt"]
-                  elif ar_2["group"] == 4:
-                      ar_1["groupFive"] += ar_2["newamt"]
-                  elif ar_2["group"] == 5:
-                      ar_1["groupSix"] += ar_2["newamt"]
+            for ar_2 in array_report_2:
+                if ar_2["link_idno"] == ar_1["idno"]:
+                    if ar_2["group"] == 0:
+                        ar_1["groupOne"] += ar_2["newamt"]
+                    elif ar_2["group"] == 1:
+                        ar_1["groupTwo"] += ar_2["newamt"]
+                    elif ar_2["group"] == 2:
+                        ar_1["groupThree"] += ar_2["newamt"]
+                    elif ar_2["group"] == 3:
+                        ar_1["groupFour"] += ar_2["newamt"]
+                    elif ar_2["group"] == 4:
+                        ar_1["groupFive"] += ar_2["newamt"]
+                    elif ar_2["group"] == 5:
+                        ar_1["groupSix"] += ar_2["newamt"]
 
-      # ---- Insert into MySQL ----
-      sql = """
+        # ---- Insert into MySQL ----
+        sql = """
           INSERT INTO debtor.arageing (
               job_id, idno, source, trantype, auditno, lineno_, amount, outamount,
               recstatus, entrydate, entrytime, entryuser, reference, recptno, paymode,
@@ -131,12 +132,11 @@ class ARAgeingCollE_Report_job:
               %(punallocamt)s, %(link_idno)s, %(groupOne)s, %(groupTwo)s, %(groupThree)s,
               %(groupFour)s, %(groupFive)s, %(groupSix)s
           )
-      """
-
-      for obj in array_report_1:
-          obj["job_id"] = idno_job_queue
-          self.cursor.execute(sql, obj)
-      self.conn.commit()
+        """
+        for obj in array_report_1:
+            obj["job_id"] = idno_job_queue
+            self.cursor.execute(sql, obj)
+        self.conn.commit()
 
     def run(self):
         idno_job_queue = self.start_job_queue("ARAgeingColl")
@@ -274,14 +274,13 @@ class ARAgeingCollE_Report_job:
 
         print("Job Completed")
 
-    pass
 
 if __name__ == "__main__":
-  config = configparser.ConfigParser()
-  config.read("D:\\laragon\\www\\msoftweb\\storage\\exec\\arageingcollection.ini")
+    config = configparser.ConfigParser()
+    config.read("D:\\hazman\\python_dist\\medicare\\arageingcollection.ini")
 
-  # Convert section DATA1 into dict (similar to Laravel $request)
-  request = dict(config["DATA1"])
+    # Convert section DATA1 into dict (similar to Laravel $request)
+    request = dict(config["DATA1"])
 
-  job = ARAgeingCollE_Report_job(request)
-  job.run()
+    job = ARAgeingCollE_Report_job(request)
+    job.run()
