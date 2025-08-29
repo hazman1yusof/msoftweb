@@ -43,8 +43,14 @@ class ARAgeingColl_ReportController extends defaultController
     {   
         switch($request->action){
             case 'showExcel':
-                // return $this->process_excel_link($request);
-                return $this->process_excel($request);
+                $PYTHON_PATH = \config('get_config.PYTHON_PATH')
+                if($PYTHON_PATH != null){
+                    return $this->process_excel($request);;
+                }else{
+                    return $this->process_excel_link($request);
+                }
+
+                // return $this->process_excel($request);
             default:
                 return 'error happen..';
         }
