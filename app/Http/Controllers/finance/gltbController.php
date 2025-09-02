@@ -10,6 +10,7 @@ use DateTime;
 use Carbon\Carbon;
 use Response;
 use App\Jobs\gltb_jobs;
+use Symfony\Component\Process\Process;
 
 class  gltbController extends defaultController
 {   
@@ -19,26 +20,15 @@ class  gltbController extends defaultController
     }
 
     public function show(Request $request){   
-        return view('other.gtb.gtb');
+        return view('other.gltb.gltb');
     }
 
     public function table(Request $request){ 
         switch($request->action){
-            case 'gltb_del':
-                return $this->gltb_del($request);
-            case 'gltb_run':
-                gltb_jobs::dispatch($request->action,$request->like);
-                return 'done';
-            case 'gltrandr':
-                gltb_jobs::dispatch($request->action,$request->month);
-                return 'done';
-                // return $this->gltb_run_dr($request);
-            case 'gltrancr':
-                gltb_jobs::dispatch($request->action,$request->month);
-                return 'done';
-            case 'glmasdtl':
-                $this->glmasdtl($request);
-                return 'done';
+            case 'check_gltb_process':
+                return $this->check_gltb_process($request);
+            case 'process':
+                return $this->process($request);
                 // return $this->gltb_run_cr($request);
             default:
                 return 'error happen..';
@@ -47,113 +37,118 @@ class  gltbController extends defaultController
 
     public function form(Request $request){   
         switch($request->action){
-            case 'gltb_run':
-                return $this->gltb_run($request);
+            case 'processLink':
+                $PYTHON_PATH = \config('get_config.PYTHON_PATH');
+                if($PYTHON_PATH != null){
+                    return $this->process($request);;
+                }else{
+                    return $this->processLink($request);
+                }
             default:
                 return 'error happen..';
         }
     }
 
-    public function gltb_del(Request $request){
-        DB::table('recondb.gltb')->truncate();
+    public function processLink(Request $request){
+        dd('linking');
+        $client = new \GuzzleHttp\Client();
+
+        $url='http://192.168.0.13:8443/msoftweb/public/gltb/table?action=process&month='.$request->month.'&year='.$request->year.'&username='.session('username').'&compcode='.session('compcode');
+
+        $response = $client->request('GET', $url, [
+          'headers' => [
+            'accept' => 'application/json',
+          ],
+        ]);
     }
 
-    public function glmasdtl(Request $request){
-        $month_ = explode('-', $request->month);
+    public function check_gltb_process(Request $request){
 
-        $year = $month_[0];
-        $period = intval($month_[1]);
+        $responce = new stdClass();
 
-        DB::table('finance.glmasdtl')
-                ->where('compcode',session('compcode'))
-                ->where('year',$year)
-                ->update([
-                    'actamount'.$period => 0
-                ]);
+        $last_job = DB::table('sysdb.job_queue')
+                        ->where('compcode', session('compcode'))
+                        ->where('page', 'gltb')
+                        ->orderBy('idno', 'desc');
 
-        $gltb = DB::table('recondb.gltb')
-                ->where('compcode',session('compcode'))
-                ->where('year',$year)
-                ->where('period',$period)
-                ->get();
-
-        foreach ($gltb as $gltb_obj) {
-            $glmasdtl = DB::table('finance.glmasdtl')
-                            ->where('compcode',session('compcode'))
-                            ->where('year',$year)
-                            ->where('costcode',$gltb_obj->costcode)
-                            ->where('glaccount',$gltb_obj->glaccount);
-
-            if($glmasdtl->exists()){
-                DB::table('finance.glmasdtl')
-                            ->where('compcode',session('compcode'))
-                            ->where('year',$year)
-                            ->where('costcode',$gltb_obj->costcode)
-                            ->where('glaccount',$gltb_obj->glaccount)
-                            ->update([
-                                'actamount'.$period => $gltb_obj->amount
-                            ]);
-            }else{
-                DB::table('finance.glmasdtl')
-                            ->insert([
-                                'compcode' => session('compcode'),
-                                'costcode' => $gltb_obj->costcode,
-                                'glaccount' => $gltb_obj->glaccount,
-                                'year' => $year,
-                                'recstatus' => 'ACTIVE',
-                                'adduser' => 'SYSTEM',
-                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                                'actamount'.$period => $gltb_obj->amount,
-                            ]);
-            }
+        if(!$last_job->exists()){
+            $responce->jobdone = 'true';
+            return json_encode($responce);
         }
 
+        $last_job = $last_job->first();
 
-        $glmasref = DB::table('finance.glmasref')
-                        ->where('compcode',session('compcode'))
-                        ->get();
-
-        foreach ($glmasref as $glm_obj) {
-            $gltran_dr = DB::table('finance.gltran')
-                            ->where('compcode',session('compcode'))
-                            ->where('dracc',$glm_obj->glaccno)
-                            ->where('year','2025')
-                            ->where('period','1')
-                            ->get();
-
-            foreach ($gltran_dr as $gltrandr_obj) {
-                $gltb = DB::table('recondb.gltb')
-                            ->where('compcode',session('compcode'))
-                            ->where('costcode',$gltrandr_obj->drcostcode)
-                            ->where('glaccount',$gltrandr_obj->dracc)
-                            ->where('year',$gltrandr_obj->year)
-                            ->where('period',$gltrandr_obj->period);
-
-                if($gltb->exists()){
-                    $gltb = $gltb->first();
-                    $newamt = floatval($gltb->amount) + floatval($gltrandr_obj->amount);
-
-                    DB::table('recondb.gltb')
-                            ->where('compcode',session('compcode'))
-                            ->where('costcode',$gltrandr_obj->drcostcode)
-                            ->where('glaccount',$gltrandr_obj->dracc)
-                            ->where('year',$gltrandr_obj->year)
-                            ->where('period',$gltrandr_obj->period)
-                            ->update([
-                                'amount' => $newamt,
-                            ]);
-                }else{
-                    DB::table('recondb.gltb')
-                        ->insert([
-                            'compcode' => session('compcode'),
-                            'costcode' => $gltrandr_obj->drcostcode,
-                            'glaccount' => $gltrandr_obj->dracc,
-                            'year' => $gltrandr_obj->year,
-                            'period' => $gltrandr_obj->period,
-                            'amount' => $gltrandr_obj->amount,
-                        ]);
-                }
-            }
+        if($last_job->status != 'DONE'){
+            $responce->jobdone = 'false';
+        }else{
+            $responce->jobdone = 'true';
         }
+        return json_encode($responce);
+    }
+
+    public function process(Request $request){
+        $data = [
+            'DATA1' => [
+                'username' => ($request->username)?$request->username:'-',
+                'compcode' => ($request->compcode)?$request->compcode:'9B',
+                'period' => $request->month,
+                'year' => $request->year
+            ]
+        ];
+
+        $iniString = '';
+        foreach ($data as $section => $settings) {
+            $iniString .= "[$section]\n";
+            foreach ($settings as $key => $value) {
+                $iniString .= "$key=$value\n";
+            }
+            $iniString .= "\n";
+        }
+
+        $path = \config('get_config.EXEC_PATH').'\\gltb.ini';
+        file_put_contents($path, $iniString);
+
+        if($this->block_if_job_pending()){
+            return response()->json([
+                'status' => 'Other job still pending'
+            ]);
+        }else{
+            // Path to your Python script
+            $scriptPath = \config('get_config.EXEC_PATH').'\\gltb.py'; // double backslashes for Windows paths
+            $pythonPath = \config('get_config.PYTHON_PATH');
+
+            // Create a process (use 'python' on Windows)
+            $process = new Process([$pythonPath, $scriptPath]);
+
+            // Don’t wait for it
+            $process->setTimeout(null);
+
+            // Force detached mode on Windows
+            $process->setOptions(['create_new_console' => true]);
+
+            $process->start();
+
+            return response()->json([
+                'status' => 'Python script started in background (Windows)'
+            ]);
+        }
+    }
+
+    public function block_if_job_pending(){
+        $last_job = DB::table('sysdb.job_queue')
+                        ->where('compcode', session('compcode'))
+                        ->where('page', 'gltb')
+                        ->orderBy('idno', 'desc');
+
+        if(!$last_job->exists()){
+            return false;
+        }
+
+        $last_job = $last_job->first();
+        if($last_job->status != 'DONE'){
+            return true;
+        }
+
+        return false;
     }
 }

@@ -50,6 +50,7 @@
 @endsection('style')
 
 @section('body')
+<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 <div class="container mycontainer">
   <div class="row">
 		<div class="col-md-12">
@@ -61,22 +62,10 @@
 						<!-- <button name="gltb_run" type="button" class="mybtn btn btn-sm" data-btntype='gltb_run'>
 						 RUN GLTB
 						</button> -->
-						<button name="gltrandr" type="button" class="mybtn btn btn-sm" data-btntype='gltrandr'>
-						 RUN GLTB DR
+						<button id="gltb" type="button" class="mybtn btn btn-primary">
+						 RUN GLTB
 						</button>
-						<input type="month" id="month">
-
-						<br>
-						<br>
-						<button name="gltrancr" type="button" class="mybtn btn btn-sm" data-btntype='gltrancr'>
-						 RUN GLTB CR
-						</button>
-
-						<br>
-						<br>
-						<button name="glmasdtl" type="button" class="mybtn btn btn-sm" data-btntype='glmasdtl'>
-						 RUN GLMASDTL
-						</button>
+						<input type="month" id="month" value="{{\Carbon\Carbon::now()->subMonth()->format('Y-m')}}">
 					  </fieldset>
 					</div>
 				</div>
@@ -92,12 +81,38 @@
 
 <script>
 $(document).ready(function () {
+  function myTask() {
+    $.get( './gltb/table?action=check_gltb_process', function( data ) {
+			
+		},'json').done(function(data) {
+			if(data.jobdone=='true'){
+				$('#gltb').attr('disabled',false);
+				$('#gltb').text('RUN GLTB');
+			}else{
+				$('#gltb').attr('disabled',true);
+				$('#gltb').text('GLTB Running..');
+			}
+		});
+  }
 
-	$('button.mybtn').click(function(){
-		var action = $(this).data('btntype');
-		var month = $('#month').val();
+  // Run forever every 5 seconds (5000 ms)
+  setInterval(myTask, 5000);
 
-		window.open('./gltb/table?action='+action+'&month='+month, '_blank');
+	$("#gltb").click(function() {
+      $('#gltb').attr('disabled',true);
+			let dateStr = $('#month').val();
+
+			let [year, month] = dateStr.split("-").map(Number);
+
+      let href = './gltb/form?action=processLink&month='+month+'&year='+year;
+
+      $.post( href,{_token:$('#_token').val()}, function( data ) {
+
+      }).fail(function(data) {
+
+      }).success(function(data){
+
+      });
 	});
 });
 		
