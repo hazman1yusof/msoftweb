@@ -135,6 +135,10 @@
                 <div class="col-md-6" style="padding-top: 30px;">
                     <div class="panel panel-default" style="height: 137px;">
                         <div class="panel-body">
+                            <select name="type" id="type" class="form-control input-sm" >
+                              <option value="detail">Detail</option>
+                              <option value="summary">Summary</option>
+                            </select>
                             <fieldset>
                             <div class='col-md-12 btnform' style="padding: 20px 0px 5px 0px">
                                 <fieldset>

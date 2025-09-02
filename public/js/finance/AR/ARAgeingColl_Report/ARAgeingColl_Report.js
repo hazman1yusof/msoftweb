@@ -105,7 +105,7 @@ $(document).ready(function () {
 
         var groupby = $("input[type=radio][name=groupby]:checked").val();
 
-        let href = './ARAgeingColl_Report/form?action=showExcel&debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&date_from='+$("#date_from").val()+'&date_to='+$("#date_to").val()+'&groupOne='+$("#groupOne").val()+'&groupTwo='+$("#groupTwo").val()+'&groupThree='+$("#groupThree").val()+'&groupFour='+$("#groupFour").val()+'&groupFive='+$("#groupFive").val()+'&groupSix='+$("#groupSix").val()+'&groupby='+groupby
+        let href = './ARAgeingColl_Report/form?action=showExcel&type='+$('#type').val()+'&debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&date_from='+$("#date_from").val()+'&date_to='+$("#date_to").val()+'&groupOne='+$("#groupOne").val()+'&groupTwo='+$("#groupTwo").val()+'&groupThree='+$("#groupThree").val()+'&groupFour='+$("#groupFour").val()+'&groupFive='+$("#groupFive").val()+'&groupSix='+$("#groupSix").val()+'&groupby='+groupby
 
         $.post( href,{_token:$('#_token').val()}, function( data ) {
         }).fail(function(data) {

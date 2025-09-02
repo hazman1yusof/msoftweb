@@ -10,6 +10,7 @@ class ARAgeingCollE_Report_job:
         self.filename = f"ARAgeingCollection {datetime.now().strftime('%Y-%m-%d %I:%M %p')}.xlsx"
         self.process = binascii.hexlify(random.randbytes(20)).decode() + ".xlsx"
 
+        self.type = request["type"]
         self.username = request["username"]
         self.compcode = request["compcode"]
         self.date_from = request["date_from"]
@@ -58,11 +59,11 @@ class ARAgeingCollE_Report_job:
         (compcode,page,filename,process,adduser,adddate,status,remarks,type,date,date_to,
          debtortype,debtorcode_from,debtorcode_to,groupOne,groupTwo,groupThree,groupFour,
          groupFive,groupSix,groupby)
-        VALUES (%s,%s,%s,%s,%s,NOW(),'PENDING',%s,'-',%s,%s,'-',%s,%s,
+        VALUES (%s,%s,%s,%s,%s,NOW(),'PENDING',%s,%s,%s,%s,'-',%s,%s,
                 %s,%s,%s,%s,%s,%s,%s)
         """
         remarks = f"AR Ageing Collection as of {self.date_from}, debtorcode from: {self.debtorcode_from} to {self.debtorcode_to}"
-        params = (self.compcode, page, self.filename, self.process, self.username, remarks,
+        params = (self.compcode, page, self.filename, self.process, self.username, remarks, self.type,
                   self.date_from, self.date_to, self.debtorcode_from, self.debtorcode_to,
                   self.groupOne, self.groupTwo, self.groupThree, self.groupFour,
                   self.groupFive, self.groupSix, self.groupby)
@@ -281,6 +282,7 @@ if __name__ == "__main__":
 
     # Convert section DATA1 into dict (similar to Laravel $request)
     request = dict(config["DATA1"])
+    # print(request)
 
     job = ARAgeingCollE_Report_job(request)
     job.run()

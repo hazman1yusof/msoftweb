@@ -44,6 +44,11 @@ class ARAgeingCollExport_sheets implements FromView, WithEvents, WithColumnWidth
         $this->title = $title;
         $this->job_id = $idno;
         $this->process = $job_queue->process;
+        if(strtoupper($job_queue->type) == 'SUMMARY'){
+            $this->type = 'SUMMARY';
+        }else{
+            $this->type = 'DETAIL';
+        }
         $this->filename = $job_queue->filename;
         // $this->type = $job_queue->type;
         $this->date_from = Carbon::parse($job_queue->date)->format('Y-m-d');
@@ -134,6 +139,7 @@ class ARAgeingCollExport_sheets implements FromView, WithEvents, WithColumnWidth
         $debtorcode_to = strtoupper($this->debtorcode_to);
         $grouping = $this->grouping;
         $groupby = $this->groupby;
+        $type = $this->type;
 
         $array_report_1 = DB::table('debtor.ARAgeing')
                             ->where('job_id',$this->job_id)
@@ -150,13 +156,16 @@ class ARAgeingCollExport_sheets implements FromView, WithEvents, WithColumnWidth
         }
 
         $unit = $array_report_1->unique('unit');
+        $debtorcode = $array_report_1->unique('debtorcode');
 
         $comp_name = $this->comp->name;
 
+        // dd($type);
+
         if($groupby == 'unit'){
-            return view('finance.AR.ARAgeingColl_Report.ARAgeingColl_Report_units_excel',compact('unit','array_report_1','grouping','date_from','date_to','comp_name'));
+            return view('finance.AR.ARAgeingColl_Report.ARAgeingColl_Report_units_excel',compact('type','unit','debtorcode','array_report_1','grouping','date_from','date_to','comp_name'));
         }else{
-            return view('finance.AR.ARAgeingColl_Report.ARAgeingColl_Report_excel',compact('unit','array_report_1','grouping','date_from','date_to','comp_name'));
+            return view('finance.AR.ARAgeingColl_Report.ARAgeingColl_Report_excel',compact('type','unit','debtorcode','array_report_1','grouping','date_from','date_to','comp_name'));
         }
 
     }

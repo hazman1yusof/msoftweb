@@ -105,6 +105,7 @@ class ARAgeingColl_ReportController extends defaultController
             'DATA1' => [
                 'username' => ($request->username)?$request->username:'-',
                 'compcode' => ($request->compcode)?$request->compcode:'9B',
+                'type' => $request->type,
                 'date_from' => $request->date_from,
                 'date_to' => $request->date_to,
                 'debtorcode_from' => $request->debtorcode_from,
@@ -182,7 +183,7 @@ class ARAgeingColl_ReportController extends defaultController
                                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                                 'status' => 'PENDING',
                                 'remarks' => 'AR Ageing Collection as of '.$this->date_from.', debtorcode from:"'.$this->debtorcode_from.'" to "'.$this->debtorcode_to.'"',
-                                'type' => '-',
+                                'type' => $this->type,
                                 'date' => $this->date_from,
                                 'date_to' => $this->date_to,
                                 'debtortype' => '-',
