@@ -20,7 +20,26 @@ class  gltbController extends defaultController
     }
 
     public function show(Request $request){   
-        return view('other.gltb.gltb');
+
+        $process_ = 'true';
+        $last_job = DB::table('sysdb.job_queue')
+                        ->where('compcode', session('compcode'))
+                        ->where('page', 'gltb')
+                        ->orderBy('idno', 'desc');
+
+        if(!$last_job->exists()){
+            $process_ = 'false';
+        }else{
+            $last_job = $last_job->first();
+
+            if($last_job->status != 'DONE'){
+                $process_ = 'true';
+            }else{
+                $process_ = 'false';
+            }
+        }
+
+        return view('other.gltb.gltb',compact('process_'));
     }
 
     public function table(Request $request){ 

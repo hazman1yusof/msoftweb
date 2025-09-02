@@ -50,6 +50,7 @@
 @endsection('style')
 
 @section('body')
+<input id="process_" type="hidden" value="{{ $process_ }}">
 <input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 <div class="container mycontainer">
   <div class="row">
@@ -62,8 +63,8 @@
 						<!-- <button name="gltb_run" type="button" class="mybtn btn btn-sm" data-btntype='gltb_run'>
 						 RUN GLTB
 						</button> -->
-						<button id="gltb" type="button" class="mybtn btn btn-primary">
-						 RUN GLTB
+						<button id="gltb" type="button" class="mybtn btn btn-primary" @if($process_ == 'true') {{'disabled'}} @endif>
+						  @if($process_ == 'true') {{'GLTB Running..'}} @else {{'RUN GLTB'}} @endif
 						</button>
 						<input type="month" id="month" value="{{\Carbon\Carbon::now()->subMonth()->format('Y-m')}}">
 					  </fieldset>
