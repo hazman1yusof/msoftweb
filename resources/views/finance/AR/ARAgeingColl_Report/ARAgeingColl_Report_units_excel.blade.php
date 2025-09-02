@@ -56,62 +56,67 @@
     @endphp
 
     @if($type == 'SUMMARY')
-        @foreach ($debtorcode as $dcode)
-            @php
-                $pun_total = 0;
-                $groupOne_total = 0;
-                $groupTwo_total = 0;
-                $groupThree_total = 0;
-                $groupFour_total = 0;
-                $groupFive_total = 0;
-                $groupSix_total = 0;
-
-                foreach ($array_report_1 as $obj_ar) {
-                    if($obj_ar->debtorcode == $dcode->debtorcode){
-                        $pun_total = $pun_total + $obj_ar->punallocamt;
-
-                        $groupOne_total = $groupOne_total + $obj_ar->groupOne;
-                        $groupTwo_total = $groupTwo_total + $obj_ar->groupTwo;
-                        $groupThree_total = $groupThree_total + $obj_ar->groupThree;
-                        $groupFour_total = $groupFour_total + $obj_ar->groupFour;
-                        $groupFive_total = $groupFive_total + $obj_ar->groupFive;
-                        $groupSix_total = $groupSix_total + $obj_ar->groupSix;
-                    }else{
-
-                    }
-                }
-            @endphp
+        @foreach ($unit as $unit_)
             <tr>
-                <td style="text-align: left">{{$dcode->debtorcode}}</td>
-                <td style="text-align: left">{{$dcode->name}}</td>
-                <td style="text-align: left">{{$pun_total}}</td>
-
-                @php($total = $pun_total + $groupOne_total + $groupTwo_total + $groupThree_total + $groupFour_total + $groupFive_total + $groupSix_total)
-                @foreach ($grouping as $key => $obj)
-                    @if($key == 0)
-                        <td>{{$groupOne_total}}</td>
-                    @elseif($key == 1)
-                        <td>{{$groupTwo_total}}</td>
-                    @elseif($key == 2)
-                        <td>{{$groupThree_total}}</td>
-                    @elseif($key == 3)
-                        <td>{{$groupFour_total}}</td>
-                    @elseif($key == 4)
-                        <td>{{$groupFive_total}}</td>
-                    @elseif($key == 5)
-                        <td>{{$groupSix_total}}</td>
-                    @else
-                        <td></td>
-                    @endif 
-                @endforeach
-
-                <td>{{$total}}</td>
-
+                <td style="font-weight:bold; text-align: left">{{$unit_->unit}}</td>
+                <td style="font-weight:bold; text-align: left">{{$unit_->unit_desc}}</td>
             </tr>
+            @foreach ($debtorcode as $dcode)
+                @if($unit_->unit == $dcode->unit)
+                    @php
+                        $pun_total = 0;
+                        $groupOne_total = 0;
+                        $groupTwo_total = 0;
+                        $groupThree_total = 0;
+                        $groupFour_total = 0;
+                        $groupFive_total = 0;
+                        $groupSix_total = 0;
 
-            @php($grandtotal = $grandtotal + $total)
+                        foreach ($array_report_1 as $obj_ar) {
+                            if($obj_ar->debtorcode == $dcode->debtorcode){
+                                $pun_total = $pun_total + $obj_ar->punallocamt;
+
+                                $groupOne_total = $groupOne_total + $obj_ar->groupOne;
+                                $groupTwo_total = $groupTwo_total + $obj_ar->groupTwo;
+                                $groupThree_total = $groupThree_total + $obj_ar->groupThree;
+                                $groupFour_total = $groupFour_total + $obj_ar->groupFour;
+                                $groupFive_total = $groupFive_total + $obj_ar->groupFive;
+                                $groupSix_total = $groupSix_total + $obj_ar->groupSix;
+                            }
+                        }
+                    @endphp
+                    <tr>
+                        <td style="text-align: left">{{$dcode->debtorcode}}</td>
+                        <td style="text-align: left">{{$dcode->name}}</td>
+                        <td style="text-align: left">{{$pun_total}}</td>
+
+                        @php($total = $pun_total + $groupOne_total + $groupTwo_total + $groupThree_total + $groupFour_total + $groupFive_total + $groupSix_total)
+                        @foreach ($grouping as $key => $obj)
+                            @if($key == 0)
+                                <td>{{$groupOne_total}}</td>
+                            @elseif($key == 1)
+                                <td>{{$groupTwo_total}}</td>
+                            @elseif($key == 2)
+                                <td>{{$groupThree_total}}</td>
+                            @elseif($key == 3)
+                                <td>{{$groupFour_total}}</td>
+                            @elseif($key == 4)
+                                <td>{{$groupFive_total}}</td>
+                            @elseif($key == 5)
+                                <td>{{$groupSix_total}}</td>
+                            @else
+                                <td></td>
+                            @endif 
+                        @endforeach
+
+                        <td>{{$total}}</td>
+
+                    </tr>
+
+                    @php($grandtotal = $grandtotal + $total)
+                @endif
+            @endforeach
         @endforeach
-
     @else
 
         @foreach ($unit as $unit_)
