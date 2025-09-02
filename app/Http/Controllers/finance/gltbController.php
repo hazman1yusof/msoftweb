@@ -50,7 +50,6 @@ class  gltbController extends defaultController
     }
 
     public function processLink(Request $request){
-        dd('linking');
         $client = new \GuzzleHttp\Client();
 
         $url='http://192.168.0.13:8443/msoftweb/public/gltb/table?action=process&month='.$request->month.'&year='.$request->year.'&username='.session('username').'&compcode='.session('compcode');
