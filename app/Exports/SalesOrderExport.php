@@ -70,31 +70,34 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths, WithC
         $scope = $this->scope;
         
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
-                    ->select('dh.invno', 'dh.posteddate','dh.mrn', 'dh.deptcode', 'dh.amount','dh.debtorcode')
-                    // ->leftJoin('debtor.debtormast as dm', function($join){
-                     // 'dm.debtorcode as dm_debtorcode', 'dm.name as debtorname'
-                    //     $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
-                    //                 ->where('dm.compcode', '=', session('compcode'));
-                    // })
-                    // ->leftJoin('hisdb.pat_mast as pm', function($join){
-                    //     $join = $join->on("pm.newmrn", '=', 'dh.mrn');    
-                    //     $join = $join->where("pm.compcode", '=', session('compcode'));
-                    // })
-                    ->where('dh.compcode','=',session('compcode'))
-                    ->where('dh.source','=','PB')
-                    ->whereIn('dh.trantype',['IN'])
-                    ->where('dh.recstatus','=', 'POSTED')
-                    ->whereBetween('dh.posteddate', [$datefr, $dateto]);
+                        ->select('dh.invno', 'dh.posteddate','dh.mrn', 'dh.deptcode', 'dh.amount','dh.debtorcode')
+                        // ->leftJoin('debtor.debtormast as dm', function($join){
+                         // 'dm.debtorcode as dm_debtorcode', 'dm.name as debtorname'
+                        //     $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
+                        //                 ->where('dm.compcode', '=', session('compcode'));
+                        // })
+                        // ->leftJoin('hisdb.pat_mast as pm', function($join){
+                        //     $join = $join->on("pm.newmrn", '=', 'dh.mrn');    
+                        //     $join = $join->where("pm.compcode", '=', session('compcode'));
+                        // })
+                        ->where('dh.compcode','=',session('compcode'))
+                        ->where('dh.source','=','PB')
+                        ->whereIn('dh.trantype',['IN'])
+                        ->where('dh.recstatus','=', 'POSTED')
+                        ->whereBetween('dh.posteddate', [$datefr, $dateto]);
 
-                    if($scope == 'POLI'){
-                        $dbacthdr = $dbacthdr
-                                        ->where('dh.unit','POLIS15');
-                    }else{
-                        if(!empty($deptcode)){
+                    if($scope != 'RN'){
+                        if($scope == 'POLI'){
                             $dbacthdr = $dbacthdr
-                                        ->where('dh.deptcode', '=', $deptcode);
+                                            ->where('dh.unit','POLIS15');
+                        }else{
+                            if(!empty($deptcode)){
+                                $dbacthdr = $dbacthdr
+                                            ->where('dh.deptcode', '=', $deptcode);
+                            }
                         }
                     }
+                    
                     $dbacthdr = $dbacthdr
                                 ->where('dh.amount','!=','0')
                                 ->get();
@@ -107,7 +110,7 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths, WithC
                     ->where('compcode','=',session('compcode'))
                     ->first();
 
-        foreach ($dbacthdr as $obj) {
+        foreach ($dbacthdr as $key => $obj) {
             $pat_mast = DB::table('hisdb.pat_mast')
                             ->where('compcode',session('compcode'))
                             ->where('newmrn',$obj->mrn);
@@ -123,6 +126,10 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths, WithC
                             ->where('compcode',session('compcode'))
                             ->where('debtorcode',$obj->debtorcode);
 
+            if($scope == 'RN'){
+                $debtormast = $debtormast->where('debtortype','RN');
+            }
+
             if($debtormast->exists()){
                 $debtormast = $debtormast->first();
                 $obj->dm_debtorcode = $debtormast->debtorcode;
@@ -130,6 +137,9 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths, WithC
             }else{
                 $obj->dm_debtorcode = '';
                 $obj->debtorname = '';
+                if($scope == 'RN'){
+                    $dbacthdr->forget($key);
+                }
             }
         }
         

@@ -43,6 +43,11 @@ $(document).ready(function () {
 		dialog_deptcode.off();
 		$('#pdfgen1').hide();
 		$('#h4_title').text('SALES POLIKLINIK');
+	}else if($('#scope').val() == 'RN'){
+		$('#deptcode_div').hide();
+		dialog_deptcode.off();
+		$('#pdfgen1').hide();
+		$('#h4_title').text('RAKAN NIAGA');
 	}else{
 		dialog_deptcode.on();
 		$('#pdfgen1').show();

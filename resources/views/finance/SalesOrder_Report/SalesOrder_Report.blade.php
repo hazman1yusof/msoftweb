@@ -55,7 +55,7 @@
 				
 				<div style="width: 800px;margin: 0 auto;">
 					<div class="col-md-4" style="margin-left: 120px;">
-						<div class="col-md-12">
+						<div class="col-md-12" id="deptcode_div">
 							<!-- <input id="deptcode" name="deptcode" type="text" class="form-control input-sm" value=""> -->
 
 						
@@ -103,5 +103,5 @@
 @endsection
 
 @section('scripts')
-	<script src="js/finance/SalesOrder_Report/SalesOrder_Report.js?v=1.3"></script>
+	<script src="js/finance/SalesOrder_Report/SalesOrder_Report.js?v=1.4"></script>
 @endsection
