@@ -95,7 +95,7 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
         // dd($billdet);
         
         $dbacthdr = DB::table('debtor.dbacthdr as d')
-                    ->select('d.debtorcode', 'dm.name AS dm_desc', 'd.invno','d.mrn','b.idno', 'b.compcode', 'b.trxdate', 'b.chgcode', 'b.quantity', 'b.amount', 'b.invno', 'b.taxamount', 'c.description AS cm_desc', 'd.trantype','d.source','d.debtorcode AS debtorcode','pm.Name as pm_name')
+                    ->select('d.debtorcode', 'dm.name AS dm_desc', 'd.invno','d.mrn','b.idno', 'b.compcode', 'b.trxdate', 'b.chgcode', 'b.quantity', 'b.amount', 'b.invno', 'b.taxamount', 'c.description AS cm_desc', 'd.trantype','d.source','d.debtorcode AS debtorcode','pm.Name as pm_name','p.avgcost as costprice')
                     ->leftJoin('debtor.debtormast as dm', function($join){
                         $join = $join->on('dm.debtorcode', '=', 'd.debtorcode')
                                     ->where('dm.compcode', '=', session('compcode'));
@@ -103,6 +103,10 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
                     ->join('hisdb.billdet as b', function($join){
                         $join = $join->on('b.invno', '=', 'd.invno')
                                     ->where('b.compcode', '=', session('compcode'));
+                    })
+                    ->leftJoin('material.product as p', function($join){
+                        $join = $join->on('p.itemcode', '=', 'b.chgcode')
+                                    ->where('p.compcode', '=', session('compcode'));
                     })
                     ->leftJoin('hisdb.chgmast as c', function($join){
                         $join = $join->on('c.chgcode', '=', 'b.chgcode')
@@ -136,19 +140,24 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
         }
 
         foreach ($dbacthdr as $obj) {
-            $chgprice_obj = DB::table('hisdb.chgprice as cp')
-                ->where('cp.compcode', '=', session('compcode'))
-                ->where('cp.chgcode', '=', $obj->chgcode)
-                // ->where('cp.uom', '=', $value->uom)
-                ->whereDate('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur"))
-                ->orderBy('cp.effdate','desc');
-
-            if($chgprice_obj->exists()){
-                $chgprice_obj = $chgprice_obj->first();
-                $obj->costprice = $chgprice_obj->costprice * $obj->quantity;
-            }else{
+            if($obj->costprice == ''){
                 $obj->costprice = 0.00;
             }
+
+            $obj->costprice = $obj->costprice * $obj->quantity;
+            // $chgprice_obj = DB::table('hisdb.chgprice as cp')
+            //     ->where('cp.compcode', '=', session('compcode'))
+            //     ->where('cp.chgcode', '=', $obj->chgcode)
+            //     // ->where('cp.uom', '=', $value->uom)
+            //     ->whereDate('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur"))
+            //     ->orderBy('cp.effdate','desc');
+
+            // if($chgprice_obj->exists()){
+            //     $chgprice_obj = $chgprice_obj->first();
+            //     $obj->costprice = $chgprice_obj->costprice * $obj->quantity;
+            // }else{
+            //     $obj->costprice = 0.00;
+            // }
         }
         
         // $dbacthdr = $dbacthdr->get(['dh.debtorcode']);

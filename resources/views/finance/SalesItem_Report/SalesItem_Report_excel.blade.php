@@ -48,7 +48,7 @@
                 <td style="text-align: right; font-weight:bold">{{$amt}}</td>
                 <td style="text-align: right; font-weight:bold">{{$cpr}}</td>
                 <td style="text-align: right; font-weight:bold">{{$tax}}</td>
-                <td style="text-align: right; font-weight:bold"></td>
+                <td style="text-align: right;">{{$tot}}</td>
                 <td style="text-align: right; font-weight:bold">{{$tot}}</td>
             </table>
         @php($totalAmount += $tot)
