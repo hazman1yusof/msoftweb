@@ -7180,14 +7180,13 @@ class TestController extends defaultController
         try {
             $deptcode='FKWSTR';
             $period=7;
-            $day_start = '2025-07-01';
-            $day_end = '2025-07-03';
+            $day_start = '2025-08-01';
+            $day_end = '2025-08-20';
             $day_now = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d');
 
             $phycntdt = DB::table('material.phycntdt')
                             ->where('compcode',session('compcode'))
-                            ->where('recno','5204211')
-                            ->whereIn('itemcode',['KW-FM/EARLOOP','KW000158','KW000173','KW000235','KW000244','KW000247','KW000342','KW000362','KW000809','KW001012','KW001013','KW001087','KW001140','KW001159','KW001171','KW001186'])
+                            ->where('recno','5204984')
                             ->get();
 
             foreach ($phycntdt as $obj) {
@@ -7200,7 +7199,7 @@ class TestController extends defaultController
                         ->where('year','2025')
                         ->first();
 
-                $openbalqty = $stockloc->openbalqty+$stockloc->netmvqty1+$stockloc->netmvqty2+$stockloc->netmvqty3+$stockloc->netmvqty4+$stockloc->netmvqty5+$stockloc->netmvqty6;
+                $openbalqty = $stockloc->openbalqty+$stockloc->netmvqty1+$stockloc->netmvqty2+$stockloc->netmvqty3+$stockloc->netmvqty4+$stockloc->netmvqty5+$stockloc->netmvqty6+$stockloc->netmvqty7;
                 // dd($openbalqty);
 
                 $ivdspdt = DB::table('material.ivdspdt')
@@ -7241,8 +7240,9 @@ class TestController extends defaultController
 
                 DB::table('material.phycntdt')
                             ->where('compcode',session('compcode'))
-                            ->where('idno',$obj->phyqty)
+                            ->where('idno',$obj->idno)
                             ->update([
+                                'thyqty' => $real_thqty,
                                 'vrqty' => $vrqty
                             ]);
 

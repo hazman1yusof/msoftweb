@@ -2884,10 +2884,11 @@ class SalesOrderController extends defaultController
 
             $stockloc_first = $stockloc->first();
             $stockloc_arr = (array)$stockloc_first;
+            $new_val = round(floatval(floatval($prev_netprice) * floatval($prev_quan)) - floatval(floatval($curr_netprice) * floatval($curr_quan)), 2);
 
             $month = defaultController::toMonth(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
             $NetMvQty = floatval($stockloc_arr['netmvqty'.$month]) + floatval($prev_quan) - floatval($curr_quan);
-            $NetMvVal = floatval($stockloc_arr['netmvval'.$month]) + floatval(floatval($prev_netprice) * floatval($prev_quan)) - floatval(floatval($curr_netprice) * floatval($curr_quan));
+            $NetMvVal = floatval($stockloc_arr['netmvval'.$month]) + $new_val;
 
             $stockloc
                 ->update([
@@ -3011,7 +3012,7 @@ class SalesOrderController extends defaultController
 
             $month = defaultController::toMonth($dbacthdr->posteddate);
             $NetMvQty = floatval($stockloc_arr['netmvqty'.$month]) + floatval($prev_quan);
-            $NetMvVal = floatval($stockloc_arr['netmvval'.$month]) + floatval(floatval($prev_netprice) * floatval($prev_quan));
+            $NetMvVal = floatval($stockloc_arr['netmvval'.$month]) + round(floatval(floatval($prev_netprice) * floatval($prev_quan)),2);
 
             $stockloc
                 ->update([
