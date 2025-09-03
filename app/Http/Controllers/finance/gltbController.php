@@ -95,6 +95,18 @@ class  gltbController extends defaultController
         }
 
         $last_job = $last_job->first();
+        $responce->status = $last_job->status;
+        $responce->datefr = $last_job->adddate;
+        $responce->dateto = $last_job->finishdate;
+        $responce->period = '-';
+        $responce->year = '-';
+
+        if(!empty($last_job->date)){
+            list($year, $month, $day) = explode("-", $last_job->date);
+
+            $responce->period = $month;
+            $responce->year = $year;
+        }
 
         if($last_job->status != 'DONE'){
             $responce->jobdone = 'false';

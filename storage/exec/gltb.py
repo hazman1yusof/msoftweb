@@ -12,13 +12,13 @@ def truncate_(mycursor, year, period):
     mycursor.execute(query5, [0, compcode_, year_])
     mydb.commit()
 
-def start_job_queue(mycursor,page,username_,compcode_):
+def start_job_queue(mycursor,page,username_,compcode_,year_,period_):
     sql = """
     INSERT INTO sysdb.job_queue
-    (compcode,page,filename,process,adduser,adddate,status)
-    VALUES (%s,%s,%s,%s,%s,NOW(),'PENDING')
+    (compcode,page,filename,process,adduser,adddate,status,date)
+    VALUES (%s,%s,%s,%s,%s,NOW(),'PENDING',%s)
     """
-    params = (compcode_, page, '-', '-', username_)
+    params = (compcode_, page, '-', '-', username_,year_+'-'+period_+'-01')
     mycursor.execute(sql, params)
     mydb.commit()
     return mycursor.lastrowid
@@ -53,7 +53,7 @@ mycursor = mydb.cursor()
 datenow = datetime.today().strftime('%Y-%m-%d')
 timestart = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
-idno_job_queue = start_job_queue(mycursor,'gltb',username_,compcode_)
+idno_job_queue = start_job_queue(mycursor,'gltb',username_,compcode_,year_,period_)
 truncate_(mycursor, year_, period_)
 
 # --- Step 1: process finance.gltran ---

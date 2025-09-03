@@ -55,7 +55,7 @@
 <div class="container mycontainer">
   <div class="row">
 		<div class="col-md-12">
-			<div class="panel panel-default" style="height: 200px;">
+			<div class="panel panel-default" style="height: 260px;width: 60%;margin: auto;">
 				<div class="panel-heading">GLTB</div>
 				<div class="panel-body" style="padding-left: 35px !important;">
 					<div class='col-md-12 btnform' style="padding:0px">
@@ -63,10 +63,16 @@
 						<!-- <button name="gltb_run" type="button" class="mybtn btn btn-sm" data-btntype='gltb_run'>
 						 RUN GLTB
 						</button> -->
-						<button id="gltb" type="button" class="mybtn btn btn-primary" @if($process_ == 'true') {{'disabled'}} @endif>
+						<button id="gltb" type="button" class="mybtn btn btn-primary" @if($process_ == 'true') {{'disabled'}} @endif style="width:50%">
 						  @if($process_ == 'true') {{'GLTB Running..'}} @else {{'RUN GLTB'}} @endif
 						</button>
-						<input type="month" id="month" value="{{\Carbon\Carbon::now()->subMonth()->format('Y-m')}}">
+						<input type="month" id="month" value="{{\Carbon\Carbon::now()->subMonth()->format('Y-m')}}" class="form-control" style="width:50%;display: inline;">
+						<br/><br/>
+						<p>Last Run Status : <span id="gltb_status"></span><p/>
+						<p>Last Run From : <span id="gltb_datefr"></span><p/>
+						<p>Last Run To : <span id="gltb_dateto"></span><p/>
+						<p>Last Run Period : <span id="gltb_period"></span></p>
+						<p>Last Run Year : <span id="gltb_year"></span></p>
 					  </fieldset>
 					</div>
 				</div>
@@ -76,7 +82,6 @@
 </div>
 		
 @endsection
-
 
 @section('scripts')
 
@@ -93,6 +98,11 @@ $(document).ready(function () {
 				$('#gltb').attr('disabled',true);
 				$('#gltb').text('GLTB Running..');
 			}
+			$('#gltb_status').text(data.status);
+			$('#gltb_datefr').text(data.datefr);
+			$('#gltb_dateto').text(data.dateto);
+			$('#gltb_period').text(data.period);
+			$('#gltb_year').text(data.year);
 		});
   }
 
