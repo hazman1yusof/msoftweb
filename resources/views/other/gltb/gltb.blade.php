@@ -64,7 +64,7 @@
 						 RUN GLTB
 						</button> -->
 						<button id="gltb" type="button" class="mybtn btn btn-primary" @if($process_ == 'true') {{'disabled'}} @endif style="width:50%">
-						  @if($process_ == 'true') {{'Processing.. <i class="fa fa-refresh fa-spin fa-fw">'}} @else {{'Process'}} @endif</i>
+						  @if($process_ == 'true') {{'Processing..'}} <i class="fa fa-refresh fa-spin fa-fw">@else {{'Process'}} @endif</i>
 						</button>
 						<input type="month" id="month" value="{{\Carbon\Carbon::now()->subMonth()->format('Y-m')}}" class="form-control" style="width:50%;display: inline;">
 						<br/><br/>
