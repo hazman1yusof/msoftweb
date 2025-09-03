@@ -42,7 +42,7 @@
 		font-weight:bold;
 	}
 	.btnform .btn{
-		width: 24% !important;
+		width: 30% !important;
 	}
 	.btnform .btn b{
 		letter-spacing: 0.5px !important;
@@ -55,8 +55,8 @@
 <div class="container mycontainer">
   <div class="row">
 		<div class="col-md-12">
-			<div class="panel panel-default" style="height: 260px;width: 60%;margin: auto;">
-				<div class="panel-heading">GLTB</div>
+			<div class="panel panel-default" style="height: 260px;width: 90%;margin: auto;">
+				<div class="panel-heading">Interface Trial Balance</div>
 				<div class="panel-body" style="padding-left: 35px !important;">
 					<div class='col-md-12 btnform' style="padding:0px">
 					 <fieldset>
@@ -64,7 +64,7 @@
 						 RUN GLTB
 						</button> -->
 						<button id="gltb" type="button" class="mybtn btn btn-primary" @if($process_ == 'true') {{'disabled'}} @endif style="width:50%">
-						  @if($process_ == 'true') {{'GLTB Running..'}} @else {{'RUN GLTB'}} @endif
+						  @if($process_ == 'true') {{'Processing.. <i class="fa fa-refresh fa-spin fa-fw">'}} @else {{'Process'}} @endif</i>
 						</button>
 						<input type="month" id="month" value="{{\Carbon\Carbon::now()->subMonth()->format('Y-m')}}" class="form-control" style="width:50%;display: inline;">
 						<br/><br/>
@@ -93,10 +93,10 @@ $(document).ready(function () {
 		},'json').done(function(data) {
 			if(data.jobdone=='true'){
 				$('#gltb').attr('disabled',false);
-				$('#gltb').text('RUN GLTB');
+				$('#gltb').html('Process');
 			}else{
 				$('#gltb').attr('disabled',true);
-				$('#gltb').text('GLTB Running..');
+				$('#gltb').html('Processing.. <i class="fa fa-refresh fa-spin fa-fw">');
 			}
 			$('#gltb_status').text(data.status);
 			$('#gltb_datefr').text(data.datefr);
@@ -110,7 +110,8 @@ $(document).ready(function () {
   setInterval(myTask, 5000);
 
 	$("#gltb").click(function() {
-      $('#gltb').attr('disabled',true);
+			$('#gltb').attr('disabled',true);
+			$('#gltb').html('Processing.. <i class="fa fa-refresh fa-spin fa-fw">');
 			let dateStr = $('#month').val();
 
 			let [year, month] = dateStr.split("-").map(Number);
