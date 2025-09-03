@@ -7186,7 +7186,7 @@ class TestController extends defaultController
 
             $phycntdt = DB::table('material.phycntdt')
                             ->where('compcode',session('compcode'))
-                            ->where('recno','5204984')
+                            ->where('recno','5204985')
                             ->get();
 
             foreach ($phycntdt as $obj) {
