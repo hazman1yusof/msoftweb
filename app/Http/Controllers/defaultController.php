@@ -986,7 +986,7 @@ abstract class defaultController extends Controller{
         }
 
         if($neg_val){
-            return 'NEGATIVE '.implode(' ', $words);
+            return implode(' ', $words);
         }else{
             return implode(' ', $words);
         }
