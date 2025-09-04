@@ -110,6 +110,16 @@ class ReceiptController extends defaultController
                 $dbacthdr_outamount = $dbacthdr_amount;
             }
 
+            $recptno_duplicate = DB::table('debtor.dbacthdr')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('source','PB')
+                                    ->where('trantype',$request->dbacthdr_trantype)
+                                    ->where('recptno',$recptno);
+
+            if($recptno_duplicate->exists()){
+                throw new \Exception("Receipt No ".$recptno." already exists");
+            }
+
             $array_insert = [
                 'compcode' => session('compcode'),
                 'unit' => session('unit'),
