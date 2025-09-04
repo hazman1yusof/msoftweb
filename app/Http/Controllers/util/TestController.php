@@ -8013,4 +8013,20 @@ class TestController extends defaultController
         }
     }
 
+    public function table_unique(Request $request){
+        $table_name= 'material.delordhd';
+
+        $duplicates = DB::table('material.delordhd as a')
+                        ->join(DB::raw("(SELECT recno, compcode
+                                         FROM material.delordhd
+                                         GROUP BY recno, compcode
+                                         HAVING COUNT(*) > 1) as b"), function($join) {
+                            $join->on('a.recno', '=', 'b.recno')
+                                 ->on('a.lineno', '=', 'b.lineno');
+                        })
+                        ->orderBy('a.recno')
+                        ->orderBy('a.lineno')
+                        ->get();
+    }
+
 }
