@@ -73,12 +73,12 @@ for (crcostcode, cracc, drcostcode, dracc, year, period, amount) in myresult:
         res_gltb = mycursor.fetchone()
 
         if res_gltb is None:
-            newamount = -amount
+            newamount = amount
             query3 = ("INSERT INTO recondb.gltb (compcode,costcode,glaccount,year,period,amount) "
                       "VALUES (%s,%s,%s,%s,%s,%s)")
             mycursor.execute(query3, [compcode_, drcostcode, dracc, year, period, newamount])
         else:
-            newamount = res_gltb[0] - amount
+            newamount = res_gltb[0] + amount
             query4 = ("UPDATE recondb.gltb SET amount = %s "
                       "WHERE compcode = %s and year= %s and period = %s and costcode = %s and glaccount = %s")
             mycursor.execute(query4, [newamount, compcode_, year, period, drcostcode, dracc])
@@ -91,12 +91,12 @@ for (crcostcode, cracc, drcostcode, dracc, year, period, amount) in myresult:
         res_gltb = mycursor.fetchone()
 
         if res_gltb is None:
-            newamount = amount
+            newamount = -amount
             query3 = ("INSERT INTO recondb.gltb (compcode,costcode,glaccount,year,period,amount) "
                       "VALUES (%s,%s,%s,%s,%s,%s)")
             mycursor.execute(query3, [compcode_, crcostcode, cracc, year, period, newamount])
         else:
-            newamount = res_gltb[0] + amount
+            newamount = res_gltb[0] - amount
             query4 = ("UPDATE recondb.gltb SET amount = %s "
                       "WHERE compcode = %s and year= %s and period = %s and costcode = %s and glaccount = %s")
             mycursor.execute(query4, [newamount, compcode_, year, period, crcostcode, cracc])
