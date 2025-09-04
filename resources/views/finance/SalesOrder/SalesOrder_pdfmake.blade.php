@@ -182,7 +182,7 @@
 							],
 							[
 								{text:'TOTAL AMOUNT TO BE PAID/(REFUND)', style: 'totalbold', colSpan: 8,fontSize: 9},{},{},{},{},{},{},{},
-								{text:'@if($totalamount<0)({{number_format(abs($totalamount),2)}})@else {{number_format($totalamount,2)}}', alignment: 'right',colSpan: 2},{}
+								{text:'@if($totalamount<0) ({{number_format(abs($totalamount),2)}}) @else {{number_format($totalamount,2) @endif}}', alignment: 'right',colSpan: 2},{}
 							],
 							[
 								{text:'RINGGIT MALAYSIA: {{$totamt_bm}}', style: 'totalbold',  italics: true, colSpan: 10,fontSize: 9}
