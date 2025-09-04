@@ -5691,7 +5691,7 @@ class TestController extends defaultController
 
                 }else if(strtoupper($product_obj->groupcode) == "ASSET"){
                     $facode = DB::table('finance.facode')
-                        ->where('compcode','=', $value->compcode)
+                        ->where('compcode','=', session('compcode'))
                         ->where('assetcode','=', $product_obj->productcat)
                         ->first();
 
