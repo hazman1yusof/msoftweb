@@ -177,12 +177,12 @@
 								{text:'{{number_format($dbacthdr->amount,2)}}', alignment: 'right',colSpan: 2},{}
 							],
 							[
-								{text:'TOTAL PAID/CREDIT NOTE', style: 'totalbold', colSpan: 8,fontSize: 9},{},{},{},{},{},{},{},
-								{text:'@if($paid!=0) - {{number_format($paid,2)}} @else 0.00 @endif', alignment: 'right',colSpan: 2},{}
+								{text:'DEPOSIT/PAYMENT PAID/CREDIT NOTE', style: 'totalbold', colSpan: 8,fontSize: 9},{},{},{},{},{},{},{},
+								{text:'@if($paid!=0){{number_format(abs($paid),2)}} @else 0.00 @endif', alignment: 'right',colSpan: 2},{}
 							],
 							[
-								{text:'BALANCE', style: 'totalbold', colSpan: 8,fontSize: 9},{},{},{},{},{},{},{},
-								{text:'{{number_format($totalamount,2)}}', alignment: 'right',colSpan: 2},{}
+								{text:'TOTAL AMOUNT TO BE PAID/(REFUND)', style: 'totalbold', colSpan: 8,fontSize: 9},{},{},{},{},{},{},{},
+								{text:'@if($totalamount<0)({{number_format(abs($totalamount),2)}})@else {{number_format($totalamount,2)}}', alignment: 'right',colSpan: 2},{}
 							],
 							[
 								{text:'RINGGIT MALAYSIA: {{$totamt_bm}}', style: 'totalbold',  italics: true, colSpan: 10,fontSize: 9}
