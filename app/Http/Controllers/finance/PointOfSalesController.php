@@ -931,7 +931,7 @@ class PointOfSalesController extends defaultController
         }       
     }
 
-    public function posted_dulu($value){
+    public function posted_dulu($value,$invno){
         $dbacthdr = DB::table("debtor.dbacthdr")
                         ->where('compcode',session('compcode'))
                         ->where('idno','=',$value)
@@ -961,8 +961,6 @@ class PointOfSalesController extends defaultController
                 ->update([
                     'recstatus' => 'POSTED',
                 ]);
-
-            $invno = $this->recno('PB','INV');
             
             $billsum = DB::table("debtor.billsum")
                         ->where('compcode',session('compcode'))
@@ -1496,7 +1494,9 @@ class PointOfSalesController extends defaultController
             if(empty($request->dbacthdr_entrydate)){
                 $request->dbacthdr_entrydate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d');
             }
-            $this->posted_dulu($request->idno);
+
+            $invno = $this->recno('PB','INV');
+            $this->posted_dulu($request->idno,$invno);
 
             $auditno = $this->defaultSysparam('PB','RC');
 

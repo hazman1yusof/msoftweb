@@ -720,7 +720,7 @@ abstract class defaultController extends Controller{
             throw new \Exception("Sysparam for source $source and trantype $trantype is not available");
         }
 
-        $pvalue1 = $pvalue1->first();
+        $pvalue1 = $pvalue1->lockForUpdate()->first();
 
         DB::table('sysdb.sysparam')
             ->where('compcode',session('compcode'))
