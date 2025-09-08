@@ -80,6 +80,10 @@ class GoodReturnCreditController extends defaultController
                 $table = $table->Where(function ($table) use ($request){
                         $table->Where('dm.name','like',$request->searchVal[0]);
                 });
+            }else if($request->searchCol[0] == 'delordhd_cnno'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('do.cnno','like',$request->searchVal[0]);
+                });
             }else if($request->searchCol[0] == 'db_payercode'){
                 $table = $table->Where(function ($table) use ($request){
                         $table->Where('db.payercode','like',$request->searchVal[0]);
