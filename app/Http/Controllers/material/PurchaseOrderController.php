@@ -1203,8 +1203,8 @@ class PurchaseOrderController extends defaultController
                     ->leftJoin('material.product as p', function ($join){
                         $join = $join->on('p.itemcode', '=', 'podt.itemcode')
                                     ->where('p.compcode','=',session('compcode'))
-                                    ->on('p.uomcode','=','podt.uomcode')
-                                    ->on('p.unit','=','podt.unit');
+                                    ->on('p.uomcode','=','podt.uomcode');
+                                    // ->on('p.unit','=','podt.unit');
                                     // ->where('p.unit','=',session('unit'));
                     })
                     ->where('podt.compcode','=',session('compcode'))

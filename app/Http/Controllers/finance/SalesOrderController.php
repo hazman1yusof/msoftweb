@@ -1928,6 +1928,7 @@ class SalesOrderController extends defaultController
         //     ->get();
         
         if($dbacthdr->recstatus == "OPEN"){
+            if(strtoupper(session('unit')) == "W'HOUSE")
             $title = "DELIVERY ORDER";
         }else{
             $title = "INVOICE";
