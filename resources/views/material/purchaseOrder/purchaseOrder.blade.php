@@ -95,6 +95,13 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 								</div>
 								<span class="help-block"></span>
 							</div>
+
+							<div id="actdate_text" class="form-inline" style="display:none">
+								FROM DATE <input id="actdate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
+								TO <input id="actdate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
+								<button type="button" class="btn btn-primary btn-sm" id="actdate_search">SEARCH</button>
+							</div>
+
 						</div>
 						
 						<div class="col-md-5" style="padding-top: 20px; text-align: center; color: red;">
@@ -697,7 +704,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 			
 		});
 	</script>
-	<script src="js/material/purchaseOrder/purchaseOrder.js?v=1.20"></script>
+	<script src="js/material/purchaseOrder/purchaseOrder.js?v=1.21"></script>
 	<!-- <script src="js/material/purchaseOrder/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

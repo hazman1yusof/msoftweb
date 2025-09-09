@@ -786,26 +786,32 @@ $(document).ready(function () {
 	$('#Scol').on('change', whenchangetodate);
 	$('#Status').on('change', searchChange);
 	$('#trandept').on('change', searchChange);
+	$('#actdate_search').on('click', searchbydate);
 	
 	function whenchangetodate(){
 		supplierkatdepan.off();
+		$('#actdate_from, #actdate_to').val('');
 		if($('#Scol').val() == 'purordhd_purdate'){
-			$("input[name='Stext']").show("fast");
-			$("#tunjukname").hide("fast");
-			$("input[name='Stext']").attr('type', 'date');
-			$("input[name='Stext']").velocity({ width: "250px" });
-			$("input[name='Stext']").on('change', searchbydate);
+			$("input[name='Stext'],#tunjukname").hide("fast");
+			$("#actdate_text").show("fast");
 		}else if($('#Scol').val() == 'purordhd_suppcode'){
-			$("input[name='Stext']").hide("fast");
+			$("input[name='Stext'],#actdate_text").hide("fast");
 			$("#tunjukname").show("fast");
 			supplierkatdepan.on();
 		}else{
 			$("input[name='Stext']").show("fast");
-			$("#tunjukname").hide("fast");
+			$("#tunjukname,#actdate_text").hide("fast");
 			$("input[name='Stext']").attr('type', 'text');
 			$("input[name='Stext']").velocity({ width: "100%" });
-			$("input[name='Stext']").off('change', searchbydate);
+			// $("input[name='Stext']").off('change', searchbydate);
 		}
+	}
+
+	function searchbydate() {
+		urlParam.searchCol = ['daterange'];
+		urlParam.fromdate = $('#actdate_from').val();
+		urlParam.todate = $('#actdate_to').val();
+		refreshGrid('#jqGrid',urlParam);
 	}
 	
 	var supplierkatdepan = new ordialog(
@@ -844,10 +850,6 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	supplierkatdepan.makedialog();
-
-	function searchbydate() {
-		search('#jqGrid', $('#searchForm [name=Stext]').val(), $('#searchForm [name=Scol] option:selected').val(), urlParam);
-	}
 
 	searchChange(true);
 	function searchChange(once=false) {

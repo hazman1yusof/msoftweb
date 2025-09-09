@@ -186,6 +186,11 @@ class PurchaseOrderController extends defaultController
                 $table = $table->Where(function ($table) use ($request){
                         $table->Where('s.name','like',$request->searchVal[0]);
                 });
+            }else if($request->searchCol[0] == 'daterange'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('po.purdate','>=',$request->fromdate);
+                        $table->Where('po.purdate','<=',$request->todate);
+                });
             }else{
                 $table = $table->Where(function ($table) use ($request){
                         $sr = substr(strstr($request->searchCol[0],'_'),1); // tukar puerreqhd_ ke po.
