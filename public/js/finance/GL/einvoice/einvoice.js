@@ -71,7 +71,7 @@ $(document).ready(function () {
 			urlParam_acctent.lineno_ = selrowData('#jqGrid').lineno_;
 			urlParam_acctent.auditno = selrowData('#jqGrid').auditno;
 			urlParam_acctent.dbname = selrowData('#jqGrid').dbname;
-			refreshGrid("#gridacctent", urlParam_acctent);
+			// refreshGrid("#gridacctent", urlParam_acctent);
 		},
 		loadComplete: function(){
 			if($('#jqGrid').data('lastselrow') == 'none'){
@@ -80,7 +80,7 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($('#jqGrid').data('lastselrow'));
 				$('#jqGrid tr#' + $('#jqGrid').data('lastselrow')).focus();
 			}
-			$("#jqGridPager td.ui-disabled").hide();
+			$("#jqGridPager #jqGrid_ilsave").hide();
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			// $("#jqGrid_iledit").click();
@@ -90,7 +90,12 @@ $(document).ready(function () {
 			if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
-			$("#jqGridPager td.ui-disabled").hide();
+			$("#jqGridPager #jqGrid_ilsave").hide();
+
+			console.log($);
+			$('input[type=checkbox].cbsel_jqgrid').on( "click", function() {
+				$()
+			});
 		},
 	});
 
@@ -199,7 +204,6 @@ $(document).ready(function () {
 				$("#gridacctent").setSelection($('#gridacctent').data('lastselrow'));
 				$('#gridacctent tr#' + $('#gridacctent').data('lastselrow')).focus();
 			}
-			$("#jqGridPageracctent td.ui-disabled").hide();
 			calc_jq_height_onchange("gridacctent",false,parseInt($('#acctent_c').prop('clientHeight'))-150);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -210,7 +214,10 @@ $(document).ready(function () {
 			if($('#gridacctent').jqGrid('getGridParam', 'reccount') > 0 ){
 				$("#gridacctent").setSelection($("#gridacctent").getDataIDs()[0]);
 			}
-			$("#jqGridPageracctent td.ui-disabled").hide();
+
+			// $.each('input[type=checkbox].cbsel_jqgrid', function( index, value ) {
+			// 	console.log(index);
+			// });
 		},
 	});
 
@@ -306,5 +313,5 @@ function dateFormatter_(cellvalue, options, rowObject){
 	return moment(cellvalue, 'YYYY-MM-DD HH:mm:ss').format("DD-MM-YYYY");
 }
 function formatterCheckbox(cellvalue, options, rowObject){
-	return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['idno']+"' data-idno='"+rowObject['idno']+"' data-rowid='"+options.rowId+"'>";
+	return "<input type='checkbox' class='cbsel_jqgrid' name='checkbox_selection' id='checkbox_selection_"+rowObject['idno']+"' data-idno='"+rowObject['idno']+"' data-rowid='"+options.rowId+"'>";
 }

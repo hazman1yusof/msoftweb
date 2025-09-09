@@ -77,7 +77,7 @@ class GoodReturnCreditController extends defaultController
                         $table->Where('pm.newmrn','like',$request->searchVal[0]);
                 });
             }else if($request->searchCol[0] == 'dm_name'){
-                $table = $table->Where(function ($table) use ($request){FDGDFG
+                $table = $table->Where(function ($table) use ($request){
                         $table->Where('dm.name','like',$request->searchVal[0]);
                 });
             }else if($request->searchCol[0] == 'delordhd_cnno'){

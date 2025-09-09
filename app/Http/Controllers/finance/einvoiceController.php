@@ -59,7 +59,7 @@ class einvoiceController extends defaultController
                         ->select('db.idno','db.compcode','db.source','db.trantype','db.auditno','db.lineno_','db.invno','db.mrn','db.episno','db.debtorcode','db.amount','db.entrydate','pm.Name','dm.name as dbname','db.LHDNSubBy','db.LHDNStatus')
                         ->leftJoin('hisdb.pat_mast as pm', function($join) use ($request){
                             $join = $join->where('pm.compcode', '=', session('compcode'));
-                            $join = $join->on('pm.mrn', '=', 'db.mrn');
+                            $join = $join->on('pm.newmrn', '=', 'db.mrn');
                         })
                         ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
                             $join = $join->where('dm.compcode', '=', session('compcode'));
@@ -67,14 +67,11 @@ class einvoiceController extends defaultController
                         })
                         ->where('db.compcode',session('compcode'))
                         ->where('db.source','PB')
-                        ->where('db.trantype','IN')
-                        ->where('db.mrn','!=','0')
-                        ->where('db.episno','!=','0');
-
-        if(!empty($request->viewonly)){
-            $table = $table->where('auditno',$request->auditno)
-                           ->where('lineno_',$request->lineno_);
-        }
+                        ->whereIn('db.trantype',['IN','RD'])
+                        ->whereNotNull('db.deptcode')
+                        ->where('db.pointofsales','0');
+                        // ->where('db.mrn','!=','0')
+                        // ->where('db.episno','!=','0');
 
         if(!empty($request->filterCol)){
             $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
