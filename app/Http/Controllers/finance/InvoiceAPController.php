@@ -90,7 +90,6 @@ use Carbon\Carbon;
                         $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
                     });
             }
-            
         }
 
         if(!empty($request->sidx)){
@@ -213,6 +212,18 @@ use Carbon\Carbon;
                     ->where('recstatus','=','POSTED')
                     ->whereDate('trandate','<=',$request->postdate)
                     ->whereNull('invoiceno');
+
+        if(!empty($request->searchCol)){
+            if($request->searchCol[0] == 'docno'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('docno','like',$request->searchVal[0]);
+                    });
+            }else{
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
+                    });
+            }
+        }
 
 
         //////////paginate/////////
