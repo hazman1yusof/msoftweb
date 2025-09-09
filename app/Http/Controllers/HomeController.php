@@ -430,6 +430,7 @@ class HomeController extends Controller
         $menu.="<li><a style='padding-left:21px' title='Receipt' class='clickable' programid='ARreceipt' targeturl='./receipt'>Receipt</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Refund' class='clickable' programid='refund' targeturl='./refund'>Refund</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Payment / Deposit' class='clickable' programid='dataentryPV' targeturl='./paymentVoucher?source=AP&scope=ALL'>Payment / Deposit</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Good Return Credit' class='clickable' programid='goodreturnCredit' targeturl='./goodReturnCredit'>Good Return Credit</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Debit Note' class='clickable' programid='dataentryDN_AR' targeturl='./DebitNote?source=AR&trantype=DN&scope=ALL'>Debit Note</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Credit Note' class='clickable' programid='dataentryCN_AR' targeturl='./CreditNoteAR?source=AR&trantype=CN&scope=ALL'>Credit Note</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Cancellation' class='clickable' programid='cancellationAR' targeturl='./cancellation'>Cancellation</a></li>";
