@@ -132,7 +132,8 @@ class ARAgeingColl_ReportController extends defaultController
         $path = \config('get_config.EXEC_PATH').'\\arageingcollection.ini';
         file_put_contents($path, $iniString);
 
-        if($this->block_if_job_pending()){
+        $compcode=($request->compcode)?$request->compcode:'9B';
+        if($this->block_if_job_pending($compcode)){
             return response()->json([
                 'status' => 'Other job still pending'
             ]);
