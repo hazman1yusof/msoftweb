@@ -286,9 +286,9 @@ class ARAgeingColl_ReportController extends defaultController
         }
     }
 
-    public function block_if_job_pending(){
+    public function block_if_job_pending($compcode){
         $last_job = DB::table('sysdb.job_queue')
-                        ->where('compcode', session('compcode'))
+                        ->where('compcode', $compcode)
                         ->where('page', 'ARAgeingColl')
                         ->orderBy('idno', 'desc')
                         ->first();
