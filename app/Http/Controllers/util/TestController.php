@@ -68,8 +68,8 @@ class TestController extends defaultController
                 return $this->tukar_semua_ivtxntdt_idspdt_uombaru($request);
             case 'betulkan_uom_billsum':
                 return $this->betulkan_uom_billsum($request);
-            // case 'betulkan_poli_qtyonhand':
-            //     return $this->betulkan_poli_qtyonhand($request);
+            case 'compare_stockbalance_report_vs_pnl':
+                return $this->compare_stockbalance_report_vs_pnl($request);
             // case 'check_product_qtyonhand_sama_dgn_stockloc_qtyonhand':
             //     return $this->check_product_qtyonhand_sama_dgn_stockloc_qtyonhand($request);
             // case 'betulkan_stockexp_semua_chk':
@@ -8027,6 +8027,80 @@ class TestController extends defaultController
                         ->orderBy('a.recno')
                         ->orderBy('a.lineno')
                         ->get();
+    }
+
+    public function compare_stockbalance_report_vs_pnl(Request $request){
+
+        $year = '2025';
+        $period = $request->period;
+        $dept = $request->dept;
+
+        if(strtoupper($dept) == 'IMP'){
+            $dept='IMP';
+            $unit='IMP';
+        }else if(strtoupper($dept) == 'FKWSTR'){
+            $dept='FKWSTR';
+            $unit="W'HOUSE";
+        }else if(strtoupper($dept) == 'KHEALTH'){
+            $dept='KHEALTH';
+            $unit='KHEALTH';
+        }else{
+            dd('no dept');
+        }
+
+        $stockloc = DB::table('material.stockloc as s')
+                        ->select('s.unit','p.description','s.idno','s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit','d.description as dept_desc','sc.description as unit_desc','gl.amount as gl_amount')
+                        ->join('material.product as p', function($join){
+                                $join = $join->on('p.itemcode', '=', 's.itemcode');
+                                // $join = $join->on('p.uomcode', '=', 's.uomcode');
+                                // $join = $join->where('p.recstatus', '=', 'ACTIVE');
+                                $join = $join->where('p.compcode', '=', session('compcode'));
+                                $join = $join->where('p.groupcode', '=', 'STOCK');
+                                $join = $join->on('p.unit', '=', 's.unit');
+                            })
+                        ->leftjoin('sysdb.department as d', function($join){
+                            $join = $join->on('d.deptcode', '=', 's.deptcode');
+                            // $join = $join->on('d.unit', '=', 's.unit');
+                            $join = $join->where('d.compcode', '=', session('compcode'));
+                        })
+                        ->leftjoin('sysdb.sector as sc', function($join){
+                            $join = $join->on('sc.sectorcode', '=', 's.unit');
+                            // $join = $join->on('d.unit', '=', 's.unit');
+                            $join = $join->where('sc.compcode', '=', session('compcode'));
+                        })
+                        ->leftjoin('finance.gltran as gl', function($join) use ($year,$period,$dept){
+                            $join = $join->on('gl.reference', '=', 's.itemcode');
+                            $join = $join->where('gl.year', '=', $year);
+                            $join = $join->where('gl.period', '=', $period);
+                            $join = $join->where('gl.idno', '=', $dept);
+                            $join = $join->where('gl.compcode', '=', session('compcode'));
+                        });
+        $stockloc = $stockloc
+                    ->where('s.compcode',session('compcode'))
+                    ->where('s.stocktxntype','TR')
+                    ->where('s.unit',$unit)
+                    ->where('s.deptcode',$dept);
+
+        $stockloc = $stockloc->where('s.compcode',session('compcode'))
+                    ->where('s.year', '=', $year)
+                    ->orderBy('s.deptcode', 'ASC')
+                    ->orderBy('s.itemcode', 'ASC')
+                    ->get();
+
+        foreach ($stockloc as $obj) {
+
+            $array_obj = (array)$obj;
+            $close_balval = round($array_obj['openbalval'], 2);
+
+            for ($from = 1; $from <= intval($period); $from++) { 
+                $close_balval = round($close_balval, 2) + round($array_obj['netmvval'.$from], 2);
+            }
+
+            if(abs($array_obj['gl_amount'] - $close_balval) > 0.00001){
+                dump($array_obj['itemcode'].' - gl_amount: '.$array_obj['gl_amount'].' - closebal_calc: '.$close_balval);
+            }
+
+        }
     }
 
 }

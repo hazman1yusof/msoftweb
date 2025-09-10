@@ -124,8 +124,8 @@ class stockBalance_basic_xlsExport implements FromView, WithEvents, WithColumnWi
                         ->select('s.unit','p.description','s.idno','s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit','d.description as dept_desc','sc.description as unit_desc')
                         ->join('material.product as p', function($join){
                                 $join = $join->on('p.itemcode', '=', 's.itemcode');
-                                $join = $join->on('p.uomcode', '=', 's.uomcode');
-                                $join = $join->where('p.recstatus', '=', 'ACTIVE');
+                                // $join = $join->on('p.uomcode', '=', 's.uomcode');
+                                // $join = $join->where('p.recstatus', '=', 'ACTIVE');
                                 $join = $join->where('p.compcode', '=', session('compcode'));
                                 $join = $join->where('p.groupcode', '=', 'STOCK');
                                 $join = $join->on('p.unit', '=', 's.unit');
@@ -252,12 +252,12 @@ class stockBalance_basic_xlsExport implements FromView, WithEvents, WithColumnWi
 
         for ($from = 1; $from <= $until; $from++) { 
             $open_balqty = $open_balqty + $array_obj['netmvqty'.$from];
-            $open_balval = $open_balval + $array_obj['netmvval'.$from];
+            $open_balval = round($open_balval, 2) + round($array_obj['netmvval'.$from], 2);
         }
 
         for ($from = 1; $from <= intval($period); $from++) { 
             $close_balqty = $close_balqty + $array_obj['netmvqty'.$from];
-            $close_balval = $close_balval + $array_obj['netmvval'.$from];
+            $close_balval = round($close_balval, 2) + round($array_obj['netmvval'.$from], 2);
         }
 
         $responce = new stdClass();
@@ -266,7 +266,7 @@ class stockBalance_basic_xlsExport implements FromView, WithEvents, WithColumnWi
         $responce->close_balqty = $close_balqty;
         $responce->close_balval = $close_balval;
         $responce->netmvqty = $array_obj['netmvqty'.$period];
-        $responce->netmvval = $array_obj['netmvval'.$period];
+        $responce->netmvval = round($array_obj['netmvval'.$period], 2);
         return $responce;
     }
 

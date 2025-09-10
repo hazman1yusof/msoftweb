@@ -29,8 +29,24 @@ class assetregisterController extends defaultController
     {   
         switch($request->oper){
             case 'add':
+                $product = DB::table('material.product')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('itemcode','=',$request->itemcode);
+
+                if(!$product->exists()){
+                    return response('Itemcode not Exists', 500);
+                }
+
                 return $this->defaultAdd($request);
             case 'edit':
+                $product = DB::table('material.product')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('itemcode','=',$request->itemcode);
+
+                if(!$product->exists()){
+                    return response('Itemcode not Exists', 500);
+                }
+
                 return $this->defaultEdit($request);
             case 'del':
                 return $this->asset_delete($request);
@@ -107,20 +123,22 @@ class assetregisterController extends defaultController
 
                     $product = DB::table('material.product')
                             ->where('compcode','=',session('compcode'))
-                            ->where('itemcode','=',$value->itemcode)
-                            ->first();
+                            ->where('itemcode','=',$value->itemcode);
 
-                    $value->itemcode_desc = $product->description;
-                    $value->description_show = $value->description;
-                    if(mb_strlen($value->description_show)>80){
+                    if($product->exists()){
+                        $product = $product->first();
+                        $value->itemcode_desc = $product->description;
+                        $value->description_show = $value->description;
+                        if(mb_strlen($value->description_show)>80){
 
-                        $time = time() + $key;
+                            $time = time() + $key;
 
-                        $value->description_show = mb_substr($value->description_show,0,80).'<span id="dots_'.$time.'" style="display: inline;">...</span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->description_show,80).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
+                            $value->description_show = mb_substr($value->description_show,0,80).'<span id="dots_'.$time.'" style="display: inline;">...</span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->description_show,80).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
 
-                        $value->callback_param = [
-                            'dots_'.$time,'more_'.$time,'moreBtn_'.$time
-                        ];
+                            $value->callback_param = [
+                                'dots_'.$time,'more_'.$time,'moreBtn_'.$time
+                            ];
+                        }
                     }
                     
                 }

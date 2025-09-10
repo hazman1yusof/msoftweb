@@ -499,7 +499,9 @@ $(document).ready(function () {
 		action:'assetregisterController',
 		url: './assetregister/table',
 		field:'',
-		table_name:'finance.fatemp',	
+		table_name:'finance.fatemp',
+		filterCol:['compcode'],
+        filterVal:['session.compcode']
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
