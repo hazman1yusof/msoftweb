@@ -125,7 +125,7 @@ class stockBalance_basic_xlsExport implements FromView, WithEvents, WithColumnWi
                         ->join('material.product as p', function($join){
                                 $join = $join->on('p.itemcode', '=', 's.itemcode');
                                 $join = $join->on('p.uomcode', '=', 's.uomcode');
-                                $join = $join->where('p.recstatus', '=', 'ACTIVE');
+                                // $join = $join->where('p.recstatus', '=', 'ACTIVE');
                                 $join = $join->where('p.compcode', '=', session('compcode'));
                                 $join = $join->where('p.groupcode', '=', 'STOCK');
                                 $join = $join->on('p.unit', '=', 's.unit');
