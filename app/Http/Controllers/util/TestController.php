@@ -68,8 +68,8 @@ class TestController extends defaultController
                 return $this->tukar_semua_ivtxntdt_idspdt_uombaru($request);
             case 'betulkan_uom_billsum':
                 return $this->betulkan_uom_billsum($request);
-            // case 'betulkan_poli_qtyonhand':
-            //     return $this->betulkan_poli_qtyonhand($request);
+            case 'compare_stockbalance_report_vs_pnl':
+                return $this->compare_stockbalance_report_vs_pnl($request);
             // case 'check_product_qtyonhand_sama_dgn_stockloc_qtyonhand':
             //     return $this->check_product_qtyonhand_sama_dgn_stockloc_qtyonhand($request);
             // case 'betulkan_stockexp_semua_chk':
@@ -8027,6 +8027,10 @@ class TestController extends defaultController
                         ->orderBy('a.recno')
                         ->orderBy('a.lineno')
                         ->get();
+    }
+
+    public function compare_stockbalance_report_vs_pnl(Request $request){
+        
     }
 
 }

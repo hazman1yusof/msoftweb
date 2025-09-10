@@ -262,11 +262,11 @@ class stockBalance_basic_xlsExport implements FromView, WithEvents, WithColumnWi
 
         $responce = new stdClass();
         $responce->open_balqty = $open_balqty;
-        $responce->open_balval = $open_balval;
+        $responce->open_balval = round($open_balval, 2);
         $responce->close_balqty = $close_balqty;
-        $responce->close_balval = $close_balval;
+        $responce->close_balval = round($close_balval, 2);
         $responce->netmvqty = $array_obj['netmvqty'.$period];
-        $responce->netmvval = $array_obj['netmvval'.$period];
+        $responce->netmvval = round($array_obj['netmvval'.$period], 2);
         return $responce;
     }
 
