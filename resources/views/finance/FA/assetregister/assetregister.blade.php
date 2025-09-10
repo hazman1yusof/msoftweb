@@ -368,6 +368,6 @@
 			});
 		</script>
 
-		<script src="js/finance/FA/assetregister/assetregisterScript.js"></script>
+		<script src="js/finance/FA/assetregister/assetregisterScript.js?v=1.1"></script>
 		
 	@endsection
