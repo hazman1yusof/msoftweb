@@ -29,8 +29,24 @@ class assetregisterController extends defaultController
     {   
         switch($request->oper){
             case 'add':
+                $product = DB::table('material.product')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('itemcode','=',$request->itemcode);
+
+                if(!$product->exists()){
+                    return response('Itemcode not Exists', 500);
+                }
+
                 return $this->defaultAdd($request);
             case 'edit':
+                $product = DB::table('material.product')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('itemcode','=',$request->itemcode);
+
+                if(!$product->exists()){
+                    return response('Itemcode not Exists', 500);
+                }
+
                 return $this->defaultEdit($request);
             case 'del':
                 return $this->asset_delete($request);
