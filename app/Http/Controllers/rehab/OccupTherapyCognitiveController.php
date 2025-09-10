@@ -462,7 +462,7 @@ class OccupTherapyCognitiveController extends defaultController
         }
         
         $mmse = DB::table('hisdb.ot_mmse as m')
-                ->select('m.mrn','m.episno','m.dateofexam','m.examiner','m.orientation1','m.orientation2','m.registration','m.registrationTrials','m.attnCalc','m.recall','m.language1','m.language2','m.language3','m.language4','m.language5','m.language6','m.tot_mmse','m.assess_lvl','pm.Name','pm.Newic')
+                ->select('m.idno','m.mrn','m.episno','m.dateofexam','m.examiner','m.orientation1','m.orientation2','m.registration','m.registrationTrials','m.attnCalc','m.recall','m.language1','m.language2','m.language3','m.language4','m.language5','m.language6','m.tot_mmse','m.assess_lvl','pm.Name','pm.Newic')
                 ->leftjoin('hisdb.pat_mast as pm', function ($join){
                     $join = $join->on('pm.MRN','=','m.mrn');
                     $join = $join->on('pm.Episno','=','m.episno');
@@ -478,8 +478,24 @@ class OccupTherapyCognitiveController extends defaultController
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
+
+        $attachment_files = $this->get_attachment_files($mrn,$episno,$mmse->idno);
+        // dd($attachment_files);
         
-        return view('rehab.occupTherapy.mmseChart_pdfmake',compact('mmse'));
+        return view('rehab.occupTherapy.mmseChart_pdfmake',compact('mmse','attachment_files'));
+        
+    }
+
+    public function get_attachment_files($mrn,$episno,$idno_mmse){
+        
+        $attachment_files = DB::table('hisdb.ot_mmse_file')
+            ->where('compcode','=',session('compcode'))
+            ->where('mrn','=',$mrn)
+            ->where('episno','=',$episno)
+            ->where('idno_mmse','=',$idno_mmse)
+            ->get();
+
+        return $attachment_files;
         
     }
 

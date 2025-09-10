@@ -262,7 +262,7 @@ var mmsetbl = $('#ot_mmse_file').DataTable( {
         {targets: 6,
         	createdCell: function (td, cellData, rowData, row, col) {
                 console.log(rowData)
-				$(td).html(`<a class="ui circular blue2 button centre floated all_attach" href="../hisweb/uploads/`+rowData.path+`" target="_blank">OPEN</a>`);
+				$(td).html(`<a class="ui circular blue2 button centre floated all_attach" href="../uploads/`+rowData.path+`" target="_blank">OPEN</a>`);
    			}
    		}
     ],
@@ -300,7 +300,7 @@ function make_all_attachment(all_attach){
 	$('#all_attach').html('');
 
 	all_attach.forEach(function(o,i){
-		$('#all_attach').append(`<a class="ui circular blue2 button all_attach" target="_blank" href="./uploads/`+o.path+`">`+o.filename+`</a>`);
+		$('#all_attach').append(`<a class="ui circular blue2 button all_attach" target="_blank" href="./hisweb/uploads/`+o.path+`">`+o.filename+`</a>`);
 	});
 }
 
