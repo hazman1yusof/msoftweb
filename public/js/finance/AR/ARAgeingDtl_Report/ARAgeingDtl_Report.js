@@ -67,6 +67,13 @@ $(document).ready(function () {
     }).on('preXhr.dt', function ( e, settings, data ) {
     }).on('xhr.dt', function ( e, settings, json, xhr ) {
     });
+
+    function myTask() {
+        DataTable.ajax.reload();
+    }
+
+    // Run forever every 5 seconds (5000 ms)
+    setInterval(myTask, 5000);
     
     $("#genreport input[name='debtorcode_from']").change(function(){
         $("#genreportpdf input[name='debtorcode_from']").val($(this).val());
@@ -109,15 +116,15 @@ $(document).ready(function () {
 
         $.post( href,{_token:$('#_token').val()}, function( data ) {
         }).fail(function(data) {
-            $('#excelgen1').attr('disabled',false);
+            // $('#excelgen1').attr('disabled',false);
         }).success(function(data){
-            $('#excelgen1').attr('disabled',false);
+            // $('#excelgen1').attr('disabled',false);
             DataTable.ajax.reload();
         });
 
-        delay(function(){
-            DataTable.ajax.reload();
-        }, 4000 );
+        // delay(function(){
+        //     DataTable.ajax.reload();
+        // }, 4000 );
 
         // window.open('./ARAgeingDtl_Report/showExcel?type='+$('#type').val()+'&debtortype='+$('#debtortype').val()+'&debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&date='+$("#date").val()+'&groupOne='+$("#groupOne").val()+'&groupTwo='+$("#groupTwo").val()+'&groupThree='+$("#groupThree").val()+'&groupFour='+$("#groupFour").val()+'&groupFive='+$("#groupFive").val()+'&groupSix='+$("#groupSix").val(), '_blank');
     });

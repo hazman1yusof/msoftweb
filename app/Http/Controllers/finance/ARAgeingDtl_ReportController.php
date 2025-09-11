@@ -14,6 +14,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 use GuzzleHttp\Client;
 use Response;
+use Symfony\Component\Process\Process;
 // use App\Jobs\ARAgeingDtlProcess;
 
 class ARAgeingDtl_ReportController extends defaultController
@@ -52,14 +53,13 @@ class ARAgeingDtl_ReportController extends defaultController
     public function form(Request $request)
     {
         switch($request->action){
-            // case 'add':
-            //     return $this->defaultAdd($request);
-            // case 'edit':
-            //     return $this->defaultEdit($request);
-            // case 'del':
-            //     return $this->defaultDel($request);
             case 'showExcel':
-                return $this->process_excel_link($request);
+                $PYTHON_PATH = \config('get_config.PYTHON_PATH');
+                if($PYTHON_PATH != null){
+                    return $this->process_excel($request);;
+                }else{
+                    return $this->process_excel_link($request);
+                }
             default:
                 return 'error happen..';
         }
@@ -141,6 +141,65 @@ class ARAgeingDtl_ReportController extends defaultController
     }
 
     public function process_excel(Request $request){
+        $data = [
+            'DATA1' => [
+                'username' => ($request->username)?$request->username:'-',
+                'compcode' => ($request->compcode)?$request->compcode:'9B',
+                'type' => $request->type,
+                'date' => $request->date,
+                'debtortype' => $request->debtortype,
+                'debtorcode_from' => $request->debtorcode_from,
+                'debtorcode_to' => $request->debtorcode_to,
+                'groupOne' => $request->groupOne,
+                'groupTwo' => $request->groupTwo,
+                'groupThree' => $request->groupThree,
+                'groupFour' => $request->groupFour,
+                'groupFive' => $request->groupFive,
+                'groupSix' => $request->groupSix,
+                'groupby' => $request->groupby,
+            ]
+        ];
+
+        $iniString = '';
+        foreach ($data as $section => $settings) {
+            $iniString .= "[$section]\n";
+            foreach ($settings as $key => $value) {
+                $iniString .= "$key=$value\n";
+            }
+            $iniString .= "\n";
+        }
+
+        $path = \config('get_config.EXEC_PATH').'\\arageing.ini';
+        file_put_contents($path, $iniString);
+
+        $compcode=($request->compcode)?$request->compcode:'9B';
+        if($this->block_if_job_pending($compcode)){
+            return response()->json([
+                'status' => 'Other job still pending'
+            ]);
+        }else{
+            // Path to your Python script
+            $scriptPath = \config('get_config.EXEC_PATH').'\\arageing.py'; // double backslashes for Windows paths
+            $pythonPath = \config('get_config.PYTHON_PATH');
+
+            // Create a process (use 'python' on Windows)
+            $process = new Process([$pythonPath, $scriptPath]);
+
+            // Don’t wait for it
+            $process->setTimeout(null);
+
+            // Force detached mode on Windows
+            $process->setOptions(['create_new_console' => true]);
+
+            $process->start();
+
+            return response()->json([
+                'status' => 'Python script started in background (Windows)'
+            ]);
+        }
+    }
+
+    public function process_excel_lama(Request $request){
 
         if($request->type == 'detail'){
             $filename = 'ARAgeingDetail '.Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d g:i A').'.xlsx';
@@ -151,8 +210,8 @@ class ARAgeingDtl_ReportController extends defaultController
         $bytes = random_bytes(20);
         $process = bin2hex($bytes).'.xlsx';
 
-        $username = $request->username;
-        $compcode = $request->compcode;
+        $username = ($request->username)?$request->username:'-';
+        $compcode = ($request->compcode)?$request->compcode:'9B';
         $type = $request->type;
         $date = $request->date;
         $debtortype = $request->debtortype;
@@ -529,5 +588,19 @@ class ARAgeingDtl_ReportController extends defaultController
                     'group' => $obj->group
                 ]);
         }
+    }
+
+    public function block_if_job_pending($compcode){
+        $last_job = DB::table('sysdb.job_queue')
+                        ->where('compcode', $compcode)
+                        ->where('page', 'ARAgeing')
+                        ->orderBy('idno', 'desc')
+                        ->first();
+
+        if($last_job->status != 'DONE'){
+            return true;
+        }
+
+        return false;
     }
 }

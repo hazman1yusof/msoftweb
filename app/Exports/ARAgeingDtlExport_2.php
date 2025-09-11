@@ -145,10 +145,14 @@ class ARAgeingDtlExport_2 implements FromView, WithEvents, WithColumnWidths, Wit
         }else if($groupby == 'unit'){
             $debtortype = $array_report->unique('unit');
         }
-        $debtorcode = $array_report->unique('debtorcode');
+        $debtorcode = $array_report->unique(function ($item) {
+            return $item->debtorcode . '-' . $item->unit;
+        })->values();
 
         $comp_name = $this->comp->name;
         $date_at = Carbon::createFromFormat('Y-m-d',$this->date)->format('d-m-Y');
+
+        // dd($array_report);
 
         if($groupby == 'debtortype'){
             if($this->type == 'detail'){
