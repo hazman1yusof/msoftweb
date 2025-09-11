@@ -34,7 +34,7 @@ $(document).ready(function () {
         serverSide: true,
         paging: true,
         columns: [
-            { data: 'idno' ,visible:false,orderable: false},
+            { data: 'idno',orderable: false},
             { data: 'compcode' ,visible:false,orderable: false},
             { data: 'page' ,visible:false,orderable: false},
             { data: 'filename',orderable: false},

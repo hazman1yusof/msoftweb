@@ -69,7 +69,7 @@
                     <table class="table table-hover table-bordered" id='job_queue'>
                     <thead>
                         <tr>
-                            <th>idno</th>
+                            <th>ID.</th>
                             <th>compcode</th>
                             <th>page</th>
                             <th>Filename</th>
@@ -223,6 +223,6 @@
 @endsection
 
 @section('scripts')
-    <script src="js/finance/AR/ARAgeingDtl_Report/ARAgeingDtl_Report.js?v=1.6"></script>
+    <script src="js/finance/AR/ARAgeingDtl_Report/ARAgeingDtl_Report.js?v=1.7"></script>
     <script src="plugins/datatables/js/jquery.datatables.min.js"></script>
 @endsection
