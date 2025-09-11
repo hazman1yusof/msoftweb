@@ -45,28 +45,35 @@ i.fa {
 					<div class="form-group"> 
 						<div class="col-md-2">
 							<label class="control-label" for="Scol">Search By : </label>  
-					  		<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
-		              	</div>
+					  	<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
+		        </div>
 
-					  	<div class="col-md-5">
+					  <div class="col-md-5">
 					  		<label class="control-label"></label>  
 							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
 						</div>
 
 						<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
 					  		<p id="p_error"></p>
-					  	</div>
-		            </div>
+					  </div>
+		      </div>
 				</div>
+
+				<div class="col-md-2" id="unitsearch">
+            <label class="control-label" for="trandept">Unit</label> 
+            <select id='unit' class="form-control input-sm">
+                <option value="All">ALL</option>
+                <option value="IMP" selected>IMP</option>
+                <option value="W'HOUSE">W'HOUSE</option>
+                <option value="KHEALTH">KHEALTH</option>
+            </select>
+        </div>
 			</fieldset> 
 		</form>
         <div class="panel panel-default">
 		    <div class="panel-heading" style="position:relative;">Reprint Bill
 					<a class='pull-right pointer text-primary' style="padding-left: 30px" id='reprint__summbill'>
-				    	Summary Bill
-					</a>
-					<a class='pull-right pointer text-primary' style="padding-left: 30px" id='reprint_bill'>
-				    	Detail Bill
+				    Invoice
 					</a>
 					<a class='pull-right btn btn-sm btn-primary'  id='btn_open_dialog_login' style="
 						position: absolute;

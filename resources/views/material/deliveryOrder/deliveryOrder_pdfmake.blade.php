@@ -143,7 +143,7 @@
 								{text:'{{number_format($obj->amount,2)}}', alignment: 'right'},
 								{text:'{{number_format($obj->totamount,2)}}', alignment: 'right'},
 								@if(!empty($obj->expdate))
-                                {text:'{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->expdate)->format('d-m-Y')}}'},
+                                {text:'{{$obj->expdate}}'},
 								@else
                                 {text:''},
 								@endif
