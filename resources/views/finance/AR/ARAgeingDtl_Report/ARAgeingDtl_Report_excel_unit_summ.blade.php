@@ -47,8 +47,10 @@
     @foreach ($debtortype as $obj_dt)
     <tr>
         @if($obj_dt->unit == 'POLIS15')
+        <td style="font-weight:bold; text-align: left">$obj_dt->unit</td>
         <td style="font-weight:bold; text-align: left">POLIKLINIK</td>
         @else
+        <td style="font-weight:bold; text-align: left">$obj_dt->unit</td>
         <td style="font-weight:bold; text-align: left">{{$obj_dt->unit_desc}}</td>
         @endif
     </tr>

@@ -66,12 +66,15 @@
         <td style="font-weight:bold; text-align: left">Poliklinik</td>
     </tr>      
 
+    @php($grandtotal = 0)
     @foreach ($debtortype as $obj_dt)
     <tr>
     <tr>
         @if($obj_dt->unit == 'POLIS15')
+        <td style="font-weight:bold; text-align: left">$obj_dt->unit</td>
         <td style="font-weight:bold; text-align: left">POLIKLINIK</td>
         @else
+        <td style="font-weight:bold; text-align: left">$obj_dt->unit</td>
         <td style="font-weight:bold; text-align: left">{{$obj_dt->unit_desc}}</td>
         @endif
     </tr>
@@ -79,8 +82,8 @@
         @foreach ($debtorcode as $obj_dc)
             @if($obj_dc->unit == $obj_dt->unit)
                 <tr>
-                    <td style="font-weight:bold; text-align: left">{{$obj_dc->debtorcode}}</td>
-                    <td style="font-weight:bold; text-align: left">{{$obj_dc->name}}</td>
+                    <td style="text-align: left">{{$obj_dc->debtorcode}}</td>
+                    <td style="text-align: left">{{$obj_dc->name}}</td>
                 </tr>
 
                 @php($total = 0.00)
@@ -115,6 +118,7 @@
                         </tr>
                     @endif
                 @endforeach
+                @php($grandtotal = $grandtotal + $total)
                 <tr>
                     <td></td>
                     <td></td>
@@ -136,4 +140,22 @@
             @endif
         @endforeach
     @endforeach
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+
+        @foreach ($grouping as $key => $group)
+            @if($key+1 == count($grouping))
+            <td style="font-weight:bold; text-align: left">Grand Total</td>
+            @else
+            <td></td>
+            @endif
+        @endforeach
+
+        <td>{{$grandtotal}}</td>
+        <td></td>
+        <td></td>
+    </tr>
 </table>
