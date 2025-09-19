@@ -72,6 +72,8 @@ class TestController extends defaultController
                 return $this->compare_stockbalance_report_vs_pnl($request);
             case 'newic_pm_ke_dm':
                 return $this->newic_pm_ke_dm($request);
+            case 'statecode_upd':
+                return $this->statecode_upd($request);
             // case 'betulkan_stockexp_semua_chk':
             //     return $this->betulkan_stockexp_semua_chk($request);
             case 'betulkan_stockexp_semua':
@@ -8118,6 +8120,41 @@ class TestController extends defaultController
                         'newic' => $value->newic
                     ]);
             }
+        }
+    }
+
+    public function statecode_upd(Request $request){
+        $dm = DB::table('debtor.debtormast')
+                ->where('compcode',session('compcode'))
+                ->whereNotNull('postcode')
+                ->get();
+
+        foreach ($dm as $obj) {
+            $postcode = DB::table('hisdb.postcode')
+                        ->where('compcode',session('compcode'))
+                        ->where('postcode',$obj->postcode);
+
+            if($postcode->exists()){
+                $postcode=$postcode->first();
+
+                $state = DB::table('hisdb.state')
+                        ->where('compcode',session('compcode'))
+                        ->where('description',strtoupper($postcode->statecode));
+
+                if($state->exists()){
+                    $state = $state->first();
+                     DB::table('debtor.debtormast')
+                            ->where('compcode',session('compcode'))
+                            ->where('idno',$obj->idno)
+                            ->update([
+                                'statecode' => $state->StateCode
+                            ]);
+
+                    echo  nl2br($state->StateCode."\n");
+                }
+
+            }
+
         }
     }
 
