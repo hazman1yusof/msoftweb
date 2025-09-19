@@ -26,13 +26,21 @@ $(document).ready(function () {
 
 	var fdl = new faster_detail_load();
 	var myfail_msg = new fail_msg_func();
+	var myfail_msg_verify = new fail_msg_func('div#fail_msg_verifytin');
 	page_to_view_only($('#viewonly').val());
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
 		url:'./einvoice/table',
 		action:'maintable',
+		unit:$('#unit').val(),
 	}
+
+	$('#unit').change(function(){
+		urlParam.unit = $('#unit').val();
+
+		refreshGrid("#jqGrid", urlParam);
+	});
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	$("#jqGrid").jqGrid({
@@ -42,19 +50,24 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', hidden:true},					
 			{ label: 'source', name: 'source', hidden:true},
 			{ label: 'TT', name: 'trantype', width: 25, classes: 'wrap'},
-			{ label: 'Bill No', name: 'auditno', width: 50, classes: 'wrap', canSearch: true, checked:true},
-			{ label: 'Line No', name: 'lineno_', width: 30, classes: 'wrap',hidden:true},
-			{ label: 'Invoice No.', name: 'invno',width: 50},
-			{ label: 'MRN', name: 'mrn', width: 30, classes: 'wrap', canSearch: true},
+			{ label: 'Bill No', name: 'auditno', width: 40, canSearch: true, checked:true},
+			{ label: 'Invoice No.', name: 'invno',width: 40},
+			{ label: 'MRN', name: 'mrn', width: 30, canSearch: true},
 			{ label: 'Episno', name: 'episno', width: 25, classes: 'wrap',hidden:true},
 			{ label: 'Patient Name', name: 'Name', width: 110, classes: 'wrap', canSearch: true},
-			{ label: 'Debtor Code', name: 'debtorcode', width: 50, classes: 'wrap', canSearch: true},
+			{ label: 'New IC', name: 'newic', width: 50},
+			{ label: 'Debtor Code', name: 'debtorcode', width: 50, canSearch: true},
 			{ label: 'Debtor Name', name: 'dbname', width: 110, classes: 'wrap', canSearch: true},
+			{ label: 'TIN', name: 'tinid', width: 50},
 			{ label: 'Amount', name: 'amount', width: 50, align: 'right',formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}},
 			{ label: 'Bill Date', name: 'entrydate', width: 40, canSearch: true},
 			{ label: 'Submit By', name: 'LHDNSubBy', width: 40},
 			{ label: 'Status', name: 'LHDNStatus', width: 40},
-			{ label: ' ', name: 'Checkbox',sortable:false, width: 25,align: "center", formatter: formatterCheckbox },
+			{ label: 'newic', name: 'newic', hidden:true},
+			{ label: 'tinid', name: 'tinid', hidden:true},
+			{ label: 'Line No', name: 'lineno_',hidden:true},
+			{ label: 'url', name: 'url',hidden:true},
+			// { label: ' ', name: 'Checkbox',sortable:false, width: 25,align: "center", formatter: formatterCheckbox },
 		],
 		autowidth:true,
         multiSort: true,
@@ -72,9 +85,10 @@ $(document).ready(function () {
 			urlParam_acctent.auditno = selrowData('#jqGrid').auditno;
 			urlParam_acctent.dbname = selrowData('#jqGrid').dbname;
 			// refreshGrid("#gridacctent", urlParam_acctent);
+			$("#jqGrid").data('lastselrow',rowid);
 		},
 		loadComplete: function(){
-			if($('#jqGrid').data('lastselrow') == 'none'){
+			if($('#jqGrid').data('lastselrow') == 'none' || $('#jqGrid').data('lastselrow') == undefined){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}else{
 				$("#jqGrid").setSelection($('#jqGrid').data('lastselrow'));
@@ -87,15 +101,16 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			fdl.set_array().reset();
-			if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
-				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-			}
 			$("#jqGridPager #jqGrid_ilsave").hide();
 
-			console.log($);
-			$('input[type=checkbox].cbsel_jqgrid').on( "click", function() {
-				$()
-			});
+			// $('input[type=checkbox].cbsel_jqgrid').on( "click", function() {
+			// 	if($(this).prop("checked")){
+			// 		$("input[type='checkbox'].cbsel_jqgrid").prop("checked", false);
+			// 		$(this).prop("checked", true);
+			// 	}else{
+			// 		$("input[type='checkbox'].cbsel_jqgrid").prop("checked", false);
+			// 	}
+			// });
 		},
 	});
 
@@ -237,6 +252,28 @@ $(document).ready(function () {
 		},
 	});
 
+	$('#Scol').on('change', whenchangetodate);
+
+	function whenchangetodate(){
+		$('#actdate_from, #actdate_to').val('');
+		if($('#Scol').val() == 'entrydate'){
+			$("input[name='Stext']").hide("fast");
+			$("#actdate_text").show("fast");
+		}else{
+			$("input[name='Stext']").show("fast");
+			$("#actdate_text").hide("fast");
+			// $("input[name='Stext']").off('change', searchbydate);
+		}
+	}
+
+	$('#actdate_search').click(function(){
+		urlParam.searchCol = ['entrydate'];
+		urlParam.datefrom = $('#actdate_from').val();
+		urlParam.dateto = $('#actdate_to').val();
+
+		refreshGrid("#jqGrid", urlParam);
+	});
+
 	$('#a_sales_acctent,#a_cost_acctent').click(function(){
 		if($(this).data('type') == 'sales'){
 			$('#acctent_title_span').text('Sales');
@@ -249,61 +286,179 @@ $(document).ready(function () {
 		}
 	});
 
+	$('#printinvoice').click(function(){
+		window.open(selrowData('#jqGrid').url, "_blank");
+	});
+
+	$("#dialog_verifytin")
+	  .dialog({
+		width: 5/10 * $(window).width(),
+		modal: true,
+		autoOpen: false,
+		open: function( event, ui ) {
+			myfail_msg_verify.clear_fail();
+			let data = selrowData('#jqGrid');
+
+			$('#mrn').val(data.mrn);
+			$('#newic').val(data.newic);
+			$('#dbname').val(data.dbname);
+			$('#tinid').val(data.tinid);
+			if($('#dialog_verifytin').data('submit_einvoice') == 'true'){
+				$('#submit_einvoice').show();
+				$('#save_verifytin').hide();
+			}else{
+				$('#submit_einvoice').show();
+				$('#submit_einvoice').hide();
+			}
+		},
+		close: function( event, ui ) {
+			myfail_msg_verify.clear_fail();
+			$('#mrn').val('');
+			$('#newic').val('');
+			$('#dbname').val('');
+			$('#tinid').val('');
+			refreshGrid("#jqGrid", urlParam);
+			$('#dialog_verifytin').data('submit_einvoice','false');
+		}
+	  });
+
+	$('#verifytin').click(function(){
+        $('#dialog_verifytin').dialog('open');
+	});
+
+	$('#check_verifytin').click(function(){
+		$('#check_verifytin,#save_verifytin').attr('disabled',true);
+
+		if($('#newic').val() == ''){
+			alert('New IC is needed');
+			$('#newic').focus();
+			$('#check_verifytin,#save_verifytin').attr('disabled',false);
+			return 0;
+		}
+
+		let seldata = selrowData('#jqGrid');
+
+		if(seldata.debtortype == 'PT' || seldata.debtortype == 'PR'){
+			return 0;
+		}
+
+		var param={
+			action:'check_verifytin',
+			url: './einvoice/table',
+			debtorcode:seldata.debtorcode,
+			newic:$('#newic').val()
+		}
+		$.get( param.url+"?"+$.param(param), function( data ) {
+			
+		}).fail(function(data) {
+			console.log(data);
+			$('#check_verifytin,#save_verifytin').attr('disabled',false);
+		}).success(function(data) {
+			$('#tinid').val(data);
+			$('#check_verifytin,#save_verifytin').attr('disabled',false);
+		});
+	});
+
+	$('#save_verifytin').click(function(){
+		$('#check_verifytin,#save_verifytin').attr('disabled',true);
+
+		let seldata = selrowData('#jqGrid');
+
+		var param={
+			action:'save_verifytin',
+			url: './einvoice/table',
+			debtorcode:seldata.debtorcode,
+			newic:$('#newic').val(),
+			tinid:$('#tinid').val()
+		}
+		$.get( param.url+"?"+$.param(param), function( data ) {
+			
+		}).fail(function(data) {
+			console.log(data);
+			$('#check_verifytin,#save_verifytin').attr('disabled',false);
+		}).success(function(data) {
+			console.log(data);
+			$('#check_verifytin,#save_verifytin').attr('disabled',false);
+			$("#dialog_verifytin").dialog('close');
+		});
+	});
+
 	$("#dialog_user_login")
 	  .dialog({
 		width: 3/10 * $(window).width(),
 		modal: true,
 		autoOpen: false,
 		open: function( event, ui ) {
+			myfail_msg.clear_fail();
 		},
 		close: function( event, ui ) {
 			myfail_msg.clear_fail();
 			$('#username_login').val('');
 			$('#password_login').val('');
-			refreshGrid("#jqGrid", urlParam);
 		}
 	  });
 
     $('#btn_open_dialog_login').click(function(){
-		if($("input[type='checkbox'][name='checkbox_selection']:checked").length == 0){
-			alert('Please select at least 1 Invoice');
-		}else{
-        	$('#dialog_user_login').dialog('open')
-		}
+        $('#dialog_user_login').dialog('open');
     });
 
     $('#login_submit').click(function(){
-    	$('#login_submit').prop('disabled',true);
 		myfail_msg.clear_fail();
-		var idno_array = [];
-		$("input[type='checkbox'][name='checkbox_selection']:checked").each(function( index ){
-			idno_array.push($(this).data('idno'));
-		});
-        var param={
-			action: 'submit_einvoice',
-			idno: selrowData('#jqGrid').idno,
-			username: $('#username_login').val(),
-			password: $('#password_login').val(),
-			_token: $("#_token").val(),
-			idno_array: idno_array
+    	if($('#formdata_login').isValid({requiredFields:''},conf,true)){
+	    	$('#login_submit').attr('disabled',true);
+
+			let seldata = selrowData('#jqGrid');
+
+			var param={
+				action:'login_submit',
+				url: './einvoice/table',
+				username:$('#username_login').val(),
+				password:$('#password_login').val()
+			}
+			$.get( param.url+"?"+$.param(param), function( data ) {
+				
+			}).fail(function(data) {
+				myfail_msg.add_fail({
+					id:'response',
+					textfld:"",
+					msg:data.responseText,
+				});
+				$('#login_submit').attr('disabled',false);
+			}).success(function(data) {
+
+				$('#login_submit').attr('disabled',false);
+				$("#dialog_user_login").dialog('close');
+				$('#dialog_verifytin').data('submit_einvoice','true');
+	        	$('#verifytin').click();
+			});
+    	}
+	});
+
+	$('#submit_einvoice').click(function(){
+		myfail_msg_verify.clear_fail();
+		$('#submit_einvoice').attr('disabled',true);
+
+		let seldata = selrowData('#jqGrid');
+
+		var param={
+			action:'einvoice_submit',
+			url: './einvoice/table',
+			idno:seldata.idno,
 		}
-		$.post( "./einvoice/form",param, function( data ){
+		$.get( param.url+"?"+$.param(param), function( data ) {
+			
 		}).fail(function(data) {
-			myfail_msg.add_fail({
+			myfail_msg_verify.add_fail({
 				id:'response',
 				textfld:"",
 				msg:data.responseText,
 			});
-    		$('#login_submit').prop('disabled',false);
-			//////////////////errorText(dialog,data.responseText);
-		}).done(function(data){
-    		$('#login_submit').prop('disabled',false);
-    		var param={
-    			idno_array: idno_array
-    		}
+			$('#submit_einvoice').attr('disabled',false);
+		}).success(function(data) {
 
-			window.open('./einvoice/table?action=show_result&'+$.param(param), '_blank');
-        	$('#dialog_user_login').dialog('close')
+			window.open('./ordcom/table?action=einvoice_show&idno='+seldata.idno, '_blank');
+			$('#submit_einvoice').attr('disabled',false);
+			$("#dialog_verifytin").dialog('close');
 		});
 	});
 

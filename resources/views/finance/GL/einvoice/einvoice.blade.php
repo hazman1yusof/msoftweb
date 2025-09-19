@@ -51,6 +51,12 @@ i.fa {
 					  <div class="col-md-5">
 					  		<label class="control-label"></label>  
 							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+						
+							<div id="actdate_text" class="form-inline" style="display:none">
+								FROM DATE <input id="actdate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
+								TO <input id="actdate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
+								<button type="button" class="btn btn-primary btn-sm" id="actdate_search">SEARCH</button>
+							</div>
 						</div>
 
 						<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
@@ -60,9 +66,9 @@ i.fa {
 				</div>
 
 				<div class="col-md-2" id="unitsearch">
-            <label class="control-label" for="trandept">Unit</label> 
+            <label class="control-label" for="unit">Unit</label> 
             <select id='unit' class="form-control input-sm">
-                <option value="All">ALL</option>
+                <option value="ALL">ALL</option>
                 <option value="IMP" selected>IMP</option>
                 <option value="W'HOUSE">W'HOUSE</option>
                 <option value="KHEALTH">KHEALTH</option>
@@ -72,8 +78,11 @@ i.fa {
 		</form>
         <div class="panel panel-default">
 		    <div class="panel-heading" style="position:relative;">Reprint Bill
-					<a class='pull-right pointer text-primary' style="padding-left: 30px" id='reprint__summbill'>
-				    Invoice
+					<a class='pull-right pointer text-primary' style="padding-left: 30px" id='printinvoice'>
+				    Print Invoice
+					</a>
+					<a class='pull-right pointer text-primary' style="padding-left: 30px" id='verifytin'>
+				    Verify TIN
 					</a>
 					<a class='pull-right btn btn-sm btn-primary'  id='btn_open_dialog_login' style="
 						position: absolute;
@@ -114,21 +123,52 @@ i.fa {
 			</div>	
 		</div> 
 
-		<div id="dialog_user_login" title="E-invoice Authorisation" >
-			<div class="panel-body" style="position: relative;">
-				<div id="fail_msg" style="color: darkred;"></div>
-				<div class="col-md-12">
-				  	<label class="control-label" for="username_login">Username</label>  
-						<input id="username_login" name="username_login" type="text" class="form-control input-sm text-uppercase" autocomplete="off">
+		<div id="dialog_verifytin" title="Verify TIN" data-submit_einvoice='false'>
+			<div class="panel-body" style="position: relative;padding:0px;">
+				<div id="fail_msg_verifytin" style="color: darkred;"></div>
+				<div class="col-md-4" style="padding-top:5px">
+				  	<label class="control-label" for="mrn">MRN</label>  
+						<input id="mrn" name="mrn" type="text" class="form-control input-sm text-uppercase" autocomplete="off" readonly>
 				</div>
-				<div class="col-md-12">
-				  	<label class="control-label" for="password_login">Password</label>  
-						<input id="password_login" name="password_login" type="password" class="form-control input-sm text-uppercase" autocomplete="off">
+				<div class="col-md-6" style="padding-top:5px">
+				  	<label class="control-label" for="newic">Newic</label>  
+						<input id="newic" name="newic" type="text" class="form-control input-sm text-uppercase" autocomplete="off">
 				</div>
-				<div class="col-md-3">
-					<button class="btn btn-primary pull-right" id="login_submit" style="margin-top: 10px;">Submit</button>
+				<div class="col-md-10" style="padding-top:5px">
+				  	<label class="control-label" for="dbname">Name</label>  
+						<input id="dbname" name="dbname" type="text" class="form-control input-sm text-uppercase" autocomplete="off" readonly>
+				</div>
+				<div class="col-md-10" style="padding-top:5px">
+				  	<label class="control-label" for="tinid">Tin ID</label>  
+						<div class='input-group'>
+							<input id="tinid" name="tinid" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="">
+							<a class='input-group-addon btn btn-primary' id="check_verifytin">Verify TIN</a>
+						</div>
+				</div>
+				<div class="col-md-12" style="padding-top:5px">
+					<button class="btn btn-primary pull-right" id="save_verifytin" style="margin-top: 10px;">Save</button>
+					<button class="btn btn-primary pull-right" id="submit_einvoice" style="margin-top: 10px;">Submit E-invoice</button>
 				</div>
 			</div>
+		</div>
+
+		<div id="dialog_user_login" title="E-invoice Authorisation" >
+			<form autocomplete="off" id="formdata_login">
+			<div class="panel-body" style="position: relative;padding:0px;">
+				<div id="fail_msg" style="color: darkred;"></div>
+				<div class="col-md-12" style="padding-top:5px">
+				  	<label class="control-label" for="username_login">Username</label>  
+						<input id="username_login" name="username_login" type="text" class="form-control input-sm text-uppercase" autocomplete="off" data-validation="required">
+				</div>
+				<div class="col-md-12" style="padding-top:5px">
+				  	<label class="control-label" for="password_login">Password</label>  
+						<input id="password_login" name="password_login" type="password" class="form-control input-sm text-uppercase" autocomplete="off" data-validation="required">
+				</div>
+				<div class="col-md-12" style="padding-top:5px">
+					<button class="btn btn-primary pull-right" id="login_submit">Submit</button>
+				</div>
+			</div>
+			</form>
 		</div>
 
    </div>
