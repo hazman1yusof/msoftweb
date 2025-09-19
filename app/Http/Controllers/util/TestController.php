@@ -70,8 +70,8 @@ class TestController extends defaultController
                 return $this->betulkan_uom_billsum($request);
             case 'compare_stockbalance_report_vs_pnl':
                 return $this->compare_stockbalance_report_vs_pnl($request);
-            // case 'check_product_qtyonhand_sama_dgn_stockloc_qtyonhand':
-            //     return $this->check_product_qtyonhand_sama_dgn_stockloc_qtyonhand($request);
+            case 'newic_pm_ke_dm':
+                return $this->newic_pm_ke_dm($request);
             // case 'betulkan_stockexp_semua_chk':
             //     return $this->betulkan_stockexp_semua_chk($request);
             case 'betulkan_stockexp_semua':
@@ -8100,6 +8100,24 @@ class TestController extends defaultController
                 dump($array_obj['itemcode'].' - gl_amount: '.$array_obj['gl_amount'].' - closebal_calc: '.$close_balval);
             }
 
+        }
+    }
+
+    public function newic_pm_ke_dm(Request $request){
+        $pm = DB::table('hisdb.pat_mast')
+                ->where('compcode',session('compcode'))
+                ->get();
+
+        foreach ($pm as $value) {
+            if(!empty($value->newmrn)){
+                dump($value->newic);
+                DB::table('debtor.debtormast')
+                    ->where('compcode',session('compcode'))
+                    ->where('debtorcode',$value->newmrn)
+                    ->update([
+                        'newic' => $value->newic
+                    ]);
+            }
         }
     }
 

@@ -213,7 +213,7 @@
 			</div>
 
 			<div class="form-group">
-				<label class="col-md-2 control-label" for="newic">New i/C</label>
+				<label class="col-md-2 control-label" for="newic">New I/C</label>
 				<div class="col-md-3">
 					<input id="newic" name="newic" type="text" class="form-control input-sm">
 				</div>
@@ -323,5 +323,5 @@
 			}
 		});
 	</script>
-	<script src="js/finance/AR/debtorMaster/debtorMaster.js?v=1.2"></script>
+	<script src="js/finance/AR/debtorMaster/debtorMaster.js?v=1.3"></script>
 @endsection
