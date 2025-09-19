@@ -79,7 +79,7 @@ return [
 
         'ftp_uploads' => [
             'driver' => 'local',
-            'root'   => public_path() . '/uploads/ftp',
+            'root'   => env('ATTACHMENT_PATH'). '/uploads/ftp',
         ],
 
         'ptcare_uploads' => [
