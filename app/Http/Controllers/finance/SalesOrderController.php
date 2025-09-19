@@ -3500,6 +3500,13 @@ class SalesOrderController extends defaultController
                         'PatClass' => 'HIS',
                         'computerid' => session('computerid'),
                     ]);
+
+                DB::table('debtor.debtormast')
+                    ->where('compcode',session('compcode'))
+                    ->where('debtorcode',$request->np_newmrn)
+                    ->update([
+                        'newic' => $request->np_newic
+                    ]);
             }else if($request->oper_ == 'edit'){
                 $pat_mast = DB::table('hisdb.pat_mast')
                             ->where('idno','!=',$request->np_idno)
@@ -3535,6 +3542,13 @@ class SalesOrderController extends defaultController
                         'NewMrn' => strtoupper($request->np_newmrn),
                         'PatClass' => 'HIS',
                         'computerid' => session('computerid'),
+                    ]);
+            
+                DB::table('debtor.debtormast')
+                    ->where('compcode',session('compcode'))
+                    ->where('debtorcode',$request->np_newmrn)
+                    ->update([
+                        'newic' => $request->np_newic
                     ]);
             }
 

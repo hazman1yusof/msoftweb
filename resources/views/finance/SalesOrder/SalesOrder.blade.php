@@ -906,7 +906,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="np_address2">Address 2</label>	 
 						<div class="col-md-10">
-								<input id="np_address2" name="np_address2" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+								<input id="np_address2" name="np_address2" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 						</div>
 					</div>
 					<div class="form-group">
@@ -918,7 +918,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="np_postcode">Postcode</label>	 
 						<div class="col-md-4">
-								<input id="np_postcode" name="np_postcode" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+								<input id="np_postcode" name="np_postcode" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 						</div>
 						<label class="col-md-2 control-label" for="np_postcode">I/C</label>	 
 						<div class="col-md-4">
@@ -961,7 +961,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="nc_address2">Address 2</label>	 
 						<div class="col-md-10">
-								<input id="nc_address2" name="nc_address2" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+								<input id="nc_address2" name="nc_address2" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 						</div>
 					</div>
 					<div class="form-group">
@@ -973,7 +973,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="nc_postcode">Postcode</label>	 
 						<div class="col-md-4">
-								<input id="nc_postcode" name="nc_postcode" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+								<input id="nc_postcode" name="nc_postcode" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 						</div>
 					</div>
 				</form>
