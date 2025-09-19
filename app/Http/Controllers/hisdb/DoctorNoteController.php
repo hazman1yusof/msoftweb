@@ -169,7 +169,7 @@ class DoctorNoteController extends defaultController
                     default:
                         return 'error happen..';
                 }
-
+            
             case 'save_preContrast':
                 switch($request->oper){
                     case 'add':
@@ -179,7 +179,7 @@ class DoctorNoteController extends defaultController
                     default:
                         return 'error happen..';
                 }
-
+            
             case 'save_consentForm':
                 switch($request->oper){
                     case 'add':
@@ -2538,6 +2538,7 @@ class DoctorNoteController extends defaultController
                         'tr_respiphysio' => $request->tr_respiphysio,
                         'tr_neuro' => $request->tr_neuro,
                         'tr_splint' => $request->tr_splint,
+                        'tr_speech' => $request->tr_speech,
                         'remarks' => $request->remarks,
                         'doctorname' => strtoupper($request->phy_doctorname),
                         'upduser'  => strtoupper($request->phy_lastuser),
@@ -2561,6 +2562,7 @@ class DoctorNoteController extends defaultController
                         'tr_respiphysio' => $request->tr_respiphysio,
                         'tr_neuro' => $request->tr_neuro,
                         'tr_splint' => $request->tr_splint,
+                        'tr_speech' => $request->tr_speech,
                         'remarks' => $request->remarks,
                         'doctorname' => strtoupper($request->phy_doctorname),
                         'adduser'  => strtoupper($request->phy_lastuser),
@@ -2616,6 +2618,7 @@ class DoctorNoteController extends defaultController
                         'tr_respiphysio' => $request->tr_respiphysio,
                         'tr_neuro' => $request->tr_neuro,
                         'tr_splint' => $request->tr_splint,
+                        'tr_speech' => $request->tr_speech,
                         'remarks' => $request->remarks,
                         'doctorname' => strtoupper($request->phy_doctorname),
                         'upduser'  => strtoupper($request->phy_lastuser),
@@ -2639,6 +2642,7 @@ class DoctorNoteController extends defaultController
                         'tr_respiphysio' => $request->tr_respiphysio,
                         'tr_neuro' => $request->tr_neuro,
                         'tr_splint' => $request->tr_splint,
+                        'tr_speech' => $request->tr_speech,
                         'remarks' => $request->remarks,
                         'doctorname' => strtoupper($request->phy_doctorname),
                         'adduser'  => strtoupper($request->phy_lastuser),
@@ -2681,7 +2685,7 @@ class DoctorNoteController extends defaultController
     public function get_table_physio(Request $request){
         
         $pat_physio_obj = DB::table('hisdb.pat_physio')
-                        ->select('compcode','mrn','episno','req_date','clinic_diag','findings','treatment as phy_treatment','tr_physio','tr_occuptherapy','tr_respiphysio','tr_neuro','tr_splint','remarks','doctorname as phy_doctorname','adduser','adddate','upduser','upddate','lastuser as phy_lastuser','lastupdate','computerid')
+                        ->select('compcode','mrn','episno','req_date','clinic_diag','findings','treatment as phy_treatment','tr_physio','tr_occuptherapy','tr_respiphysio','tr_neuro','tr_splint','tr_speech','remarks','doctorname as phy_doctorname','adduser','adddate','upduser','upddate','lastuser as phy_lastuser','lastupdate','computerid')
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno);
@@ -3549,7 +3553,7 @@ class DoctorNoteController extends defaultController
         }
         
         $pat_physio = DB::table('hisdb.pat_physio as p')
-                    ->select('p.idno','p.compcode','p.mrn','p.episno','p.req_date','p.clinic_diag','p.findings','p.treatment','p.tr_physio','p.tr_occuptherapy','p.tr_respiphysio','p.tr_neuro','p.tr_splint','p.remarks','p.doctorname','p.adduser','p.adddate','p.upduser','p.upddate','p.lastuser','p.lastupdate','p.computerid','pm.Name','pm.Address1','pm.Address2','pm.Address3','pm.Postcode','pm.telhp','pm.Newic','pm.Sex','ep.reg_date','b.ward as EpWard')
+                    ->select('p.idno','p.compcode','p.mrn','p.episno','p.req_date','p.clinic_diag','p.findings','p.treatment','p.tr_physio','p.tr_occuptherapy','p.tr_respiphysio','p.tr_neuro','p.tr_splint','p.tr_speech','p.remarks','p.doctorname','p.adduser','p.adddate','p.upduser','p.upddate','p.lastuser','p.lastupdate','p.computerid','pm.Name','pm.Address1','pm.Address2','pm.Address3','pm.Postcode','pm.telhp','pm.Newic','pm.Sex','ep.reg_date','b.ward as EpWard')
                     ->leftjoin('hisdb.pat_mast as pm', function ($join){
                         $join = $join->on('pm.MRN','=','p.mrn');
                         $join = $join->on('pm.Episno','=','p.episno');

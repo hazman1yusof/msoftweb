@@ -501,7 +501,7 @@
                         <ul class="nav nav-tabs" id="jqGridDoctorNote_panel_tabs">
                             <li class="active"><a data-toggle="tab" id="navtab_otbook" href="#tab-otbook" aria-expanded="true" data-type='OTBOOK'>Ward / OT</a></li>
                             <li><a data-toggle="tab" id="navtab_rad" href="#tab-rad_dn" data-type='RAD'>Radiology</a></li>
-                            <li><a data-toggle="tab" id="navtab_physio" href="#tab-physio" data-type='PHYSIO'>Physiotherapy</a></li>
+                            <li><a data-toggle="tab" id="navtab_physio" href="#tab-physio" data-type='PHYSIO'>Rehab</a></li>
                             <li><a data-toggle="tab" id="navtab_dressing" href="#tab-dressing" data-type='DRESSING'>Dressing</a></li>
                         </ul>
                         <div class="tab-content" style="padding: 10px 5px;">
@@ -1276,10 +1276,14 @@
                                                                 </div>
                                                             </div>
                                                             
-                                                            <div class="form-group">
+                                                            <div class="form-group" id='Req_treatment'>
                                                                 <label class="col-md-3 control-label" for="phy_treatment">Treatment</label>
                                                                 <div class="col-md-6">
                                                                     <!-- <textarea id="phy_treatment" name="phy_treatment" type="text" class="form-control input-sm"></textarea> -->
+                                                                    
+                                                                    <div class="col-md-12" style="padding-top: 20px; text-align: left; color: red;">
+                                                                        <p id="p_error_ReqTreatment"></p>
+                                                                    </div>
                                                                     
                                                                     <div class="form-check">
                                                                         <input class="form-check-input" type="checkbox" name="tr_physio" id="tr_physio" value="1">
@@ -1304,6 +1308,11 @@
                                                                     <div class="form-check">
                                                                         <input class="form-check-input" type="checkbox" name="tr_splint" id="tr_splint" value="1">
                                                                         <label class="form-check-label" for="tr_splint">Splinting</label>
+                                                                    </div>
+                                                                    
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox" name="tr_speech" id="tr_speech" value="1">
+                                                                        <label class="form-check-label" for="tr_speech">Speech</label>
                                                                     </div>
                                                                 </div>
                                                             </div>

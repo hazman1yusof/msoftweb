@@ -14,7 +14,7 @@
         <div class="ui top attached tabular menu">
             <a class="item active" data-tab="otbookReqFor" id="navtab_otbookReqFor">Ward / OT</a>
             <a class="item" data-tab="radReqFor" id="navtab_radReqFor">Radiology</a>
-            <a class="item" data-tab="physioReqFor" id="navtab_physioReqFor">Physiotherapy</a>
+            <a class="item" data-tab="physioReqFor" id="navtab_physioReqFor">Rehab</a>
             <a class="item" data-tab="dressingReqFor" id="navtab_dressingReqFor">Dressing</a>
         </div>
         
@@ -203,7 +203,6 @@
                 <a class="item" data-tab="mriReqFor" id="navtab_mriReqFor">Checklist MRI</a>
                 <a class="item" data-tab="preContrastReqFor" id="navtab_preContrastReqFor">Pre-Contrast Questionnaire</a>
                 <a class="item" data-tab="consentReqFor" id="navtab_consentReqFor">Consent Form</a>
-
             </div>
             
             <div class="ui bottom attached tab raised segment active" data-tab="radClinicReqFor">
@@ -899,11 +898,11 @@
                     </div>
                 </div>
             </div>
-
+            
             <div class="ui bottom attached tab raised segment" data-tab="preContrastReqFor">
                 @include('patientcare.preContrastReqFor')
             </div>
-
+            
             <div class="ui bottom attached tab raised segment" data-tab="consentReqFor">
                 @include('patientcare.consentFormReqFor')
             </div>
@@ -973,7 +972,11 @@
                                 <div class="thirteen wide column" style="padding: 14px 14px 0px 30px;">
                                     <div class="field eight wide column">
                                         <!-- <textarea id="phyReqFor_treatment" name="phy_treatment" type="text" rows="5"></textarea> -->
-                                        <div class="ui form">
+                                        <div class="ui form" id='ReqFor_treatment'>
+                                            <div class="field" style="padding-top: 20px; text-align: left; color: red;">
+                                                <p id="p_error_ReqForTreatment"></p>
+                                            </div>
+                                            
                                             <div class="grouped fields">
                                                 <div class="field">
                                                     <div class="ui checkbox">
@@ -1003,6 +1006,12 @@
                                                     <div class="ui checkbox">
                                                         <input type="checkbox" name="tr_splint" id="ReqFor_tr_splint" value="1">
                                                         <label for="ReqFor_tr_splint">Splinting</label>
+                                                    </div>
+                                                </div>
+                                                <div class="field">
+                                                    <div class="ui checkbox">
+                                                        <input type="checkbox" name="tr_speech" id="ReqFor_tr_speech" value="1">
+                                                        <label for="ReqFor_tr_speech">Speech</label>
                                                     </div>
                                                 </div>
                                             </div>

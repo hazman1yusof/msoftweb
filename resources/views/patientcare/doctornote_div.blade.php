@@ -418,7 +418,7 @@
                 <div class="ui top attached tabular menu">
                     <a class="item active" data-tab="otbook">Ward / OT</a>
                     <a class="item" data-tab="rad">Radiology</a>
-                    <a class="item" data-tab="physio">Physiotherapy</a>
+                    <a class="item" data-tab="physio">Rehab</a>
                     <a class="item" data-tab="dressing">Dressing</a>
                 </div>
                 
@@ -1287,11 +1287,11 @@
                             </div>
                         </div>
                     </div>
-
+                    
                     <div class="ui bottom attached tab raised segment" data-tab="preContrast">
                         @include('patientcare.preContrast')
                     </div>
-
+                    
                     <div class="ui bottom attached tab raised segment" data-tab="consent">
                         @include('patientcare.consentForm')
                     </div>
@@ -1361,7 +1361,11 @@
                                         <div class="thirteen wide column" style="padding: 14px 14px 0px 30px;">
                                             <div class="field eight wide column">
                                                 <!-- <textarea id="phy_treatment" name="phy_treatment" type="text" rows="5"></textarea> -->
-                                                <div class="ui form">
+                                                <div class="ui form" id='Req_treatment'>
+                                                    <div class="field" style="padding-top: 20px; text-align: left; color: red;">
+                                                        <p id="p_error_ReqTreatment"></p>
+                                                    </div>
+                                                    
                                                     <div class="grouped fields">
                                                         <div class="field">
                                                             <div class="ui checkbox">
@@ -1391,6 +1395,12 @@
                                                             <div class="ui checkbox">
                                                                 <input type="checkbox" name="tr_splint" id="tr_splint" value="1">
                                                                 <label for="tr_splint">Splinting</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="field">
+                                                            <div class="ui checkbox">
+                                                                <input type="checkbox" name="tr_speech" id="tr_speech" value="1">
+                                                                <label for="tr_speech">Speech</label>
                                                             </div>
                                                         </div>
                                                     </div>
