@@ -80,6 +80,7 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
                                     ->where('dt.compcode', '=', session('compcode'));
                     })
                     ->where('dh.compcode','=',session('compcode'))
+                    ->where('dh.recstatus','POSTED')
                     ->whereIn('dh.trantype',['RD','RC'])
                     ->groupBy('dh.entrydate')
                     ->whereBetween('dh.entrydate', [$datefr, $dateto])
@@ -104,6 +105,7 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
                                         ->where('dt.compcode', '=', session('compcode'));
                         })
                         ->where('dh.compcode','=',session('compcode'))
+                        ->where('dh.recstatus','POSTED')
                         ->where('dh.trantype', '=','RF')
                         ->groupBy('dh.entrydate')
                         ->whereBetween('dh.entrydate', [$datefr, $dateto])
