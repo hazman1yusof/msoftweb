@@ -158,18 +158,27 @@ $(document).ready(function (){
     });
     
     $("#save_physioReqFor").click(function (){
-        disableForm('#formPhysioReqFor');
-        if($('#formPhysioReqFor').isValid({requiredFields: ''}, conf, true)){
-            saveForm_physioReqFor(function (data){
-                // emptyFormdata_div("#formPhysioReqFor",['#mrn_requestFor','#episno_requestFor']);
-                // disableForm('#formPhysioReqFor');
-                $('#cancel_physioReqFor').data('oper','edit');
-                $("#cancel_physioReqFor").click();
-                populate_physioReqFor_getdata();
-            });
+        checked = $("#ReqFor_treatment input[type=checkbox]:checked").length;
+        
+        if(!checked){
+            $('#p_error_ReqForTreatment').text("You must check at least one checkbox.");
+            // alert("You must check at least one checkbox.");
+            // return false;
         }else{
-            enableForm('#formPhysioReqFor');
-            rdonly('#formPhysioReqFor');
+            disableForm('#formPhysioReqFor');
+            if($('#formPhysioReqFor').isValid({requiredFields: ''}, conf, true)){
+                saveForm_physioReqFor(function (data){
+                    // emptyFormdata_div("#formPhysioReqFor",['#mrn_requestFor','#episno_requestFor']);
+                    // disableForm('#formPhysioReqFor');
+                    $('#cancel_physioReqFor').data('oper','edit');
+                    $("#cancel_physioReqFor").click();
+                    populate_physioReqFor_getdata();
+                    $('#p_error_ReqForTreatment').text("");
+                });
+            }else{
+                enableForm('#formPhysioReqFor');
+                rdonly('#formPhysioReqFor');
+            }
         }
     });
     
@@ -177,6 +186,7 @@ $(document).ready(function (){
         // emptyFormdata_div("#formPhysioReqFor",['#mrn_requestFor','#episno_requestFor']);
         disableForm('#formPhysioReqFor');
         button_state_physioReqFor($(this).data('oper'));
+        $('#p_error_ReqForTreatment').text("");
     });
     /////////////////////////////////////////////physio ends/////////////////////////////////////////////
     
@@ -219,7 +229,7 @@ $(document).ready(function (){
         button_state_dressingReqFor($(this).data('oper'));
     });
     ////////////////////////////////////////////dressing ends////////////////////////////////////////////
-
+    
     ///////////////////////////////////////////preContrast starts///////////////////////////////////////////
     disableForm('#formPreContrastReqFor');
     
@@ -259,7 +269,7 @@ $(document).ready(function (){
         button_state_preContrastReqFor($(this).data('oper'));
     });
     ////////////////////////////////////////////preContrast ends////////////////////////////////////////////
-
+    
     ///////////////////////////////////////////consentForm starts///////////////////////////////////////////
     disableForm('#formConsentFormReqFor');
     
@@ -939,6 +949,7 @@ function populate_physioReqFor_getdata(){
         }
         
         // $("#phyReqFor_doctorname").val($('#doctorname_requestFor').val());
+        $('#p_error_ReqForTreatment').text("");
         textarea_init_physioReqFor();
     });
 }
@@ -1037,6 +1048,7 @@ function populate_consentFormReqFor_getdata(){
         }else{
             button_state_consentFormReqFor('add');
         }
+        
         $("#patientName").val($('#ptname_requestFor').val());
         textarea_init_consentFormReqFor();
     });
@@ -1442,14 +1454,14 @@ $('#jqGridRequestFor_panel').on('shown.bs.collapse', function (){
     let curtype = $(this).data('curtype');
     $('#jqGridRequestFor_panel_tabs.nav-tabs a#'+curtype).tab('show');
     
+    $(this).find('.nav a:first').tab('show');
     populate_otbookReqFor_getdata();
-    populate_radClinicReqFor_getdata();
-    
-    populate_physioReqFor_getdata();
-    populate_dressingReqFor_getdata();
-    populate_mriReqFor_getdata();
-    populate_preContrastReqFor_getdata();
-    populate_consentFormReqFor_getdata();
+    // populate_radClinicReqFor_getdata();
+    // populate_mriReqFor_getdata();
+    // populate_physioReqFor_getdata();
+    // populate_dressingReqFor_getdata();
+    // populate_preContrastReqFor_getdata();
+    // populate_consentFormReqFor_getdata();
 });
 
 $('#jqGridRequestFor_panel_tabs.nav-tabs a').on('shown.bs.tab', function (e){
@@ -1487,11 +1499,9 @@ $('#jqGridRequestFor_rad_tabs.nav-tabs a').on('shown.bs.tab', function (e){
             break;
         case 'PRECONTRAST_REQFOR':
             populate_preContrastReqFor_getdata();
-            // textarea_init_dressingReqFor();
             break;
         case 'CONSENT_REQFOR':
             populate_consentFormReqFor_getdata();
-            // textarea_init_dressingReqFor();
             break;
     }
 });
@@ -1652,6 +1662,7 @@ function toggle_reqfor_reqtype(){
         }
     }
 }
+
 // function calc_jq_height_onchange(jqgrid){
 //     let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
 //     if(scrollHeight < 50){

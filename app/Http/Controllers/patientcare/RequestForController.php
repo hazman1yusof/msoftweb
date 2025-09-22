@@ -113,7 +113,7 @@ class RequestForController extends defaultController
                     default:
                         return 'error happen..';
                 }
-
+            
             case 'save_consentForm':
                 switch($request->oper){
                     case 'add':
@@ -123,6 +123,7 @@ class RequestForController extends defaultController
                     default:
                         return 'error happen..';
                 }
+            
             default:
                 return 'error happen..';
         }
@@ -1446,6 +1447,7 @@ class RequestForController extends defaultController
                         'tr_respiphysio' => $request->tr_respiphysio,
                         'tr_neuro' => $request->tr_neuro,
                         'tr_splint' => $request->tr_splint,
+                        'tr_speech' => $request->tr_speech,
                         'remarks' => $request->remarks,
                         'doctorname' => strtoupper($request->phy_doctorname),
                         'upduser'  => strtoupper($request->phy_lastuser),
@@ -1469,6 +1471,7 @@ class RequestForController extends defaultController
                         'tr_respiphysio' => $request->tr_respiphysio,
                         'tr_neuro' => $request->tr_neuro,
                         'tr_splint' => $request->tr_splint,
+                        'tr_speech' => $request->tr_speech,
                         'remarks' => $request->remarks,
                         'doctorname' => strtoupper($request->phy_doctorname),
                         'adduser'  => strtoupper($request->phy_lastuser),
@@ -1524,6 +1527,7 @@ class RequestForController extends defaultController
                         'tr_respiphysio' => $request->tr_respiphysio,
                         'tr_neuro' => $request->tr_neuro,
                         'tr_splint' => $request->tr_splint,
+                        'tr_speech' => $request->tr_speech,
                         'remarks' => $request->remarks,
                         'doctorname' => strtoupper($request->phy_doctorname),
                         'upduser'  => strtoupper($request->phy_lastuser),
@@ -1547,6 +1551,7 @@ class RequestForController extends defaultController
                         'tr_respiphysio' => $request->tr_respiphysio,
                         'tr_neuro' => $request->tr_neuro,
                         'tr_splint' => $request->tr_splint,
+                        'tr_speech' => $request->tr_speech,
                         'remarks' => $request->remarks,
                         'doctorname' => strtoupper($request->phy_doctorname),
                         'adduser'  => strtoupper($request->phy_lastuser),
@@ -1589,7 +1594,7 @@ class RequestForController extends defaultController
     public function get_table_physio(Request $request){
         
         $pat_physio_obj = DB::table('hisdb.pat_physio')
-                        ->select('compcode','mrn','episno','req_date','clinic_diag','findings','treatment as phy_treatment','tr_physio','tr_occuptherapy','tr_respiphysio','tr_neuro','tr_splint','remarks','doctorname as phy_doctorname','adduser','adddate','upduser','upddate','lastuser as phy_lastuser','lastupdate','computerid')
+                        ->select('compcode','mrn','episno','req_date','clinic_diag','findings','treatment as phy_treatment','tr_physio','tr_occuptherapy','tr_respiphysio','tr_neuro','tr_splint','tr_speech','remarks','doctorname as phy_doctorname','adduser','adddate','upduser','upddate','lastuser as phy_lastuser','lastupdate','computerid')
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno);

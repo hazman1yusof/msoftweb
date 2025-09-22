@@ -138,6 +138,11 @@
                                             @else
                                                 { text: '[  ] SPLINTING\n', bold: true },
                                             @endif
+                                            @if($pat_physio->tr_speech == '1')
+                                                { text: '[√] SPEECH\n', bold: true },
+                                            @else
+                                                { text: '[  ] SPEECH\n', bold: true },
+                                            @endif
                                         ], rowSpan: 2, alignment: 'left'
                                     }
                                 ],

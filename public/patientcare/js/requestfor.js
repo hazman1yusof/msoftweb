@@ -165,18 +165,27 @@ $(document).ready(function (){
     });
     
     $("#save_physioReqFor").click(function (){
-        disableForm('#formPhysioReqFor');
-        if($('#formPhysioReqFor').isValid({requiredFields: ''}, conf, true)){
-            saveForm_physioReqFor(function (data){
-                // emptyFormdata_div("#formPhysioReqFor",['#mrn_requestFor','#episno_requestFor']);
-                // disableForm('#formPhysioReqFor');
-                $('#cancel_physioReqFor').data('oper','edit');
-                $("#cancel_physioReqFor").click();
-                populate_physioReqFor_getdata();
-            });
+        checked = $("#ReqFor_treatment input[type=checkbox]:checked").length;
+        
+        if(!checked){
+            $('#p_error_ReqForTreatment').text("You must check at least one checkbox.");
+            // alert("You must check at least one checkbox.");
+            // return false;
         }else{
-            enableForm('#formPhysioReqFor');
-            rdonly('#formPhysioReqFor');
+            disableForm('#formPhysioReqFor');
+            if($('#formPhysioReqFor').isValid({requiredFields: ''}, conf, true)){
+                saveForm_physioReqFor(function (data){
+                    // emptyFormdata_div("#formPhysioReqFor",['#mrn_requestFor','#episno_requestFor']);
+                    // disableForm('#formPhysioReqFor');
+                    $('#cancel_physioReqFor').data('oper','edit');
+                    $("#cancel_physioReqFor").click();
+                    populate_physioReqFor_getdata();
+                    $('#p_error_ReqForTreatment').text("");
+                });
+            }else{
+                enableForm('#formPhysioReqFor');
+                rdonly('#formPhysioReqFor');
+            }
         }
     });
     
@@ -184,6 +193,7 @@ $(document).ready(function (){
         // emptyFormdata_div("#formPhysioReqFor",['#mrn_requestFor','#episno_requestFor']);
         disableForm('#formPhysioReqFor');
         button_state_physioReqFor($(this).data('oper'));
+        $('#p_error_ReqForTreatment').text("");
     });
     /////////////////////////////////////////////physio ends/////////////////////////////////////////////
     
@@ -226,7 +236,7 @@ $(document).ready(function (){
         button_state_dressingReqFor($(this).data('oper'));
     });
     ////////////////////////////////////////////dressing ends////////////////////////////////////////////
-
+    
     ///////////////////////////////////////////preContrast starts///////////////////////////////////////////
     disableForm('#formPreContrastReqFor');
     
@@ -266,7 +276,7 @@ $(document).ready(function (){
         button_state_preContrastReqFor($(this).data('oper'));
     });
     ////////////////////////////////////////////preContrast ends////////////////////////////////////////////
-
+    
     ///////////////////////////////////////////consentForm starts///////////////////////////////////////////
     disableForm('#formConsentFormReqFor');
     
@@ -381,57 +391,57 @@ $(document).ready(function (){
         }
     }});
     
-    var accomodation_table = $('#accomodation_table').DataTable( {
-            "ajax": "pat_mast/get_entry?action=accomodation_table",
-            "paging":false,
-            "columns": [
-                {'data': 'desc_bt'},
-                {'data': 'bednum'},
-                {'data': 'desc_d'},
-                {'data': 'room'},
-                {'data': 'occup'},
-                {'data': 'bedtype'},
-                {'data': 'ward'},
-            ],
-            order: [[5, 'asc'],[6, 'asc']],
-            columnDefs: [ {
-                targets: [0,5,6],
-                visible: false
-            } ],
-            rowGroup: {
-                dataSrc: [ "desc_bt" ],
-                startRender: function ( rows, group ) {
-                    return group + `<i class="arrow fa fa-angle-double-down"></i>`;
-                }
-            },
-            "createdRow": function( row, data, dataIndex ) {
-                $(row).addClass( data['desc_bt'] );
-                if(data.occup != 'VACANT'){
-                    $(row).addClass('disabled red');
-                }
-            },
-            "initComplete": function(settings, json) {
-                let opt_bt = opt_ward = "";
-
-                $('input[type="radio"][name="search_bed"]').on('click',function(){
-                    let seltype = $(this).data('seltype');
-                    if(seltype == 'bt'){
-                        $("#search_bed_select_bed_dept").show();
-                        $("#search_bed_select_ward").hide();
-                    }else{
-                        $("#search_bed_select_bed_dept").hide();
-                        $("#search_bed_select_ward").show();
-                    }
-                });
-
-                $("select[name='search_bed_select']").on('change',function(){
-                    // accomodation_table.columns( $(this).data('dtbid') ).search( this.value ).draw();
-                    accomodation_table.search( this.value ).draw();
-                });
+    var accomodation_table = $('#accomodation_table').DataTable({
+        "ajax": "pat_mast/get_entry?action=accomodation_table",
+        "paging": false,
+        "columns": [
+            {'data': 'desc_bt'},
+            {'data': 'bednum'},
+            {'data': 'desc_d'},
+            {'data': 'room'},
+            {'data': 'occup'},
+            {'data': 'bedtype'},
+            {'data': 'ward'},
+        ],
+        order: [[5, 'asc'],[6, 'asc']],
+        columnDefs: [{
+            targets: [0,5,6],
+            visible: false
+        }],
+        rowGroup: {
+            dataSrc: ["desc_bt"],
+            startRender: function (rows, group){
+                return group + `<i class="arrow fa fa-angle-double-down"></i>`;
             }
-        } );
-
-    $('#accomodation_table tbody').on('click', 'tr', function () {
+        },
+        "createdRow": function (row, data, dataIndex){
+            $(row).addClass(data['desc_bt']);
+            if(data.occup != 'VACANT'){
+                $(row).addClass('disabled red');
+            }
+        },
+        "initComplete": function (settings, json){
+            let opt_bt = opt_ward = "";
+            
+            $('input[type="radio"][name="search_bed"]').on('click', function (){
+                let seltype = $(this).data('seltype');
+                if(seltype == 'bt'){
+                    $("#search_bed_select_bed_dept").show();
+                    $("#search_bed_select_ward").hide();
+                }else{
+                    $("#search_bed_select_bed_dept").hide();
+                    $("#search_bed_select_ward").show();
+                }
+            });
+            
+            $("select[name='search_bed_select']").on('change', function (){
+                // accomodation_table.columns($(this).data('dtbid')).search(this.value).draw();
+                accomodation_table.search(this.value).draw();
+            });
+        }
+    });
+    
+    $('#accomodation_table tbody').on('click', 'tr', function (){
         let rowdata = accomodation_table.row(this).data();
         $('#ReqFor_bed').val(rowdata.bednum);
         $('#ReqFor_ward').val(rowdata.ward);
@@ -1038,6 +1048,7 @@ function populate_physioReqFor_getdata(){
         }
         
         // $("#phyReqFor_doctorname").val($('#doctorname_requestFor').val());
+        $('#p_error_ReqForTreatment').text("");
         // textarea_init_physioReqFor();
     });
 }
@@ -1089,7 +1100,7 @@ function populate_preContrastReqFor_getdata(){
     };
     
     $.get("./ptcare_requestfor/table?"+$.param(saveParam), $.param(postobj), function (data){
-
+        
     },'json').done(function (data){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formPreContrastReqFor",data.pat_preContrast);
@@ -1100,7 +1111,6 @@ function populate_preContrastReqFor_getdata(){
         }
         
         textarea_init_preContrastReqFor();
-
     });
 }
 
@@ -1119,7 +1129,7 @@ function populate_consentFormReqFor_getdata(){
     };
     
     $.get("./ptcare_requestfor/table?"+$.param(saveParam), $.param(postobj), function (data){
-
+        
     },'json').done(function (data){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formConsentFormReqFor",data.pat_consentForm);
@@ -1128,9 +1138,9 @@ function populate_consentFormReqFor_getdata(){
         }else{
             button_state_consentFormReqFor('add');
         }
+
         $("#req_patientName").val($('#ptname_requestFor').val());
         textarea_init_consentFormReqFor();
-
     });
 }
 
@@ -1155,12 +1165,11 @@ function autoinsert_rowdata(form,rowData){
 }
 
 function saveForm_otbookReqFor(callback){
-
     var result = confirm("This patient will be transfer to ward : "+$('#ReqFor_bed').val()+"");
     if(result != true){
         return 0;
     }
-
+    
     var saveParam = {
         action: 'save_otbook',
         oper: $("#cancel_otbookReqFor").data('oper'),
@@ -1756,14 +1765,14 @@ $('#tab_requestFor').on('shown.bs.collapse', function (){
     // let curtype = $(this).data('curtype');
     // $('#requestFor.menu a#'+curtype).tab('show');
     
+    $('#requestFor .top.menu .item').tab('change tab','otbookReqFor');
     populate_otbookReqFor_getdata();
-    populate_radClinicReqFor_getdata();
-    populate_mriReqFor_getdata();
-    populate_physioReqFor_getdata();
-    populate_dressingReqFor_getdata();
-    populate_preContrastReqFor_getdata();
-    populate_consentFormReqFor_getdata();
-
+    // populate_radClinicReqFor_getdata();
+    // populate_mriReqFor_getdata();
+    // populate_physioReqFor_getdata();
+    // populate_dressingReqFor_getdata();
+    // populate_preContrastReqFor_getdata();
+    // populate_consentFormReqFor_getdata();
 });
 
 $("#tab_requestFor").on("hide.bs.collapse", function (){
@@ -1923,7 +1932,7 @@ function toggle_reqfor_reqtype(){
     }
 }
 
-window.message_parent_wardbook = function(data) { // inside the iframe
+window.message_parent_wardbook = function (data){ // inside the iframe
     console.log(data);
     $('#ReqFor_bed').val(data.bednum);
     $('#ReqFor_ward').val(data.ward);
