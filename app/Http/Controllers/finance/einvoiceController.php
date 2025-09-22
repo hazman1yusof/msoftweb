@@ -623,6 +623,8 @@ class einvoiceController extends defaultController
                     $state = $state->first();
                     $statecode = $state->StateCode;
                 }
+            }else{
+                throw new \Exception("Wrong Postcode, please check");
             }
 
             DB::table('debtor.debtormast')
