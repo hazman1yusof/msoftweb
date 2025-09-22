@@ -97,7 +97,7 @@ class einvoiceController extends defaultController
                         })
                         ->where('db.compcode',session('compcode'))
                         ->where('db.source','PB')
-                        ->whereIn('db.trantype',['IN','RD'])
+                        ->whereIn('db.trantype',['IN'])
                         ->whereNotNull('db.deptcode');
 
         if(strtoupper($unit) != 'ALL'){
