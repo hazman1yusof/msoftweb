@@ -49,9 +49,26 @@
 			},
 			pageSize: 'A4',
 			content: [
+				@if(!empty($einvoiceQR))
+				{	
+					columns: [
+						{
+							image: 'letterhead',width:250, style: 'tableHeader', alignment: 'left'
+						},
+						{
+							width: 250,
+				            qr: 'https://myinvois.hasil.gov.my/{{$einvoiceQR->uuid}}/share/{{$einvoiceQR->longid}}',   // the text or URL for the QR code
+				            fit: 100,                    // size of QR code (pixels)
+				            alignment: 'right',         // left | center | right
+				            foreground: 'black'          // optional: QR color
+				        }
+					]
+				},
+				@else
 				{
 					image: 'letterhead',width:250, style: 'tableHeader', colSpan: 5, alignment: 'center'
 				},
+				@endif
 				{
 					text: '\n{{$title}}\n',
 					style: 'header',

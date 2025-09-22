@@ -831,39 +831,6 @@ class einvoiceController extends defaultController
 
             $url = "http://175.143.1.33:8080/einvoice/einvoice_post"; // your target API
 
-            // $my_all = [
-            //     "header" => [
-            //         "DATA1" => [
-            //             ["invno", "0101204-1"],
-            //             ["name", "JAMILAH BINTI AWANG"],
-            //             ["tin", "IG11232170041"],
-            //             ["newic", ""],
-            //             ["telhp", "01170720217"],
-            //             ["postcode", "26300"],
-            //             ["city", "GAMBANG"],
-            //             ["statecode", "06"],
-            //             ["addr1", "343 FELDA LEPAR HILIR 01"],
-            //             ["addr2", "GAMBANG"],
-            //             ["addr3", ""],
-            //             ["totalamount", "75"],
-            //             ["billdate", "29/08/2025"],
-            //             ["compcode", "imsc"],
-            //         ],
-            //     ],
-            //     "detail" => [
-            //         "DATA1" => [
-            //             ["desc", "REGISTRATION"],
-            //             ["price", "5"],
-            //             ["qty", "1"],
-            //         ],
-            //         "DATA2" => [
-            //             ["desc", "CONSULTATION"],
-            //             ["price", "70"],
-            //             ["qty", "1"],
-            //         ],
-            //     ],
-            // ];
-
             $client = new Client();
 
             $response = $client->post($url, [
@@ -917,7 +884,7 @@ class einvoiceController extends defaultController
             } else {
 
             }
-            
+
             DB::commit();
 
             return response()->json([

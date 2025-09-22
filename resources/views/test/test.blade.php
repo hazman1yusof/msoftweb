@@ -1,31 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>jQuery Button Disable Test</title>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 </head>
 <body>
-  <button id="btn">Click Me</button>
+  <button onclick="generatePDF()">Generate PDF with QR Code</button>
 
   <script>
-    // --- Example 1: direct .click binding ---
-    $("#btn").click(function () {
-      $(this).attr('disabled',true);   // disable after first click
-      console.log('clicked');
-    });
+    function generatePDF() {
+      const docDefinition = {
+        content: [
+          { text: 'QR Code Example', style: 'header' },
+          {
+            qr: 'https://example.com',   // the text or URL for the QR code
+            fit: 100,                    // size of QR code (pixels)
+            alignment: 'center',         // left | center | right
+            foreground: 'black'          // optional: QR color
+          },
+          { text: 'Scan the QR code above.', margin: [0, 20, 0, 0] }
+        ],
+        styles: {
+          header: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] }
+        }
+      };
 
-    /*
-    // --- Example 2: delegated binding (uncomment to test) ---
-    $(document).on("click", "#btn", function (e) {
-      if ($(this).prop("disabled")) {
-        e.preventDefault();
-        return; // do nothing if disabled
-      }
-      $(this).prop("disabled", true);
-      alert("Delegated binding: clicked once!");
-    });
-    */
+      pdfMake.createPdf(docDefinition).open();
+    }
   </script>
 </body>
 </html>
