@@ -485,7 +485,7 @@ $(document).ready(function () {
 			let data = selrowData('#jqGrid');
 
 			$('#payercode_dm').val(data.debtorcode);
-			$('#payername_dm').val(data.Name);
+			$('#payername_dm').val(data.dbname);
 			$('#address1_dm').val(data.address1);
 			$('#address2_dm').val(data.address2);
 			$('#address3_dm').val(data.address3);
