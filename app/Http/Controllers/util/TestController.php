@@ -8118,7 +8118,7 @@ class TestController extends defaultController
                         ->where('debtorcode',$value->NewMrn);
 
                 if($dm->exists()){
-                    dump($value->newic);
+                    dump($value->Newic);
                     DB::table('debtor.debtormast')
                         ->where('compcode',session('compcode'))
                         ->where('debtorcode',$value->NewMrn)
