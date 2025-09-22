@@ -320,7 +320,7 @@ $(document).ready(function () {
 				$('#submit_einvoice').show();
 				$('#save_verifytin').hide();
 			}else{
-				$('#submit_einvoice').show();
+				$('#save_verifytin').show();
 				$('#submit_einvoice').hide();
 			}
 		},
