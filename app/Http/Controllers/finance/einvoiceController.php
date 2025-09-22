@@ -45,6 +45,8 @@ class einvoiceController extends defaultController
                 return $this->login_submit($request);
             case 'einvoice_submit':
                 return $this->einvoice_submit($request);
+            case 'einvoice_save_dm':
+                return $this->einvoice_save_dm($request);
             default:
                 return 'error happen..';
         }
@@ -84,7 +86,7 @@ class einvoiceController extends defaultController
         $unit = ($request->unit)?$request->unit:'ALL';
 
         $table = DB::table('debtor.dbacthdr as db')
-                        ->select('db.idno','db.compcode','db.source','db.trantype','db.auditno','db.lineno_','db.invno','db.mrn','db.episno','db.debtorcode','db.amount','db.entrydate','pm.Name','dm.name as dbname','db.LHDNSubBy','db.LHDNStatus','dm.newic as dm_newic','dm.tinid','pm.newic as pm_newic','dm.debtortype','db.unit','db.pointofsales')
+                        ->select('db.idno','db.compcode','db.source','db.trantype','db.auditno','db.lineno_','db.invno','db.mrn','db.episno','db.debtorcode','db.amount','db.entrydate','pm.Name','dm.name as dbname','db.LHDNSubBy','db.LHDNStatus','dm.newic as dm_newic','dm.tinid','pm.newic as pm_newic','dm.debtortype','db.unit','db.pointofsales','dm.address1','dm.address2','dm.address3','dm.postcode','dm.teloffice','dm.statecode')
                         ->leftJoin('hisdb.pat_mast as pm', function($join) use ($request){
                             $join = $join->where('pm.compcode', '=', session('compcode'));
                             $join = $join->on('pm.newmrn', '=', 'db.mrn');
@@ -532,6 +534,51 @@ class einvoiceController extends defaultController
         }
     }
 
+    public function einvoice_save_dm(Request $request){
+        DB::beginTransaction();
+        try {
+
+            $postcode = DB::table('hisdb.postcode')
+                        ->where('compcode',session('compcode'))
+                        ->where('postcode',$request->postcode_dm);
+
+            $statecode = null;
+
+            if($postcode->exists()){
+                $postcode=$postcode->first();
+
+                $state = DB::table('hisdb.state')
+                        ->where('compcode',session('compcode'))
+                        ->where('description',strtoupper($postcode->statecode));
+
+                if($state->exists()){
+                    $state = $state->first();
+                    $statecode = $state->StateCode;
+                }
+            }
+
+            DB::table('debtor.debtormast')
+                ->where('compcode',session('compcode'))
+                ->where('debtorcode',$request->payercode_dm)
+                ->update([
+                    'address1' => $request->address1_dm,
+                    'address2' => $request->address2_dm,
+                    'address3' => $request->address3_dm,
+                    'postcode' => $request->postcode_dm,
+                    'teloffice' => $request->telhp_dm,
+                    'statecode' => $statecode,
+                ]);
+
+
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
     public function einvoice_store_taxpayer($myresponse,$mykad,$debtorcode){
         DB::table('finance.taxpayer')
                 ->insert([
@@ -600,7 +647,7 @@ class einvoiceController extends defaultController
             }
 
             $dbacthdr = DB::table('debtor.dbacthdr as db')
-                            ->select('db.idno','db.compcode','db.source','db.trantype','db.auditno','db.lineno_','db.invno','db.mrn','db.episno','db.debtorcode','db.amount','db.entrydate','pm.Name','dm.name as dbname','db.LHDNSubBy','db.LHDNStatus','dm.newic as dm_newic','dm.tinid','pm.newic as pm_newic','dm.debtortype','db.unit','db.pointofsales','dm.address1','dm.address2','dm.address3','dm.postcode','dm.statecode')
+                            ->select('db.idno','db.compcode','db.source','db.trantype','db.auditno','db.lineno_','db.invno','db.mrn','db.episno','db.debtorcode','db.amount','db.entrydate','pm.Name','dm.name as dbname','db.LHDNSubBy','db.LHDNStatus','dm.newic as dm_newic','dm.tinid','pm.newic as pm_newic','dm.debtortype','db.unit','db.pointofsales','dm.address1','dm.address2','dm.address3','dm.postcode','dm.statecode','dm.teloffice')
                             ->leftJoin('hisdb.pat_mast as pm', function($join) use ($request){
                                 $join = $join->where('pm.compcode', '=', session('compcode'));
                                 $join = $join->on('pm.newmrn', '=', 'db.mrn');
@@ -636,6 +683,37 @@ class einvoiceController extends defaultController
                     ->where('b.billno','=',$dbacthdr->auditno)
                     ->where('b.compcode','=',session('compcode'))
                     ->get();
+
+            if (empty($dbacthdr->invno)) {
+                throw new \Exception("No invno");
+            }
+            if (empty($dbacthdr->dbname)) {
+                throw new \Exception("No name");
+            }
+            if (empty($dbacthdr->tinid)) {
+                throw new \Exception("No tin");
+            }
+            if (empty($newic)) {
+                throw new \Exception("No newic");
+            }
+            if (empty($dbacthdr->teloffice)) {
+                throw new \Exception("No telhp");
+            }
+            if (empty($dbacthdr->postcode)) {
+                throw new \Exception("No postcode");
+            }
+            if (empty($dbacthdr->address2)) {
+                throw new \Exception("No city");
+            }
+            if (empty($dbacthdr->statecode)) {
+                throw new \Exception("No statecode");
+            }
+            if (empty($dbacthdr->address1)) {
+                throw new \Exception("No addr1");
+            }
+            if (empty($dbacthdr->address2)) {
+                throw new \Exception("No addr2");
+            }
 
             $headerData = [
                 ["invno", $dbacthdr->invno ?? ""],
@@ -681,7 +759,7 @@ class einvoiceController extends defaultController
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
-            dd(json_encode($my_all));
+            // dd(json_encode($my_all));
 
             $url = "http://175.143.1.33:8080/einvoice/einvoice_post"; // your target API
 

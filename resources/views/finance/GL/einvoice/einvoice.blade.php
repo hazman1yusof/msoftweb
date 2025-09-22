@@ -78,16 +78,19 @@ i.fa {
 		</form>
         <div class="panel panel-default">
 		    <div class="panel-heading" style="position:relative;">Reprint Bill
-					<a class='pull-right pointer text-primary' style="padding-left: 30px" id='printinvoice'>
+					<a class='pull-right pointer text-primary' style="padding-left: 25px" id='printinvoice'>
 				    Print Invoice
 					</a>
-					<a class='pull-right pointer text-primary' style="padding-left: 30px" id='verifytin'>
+					<a class='pull-right pointer text-primary' style="padding-left: 25px" id='verifytin'>
 				    Verify TIN
+					</a>
+					<a class='pull-right pointer text-primary' style="padding-left: 25px" id='debtormast_edit'>
+				    Address
 					</a>
 					<a class='pull-right btn btn-sm btn-primary'  id='btn_open_dialog_login' style="
 						position: absolute;
 		    		top: 3px;
-		    		right: 190px;">
+		    		right: 250px;">
 		    	Submit</a>
 		    </div>
 		    <div class="panel-body">
@@ -169,6 +172,49 @@ i.fa {
 				</div>
 			</div>
 			</form>
+		</div>
+
+		<div id="dialog_debtormast" title="Debtormast">
+			<div class="panel-body" style="position: relative;padding:0px;">
+			<form autocomplete="off" id="formdata_dm">
+				<div id="fail_msg_dm" style="color: darkred;"></div>
+				<div class="col-md-4" style="padding-top:5px">
+				  	<label class="control-label" for="payercode_dm">Payercode</label>  
+						<input id="payercode_dm" name="payercode_dm" type="text" class="form-control input-sm text-uppercase" autocomplete="off" readonly>
+				</div>
+				<div class="col-md-8" style="padding-top:5px">
+				  	<label class="control-label" for="payername_dm">Payer Name</label>  
+						<input id="payername_dm" name="payername_dm" type="text" class="form-control input-sm text-uppercase" autocomplete="off" readonly>
+				</div>
+				<div class="col-md-12" style="padding-top:5px">
+				  	<label class="control-label" for="address1_dm">Address 1</label>  
+						<input id="address1_dm" name="address1_dm" type="text" class="form-control input-sm text-uppercase" autocomplete="off" data-validation="required">
+				</div>
+				<div class="col-md-12" style="padding-top:5px">
+				  	<label class="control-label" for="address2_dm">Address 2</label>  
+						<input id="address2_dm" name="address2_dm" type="text" class="form-control input-sm text-uppercase" autocomplete="off" data-validation="required">
+				</div>
+				<div class="col-md-10" style="padding-top:5px">
+				  	<label class="control-label" for="address3_dm">Address 3</label>  
+						<input id="address3_dm" name="address3_dm" type="text" class="form-control input-sm text-uppercase" autocomplete="off" >
+				</div>
+				<div class="col-md-2" style="padding-top:5px">
+				  	<label class="control-label" for="statecode_dm">State Code</label>  
+						<input id="statecode_dm" name="statecode_dm" type="text" class="form-control input-sm text-uppercase" autocomplete="off" readonly>
+				</div>
+				<div class="col-md-4" style="padding-top:5px">
+				  	<label class="control-label" for="postcode_dm">Postcode</label>  
+						<input id="postcode_dm" name="postcode_dm" type="text" class="form-control input-sm text-uppercase" autocomplete="off" data-validation="required">
+				</div>
+				<div class="col-md-8" style="padding-top:5px">
+				  	<label class="control-label" for="telhp_dm">Telephone</label>  
+						<input id="telhp_dm" name="telhp_dm" type="text" class="form-control input-sm text-uppercase" autocomplete="off" data-validation="required">
+				</div>
+				<div class="col-md-12" style="padding-top:5px">
+					<button class="btn btn-primary pull-right" id="save_dm" style="margin-top: 10px;">Save</button>
+				</div>
+			</form>
+			</div>
 		</div>
 
    </div>

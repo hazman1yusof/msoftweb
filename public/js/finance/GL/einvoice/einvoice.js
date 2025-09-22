@@ -24,9 +24,16 @@ $(document).ready(function () {
 		},
 	};
 
+	$('body').click(function(){
+		myfail_msg.clear_fail();
+		myfail_msg_verify.clear_fail();
+		myfail_msg_dm.clear_fail();
+	});
+
 	var fdl = new faster_detail_load();
 	var myfail_msg = new fail_msg_func();
 	var myfail_msg_verify = new fail_msg_func('div#fail_msg_verifytin');
+	var myfail_msg_dm = new fail_msg_func('div#fail_msg_dm');
 	page_to_view_only($('#viewonly').val());
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
@@ -67,6 +74,12 @@ $(document).ready(function () {
 			{ label: 'tinid', name: 'tinid', hidden:true},
 			{ label: 'Line No', name: 'lineno_',hidden:true},
 			{ label: 'url', name: 'url',hidden:true},
+			{ label: 'address1', name: 'address1', hidden:true},
+			{ label: 'address2', name: 'address2', hidden:true},
+			{ label: 'address3', name: 'address3', hidden:true},
+			{ label: 'postcode', name: 'postcode', hidden:true},
+			{ label: 'teloffice', name: 'teloffice', hidden:true},
+			{ label: 'statecode', name: 'statecode', hidden:true},
 			// { label: ' ', name: 'Checkbox',sortable:false, width: 25,align: "center", formatter: formatterCheckbox },
 		],
 		autowidth:true,
@@ -456,13 +469,90 @@ $(document).ready(function () {
 			$('#submit_einvoice').attr('disabled',false);
 		}).success(function(data) {
 
-			window.open('./ordcom/table?action=einvoice_show&idno='+seldata.idno, '_blank');
+			window.open('./einvoice/table?action=einvoice_show&idno='+seldata.idno, '_blank');
 			$('#submit_einvoice').attr('disabled',false);
 			$("#dialog_verifytin").dialog('close');
 		});
 	});
 
+	$("#dialog_debtormast")
+	  .dialog({
+		width: 8/10 * $(window).width(),
+		modal: true,
+		autoOpen: false,
+		open: function( event, ui ) {
+			myfail_msg_dm.clear_fail();
+			let data = selrowData('#jqGrid');
+
+			$('#payercode_dm').val(data.debtorcode);
+			$('#payername_dm').val(data.Name);
+			$('#address1_dm').val(data.address1);
+			$('#address2_dm').val(data.address2);
+			$('#address3_dm').val(data.address3);
+			$('#postcode_dm').val(data.postcode);
+			$('#telhp_dm').val(data.teloffice);
+			$('#statecode_dm').val(data.statecode);
+
+		},
+		close: function( event, ui ) {
+			refreshGrid("#jqGrid", urlParam);
+			myfail_msg_dm.clear_fail();
+
+			$('#payercode_dm').val('');
+			$('#payername_dm').val('');
+			$('#address1_dm').val('');
+			$('#address2_dm').val('');
+			$('#address3_dm').val('');
+			$('#postcode_dm').val('');
+			$('#telhp_dm').val('');
+			$('#statecode_dm').val('');
+		}
+	  });
+
+	$('#debtormast_edit').click(function(){
+		$("#dialog_debtormast").dialog('open');
+	});
+
+	$('#save_dm').click(function(){
+		myfail_msg_dm.clear_fail();
+
+    	if($('#formdata_dm').isValid({requiredFields:''},conf,true)){
+    		$('#save_dm').attr('disabled',true);
+
+			let seldata = selrowData('#jqGrid');
+
+			var param={
+				action:'einvoice_save_dm',
+				url: './einvoice/table',
+				payercode_dm:$('#payercode_dm').val(),
+				payername_dm:$('#payername_dm').val(),
+				address1_dm:$('#address1_dm').val(),
+				address2_dm:$('#address2_dm').val(),
+				address3_dm:$('#address3_dm').val(),
+				postcode_dm:$('#postcode_dm').val(),
+				telhp_dm:$('#telhp_dm').val(),
+			}
+			$.get( param.url+"?"+$.param(param), function( data ) {
+				
+			}).fail(function(data) {
+				myfail_msg_dm.add_fail({
+					id:'response',
+					textfld:"",
+					msg:data.responseText,
+				});
+				$('#save_dm').attr('disabled',false);
+			}).success(function(data) {
+
+				$('#save_dm').attr('disabled',false);
+				$("#dialog_debtormast").dialog('close');
+			});
+    	}
+		
+	});
+
 });
+
+
 
 function dateFormatter_(cellvalue, options, rowObject){
 	return moment(cellvalue, 'YYYY-MM-DD HH:mm:ss').format("DD-MM-YYYY");
