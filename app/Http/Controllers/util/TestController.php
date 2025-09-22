@@ -8111,14 +8111,21 @@ class TestController extends defaultController
                 ->get();
 
         foreach ($pm as $value) {
-            if(!empty($value->newmrn)){
-                dump($value->newic);
-                DB::table('debtor.debtormast')
-                    ->where('compcode',session('compcode'))
-                    ->where('debtorcode',$value->newmrn)
-                    ->update([
-                        'newic' => $value->newic
-                    ]);
+            if(!empty($value->NewMrn)){
+
+                $dm = DB::table('debtor.debtormast')
+                        ->where('compcode',session('compcode'))
+                        ->where('debtorcode',$value->NewMrn);
+
+                if($dm->exists()){
+                    dump($value->newic);
+                    DB::table('debtor.debtormast')
+                        ->where('compcode',session('compcode'))
+                        ->where('debtorcode',$value->NewMrn)
+                        ->update([
+                            'newic' => $value->Newic
+                        ]);
+                }
             }
         }
     }
