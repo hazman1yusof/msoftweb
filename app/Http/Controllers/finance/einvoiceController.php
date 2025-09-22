@@ -917,12 +917,13 @@ class einvoiceController extends defaultController
             } else {
 
             }
+            
+            DB::commit();
 
             return response()->json([
                 "sent_data" => $body,
             ]);
 
-            DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
 
