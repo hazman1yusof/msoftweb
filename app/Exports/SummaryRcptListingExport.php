@@ -66,7 +66,7 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
         
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt')
                     ->select(
-                        'dh.entrydate',
+                        'dh.posteddate',
                         DB::raw("SUM(case when dh.paytype = '#F_TAB-CASH' then dh.amount else 0 end) as cash"),
                         DB::raw("SUM(case when dh.paytype = '#F_TAB-CARD' OR dh.paytype = '#F_TAB-DEBIT' then dh.amount else 0 end) as card"),
                         DB::raw("SUM(case when dh.paytype = '#F_TAB-CHEQUE' then dh.amount else 0 end) as cheque"),
@@ -82,16 +82,16 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
                     ->where('dh.compcode','=',session('compcode'))
                     ->where('dh.recstatus','POSTED')
                     ->whereIn('dh.trantype',['RD','RC'])
-                    ->groupBy('dh.entrydate')
-                    ->whereBetween('dh.entrydate', [$datefr, $dateto])
-                    ->orderBy('dh.entrydate','ASC')
+                    ->groupBy('dh.posteddate')
+                    ->whereBetween('dh.posteddate', [$datefr, $dateto])
+                    ->orderBy('dh.posteddate','ASC')
                     ->get();
         
         $totalAmount = $dbacthdr->sum('amount');
         
         $dbacthdr_rf = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt')
                         ->select(
-                            'dh.entrydate',
+                            'dh.posteddate',
                             DB::raw("SUM(case when dh.paytype = '#F_TAB-CASH' then dh.amount else 0 end) as cash"),
                             DB::raw("SUM(case when dh.paytype = '#F_TAB-CARD' OR dh.paytype = '#F_TAB-DEBIT' then dh.amount else 0 end) as card"),
                             DB::raw("SUM(case when dh.paytype = '#F_TAB-CHEQUE' then dh.amount else 0 end) as cheque"),
@@ -107,9 +107,9 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
                         ->where('dh.compcode','=',session('compcode'))
                         ->where('dh.recstatus','POSTED')
                         ->where('dh.trantype', '=','RF')
-                        ->groupBy('dh.entrydate')
-                        ->whereBetween('dh.entrydate', [$datefr, $dateto])
-                        ->orderBy('dh.entrydate','ASC')
+                        ->groupBy('dh.posteddate')
+                        ->whereBetween('dh.posteddate', [$datefr, $dateto])
+                        ->orderBy('dh.posteddate','ASC')
                         ->get();
         
         $db_dbacthdr = DB::table('debtor.dbacthdr as db')
@@ -127,6 +127,7 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
                         ->where('db.compcode',session('compcode'))
                         // ->where('db.tillcode',$this->tillcode)
                         // ->where('db.tillno',$this->tillno)
+                        ->where('db.recstatus','POSTED')
                         ->whereIn('db.trantype',['RD','RC'])
                         ->join('debtor.paymode as pm', function($join){
                             $join = $join->on('pm.paymode', '=', 'db.paymode')
@@ -134,13 +135,14 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
                                         ->where('pm.paytype','CASH')
                                         ->where('pm.compcode',session('compcode'));
                         })
-                        ->whereBetween('db.entrydate', [$datefr, $dateto])
+                        ->whereBetween('db.posteddate', [$datefr, $dateto])
                         ->sum('amount');
             
             $sum_chq = DB::table('debtor.dbacthdr as db')
                         ->where('db.compcode',session('compcode'))
                         // ->where('db.tillcode',$this->tillcode)
                         // ->where('db.tillno',$this->tillno)
+                        ->where('db.recstatus','POSTED')
                         ->whereIn('db.trantype',['RD','RC'])
                         ->join('debtor.paymode as pm', function($join){
                             $join = $join->on('pm.paymode', '=', 'db.paymode')
@@ -148,13 +150,14 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
                                         ->where('pm.paytype','CHEQUE')
                                         ->where('pm.compcode',session('compcode'));
                         })
-                        ->whereBetween('db.entrydate', [$datefr, $dateto])
+                        ->whereBetween('db.posteddate', [$datefr, $dateto])
                         ->sum('amount');
             
             $sum_card = DB::table('debtor.dbacthdr as db')
                         ->where('db.compcode',session('compcode'))
                         // ->where('db.tillcode',$this->tillcode)
                         // ->where('db.tillno',$this->tillno)
+                        ->where('db.recstatus','POSTED')
                         ->whereIn('db.trantype',['RD','RC'])
                         ->join('debtor.paymode as pm', function($join){
                             $join = $join->on('pm.paymode', '=', 'db.paymode')
@@ -162,13 +165,14 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
                                         ->where('pm.paytype','CARD')
                                         ->where('pm.compcode',session('compcode'));
                         })
-                        ->whereBetween('db.entrydate', [$datefr, $dateto])
+                        ->whereBetween('db.posteddate', [$datefr, $dateto])
                         ->sum('amount');
             
             $sum_bank = DB::table('debtor.dbacthdr as db')
                         ->where('db.compcode',session('compcode'))
                         // ->where('db.tillcode',$this->tillcode)
                         // ->where('db.tillno',$this->tillno)
+                        ->where('db.recstatus','POSTED')
                         ->whereIn('db.trantype',['RD','RC'])
                         ->join('debtor.paymode as pm', function($join){
                             $join = $join->on('pm.paymode', '=', 'db.paymode')
@@ -176,21 +180,23 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
                                         ->where('pm.paytype','BANK')
                                         ->where('pm.compcode',session('compcode'));
                         })
-                        ->whereBetween('db.entrydate', [$datefr, $dateto])
+                        ->whereBetween('db.posteddate', [$datefr, $dateto])
                         ->sum('amount');
             
             $sum_all = DB::table('debtor.dbacthdr as db')
                         ->where('db.compcode',session('compcode'))
                         // ->where('db.tillcode',$this->tillcode)
                         // ->where('db.tillno',$this->tillno)
+                        ->where('db.recstatus','POSTED')
                         ->whereIn('db.trantype',['RD','RC'])
-                        ->whereBetween('db.entrydate', [$datefr, $dateto])
+                        ->whereBetween('db.posteddate', [$datefr, $dateto])
                         ->sum('amount');
             
             $sum_cash_ref = DB::table('debtor.dbacthdr as db')
                             ->where('db.compcode',session('compcode'))
                             // ->where('db.tillcode',$this->tillcode)
                             // ->where('db.tillno',$this->tillno)
+                            ->where('db.recstatus','POSTED')
                             ->whereIn('db.trantype',['RF'])
                             ->join('debtor.paymode as pm', function($join){
                                 $join = $join->on('pm.paymode', '=', 'db.paymode')
@@ -198,13 +204,14 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
                                             ->where('pm.paytype','CASH')
                                             ->where('pm.compcode',session('compcode'));
                             })
-                            ->whereBetween('db.entrydate', [$datefr, $dateto])
+                            ->whereBetween('db.posteddate', [$datefr, $dateto])
                             ->sum('amount');
             
             $sum_chq_ref = DB::table('debtor.dbacthdr as db')
                             ->where('db.compcode',session('compcode'))
                             // ->where('db.tillcode',$this->tillcode)
                             // ->where('db.tillno',$this->tillno)
+                            ->where('db.recstatus','POSTED')
                             ->whereIn('db.trantype',['RF'])
                             ->join('debtor.paymode as pm', function($join){
                                 $join = $join->on('pm.paymode', '=', 'db.paymode')
@@ -212,13 +219,14 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
                                             ->where('pm.paytype','CHEQUE')
                                             ->where('pm.compcode',session('compcode'));
                             })
-                            ->whereBetween('db.entrydate', [$datefr, $dateto])
+                            ->whereBetween('db.posteddate', [$datefr, $dateto])
                             ->sum('amount');
             
             $sum_card_ref = DB::table('debtor.dbacthdr as db')
                             ->where('db.compcode',session('compcode'))
                             // ->where('db.tillcode',$this->tillcode)
                             // ->where('db.tillno',$this->tillno)
+                            ->where('db.recstatus','POSTED')
                             ->whereIn('db.trantype',['RF'])
                             ->join('debtor.paymode as pm', function($join){
                                 $join = $join->on('pm.paymode', '=', 'db.paymode')
@@ -226,13 +234,14 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
                                             ->where('pm.paytype','CARD')
                                             ->where('pm.compcode',session('compcode'));
                             })
-                            ->whereBetween('db.entrydate', [$datefr, $dateto])
+                            ->whereBetween('db.posteddate', [$datefr, $dateto])
                             ->sum('amount');
             
             $sum_bank_ref = DB::table('debtor.dbacthdr as db')
                             ->where('db.compcode',session('compcode'))
                             // ->where('db.tillcode',$this->tillcode)
                             // ->where('db.tillno',$this->tillno)
+                            ->where('db.recstatus','POSTED')
                             ->whereIn('db.trantype',['RF'])
                             ->join('debtor.paymode as pm', function($join){
                                 $join = $join->on('pm.paymode', '=', 'db.paymode')
@@ -240,15 +249,16 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
                                             ->where('pm.paytype','BANK')
                                             ->where('pm.compcode',session('compcode'));
                             })
-                            ->whereBetween('db.entrydate', [$datefr, $dateto])
+                            ->whereBetween('db.posteddate', [$datefr, $dateto])
                             ->sum('amount');
             
             $sum_all_ref = DB::table('debtor.dbacthdr as db')
                             ->where('db.compcode',session('compcode'))
                             // ->where('db.tillcode',$this->tillcode)
                             // ->where('db.tillno',$this->tillno)
+                            ->where('db.recstatus','POSTED')
                             ->whereIn('db.trantype',['RF'])
-                            ->whereBetween('db.entrydate', [$datefr, $dateto])
+                            ->whereBetween('db.posteddate', [$datefr, $dateto])
                             ->sum('amount');
             
             $total_card_rcrd = $sum_card + $sum_bank;
