@@ -12,6 +12,8 @@ use Response;
 use File;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use GuzzleHttp\Client;
+use App\Exports\print_implant_patientExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class einvoiceController extends defaultController
 {   
@@ -24,11 +26,17 @@ class einvoiceController extends defaultController
         return view('finance.GL.einvoice.einvoice');
     }
 
+    public function show_imp(Request $request){   
+        return view('finance.GL.einvoice.implant_patmast');
+    }
+
     public function table(Request $request){   
         DB::enableQueryLog();
         switch($request->action){
             case 'maintable':
                 return $this->maintable($request);
+            case 'maintable_ip':
+                return $this->maintable_ip($request);
             case 'acctent_sales':
                 return $this->acctent_sales($request);
             case 'acctent_cost':
@@ -47,6 +55,8 @@ class einvoiceController extends defaultController
                 return $this->einvoice_submit($request);
             case 'einvoice_save_dm':
                 return $this->einvoice_save_dm($request);
+            case 'print_implant_patient':
+                return $this->print_implant_patient($request);
             default:
                 return 'error happen..';
         }
@@ -177,6 +187,64 @@ class einvoiceController extends defaultController
         $responce->sql_query = $this->getQueries($table);
         
         return json_encode($responce);
+    }
+
+    public function maintable_ip(Request $request){
+
+        $table = DB::table('hisdb.pat_mast as pm')
+                        ->select('pm.idno','pm.CompCode','pm.MRN','pm.Episno','pm.Name','pm.Address1','pm.Address2','pm.Address3','pm.Postcode','pm.citycode','pm.AreaCode','pm.StateCode','pm.CountryCode','pm.telh','pm.telhp','pm.Newic','pm.NewMrn')
+                        ->where('pm.compcode',session('compcode'));
+
+        if(!empty($request->filterCol)){
+            $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
+        }
+        
+        if(!empty($request->searchCol)){
+            if($request->searchCol[0] == 'Name'){
+                $table = $table->Where(function ($table) use ($request) {
+                    $table->Where('pm.'.$request->searchCol[0],'like',$request->searchVal[0]);
+                });
+            }else{
+                $table = $table->Where(function ($table) use ($request) {
+                    $table->Where('pm.'.$request->searchCol[0],'like',$request->searchVal[0]);
+                });
+            }
+        }
+        
+        if(!empty($request->sidx)){
+            
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                foreach ($pieces as $key => $value) {
+                    $value_ = substr_replace($value,"pm.",0,strpos($value,"_")+1);
+                    $pieces_inside = explode(" ", $value_);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }else{
+            $table = $table->orderBy('pm.idno','DESC');
+        }
+        
+        $paginate = $table->paginate($request->rows);
+        //////////paginate/////////
+        
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+        
+        return json_encode($responce);
+    }
+
+    public function print_implant_patient(Request $request){
+        return Excel::download(new print_implant_patientExport(), 'Patient Implant List.xlsx');
     }
 
     public function submit_einvoice(Request $request){

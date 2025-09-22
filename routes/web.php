@@ -821,6 +821,7 @@ Route::post('/reprintBill/form','finance\ReprintBillController@form');
 
 //// Reprint Bill ///
 Route::get('/einvoice','finance\einvoiceController@show');
+Route::get('/implant_patmast','finance\einvoiceController@show_imp');
 Route::get('/einvoice/table','finance\einvoiceController@table');
 Route::post('/einvoice/form','finance\einvoiceController@form');
 

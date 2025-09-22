@@ -547,7 +547,6 @@ $(document).ready(function () {
 				$("#dialog_debtormast").dialog('close');
 			});
     	}
-		
 	});
 
 });
