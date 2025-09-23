@@ -3,21 +3,23 @@
         <div class="ui secondary segment">MUSCLE TONE (MAS)</div>
         <div class="ui segment">
             <div class="ui grid">
-                <div class="five wide column" style="margin: auto;">
+                <div class="twelve wide column" style="margin: auto;">
                     <div class="ui form">
                         <div class="field">
                             <div class="inline fields">
                                 <label for="muscleUL">UL</label>
                                 <div class="field">
-                                    <input type="text" name="muscleUL">
+                                    <!-- <input type="text" name="muscleUL"> -->
+                                    <textarea rows="4" cols="50" name="muscleUL"></textarea>
                                 </div>
-                            </div>
+                            <!-- </div>
                         </div>
                         <div class="field">
-                            <div class="inline fields">
+                            <div class="inline fields"> -->
                                 <label for="muscleLL">LL</label>
                                 <div class="field">
-                                    <input type="text" name="muscleLL">
+                                    <!-- <input type="text" name="muscleLL"> -->
+                                    <textarea rows="4" cols="50" name="muscleLL"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -28,7 +30,7 @@
                     <div class="inline fields">
                         <label>Impression</label>
                         <div class="field">
-                            <textarea rows="6" cols="50" id="neuroAssessment_impressionMAS" name="impressionMAS"></textarea>
+                            <textarea rows="4" cols="50" id="neuroAssessment_impressionMAS" name="impressionMAS"></textarea>
                         </div>
                     </div>
                 </div>
@@ -187,6 +189,45 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td></td>
+                                <td>Adduction</td>
+                                <td>
+                                    <input type="text" class="form-control" name="aShlderAddInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aShlderAddProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aShlderAddFin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Int Rot</td>
+                                <td>
+                                    <input type="text" class="form-control" name="aShlderIntRotInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aShlderIntRotProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aShlderIntRotFin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Ext Rot</td>
+                                <td>
+                                    <input type="text" class="form-control" name="aShlderExtRotInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aShlderExtRotProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aShlderExtRotFin">
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>Elbow</td>
                                 <td>Flexion</td>
                                 <td>
@@ -213,6 +254,32 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td></td>
+                                <td>Pronation</td>
+                                <td>
+                                    <input type="text" class="form-control" name="aElbowProInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aElbowProProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aElbowProFin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Supination</td>
+                                <td>
+                                    <input type="text" class="form-control" name="aElbowSupInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aElbowSupProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aElbowSupFin">
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>Wrist</td>
                                 <td>Flexion</td>
                                 <td>
@@ -236,6 +303,32 @@
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" name="aWristExtFin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Radial Deviation</td>
+                                <td>
+                                    <input type="text" class="form-control" name="aWristRadInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aWristRadProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aWristRadFin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Ulnar Deviation</td>
+                                <td>
+                                    <input type="text" class="form-control" name="aWristUlnarInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aWristUlnarProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aWristUlnarFin">
                                 </td>
                             </tr>
                             <tr>
@@ -275,6 +368,45 @@
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" name="aHipAbdFin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Adduction</td>
+                                <td>
+                                    <input type="text" class="form-control" name="aHipAddInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aHipAddProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aHipAddFin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Int Rot</td>
+                                <td>
+                                    <input type="text" class="form-control" name="aHipIntRotInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aHipIntRotProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aHipIntRotFin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Ext Rot</td>
+                                <td>
+                                    <input type="text" class="form-control" name="aHipExtRotInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aHipExtRotProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aHipExtRotFin">
                                 </td>
                             </tr>
                             <tr>
@@ -327,6 +459,32 @@
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" name="aAnklePtarFin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Eversion</td>
+                                <td>
+                                    <input type="text" class="form-control" name="aAnkleEverInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aAnkleEverProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aAnkleEverFin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Inversion</td>
+                                <td>
+                                    <input type="text" class="form-control" name="aAnkleInverInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aAnkleInverProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="aAnkleInverFin">
                                 </td>
                             </tr>
                         </tbody>
@@ -399,6 +557,45 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td></td>
+                                <td>Adduction</td>
+                                <td>
+                                    <input type="text" class="form-control" name="sShlderAddInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sShlderAddProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sShlderAddFin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Int Rot</td>
+                                <td>
+                                    <input type="text" class="form-control" name="sShlderIntRotInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sShlderIntRotProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sShlderIntRotFin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Ext Rot</td>
+                                <td>
+                                    <input type="text" class="form-control" name="sShlderExtRotInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sShlderExtRotProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sShlderExtRotFin">
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>Elbow</td>
                                 <td>Flexion</td>
                                 <td>
@@ -425,6 +622,32 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td></td>
+                                <td>Pronation</td>
+                                <td>
+                                    <input type="text" class="form-control" name="sElbowProInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sElbowProProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sElbowProFin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Supination</td>
+                                <td>
+                                    <input type="text" class="form-control" name="sElbowSupInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sElbowSupProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sElbowSupFin">
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>Wrist</td>
                                 <td>Flexion</td>
                                 <td>
@@ -448,6 +671,32 @@
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" name="sWristExtFin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Radial Deviation</td>
+                                <td>
+                                    <input type="text" class="form-control" name="sWristRadInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sWristRadProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sWristRadFin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Ulnar Deviation</td>
+                                <td>
+                                    <input type="text" class="form-control" name="sWristUlnarInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sWristUlnarProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sWristUlnarFin">
                                 </td>
                             </tr>
                             <tr>
@@ -487,6 +736,45 @@
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" name="sHipAbdFin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Adduction</td>
+                                <td>
+                                    <input type="text" class="form-control" name="sHipAddInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sHipAddProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sHipAddFin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Int Rot</td>
+                                <td>
+                                    <input type="text" class="form-control" name="sHipIntRotInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sHipIntRotProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sHipIntRotFin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Ext Rot</td>
+                                <td>
+                                    <input type="text" class="form-control" name="sHipExtRotInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sHipExtRotProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sHipExtRotFin">
                                 </td>
                             </tr>
                             <tr>
@@ -539,6 +827,32 @@
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" name="sAnklePtarFin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Eversion</td>
+                                <td>
+                                    <input type="text" class="form-control" name="sAnkleEverInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sAnkleEverProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sAnkleEverFin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Inversion</td>
+                                <td>
+                                    <input type="text" class="form-control" name="sAnkleInverInit">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sAnkleInverProg">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="sAnkleInverFin">
                                 </td>
                             </tr>
                         </tbody>
