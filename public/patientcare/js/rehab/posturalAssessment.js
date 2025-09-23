@@ -140,6 +140,8 @@ $(document).ready(function (){
             alert('Please choose Patient First');
         }else if($('#save_posturalAssessment').prop('disabled')){
             alert('Edit this patient first');
+        }else if(entereddate == ''){
+            alert('Please enter date first');
         }else{
             if(istablet){
                 let filename = type+'_'+mrn+'_.pdf';
