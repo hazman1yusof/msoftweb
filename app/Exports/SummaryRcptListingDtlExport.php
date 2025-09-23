@@ -45,10 +45,11 @@ class SummaryRcptListingDtlExport implements FromView, WithEvents, WithColumnWid
     public function columnFormats(): array
     {
         return [
-            'B' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
         ];
     }
     
@@ -60,6 +61,9 @@ class SummaryRcptListingDtlExport implements FromView, WithEvents, WithColumnWid
             'C' => 15,
             'D' => 15,
             'E' => 15,
+            'F' => 15,
+            'G' => 15,
+            'H' => 15,
         ];
     }
     
