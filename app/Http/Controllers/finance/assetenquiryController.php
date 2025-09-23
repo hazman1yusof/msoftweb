@@ -67,7 +67,7 @@ class assetenquiryController extends defaultController
 
         if(!empty($request->searchCol)){
             $table = $table->Where(function ($table) use ($request){
-                    $table->Where('fa.'$request->searchCol[0],'like',$request->searchVal[0]);
+                    $table->Where('fa.'.$request->searchCol[0],'like',$request->searchVal[0]);
             });
         }
         
