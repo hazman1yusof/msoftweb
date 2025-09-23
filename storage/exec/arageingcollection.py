@@ -257,7 +257,7 @@ class ARAgeingCollE_Report_job:
 
                     obj_ref_db["remark"] = obj_ref_db.get("remark", "")
                     obj_ref_db["doc_no"] = obj_ref_db.get("invno")
-                    obj_ref_db["newamt"] = obj_ref_db["amount"]
+                    obj_ref_db["newamt"] = obj_dballoc["amount"]
                     obj_ref_db["group"] = self.assign_grouping(days)
                     obj_ref_db["group_type"] = 2
                     obj_ref_db["days"] = days
