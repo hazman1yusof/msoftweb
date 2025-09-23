@@ -11,7 +11,7 @@
     </tr>
     @foreach($dbacthdr as $db_obj)
     <tr>
-        <td>{{\Carbon\Carbon::parse($db_obj->entrydate)->format('d/m/Y')}}</td>
+        <td>{{\Carbon\Carbon::parse($db_obj->posteddate)->format('d/m/Y')}}</td>
         <td>{{$db_obj->tillcode}}</td>
         <td>{{$db_obj->cashier}}</td>
         <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->cash, 2, '.', ',') }}</td>
@@ -66,7 +66,7 @@
 
     @foreach($dbacthdr_rf as $db_obj)
     <tr>
-        <td>{{\Carbon\Carbon::parse($db_obj->entrydate)->format('d/m/Y')}}</td>
+        <td>{{\Carbon\Carbon::parse($db_obj->posteddate)->format('d/m/Y')}}</td>
         <td>{{$db_obj->tillcode}}</td>
         <td>{{$db_obj->cashier}}</td>
         <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->cash, 2, '.', ',') }}</td>
