@@ -415,7 +415,7 @@ class assetregisterController extends defaultController
                     ->insert([
                         'assetcode' => $fatemp->assetcode,
                         'assettype' => $fatemp->assettype,
-                        'assetno' => $assetno, // got padding
+                        'assetno' => $fatemp->assetcode.$assetno, // got padding
                         'description' => $fatemp->description,
                         'dolineno' => $fatemp->lineno_,
                         'deptcode' => $fatemp->deptcode,
@@ -498,7 +498,7 @@ class assetregisterController extends defaultController
                 ->insert([
                     'assetcode' => $fatemp->assetcode,
                     'assettype' => $fatemp->assettype,
-                    'assetno' => $assetno, // got padding
+                    'assetno' => $fatemp->assetcode.$assetno, // got padding
                     'description' => $fatemp->description,
                     'dolineno' => $fatemp->lineno_,
                     'deptcode' => $fatemp->deptcode,
