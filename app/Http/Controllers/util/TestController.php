@@ -72,8 +72,8 @@ class TestController extends defaultController
                 return $this->compare_stockbalance_report_vs_pnl($request);
             case 'newic_pm_ke_dm':
                 return $this->newic_pm_ke_dm($request);
-            case 'statecode_upd':
-                return $this->statecode_upd($request);
+            case 'len_len':
+                return $this->len_len($request);
             // case 'betulkan_stockexp_semua_chk':
             //     return $this->betulkan_stockexp_semua_chk($request);
             case 'betulkan_stockexp_semua':
@@ -8163,6 +8163,35 @@ class TestController extends defaultController
             }
 
         }
+    }
+
+    public function len_len(Request $request){
+        $apalloc = DB::table('finance.apalloc')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','AP')
+                        ->where('trantype','AL')
+                        ->where('docsource','AP')
+                        ->where('doctrantype','PV')
+                        ->where('docauditno','5201835')
+                        ->where('recstatus','!=','DELETE')
+                        ->where('recstatus','!=','CANCELLED')
+                        ->get();
+
+        foreach($apalloc as $obj){
+            DB::table('finance.apacthdr')
+                    ->where('compcode','=',session('compcode'))
+                    // ->where('unit','=',session('unit'))
+                    ->where('source','=',$obj->refsource)
+                    ->where('trantype','=',$obj->reftrantype)
+                    ->where('auditno','=',$obj->refauditno)
+                    ->update([
+                        'outamount' => 0
+                    ]);
+
+            dump($obj->refauditno);
+        }
+
+
     }
 
 }
