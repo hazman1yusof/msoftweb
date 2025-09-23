@@ -22,7 +22,7 @@ use Illuminate\Contracts\View\View;
 use DateTime;
 use Carbon\Carbon;
 
-class SummaryRcptListingDtlExport implements FromView, WithEvents, WithColumnWidths
+class SummaryRcptListingDtlExport implements FromView, WithEvents, WithColumnWidths, WithColumnFormatting
 {
     
     /**
@@ -40,6 +40,16 @@ class SummaryRcptListingDtlExport implements FromView, WithEvents, WithColumnWid
         $this->comp = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+            'B' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+        ];
     }
     
     public function columnWidths(): array
