@@ -106,6 +106,70 @@ class SessionController extends Controller
     	}
     }
 
+    public function autologin(Request $request){
+        if(empty(request('computerid'))){
+            return back();
+        }
+
+        $user = User::where('username',request('username'))
+                    ->where('password',request('password'))
+                    ->where('compcode',request('cmb_companies'))
+                    ->first();
+
+        if($user){
+            Auth::login($user);
+            $request->session()->put('compcode', request('cmb_companies'));
+            $request->session()->put('username', request('username'));
+            $request->session()->put('deptcode', $user->dept);
+            if(!empty(request('computerid'))){
+                $request->session()->put('computerid',request('computerid'));
+            }
+
+            $doctor = DB::table('hisdb.doctor')->where('loginid','=',$user->username);
+
+            if($doctor->exists()){
+                $request->session()->put('isdoctor', $user->username);
+            }
+
+            if($user->dept != ''){
+                $units = DB::table('sysdb.department')
+                    ->select('sector')
+                    ->where('deptcode','=',$user->dept)
+                    ->where('compcode','=',request('cmb_companies'))
+                    ->first();
+                $request->session()->put('unit', $units->sector);
+            }else{
+                $units = DB::table('sysdb.sector')
+                    ->select('sectorcode')
+                    ->where('compcode','=',request('cmb_companies'))
+                    ->first();
+                $request->session()->put('unit', $units->sectorcode);
+            }
+
+            if(strtoupper($user->programmenu) == 'WAREHOUSE'){
+                return redirect('/warehouse');
+            }else if(strtoupper($user->programmenu) == 'IMPLANT'){
+                return redirect('/implant');
+            }else if(strtoupper($user->programmenu) == 'KHEALTH'){
+                return redirect('/khealth');
+            }
+
+            if($user->groupid == 'patient'){
+                return redirect('/apptrsc?TYPE=DOC');
+            }
+            
+            if(request('myurl') == '192.168.0.108'){
+                return redirect('/home');
+            }else if(!empty($request->mobile) && $request->mobile == 'true'){
+                return redirect('/mobile');
+            }else{
+                return redirect()->home();
+            }
+        }else{
+            return back();
+        }
+    }
+
     public function qrcode_prereg(Request $request){
         if($request->select == 'ic'){
             $validatedData = $request->validate([
