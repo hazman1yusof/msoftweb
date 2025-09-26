@@ -312,6 +312,7 @@ $(document).ready(function () {
 			myfail_msg_verify.clear_fail();
 			let data = selrowData('#jqGrid');
 
+			$('#invno').val(data.invno);
 			$('#mrn').val(data.mrn);
 			$('#newic').val(data.newic);
 			$('#dbname').val(data.dbname);

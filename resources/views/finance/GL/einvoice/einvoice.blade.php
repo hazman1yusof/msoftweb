@@ -130,6 +130,10 @@ i.fa {
 			<div class="panel-body" style="position: relative;padding:0px;">
 				<div id="fail_msg_verifytin" style="color: darkred;"></div>
 				<div class="col-md-4" style="padding-top:5px">
+				  	<label class="control-label" for="invno">Invoice No.</label>  
+						<input id="invno" name="invno" type="text" class="form-control input-sm text-uppercase" autocomplete="off" readonly>
+				</div>
+				<div class="col-md-4" style="padding-top:5px">
 				  	<label class="control-label" for="mrn">MRN</label>  
 						<input id="mrn" name="mrn" type="text" class="form-control input-sm text-uppercase" autocomplete="off" readonly>
 				</div>
