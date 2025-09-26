@@ -1194,8 +1194,12 @@ class CreditNoteARController extends defaultController
                                 $join = $join->on('a.docsource', '=', 'h.source')
                                             ->on('a.doctrantype', '=', 'h.trantype')
                                             ->on('a.docauditno', '=', 'h.auditno');
+                    })->join('debtor.dbacthdr as h2', function($join){
+                                $join = $join->on('a.refsource', '=', 'h2.source')
+                                            ->on('a.reftrantype', '=', 'h2.trantype')
+                                            ->on('a.refauditno', '=', 'h2.auditno');
                     })
-                    ->leftJoin('hisdb.pat_mast as p', 'h.mrn', '=', 'p.newmrn')
+                    ->leftJoin('hisdb.pat_mast as p', 'h2.mrn', '=', 'p.newmrn')
                     ->where('a.compcode',session('compcode'))
                     ->where('a.docsource','=','PB')
                     ->where('a.doctrantype','=','CN')
