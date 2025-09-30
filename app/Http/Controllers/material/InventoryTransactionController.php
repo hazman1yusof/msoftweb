@@ -276,6 +276,16 @@ class InventoryTransactionController extends defaultController
                 $request_no = $this->request_no($request->trantype, $request->txndept);
                 $recno = $this->recno('IV','IT');
                 $compcode = session('compcode');
+
+                $unique_recno = DB::table('material.ivtmphd')
+                                ->where('compcode',session('compcode'))
+                                ->where('recno',$recno)
+                                ->where('trantype',$request->trantype);
+
+                if($unique_recno->exists()){
+                    throw new \Exception("ivtmphd already exists");
+                }
+
             }else{
                 $request_no = 0;
                 $recno = 0;
@@ -761,7 +771,7 @@ class InventoryTransactionController extends defaultController
 
                 $unique_recno = DB::table('material.ivtxnhd')
                                     ->where('compcode',session('compcode'))
-                                    ->where('recno',$delordhd_obj->recno)
+                                    ->where('recno',$ivtmphd->recno)
                                     ->where('trantype',$ivtmphd->trantype);
 
                 if($unique_recno->exists()){
@@ -1019,10 +1029,11 @@ class InventoryTransactionController extends defaultController
                 DB::table("material.IvTxnHd")
                     ->where('compcode',$ivtmphd->compcode)
                     ->where('RecNo',$ivtmphd->recno)
-                    ->update([
-                        'CompCode' => 'XX',
-                        'RecStatus' => 'CANCELLED',
-                    ]);
+                    ->delete();
+                    // ->update([
+                    //     'CompCode' => 'XX',
+                    //     'RecStatus' => 'CANCELLED',
+                    // ]);
 
                 //-- 2. transfer from ivtmpdt to ivtxndt --//
                 $ivtmpdt_obj = DB::table('material.ivtmpdt')
@@ -1047,10 +1058,11 @@ class InventoryTransactionController extends defaultController
                     DB::table("material.ivtxndt")
                         ->where('compcode',session('compcode'))
                         ->where('recno',$value->recno)
-                        ->update([
-                            'CompCode' => 'XX',
-                            'RecStatus' => 'CANCELLED',
-                        ]);
+                        ->delete();
+                        // ->update([
+                        //     'CompCode' => 'XX',
+                        //     'RecStatus' => 'CANCELLED',
+                        // ]);
 
                     //-- 4. posting stockloc OUT --//
 
@@ -1095,9 +1107,12 @@ class InventoryTransactionController extends defaultController
                         ->where('compcode',session('compcode'))
                         ->where('auditno',$value->recno)
                         ->where('lineno_',$value->lineno_)
-                        ->update([
-                            'compcode' => 'XX'
-                        ]);
+                        ->where('source',$ivtmphd->source)
+                        ->where('trantype',$ivtmphd->trantype)
+                        ->delete();
+                        // ->update([
+                        //     'compcode' => 'XX'
+                        // ]);
 
                     $this->init_glmastdtl_del(
                             $drccode,//drcostcode
@@ -1204,10 +1219,12 @@ class InventoryTransactionController extends defaultController
                 DB::table("material.IvTxnHd")
                     ->where('compcode',$ivtmphd->compcode)
                     ->where('RecNo',$ivtmphd->recno)
-                    ->update([
-                        'CompCode' => 'XX',
-                        'RecStatus' => 'CANCELLED',
-                    ]);
+                    ->where('trantype',$ivtmphd->trantype)
+                    ->delete();
+                    // ->update([
+                    //     'CompCode' => 'XX',
+                    //     'RecStatus' => 'CANCELLED',
+                    // ]);
 
                 //-- 2. transfer from ivtmpdt to ivtxndt --//
                 $ivtmpdt_obj = DB::table('material.ivtmpdt')
@@ -1232,10 +1249,12 @@ class InventoryTransactionController extends defaultController
                     DB::table("material.ivtxndt")
                         ->where('compcode',session('compcode'))
                         ->where('recno',$value->recno)
-                        ->update([
-                            'CompCode' => 'XX',
-                            'RecStatus' => 'CANCELLED',
-                        ]);
+                        ->where('trantype',$value->trantype)
+                        ->delete();
+                        // ->update([
+                        //     'CompCode' => 'XX',
+                        //     'RecStatus' => 'CANCELLED',
+                        // ]);
 
                     //-- 4. posting stockloc OUT --//
 
@@ -1280,9 +1299,12 @@ class InventoryTransactionController extends defaultController
                         ->where('compcode',session('compcode'))
                         ->where('auditno',$value->recno)
                         ->where('lineno_',$value->lineno_)
-                        ->update([
-                            'compcode' => 'XX'
-                        ]);
+                        ->where('source',$ivtmphd->source)
+                        ->where('trantype',$ivtmphd->trantype)
+                        ->delete();
+                        // ->update([
+                        //     'compcode' => 'XX'
+                        // ]);
 
                     $this->init_glmastdtl_del(
                             $drccode,//drcostcode

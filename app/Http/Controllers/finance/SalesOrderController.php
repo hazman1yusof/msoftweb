@@ -354,6 +354,16 @@ class SalesOrderController extends defaultController
                             ->where('MRN','=',$request->db_mrn)
                             ->first();
             }
+
+            $unique_recno = DB::table('debtor.dbacthdr')
+                                ->where('compcode',session('compcode'))
+                                ->where('auditno',$auditno)
+                                ->where('source','PB')
+                                ->where('trantype','IN');
+
+            if($unique_recno->exists()){
+                throw new \Exception("ivtmphd already exists");
+            }
             
             $array_insert = [
                 'source' => 'PB',
