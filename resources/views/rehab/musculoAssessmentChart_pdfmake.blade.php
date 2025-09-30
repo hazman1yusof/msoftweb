@@ -1740,7 +1740,7 @@
             <div class="ui secondary segment">
                 <h3>
                     <b>Navigation</b>
-                    <button id="merge_btn" class="ui small primary button" style="font-size: 12px; padding: 6px 10px; float: right;">Merge</button>
+                    <!-- <button id="merge_btn" class="ui small primary button" style="font-size: 12px; padding: 6px 10px; float: right;">Merge</button> -->
                 </h3>
             </div>
             <div class="ui segment teal inverted canclick" style="cursor: pointer;" data-goto='#pdfiframe'>
@@ -1748,7 +1748,8 @@
             </div>
             @if($attachment_files != '')
             <div class="ui segment canclick" style="cursor: pointer;" data-goto='#pdfiframe_1'>
-                <p>IMAGE<input type="checkbox" data-src="{{$attachment_files}}" name="1" style="float: right; margin-right: 5px;"></p>
+                <!-- <p>IMAGE<input type="checkbox" data-src="{{$attachment_files}}" name="1" style="float: right; margin-right: 5px;"></p> -->
+                <p>IMAGE</p>
             </div>
             @endif
             <div id="btn_merge" class="ui segment canclick" style="cursor: pointer; display: none;" data-goto='#pdfiframe_merge'>
