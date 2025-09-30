@@ -88,37 +88,37 @@
                     <tr>
                         <td><input type="checkbox" id="ReqFor_allergydrugs" name="allergydrugs" value="1" class="ui read-only checkbox" class="hidden" readonly="" tabindex="0"></td>
                         <td><label for="ReqFor_allergydrugs1">Meds</label></td>
-                        <td><textarea id="ReqFor_drugs_remarks" name="drugs_remarks" type="text" rows="3" readonly=""></textarea></td>
+                        <td><textarea id="ReqFor_drugs_remarks" name="drugs_remarks" type="text" rows="3" readonly="" disabled></textarea></td>
                     </tr>
                     <!-- <tr>
                         <td><input type="checkbox" id="ReqFor_allergyplaster" name="allergyplaster" value="1" class="ui read-only checkbox" class="hidden" readonly="" tabindex="0"></td>
                         <td><label for="ReqFor_allergyplaster1">Plaster</label></td>
-                        <td><textarea id="ReqFor_plaster_remarks" name="plaster_remarks" type="text" rows="3" readonly=""></textarea></td>
+                        <td><textarea id="ReqFor_plaster_remarks" name="plaster_remarks" type="text" rows="3" readonly="" disabled></textarea></td>
                     </tr> -->
                     <tr>
                         <td><input type="checkbox" id="ReqFor_allergyfood" name="allergyfood" value="1" class="ui read-only checkbox" class="hidden" readonly="" tabindex="0"></td>
                         <td><label for="ReqFor_allergyfood1">Food</label></td>
-                        <td><textarea id="ReqFor_food_remarks" name="food_remarks" type="text" rows="3" readonly=""></textarea></td>
+                        <td><textarea id="ReqFor_food_remarks" name="food_remarks" type="text" rows="3" readonly="" disabled></textarea></td>
                     </tr>
                     <!-- <tr>
                         <td><input type="checkbox" id="ReqFor_allergyenvironment" name="allergyenvironment" value="1" class="ui read-only checkbox" class="hidden" readonly="" tabindex="0"></td>
                         <td><label for="ReqFor_allergyenvironment1">Environment</label></td>
-                        <td><textarea id="ReqFor_environment_remarks" name="environment_remarks" type="text" rows="3" readonly=""></textarea></td>
+                        <td><textarea id="ReqFor_environment_remarks" name="environment_remarks" type="text" rows="3" readonly="" disabled></textarea></td>
                     </tr> -->
                     <tr>
                         <td><input type="checkbox" id="ReqFor_allergyothers" name="allergyothers" value="1" class="ui read-only checkbox" class="hidden" readonly="" tabindex="0"></td>
                         <td><label for="ReqFor_allergyothers1">Others</label></td>
-                        <td><textarea id="ReqFor_others_remarks" name="others_remarks" type="text" rows="3" readonly=""></textarea></td>
+                        <td><textarea id="ReqFor_others_remarks" name="others_remarks" type="text" rows="3" readonly="" disabled></textarea></td>
                     </tr>
                     <!-- <tr>
                         <td><input type="checkbox" id="ReqFor_allergyunknown" name="allergyunknown" value="1" class="ui read-only checkbox" class="hidden" readonly="" tabindex="0"></td>
                         <td><label for="ReqFor_allergyunknown1">Unknown</label></td>
-                        <td><textarea id="ReqFor_unknown_remarks" name="unknown_remarks" type="text" rows="3" readonly=""></textarea></td>
+                        <td><textarea id="ReqFor_unknown_remarks" name="unknown_remarks" type="text" rows="3" readonly="" disabled></textarea></td>
                     </tr>
                     <tr>
                         <td><input type="checkbox" id="ReqFor_allergynone" name="allergynone" value="1" class="ui read-only checkbox" class="hidden" readonly="" tabindex="0"></td>
                         <td><label for="ReqFor_allergynone1">None</label></td>
-                        <td><textarea id="ReqFor_none_remarks" name="none_remarks" type="text" rows="3" readonly=""></textarea></td>
+                        <td><textarea id="ReqFor_none_remarks" name="none_remarks" type="text" rows="3" readonly="" disabled></textarea></td>
                     </tr> -->
                 </tbody>
             </table>
