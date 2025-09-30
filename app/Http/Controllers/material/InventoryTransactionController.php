@@ -759,6 +759,15 @@ class InventoryTransactionController extends defaultController
 
                 $this->check_sequence_backdated($ivtmphd);
 
+                $unique_recno = DB::table('material.ivtxnhd')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('recno',$delordhd_obj->recno)
+                                    ->where('trantype',$ivtmphd->trantype);
+
+                if($unique_recno->exists()){
+                    throw new \Exception("ivtxnhd already exists");
+                }
+
                 DB::table("material.IvTxnHd")
                     ->insert([
                         'AddDate'  => $ivtmphd->adddate,
