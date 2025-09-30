@@ -246,8 +246,8 @@ $(document).ready(function () {
 			{ label: 'Debtor Name', name: 'dm_name', width: 28, canSearch: true, classes: 'wrap',checked:true },
 			{ label: 'Document Date', name: 'db_entrydate', width: 12, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'Posted Date', name: 'db_posteddate', width: 12, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
-			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right', formatter: padzero, unformat: unpadzero,canSearch: true, selected:true},
-			{ label: 'Invoice No', name: 'db_invno', width: 10, align: 'right', canSearch: true, formatter: padzero, unformat: unpadzero },
+			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right',canSearch: true, selected:true},
+			{ label: 'Invoice No', name: 'db_invno', width: 10, align: 'right', canSearch: true },
 			// { label: 'Sector', name: 'db_unit', width: 15, canSearch: true, classes: 'wrap' },
 			{ label: 'Quotation No', name: 'db_quoteno', width: 10, align: 'right', formatter: padzero5, unformat: unpadzero },
 			{ label: 'Amount', name: 'db_amount', width: 10, align: 'right', formatter: 'currency' },
@@ -345,13 +345,11 @@ $(document).ready(function () {
 			}
 			
 			let db_invno = selrowData("#jqGrid").db_invno;
-			let invno = db_invno.toString().padStart(8, '0');
 			
 			let db_auditno = selrowData("#jqGrid").db_auditno;
-			let auditno = db_auditno.toString().padStart(8, '0');
 			
-			$('#db_invno').val(invno);
-			$('#db_auditno').val(auditno);
+			$('#db_invno').val(db_invno);
+			$('#db_auditno').val(db_auditno);
 		},
 		gridComplete: function () {
 			cbselect.show_hide_table();
@@ -474,13 +472,11 @@ $(document).ready(function () {
 			}
 			
 			let db_invno = selrowData("#jqGrid").db_invno;
-			let invno = db_invno.toString().padStart(8, '0');
 			
 			let db_auditno = selrowData("#jqGrid").db_auditno;
-			let auditno = db_auditno.toString().padStart(8, '0');
 			
-			$('#db_invno').val(invno);
-			$('#db_auditno').val(auditno);
+			$('#db_invno').val(db_invno);
+			$('#db_auditno').val(db_auditno);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
@@ -519,7 +515,7 @@ $(document).ready(function () {
 			return ''
 		}
 	
-		let padzero = 8, str="";
+		let padzero = 7, str="";
 		while(padzero>0){
 			str=str.concat("0");
 			padzero--;

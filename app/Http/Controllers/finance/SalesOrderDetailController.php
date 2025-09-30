@@ -1906,7 +1906,6 @@ class SalesOrderDetailController extends defaultController
     }
 
     public function del(Request $request){
-
         DB::beginTransaction();
 
         try {
