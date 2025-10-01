@@ -763,9 +763,10 @@ class einvoiceController extends defaultController
             }
             if (empty($dbacthdr->tinid)) {
                 throw new \Exception("No tin");
-            }
-            if (empty($newic)) {
-                throw new \Exception("No newic");
+            }else{
+                if (empty($newic)) {
+                    throw new \Exception("No newic");
+                }
             }
             if (empty($dbacthdr->teloffice)) {
                 throw new \Exception("No telhp");
