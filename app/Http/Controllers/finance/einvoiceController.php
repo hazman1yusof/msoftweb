@@ -105,6 +105,7 @@ class einvoiceController extends defaultController
                             $join = $join->where('dm.compcode', '=', session('compcode'));
                             $join = $join->on('dm.debtorcode', '=', 'db.debtorcode');
                         })
+                        ->where('db.recstatus','POSTED')
                         ->where('db.compcode',session('compcode'))
                         ->where('db.source','PB')
                         ->whereIn('db.trantype',['IN'])

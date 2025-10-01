@@ -211,6 +211,15 @@ class DeliveryOrderDetailController extends defaultController
                 $delordno = $this->request_no('DO',$delordhd->first()->prdept);
                 $recno = $this->recno('PUR','DO');
 
+                $unique_recno = DB::table('material.delordhd')
+                                ->where('compcode',session('compcode'))
+                                ->where('recno',$recno)
+                                ->where('trantype','GRN');
+
+                if($unique_recno->exists()){
+                    throw new \Exception("delordhd already exists");
+                }
+
                 DB::table("material.delordhd")
                     ->where('idno','=',$request->idno)
                     ->update([

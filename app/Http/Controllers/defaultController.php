@@ -603,9 +603,16 @@ abstract class defaultController extends Controller{
         $pvalue1 = DB::table('sysdb.sysparam')->select('pvalue1')
             ->where('compcode',session('compcode'))
             ->where('source', '=', $source)
-            ->where('trantype', '=', $trantype)->first();
+            ->where('trantype', '=', $trantype);
+
+        if(!$pvalue1->exists()){
+            throw new \Exception("Sysparam for source $source and trantype $trantype is not available");
+        }
         
         //2. add 1 into the value
+        
+        $pvalue1 = $pvalue1->lockForUpdate()->first();
+
         $pvalue1 = intval($pvalue1->pvalue1) + 1;
 
         //3. update the value
