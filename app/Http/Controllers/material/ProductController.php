@@ -726,6 +726,10 @@ class ProductController extends defaultController
 
         $product = $product->unique('itemcode');
 
+        foreach ($product as $key => $value) {
+            $value->itemcode = str_replace(' ', '_', $value->itemcode);
+        }
+
         // dd($product);
 
         return view('material.product.print_barcode',compact('product','pages'));
