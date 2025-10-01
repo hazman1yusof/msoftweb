@@ -20,9 +20,6 @@
 @foreach($product as $p_)
     <svg id="_{{$p_->itemcode}}"></svg>
 @endforeach
-<body style="margin: 0px;">
-    <iframe id="pdfiframe" width="100%" height="100%" src="" frameborder="0" style="width: 99vw;height: 99vh;"></iframe>
-</body>
 <script>
 
     var count = {{$pages}};
@@ -83,4 +80,7 @@
     });
 </script>
 
+<body style="margin: 0px;">
+    <iframe id="pdfiframe" width="100%" height="100%" src="" frameborder="0" style="width: 99vw;height: 99vh;"></iframe>
+</body>
 </html>

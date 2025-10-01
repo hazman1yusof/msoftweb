@@ -23,6 +23,7 @@
 
 @section('body')
 	<div class='row'>
+		<input type="hidden" name="unit_used" id="unit_used" value="{{ $unit_used }}">
 		<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
 		<input type="hidden" name="itemcode_hidden" id="itemcode_hidden">
 		<input type="hidden" name="uomcode_hidden" id="uomcode_hidden">
@@ -668,6 +669,6 @@
 			
 		});
 	</script>
-	<script src="js/material/product/product.js?v=1.4"></script>
+	<script src="js/material/product/product.js?v=1.5"></script>
 
 @endsection

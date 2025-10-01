@@ -22,7 +22,13 @@ class ProductController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('material.product.product');
+        if(!in_array(strtoupper($request->groupcode), ['ASSET','OTHERS'])){
+            $unit_used = session('unit');
+        }else{
+            $unit_used = 'all';
+        }
+
+        return view('material.product.product',compact('unit_used'));
     }
 
     public function form(Request $request)
@@ -130,6 +136,7 @@ class ProductController extends defaultController
                              'cm.freqcode as cm_freqcode',
                              'cm.instruction as cm_instruction')
                     ->where('p.compcode','=',session('compcode'))
+                    ->where('p.recstatus','=','ACTIVE')
                     ->where('p.Class','=',$Class)
                     ->where('p.groupcode','=',$groupcode);
 
@@ -698,12 +705,24 @@ class ProductController extends defaultController
             $itemcodefrom = '%';
         }
         $itemcodeto = $request->itemcodeto;
+        $groupcode = $request->groupcode;
+        $Class = $request->Class;
 
         $product = DB::table('material.product as p')
-                ->select('itemcode','description')
-                ->where('p.compcode',session('compcode'))
-                ->whereBetween('p.itemcode',[$itemcodefrom,$itemcodeto.'%'])
-                ->get();
+                    ->select('itemcode','description')
+                    ->where('p.compcode',session('compcode'))
+                    ->where('p.recstatus','=','ACTIVE')
+                    ->where('p.Class','=',$Class)
+                    ->where('p.groupcode','=',$groupcode)
+                    ->whereBetween('p.itemcode',[$itemcodefrom,$itemcodeto.'%']);
+
+        if(!in_array(strtoupper($groupcode), ['ASSET','OTHERS'])){
+            $product = $product->where('p.unit','=',session('unit'));
+        }
+
+        // dd($this->getQueries($product));
+
+        $product = $product->get();
 
         $product = $product->unique('itemcode');
 

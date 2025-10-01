@@ -28,6 +28,7 @@ $(document).ready(function () {
 	/////////////////////////////////////////////////////////Get GROUPCODE AND Class /////////////////////////////
 	var gc2 = $('#groupcode2').val();
 	var Class2 = $('#Class2').val();
+	var unit_used = $('#unit_used').val();
 	var fdl = new faster_detail_load();
 
 	/////////////////////////////////////////////////////////object for dialog handler//////////////////
@@ -50,7 +51,7 @@ $(document).ready(function () {
     });
 
     $('#barcode_print').click(function(){
-	    window.open('./product/table?action=print_barcode&itemcodefrom='+$('#itemcode_from_barcode').val()+'&itemcodeto='+$('#itemcode_to_barcode').val()+'&pages='+$('#barcode_pages').val());
+	    window.open('./product/table?action=print_barcode&itemcodefrom='+$('#itemcode_from_barcode').val()+'&itemcodeto='+$('#itemcode_to_barcode').val()+'&pages='+$('#barcode_pages').val()+'&groupcode='+gc2+'&Class='+Class2);
     });
 
 	var itemcode_from_barcode = new ordialog(
@@ -61,11 +62,11 @@ $(document).ready(function () {
 				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 			],
 			urlParam: {
-				filterCol:['compcode'],//,'sector'
-				filterVal:['session.compcode']//, 'session.unit'
+				filterCol:['groupcode', 'Class','recstatus','compcode','unit'],
+				filterVal:[gc2, Class2,'ACTIVE','session.compcode',unit_used]
 			},
-			sortname:'idno',
-			sortorder:'desc',
+			sortname:'itemcode',
+			sortorder:'asc',
 			ondblClickRow: function () {
 			},
 			gridComplete: function(obj){
@@ -80,8 +81,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Item From",
 			open: function(){
-				itemcode_from_barcode.urlParam.filterCol=['compcode'];//,'sector'
-				itemcode_from_barcode.urlParam.filterVal=['session.compcode'];//, 'session.unit'
+				itemcode_from_barcode.urlParam.filterCol=['groupcode', 'Class','recstatus','compcode','unit'];//,'sector'
+				itemcode_from_barcode.urlParam.filterVal=[gc2, Class2,'ACTIVE','session.compcode',unit_used];//, 'session.unit'
 			},
 			close: function(obj_){
 			},
@@ -104,11 +105,11 @@ $(document).ready(function () {
 				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 			],
 			urlParam: {
-				filterCol:['compcode'],//,'sector'
-				filterVal:['session.compcode']//, 'session.unit'
+				filterCol:['groupcode', 'Class','recstatus','compcode','unit'],
+				filterVal:[gc2, Class2,'ACTIVE','session.compcode',unit_used]
 			},
-			sortname:'idno',
-			sortorder:'desc',
+			sortname:'itemcode',
+			sortorder:'asc',
 			ondblClickRow: function () {
 			},
 			gridComplete: function(obj){
@@ -123,8 +124,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Item To",
 			open: function(){
-				itemcode_to_barcode.urlParam.filterCol=['compcode'];//,'sector'
-				itemcode_to_barcode.urlParam.filterVal=['session.compcode'];//, 'session.unit'
+				itemcode_to_barcode.urlParam.filterCol=['groupcode', 'Class','recstatus','compcode','unit'];//,'sector'
+				itemcode_to_barcode.urlParam.filterVal=[gc2, Class2,'ACTIVE','session.compcode',unit_used];//, 'session.unit'
 			},
 			close: function(obj_){
 			},
