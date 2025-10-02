@@ -72,8 +72,8 @@ class TestController extends defaultController
                 return $this->compare_stockbalance_report_vs_pnl($request);
             case 'newic_pm_ke_dm':
                 return $this->newic_pm_ke_dm($request);
-            case 'len_len':
-                return $this->len_len($request);
+            case 'itemcode_avgcost':
+                return $this->itemcode_avgcost($request);
             // case 'betulkan_stockexp_semua_chk':
             //     return $this->betulkan_stockexp_semua_chk($request);
             case 'betulkan_stockexp_semua':
@@ -8190,8 +8190,26 @@ class TestController extends defaultController
 
             dump($obj->refauditno);
         }
+    }
 
+    public function itemcode_avgcost(Request $request){
+        $dm = DB::table('recondb.itemcode_avgcost')
+                ->get();
 
+        foreach ($dm as $obj) {
+            $product = DB::table('material.product')
+                        ->where('compcode',session('compcode'))
+                        ->where('itemcode',$obj->itemcode)
+                        ->get();
+
+            DB::table('material.product')
+                    ->where('compcode',session('compcode'))
+                    ->where('itemcode',$obj->itemcode)
+                    ->update([
+                        'avgcost' => $obj->avgcost
+                    ]);
+
+        }
     }
 
 }
