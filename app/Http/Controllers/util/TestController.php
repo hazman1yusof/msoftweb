@@ -74,8 +74,8 @@ class TestController extends defaultController
                 return $this->newic_pm_ke_dm($request);
             case 'itemcode_avgcost':
                 return $this->itemcode_avgcost($request);
-            // case 'betulkan_stockexp_semua_chk':
-            //     return $this->betulkan_stockexp_semua_chk($request);
+            case 'itemcode_avgcost_ivdspdt':
+                return $this->itemcode_avgcost_ivdspdt($request);
             case 'betulkan_stockexp_semua':
                 return $this->betulkan_stockexp_semua($request);
             // case 'betulkan_stockloc_2025':
@@ -8208,7 +8208,6 @@ class TestController extends defaultController
                     ->update([
                         'avgcost' => $obj->avgcost
                     ]);
-
         }
     }
 
