@@ -97,6 +97,7 @@ $(document).ready(function (){
         }else{
             button_state_spinalCord('add');
         }
+        $('#spinalCord_chart').attr('disabled',false);
         
         // getdata_spinalCord();
         $("#idno_spinalCord").val(data.idno);
@@ -290,7 +291,7 @@ function button_state_spinalCord(state){
         case 'empty':
             $("#toggle_physio").removeAttr('data-toggle');
             $('#cancel_spinalCord').data('oper','add');
-            $('#new_spinalCord,#save_spinalCord,#cancel_spinalCord,#edit_spinalCord').attr('disabled',true);
+            $('#new_spinalCord,#save_spinalCord,#cancel_spinalCord,#edit_spinalCord,#spinalCord_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_physio").attr('data-toggle','collapse');
@@ -307,7 +308,7 @@ function button_state_spinalCord(state){
         case 'wait':
             $("#toggle_physio").attr('data-toggle','collapse');
             $("#save_spinalCord,#cancel_spinalCord").attr('disabled',false);
-            $('#edit_spinalCord,#new_spinalCord').attr('disabled',true);
+            $('#edit_spinalCord,#new_spinalCord,#spinalCord_chart').attr('disabled',true);
             break;
     }
 }
@@ -437,8 +438,10 @@ function getdata_spinalCord(){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formSpinalCord",data.spinalcord);
             button_state_spinalCord('edit');
+            $('#spinalCord_chart').attr('disabled',false);
         }else{
             button_state_spinalCord('add');
+            $('#spinalCord_chart').attr('disabled',true);
         }
         
         // textarea_init_spinalCord();

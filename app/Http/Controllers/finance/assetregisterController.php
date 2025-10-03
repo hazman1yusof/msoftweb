@@ -324,7 +324,7 @@ class assetregisterController extends defaultController
                 if($fatemp->individualtag == 'N'){
 
                     $tagnextno_counter = intval($facode->tagnextno)+1;
-                    $assetno = str_pad($facode->tagnextno,6,"0",STR_PAD_LEFT);
+                    $assetno = str_pad($facode->tagnextno,5,"0",STR_PAD_LEFT);
 
                     $this->crt_fareg_notindv($fatemp,$product,$assetno);
                 }else if($fatemp->individualtag == 'Y'){
@@ -415,7 +415,7 @@ class assetregisterController extends defaultController
                     ->insert([
                         'assetcode' => $fatemp->assetcode,
                         'assettype' => $fatemp->assettype,
-                        'assetno' => $assetno, // got padding
+                        'assetno' => $fatemp->assetcode.$assetno, // got padding
                         'description' => $fatemp->description,
                         'dolineno' => $fatemp->lineno_,
                         'deptcode' => $fatemp->deptcode,
@@ -490,7 +490,7 @@ class assetregisterController extends defaultController
     public function crt_fareg_indv($fatemp,$product,$tagnextno){
         ////2. insert into faregister
         for ($x=0; $x < $fatemp->qty; $x++) { 
-            $assetno = str_pad(intval($tagnextno)+$x,6,"0",STR_PAD_LEFT);
+            $assetno = str_pad(intval($tagnextno)+$x,5,"0",STR_PAD_LEFT);
             $purprice = floatval($fatemp->purprice) / intval($fatemp->qty);
             $origcost = floatval($fatemp->origcost) / intval($fatemp->qty);
             $currentcost = floatval($fatemp->currentcost) / intval($fatemp->qty);
@@ -498,7 +498,7 @@ class assetregisterController extends defaultController
                 ->insert([
                     'assetcode' => $fatemp->assetcode,
                     'assettype' => $fatemp->assettype,
-                    'assetno' => $assetno, // got padding
+                    'assetno' => $fatemp->assetcode.$assetno, // got padding
                     'description' => $fatemp->description,
                     'dolineno' => $fatemp->lineno_,
                     'deptcode' => $fatemp->deptcode,

@@ -320,6 +320,7 @@ $(document).ready(function (){
 			{ label: 'Credit Term', name: 'creditterm', hidden: true },
 			{ label: 'Coverage IP', name: 'coverageip', hidden: true },
 			{ label: 'Coverage OP', name: 'coverageop', hidden: true },
+			{ label: 'newic', name: 'newic', hidden: true },
 			{ label: 'tinid', name: 'tinid', hidden: true },
 			{ label: 'idno', name: 'idno', hidden: true },
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },

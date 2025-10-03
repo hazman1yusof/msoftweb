@@ -120,13 +120,13 @@ class ARAgeingJob:
                    pm.Name as pm_name, dm.debtortype, dt.debtortycode, dt.description, dm.name, st.description as unit_desc
             FROM debtor.debtormast dm
             JOIN debtor.debtortype dt ON dt.debtortycode = dm.debtortype AND dt.compcode = %s
-            JOIN debtor.dbacthdr dh ON dh.debtorcode = dm.debtorcode AND dh.recstatus='POSTED' AND dh.compcode=%s AND dh.posteddate <= %s
+            JOIN debtor.dbacthdr dh ON dh.debtorcode = dm.debtorcode AND dh.recstatus='POSTED' AND dh.compcode=%s AND dh.posteddate <= %s AND dh.trantype != %s
             JOIN sysdb.sector st ON st.sectorcode = dh.unit AND st.compcode=%s
             LEFT JOIN hisdb.pat_mast pm ON pm.NewMrn = dh.mrn AND pm.compcode=%s
             WHERE dm.compcode=%s
         """
 
-        params = [self.compcode, self.compcode, self.date, self.compcode, self.compcode, self.compcode]
+        params = [self.compcode, self.compcode, self.date, 'RD', self.compcode, self.compcode, self.compcode]
 
         if self.debtortype.upper() != 'ALL':
             sql += " AND dt.debtortycode=%s"

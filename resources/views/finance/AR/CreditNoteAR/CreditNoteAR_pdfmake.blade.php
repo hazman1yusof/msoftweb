@@ -98,10 +98,10 @@
                                 [
                                     { text: "{{\Carbon\Carbon::parse($obj->entrydate_hdr)->format('d/m/Y')}}"},
                                     { text: '{{$obj->reftrantype}}-{{str_pad($obj->refauditno, 5, "0", STR_PAD_LEFT)}}' },
-                                    @if ($dballoc_dtl->reftrantype == 'DN')
+                                    @if ($obj->reftrantype == 'DN')
                                        { text: '{{$dbacthdr->remark}}' },
-                                    @elseif ($dballoc_dtl->reftrantype == 'IN')
-                                       { text: '{{$dballoc_dtl->pt_name}}' },
+                                    @elseif ($obj->reftrantype == 'IN')
+                                       { text: '{{$obj->pt_name}}' },
                                     @endif
                                     { text: '{{number_format($obj->amount,2)}}', alignment: 'right' },
                                 ],

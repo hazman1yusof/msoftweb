@@ -767,39 +767,116 @@
 			
 			<div class="ui bottom attached tab raised segment" data-tab="physTreatment">
 				<div class="ui form ui grid">
-					<div class="five wide column grouped fields">
-						<div class="sixteen wide column field">
-							<div class="ui checkbox">
-								<input type="checkbox" name="tr_physio" id="Physio_tr_physio" value="1">
-								<label for="Physio_tr_physio">Physiotherapy</label>
+					<div class='ui grid' style="padding: 15px 30px;">
+						<div class="four wide column" style="padding: 14px 14px 0px 150px;">
+							<div class="field">
+								<label>Date</label>
 							</div>
 						</div>
-						<div class="sixteen wide column field">
-							<div class="ui checkbox">
-								<input type="checkbox" name="tr_occuptherapy" id="Physio_tr_occuptherapy" value="1">
-								<label for="Physio_tr_occuptherapy">Occupational Therapy</label>
+						
+						<div class="twelve wide column" style="padding: 14px 14px 0px 14px;">
+							<div class="field eight wide column">
+								<input id="Physio_req_date" name="req_date" type="date" rdonly>
 							</div>
 						</div>
-					</div>
-					<div class="five wide column grouped fields">
-						<div class="sixteen wide column field">
-							<div class="ui checkbox">
-								<input type="checkbox" name="tr_respiphysio" id="Physio_tr_respiphysio" value="1">
-								<label for="Physio_tr_respiphysio">Respiratory Physiotherapy</label>
+						
+						<div class="four wide column" style="padding: 14px 14px 0px 150px;">
+							<div class="field">
+								<label>Clinical Diagnosis</label>
 							</div>
 						</div>
-						<div class="sixteen wide column field">
-							<div class="ui checkbox">
-								<input type="checkbox" name="tr_neuro" id="Physio_tr_neuro" value="1">
-								<label for="Physio_tr_neuro">Neuro Rehab</label>
+						
+						<div class="twelve wide column" style="padding: 14px 14px 0px 14px;">
+							<div class="field eight wide column">
+								<textarea id="Physio_clinic_diag" name="clinic_diag" type="text" rows="5" readonly="" disabled></textarea>
 							</div>
 						</div>
-					</div>
-					<div class="five wide column grouped fields">
-						<div class="sixteen wide column field">
-							<div class="ui checkbox">
-								<input type="checkbox" name="tr_splint" id="Physio_tr_splint" value="1">
-								<label for="Physio_tr_splint">Splinting</label>
+						
+						<div class="four wide column" style="padding: 14px 14px 0px 150px;">
+							<div class="field">
+								<label>Relevant Finding(s)</label>
+							</div>
+						</div>
+						
+						<div class="twelve wide column" style="padding: 14px 14px 0px 14px;">
+							<div class="field eight wide column">
+								<textarea id="Physio_findings" name="findings" type="text" rows="5" readonly="" disabled></textarea>
+							</div>
+						</div>
+						
+						<div class="three wide column" style="padding: 14px 14px 0px 150px;">
+							<div class="field">
+								<label>Treatment</label>
+							</div>
+						</div>
+						
+						<div class="thirteen wide column" style="padding: 14px 14px 0px 30px;">
+							<div class="field eight wide column">
+								<!-- <textarea id="phyPhysio_treatment" name="phy_treatment" type="text" rows="5"></textarea> -->
+								<div class="ui form">
+									<div class="grouped fields">
+										<div class="field">
+											<div class="ui read-only checkbox">
+												<input type="checkbox" name="tr_physio" id="Physio_tr_physio" value="1">
+												<label for="Physio_tr_physio">Physiotherapy</label>
+											</div>
+										</div>
+										<div class="field">
+											<div class="ui read-only checkbox">
+												<input type="checkbox" name="tr_occuptherapy" id="Physio_tr_occuptherapy" value="1">
+												<label for="Physio_tr_occuptherapy">Occupational Therapy</label>
+											</div>
+										</div>
+										<div class="field">
+											<div class="ui read-only checkbox">
+												<input type="checkbox" name="tr_respiphysio" id="Physio_tr_respiphysio" value="1">
+												<label for="Physio_tr_respiphysio">Respiratory Physiotherapy</label>
+											</div>
+										</div>
+										<div class="field">
+											<div class="ui read-only checkbox">
+												<input type="checkbox" name="tr_neuro" id="Physio_tr_neuro" value="1">
+												<label for="Physio_tr_neuro">Neuro Rehab</label>
+											</div>
+										</div>
+										<div class="field">
+											<div class="ui read-only checkbox">
+												<input type="checkbox" name="tr_splint" id="Physio_tr_splint" value="1">
+												<label for="Physio_tr_splint">Splinting</label>
+											</div>
+										</div>
+										<div class="field">
+											<div class="ui read-only checkbox">
+												<input type="checkbox" name="tr_speech" id="Physio_tr_speech" value="1">
+												<label for="Physio_tr_speech">Speech</label>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="four wide column" style="padding: 14px 14px 0px 150px;">
+							<div class="field">
+								<label>Remarks</label>
+							</div>
+						</div>
+						
+						<div class="twelve wide column" style="padding: 14px 14px 0px 14px;">
+							<div class="field eight wide column">
+								<textarea id="Physio_remarks" name="remarks" type="text" rows="5" readonly="" disabled></textarea>
+							</div>
+						</div>
+						
+						<div class="sixteen wide column centered grid" style="padding-left: 150px;">
+							<div class="inline field">
+								<label>Name of Requesting Doctor</label>
+								<input id="phyPhysio_doctorname" name="phy_doctorname" type="text" style="width: 350px; text-transform: uppercase;" rdonly>
+							</div>
+							
+							<div class="inline field">
+								<label>Entered By</label>
+								<input id="phyPhysio_lastuser" name="phy_lastuser" type="text" style="width: 350px; text-transform: uppercase;" rdonly>
 							</div>
 						</div>
 					</div>

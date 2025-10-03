@@ -11,6 +11,9 @@ use Carbon\Carbon;
 use Response;
 use File;
 use Guzzle\Http\Exception\ClientErrorResponseException;
+use GuzzleHttp\Client;
+use App\Exports\print_implant_patientExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class einvoiceController extends defaultController
 {   
@@ -23,11 +26,17 @@ class einvoiceController extends defaultController
         return view('finance.GL.einvoice.einvoice');
     }
 
+    public function show_imp(Request $request){   
+        return view('finance.GL.einvoice.implant_patmast');
+    }
+
     public function table(Request $request){   
         DB::enableQueryLog();
         switch($request->action){
             case 'maintable':
                 return $this->maintable($request);
+            case 'maintable_ip':
+                return $this->maintable_ip($request);
             case 'acctent_sales':
                 return $this->acctent_sales($request);
             case 'acctent_cost':
@@ -36,9 +45,37 @@ class einvoiceController extends defaultController
                 return $this->einvoice_show($request);
             case 'show_result':
                 return $this->show_result($request);
+            case 'check_verifytin':
+                return $this->check_verifytin($request);
+            case 'save_verifytin':
+                return $this->save_verifytin($request);
+            case 'login_submit':
+                return $this->login_submit($request);
+            case 'einvoice_submit':
+                return $this->einvoice_submit($request);
+            case 'einvoice_save_dm':
+                return $this->einvoice_save_dm($request);
+            case 'print_implant_patient':
+                return $this->print_implant_patient($request);
             default:
                 return 'error happen..';
         }
+    }
+
+    public function einvoice_show(Request $request){   
+        $idno = $request->idno;
+        if(empty($idno)){
+            throw new \Exception("No dbacthdr idno");
+        }
+
+        $dbacthdr = DB::table('debtor.dbacthdr as db')
+                        ->where('db.compcode',session('compcode'))
+                        ->where('db.idno',$idno)
+                        ->first();
+
+        $invno = $dbacthdr->invno;
+
+        return view('finance.GL.einvoice.einvoice_show',compact('invno'));
     }
 
     public function form(Request $request){   
@@ -55,8 +92,11 @@ class einvoiceController extends defaultController
     }
 
     public function maintable(Request $request){
+
+        $unit = ($request->unit)?$request->unit:'ALL';
+
         $table = DB::table('debtor.dbacthdr as db')
-                        ->select('db.idno','db.compcode','db.source','db.trantype','db.auditno','db.lineno_','db.invno','db.mrn','db.episno','db.debtorcode','db.amount','db.entrydate','pm.Name','dm.name as dbname','db.LHDNSubBy','db.LHDNStatus')
+                        ->select('db.idno','db.compcode','db.source','db.trantype','db.auditno','db.lineno_','db.invno','db.mrn','db.episno','db.debtorcode','db.amount','db.entrydate','pm.Name','dm.name as dbname','db.LHDNSubBy','db.LHDNStatus','dm.newic as dm_newic','dm.tinid','pm.newic as pm_newic','dm.debtortype','db.unit','db.pointofsales','dm.address1','dm.address2','dm.address3','dm.postcode','dm.teloffice','dm.statecode')
                         ->leftJoin('hisdb.pat_mast as pm', function($join) use ($request){
                             $join = $join->where('pm.compcode', '=', session('compcode'));
                             $join = $join->on('pm.newmrn', '=', 'db.mrn');
@@ -65,11 +105,16 @@ class einvoiceController extends defaultController
                             $join = $join->where('dm.compcode', '=', session('compcode'));
                             $join = $join->on('dm.debtorcode', '=', 'db.debtorcode');
                         })
+                        ->where('db.recstatus','POSTED')
                         ->where('db.compcode',session('compcode'))
                         ->where('db.source','PB')
-                        ->whereIn('db.trantype',['IN','RD'])
-                        ->whereNotNull('db.deptcode')
-                        ->where('db.pointofsales','0');
+                        ->whereIn('db.trantype',['IN'])
+                        ->whereNotNull('db.deptcode');
+
+        if(strtoupper($unit) != 'ALL'){
+            $table = $table->where('db.unit',$unit);
+        }
+
                         // ->where('db.mrn','!=','0')
                         // ->where('db.episno','!=','0');
 
@@ -81,6 +126,11 @@ class einvoiceController extends defaultController
             if($request->searchCol[0] == 'Name'){
                 $table = $table->Where(function ($table) use ($request) {
                     $table->Where('pm.'.$request->searchCol[0],'like',$request->searchVal[0]);
+                });
+            }else if($request->searchCol[0] == 'entrydate'){
+                $table = $table->Where(function ($table) use ($request) {
+                    $table->WhereDate('db.entrydate','>=',$request->datefrom);
+                    $table->WhereDate('db.entrydate','<=',$request->dateto);
                 });
             }else{
                 $table = $table->Where(function ($table) use ($request) {
@@ -107,6 +157,24 @@ class einvoiceController extends defaultController
         }
         
         $paginate = $table->paginate($request->rows);
+
+        foreach ($paginate->items() as $key => $value) {
+            if(!empty($value->pm_newic)){
+                $value->newic = $value->pm_newic;
+            }else{
+                $value->newic = $value->dm_newic;
+            }
+
+            if(strtoupper($value->trantype)=='IN'){
+                if($value->pointofsales == '1'){
+                    $value->url = "./PointOfSales/showpdf?idno=".$value->idno;
+                }else{
+                    $value->url = "./SalesOrder/showpdf?idno=".$value->idno;
+                }
+            }else if(strtoupper($value->trantype)=='RD'){
+                $value->url = "./receipt/showpdf?auditno=".$value->idno;
+            }
+        }
         
         //////////paginate/////////
         
@@ -120,6 +188,64 @@ class einvoiceController extends defaultController
         $responce->sql_query = $this->getQueries($table);
         
         return json_encode($responce);
+    }
+
+    public function maintable_ip(Request $request){
+
+        $table = DB::table('hisdb.pat_mast as pm')
+                        ->select('pm.idno','pm.CompCode','pm.MRN','pm.Episno','pm.Name','pm.Address1','pm.Address2','pm.Address3','pm.Postcode','pm.citycode','pm.AreaCode','pm.StateCode','pm.CountryCode','pm.telh','pm.telhp','pm.Newic','pm.NewMrn')
+                        ->where('pm.compcode',session('compcode'));
+
+        if(!empty($request->filterCol)){
+            $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
+        }
+        
+        if(!empty($request->searchCol)){
+            if($request->searchCol[0] == 'Name'){
+                $table = $table->Where(function ($table) use ($request) {
+                    $table->Where('pm.'.$request->searchCol[0],'like',$request->searchVal[0]);
+                });
+            }else{
+                $table = $table->Where(function ($table) use ($request) {
+                    $table->Where('pm.'.$request->searchCol[0],'like',$request->searchVal[0]);
+                });
+            }
+        }
+        
+        if(!empty($request->sidx)){
+            
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                foreach ($pieces as $key => $value) {
+                    $value_ = substr_replace($value,"pm.",0,strpos($value,"_")+1);
+                    $pieces_inside = explode(" ", $value_);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }else{
+            $table = $table->orderBy('pm.idno','DESC');
+        }
+        
+        $paginate = $table->paginate($request->rows);
+        //////////paginate/////////
+        
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+        
+        return json_encode($responce);
+    }
+
+    public function print_implant_patient(Request $request){
+        return Excel::download(new print_implant_patientExport(), 'Patient Implant List.xlsx');
     }
 
     public function submit_einvoice(Request $request){
@@ -399,112 +525,15 @@ class einvoiceController extends defaultController
         return json_encode($responce);
     }
 
-    public function populate_invoice($header,$detail){
-        $inv_format = 'JSON';
-        $inv_id = $header->invno;
-        $inv_date = $header->billdate;
-        // $inv_time = Carbon::createFromFormat('d/m/Y', $header->billdate)->format('H:i:d').'Z';
-        $inv_time = '00:00:00Z';
-
-        $cus_city = $header->city;
-        $cus_postcode = $header->postcode;
-        $cus_statecode = $header->statecode;
-        $cus_addr1 = $header->addr1;
-        $cus_addr2 = $header->addr2;
-        $cus_addr3 = $header->addr3;
-
-        $cus_name = $header->name;
-        $cus_newic = $header->newic;
-        $cus_tin = $header->tin;
-        $cus_telhp = $header->telhp;
-
-        $totalamount = floatval($header->totalamount);
-
-        $filename = storage_path("json").'/example1.json';
-        $file = File::get($filename);
-        $json = json_decode($file);
-        // dd($json);
-
-        $json->Invoice[0]->ID[0]->_ = 'JSON-'.$inv_id;
-        $json->Invoice[0]->IssueDate[0]->_ = $inv_date;
-        $json->Invoice[0]->IssueTime[0]->_ = $inv_time;
-        $json->Invoice[0]->AccountingCustomerParty[0]->Party[0]->PostalAddress[0]->CityName[0]->_ = $cus_city;
-        $json->Invoice[0]->AccountingCustomerParty[0]->Party[0]->PostalAddress[0]->PostalZone[0]->_ = $cus_postcode;
-        $json->Invoice[0]->AccountingCustomerParty[0]->Party[0]->PostalAddress[0]->CountrySubentityCode[0]->_ = $cus_statecode;
-        $json->Invoice[0]->AccountingCustomerParty[0]->Party[0]->PostalAddress[0]->AddressLine[0]->Line[0]->_ = $cus_addr1;
-        $json->Invoice[0]->AccountingCustomerParty[0]->Party[0]->PostalAddress[0]->AddressLine[1]->Line[0]->_ = $cus_addr2;
-        $json->Invoice[0]->AccountingCustomerParty[0]->Party[0]->PostalAddress[0]->AddressLine[2]->Line[0]->_ = $cus_addr3;
-        $json->Invoice[0]->AccountingCustomerParty[0]->Party[0]->PartyLegalEntity[0]->RegistrationName[0]->_ = $cus_name;
-        if(!empty($cus_tin)){
-            $json->Invoice[0]->AccountingCustomerParty[0]->Party[0]->PartyIdentification[0]->ID[0]->_ = $cus_tin;
-        }
-        if(!empty($cus_newic)){
-            $json->Invoice[0]->AccountingCustomerParty[0]->Party[0]->PartyIdentification[1]->ID[0]->_ = $cus_newic;
-        }
-        $json->Invoice[0]->AccountingCustomerParty[0]->Party[0]->Contact[0]->Telephone[0]->_ = $cus_telhp;
-        $json->Invoice[0]->LegalMonetaryTotal[0]->PayableAmount[0]->_ = $totalamount;
-
-        $filename_detail = storage_path("json").'/example_detail.json';
-        $file_detail = File::get($filename_detail);
-        $json_detail_main = json_decode($file_detail);
-        // dd($json_detail);
-
-        $InvoiceLine_array = []; 
-        $lineno=0;
-        foreach ($detail as $key => $value) {
-            $lineno++;
-            $json_detail = $json_detail_main;
-            $desc = $value->description;
-            $price = floatval($value->totamount);
-
-            $json_detail->ID[0]->_ = str_pad($lineno, 3, "0", STR_PAD_LEFT);
-            $json_detail->LineExtensionAmount[0]->_ = $price;
-            $json_detail->LineExtensionAmount[0]->currencyID = "MYR";
-            $json_detail->TaxTotal[0]->TaxAmount[0]->_ = 0;
-            $json_detail->TaxTotal[0]->TaxAmount[0]->currencyID = "MYR";
-            $json_detail->TaxTotal[0]->TaxSubtotal[0]->TaxableAmount[0]->_ = 0;
-            $json_detail->TaxTotal[0]->TaxSubtotal[0]->TaxableAmount[0]->currencyID = "MYR";
-            $json_detail->TaxTotal[0]->TaxSubtotal[0]->TaxAmount[0]->_ = 0;
-            $json_detail->TaxTotal[0]->TaxSubtotal[0]->TaxAmount[0]->currencyID = "MYR";
-            $json_detail->TaxTotal[0]->TaxSubtotal[0]->TaxCategory[0]->ID[0]->_ = "06";
-            $json_detail->TaxTotal[0]->TaxSubtotal[0]->TaxCategory[0]->TaxExemptionReason[0]->_ = "NA";
-            $json_detail->TaxTotal[0]->TaxSubtotal[0]->TaxCategory[0]->TaxScheme[0]->ID[0]->_ = "OTH";
-            $json_detail->TaxTotal[0]->TaxSubtotal[0]->TaxCategory[0]->TaxScheme[0]->ID[0]->schemeID = "UN/ECE 5153";
-            $json_detail->TaxTotal[0]->TaxSubtotal[0]->TaxCategory[0]->TaxScheme[0]->ID[0]->schemeAgencyID = "6";
-            $json_detail->Item[0]->CommodityClassification[0]->ItemClassificationCode[0]->_ = "022";
-            $json_detail->Item[0]->CommodityClassification[0]->ItemClassificationCode[0]->listID = "CLASS";
-            $json_detail->Item[0]->Description[0]->_ = $desc;
-            $json_detail->Price[0]->PriceAmount[0]->_ = $price;
-            $json_detail->Price[0]->PriceAmount[0]->currencyID = "MYR";
-            $json_detail->ItemPriceExtension[0]->Amount[0]->_ = $price;
-            $json_detail->ItemPriceExtension[0]->Amount[0]->currencyID = "MYR";
-
-            array_push($InvoiceLine_array, $json_detail);
-        }
-        $json->Invoice[0]->InvoiceLine = $InvoiceLine_array;
-
-        $array_insert = [
-            'invno' => $header->invno,
-            'inv_idno' => $header->idno,
-            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'json' => json_encode($json),
-            'subby' => $header->subby,
-        ];
-
-        DB::table('sysdb.einvoice_log')
-                ->insert($array_insert);
-
-        // dd($json);
-        return $json;
-    }
-
     public function login_lhdn(){
 
-        $client = new \GuzzleHttp\Client();
-        $url = 'https://preprod-api.myinvois.hasil.gov.my/connect/token';
-        // $url = 'https://api.myinvois.hasil.gov.my/connect/token';
-        $clientId = 'c2fecea0-5984-4253-97a7-41dd1565c6e4';
-        $clientSecret = '6eeb46b0-8524-4aea-b096-cc141b3b3b83';
+        $client = new Client([
+            'verify' => false,
+        ]);
+        $url = 'https://api.myinvois.hasil.gov.my/connect/token';
+        
+        $clientId = 'd3b76b30-305d-4812-8510-83df7ae016aa';//'21c26151-0a18-4d05-aca1-5688a2e4464b';
+        $clientSecret = 'accd3c7a-7010-4b7a-acf4-957eedaa1a3d';//'0ed09a87-ae99-48a4-86ed-e1481230122a';
 
         $response = $client->request('POST', $url, [
             'headers' => ['Content-type: application/x-www-form-urlencoded'],
@@ -522,129 +551,352 @@ class einvoiceController extends defaultController
         return $content->access_token;
     }
 
-    public function einvoice_show(Request $request){
-        $idno = $request->idno;
-        $header = DB::table('debtor.dbacthdr as db')
-                    ->select('db.idno','db.invno','db.amount','db.posteddate','dm.name','dm.tinid','dm.address1','dm.address2','dm.address3','dm.postcode','dm.statecode','dm.countrycode','dm.teloffice','pm.Newic','pm.telhp')
-                    ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
-                        $join = $join->where('dm.compcode', '=', session('compcode'));
-                        $join = $join->on('dm.debtorcode', '=', 'db.debtorcode');
-                    })
-                    ->leftJoin('hisdb.pat_mast as pm', function($join) use ($request){
-                        $join = $join->where('pm.compcode', '=', session('compcode'));
-                        $join = $join->on('pm.mrn', '=', 'db.mrn');
-                    })
-                    ->where('db.compcode',session('compcode'))
-                    ->where('db.idno',$idno)
-                    ->first();
+    public function check_verifytin(Request $request){
 
-        $invoice = DB::table('sysdb.einvoice_log')
-                    ->where('inv_idno',$header->idno)
-                    ->orderBy('idno','DESC')
-                    ->first();
+        $mykad = $request->newic;
+        $debtorcode = $request->debtorcode;
 
-        $header->status = $invoice->status;
-        $header->submissionUid = $invoice->submissionUid;
-        $header->invoiceCodeNumber = $invoice->invoiceCodeNumber;
-        $header->uuid = $invoice->uuid;
-        $header->message = $invoice->message;
-        $header->code = $invoice->code;
-        $header->propertyPath = $invoice->propertyPath;
+        $taxpayer = DB::table('finance.taxpayer')
+                        ->where('mykad',$mykad);
 
-        $detail = DB::table('debtor.billsum as bs')
-                    ->select('bs.idno','bs.chggroup','bs.uom','bs.totamount','cm.description')
-                    ->leftJoin('hisdb.chgmast as cm', function($join) use ($request){
-                        $join = $join->where('cm.compcode', '=', session('compcode'));
-                        $join = $join->on('cm.chgcode', '=', 'bs.chggroup');
-                        $join = $join->on('cm.uom', '=', 'bs.uom');
-                    })
-                    ->where('bs.invno',$header->invno)
-                    ->where('bs.compcode',session('compcode'))
-                    ->where('bs.source','PB')
-                    ->where('bs.trantype','IN')
-                    ->where('bs.totamount','!=','0')
-                    ->where('bs.recstatus','!=','DELETE')
-                    ->where('bs.recstatus','!=','CANCELLED')
-                    ->get();
+        if($taxpayer->exists()){
+            $taxpayer = $taxpayer->first();
+            $retval = $taxpayer->tin;
 
-        return view('finance.GL.einvoice.einvoice_show',compact('header','detail'));
-    }
-
-    public function einvoice_storeDB($myresponse,$username){
-
-        if(empty($myresponse->submissionUid) && !property_exists($myresponse,'rejectedDocuments')){
-            DB::table('sysdb.einvoice_log')
-                    ->insert([
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'errormsg' => json_encode($myresponse),
-                        'status' => 'ERROR'
-                    ]);
+            echo $retval;
         }else{
-            foreach ($myresponse->rejectedDocuments as $rejectedDocument) {
-                $invno = substr($rejectedDocument->invoiceCodeNumber, 5);
-                DB::table('sysdb.einvoice_log')
-                    ->where('inv_idno',$invno)
-                    ->update([
-                        'status' => 'REJECTED',
-                        'submissionUid' => $myresponse->submissionUid,
-                        'invoiceCodeNumber' => $rejectedDocument->invoiceCodeNumber,
-                        'message' => $rejectedDocument->error->details[0]->message,
+
+            $access_token = $this->login_lhdn();
+
+            $client = new Client([
+                        'verify' => false,
                     ]);
+            $url = 'https://api.myinvois.hasil.gov.my/api/v1.0/taxpayer/search/tin?idType=NRIC&idValue='.$mykad.'&taxpayerName=';
+            try {
+                $response = $client->request('GET', $url, [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'Accept' => 'application/json',
+                        'authorization' => $access_token,
+                    ]
+                ]);
 
-                DB::table('debtor.dbacthdr as db')
-                            ->where('db.compcode',session('compcode'))
-                            ->where('db.idno',$invno)
-                            ->update([
-                                'LHDNStatus' => 'REJECTED',
-                                'LHDNSubID' => $myresponse->submissionUid,
-                                'LHDNCodeNo' => $rejectedDocument->invoiceCodeNumber,
-                                // 'LHDNDocID' => $acceptedDocument->uuid,
-                                'LHDNSubBy' => $username
-                            ]);
-            }
+                $response_ = $response->getBody()->getContents();
 
-            foreach ($myresponse->acceptedDocuments as $acceptedDocument) {
-                $invno = substr($acceptedDocument->invoiceCodeNumber, 5);
-                DB::table('sysdb.einvoice_log')
-                    ->where('inv_idno',$invno)
-                    ->update([
-                        'status' => 'ACCEPTED',
-                        'submissionUid' => $myresponse->submissionUid,
-                        'invoiceCodeNumber' => $acceptedDocument->invoiceCodeNumber,
-                        'uuid' => $acceptedDocument->uuid,
-                    ]);
+                $myresponse = json_decode($response_);
 
-                DB::table('debtor.dbacthdr as db')
-                            ->where('db.compcode',session('compcode'))
-                            ->where('db.idno',$invno)
-                            ->update([
-                                'LHDNStatus' => 'ACCEPTED',
-                                'LHDNSubID' => $myresponse->submissionUid,
-                                'LHDNCodeNo' => $acceptedDocument->invoiceCodeNumber,
-                                'LHDNDocID' => $acceptedDocument->uuid,
-                                'LHDNSubBy' => $username
-                            ]);
+                return $this->einvoice_store_taxpayer($myresponse,$mykad,$debtorcode);
+
+                // return view('einvoice_show',compact('myresponse','header','detail'));
+
+            }catch(\GuzzleHttp\Exception\RequestException $e) {
+                return 'notin';
+                if ($e->hasResponse()) {
+                    $response = $e->getResponse();
+
+                    $myresponse = json_decode((string) $response->getBody());
+
+                    return $myresponse;
+                    // return view('einvoice_show',compact('myresponse','header','detail'));
+                }
             }
         }
     }
 
-    public function check_invno_exist($inv_id){
-        $einvoice = DB::table('sysdb.einvoice_log')
-                        ->where('inv_idno',$inv_id)
-                        ->where('status','ACCEPTED');
+    public function einvoice_save_dm(Request $request){
+        DB::beginTransaction();
+        try {
 
-        return $einvoice->exists();
+            $postcode = DB::table('hisdb.postcode')
+                        ->where('compcode',session('compcode'))
+                        ->where('postcode',$request->postcode_dm);
+
+            $statecode = null;
+
+            if($postcode->exists()){
+                $postcode=$postcode->first();
+
+                $state = DB::table('hisdb.state')
+                        ->where('compcode',session('compcode'))
+                        ->where('description',strtoupper($postcode->statecode));
+
+                if($state->exists()){
+                    $state = $state->first();
+                    $statecode = $state->StateCode;
+                }
+            }else{
+                throw new \Exception("Wrong Postcode, please check");
+            }
+
+            DB::table('debtor.debtormast')
+                ->where('compcode',session('compcode'))
+                ->where('debtorcode',$request->payercode_dm)
+                ->update([
+                    'address1' => $request->address1_dm,
+                    'address2' => $request->address2_dm,
+                    'address3' => $request->address3_dm,
+                    'postcode' => $request->postcode_dm,
+                    'teloffice' => $request->telhp_dm,
+                    'statecode' => $statecode,
+                ]);
+
+
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
     }
 
-    public function show_result(Request $request){
-        $idno_array = $request->idno_array;
+    public function einvoice_store_taxpayer($myresponse,$mykad,$debtorcode){
+        DB::table('finance.taxpayer')
+                ->insert([
+                    'mykad' => $mykad,
+                    'tin' => $myresponse->tin
+                ]);
 
-        $einvoices = DB::table('sysdb.einvoice_log')
-            ->whereIn('inv_idno',$idno_array)
-            ->get();
+        DB::table('debtor.debtormast')
+                ->where('compcode',session('compcode'))
+                ->where('debtorcode',$debtorcode)
+                ->update([
+                    'tinid' => $myresponse->tin
+                ]);
 
-        $einvoices = $einvoices->unique('invno');
-
-        return view('finance.GL.einvoice.show_result',compact('einvoices'));
+        return $myresponse->tin;
     }
+
+    public function save_verifytin(Request $request){
+        $upd_array = [];
+
+        if(!empty($request->tinid)){
+            $upd_array['tinid'] = $request->tinid;
+        }
+
+        if(!empty($request->newic)){
+            $upd_array['newic'] = $request->newic;
+        }
+
+        if(count($upd_array)>0){
+            DB::table('debtor.debtormast')
+                ->where('compcode',session('compcode'))
+                ->where('debtorcode',$request->debtorcode)
+                ->update($upd_array);
+        }
+    }
+
+    public function login_submit(Request $request){
+
+        DB::beginTransaction();
+        try {
+
+            $users = DB::table('sysdb.users')
+                            ->where('compcode',session('compcode'))
+                            ->where('username',$request->username)
+                            ->where('password',$request->password);
+
+            if(!$users->exists()){
+                throw new \Exception("Wrong Password or username");
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function einvoice_submit(Request $request){
+
+        DB::beginTransaction();
+        try {
+            $idno = $request->idno;
+            if(empty($idno)){
+                throw new \Exception("No dbacthdr idno");
+            }
+
+            $dbacthdr = DB::table('debtor.dbacthdr as db')
+                            ->select('db.idno','db.compcode','db.source','db.trantype','db.auditno','db.lineno_','db.invno','db.mrn','db.episno','db.debtorcode','db.amount','db.entrydate','pm.Name','dm.name as dbname','db.LHDNSubBy','db.LHDNStatus','dm.newic as dm_newic','dm.tinid','pm.newic as pm_newic','dm.debtortype','db.unit','db.pointofsales','dm.address1','dm.address2','dm.address3','dm.postcode','dm.statecode','dm.teloffice')
+                            ->leftJoin('hisdb.pat_mast as pm', function($join) use ($request){
+                                $join = $join->where('pm.compcode', '=', session('compcode'));
+                                $join = $join->on('pm.newmrn', '=', 'db.mrn');
+                            })
+                            ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
+                                $join = $join->where('dm.compcode', '=', session('compcode'));
+                                $join = $join->on('dm.debtorcode', '=', 'db.debtorcode');
+                            })
+                            ->where('db.compcode',session('compcode'))
+                            ->where('db.idno',$idno);
+
+            if(!$dbacthdr->exists()){
+                throw new \Exception("No dbacthdr data");
+            }
+
+            $dbacthdr = $dbacthdr->first();
+            if(!empty($dbacthdr->pm_newic)){
+                $newic = $dbacthdr->pm_newic;
+            }else{
+                $newic = $dbacthdr->dm_newic;
+            }
+
+            $billsum = DB::table('debtor.billsum AS b')
+                    ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus', 'm.description')
+                    ->leftJoin('hisdb.chgmast as m', function($join) use ($request){
+                        $join = $join->on('b.chggroup', '=', 'm.chgcode');
+                        $join = $join->on('b.uom', '=', 'm.uom');
+                        $join = $join->where('m.compcode', '=', session('compcode'));
+                        // $join = $join->where('m.unit', '=', session('unit'));
+                    })
+                    ->where('b.source','=',$dbacthdr->source)
+                    ->where('b.trantype','=',$dbacthdr->trantype)
+                    ->where('b.billno','=',$dbacthdr->auditno)
+                    ->where('b.compcode','=',session('compcode'))
+                    ->get();
+
+            if (empty($dbacthdr->invno)) {
+                throw new \Exception("No invno");
+            }
+            if (empty($dbacthdr->dbname)) {
+                throw new \Exception("No name");
+            }
+            if (empty($dbacthdr->tinid)) {
+                throw new \Exception("No tin");
+            }
+            
+            if (empty($dbacthdr->teloffice)) {
+                throw new \Exception("No telhp");
+            }
+            if (empty($dbacthdr->postcode)) {
+                throw new \Exception("No postcode");
+            }
+            if (empty($dbacthdr->address2)) {
+                throw new \Exception("No city");
+            }
+            if (empty($dbacthdr->statecode)) {
+                throw new \Exception("No statecode");
+            }
+            if (empty($dbacthdr->address1)) {
+                throw new \Exception("No addr1");
+            }
+            if (empty($dbacthdr->address2)) {
+                throw new \Exception("No addr2");
+            }
+
+            $headerData = [
+                ["invno", $dbacthdr->invno ?? ""],
+                ["name", $dbacthdr->dbname ?? ""],
+                ["tin", $dbacthdr->tinid ?? ""],
+                ["newic", $newic ?? ""],
+                ["telhp", $dbacthdr->teloffice ?? ""],
+                ["postcode", $dbacthdr->postcode ?? ""],
+                ["city", $dbacthdr->address2 ?? ""],
+                ["statecode", $dbacthdr->statecode ?? ""],
+                ["addr1", $dbacthdr->address1 ?? ""],
+                ["addr2", $dbacthdr->address2 ?? ""],
+                ["addr3", $dbacthdr->address3 ?? ""],
+                ["totalamount", $dbacthdr->amount ?? "0"],
+                ["billdate", Carbon::now()->format('d/m/Y')],
+                ["compcode", "medicare"],
+            ];
+
+            $details = [];
+            $counter = 1;
+
+            foreach ($billsum as $row) {
+                $details["DATA" . $counter] = [
+                    ["desc", $row->description ?? ""],
+                    ["price", $row->amount ?? "0"],
+                    ["qty", $row->quantity ?? "1"],
+                ];
+                $counter++;
+            }
+
+            $my_all = [
+                "header" => [
+                    "DATA1" => $headerData,
+                ],
+                "detail" => $details,
+            ];
+
+            DB::table('finance.einvoice_sentdata')
+                ->insert([
+                    'dbacthdr_idno' => $idno,
+                    'payload' => json_encode($my_all),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            // dd(json_encode($my_all));
+
+            $url = "http://175.143.1.33:8080/einvoice/einvoice_post"; // your target API
+
+            $client = new Client();
+
+            $response = $client->post($url, [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json',
+                    'User-Agent' => 'Mozilla/5.0 (Laravel Guzzle Client)',
+                ],
+                'json' => $my_all, // Guzzle will json_encode automatically
+            ]);
+
+            $body = $response->getBody()->getContents();
+
+            if (strpos($body, "ACCEPTED") === 0) {
+                // Split into parts
+                $parts = explode("|", $body);
+
+                $status = $parts[0] ?? null;
+                $submissionUid = $parts[1] ?? null;
+                $invoiceCodeNumber = $parts[2] ?? null;
+                $uuid = $parts[3] ?? null;
+
+                DB::table('debtor.dbacthdr as db')
+                            ->where('db.compcode',session('compcode'))
+                            ->where('db.idno',$idno)
+                            ->update([
+                                'LHDNStatus' => $status,
+                                'LHDNSubID' => $submissionUid,
+                                'LHDNCodeNo' => $invoiceCodeNumber,
+                                'LHDNDocID' => $uuid,
+                                'LHDNSubBy' => session('username'),
+                            ]);
+            } else if (strpos($body, "REJECTED") === 0) {
+                $parts = explode("|", $body);
+
+                $status = $parts[0] ?? null;
+                $submissionUid = $parts[1] ?? null;
+                $invoiceCodeNumber = $parts[2] ?? null;
+                $uuid = $parts[3] ?? null;
+
+                DB::table('debtor.dbacthdr as db')
+                            ->where('db.compcode',session('compcode'))
+                            ->where('db.idno',$idno)
+                            ->update([
+                                'LHDNStatus' => $status,
+                                'LHDNSubID' => $submissionUid,
+                                'LHDNCodeNo' => $invoiceCodeNumber,
+                                'LHDNDocID' => $uuid,
+                                'LHDNSubBy' => session('username'),
+                            ]);
+            } else {
+
+            }
+
+            DB::commit();
+
+            return response()->json([
+                "sent_data" => $body,
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
 }

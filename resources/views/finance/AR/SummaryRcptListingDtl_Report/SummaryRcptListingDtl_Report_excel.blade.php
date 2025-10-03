@@ -11,25 +11,25 @@
     </tr>
     @foreach($dbacthdr as $db_obj)
     <tr>
-        <td>{{\Carbon\Carbon::parse($db_obj->entrydate)->format('d/m/Y')}}</td>
+        <td>{{\Carbon\Carbon::parse($db_obj->posteddate)->format('d/m/Y')}}</td>
         <td>{{$db_obj->tillcode}}</td>
         <td>{{$db_obj->cashier}}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->cash, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->card, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->cheque, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->autodebit, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format(($db_obj->cash)+($db_obj->card)+($db_obj->cheque)+($db_obj->autodebit), 2, '.', ',')}}</td>
+        <td data-format="0.00" style="text-align: right">{{ $db_obj->cash }}</td>
+        <td data-format="0.00" style="text-align: right">{{ $db_obj->card }}</td>
+        <td data-format="0.00" style="text-align: right">{{ $db_obj->cheque }}</td>
+        <td data-format="0.00" style="text-align: right">{{ $db_obj->autodebit }}</td>
+        <td data-format="0.00" style="text-align: right">{{ ($db_obj->cash)+($db_obj->card)+($db_obj->cheque)+($db_obj->autodebit) }}</td>
     </tr>
     @endforeach
     <tr>
         <td style="font-weight:bold">SUBTOTAL</td>
         <td></td>
         <td></td>
-        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_cash, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_card, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_chq, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_bank, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_all, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ $sum_cash }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ $sum_card }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ $sum_chq }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ $sum_bank }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ $sum_all }}</td>
     </tr>
 </table>
 
@@ -66,25 +66,25 @@
 
     @foreach($dbacthdr_rf as $db_obj)
     <tr>
-        <td>{{\Carbon\Carbon::parse($db_obj->entrydate)->format('d/m/Y')}}</td>
+        <td>{{\Carbon\Carbon::parse($db_obj->posteddate)->format('d/m/Y')}}</td>
         <td>{{$db_obj->tillcode}}</td>
         <td>{{$db_obj->cashier}}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->cash, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->card, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->cheque, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->autodebit, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format(($db_obj->cash)+($db_obj->card)+($db_obj->cheque)+($db_obj->autodebit), 2, '.', ',')}}</td>
+        <td data-format="0.00" style="text-align: right">{{ $db_obj->cash }}</td>
+        <td data-format="0.00" style="text-align: right">{{ $db_obj->card }}</td>
+        <td data-format="0.00" style="text-align: right">{{ $db_obj->cheque }}</td>
+        <td data-format="0.00" style="text-align: right">{{ $db_obj->autodebit }}</td>
+        <td data-format="0.00" style="text-align: right">{{ ($db_obj->cash)+($db_obj->card)+($db_obj->cheque)+($db_obj->autodebit) }}</td>
     </tr>
     @endforeach
     <tr>
         <td style="font-weight:bold">SUBTOTAL</td>
         <td></td>
         <td></td>
-        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_cash_ref, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_card_ref, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_chq_ref, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_bank_ref, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_all_ref, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ $sum_cash_ref }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ $sum_card_ref }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ $sum_chq_ref }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ $sum_bank_ref }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ $sum_all_ref }}</td>
     </tr>
      <tr>
         <td></td>
@@ -100,10 +100,10 @@
         <td style="font-weight:bold">GRAND TOTAL</td>
         <td></td>
         <td></td>
-        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($grandtotal_cash, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($grandtotal_card, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($grandtotal_chq, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($grandtotal_bank, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($grandtotal_all, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ $grandtotal_cash }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ $grandtotal_card }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ $grandtotal_chq }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ $grandtotal_bank }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ $grandtotal_all }}</td>
     </tr>
 </table>

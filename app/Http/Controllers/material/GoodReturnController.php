@@ -405,6 +405,15 @@ class GoodReturnController extends defaultController
                                 ->where('compcode', '=', session('compcode'))
                                 ->first();
 
+                $unique_recno = DB::table('material.ivtxnhd')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('recno',$delordhd_obj->recno)
+                                    ->where('trantype',$delordhd_obj->trantype);
+
+                if($unique_recno->exists()){
+                    throw new \Exception("ivtxnhd already exists");
+                }
+
                     //2. pastu letak dkt ivtxnhd
                 DB::table('material.ivtxnhd')
                     ->insert([

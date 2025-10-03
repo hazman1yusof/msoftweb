@@ -106,25 +106,38 @@
                                             { text: '(date/type of tca/location):\n\n', italics: true },
                                         ],
                                     },
-                                    {
-                                        text: [
-                                            @if(!empty($patrehabperkeso->dateTCA))
-                                                { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$patrehabperkeso->dateTCA)->format('d-m-Y')}}' },
-                                            @else
-                                                { text: ' ' },
-                                            @endif
-                                            { text: '\n{{$patrehabperkeso->typeTCA}}' },
-                                        ],
-                                    },
+                                    { text: `{!!$patrehabperkeso->TCA!!}` },
                                 ],
+                                // [
+                                //     {
+                                //         text: [
+                                //             { text: 'Date of TCA:' },
+                                //             { text: '(date/type of tca/location):\n\n', italics: true },
+                                //         ],
+                                //     },
+                                //     {
+                                //         text: [
+                                //             @if(!empty($patrehabperkeso->dateTCA))
+                                //                 { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$patrehabperkeso->dateTCA)->format('d-m-Y')}}' },
+                                //             @else
+                                //                 { text: ' ' },
+                                //             @endif
+                                //             { text: '\n{{$patrehabperkeso->typeTCA}}' },
+                                //         ],
+                                //     },
+                                // ],
                                 [
                                     { text: 'Date of MC (if any):\n\n' },
-                                    @if(!empty($patrehabperkeso->dateMC))
-                                        { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$patrehabperkeso->dateMC)->format('d-m-Y')}}' },
-                                    @else
-                                        { text: ' ' },
-                                    @endif
+                                    { text: `{!!$patrehabperkeso->MC!!}` },
                                 ],
+                                // [
+                                //     { text: 'Date of MC (if any):\n\n' },
+                                //     @if(!empty($patrehabperkeso->dateMC))
+                                //         { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$patrehabperkeso->dateMC)->format('d-m-Y')}}' },
+                                //     @else
+                                //         { text: ' ' },
+                                //     @endif
+                                // ],
                                 [
                                     {
                                         text: [
@@ -516,6 +529,16 @@
                                 ],
                                 [
                                     { text: '' },
+                                    { text: 'ADDUCTION' },
+                                    { text: '{{$romaffectedside->aShlderAddInitP}}' },
+                                    { text: '{{$romaffectedside->aShlderAddInitA}}' },
+                                    { text: '{{$romaffectedside->aShlderAddProgP}}' },
+                                    { text: '{{$romaffectedside->aShlderAddProgA}}' },
+                                    { text: '{{$romaffectedside->aShlderAddFinP}}' },
+                                    { text: '{{$romaffectedside->aShlderAddFinA}}' },
+                                ],
+                                [
+                                    { text: '' },
                                     { text: 'INT. ROT' },
                                     { text: '{{$romaffectedside->aShlderIntRotInitP}}' },
                                     { text: '{{$romaffectedside->aShlderIntRotInitA}}' },
@@ -555,6 +578,26 @@
                                     { text: '{{$romaffectedside->aElbowExtFinA}}' },
                                 ],
                                 [
+                                    { text: '' },
+                                    { text: 'PRONATION' },
+                                    { text: '{{$romaffectedside->aElbowProInitP}}' },
+                                    { text: '{{$romaffectedside->aElbowProInitA}}' },
+                                    { text: '{{$romaffectedside->aElbowProProgP}}' },
+                                    { text: '{{$romaffectedside->aElbowProProgA}}' },
+                                    { text: '{{$romaffectedside->aElbowProFinP}}' },
+                                    { text: '{{$romaffectedside->aElbowProFinA}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'SUPINATION' },
+                                    { text: '{{$romaffectedside->aElbowSupInitP}}' },
+                                    { text: '{{$romaffectedside->aElbowSupInitA}}' },
+                                    { text: '{{$romaffectedside->aElbowSupProgP}}' },
+                                    { text: '{{$romaffectedside->aElbowSupProgA}}' },
+                                    { text: '{{$romaffectedside->aElbowSupFinP}}' },
+                                    { text: '{{$romaffectedside->aElbowSupFinA}}' },
+                                ],
+                                [
                                     { text: 'WRIST' },
                                     { text: 'FLEXION' },
                                     { text: '{{$romaffectedside->aWristFlxInitP}}' },
@@ -573,6 +616,26 @@
                                     { text: '{{$romaffectedside->aWristExtProgA}}' },
                                     { text: '{{$romaffectedside->aWristExtFinP}}' },
                                     { text: '{{$romaffectedside->aWristExtFinA}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'RADIAL DEVIATION' },
+                                    { text: '{{$romaffectedside->aWristRadInitP}}' },
+                                    { text: '{{$romaffectedside->aWristRadInitA}}' },
+                                    { text: '{{$romaffectedside->aWristRadProgP}}' },
+                                    { text: '{{$romaffectedside->aWristRadProgA}}' },
+                                    { text: '{{$romaffectedside->aWristRadFinP}}' },
+                                    { text: '{{$romaffectedside->aWristRadFinA}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'ULNAR DEVIATION' },
+                                    { text: '{{$romaffectedside->aWristUlnarInitP}}' },
+                                    { text: '{{$romaffectedside->aWristUlnarInitA}}' },
+                                    { text: '{{$romaffectedside->aWristUlnarProgP}}' },
+                                    { text: '{{$romaffectedside->aWristUlnarProgA}}' },
+                                    { text: '{{$romaffectedside->aWristUlnarFinP}}' },
+                                    { text: '{{$romaffectedside->aWristUlnarFinA}}' },
                                 ],
                                 [
                                     { text: 'HIP' },
@@ -603,6 +666,16 @@
                                     { text: '{{$romaffectedside->aHipAbdProgA}}' },
                                     { text: '{{$romaffectedside->aHipAbdFinP}}' },
                                     { text: '{{$romaffectedside->aHipAbdFinA}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'ADDUCTION' },
+                                    { text: '{{$romaffectedside->aHipAddInitP}}' },
+                                    { text: '{{$romaffectedside->aHipAddInitA}}' },
+                                    { text: '{{$romaffectedside->aHipAddProgP}}' },
+                                    { text: '{{$romaffectedside->aHipAddProgA}}' },
+                                    { text: '{{$romaffectedside->aHipAddFinP}}' },
+                                    { text: '{{$romaffectedside->aHipAddFinA}}' },
                                 ],
                                 [
                                     { text: '' },
@@ -663,6 +736,26 @@
                                     { text: '{{$romaffectedside->aAnklePtarProgA}}' },
                                     { text: '{{$romaffectedside->aAnklePtarFinP}}' },
                                     { text: '{{$romaffectedside->aAnklePtarFinA}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'EVERSION' },
+                                    { text: '{{$romaffectedside->aAnkleEverInitP}}' },
+                                    { text: '{{$romaffectedside->aAnkleEverInitA}}' },
+                                    { text: '{{$romaffectedside->aAnkleEverProgP}}' },
+                                    { text: '{{$romaffectedside->aAnkleEverProgA}}' },
+                                    { text: '{{$romaffectedside->aAnkleEverFinP}}' },
+                                    { text: '{{$romaffectedside->aAnkleEverFinA}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'INVERSION' },
+                                    { text: '{{$romaffectedside->aAnkleInverInitP}}' },
+                                    { text: '{{$romaffectedside->aAnkleInverInitA}}' },
+                                    { text: '{{$romaffectedside->aAnkleInverProgP}}' },
+                                    { text: '{{$romaffectedside->aAnkleInverProgA}}' },
+                                    { text: '{{$romaffectedside->aAnkleInverFinP}}' },
+                                    { text: '{{$romaffectedside->aAnkleInverFinA}}' },
                                 ],
                             ]
                         },
@@ -739,6 +832,16 @@
                                 ],
                                 [
                                     { text: '' },
+                                    { text: 'ADDUCTION' },
+                                    { text: '{{$romsoundside->sShlderAddInitP}}' },
+                                    { text: '{{$romsoundside->sShlderAddInitA}}' },
+                                    { text: '{{$romsoundside->sShlderAddProgP}}' },
+                                    { text: '{{$romsoundside->sShlderAddProgA}}' },
+                                    { text: '{{$romsoundside->sShlderAddFinP}}' },
+                                    { text: '{{$romsoundside->sShlderAddFinA}}' },
+                                ],
+                                [
+                                    { text: '' },
                                     { text: 'INT. ROT' },
                                     { text: '{{$romsoundside->sShlderIntRotInitP}}' },
                                     { text: '{{$romsoundside->sShlderIntRotInitA}}' },
@@ -778,6 +881,26 @@
                                     { text: '{{$romsoundside->sElbowExtFinA}}' },
                                 ],
                                 [
+                                    { text: '' },
+                                    { text: 'PRONATION' },
+                                    { text: '{{$romsoundside->sElbowProInitP}}' },
+                                    { text: '{{$romsoundside->sElbowProInitA}}' },
+                                    { text: '{{$romsoundside->sElbowProProgP}}' },
+                                    { text: '{{$romsoundside->sElbowProProgA}}' },
+                                    { text: '{{$romsoundside->sElbowProFinP}}' },
+                                    { text: '{{$romsoundside->sElbowProFinA}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'SUPINATION' },
+                                    { text: '{{$romsoundside->sElbowSupInitP}}' },
+                                    { text: '{{$romsoundside->sElbowSupInitA}}' },
+                                    { text: '{{$romsoundside->sElbowSupProgP}}' },
+                                    { text: '{{$romsoundside->sElbowSupProgA}}' },
+                                    { text: '{{$romsoundside->sElbowSupFinP}}' },
+                                    { text: '{{$romsoundside->sElbowSupFinA}}' },
+                                ],
+                                [
                                     { text: 'WRIST' },
                                     { text: 'FLEXION' },
                                     { text: '{{$romsoundside->sWristFlxInitP}}' },
@@ -796,6 +919,26 @@
                                     { text: '{{$romsoundside->sWristExtProgA}}' },
                                     { text: '{{$romsoundside->sWristExtFinP}}' },
                                     { text: '{{$romsoundside->sWristExtFinA}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'RADIAL DEVIATION' },
+                                    { text: '{{$romsoundside->sWristRadInitP}}' },
+                                    { text: '{{$romsoundside->sWristRadInitA}}' },
+                                    { text: '{{$romsoundside->sWristRadProgP}}' },
+                                    { text: '{{$romsoundside->sWristRadProgA}}' },
+                                    { text: '{{$romsoundside->sWristRadFinP}}' },
+                                    { text: '{{$romsoundside->sWristRadFinA}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'ULNAR DEVIATION' },
+                                    { text: '{{$romsoundside->sWristUlnarInitP}}' },
+                                    { text: '{{$romsoundside->sWristUlnarInitA}}' },
+                                    { text: '{{$romsoundside->sWristUlnarProgP}}' },
+                                    { text: '{{$romsoundside->sWristUlnarProgA}}' },
+                                    { text: '{{$romsoundside->sWristUlnarFinP}}' },
+                                    { text: '{{$romsoundside->sWristUlnarFinA}}' },
                                 ],
                                 [
                                     { text: 'HIP' },
@@ -826,6 +969,16 @@
                                     { text: '{{$romsoundside->sHipAbdProgA}}' },
                                     { text: '{{$romsoundside->sHipAbdFinP}}' },
                                     { text: '{{$romsoundside->sHipAbdFinA}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'ADDUCTION' },
+                                    { text: '{{$romsoundside->sHipAddInitP}}' },
+                                    { text: '{{$romsoundside->sHipAddInitA}}' },
+                                    { text: '{{$romsoundside->sHipAddProgP}}' },
+                                    { text: '{{$romsoundside->sHipAddProgA}}' },
+                                    { text: '{{$romsoundside->sHipAddFinP}}' },
+                                    { text: '{{$romsoundside->sHipAddFinA}}' },
                                 ],
                                 [
                                     { text: '' },
@@ -887,6 +1040,26 @@
                                     { text: '{{$romsoundside->sAnklePtarFinP}}' },
                                     { text: '{{$romsoundside->sAnklePtarFinA}}' },
                                 ],
+                                [
+                                    { text: '' },
+                                    { text: 'EVERSION' },
+                                    { text: '{{$romsoundside->sAnkleEverInitP}}' },
+                                    { text: '{{$romsoundside->sAnkleEverInitA}}' },
+                                    { text: '{{$romsoundside->sAnkleEverProgP}}' },
+                                    { text: '{{$romsoundside->sAnkleEverProgA}}' },
+                                    { text: '{{$romsoundside->sAnkleEverFinP}}' },
+                                    { text: '{{$romsoundside->sAnkleEverFinA}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'INVERSION' },
+                                    { text: '{{$romsoundside->sAnkleInverInitP}}' },
+                                    { text: '{{$romsoundside->sAnkleInverInitA}}' },
+                                    { text: '{{$romsoundside->sAnkleInverProgP}}' },
+                                    { text: '{{$romsoundside->sAnkleInverProgA}}' },
+                                    { text: '{{$romsoundside->sAnkleInverFinP}}' },
+                                    { text: '{{$romsoundside->sAnkleInverFinA}}' },
+                                ],
                             ]
                         },
                         layout: {
@@ -912,11 +1085,18 @@
                     { text: '\u200B\t4) MUSCLE TONE (MAS):', fontSize: 9 },
                     {
                         text: [
-                            { text: 'UL: {{$neuroassessment->muscleUL}}\n' },
-                            { text: 'LL: {{$neuroassessment->muscleLL}}' },
+                            { text: `UL: {!!$neuroassessment->muscleUL!!}\n\n` },
+                            { text: `LL: {!!$neuroassessment->muscleLL!!}` },
                         ],
                         style: 'tableExample1',
                     },
+                    // {
+                    //     text: [
+                    //         { text: 'UL: {{$neuroassessment->muscleUL}}\n' },
+                    //         { text: 'LL: {{$neuroassessment->muscleLL}}' },
+                    //     ],
+                    //     style: 'tableExample1',
+                    // },
                     {
                         style: 'tableExample1',
                         table: {
@@ -1078,6 +1258,27 @@
                                     { text: '{{$musclepower->aShlderAbdFin}}' },
                                 ],
                                 [
+                                    { text: '' },
+                                    { text: 'ADDUCTION' },
+                                    { text: '{{$musclepower->aShlderAddInit}}' },
+                                    { text: '{{$musclepower->aShlderAddProg}}' },
+                                    { text: '{{$musclepower->aShlderAddFin}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'INT. ROT' },
+                                    { text: '{{$musclepower->aShlderIntRotInit}}' },
+                                    { text: '{{$musclepower->aShlderIntRotProg}}' },
+                                    { text: '{{$musclepower->aShlderIntRotFin}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'EXT. ROT' },
+                                    { text: '{{$musclepower->aShlderExtRotInit}}' },
+                                    { text: '{{$musclepower->aShlderExtRotProg}}' },
+                                    { text: '{{$musclepower->aShlderExtRotFin}}' },
+                                ],
+                                [
                                     { text: 'ELBOW' },
                                     { text: 'FLEXION' },
                                     { text: '{{$musclepower->aElbowFlxInit}}' },
@@ -1092,6 +1293,20 @@
                                     { text: '{{$musclepower->aElbowExtFin}}' },
                                 ],
                                 [
+                                    { text: '' },
+                                    { text: 'PRONATION' },
+                                    { text: '{{$musclepower->aElbowProInit}}' },
+                                    { text: '{{$musclepower->aElbowProProg}}' },
+                                    { text: '{{$musclepower->aElbowProFin}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'SUPINATION' },
+                                    { text: '{{$musclepower->aElbowSupInit}}' },
+                                    { text: '{{$musclepower->aElbowSupProg}}' },
+                                    { text: '{{$musclepower->aElbowSupFin}}' },
+                                ],
+                                [
                                     { text: 'WRIST' },
                                     { text: 'FLEXION' },
                                     { text: '{{$musclepower->aWristFlxInit}}' },
@@ -1104,6 +1319,20 @@
                                     { text: '{{$musclepower->aWristExtInit}}' },
                                     { text: '{{$musclepower->aWristExtProg}}' },
                                     { text: '{{$musclepower->aWristExtFin}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'RADIAL DEVIATION' },
+                                    { text: '{{$musclepower->aWristRadInit}}' },
+                                    { text: '{{$musclepower->aWristRadProg}}' },
+                                    { text: '{{$musclepower->aWristRadFin}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'ULNAR DEVIATION' },
+                                    { text: '{{$musclepower->aWristUlnarInit}}' },
+                                    { text: '{{$musclepower->aWristUlnarProg}}' },
+                                    { text: '{{$musclepower->aWristUlnarFin}}' },
                                 ],
                                 [
                                     { text: 'HIP' },
@@ -1125,6 +1354,27 @@
                                     { text: '{{$musclepower->aHipAbdInit}}' },
                                     { text: '{{$musclepower->aHipAbdProg}}' },
                                     { text: '{{$musclepower->aHipAbdFin}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'ADDUCTION' },
+                                    { text: '{{$musclepower->aHipAddInit}}' },
+                                    { text: '{{$musclepower->aHipAddProg}}' },
+                                    { text: '{{$musclepower->aHipAddFin}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'INT. ROT' },
+                                    { text: '{{$musclepower->aHipIntRotInit}}' },
+                                    { text: '{{$musclepower->aHipIntRotProg}}' },
+                                    { text: '{{$musclepower->aHipIntRotFin}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'EXT. ROT' },
+                                    { text: '{{$musclepower->aHipExtRotInit}}' },
+                                    { text: '{{$musclepower->aHipExtRotProg}}' },
+                                    { text: '{{$musclepower->aHipExtRotFin}}' },
                                 ],
                                 [
                                     { text: 'KNEE' },
@@ -1153,6 +1403,20 @@
                                     { text: '{{$musclepower->aAnklePtarInit}}' },
                                     { text: '{{$musclepower->aAnklePtarProg}}' },
                                     { text: '{{$musclepower->aAnklePtarFin}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'EVERSION' },
+                                    { text: '{{$musclepower->aAnkleEverInit}}' },
+                                    { text: '{{$musclepower->aAnkleEverProg}}' },
+                                    { text: '{{$musclepower->aAnkleEverFin}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'INVERSION' },
+                                    { text: '{{$musclepower->aAnkleInverInit}}' },
+                                    { text: '{{$musclepower->aAnkleInverProg}}' },
+                                    { text: '{{$musclepower->aAnkleInverFin}}' },
                                 ],
                             ]
                         },
@@ -1209,6 +1473,27 @@
                                     { text: '{{$musclepower->sShlderAbdFin}}' },
                                 ],
                                 [
+                                    { text: '' },
+                                    { text: 'ADDUCTION' },
+                                    { text: '{{$musclepower->sShlderAddInit}}' },
+                                    { text: '{{$musclepower->sShlderAddProg}}' },
+                                    { text: '{{$musclepower->sShlderAddFin}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'INT. ROT' },
+                                    { text: '{{$musclepower->sShlderIntRotInit}}' },
+                                    { text: '{{$musclepower->sShlderIntRotProg}}' },
+                                    { text: '{{$musclepower->sShlderIntRotFin}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'EXT. ROT' },
+                                    { text: '{{$musclepower->sShlderExtRotInit}}' },
+                                    { text: '{{$musclepower->sShlderExtRotProg}}' },
+                                    { text: '{{$musclepower->sShlderExtRotFin}}' },
+                                ],
+                                [
                                     { text: 'ELBOW' },
                                     { text: 'FLEXION' },
                                     { text: '{{$musclepower->sElbowFlxInit}}' },
@@ -1223,6 +1508,20 @@
                                     { text: '{{$musclepower->sElbowExtFin}}' },
                                 ],
                                 [
+                                    { text: '' },
+                                    { text: 'PRONATION' },
+                                    { text: '{{$musclepower->sElbowProInit}}' },
+                                    { text: '{{$musclepower->sElbowProProg}}' },
+                                    { text: '{{$musclepower->sElbowProFin}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'SUPINATION' },
+                                    { text: '{{$musclepower->sElbowSupInit}}' },
+                                    { text: '{{$musclepower->sElbowSupProg}}' },
+                                    { text: '{{$musclepower->sElbowSupFin}}' },
+                                ],
+                                [
                                     { text: 'WRIST' },
                                     { text: 'FLEXION' },
                                     { text: '{{$musclepower->sWristFlxInit}}' },
@@ -1235,6 +1534,20 @@
                                     { text: '{{$musclepower->sWristExtInit}}' },
                                     { text: '{{$musclepower->sWristExtProg}}' },
                                     { text: '{{$musclepower->sWristExtFin}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'RADIAL DEVIATION' },
+                                    { text: '{{$musclepower->sWristRadInit}}' },
+                                    { text: '{{$musclepower->sWristRadProg}}' },
+                                    { text: '{{$musclepower->sWristRadFin}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'ULNAR DEVIATION' },
+                                    { text: '{{$musclepower->sWristUlnarInit}}' },
+                                    { text: '{{$musclepower->sWristUlnarProg}}' },
+                                    { text: '{{$musclepower->sWristUlnarFin}}' },
                                 ],
                                 [
                                     { text: 'HIP' },
@@ -1256,6 +1569,27 @@
                                     { text: '{{$musclepower->sHipAbdInit}}' },
                                     { text: '{{$musclepower->sHipAbdProg}}' },
                                     { text: '{{$musclepower->sHipAbdFin}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'ADDUCTION' },
+                                    { text: '{{$musclepower->sHipAddInit}}' },
+                                    { text: '{{$musclepower->sHipAddProg}}' },
+                                    { text: '{{$musclepower->sHipAddFin}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'INT. ROT' },
+                                    { text: '{{$musclepower->sHipIntRotInit}}' },
+                                    { text: '{{$musclepower->sHipIntRotProg}}' },
+                                    { text: '{{$musclepower->sHipIntRotFin}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'EXT. ROT' },
+                                    { text: '{{$musclepower->sHipExtRotInit}}' },
+                                    { text: '{{$musclepower->sHipExtRotProg}}' },
+                                    { text: '{{$musclepower->sHipExtRotFin}}' },
                                 ],
                                 [
                                     { text: 'KNEE' },
@@ -1284,6 +1618,20 @@
                                     { text: '{{$musclepower->sAnklePtarInit}}' },
                                     { text: '{{$musclepower->sAnklePtarProg}}' },
                                     { text: '{{$musclepower->sAnklePtarFin}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'EVERSION' },
+                                    { text: '{{$musclepower->sAnkleEverInit}}' },
+                                    { text: '{{$musclepower->sAnkleEverProg}}' },
+                                    { text: '{{$musclepower->sAnkleEverFin}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: 'INVERSION' },
+                                    { text: '{{$musclepower->sAnkleInverInit}}' },
+                                    { text: '{{$musclepower->sAnkleInverProg}}' },
+                                    { text: '{{$musclepower->sAnkleInverFin}}' },
                                 ],
                             ]
                         },
@@ -1533,43 +1881,48 @@
                         style: 'tableExample1',
                         table: {
                             headerRows: 1,
-                            widths: [20,232,232],
+                            widths: [247,247],
+                            // widths: [20,232,232],
                             body: [
                                 [
-                                    { text: 'NO ', style: 'tableHeader' },
+                                    // { text: 'NO ', style: 'tableHeader' },
                                     { text: 'FINDING', style: 'tableHeader', alignment: 'left' },
                                     { text: 'INTERVENTION', style: 'tableHeader', alignment: 'left' },
                                 ],
                                 [
-                                    { text: '1.' },
-                                    { text: '{{$patrehabperkeso->finding1}}', alignment: 'left' },
-                                    { text: '{{$patrehabperkeso->intervention1}}', alignment: 'left' },
+                                    { text: `{!!$patrehabperkeso->finding!!}`, alignment: 'left' },
+                                    { text: `{!!$patrehabperkeso->intervention!!}`, alignment: 'left' },
                                 ],
-                                [
-                                    { text: '2.' },
-                                    { text: '{{$patrehabperkeso->finding2}}', alignment: 'left' },
-                                    { text: '{{$patrehabperkeso->intervention2}}', alignment: 'left' },
-                                ],
-                                [
-                                    { text: '3.' },
-                                    { text: '{{$patrehabperkeso->finding3}}', alignment: 'left' },
-                                    { text: '{{$patrehabperkeso->intervention3}}', alignment: 'left' },
-                                ],
-                                [
-                                    { text: '4.' },
-                                    { text: '{{$patrehabperkeso->finding4}}', alignment: 'left' },
-                                    { text: '{{$patrehabperkeso->intervention4}}', alignment: 'left' },
-                                ],
-                                [
-                                    { text: '5.' },
-                                    { text: '{{$patrehabperkeso->finding5}}', alignment: 'left' },
-                                    { text: '{{$patrehabperkeso->intervention5}}', alignment: 'left' },
-                                ],
-                                [
-                                    { text: '6.' },
-                                    { text: '{{$patrehabperkeso->finding6}}', alignment: 'left' },
-                                    { text: '{{$patrehabperkeso->intervention6}}', alignment: 'left' },
-                                ],
+                                // [
+                                //     { text: '1.' },
+                                //     { text: '{{$patrehabperkeso->finding1}}', alignment: 'left' },
+                                //     { text: '{{$patrehabperkeso->intervention1}}', alignment: 'left' },
+                                // ],
+                                // [
+                                //     { text: '2.' },
+                                //     { text: '{{$patrehabperkeso->finding2}}', alignment: 'left' },
+                                //     { text: '{{$patrehabperkeso->intervention2}}', alignment: 'left' },
+                                // ],
+                                // [
+                                //     { text: '3.' },
+                                //     { text: '{{$patrehabperkeso->finding3}}', alignment: 'left' },
+                                //     { text: '{{$patrehabperkeso->intervention3}}', alignment: 'left' },
+                                // ],
+                                // [
+                                //     { text: '4.' },
+                                //     { text: '{{$patrehabperkeso->finding4}}', alignment: 'left' },
+                                //     { text: '{{$patrehabperkeso->intervention4}}', alignment: 'left' },
+                                // ],
+                                // [
+                                //     { text: '5.' },
+                                //     { text: '{{$patrehabperkeso->finding5}}', alignment: 'left' },
+                                //     { text: '{{$patrehabperkeso->intervention5}}', alignment: 'left' },
+                                // ],
+                                // [
+                                //     { text: '6.' },
+                                //     { text: '{{$patrehabperkeso->finding6}}', alignment: 'left' },
+                                //     { text: '{{$patrehabperkeso->intervention6}}', alignment: 'left' },
+                                // ],
                             ]
                         },
                         layout: {
@@ -1890,7 +2243,7 @@
             <div class="ui secondary segment">
                 <h3>
                     <b>Navigation</b>
-                    <button id="merge_btn" class="ui small primary button" style="font-size: 12px; padding: 6px 10px; float: right;">Merge</button>
+                    <!-- <button id="merge_btn" class="ui small primary button" style="font-size: 12px; padding: 6px 10px; float: right;">Merge</button> -->
                 </h3>
             </div>
             <div class="ui segment teal inverted canclick" style="cursor: pointer;" data-goto='#pdfiframe'>
@@ -1898,12 +2251,14 @@
             </div>
             @if($attachment_files1 != '')
             <div class="ui segment canclick" style="cursor: pointer;" data-goto='#pdfiframe_1'>
-                <p>IMAGE<input type="checkbox" data-src="{{$attachment_files1}}" name="1" style="float: right; margin-right: 5px;"></p>
+                <!-- <p>IMAGE<input type="checkbox" data-src="{{$attachment_files1}}" name="1" style="float: right; margin-right: 5px;"></p> -->
+                <p>IMAGE</p>
             </div>
             @endif
             @if($attachment_files2 != '')
             <div class="ui segment canclick" style="cursor: pointer;" data-goto='#pdfiframe_2'>
-                <p>IMAGE<input type="checkbox" data-src="{{$attachment_files2}}" name="1" style="float: right; margin-right: 5px;"></p>
+                <!-- <p>IMAGE<input type="checkbox" data-src="{{$attachment_files2}}" name="1" style="float: right; margin-right: 5px;"></p> -->
+                <p>IMAGE</p>
             </div>
             @endif
             <div id="btn_merge" class="ui segment canclick" style="cursor: pointer; display: none;" data-goto='#pdfiframe_merge'>

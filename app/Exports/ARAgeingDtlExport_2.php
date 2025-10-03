@@ -92,6 +92,8 @@ class ARAgeingDtlExport_2 implements FromView, WithEvents, WithColumnWidths, Wit
                 'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
                 'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
                 'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'K' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'L' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             ];
         }else if($this->type == 'summary'){
             return [
@@ -101,6 +103,10 @@ class ARAgeingDtlExport_2 implements FromView, WithEvents, WithColumnWidths, Wit
                 'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
                 'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
                 'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'K' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'L' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             ];
         }
     }

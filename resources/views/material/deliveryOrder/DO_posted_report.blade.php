@@ -158,6 +158,9 @@
                     sortname:'deptcode',
                     sortorder:'asc',
                     ondblClickRow: function () {
+                        let data = selrowData('#' + dept_from.gridname);
+
+                        $('#dept_to').val(data.deptcode);
                     },
                     gridComplete: function(obj){
                         var gridname = '#'+obj.gridname;

@@ -205,6 +205,18 @@
 						<option value='UKM MEDICARE'>UKM MEDICARE</option>
 					</select> 
 				</div>
+				
+				<label class="col-md-2 control-label" for="brnno">BRN No.</label>
+				<div class="col-md-3">
+					<input id="brnno" name="brnno" type="text" class="form-control input-sm">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="newic">New I/C</label>
+				<div class="col-md-3">
+					<input id="newic" name="newic" type="text" class="form-control input-sm">
+				</div>
 			</div>
 			
 			<div class="form-group">
@@ -311,5 +323,5 @@
 			}
 		});
 	</script>
-	<script src="js/finance/AR/debtorMaster/debtorMaster.js?v=1.2"></script>
+	<script src="js/finance/AR/debtorMaster/debtorMaster.js?v=1.3"></script>
 @endsection

@@ -28,6 +28,7 @@ Route::get('/login','SessionController@create')->name('login');
 Route::get('/loginappt','SessionController@create2')->name('login2');
 Route::get('/qrcode','SessionController@qrcode');
 Route::post('/qrcode','SessionController@qrcode_prereg');
+Route::get('/autologin','SessionController@autologin');
 Route::post('/login','SessionController@store');
 Route::get('/logout','SessionController@destroy')->name('logout');
 Route::get('/mobile','HomeController@mobile')->name('mobile');
@@ -821,6 +822,7 @@ Route::post('/reprintBill/form','finance\ReprintBillController@form');
 
 //// Reprint Bill ///
 Route::get('/einvoice','finance\einvoiceController@show');
+Route::get('/implant_patmast','finance\einvoiceController@show_imp');
 Route::get('/einvoice/table','finance\einvoiceController@table');
 Route::post('/einvoice/form','finance\einvoiceController@form');
 

@@ -98,6 +98,16 @@ class DeliveryOrderController extends defaultController
                 $request_no = $this->request_no('GRN', $request->delordhd_prdept);
                 $recno = $this->recno('IV','IT');
                 $compcode = session('compcode');
+
+                $unique_recno = DB::table('material.delordhd')
+                                ->where('compcode',session('compcode'))
+                                ->where('recno',$recno)
+                                ->where('trantype','GRN');
+
+                if($unique_recno->exists()){
+                    throw new \Exception("delordhd already exists");
+                }
+
             }else{
                 $request_no = 0;
                 $recno = 0;
@@ -364,6 +374,16 @@ class DeliveryOrderController extends defaultController
                     //2. pastu letak dkt ivtxnhd
 
                 if($Stock_flag){
+
+                    $unique_recno = DB::table('material.ivtxnhd')
+                                        ->where('compcode',session('compcode'))
+                                        ->where('recno',$delordhd_obj->recno)
+                                        ->where('trantype',$delordhd_obj->trantype);
+
+                    if($unique_recno->exists()){
+                        throw new \Exception("ivtxnhd already exists");
+                    }
+
                     DB::table('material.ivtxnhd')
                         ->insert([
                             'compcode'=>$delordhd_obj->compcode, 

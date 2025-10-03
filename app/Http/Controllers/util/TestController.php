@@ -70,10 +70,12 @@ class TestController extends defaultController
                 return $this->betulkan_uom_billsum($request);
             case 'compare_stockbalance_report_vs_pnl':
                 return $this->compare_stockbalance_report_vs_pnl($request);
-            // case 'check_product_qtyonhand_sama_dgn_stockloc_qtyonhand':
-            //     return $this->check_product_qtyonhand_sama_dgn_stockloc_qtyonhand($request);
-            // case 'betulkan_stockexp_semua_chk':
-            //     return $this->betulkan_stockexp_semua_chk($request);
+            case 'newic_pm_ke_dm':
+                return $this->newic_pm_ke_dm($request);
+            case 'itemcode_avgcost':
+                return $this->itemcode_avgcost($request);
+            case 'itemcode_avgcost_ivdspdt':
+                return $this->itemcode_avgcost_ivdspdt($request);
             case 'betulkan_stockexp_semua':
                 return $this->betulkan_stockexp_semua($request);
             // case 'betulkan_stockloc_2025':
@@ -8100,6 +8102,112 @@ class TestController extends defaultController
                 dump($array_obj['itemcode'].' - gl_amount: '.$array_obj['gl_amount'].' - closebal_calc: '.$close_balval);
             }
 
+        }
+    }
+
+    public function newic_pm_ke_dm(Request $request){
+        $pm = DB::table('hisdb.pat_mast')
+                ->where('compcode',session('compcode'))
+                ->get();
+
+        foreach ($pm as $value) {
+            if(!empty($value->NewMrn)){
+
+                $dm = DB::table('debtor.debtormast')
+                        ->where('compcode',session('compcode'))
+                        ->where('debtorcode',$value->NewMrn);
+
+                if($dm->exists()){
+                    dump($value->Newic);
+                    DB::table('debtor.debtormast')
+                        ->where('compcode',session('compcode'))
+                        ->where('debtorcode',$value->NewMrn)
+                        ->update([
+                            'newic' => $value->Newic
+                        ]);
+                }
+            }
+        }
+    }
+
+    public function statecode_upd(Request $request){
+        $dm = DB::table('debtor.debtormast')
+                ->where('compcode',session('compcode'))
+                ->whereNotNull('postcode')
+                ->get();
+
+        foreach ($dm as $obj) {
+            $postcode = DB::table('hisdb.postcode')
+                        ->where('compcode',session('compcode'))
+                        ->where('postcode',$obj->postcode);
+
+            if($postcode->exists()){
+                $postcode=$postcode->first();
+
+                $state = DB::table('hisdb.state')
+                        ->where('compcode',session('compcode'))
+                        ->where('description',strtoupper($postcode->statecode));
+
+                if($state->exists()){
+                    $state = $state->first();
+                     DB::table('debtor.debtormast')
+                            ->where('compcode',session('compcode'))
+                            ->where('idno',$obj->idno)
+                            ->update([
+                                'statecode' => $state->StateCode
+                            ]);
+
+                    echo  nl2br($state->StateCode."\n");
+                }
+
+            }
+
+        }
+    }
+
+    public function len_len(Request $request){
+        $apalloc = DB::table('finance.apalloc')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','AP')
+                        ->where('trantype','AL')
+                        ->where('docsource','AP')
+                        ->where('doctrantype','PV')
+                        ->where('docauditno','5201835')
+                        ->where('recstatus','!=','DELETE')
+                        ->where('recstatus','!=','CANCELLED')
+                        ->get();
+
+        foreach($apalloc as $obj){
+            DB::table('finance.apacthdr')
+                    ->where('compcode','=',session('compcode'))
+                    // ->where('unit','=',session('unit'))
+                    ->where('source','=',$obj->refsource)
+                    ->where('trantype','=',$obj->reftrantype)
+                    ->where('auditno','=',$obj->refauditno)
+                    ->update([
+                        'outamount' => 0
+                    ]);
+
+            dump($obj->refauditno);
+        }
+    }
+
+    public function itemcode_avgcost(Request $request){
+        $dm = DB::table('recondb.itemcode_avgcost')
+                ->get();
+
+        foreach ($dm as $obj) {
+            $product = DB::table('material.product')
+                        ->where('compcode',session('compcode'))
+                        ->where('itemcode',$obj->itemcode)
+                        ->get();
+
+            DB::table('material.product')
+                    ->where('compcode',session('compcode'))
+                    ->where('itemcode',$obj->itemcode)
+                    ->update([
+                        'avgcost' => $obj->avgcost
+                    ]);
         }
     }
 

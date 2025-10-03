@@ -67,7 +67,7 @@ class assetenquiryController extends defaultController
 
         if(!empty($request->searchCol)){
             $table = $table->Where(function ($table) use ($request){
-                    $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
+                    $table->Where('fa.'.$request->searchCol[0],'like',$request->searchVal[0]);
             });
         }
         
@@ -77,9 +77,8 @@ class assetenquiryController extends defaultController
             if(count($pieces) == 1){
                 $table = $table->orderBy($request->sidx, $request->sord);
             }else{
-                foreach($pieces as $key => $value){
-                    $value_ = substr_replace($value,"db.",0,strpos($value,"_")+1);
-                    $pieces_inside = explode(" ", $value_);
+                for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+                    $pieces_inside = explode(" ", $pieces[$i]);
                     $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
                 }
             }

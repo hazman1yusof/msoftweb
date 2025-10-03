@@ -83,9 +83,9 @@
 								<div class='col-md-12 btnform' style="padding: 20px 0px">
 									<fieldset>
 										<!-- <legend>Stock Sheet :</legend> -->
-										<button name="SummaryRcptListing_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" id="pdfgen1">
+										<!-- <button name="SummaryRcptListing_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" id="pdfgen1">
 											<span class="fa fa-file-pdf-o fa-lg"></span> Generate Report PDF
-										</button>
+										</button> -->
 										<button name="SummaryRcptListing_xls" type="button" class="mybtn btn btn-sm mybtnxls" id="excelgen1">
 											<span class="fa fa-file-excel-o fa-lg"></span> Generate Report Excel
 										</button>
