@@ -465,7 +465,7 @@ class OccupTherapyCognitiveController extends defaultController
                 ->select('m.idno','m.mrn','m.episno','m.dateofexam','m.examiner','m.orientation1','m.orientation2','m.registration','m.registrationTrials','m.attnCalc','m.recall','m.language1','m.language2','m.language3','m.language4','m.language5','m.language6','m.tot_mmse','m.assess_lvl','pm.Name','pm.Newic')
                 ->leftjoin('hisdb.pat_mast as pm', function ($join){
                     $join = $join->on('pm.MRN','=','m.mrn');
-                    $join = $join->on('pm.Episno','=','m.episno');
+                    // $join = $join->on('pm.Episno','=','m.episno');
                     $join = $join->where('pm.compcode','=',session('compcode'));
                 })
                 ->where('m.compcode','=',session('compcode'))
@@ -513,7 +513,7 @@ class OccupTherapyCognitiveController extends defaultController
                 ->select('c.mrn','c.episno','c.dateAssessment','c.education','c.visuospatial','c.naming','c.attention1','c.attention2','c.attention3','c.languageRepeat','c.languageFluency','c.abstraction','c.delayed','c.orientation','c.tot_moca','pm.Name','pm.Newic')
                 ->leftjoin('hisdb.pat_mast as pm', function ($join){
                     $join = $join->on('pm.MRN','=','c.mrn');
-                    $join = $join->on('pm.Episno','=','c.episno');
+                    // $join = $join->on('pm.Episno','=','c.episno');
                     $join = $join->where('pm.compcode','=',session('compcode'));
                 })
                 ->where('c.compcode','=',session('compcode'))
