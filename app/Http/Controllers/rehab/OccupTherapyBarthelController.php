@@ -266,7 +266,7 @@ class OccupTherapyBarthelController extends defaultController
                     ->select('pm.MRN','pm.Name','pm.Newic','b.dateofAssessment')
                     ->leftjoin('hisdb.ot_barthel as b', function ($join){
                         $join = $join->on('b.mrn','=','pm.MRN');
-                        $join = $join->on('b.episno','=','pm.Episno');
+                        // $join = $join->on('b.episno','=','pm.Episno');
                         $join = $join->where('b.compcode','=',session('compcode'));
                     })
                     ->where('pm.CompCode','=',session('compcode'))
