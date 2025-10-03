@@ -42,18 +42,18 @@
                                 [
                                     { text: 'Name' },
                                     { text: ':' },
-                                    { text: `{!!$pat_mast->Name!!}`,},
+                                    { text: `{!!$barthel->Name!!}`,},
                                     { text: 'MRN' },
                                     { text: ':' },
-                                    { text: '{{str_pad($pat_mast->MRN, 7, "0", STR_PAD_LEFT)}}' },
+                                    { text: '{{str_pad($barthel->MRN, 7, "0", STR_PAD_LEFT)}}' },
                                 ],
                                 [
                                     { text: 'NRIC/Passport No.' },
                                     { text: ':' },
-                                    { text: '{{$pat_mast->Newic}}' },
+                                    { text: '{{$barthel->Newic}}' },
                                     { text: 'Date' },
                                     { text: ':' },
-                                    { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$pat_mast->dateofAssessment)->format('d-m-Y')}}' },
+                                    { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$barthel->dateofAssessment)->format('d-m-Y')}}' },
                                 ],
                             ]
                             
