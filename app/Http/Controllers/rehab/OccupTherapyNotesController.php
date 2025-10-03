@@ -220,7 +220,7 @@ class OccupTherapyNotesController extends defaultController
                 ->select('n.mrn','n.episno','n.dateNotes','n.notes','pm.Name','pm.Newic')
                 ->leftjoin('hisdb.pat_mast as pm', function ($join){
                     $join = $join->on('pm.MRN','=','n.mrn');
-                    $join = $join->on('pm.Episno','=','n.episno');
+                    // $join = $join->on('pm.Episno','=','n.episno');
                     $join = $join->where('pm.compcode','=',session('compcode'));
                 })
                 ->where('n.compcode','=',session('compcode'))

@@ -389,7 +389,7 @@ class PosturalAssessmentController extends defaultController
                             ->select('pa.idno','pa.compcode','pa.mrn','pa.episno','pa.entereddate','pa.FACToeOutL','pa.FACToeOutR','pa.FACToeInL','pa.FACToeInR','pa.FACPronationL','pa.FACPronationR','pa.FACFlatFeetL','pa.FACFlatFeetR','pa.FACHighArchL','pa.FACHighArchR','pa.KHKnockKneesL','pa.KHKnockKneesR','pa.KHBowLegsL','pa.KHBowLegsR','pa.spineScoliosisL','pa.spineScoliosisR','pa.scapulaDeviationL','pa.scapulaDeviationR','pa.shoulderDeviationL','pa.shoulderDeviationR','pa.headTiltL','pa.headTiltR','pa.headRotateL','pa.headRotateR','pa.anteriorPosteriorRmk','pa.ankleDorsiflexL','pa.ankleDorsiflexR','pa.anklePlantarL','pa.anklePlantarR','pa.kneeFlexedL','pa.kneeFlexedR','pa.kneeHyperextendL','pa.kneeHyperextendR','pa.pelvisAnterTransL','pa.pelvisAnterTransR','pa.devSymmetry','pa.tiltAnterior','pa.tiltPosterior','pa.LSLordosis','pa.LSFlat','pa.TSKyphosis','pa.TSFlat','pa.trunkRotation','pa.shoulderForward','pa.HPForward','pa.HPBack','pa.lateralRmk','pa.adduser','pa.adddate','pa.upduser','pa.upddate','pa.lastuser','pa.lastupdate','pa.computerid','pm.Name','pm.Newic','pm.Sex')
                             ->leftjoin('hisdb.pat_mast as pm', function ($join){
                                 $join = $join->on('pm.MRN','=','pa.mrn');
-                                $join = $join->on('pm.Episno','=','pa.episno');
+                                // $join = $join->on('pm.Episno','=','pa.episno');
                                 $join = $join->where('pm.compcode','=',session('compcode'));
                             })
                             ->where('pa.compcode','=',session('compcode'))

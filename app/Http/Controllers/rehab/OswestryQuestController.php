@@ -281,7 +281,7 @@ class OswestryQuestController extends defaultController
                         ->select('oq.idno','oq.compcode','oq.mrn','oq.episno','oq.entereddate','oq.painIntensity','oq.personalCare','oq.lifting','oq.walking','oq.sitting','oq.standing','oq.sleeping','oq.socialLife','oq.travelling','oq.employHomemaking','oq.totalScore','oq.disabilityLevel','oq.adduser','oq.adddate','oq.upduser','oq.upddate','oq.lastuser','oq.lastupdate','oq.computerid','pm.Name','pm.Newic')
                         ->leftjoin('hisdb.pat_mast as pm', function ($join){
                             $join = $join->on('pm.MRN','=','oq.mrn');
-                            $join = $join->on('pm.Episno','=','oq.episno');
+                            // $join = $join->on('pm.Episno','=','oq.episno');
                             $join = $join->where('pm.compcode','=',session('compcode'));
                         })
                         ->where('oq.compcode','=',session('compcode'))

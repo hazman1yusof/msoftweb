@@ -42,18 +42,18 @@
                                 [
                                     { text: 'Name' },
                                     { text: ':' },
-                                    { text: `{!!$pat_mast->Name!!}`,},
+                                    { text: `{!!$barthel->Name!!}`,},
                                     { text: 'MRN' },
                                     { text: ':' },
-                                    { text: '{{str_pad($pat_mast->MRN, 7, "0", STR_PAD_LEFT)}}' },
+                                    { text: '{{str_pad($barthel->mrn, 7, "0", STR_PAD_LEFT)}}' },
                                 ],
                                 [
                                     { text: 'NRIC/Passport No.' },
                                     { text: ':' },
-                                    { text: '{{$pat_mast->Newic}}' },
+                                    { text: '{{$barthel->Newic}}' },
                                     { text: 'Date' },
                                     { text: ':' },
-                                    { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$pat_mast->dateofAssessment)->format('d-m-Y')}}' },
+                                    { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$barthel->dateofAssessment)->format('d-m-Y')}}' },
                                 ],
                             ]
                             
@@ -74,8 +74,8 @@
                                     { text: 'Description', style: 'tableHeader', alignment: 'center', fillColor: '#dddddd' }
                                 ],
                                 //chairBedTrf
-                                @foreach ($barthel as $obj)
-                                    @if($obj->chairBedTrf == '0')
+                                
+                                    @if($barthel->chairBedTrf == '0')
                                         [    
                                             { text: 'CHAIR/BED TRANSFERS', rowSpan:5, bold:true},
                                             { image: 'checked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -106,7 +106,7 @@
                                             { text: '15', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient can safely approach the bed walking or in a wheelchair, lock brakes, lift footrests, or position walking aid, move safely to bed, lie down, come to a sitting position on the side of the bed, change the position of the wheelchair, transfer back into it safely and/or grasp aid and stand. The patient must be independent in all phases of this activity.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->chairBedTrf == '3')
+                                    @elseif($barthel->chairBedTrf == '3')
                                         [
                                             { text: 'CHAIR/BED TRANSFERS', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -137,7 +137,7 @@
                                             { text: '15', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient can safely approach the bed walking or in a wheelchair, lock brakes, lift footrests, or position walking aid, move safely to bed, lie down, come to a sitting position on the side of the bed, change the position of the wheelchair, transfer back into it safely and/or grasp aid and stand. The patient must be independent in all phases of this activity.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->chairBedTrf == '8')
+                                    @elseif($barthel->chairBedTrf == '8')
                                         [
                                             { text: 'CHAIR/BED TRANSFERS', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -168,7 +168,7 @@
                                             { text: '15', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient can safely approach the bed walking or in a wheelchair, lock brakes, lift footrests, or position walking aid, move safely to bed, lie down, come to a sitting position on the side of the bed, change the position of the wheelchair, transfer back into it safely and/or grasp aid and stand. The patient must be independent in all phases of this activity.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->chairBedTrf == '12')
+                                    @elseif($barthel->chairBedTrf == '12')
                                         [
                                             { text: 'CHAIR/BED TRANSFERS', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -231,11 +231,10 @@
                                             { text: 'The patient can safely approach the bed walking or in a wheelchair, lock brakes, lift footrests, or position walking aid, move safely to bed, lie down, come to a sitting position on the side of the bed, change the position of the wheelchair, transfer back into it safely and/or grasp aid and stand. The patient must be independent in all phases of this activity.', alignment: 'justify' },
                                         ],
                                     @endif
-                                @endforeach
+                                
 
                                 //ambulation
-                                @foreach ($barthel as $obj)
-                                    @if($obj->ambulation == '0')
+                                    @if($barthel->ambulation == '0')
                                         [    
                                             { text: 'AMBULATION', rowSpan:5, bold:true},
                                             { image: 'checked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -266,7 +265,7 @@
                                             { text: '15', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient must be able to wear braces if required, lock and unlock these braces assume standing position, sit down, and place the necessary aids into position for use. The patient must be able to crutches, canes, or a walkarette, and walk 50 metres without help or supervision.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->ambulation == '3')
+                                    @elseif($barthel->ambulation == '3')
                                         [
                                             { text: 'AMBULATION', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -297,7 +296,7 @@
                                             { text: '15', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient must be able to wear braces if required, lock and unlock these braces assume standing position, sit down, and place the necessary aids into position for use. The patient must be able to crutches, canes, or a walkarette, and walk 50 metres without help or supervision.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->ambulation == '8')
+                                    @elseif($barthel->ambulation == '8')
                                         [
                                             { text: 'AMBULATION', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -328,7 +327,7 @@
                                             { text: '15', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient must be able to wear braces if required, lock and unlock these braces assume standing position, sit down, and place the necessary aids into position for use. The patient must be able to crutches, canes, or a walkarette, and walk 50 metres without help or supervision.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->ambulation == '12')
+                                    @elseif($barthel->ambulation == '12')
                                         [
                                             { text: 'AMBULATION', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -391,11 +390,9 @@
                                             { text: 'The patient must be able to wear braces if required, lock and unlock these braces assume standing position, sit down, and place the necessary aids into position for use. The patient must be able to crutches, canes, or a walkarette, and walk 50 metres without help or supervision.', alignment: 'justify' },
                                         ],
                                     @endif
-                                @endforeach
                             
                                 //ambulationWheelchair
-                                @foreach ($barthel as $obj)
-                                    @if($obj->ambulationWheelchair == '0')
+                                    @if($barthel->ambulationWheelchair == '0')
                                         [    
                                             { text: 'AMBULATION/WHEELCHAIR\n\n*(If unable to walk)\nOnly use thís item if the patient is rated "0" for Ambulation, and then only if the patient has been trained in wheelchair management.', rowSpan:5, bold:true, alignment: 'justify'},
                                             { image: 'checked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -426,7 +423,7 @@
                                             { text: '5', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'To propel wheclchair independently, the patient must be able to go around comers, turn around, manoeuvre the chair to a table, bed, toilet, etc. The patient must be able to push a chair at least 50 metres and negotiate a kerb.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->ambulationWheelchair == '1')
+                                    @elseif($barthel->ambulationWheelchair == '1')
                                         [
                                             { text: 'AMBULATION/WHEELCHAIR\n\n*(If unable to walk)\nOnly use thís item if the patient is rated "0" for Ambulation, and then only if the patient has been trained in wheelchair management.', rowSpan:5, bold:true, alignment: 'justify'},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -457,7 +454,7 @@
                                             { text: '5', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'To propel wheclchair independently, the patient must be able to go around comers, turn around, manoeuvre the chair to a table, bed, toilet, etc. The patient must be able to push a chair at least 50 metres and negotiate a kerb.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->ambulationWheelchair == '3')
+                                    @elseif($barthel->ambulationWheelchair == '3')
                                         [
                                             { text: 'AMBULATION/WHEELCHAIR\n\n*(If unable to walk)\nOnly use thís item if the patient is rated "0" for Ambulation, and then only if the patient has been trained in wheelchair management.', rowSpan:5, bold:true, alignment: 'justify'},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -488,7 +485,7 @@
                                             { text: '5', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'To propel wheclchair independently, the patient must be able to go around comers, turn around, manoeuvre the chair to a table, bed, toilet, etc. The patient must be able to push a chair at least 50 metres and negotiate a kerb.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->ambulationWheelchair == '4')
+                                    @elseif($barthel->ambulationWheelchair == '4')
                                         [
                                             { text: 'AMBULATION/WHEELCHAIR\n\n*(If unable to walk)\nOnly use thís item if the patient is rated "0" for Ambulation, and then only if the patient has been trained in wheelchair management.', rowSpan:5, bold:true, alignment: 'justify'},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -519,7 +516,7 @@
                                             { text: '5', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'To propel wheclchair independently, the patient must be able to go around comers, turn around, manoeuvre the chair to a table, bed, toilet, etc. The patient must be able to push a chair at least 50 metres and negotiate a kerb.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->ambulationWheelchair == '5')
+                                    @elseif($barthel->ambulationWheelchair == '5')
                                         [
                                             { text: 'AMBULATION/WHEELCHAIR\n\n*(If unable to walk)\nOnly use thís item if the patient is rated "0" for Ambulation, and then only if the patient has been trained in wheelchair management.', rowSpan:5, bold:true, alignment: 'justify'},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -582,11 +579,9 @@
                                             { text: 'To propel wheclchair independently, the patient must be able to go around comers, turn around, manoeuvre the chair to a table, bed, toilet, etc. The patient must be able to push a chair at least 50 metres and negotiate a kerb.', alignment: 'justify' },
                                         ],
                                     @endif
-                                @endforeach
                                 
                                 //stairClimbing
-                                @foreach ($barthel as $obj)
-                                    @if($obj->stairClimbing == '0')
+                                    @if($barthel->stairClimbing == '0')
                                         [    
                                             { text: 'STAIR CLIMBING', rowSpan:5, bold:true},
                                             { image: 'checked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -617,7 +612,7 @@
                                             { text: '10', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient is able to go up and down a flight of stairs safely without help or supervision. The patient is able to use hand rails, cane or crutches when needed and is able to carry these devices as he/she ascends or descends.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->stairClimbing == '2')
+                                    @elseif($barthel->stairClimbing == '2')
                                         [
                                             { text: 'STAIR CLIMBING', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -648,7 +643,7 @@
                                             { text: '10', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient is able to go up and down a flight of stairs safely without help or supervision. The patient is able to use hand rails, cane or crutches when needed and is able to carry these devices as he/she ascends or descends.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->stairClimbing == '5')
+                                    @elseif($barthel->stairClimbing == '5')
                                         [
                                             { text: 'STAIR CLIMBING', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -679,7 +674,7 @@
                                             { text: '10', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient is able to go up and down a flight of stairs safely without help or supervision. The patient is able to use hand rails, cane or crutches when needed and is able to carry these devices as he/she ascends or descends.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->stairClimbing == '8')
+                                    @elseif($barthel->stairClimbing == '8')
                                         [
                                             { text: 'STAIR CLIMBING', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -742,11 +737,9 @@
                                             { text: 'The patient is able to go up and down a flight of stairs safely without help or supervision. The patient is able to use hand rails, cane or crutches when needed and is able to carry these devices as he/she ascends or descends.', alignment: 'justify' },
                                         ],
                                     @endif
-                                @endforeach
                                 
                                 //toiletTrf
-                                @foreach ($barthel as $obj)
-                                    @if($obj->toiletTrf == '0')
+                                    @if($barthel->toiletTrf == '0')
                                         [    
                                             { text: 'TOILET TRANSFERS', rowSpan:5, bold:true, pageBreak: 'before'},
                                             { image: 'checked', width: 10, alignment: 'right', border: [true, true, false, true], pageBreak: 'before'},
@@ -777,7 +770,7 @@
                                             { text: '10', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient is able to get on/off the toilet, fasten clothing and use toilet paper without help. If necessary, the patient may use a bed pan or commode or urinal at night, but must be able to empty it and clean it.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->toiletTrf == '2')
+                                    @elseif($barthel->toiletTrf == '2')
                                         [
                                             { text: 'TOILET TRANSFERS', rowSpan:5, bold:true, pageBreak: 'before'},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true], pageBreak: 'before'},
@@ -808,7 +801,7 @@
                                             { text: '10', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient is able to get on/off the toilet, fasten clothing and use toilet paper without help. If necessary, the patient may use a bed pan or commode or urinal at night, but must be able to empty it and clean it.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->toiletTrf == '5')
+                                    @elseif($barthel->toiletTrf == '5')
                                         [
                                             { text: 'TOILET TRANSFERS', rowSpan:5, bold:true, pageBreak: 'before'},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true], pageBreak: 'before'},
@@ -839,7 +832,7 @@
                                             { text: '10', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient is able to get on/off the toilet, fasten clothing and use toilet paper without help. If necessary, the patient may use a bed pan or commode or urinal at night, but must be able to empty it and clean it.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->toiletTrf == '8')
+                                    @elseif($barthel->toiletTrf == '8')
                                         [
                                             { text: 'TOILET TRANSFERS', rowSpan:5, bold:true, pageBreak: 'before'},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true], pageBreak: 'before'},
@@ -902,11 +895,10 @@
                                             { text: 'The patient is able to get on/off the toilet, fasten clothing and use toilet paper without help. If necessary, the patient may use a bed pan or commode or urinal at night, but must be able to empty it and clean it.', alignment: 'justify' },
                                         ],
                                     @endif
-                                @endforeach
+                                
                                
                                 //bowelControl
-                                @foreach ($barthel as $obj)
-                                    @if($obj->bowelControl == '0')
+                                    @if($barthel->bowelControl == '0')
                                         [    
                                             { text: 'BOWEL CONTROL', rowSpan:5, bold:true},
                                             { image: 'checked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -937,7 +929,7 @@
                                             { text: '10', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient can control bowels and has no accidents, can use suppository, or take an enema when necessary.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->bowelControl == '2')
+                                    @elseif($barthel->bowelControl == '2')
                                         [
                                             { text: 'BOWEL CONTROL', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -968,7 +960,7 @@
                                             { text: '10', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient can control bowels and has no accidents, can use suppository, or take an enema when necessary.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->bowelControl == '5')
+                                    @elseif($barthel->bowelControl == '5')
                                         [
                                             { text: 'BOWEL CONTROL', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -999,7 +991,7 @@
                                             { text: '10', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient can control bowels and has no accidents, can use suppository, or take an enema when necessary.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->bowelControl == '8')
+                                    @elseif($barthel->bowelControl == '8')
                                         [
                                             { text: 'BOWEL CONTROL', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -1062,11 +1054,9 @@
                                             { text: 'The patient can control bowels and has no accidents, can use suppository, or take an enema when necessary.', alignment: 'justify' },
                                         ],
                                     @endif
-                                @endforeach
                                 
                                 //bladderControl
-                                @foreach ($barthel as $obj)
-                                    @if($obj->bladderControl == '0')
+                                    @if($barthel->bladderControl == '0')
                                         [    
                                             { text: 'BLADDER CONTROL', rowSpan:5, bold:true},
                                             { image: 'checked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -1097,7 +1087,7 @@
                                             { text: '10', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient is able to control bladder day and night, and/or is independent with internal or external devices.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->bladderControl == '2')
+                                    @elseif($barthel->bladderControl == '2')
                                         [
                                             { text: 'BLADDER CONTROL', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -1128,7 +1118,7 @@
                                             { text: '10', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient is able to control bladder day and night, and/or is independent with internal or external devices.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->bladderControl == '5')
+                                    @elseif($barthel->bladderControl == '5')
                                         [
                                             { text: 'BLADDER CONTROL', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -1159,7 +1149,7 @@
                                             { text: '10', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient is able to control bladder day and night, and/or is independent with internal or external devices.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->bladderControl == '8')
+                                    @elseif($barthel->bladderControl == '8')
                                         [
                                             { text: 'BLADDER CONTROL', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -1222,11 +1212,9 @@
                                             { text: 'The patient is able to control bladder day and night, and/or is independent with internal or external devices.', alignment: 'justify' },
                                         ],
                                     @endif
-                                @endforeach
                                 
                                 //bathing
-                                @foreach ($barthel as $obj)
-                                    @if($obj->bathing == '0')
+                                    @if($barthel->bathing == '0')
                                         [    
                                             { text: 'BATHING', rowSpan:5, bold:true},
                                             { image: 'checked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -1257,7 +1245,7 @@
                                             { text: '5', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient may use a bathtub, a shower, or take a complete sponge bath. The patient must be able to do all the steps of whichever method is employed without another person being present.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->bathing == '1')
+                                    @elseif($barthel->bathing == '1')
                                         [
                                             { text: 'BATHING', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -1288,7 +1276,7 @@
                                             { text: '5', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient may use a bathtub, a shower, or take a complete sponge bath. The patient must be able to do all the steps of whichever method is employed without another person being present.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->bathing == '3')
+                                    @elseif($barthel->bathing == '3')
                                         [
                                             { text: 'BATHING', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -1319,7 +1307,7 @@
                                             { text: '5', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient may use a bathtub, a shower, or take a complete sponge bath. The patient must be able to do all the steps of whichever method is employed without another person being present.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->bathing == '4')
+                                    @elseif($barthel->bathing == '4')
                                         [
                                             { text: 'BATHING', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -1382,11 +1370,9 @@
                                             { text: 'The patient may use a bathtub, a shower, or take a complete sponge bath. The patient must be able to do all the steps of whichever method is employed without another person being present.', alignment: 'justify' },
                                         ],
                                     @endif
-                                @endforeach
                                 
                                 //dressing
-                                @foreach ($barthel as $obj)
-                                    @if($obj->dressing == '0')
+                                    @if($barthel->dressing == '0')
                                         [    
                                             { text: 'DRESSING', rowSpan:5, bold:true},
                                             { image: 'checked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -1417,7 +1403,7 @@
                                             { text: '10', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient is able to put on, remove, corset, braces, as prescribed.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->dressing == '2')
+                                    @elseif($barthel->dressing == '2')
                                         [
                                             { text: 'DRESSING', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -1448,7 +1434,7 @@
                                             { text: '10', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient is able to put on, remove, corset, braces, as prescribed.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->dressing == '5')
+                                    @elseif($barthel->dressing == '5')
                                         [
                                             { text: 'DRESSING', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -1479,7 +1465,7 @@
                                             { text: '10', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient is able to put on, remove, corset, braces, as prescribed.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->dressing == '8')
+                                    @elseif($barthel->dressing == '8')
                                         [
                                             { text: 'DRESSING', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -1542,11 +1528,9 @@
                                             { text: 'The patient is able to put on, remove, corset, braces, as prescribed.', alignment: 'justify' },
                                         ],
                                     @endif
-                                @endforeach
                                 
                                 //personalHygiene
-                                @foreach ($barthel as $obj)
-                                    @if($obj->personalHygiene == '0')
+                                    @if($barthel->personalHygiene == '0')
                                         [    
                                             { text: 'PERSONAL HYGIENE\n\n(Grooming)', rowSpan:5, bold:true},
                                             { image: 'checked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -1577,7 +1561,7 @@
                                             { text: '5', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient can wash his/her hands and face, comb hair, clean teeth and shave. A male patient may use any kind of razor but must insert the blade, or plug in the razor without help, as well as retrieve it from the drawer or cabinet. A female patient must apply her own make-up, if used, but need not braid or style her hair.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->personalHygiene == '1')
+                                    @elseif($barthel->personalHygiene == '1')
                                         [
                                             { text: 'PERSONAL HYGIENE\n\n(Grooming)', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -1608,7 +1592,7 @@
                                             { text: '5', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient can wash his/her hands and face, comb hair, clean teeth and shave. A male patient may use any kind of razor but must insert the blade, or plug in the razor without help, as well as retrieve it from the drawer or cabinet. A female patient must apply her own make-up, if used, but need not braid or style her hair.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->personalHygiene == '3')
+                                    @elseif($barthel->personalHygiene == '3')
                                         [
                                             { text: 'PERSONAL HYGIENE\n\n(Grooming)', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -1639,7 +1623,7 @@
                                             { text: '5', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient can wash his/her hands and face, comb hair, clean teeth and shave. A male patient may use any kind of razor but must insert the blade, or plug in the razor without help, as well as retrieve it from the drawer or cabinet. A female patient must apply her own make-up, if used, but need not braid or style her hair.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->personalHygiene == '4')
+                                    @elseif($barthel->personalHygiene == '4')
                                         [
                                             { text: 'PERSONAL HYGIENE\n\n(Grooming)', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -1702,11 +1686,9 @@
                                             { text: 'The patient can wash his/her hands and face, comb hair, clean teeth and shave. A male patient may use any kind of razor but must insert the blade, or plug in the razor without help, as well as retrieve it from the drawer or cabinet. A female patient must apply her own make-up, if used, but need not braid or style her hair.', alignment: 'justify' },
                                         ],
                                     @endif
-                                @endforeach
                                 
                                 //feeding
-                                @foreach ($barthel as $obj)
-                                    @if($obj->feeding == '0')
+                                    @if($barthel->feeding == '0')
                                         [    
                                             { text: 'FEEDING', rowSpan:5, bold:true},
                                             { image: 'checked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -1737,7 +1719,7 @@
                                             { text: '10', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient can feed self trom a tray or table when someone puts the food within reach. The patient must put on an assistive device if needed, cut food, and if desired use salt and pepper, spread butter, etc.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->feeding == '2')
+                                    @elseif($barthel->feeding == '2')
                                         [
                                             { text: 'FEEDING', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -1768,7 +1750,7 @@
                                             { text: '10', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient can feed self trom a tray or table when someone puts the food within reach. The patient must put on an assistive device if needed, cut food, and if desired use salt and pepper, spread butter, etc.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->feeding == '5')
+                                    @elseif($barthel->feeding == '5')
                                         [
                                             { text: 'FEEDING', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -1799,7 +1781,7 @@
                                             { text: '10', alignment: 'left', border: [false, true, true, true] },//ltrb
                                             { text: 'The patient can feed self trom a tray or table when someone puts the food within reach. The patient must put on an assistive device if needed, cut food, and if desired use salt and pepper, spread butter, etc.', alignment: 'justify' },
                                         ],
-                                    @elseif($obj->feeding == '8')
+                                    @elseif($barthel->feeding == '8')
                                         [
                                             { text: 'FEEDING', rowSpan:5, bold:true},
                                             { image: 'unchecked', width: 10, alignment: 'right', border: [true, true, false, true]},
@@ -1862,31 +1844,25 @@
                                             { text: 'The patient can feed self trom a tray or table when someone puts the food within reach. The patient must put on an assistive device if needed, cut food, and if desired use salt and pepper, spread butter, etc.', alignment: 'justify' },
                                         ],
                                     @endif
-                                @endforeach
 
                                 //tot_score
-                                @foreach ($barthel as $obj)
                                     [    
                                         { text: 'TOTAL SCORE', bold:true},
-                                        { text: '{{$obj->tot_score}}', colSpan:3},{},{},
+                                        { text: '{{$barthel->tot_score}}', colSpan:3},{},{},
                                     ],
-                                @endforeach
                                 
                                 //interpretation
-                                @foreach ($barthel as $obj)
                                     [    
                                         { text: 'INTERPRETATION', bold:true},
-                                        { text: '{{$obj->interpretation}}', colSpan:3},{},{},
+                                        { text: '{{$barthel->interpretation}}', colSpan:3},{},{},
                                     ],
-                                @endforeach
                                 
                                 //prediction
-                                @foreach ($barthel as $obj)
                                     [    
                                         { text: 'PREDICTION', bold:true},
-                                        { text: `{!!$obj->prediction!!}`, colSpan:3},{},{},
+                                        { text: `{!!$barthel->prediction!!}`, colSpan:3},{},{},
                                     ],
-                                @endforeach
+                                    
                             ],
                         },
                         layout: {

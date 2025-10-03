@@ -45,6 +45,20 @@
                     {
                         style: 'tableExample',
                         table: {
+                            headerRows: 1,
+                            widths: ['*','*'], // panjang standard dia 515
+                            body: [
+                                [
+                                    { text: `Name : \u200B\t{!!$musculoassessment->Name!!}` },
+                                    { text: 'Date : \u200B\t{{\Carbon\Carbon::createFromFormat('Y-m-d',$musculoassessment->entereddate)->format('d-m-Y')}}' },
+                                ],
+                            ]
+                        },
+                        layout: 'noBorders',
+                    },
+                    {
+                        style: 'tableExample',
+                        table: {
                             widths: ['*'],
                             // headerRows: 5,
                             // keepWithHeaderRows: 5,

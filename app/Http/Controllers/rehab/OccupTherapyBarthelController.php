@@ -261,34 +261,46 @@ class OccupTherapyBarthelController extends defaultController
         if(!$mrn || !$episno){
             abort(404);
         }
-        
-        $pat_mast = DB::table('hisdb.pat_mast as pm')
-                    ->select('pm.MRN','pm.Name','pm.Newic','b.dateofAssessment')
-                    ->leftjoin('hisdb.ot_barthel as b', function ($join){
-                        $join = $join->on('b.mrn','=','pm.MRN');
-                        $join = $join->on('b.episno','=','pm.Episno');
-                        $join = $join->where('b.compcode','=',session('compcode'));
-                    })
-                    ->where('pm.CompCode','=',session('compcode'))
-                    ->where('pm.MRN','=',$mrn)
-                    ->where('pm.Episno','=',$episno)
-                    ->where('b.dateofAssessment','=',$dateofAssessment)
-                    ->first();
-    
+
         $barthel = DB::table('hisdb.ot_barthel as b')
-                ->select('b.mrn','b.episno','b.dateofAssessment','b.chairBedTrf','b.ambulation','b.ambulationWheelchair','b.stairClimbing','b.toiletTrf','b.bowelControl','b.bladderControl','b.bathing','b.dressing','b.personalHygiene','b.feeding','b.tot_score','b.interpretation','b.prediction')
+                ->select('b.mrn','b.episno','b.dateofAssessment','b.chairBedTrf','b.ambulation','b.ambulationWheelchair','b.stairClimbing','b.toiletTrf','b.bowelControl','b.bladderControl','b.bathing','b.dressing','b.personalHygiene','b.feeding','b.tot_score','b.interpretation','b.prediction','pm.Name','pm.Newic')
+                ->leftjoin('hisdb.pat_mast as pm', function ($join){
+                    $join = $join->on('pm.MRN','=','b.mrn');
+                    $join = $join->where('pm.compcode','=',session('compcode'));
+                })
                 ->where('b.compcode','=',session('compcode'))
                 ->where('b.mrn','=',$mrn)
                 ->where('b.episno','=',$episno)
                 ->where('b.dateofAssessment','=',$dateofAssessment)
-                ->get();
+                ->first();
+
+        // $pat_mast = DB::table('hisdb.pat_mast as pm')
+        //             ->select('pm.MRN','pm.Name','pm.Newic','b.dateofAssessment')
+        //             ->leftjoin('hisdb.ot_barthel as b', function ($join){
+        //                 $join = $join->on('b.mrn','=','pm.MRN');
+        //                 // $join = $join->on('b.episno','=','pm.Episno');
+        //                 $join = $join->where('b.compcode','=',session('compcode'));
+        //             })
+        //             ->where('pm.CompCode','=',session('compcode'))
+        //             ->where('pm.MRN','=',$mrn)
+        //             ->where('pm.Episno','=',$episno)
+        //             ->where('b.dateofAssessment','=',$dateofAssessment)
+        //             ->first();
+    
+        // $barthel = DB::table('hisdb.ot_barthel as b')
+        //         ->select('b.mrn','b.episno','b.dateofAssessment','b.chairBedTrf','b.ambulation','b.ambulationWheelchair','b.stairClimbing','b.toiletTrf','b.bowelControl','b.bladderControl','b.bathing','b.dressing','b.personalHygiene','b.feeding','b.tot_score','b.interpretation','b.prediction')
+        //         ->where('b.compcode','=',session('compcode'))
+        //         ->where('b.mrn','=',$mrn)
+        //         ->where('b.episno','=',$episno)
+        //         ->where('b.dateofAssessment','=',$dateofAssessment)
+        //         ->get();
         // dd($barthel);
 
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
         
-        return view('rehab.occupTherapy.barthelChart_pdfmake',compact('barthel','pat_mast'));
+        return view('rehab.occupTherapy.barthelChart_pdfmake',compact('barthel'));
         
     }
 }

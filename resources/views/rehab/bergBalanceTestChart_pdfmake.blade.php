@@ -24,9 +24,9 @@
                 pageSize: 'A4',
                 // pageOrientation: 'landscape',
                 content: [
-                    // {
-                    //     image: 'letterhead', width: 500, style: 'tableHeader', colSpan: 5, alignment: 'center'
-                    // },
+                    {
+                        image: 'letterhead', width: 500, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                    },
                     // {
                     //     text: '\nBERG BALANCE POSITIONS AND TESTS\n',
                     //     style: 'header',
@@ -50,6 +50,20 @@
                                 // return (rowIndex === 0) ? '#000000' : null;
                             }
                         }
+                    },
+                    {
+                        style: 'tableExample',
+                        table: {
+                            headerRows: 1,
+                            widths: ['*','*'], // panjang standard dia 515
+                            body: [
+                                [
+                                    { text: `Name : \u200B\t{!!$bergtest->Name!!}` },
+                                    { text: 'Date : \u200B\t{{\Carbon\Carbon::createFromFormat('Y-m-d',$bergtest->entereddate)->format('d-m-Y')}}' },
+                                ],
+                            ]
+                        },
+                        layout: 'noBorders',
                     },
                     {
                         style: 'tableExample',

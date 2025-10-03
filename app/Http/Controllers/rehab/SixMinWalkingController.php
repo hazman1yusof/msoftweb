@@ -383,7 +383,7 @@ class SixMinWalkingController extends defaultController
                     ->select('s.idno','s.compcode','s.mrn','s.episno','s.lapCounter','s.patName','s.walk','s.techID','s.entereddate','s.gender','s.age','s.race','s.heightFT','s.heightIN','s.heightCM','s.weightLBS','s.weightKG','s.bpsys1','s.bpdias2','s.medsDose','s.medsTime','s.suppOxygen','s.oxygenFlow','s.oxygenType','s.baselineTime','s.endTestTime','s.baselineHR','s.endTestHR','s.baselineBorgScale','s.endTestBorgScale','s.baselineDyspnea','s.endTestDyspnea','s.baselineFatigue','s.endTestFatigue','s.baselineSpO2','s.endTestSpO2','s.stopPaused','s.reason','s.othSymptoms','s.lapsNo','s.partialLaps','s.lapsTot','s.totDistance','s.predictDistance','s.percentPredicted','s.comments','s.adduser','s.adddate','s.upduser','s.upddate','s.lastuser','s.lastupdate','s.computerid','pm.Name','pm.Newic','pm.Sex','rc.Description as raceDesc')
                     ->leftjoin('hisdb.pat_mast as pm', function ($join){
                         $join = $join->on('pm.MRN','=','s.mrn');
-                        $join = $join->on('pm.Episno','=','s.episno');
+                        // $join = $join->on('pm.Episno','=','s.episno');
                         $join = $join->where('pm.compcode','=',session('compcode'));
                     })
                     ->leftjoin('hisdb.racecode as rc', function ($join){
