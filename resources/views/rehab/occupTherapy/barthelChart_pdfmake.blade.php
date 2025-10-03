@@ -42,7 +42,7 @@
                                 [
                                     { text: 'Name' },
                                     { text: ':' },
-                                    { text: `{!!$pat_mast->Name!!}`,},
+                                    { text: '{{$pat_mast->Name}}'},
                                     { text: 'MRN' },
                                     { text: ':' },
                                     { text: '{{str_pad($pat_mast->MRN, 7, "0", STR_PAD_LEFT)}}' },
