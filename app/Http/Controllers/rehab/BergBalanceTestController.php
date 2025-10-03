@@ -290,7 +290,7 @@ class BergBalanceTestController extends defaultController
                     ->select('b.idno','b.compcode','b.mrn','b.episno','b.entereddate','b.sitToStand','b.standUnsupported','b.sitBackUnsupported','b.standToSit','b.transfer','b.standEyesClosed','b.standFeetTogether','b.reachForward','b.pickUpObject','b.turnToLookBehind','b.turn360','b.placeFootOnStep','b.oneFootInFront','b.standOneLeg','b.totalScore','b.adduser','b.adddate','b.upduser','b.upddate','b.lastuser','b.lastupdate','b.computerid','pm.Name','pm.Newic')
                     ->leftjoin('hisdb.pat_mast as pm', function ($join){
                         $join = $join->on('pm.MRN','=','b.mrn');
-                        $join = $join->on('pm.Episno','=','b.episno');
+                        // $join = $join->on('pm.Episno','=','b.episno');
                         $join = $join->where('pm.compcode','=',session('compcode'));
                     })
                     ->where('b.compcode','=',session('compcode'))

@@ -271,7 +271,7 @@ class CardiorespAssessmentController extends defaultController
                                 ->select('c.idno as c_idno','c.compcode','c.mrn','c.episno','c.entereddate','c.subjectiveAssessmt','c.objectiveAssessmt','c.analysis','c.intervention','c.homeEducation','c.evaluation','c.review','c.additionalNotes','c.adduser','c.adddate','c.upduser','c.upddate','c.lastuser','c.lastupdate','c.computerid','pm.Name','pm.Newic')
                                 ->leftjoin('hisdb.pat_mast as pm', function ($join){
                                     $join = $join->on('pm.MRN','=','c.mrn');
-                                    $join = $join->on('pm.Episno','=','c.episno');
+                                    // $join = $join->on('pm.Episno','=','c.episno');
                                     $join = $join->where('pm.compcode','=',session('compcode'));
                                 })
                                 ->where('c.compcode','=',session('compcode'))

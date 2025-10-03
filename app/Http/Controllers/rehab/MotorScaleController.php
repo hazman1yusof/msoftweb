@@ -275,7 +275,7 @@ class MotorScaleController extends defaultController
                     ->select('ms.idno','ms.compcode','ms.mrn','ms.episno','ms.entereddate','ms.sideLie','ms.sitOverBed','ms.balancedSit','ms.sitToStand','ms.walking','ms.upperArmFunc','ms.advHandActvt','ms.generalTonus','ms.movementScore','ms.comments','ms.adduser','ms.adddate','ms.upduser','ms.upddate','ms.lastuser','ms.lastupdate','ms.computerid','pm.Name','pm.Newic')
                     ->leftjoin('hisdb.pat_mast as pm', function ($join){
                         $join = $join->on('pm.MRN','=','ms.mrn');
-                        $join = $join->on('pm.Episno','=','ms.episno');
+                        // $join = $join->on('pm.Episno','=','ms.episno');
                         $join = $join->where('pm.compcode','=',session('compcode'));
                     })
                     ->where('ms.compcode','=',session('compcode'))
