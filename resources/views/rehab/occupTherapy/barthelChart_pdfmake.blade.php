@@ -45,7 +45,7 @@
                                     { text: `{!!$barthel->Name!!}`,},
                                     { text: 'MRN' },
                                     { text: ':' },
-                                    { text: '{{str_pad($barthel->MRN, 7, "0", STR_PAD_LEFT)}}' },
+                                    { text: '{{str_pad($barthel->mrn, 7, "0", STR_PAD_LEFT)}}' },
                                 ],
                                 [
                                     { text: 'NRIC/Passport No.' },
