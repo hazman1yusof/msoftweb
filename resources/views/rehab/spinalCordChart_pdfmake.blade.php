@@ -34,6 +34,20 @@
                     },
                     // { canvas: [ { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 } ] },
                     {
+                        style: 'tableExample',
+                        table: {
+                            headerRows: 1,
+                            widths: [450,'*'], // panjang standard dia 515
+                            body: [
+                                [
+                                    { text: `Name : \u200B\t{!!$spinalcord->Name!!}` },
+                                    { text: 'Date : \u200B\t{{\Carbon\Carbon::createFromFormat('Y-m-d',$spinalcord->entereddate)->format('d-m-Y')}}' },
+                                ],
+                            ]
+                        },
+                        layout: 'noBorders',
+                    },
+                    {
                         alignment: 'justify',
                         columns: [
                             {
@@ -1248,7 +1262,7 @@
                     },
                     tableExample: {
                         fontSize: 8,
-                        margin: [0, 5, 0, 0]
+                        margin: [0, 3, 0, 3]
                     },
                     tableLeft: {
                         fontSize: 8,

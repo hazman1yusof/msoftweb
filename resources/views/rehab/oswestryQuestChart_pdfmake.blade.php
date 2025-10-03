@@ -25,7 +25,7 @@
                 // pageOrientation: 'landscape',
                 content: [
                     {
-                        image: 'letterhead', width: 500, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        image: 'letterhead', width: 470, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
                         text: 'OSWESTRY LOW BACK DISABILITY QUESTIONNAIRE\n',
@@ -38,6 +38,20 @@
                             { text: 'Instructions: this questionnaire has been designed to give us information as to how your back pain has affected your ability to manage everyday life. Please answer every section and mark in each section only the ONE box which applies to you at this time. We realize you may consider 2 of the statements in any section may relate to you, but ' },
                             { text: 'please mark the box which most closely describes your current condition.\n\n', decoration: 'underline' },
                         ], alignment: 'center', fontSize: 8
+                    },
+                    {
+                        style: 'tableExample',
+                        table: {
+                            headerRows: 1,
+                            widths: ['*','*'], // panjang standard dia 515
+                            body: [
+                                [
+                                    { text: `Name : \u200B\t{!!$oswestryquest->Name!!}` },
+                                    { text: 'Date : \u200B\t{{\Carbon\Carbon::createFromFormat('Y-m-d',$oswestryquest->entereddate)->format('d-m-Y')}}' },
+                                ],
+                            ]
+                        },
+                        layout: 'noBorders',
                     },
                     {
                         alignment: 'justify',

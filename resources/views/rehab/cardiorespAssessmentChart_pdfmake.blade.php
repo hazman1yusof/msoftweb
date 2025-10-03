@@ -45,6 +45,20 @@
                     {
                         style: 'tableExample',
                         table: {
+                            headerRows: 1,
+                            widths: ['*','*'], // panjang standard dia 515
+                            body: [
+                                [
+                                    { text: `Name : \u200B\t{!!$cardiorespassessment->Name!!}` },
+                                    { text: 'Date : \u200B\t{{\Carbon\Carbon::createFromFormat('Y-m-d',$cardiorespassessment->entereddate)->format('d-m-Y')}}' },
+                                ],
+                            ]
+                        },
+                        layout: 'noBorders',
+                    },
+                    {
+                        style: 'tableExample',
+                        table: {
                             widths: ['*'],
                             // headerRows: 5,
                             // keepWithHeaderRows: 5,
