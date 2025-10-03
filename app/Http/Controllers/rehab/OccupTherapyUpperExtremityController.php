@@ -406,11 +406,10 @@ class OccupTherapyUpperExtremityController extends defaultController
                         'idno_strength' => $request->idno_strength,
                         'mmt' => $request->mmt,
                         'jamar' => $request->jamar,
-                        'mmt_grip' => $request->mmt_grip,
+                        'mmt_remarks' => $request->mmt_remarks,
                         'jamarGripDate' => $request->jamarGripDate,
                         'jamarGrip_rt' => $request->jamarGrip_rt,
                         'jamarGrip_lt' => $request->jamarGrip_lt,
-                        'mmt_pinch' => $request->mmt_pinch,
                         'jamarPinchDate' => $request->jamarPinchDate,
                         'jamarPinch_lateral_rt' => $request->jamarPinch_lateral_rt,
                         'jamarPinch_pad_rt' => $request->jamarPinch_pad_rt,
@@ -456,11 +455,10 @@ class OccupTherapyUpperExtremityController extends defaultController
                 ->update([
                     'mmt' => $request->mmt,
                     'jamar' => $request->jamar,
-                    'mmt_grip' => $request->mmt_grip,
+                    'mmt_remarks' => $request->mmt_remarks,
                     'jamarGripDate' => $request->jamarGripDate,
                     'jamarGrip_rt' => $request->jamarGrip_rt,
                     'jamarGrip_lt' => $request->jamarGrip_lt,
-                    'mmt_pinch' => $request->mmt_pinch,
                     'jamarPinchDate' => $request->jamarPinchDate,
                     'jamarPinch_lateral_rt' => $request->jamarPinch_lateral_rt,
                     'jamarPinch_pad_rt' => $request->jamarPinch_pad_rt,
@@ -1372,6 +1370,163 @@ class OccupTherapyUpperExtremityController extends defaultController
             
         }
     
+    }
+
+     public function upperExtremity_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        $dateAssess = $request->dateAssess;
+
+        if(!$mrn || !$episno){
+            abort(404);
+        }
+        
+        $upperExtremity = DB::table('hisdb.ot_upperextremity as h')
+                ->select('h.idno','h.mrn','h.episno','h.dateAssess','h.occupTherapist','h.handDominant','h.diagnosis','pm.Name','pm.Newic')
+                ->leftjoin('hisdb.pat_mast as pm', function ($join){
+                    $join = $join->on('pm.MRN','=','h.mrn');
+                    $join = $join->on('pm.Episno','=','h.episno');
+                    $join = $join->where('pm.compcode','=',session('compcode'));
+                })
+                ->where('h.compcode','=',session('compcode'))
+                ->where('h.mrn','=',$mrn)
+                ->where('h.episno','=',$episno)
+                ->where('h.dateAssess','=',$dateAssess)
+                ->first();
+        // dd($upperExtremity);
+
+        // range of motion
+        $date_rof = DB::table('hisdb.ot_upperextremity_rof')
+                    ->select('daterof', DB::raw('DATE_FORMAT(daterof, "%d/%m/%Y") as date'))
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$mrn)
+                    ->where('episno','=',$episno)
+                    ->where('idno_rof','=',$upperExtremity->idno)
+                    ->groupBy('daterof')
+                    ->orderBy('daterof','asc')
+                    ->get();
+
+            
+        $rof = DB::table('hisdb.ot_upperextremity_rof as r')
+                ->select('r.idno','r.mrn','r.episno','r.daterof','r.dominant','r.idno_rof','r.shoulder_ext','r.shoulder_flex','r.shoulder_addAbd','r.shoulder_intRotation','r.shoulder_extRotation','r.elbow_extFlex','r.forearm_pronation','r.forearm_supination','r.impressions','h.idno','h.dateAssess')
+                ->leftjoin('hisdb.ot_upperextremity as h', function ($join){
+                    $join = $join->on('h.mrn','=','r.mrn');
+                    $join = $join->on('h.episno','=','r.episno');
+                    $join = $join->where('h.compcode','=',session('compcode'));
+                })
+                ->where('r.compcode','=',session('compcode'))
+                ->where('r.mrn','=',$mrn)
+                ->where('r.episno','=',$episno)
+                ->where('h.dateAssess','=',$dateAssess)
+                ->where('r.idno_rof','=',$upperExtremity->idno)
+                ->get();
+
+        // dd($rof);
+
+        // muscle strength
+        $strength = DB::table('hisdb.ot_upperextremity_strength as s')
+                ->select('s.idno','s.idno_strength','s.mrn','s.episno','s.mmt','s.jamar','s.mmt_remarks','s.jamarGripDate','s.jamarGrip_rt','s.jamarGrip_lt','s.jamarPinchDate','s.jamarPinch_lateral_rt','s.jamarPinch_pad_rt','s.jamarPinch_jaw_rt','s.jamarPinch_lateral_lt','s.jamarPinch_pad_lt','s.jamarPinch_jaw_lt','s.impressions','h.idno','h.dateAssess')
+                ->leftjoin('hisdb.ot_upperextremity as h', function ($join){
+                    $join = $join->on('h.mrn','=','s.mrn');
+                    $join = $join->on('h.episno','=','s.episno');
+                    $join = $join->where('h.compcode','=',session('compcode'));
+                })
+                ->where('s.compcode','=',session('compcode'))
+                ->where('s.mrn','=',$mrn)
+                ->where('s.episno','=',$episno)
+                ->where('h.dateAssess','=',$dateAssess)
+                ->where('s.idno_strength','=',$upperExtremity->idno)
+                ->first();
+        // dd($strength);
+
+        // sensation
+        $sensation = DB::table('hisdb.ot_upperextremity_sensation as ss')
+                ->select('ss.idno','ss.idno_sensation','ss.mrn','ss.episno','ss.sens_sharpIntact_rt','ss.sens_sharpIntact_lt','ss.sens_dullIntact_rt','ss.sens_dullIntact_lt','ss.sens_lightIntact_rt','ss.sens_lightIntact_lt','ss.sens_deepIntact_rt','ss.sens_deepIntact_lt','ss.sens_stereoIntact','ss.sens_sharpImpaired_rt','ss.sens_sharpImpaired_lt','ss.sens_dullImpaired_rt','ss.sens_dullImpaired_lt','ss.sens_lightImpaired_rt','ss.sens_lightImpaired_lt','ss.sens_deepImpaired_rt','ss.sens_deepImpaired_lt','ss.sens_stereoImpaired','ss.sens_sharpAbsent_rt','ss.sens_sharpAbsent_lt','ss.sens_dullAbsent_rt','ss.sens_dullAbsent_lt','ss.sens_lightAbsent_rt','ss.sens_lightAbsent_lt','ss.sens_deepAbsent_rt','ss.sens_deepAbsent_lt','ss.sens_stereoAbsent','ss.impressions','h.idno','h.dateAssess')
+                ->leftjoin('hisdb.ot_upperextremity as h', function ($join){
+                    $join = $join->on('h.mrn','=','ss.mrn');
+                    $join = $join->on('h.episno','=','ss.episno');
+                    $join = $join->where('h.compcode','=',session('compcode'));
+                })
+                ->where('ss.compcode','=',session('compcode'))
+                ->where('ss.mrn','=',$mrn)
+                ->where('ss.episno','=',$episno)
+                ->where('h.dateAssess','=',$dateAssess)
+                ->where('ss.idno_sensation','=',$upperExtremity->idno)
+                ->first();
+        // dd($sensation);
+        // dd($upperExtremity->idno);
+
+        // prehensive pattern
+        $prehensive = DB::table('hisdb.ot_upperextremity_prehensive as p')
+                ->select('p.idno','p.idno_prehensive','p.mrn','p.episno','p.prehensive_hook_rt','p.prehensive_hook_lt','p.prehensive_lateral_rt','p.prehensive_lateral_lt','p.prehensive_tip_rt','p.prehensive_tip_lt','p.prehensive_cylindrical_rt','p.prehensive_cylindrical_lt','p.prehensive_pad_rt','p.prehensive_pad_lt','p.prehensive_jaw_rt','p.prehensive_jaw_lt','p.prehensive_spherical_rt','p.prehensive_spherical_lt','p.impressions','h.idno','h.dateAssess')
+                ->leftjoin('hisdb.ot_upperextremity as h', function ($join){
+                    $join = $join->on('h.mrn','=','p.mrn');
+                    $join = $join->on('h.episno','=','p.episno');
+                    $join = $join->where('h.compcode','=',session('compcode'));
+                })
+                ->where('p.compcode','=',session('compcode'))
+                ->where('p.mrn','=',$mrn)
+                ->where('p.episno','=',$episno)
+                ->where('h.dateAssess','=',$dateAssess)
+                ->where('p.idno_prehensive','=',$upperExtremity->idno)
+                ->first();
+        // dd($prehensive);
+
+        // skin condition
+        $skin = DB::table('hisdb.ot_upperextremity_skin as sc')
+                ->select('sc.idno','sc.idno_skin','sc.mrn','sc.episno','sc.skinCondition','sc.impressions','h.idno','h.dateAssess')
+                ->leftjoin('hisdb.ot_upperextremity as h', function ($join){
+                    $join = $join->on('h.mrn','=','sc.mrn');
+                    $join = $join->on('h.episno','=','sc.episno');
+                    $join = $join->where('h.compcode','=',session('compcode'));
+                })
+                ->where('sc.compcode','=',session('compcode'))
+                ->where('sc.mrn','=',$mrn)
+                ->where('sc.episno','=',$episno)
+                ->where('h.dateAssess','=',$dateAssess)
+                ->where('sc.idno_skin','=',$upperExtremity->idno)
+                ->first();
+        // dd($skin);
+
+        // edema
+        $edema = DB::table('hisdb.ot_upperextremity_edema as e')
+                ->select('e.idno','e.idno_edema','e.mrn','e.episno','e.edema_noted_rt','e.edema_noted_lt','e.edema_new1','e.edema_new1_rt','e.edema_new1_lt','e.impressions','h.idno','h.dateAssess')
+                ->leftjoin('hisdb.ot_upperextremity as h', function ($join){
+                    $join = $join->on('h.mrn','=','e.mrn');
+                    $join = $join->on('h.episno','=','e.episno');
+                    $join = $join->where('h.compcode','=',session('compcode'));
+                })
+                ->where('e.compcode','=',session('compcode'))
+                ->where('e.mrn','=',$mrn)
+                ->where('e.episno','=',$episno)
+                ->where('h.dateAssess','=',$dateAssess)
+                ->where('e.idno_edema','=',$upperExtremity->idno)
+                ->first();
+        // dd($edema);
+
+        // functional activities
+        $func = DB::table('hisdb.ot_upperextremity_func as f')
+                ->select('f.idno','f.idno_func','f.mrn','f.episno','f.func_writing_rt','f.func_writing_lt','f.func_pickCoins_rt','f.func_pickCoins_lt','f.func_pickPins_rt','f.func_pickPins_lt','f.func_button_rt','f.func_button_lt','f.func_feedSpoon_rt','f.func_feedSpoon_lt','f.func_feedHand_rt','f.func_feedHand_lt','f.impressions','h.idno','h.dateAssess')
+                ->leftjoin('hisdb.ot_upperextremity as h', function ($join){
+                    $join = $join->on('h.mrn','=','f.mrn');
+                    $join = $join->on('h.episno','=','f.episno');
+                    $join = $join->where('h.compcode','=',session('compcode'));
+                })
+                ->where('f.compcode','=',session('compcode'))
+                ->where('f.mrn','=',$mrn)
+                ->where('f.episno','=',$episno)
+                ->where('h.dateAssess','=',$dateAssess)
+                ->where('f.idno_func','=',$upperExtremity->idno)
+                ->first();
+        // dd($func);
+
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+        return view('rehab.occupTherapy.upperExtremityChart_pdfmake',compact('upperExtremity','date_rof','rof','strength','sensation','prehensive','skin','edema','func'));
+        
     }
 
 }

@@ -300,7 +300,7 @@ function make_all_attachment(all_attach){
 	$('#all_attach').html('');
 
 	all_attach.forEach(function(o,i){
-		$('#all_attach').append(`<a class="ui circular blue2 button all_attach" target="_blank" href="./hisweb/uploads/`+o.path+`">`+o.filename+`</a>`);
+		$('#all_attach').append(`<a class="ui circular blue2 button all_attach" target="_blank" href="./uploads/`+o.path+`">`+o.filename+`</a>`);
 	});
 }
 

@@ -10,7 +10,7 @@
             <button class="ui button" id="edit_upperExtremity"><span class="fa fa-edit fa-lg"></span>Edit</button>
             <button class="ui button" id="save_upperExtremity"><span class="fa fa-save fa-lg"></span>Save</button>
             <button class="ui button" id="cancel_upperExtremity"><span class="fa fa-ban fa-lg"></span>Cancel</button>
-            <!-- <button class="ui button" id="upperExtremity_chart"><span class="fa fa-print fa-lg"></span>Print</button> -->
+            <button class="ui button" id="upperExtremity_chart"><span class="fa fa-print fa-lg"></span>Print</button>
         </div>
     </div>
     <div class="ui segment">
@@ -227,6 +227,10 @@
                                                                             Oxford Manual Muscle Testing
                                                                         </label>
                                                                     </div>
+                                                                    
+                                                                    <div class="ui form">
+                                                                        <textarea id="mmt_remarks" name="mmt_remarks" rows="30"></textarea>
+                                                                    </div>
                                                                 </td>
                                                                 <td class="eight wide">
                                                                     <div class="ui field">
@@ -235,131 +239,123 @@
                                                                             Jamar Dynamometer
                                                                         </label>
                                                                     </div>
-                                                                </td>
-                                                            </tr>
-                                                            
-                                                        </tbody>
-                                                    </table>
-
-                                                    <table class="ui celled table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th colspan="2">GRIP STRENGTH</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td class="eight wide">
-                                                                    <div class="ui form">
-                                                                        <textarea id="mmt_grip" name="mmt_grip" rows="6"></textarea>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="eight wide">
-                                                                    <div class="inline fields">
-                                                                        <div class="field">
-                                                                            <label for="jamarGripDate" style="padding-left: 10px;">Date: </label>
-                                                                            <input id="jamarGripDate" name="jamarGripDate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>">
-                                                                        </div>                                         
-                                                                    </div>
-                                                                    <table class="table;border border-white">
-                                                                        <tbody>
-                                                                            <tr>
-                                                                                <td>
-                                                                                    <label>Rt Hand: </label>
-                                                                                    <div class="ui right labeled input" style="margin:0px; padding: 0px 0px 0px 10px;">
-                                                                                        <input type="text" onKeyPress="if(this.value.length==6) return false;" id="jamarGrip_rt" name="jamarGrip_rt">
-                                                                                        <div class="ui basic label">kg</div>
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>
-                                                                             <tr>
-                                                                                <td>
-                                                                                    <label>Lt Hand: </label>
-                                                                                    <div class="ui right labeled input" style="margin:0px; padding: 0px 0px 0px 10px;">
-                                                                                        <input type="text" onKeyPress="if(this.value.length==6) return false;" id="jamarGrip_lt" name="jamarGrip_lt">
-                                                                                        <div class="ui basic label">kg</div>
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-
-                                                    <table class="ui celled table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th colspan="2">PINCH STRENGTH</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td class="eight wide">
-                                                                    <div class="ui form">
-                                                                        <textarea id="mmt_pinch" name="mmt_pinch" rows="12"></textarea>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="eight wide">
-                                                                    <div class="inline fields">
-                                                                        <div class="field">
-                                                                            <label for="jamarPinchDate" style="padding-left: 10px;">Date: </label>
-                                                                            <input id="jamarPinchDate" name="jamarPinchDate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>">
-                                                                        </div>                                         
-                                                                    </div>
-                                                                    <table class="table small;border border-white">
+                                                                    <table class="ui celled table">
                                                                         <thead>
                                                                             <tr>
-                                                                                <th></th>
-                                                                                <th>Rt Hand</th>
-                                                                                <th>Lt Hand</th>
+                                                                                <th>GRIP STRENGTH</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
                                                                             <tr>
-                                                                                <td>Lateral</td>
-                                                                                <td>
-                                                                                    <div class="ui mini right labeled input" style="padding-right: 5px;">
-                                                                                        <input type="text" id="jamarPinch_lateral_rt" name="jamarPinch_lateral_rt" size="15">
-                                                                                        <div class="ui basic label">kg</div>
+                                                                                <!-- <td class="eight wide">
+                                                                                    <div class="ui form">
+                                                                                        <textarea id="mmt_grip" name="mmt_grip" rows="6"></textarea>
                                                                                     </div>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <div class="ui mini right labeled input">
-                                                                                        <input type="text" id="jamarPinch_lateral_lt" name="jamarPinch_lateral_lt" size="15">
-                                                                                        <div class="ui basic label">kg</div>
+                                                                                </td> -->
+                                                                                <td class="eight wide">
+                                                                                    <div class="inline fields">
+                                                                                        <div class="field">
+                                                                                            <label for="jamarGripDate" style="padding-left: 10px;">Date: </label>
+                                                                                            <input id="jamarGripDate" name="jamarGripDate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>">
+                                                                                        </div>                                         
                                                                                     </div>
+                                                                                    <table class="table;border border-white">
+                                                                                        <tbody>
+                                                                                            <tr>
+                                                                                                <td>
+                                                                                                    <label>Rt Hand: </label>
+                                                                                                    <div class="ui right labeled input" style="margin:0px; padding: 0px 0px 0px 10px;">
+                                                                                                        <input type="text" onKeyPress="if(this.value.length==6) return false;" id="jamarGrip_rt" name="jamarGrip_rt">
+                                                                                                        <div class="ui basic label">kg</div>
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td>
+                                                                                                    <label>Lt Hand: </label>
+                                                                                                    <div class="ui right labeled input" style="margin:0px; padding: 0px 0px 0px 10px;">
+                                                                                                        <input type="text" onKeyPress="if(this.value.length==6) return false;" id="jamarGrip_lt" name="jamarGrip_lt">
+                                                                                                        <div class="ui basic label">kg</div>
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
                                                                                 </td>
                                                                             </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                     <table class="ui celled table">
+                                                                        <thead>
                                                                             <tr>
-                                                                                <td>Pad</td>
-                                                                                <td>
-                                                                                    <div class="ui mini right labeled input" style="padding-right: 5px;">
-                                                                                        <input type="text" id="jamarPinch_pad_rt" name="jamarPinch_pad_rt" size="15">
-                                                                                        <div class="ui basic label">kg</div>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <div class="ui mini right labeled input">
-                                                                                        <input type="text" id="jamarPinch_pad_lt" name="jamarPinch_pad_lt" size="15">
-                                                                                        <div class="ui basic label">kg</div>
-                                                                                    </div>
-                                                                                </td>
+                                                                                <th>PINCH STRENGTH</th>
                                                                             </tr>
+                                                                        </thead>
+                                                                        <tbody>
                                                                             <tr>
-                                                                                <td>3-Jaw Chuck</td>
-                                                                                <td>
-                                                                                    <div class="ui mini right labeled input" style="padding-right: 5px;">
-                                                                                        <input type="text" id="jamarPinch_jaw_rt" name="jamarPinch_jaw_rt" size="15">
-                                                                                        <div class="ui basic label">kg</div>
+                                                                                <td class="eight wide">
+                                                                                    <div class="inline fields">
+                                                                                        <div class="field">
+                                                                                            <label for="jamarPinchDate" style="padding-left: 10px;">Date: </label>
+                                                                                            <input id="jamarPinchDate" name="jamarPinchDate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>">
+                                                                                        </div>                                         
                                                                                     </div>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <div class="ui mini right labeled input">
-                                                                                        <input type="text" id="jamarPinch_jaw_lt" name="jamarPinch_jaw_lt" size="15">
-                                                                                        <div class="ui basic label">kg</div>
-                                                                                    </div>
+                                                                                    <table class="table small;border border-white">
+                                                                                        <thead>
+                                                                                            <tr>
+                                                                                                <th></th>
+                                                                                                <th>Rt Hand</th>
+                                                                                                <th>Lt Hand</th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                            <tr>
+                                                                                                <td>Lateral</td>
+                                                                                                <td>
+                                                                                                    <div class="ui mini right labeled input" style="padding-right: 5px;">
+                                                                                                        <input type="text" id="jamarPinch_lateral_rt" name="jamarPinch_lateral_rt" size="12">
+                                                                                                        <div class="ui basic label">kg</div>
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <div class="ui mini right labeled input">
+                                                                                                        <input type="text" id="jamarPinch_lateral_lt" name="jamarPinch_lateral_lt" size="12">
+                                                                                                        <div class="ui basic label">kg</div>
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td>Pad</td>
+                                                                                                <td>
+                                                                                                    <div class="ui mini right labeled input" style="padding-right: 5px;">
+                                                                                                        <input type="text" id="jamarPinch_pad_rt" name="jamarPinch_pad_rt" size="12">
+                                                                                                        <div class="ui basic label">kg</div>
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <div class="ui mini right labeled input">
+                                                                                                        <input type="text" id="jamarPinch_pad_lt" name="jamarPinch_pad_lt" size="12">
+                                                                                                        <div class="ui basic label">kg</div>
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td>3-Jaw Chuck</td>
+                                                                                                <td>
+                                                                                                    <div class="ui mini right labeled input" style="padding-right: 5px;">
+                                                                                                        <input type="text" id="jamarPinch_jaw_rt" name="jamarPinch_jaw_rt" size="12">
+                                                                                                        <div class="ui basic label">kg</div>
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <div class="ui mini right labeled input">
+                                                                                                        <input type="text" id="jamarPinch_jaw_lt" name="jamarPinch_jaw_lt" size="12">
+                                                                                                        <div class="ui basic label">kg</div>
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
                                                                                 </td>
                                                                             </tr>
                                                                         </tbody>

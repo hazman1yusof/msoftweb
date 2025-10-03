@@ -417,6 +417,11 @@ $(document).ready(function (){
     });
     //////////////////////////////////////functional ends//////////////////////////////////////
     
+    /////////////////////////////////////////print button starts/////////////////////////////////////////
+    $("#upperExtremity_chart").click(function (){
+        window.open('./occupTherapy_upperExtremity/upperExtremity_chart?mrn='+$('#mrn_occupTherapy').val()+'&episno='+$("#episno_occupTherapy").val()+'&dateAssess='+$("#dateAssess").val(), '_blank');
+    });
+
     // to format number input to two decimal places (0.00)
     $(".floatNumberField").change(function (){
         $(this).val(parseFloat($(this).val()).toFixed(2));
@@ -1049,7 +1054,7 @@ function button_state_upperExtremity(state){
         case 'empty':
             $("#toggle_occupTherapy").removeAttr('data-toggle');
             $('#cancel_upperExtremity').data('oper','add');
-            $('#new_upperExtremity,#save_upperExtremity,#cancel_upperExtremity,#edit_upperExtremity').attr('disabled',true);
+            $('#new_upperExtremity,#save_upperExtremity,#cancel_upperExtremity,#edit_upperExtremity,#upperExtremity_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
@@ -1060,7 +1065,7 @@ function button_state_upperExtremity(state){
         case 'edit':
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
             $('#cancel_upperExtremity').data('oper','edit');
-            $("#edit_upperExtremity,#new_upperExtremity").attr('disabled',false);
+            $("#edit_upperExtremity,#new_upperExtremity,#upperExtremity_chart").attr('disabled',false);
             $('#save_upperExtremity,#cancel_upperExtremity').attr('disabled',true);
             break;
         case 'wait':
