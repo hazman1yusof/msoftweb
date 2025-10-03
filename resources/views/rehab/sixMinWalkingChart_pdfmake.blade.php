@@ -96,8 +96,16 @@
                                 ],
                                 [
                                     { text: 'Time', style: 'tableHeader' },
-                                    { text: '{{\Carbon\Carbon::createFromFormat('H:i:s',$sixminwalk->baselineTime)->format('h:i A')}}', alignment: 'center' },
-                                    { text: '{{\Carbon\Carbon::createFromFormat('H:i:s',$sixminwalk->endTestTime)->format('h:i A')}}', alignment: 'center' },
+                                    @if(!empty($sixminwalk->baselineTime))
+                                        { text: '{{\Carbon\Carbon::createFromFormat('H:i:s',$sixminwalk->baselineTime)->format('h:i A')}}', alignment: 'center' },
+                                    @else
+                                        { text: '', alignment: 'center' },
+                                    @endif
+                                    @if(!empty($sixminwalk->endTestTime))
+                                        { text: '{{\Carbon\Carbon::createFromFormat('H:i:s',$sixminwalk->endTestTime)->format('h:i A')}}', alignment: 'center' },
+                                    @else
+                                        { text: '', alignment: 'center' },
+                                    @endif
                                 ],
                                 [
                                     { text: 'Heart Rate', style: 'tableHeader' },
