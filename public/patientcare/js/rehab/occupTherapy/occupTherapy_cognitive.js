@@ -262,7 +262,7 @@ var mmsetbl = $('#ot_mmse_file').DataTable( {
         {targets: 6,
         	createdCell: function (td, cellData, rowData, row, col) {
                 console.log(rowData)
-				$(td).html(`<a class="ui circular blue2 button centre floated all_attach" href="../uploads/`+rowData.path+`" target="_blank">OPEN</a>`);
+				$(td).html(`<a class="ui circular blue2 button centre floated all_attach" href="../hisweb/uploads/`+rowData.path+`" target="_blank">OPEN</a>`);
    			}
    		}
     ],
