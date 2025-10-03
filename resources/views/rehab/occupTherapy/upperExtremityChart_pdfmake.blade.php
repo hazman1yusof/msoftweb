@@ -16,13 +16,26 @@
     <script>
         var rof = [
             @foreach($rof as $key => $dt)
-            [
+            {
                 @foreach($dt as $key2 => $val)
-                    {'{{$key2}}' : `{!!str_replace('`', '', $val)!!}`},
+                    '{{$key2}}' : `{!!str_replace('`', '', $val)!!}`,
                 @endforeach
-            ],
+            },
             @endforeach
         ];
+
+        var hand = [
+            @foreach($hand as $key => $dt)
+            {
+                @foreach($dt as $key2 => $val)
+                    '{{$key2}}' : `{!!str_replace('`', '', $val)!!}`,
+                @endforeach
+            },
+            @endforeach
+        ];
+
+        var imp_ROF = '{{$imp_ROF->impressions}}';
+        var imp_hand = '{{$imp_ROF->impressions}}';
 
         $(document).ready(function (){
             var docDefinition = {
@@ -33,7 +46,7 @@
                 },
                 pageSize: 'A4',
                 // pageOrientation: 'landscape',
-                // pageMargins: [10, 20, 20, 30],
+                pageMargins: [10, 10, 10, 10],
                 content: [
                     {
                         image: 'letterhead', width: 500, style: 'tableHeader', colSpan: 5, alignment: 'center'
@@ -86,152 +99,7 @@
                     //HAND
                     {
                         style: 'tableExample',
-                        table: {
-                            // headerRows: 1,
-                            widths: [50,50,50,'*'], // panjang standard dia 515
-                            body: [
-                                [
-                                    { text: 'HAND', style: 'tableHeader', alignment: 'center', colSpan:4, fillColor: '#dddddd'},{},{},{},
-                                ],
-                                [
-                                    { text: '', colSpan:3},{},{},
-                                    { text: 'Date'},
-                                ],
-                                [
-                                    { text: 'Indicate', colSpan:3},{},{},
-                                    { text: ''},
-                                ],
-                                [
-                                    { text: 'Wrist'},
-                                    { text: '0-90'},
-                                    { text: 'Flex'},
-                                    { text: ''},
-                                ],
-                                [
-                                    { text: ''},
-                                    { text: '0-90'},
-                                    { text: 'Ext'},
-                                    { text: ''},
-                                ],
-                                [
-                                    { text: ''},
-                                    { text: '0-30'},
-                                    { text: 'Ulna/Radial Deviation'},
-                                    { text: ''},
-                                ],
-                                [
-                                    { text: 'Thumb'},
-                                    { text: '0-50'},
-                                    { text: 'Ext/Flex MP'},
-                                    { text: ''},
-                                ],
-                                [
-                                    { text: ''},
-                                    { text: '0-80'},
-                                    { text: 'Ext/Flex IP'},
-                                    { text: ''},
-                                ],
-                                [
-                                    { text: ''},
-                                    { text: '0-15'},
-                                    { text: 'Ext/Flex CMC'},
-                                    { text: ''},
-                                ],
-                                [
-                                    { text: ''},
-                                    { text: '0-75'},
-                                    { text: 'Palmar Abduction'},
-                                    { text: ''},
-                                ],
-                                [
-                                    { text: ''},
-                                    { text: ''},
-                                    { text: 'Opposition record in inches:\nThumb to tip 5th Digit'},
-                                    { text: ''},
-                                ],
-                                [
-                                    { text: ''},
-                                    { text: ''},
-                                    { text: 'Thumb to base 5th Digit'},
-                                    { text: ''},
-                                ],
-                                [
-                                    { text: 'Index'},
-                                    { text: '0-90'},
-                                    { text: 'MCP'},
-                                    { text: ''},
-                                ], 
-                                [
-                                    { text: ''},
-                                    { text: '0-110'},
-                                    { text: 'PIP'},
-                                    { text: ''},
-                                ], 
-                                [
-                                    { text: ''},
-                                    { text: '0-90'},
-                                    { text: 'DIP'},
-                                    { text: ''},
-                                ], 
-                                [
-                                    { text: 'Middle'},
-                                    { text: '0-90'},
-                                    { text: 'MCP'},
-                                    { text: ''},
-                                ], 
-                                [
-                                    { text: ''},
-                                    { text: '0-110'},
-                                    { text: 'PIP'},
-                                    { text: ''},
-                                ], 
-                                [
-                                    { text: ''},
-                                    { text: '0-90'},
-                                    { text: 'DIP'},
-                                    { text: ''},
-                                ], 
-                                [
-                                    { text: 'Ring'},
-                                    { text: '0-90'},
-                                    { text: 'MCP'},
-                                    { text: ''},
-                                ], 
-                                [
-                                    { text: ''},
-                                    { text: '0-110'},
-                                    { text: 'PIP'},
-                                    { text: ''},
-                                ], 
-                                [
-                                    { text: ''},
-                                    { text: '0-90'},
-                                    { text: 'DIP'},
-                                    { text: ''},
-                                ], 
-                                [
-                                    { text: 'Little'},
-                                    { text: '0-90'},
-                                    { text: 'MCP'},
-                                    { text: ''},
-                                ], 
-                                [
-                                    { text: ''},
-                                    { text: '0-110'},
-                                    { text: 'PIP'},
-                                    { text: ''},
-                                ], 
-                                [
-                                    { text: ''},
-                                    { text: '0-90'},
-                                    { text: 'DIP'},
-                                    { text: ''},
-                                ], 
-                                [
-                                    { text: 'Impressions: ', colSpan:4},{},{},{},
-                                ],
-                            ],
-                        },
+                        table: make_table_hand(),
                     },
                     //MUSCLE STRENGTH
                     {
@@ -943,119 +811,297 @@
                 $('#pdfiframe').attr('src',dataURL);
             });
         });
-      
-        // function make_table_rof(){
-           
-
-        //     var width = [48,48,48,48,48];
-
-        //     date_rof.forEach(function (e,i){
-        //         width.push('*');
-        //     });
-
-        //     var body = [
-        //         [{ text: '', style: 'tableHeader', colSpan:3 },{ text: '', style: 'tableHeader' },{}],
-        //     ];
-
-        //     date_rof.forEach(function (e,i){
-        //         var date_rof = e.date;
-        //         body[0].push({ text: date_rof, style: 'tableHeader', alignment: 'left' });
-        //     });
-
-        //     // idno_rof.forEach(function(e_id,i_id){
-        //     //    rof_array.forEach(function(e_a,i_a){
-        //     //         if(e_a.idno_rof == e_id.idno){
-        //     //             var arr =[
-        //     //                 { text: 'Indicate', colSpan:3},{},{}
-        //     //                 { text: e_a.dominant},
-        //     //             ];
-        //     //             retval.push(arr);
-        //     //         }
-        //     //     });
-        //     // });
-
-        //     var ret_obj = {
-        //         headerRows: 1,
-        //         widths: width,
-        //         body: body,
-        //     };
-            
-        //     return ret_obj;
-        // }
 
         function make_table_rom(){
-            return {
-                        // headerRows: 1,
-                        widths: [50,50,50,'*'], // panjang standard dia 515
-                        body: [
+
+            var widths = [50,50,50];
+            var body = [
                             [
-                                { text: 'RANGE OF MOTION', style: 'tableHeader', alignment: 'center', colSpan:4, fillColor: '#dddddd'},{},{},{},
+                                { text: 'RANGE OF MOTION', style: 'tableHeader', alignment: 'center', colSpan:3, fillColor: '#dddddd'},{},{},
                             ],
                             [
-                                { text: '', colSpan:3},{},{},
-                                { text: 'Date'},
+                                { text: 'Date', colSpan:3},{},{},
                             ],
                             [
                                 { text: 'Indicate', colSpan:3},{},{},
-                                { text: ''},
                             ],
                             [
                                 { text: 'Shoulder'},
                                 { text: '0-50'},
                                 { text: 'Ext'},
-                                { text: ''},
                             ],
                             [
                                 { text: ''},
                                 { text: '0-180'},
                                 { text: 'Flex'},
-                                { text: ''},
                             ],
                             [
                                 { text: ''},
                                 { text: '0-180'},
                                 { text: 'Add/Abd'},
-                                { text: ''},
                             ],
                             [
                                 { text: ''},
                                 { text: '0-90'},
                                 { text: 'Internal Rotation'},
-                                { text: ''},
                             ],
                             [
                                 { text: ''},
                                 { text: '0-90'},
                                 { text: 'External Rotation'},
-                                { text: ''},
                             ],
                             [
                                 { text: 'Elbow'},
                                 { text: '0-160'},
                                 { text: 'Ext/Flex'},
-                                { text: ''},
                             ],
                             [
                                 { text: 'Forearm'},
                                 { text: '0-90'},
                                 { text: 'Pronation'},
-                                { text: ''},
                             ],
                             [
                                 { text: 'Forarm'},
                                 { text: '0-90'},
                                 { text: 'Supination'},
-                                { text: ''},
                             ],
                             [
-                                { text: 'Impressions: ', colSpan:4},{},{},{},
+                                { text: 'Impressions: ', colSpan:3},{},{},
                             ],
-                        ],
-                    };
+                        ];
+
+            rof.forEach(function(element, index){
+                widths.push('*');
+
+                body[0][0].colSpan += 1;
+                body[0].push({});
+
+                body[1].push({text : element.daterof});
+
+                body[2].push({text : element.dominant});
+
+                body[3].push({text : element.shoulder_ext});
+
+                body[4].push({text : element.shoulder_flex});
+
+                body[5].push({text : element.shoulder_addAbd});
+
+                body[6].push({text : element.shoulder_intRotation});
+
+                body[7].push({text : element.shoulder_extRotation});
+
+                body[8].push({text : element.elbow_extFlex});
+
+                body[9].push({text : element.forearm_pronation});
+
+                body[10].push({text : element.forearm_pronation});
+
+                if(index == 0){
+                    body[11].push({text: imp_ROF, colSpan:1});
+                }else{
+                    body[11][3].colSpan += 1;
+                    body[11].push({});
+                }
+            });
+
+            return {
+                // headerRows: 1,
+                widths: widths, // panjang standard dia 515
+                body: body,
+            };
         }
 
-        function make_header(){
-            
+        function make_table_hand(){
+            var widths = [50,50,50];
+            var body = [
+                                [
+                                    { text: 'HAND', style: 'tableHeader', alignment: 'center', colSpan:3, fillColor: '#dddddd'},{},{},
+                                ],
+                                [
+                                    { text: '', colSpan:3},{},{},
+                                ],
+                                [
+                                    { text: 'Indicate', colSpan:3},{},{},
+                                ],
+                                [
+                                    { text: 'Wrist'},
+                                    { text: '0-90'},
+                                    { text: 'Flex'},
+                                ],
+                                [
+                                    { text: ''},
+                                    { text: '0-90'},
+                                    { text: 'Ext'},
+                                ],
+                                [
+                                    { text: ''},
+                                    { text: '0-30'},
+                                    { text: 'Ulna/Radial Deviation'},
+                                ],
+                                [
+                                    { text: 'Thumb'},
+                                    { text: '0-50'},
+                                    { text: 'Ext/Flex MP'},
+                                ],
+                                [
+                                    { text: ''},
+                                    { text: '0-80'},
+                                    { text: 'Ext/Flex IP'},
+                                ],
+                                [
+                                    { text: ''},
+                                    { text: '0-15'},
+                                    { text: 'Ext/Flex CMC'},
+                                ],
+                                [
+                                    { text: ''},
+                                    { text: '0-75'},
+                                    { text: 'Palmar Abduction'},
+                                ],
+                                [
+                                    { text: ''},
+                                    { text: ''},
+                                    { text: 'Opposition record in inches:\nThumb to tip 5th Digit'},
+                                ],
+                                [
+                                    { text: ''},
+                                    { text: ''},
+                                    { text: 'Thumb to base 5th Digit'},
+                                ],
+                                [
+                                    { text: 'Index'},
+                                    { text: '0-90'},
+                                    { text: 'MCP'},
+                                ], 
+                                [
+                                    { text: ''},
+                                    { text: '0-110'},
+                                    { text: 'PIP'},
+                                ], 
+                                [
+                                    { text: ''},
+                                    { text: '0-90'},
+                                    { text: 'DIP'},
+                                ], 
+                                [
+                                    { text: 'Middle'},
+                                    { text: '0-90'},
+                                    { text: 'MCP'},
+                                ], 
+                                [
+                                    { text: ''},
+                                    { text: '0-110'},
+                                    { text: 'PIP'},
+                                ], 
+                                [
+                                    { text: ''},
+                                    { text: '0-90'},
+                                    { text: 'DIP'},
+                                ], 
+                                [
+                                    { text: 'Ring'},
+                                    { text: '0-90'},
+                                    { text: 'MCP'},
+                                ], 
+                                [
+                                    { text: ''},
+                                    { text: '0-110'},
+                                    { text: 'PIP'},
+                                ], 
+                                [
+                                    { text: ''},
+                                    { text: '0-90'},
+                                    { text: 'DIP'},
+                                ], 
+                                [
+                                    { text: 'Little'},
+                                    { text: '0-90'},
+                                    { text: 'MCP'},
+                                ], 
+                                [
+                                    { text: ''},
+                                    { text: '0-110'},
+                                    { text: 'PIP'},
+                                ], 
+                                [
+                                    { text: ''},
+                                    { text: '0-90'},
+                                    { text: 'DIP'},
+                                ], 
+                                [
+                                    { text: 'Impressions: ', colSpan:3},{},{},
+                                ],
+                            ];
+
+            hand.forEach(function(element, index){
+                widths.push('*');
+
+                body[0][0].colSpan += 1;
+                body[0].push({});
+
+                body[1].push({text : element.datehand});
+
+                body[2].push({text : element.dominants});
+
+                body[3].push({text : element.wrist_flex});
+
+                body[4].push({text : element.wrist_ext,noWrap:false});
+
+                body[5].push({text : element.wrist_ulna});
+
+                body[6].push({text : element.thumb_extFlexMP});
+
+                body[7].push({text : element.thumb_extFlexIP});
+
+                body[8].push({text : element.thumb_extFlexCMC});
+
+                body[9].push({text : element.thumb_palmar});
+
+                body[10].push({text : element.thumb_tip});
+
+                body[11].push({text : element.thumb_base});
+
+                body[12].push({text : element.index_MCP});
+
+                body[13].push({text : element.index_PIP});
+
+                body[14].push({text : element.index_DIP});
+
+                body[15].push({text : element.middle_MCP});
+
+                body[16].push({text : element.middle_PIP});
+
+                body[17].push({text : element.middle_DIP});
+
+                body[18].push({text : element.ring_MCP});
+
+                body[19].push({text : element.ring_PIP});
+
+                body[20].push({text : element.ring_DIP});
+
+                body[21].push({text : element.little_MCP});
+
+                body[22].push({text : element.little_PIP});
+
+                body[23].push({text : element.little_DIP});
+
+                if(index == 0){
+                    body[24].push({text: imp_hand, colSpan:1});
+                }else{
+                    body[24][3].colSpan += 1;
+                    body[24].push({});
+                }
+            });
+
+            console.log(widths);
+
+            console.log(body);
+
+            return {
+                // headerRows: 1,
+                widths: widths, // panjang standard dia 515
+                body: body,
+            };
         }
         
         // pdfMake.createPdf(docDefinition).getDataUrl(function (dataURL){

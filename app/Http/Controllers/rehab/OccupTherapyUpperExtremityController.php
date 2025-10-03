@@ -1395,18 +1395,6 @@ class OccupTherapyUpperExtremityController extends defaultController
                 ->where('h.dateAssess','=',$dateAssess)
                 ->first();
         // dd($upperExtremity);
-
-        // range of motion
-        $date_rof = DB::table('hisdb.ot_upperextremity_rof')
-                    ->select('daterof', DB::raw('DATE_FORMAT(daterof, "%d/%m/%Y") as date'))
-                    ->where('compcode','=',session('compcode'))
-                    ->where('mrn','=',$mrn)
-                    ->where('episno','=',$episno)
-                    ->where('idno_rof','=',$upperExtremity->idno)
-                    ->groupBy('daterof')
-                    ->orderBy('daterof','asc')
-                    ->get();
-
             
         $rof = DB::table('hisdb.ot_upperextremity_rof as r')
                 ->select('r.idno','r.mrn','r.episno','r.daterof','r.dominant','r.idno_rof','r.shoulder_ext','r.shoulder_flex','r.shoulder_addAbd','r.shoulder_intRotation','r.shoulder_extRotation','r.elbow_extFlex','r.forearm_pronation','r.forearm_supination','r.impressions','h.idno','h.dateAssess')
@@ -1421,8 +1409,36 @@ class OccupTherapyUpperExtremityController extends defaultController
                 ->where('h.dateAssess','=',$dateAssess)
                 ->where('r.idno_rof','=',$upperExtremity->idno)
                 ->get();
-
-        // dd($rof);
+        
+        $imp_ROF = DB::table('hisdb.ot_upperextremity_imp')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('mrn','=',$mrn)
+                                ->where('episno','=',$episno)
+                                ->where('tabName','=','ROF')
+                                ->where('idno_imp','=',$upperExtremity->idno)
+                                ->first();
+            
+        $hand = DB::table('hisdb.ot_upperExtremity_hand as h')
+                ->select('h.idno','h.compcode','h.mrn','h.episno','h.datehand','h.dominants','h.idno_hand','h.wrist_flex','h.wrist_ext','h.wrist_ulna','h.thumb_extFlexMP','h.thumb_extFlexIP','h.thumb_extFlexCMC','h.thumb_palmar','h.thumb_tip','h.thumb_base','h.index_MCP','h.index_PIP','h.index_DIP','h.middle_MCP','h.middle_PIP','h.middle_DIP','h.ring_MCP','h.ring_PIP','h.ring_DIP','h.little_MCP','h.little_PIP','h.little_DIP','o.idno as midno','o.dateAssess')
+                ->leftjoin('hisdb.ot_upperextremity as o', function ($join){
+                    $join = $join->on('o.mrn','=','h.mrn');
+                    $join = $join->on('o.episno','=','h.episno');
+                    $join = $join->where('o.compcode','=',session('compcode'));
+                })
+                ->where('h.compcode','=',session('compcode'))
+                ->where('h.mrn','=',$mrn)
+                ->where('h.episno','=',$episno)
+                ->where('o.dateAssess','=',$dateAssess)
+                ->where('h.idno_hand','=',$upperExtremity->idno)
+                ->get();
+        
+        $imp_hand = DB::table('hisdb.ot_upperextremity_imp')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('mrn','=',$mrn)
+                                ->where('episno','=',$episno)
+                                ->where('tabName','=','hand')
+                                ->where('idno_imp','=',$upperExtremity->idno)
+                                ->first();
 
         // muscle strength
         $strength = DB::table('hisdb.ot_upperextremity_strength as s')
@@ -1525,7 +1541,7 @@ class OccupTherapyUpperExtremityController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->first();
         
-        return view('rehab.occupTherapy.upperExtremityChart_pdfmake',compact('upperExtremity','date_rof','rof','strength','sensation','prehensive','skin','edema','func'));
+        return view('rehab.occupTherapy.upperExtremityChart_pdfmake',compact('upperExtremity','rof','imp_ROF','hand','imp_hand','strength','sensation','prehensive','skin','edema','func'));
         
     }
 
