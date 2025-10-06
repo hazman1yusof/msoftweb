@@ -1440,6 +1440,8 @@ class OccupTherapyUpperExtremityController extends defaultController
                                 ->where('idno_imp','=',$upperExtremity->idno)
                                 ->first();
 
+                                //dd($imp_hand);
+
         // muscle strength
         $strength = DB::table('hisdb.ot_upperextremity_strength as s')
                 ->select('s.idno','s.idno_strength','s.mrn','s.episno','s.mmt','s.jamar','s.mmt_remarks','s.jamarGripDate','s.jamarGrip_rt','s.jamarGrip_lt','s.jamarPinchDate','s.jamarPinch_lateral_rt','s.jamarPinch_pad_rt','s.jamarPinch_jaw_rt','s.jamarPinch_lateral_lt','s.jamarPinch_pad_lt','s.jamarPinch_jaw_lt','s.impressions','h.idno','h.dateAssess')

@@ -35,7 +35,7 @@
         ];
 
         var imp_ROF = '{{$imp_ROF->impressions}}';
-        var imp_hand = '{{$imp_ROF->impressions}}';
+        var imp_hand = '{{$imp_hand->impressions}}';
 
         $(document).ready(function (){
             var docDefinition = {
