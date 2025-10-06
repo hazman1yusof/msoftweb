@@ -136,7 +136,7 @@ class ProductController extends defaultController
                              'cm.freqcode as cm_freqcode',
                              'cm.instruction as cm_instruction')
                     ->where('p.compcode','=',session('compcode'))
-                    ->where('p.recstatus','=','ACTIVE')
+                    // ->where('p.recstatus','=','ACTIVE')
                     ->where('p.Class','=',$Class)
                     ->where('p.groupcode','=',$groupcode);
 
