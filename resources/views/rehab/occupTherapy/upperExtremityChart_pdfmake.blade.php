@@ -35,7 +35,7 @@
         ];
 
         var imp_ROF = '{{$imp_ROF->impressions}}';
-        var imp_hand = '{{$imp_ROF->impressions}}';
+        var imp_hand = '{{$imp_hand->impressions}}';
 
         $(document).ready(function (){
             var docDefinition = {
@@ -880,21 +880,21 @@
 
                 body[2].push({text : element.dominant});
 
-                body[3].push({text : element.shoulder_ext});
+                body[3].push({text : element.shoulder_ext,noWrap:false});
 
-                body[4].push({text : element.shoulder_flex});
+                body[4].push({text : element.shoulder_flex,noWrap:false});
 
-                body[5].push({text : element.shoulder_addAbd});
+                body[5].push({text : element.shoulder_addAbd,noWrap:false});
 
-                body[6].push({text : element.shoulder_intRotation});
+                body[6].push({text : element.shoulder_intRotation,noWrap:false});
 
-                body[7].push({text : element.shoulder_extRotation});
+                body[7].push({text : element.shoulder_extRotation,noWrap:false});
 
-                body[8].push({text : element.elbow_extFlex});
+                body[8].push({text : element.elbow_extFlex,noWrap:false});
 
-                body[9].push({text : element.forearm_pronation});
+                body[9].push({text : element.forearm_pronation,noWrap:false});
 
-                body[10].push({text : element.forearm_pronation});
+                body[10].push({text : element.forearm_pronation,noWrap:false});
 
                 if(index == 0){
                     body[11].push({text: imp_ROF, colSpan:1});
@@ -1043,47 +1043,47 @@
 
                 body[2].push({text : element.dominants});
 
-                body[3].push({text : element.wrist_flex});
+                body[3].push({text : element.wrist_flex,noWrap:false});
 
                 body[4].push({text : element.wrist_ext,noWrap:false});
 
-                body[5].push({text : element.wrist_ulna});
+                body[5].push({text : element.wrist_ulna,noWrap:false});
 
-                body[6].push({text : element.thumb_extFlexMP});
+                body[6].push({text : element.thumb_extFlexMP,noWrap:false});
 
-                body[7].push({text : element.thumb_extFlexIP});
+                body[7].push({text : element.thumb_extFlexIP,noWrap:false});
 
-                body[8].push({text : element.thumb_extFlexCMC});
+                body[8].push({text : element.thumb_extFlexCMC,noWrap:false});
 
-                body[9].push({text : element.thumb_palmar});
+                body[9].push({text : element.thumb_palmar,noWrap:false});
 
-                body[10].push({text : element.thumb_tip});
+                body[10].push({text : element.thumb_tip,noWrap:false});
 
-                body[11].push({text : element.thumb_base});
+                body[11].push({text : element.thumb_base,noWrap:false});
 
-                body[12].push({text : element.index_MCP});
+                body[12].push({text : element.index_MCP,noWrap:false});
 
-                body[13].push({text : element.index_PIP});
+                body[13].push({text : element.index_PIP,noWrap:false});
 
-                body[14].push({text : element.index_DIP});
+                body[14].push({text : element.index_DIP,noWrap:false});
 
-                body[15].push({text : element.middle_MCP});
+                body[15].push({text : element.middle_MCP,noWrap:false});
 
-                body[16].push({text : element.middle_PIP});
+                body[16].push({text : element.middle_PIP,noWrap:false});
 
-                body[17].push({text : element.middle_DIP});
+                body[17].push({text : element.middle_DIP,noWrap:false});
 
-                body[18].push({text : element.ring_MCP});
+                body[18].push({text : element.ring_MCP,noWrap:false});
 
-                body[19].push({text : element.ring_PIP});
+                body[19].push({text : element.ring_PIP,noWrap:false});
 
-                body[20].push({text : element.ring_DIP});
+                body[20].push({text : element.ring_DIP,noWrap:false});
 
-                body[21].push({text : element.little_MCP});
+                body[21].push({text : element.little_MCP,noWrap:false});
 
-                body[22].push({text : element.little_PIP});
+                body[22].push({text : element.little_PIP,noWrap:false});
 
-                body[23].push({text : element.little_DIP});
+                body[23].push({text : element.little_DIP,noWrap:false});
 
                 if(index == 0){
                     body[24].push({text: imp_hand, colSpan:1});
