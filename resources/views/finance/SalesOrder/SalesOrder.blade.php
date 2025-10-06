@@ -178,6 +178,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 							  @elseif (Request::get('scope') == 'CANCEL')
 									<option value="OPEN">OPEN</option>
 						      <option value="PREPARED">PREPARED</option>
+								  <option value="RECOMPUTED">RECOMPUTED</option>
 								@endif
 					   </select>
 		      </div>
@@ -1098,7 +1099,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 			});
 		</script>
 
-		<script src="js/finance/SalesOrder/SalesOrder.js?v=1.41"></script>
+		<script src="js/finance/SalesOrder/SalesOrder.js?v=1.42"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	
