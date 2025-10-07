@@ -33,7 +33,7 @@ class InvChartController extends defaultController
                     ->select('pm.MRN','pm.Name')
                     ->where('pm.CompCode','=',session('compcode'))
                     ->where('pm.MRN','=',$mrn)
-                    ->where('pm.Episno','=',$episno)
+                    // ->where('pm.Episno','=',$episno)
                     ->first();
         
         $datetime = DB::table('nursing.nurs_investigation')
