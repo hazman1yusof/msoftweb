@@ -65,7 +65,11 @@
                                     {
                                         text: [
                                             { text: 'Date Requested : ', bold: true, alignment: 'left' },
-                                            { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$pat_physio->req_date)->format('d-m-Y')}}' },
+                                            @if(!empty($pat_physio->req_date))
+                                                { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$pat_physio->req_date)->format('d-m-Y')}}' },
+                                            @else
+                                                { text: '' },
+                                            @endif
                                             { text: '\n\nWard / Clinic : ', bold: true, alignment: 'left' },
                                             { text: '{{$pat_physio->EpWard}}' },
                                         ], alignment: 'left', border: [true, false, true, false]
@@ -106,13 +110,13 @@
                                     {
                                         text: [
                                             { text: 'Clinical Diagnosis:', bold: true, alignment: 'left' },
-                                            { text: `\n\n{!!str_replace('`', '', $pat_physio->clinic_diag)!!}` },
+                                            { text: `\n\n{!!$pat_physio->clinic_diag!!}` },
                                         ], alignment: 'left'
                                     },
                                     {
                                         text: [
                                             { text: 'Treatment', italics: true, bold: true, alignment: 'center' },
-                                            // { text: `\n\n{!!str_replace('`', '', $pat_physio->treatment)!!}` },
+                                            // { text: `\n\n{!!$pat_physio->treatment!!}` },
                                             @if($pat_physio->tr_physio == '1')
                                                 { text: '\n\n[√] PHYSIOTHERAPY\n', bold: true },
                                             @else
@@ -147,7 +151,7 @@
                                     }
                                 ],
                                 [
-                                    { text: `Relevant Finding(s) : \n\n{!!str_replace('`', '', $pat_physio->findings)!!}`, alignment: 'left' },
+                                    { text: `Relevant Finding(s) : \n\n{!!$pat_physio->findings!!}`, alignment: 'left' },
                                     {},
                                 ],
                                 [
@@ -155,7 +159,7 @@
                                     {
                                         text: [
                                             { text: 'Remarks', italics: false, bold: true, alignment: 'left' },
-                                            { text: `\n\n{!!str_replace('`', '', $pat_physio->remarks)!!}` },
+                                            { text: `\n\n{!!$pat_physio->remarks!!}` },
                                         ], alignment: 'left'
                                     },
                                 ],

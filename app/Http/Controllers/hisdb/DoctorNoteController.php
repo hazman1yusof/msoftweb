@@ -1269,7 +1269,7 @@ class DoctorNoteController extends defaultController
                     // ->select('Name')
                     ->where('CompCode',session('compcode'))
                     ->where('MRN','=',$request->mrn)
-                    ->where('Episno','=',$request->episno)
+                    // ->where('Episno','=',$request->episno)
                     ->first();
         
         $sysparam = DB::table('sysdb.sysparam')
@@ -3423,7 +3423,7 @@ class DoctorNoteController extends defaultController
                     ->select('ot.compcode','ot.mrn','ot.episno','ot.op_date','ot.oper_type','ot.adm_type','ot.anaesthetist','ot.remarks','ot.doctorname','ot.adduser','ot.adddate','ot.upduser','ot.upddate','ot.lastuser','ot.lastupdate','ot.computerid','pm.Name','pm.Newic','e.pay_type','e.pyrmode','ep.payercode','dm.name AS debtor_name','g.staffid')
                     ->leftJoin('hisdb.pat_mast as pm', function ($join) use ($request){
                         $join = $join->on('pm.MRN','=','ot.mrn')
-                                    ->on('pm.Episno','=','ot.episno')
+                                    // ->on('pm.Episno','=','ot.episno')
                                     ->where('pm.CompCode','=',session('compcode'));
                     })
                     ->leftJoin('hisdb.episode as e', function ($join) use ($request){
@@ -3467,7 +3467,7 @@ class DoctorNoteController extends defaultController
                         ->select('r.idno','r.compcode','r.mrn','r.episno','r.iPesakit as r_iPesakit','r.weight','r.pt_condition','r.LMP','r.xray','r.xray_date','r.xray_remark','r.mri','r.mri_date','r.mri_remark','r.angio','r.angio_date','r.angio_remark','r.ultrasound','r.ultrasound_date','r.ultrasound_remark','r.ct','r.ct_date','r.ct_remark','r.fluroscopy','r.fluroscopy_date','r.fluroscopy_remark','r.mammogram','r.mammogram_date','r.mammogram_remark','r.bmd','r.bmd_date','r.bmd_remark','r.clinicaldata','r.doctorname','r.rad_note','r.radiologist','r.adduser','r.adddate','r.upduser','r.upddate','r.lastuser','r.lastupdate','r.computerid','pm.iPesakit','pm.Name','pm.Address1','pm.Address2','pm.Address3','pm.Postcode','pm.telhp','pm.Newic','pm.Sex','pm.RaceCode','ep.reg_date','ep.newcaseP','ep.newcaseNP','ep.followupP','ep.followupNP','b.ward as EpWard','his.allergyh')
                         ->leftjoin('hisdb.pat_mast as pm', function ($join){
                             $join = $join->on('pm.MRN','=','r.mrn');
-                            $join = $join->on('pm.Episno','=','r.episno');
+                            // $join = $join->on('pm.Episno','=','r.episno');
                             $join = $join->where('pm.compcode','=',session('compcode'));
                         })
                         ->leftjoin('hisdb.episode as ep', function ($join){
@@ -3508,7 +3508,7 @@ class DoctorNoteController extends defaultController
                 ->select('ptm.mrn','ptm.episno','ptm.weight as mri_weight','ptm.entereddate','ptm.cardiacpacemaker','ptm.pros_valve','ptm.prosvalve_rmk','ptm.intraocular','ptm.cochlear_imp','ptm.neurotransm','ptm.bonegrowth','ptm.druginfuse','ptm.surg_clips','ptm.jointlimb_pros','ptm.shrapnel','ptm.oper_3mth','ptm.oper3mth_remark','ptm.prev_mri','ptm.claustrophobia','ptm.dental_imp','ptm.frmgnetic_imp','ptm.pregnancy','ptm.allergy_drug','ptm.bloodurea','ptm.serum_creatinine','ptm.doctorname as mri_doctorname','ptm.radiologist','ptm.radiographer','ptm.staffnurse','ptm.adduser','ptm.adddate','ptm.upduser','ptm.upddate','ptm.lastuser as mri_lastuser','ptm.lastupdate','pm.Name','pm.Newic','pm.telhp','pm.telh','ph.weight','n.vs_weight','e.bed as ward','b.ward as EpWard')
                 ->leftjoin('hisdb.pat_mast as pm', function ($join){
                     $join = $join->on('pm.MRN','=','ptm.mrn');
-                    $join = $join->on('pm.Episno','=','ptm.episno');
+                    // $join = $join->on('pm.Episno','=','ptm.episno');
                     $join = $join->where('pm.compcode','=',session('compcode'));
                 })
                 ->leftjoin('hisdb.pathealth as ph', function ($join){
@@ -3556,7 +3556,7 @@ class DoctorNoteController extends defaultController
                     ->select('p.idno','p.compcode','p.mrn','p.episno','p.req_date','p.clinic_diag','p.findings','p.treatment','p.tr_physio','p.tr_occuptherapy','p.tr_respiphysio','p.tr_neuro','p.tr_splint','p.tr_speech','p.remarks','p.doctorname','p.adduser','p.adddate','p.upduser','p.upddate','p.lastuser','p.lastupdate','p.computerid','pm.Name','pm.Address1','pm.Address2','pm.Address3','pm.Postcode','pm.telhp','pm.Newic','pm.Sex','ep.reg_date','b.ward as EpWard')
                     ->leftjoin('hisdb.pat_mast as pm', function ($join){
                         $join = $join->on('pm.MRN','=','p.mrn');
-                        $join = $join->on('pm.Episno','=','p.episno');
+                        // $join = $join->on('pm.Episno','=','p.episno');
                         $join = $join->where('pm.compcode','=',session('compcode'));
                     })
                     ->leftjoin('hisdb.episode as ep', function ($join){
@@ -3591,7 +3591,7 @@ class DoctorNoteController extends defaultController
                     ->select('d.mrn','d.episno','d.od_dressing','d.bd_dressing','d.eod_dressing','d.others_dressing','d.others_name','d.solution','d.doctorname','d.adduser','d.adddate','d.upduser','d.upddate','d.lastuser','d.lastupdate','d.computerid','pm.Name','pm.Newic')
                     ->leftjoin('hisdb.pat_mast as pm', function ($join){
                         $join = $join->on('pm.MRN','=','d.mrn');
-                        $join = $join->on('pm.Episno','=','d.episno');
+                        // $join = $join->on('pm.Episno','=','d.episno');
                         $join = $join->where('pm.compcode','=',session('compcode'));
                     })
                     ->where('d.compcode','=',session('compcode'))
@@ -3607,7 +3607,7 @@ class DoctorNoteController extends defaultController
         return view('hisdb.doctornote.dressingChart_pdfmake',compact('dressing'));
         
     }
-
+    
     public function preContrast_chart(Request $request){
         
         $mrn = $request->mrn;
@@ -3620,7 +3620,7 @@ class DoctorNoteController extends defaultController
                 ->select('p.mrn','p.episno','p.examination','p.hisAllergy','p.feverAllergic','p.prevReactContrast','p.prevReactDrug','p.asthma','p.heartDisease','p.veryOldYoung','p.poorCondition','p.dehydrated','p.seriousMedCondition','p.prevContrastExam','p.consentProcedure','p.LMP','p.renalFunction','p.docName','pm.Name','pm.Newic')
                 ->leftjoin('hisdb.pat_mast as pm', function ($join){
                     $join = $join->on('pm.MRN','=','p.mrn');
-                    $join = $join->on('pm.Episno','=','p.episno');
+                    // $join = $join->on('pm.Episno','=','p.episno');
                     $join = $join->where('pm.compcode','=',session('compcode'));
                 })
                 ->where('p.compcode','=',session('compcode'))
@@ -3637,7 +3637,7 @@ class DoctorNoteController extends defaultController
         return view('hisdb.doctornote.preContrastChart_pdfmake',compact('preContrast','age'));
         
     }
-
+    
     public function consentForm_chart(Request $request){
         
         $mrn = $request->mrn;
@@ -3650,7 +3650,7 @@ class DoctorNoteController extends defaultController
                 ->select('p.mrn','p.episno','p.guardianName','p.address','p.procedureName','p.guardianType','p.patientName','p.procedureRadName','p.doctorName','p.dateConsentGuardian','p.guardianSign','p.guardianSignType','p.relationship','p.guardianICNum','p.guardianSignTypeDoc','p.dateConsentDoc','p.doctorSign','pm.Name','pm.Newic')
                 ->leftjoin('hisdb.pat_mast as pm', function ($join){
                     $join = $join->on('pm.MRN','=','p.mrn');
-                    $join = $join->on('pm.Episno','=','p.episno');
+                    // $join = $join->on('pm.Episno','=','p.episno');
                     $join = $join->where('pm.compcode','=',session('compcode'));
                 })
                 ->where('p.compcode','=',session('compcode'))

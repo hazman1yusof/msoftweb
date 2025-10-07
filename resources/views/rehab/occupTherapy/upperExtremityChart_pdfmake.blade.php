@@ -34,8 +34,18 @@
             @endforeach
         ];
 
-        var imp_ROF = '{{$imp_ROF->impressions}}';
-        var imp_hand = '{{$imp_hand->impressions}}';
+        var imp_ROF = 
+            @if(!empty($imp_ROF))
+                { text: `{!!$imp_ROF->impressions!!}`};
+            @else
+                { text: ' ' };
+            @endif
+        var imp_hand = 
+            @if(!empty($imp_hand))
+                { text: `{!!$imp_hand->impressions!!}`};
+            @else
+                { text: ' ' };
+            @endif
 
         $(document).ready(function (){
             var docDefinition = {
@@ -816,59 +826,59 @@
 
             var widths = [50,50,50];
             var body = [
-                            [
-                                { text: 'RANGE OF MOTION', style: 'tableHeader', alignment: 'center', colSpan:3, fillColor: '#dddddd'},{},{},
-                            ],
-                            [
-                                { text: 'Date', colSpan:3},{},{},
-                            ],
-                            [
-                                { text: 'Indicate', colSpan:3},{},{},
-                            ],
-                            [
-                                { text: 'Shoulder'},
-                                { text: '0-50'},
-                                { text: 'Ext'},
-                            ],
-                            [
-                                { text: ''},
-                                { text: '0-180'},
-                                { text: 'Flex'},
-                            ],
-                            [
-                                { text: ''},
-                                { text: '0-180'},
-                                { text: 'Add/Abd'},
-                            ],
-                            [
-                                { text: ''},
-                                { text: '0-90'},
-                                { text: 'Internal Rotation'},
-                            ],
-                            [
-                                { text: ''},
-                                { text: '0-90'},
-                                { text: 'External Rotation'},
-                            ],
-                            [
-                                { text: 'Elbow'},
-                                { text: '0-160'},
-                                { text: 'Ext/Flex'},
-                            ],
-                            [
-                                { text: 'Forearm'},
-                                { text: '0-90'},
-                                { text: 'Pronation'},
-                            ],
-                            [
-                                { text: 'Forarm'},
-                                { text: '0-90'},
-                                { text: 'Supination'},
-                            ],
-                            [
-                                { text: 'Impressions: ', colSpan:3},{},{},
-                            ],
-                        ];
+                        [
+                            { text: 'RANGE OF MOTION', style: 'tableHeader', alignment: 'center', colSpan:3, fillColor: '#dddddd'},{},{},
+                        ],
+                        [
+                            { text: 'Date', colSpan:3},{},{},
+                        ],
+                        [
+                            { text: 'Indicate', colSpan:3},{},{},
+                        ],
+                        [
+                            { text: 'Shoulder'},
+                            { text: '0-50'},
+                            { text: 'Ext'},
+                        ],
+                        [
+                            { text: ''},
+                            { text: '0-180'},
+                            { text: 'Flex'},
+                        ],
+                        [
+                            { text: ''},
+                            { text: '0-180'},
+                            { text: 'Add/Abd'},
+                        ],
+                        [
+                            { text: ''},
+                            { text: '0-90'},
+                            { text: 'Internal Rotation'},
+                        ],
+                        [
+                            { text: ''},
+                            { text: '0-90'},
+                            { text: 'External Rotation'},
+                        ],
+                        [
+                            { text: 'Elbow'},
+                            { text: '0-160'},
+                            { text: 'Ext/Flex'},
+                        ],
+                        [
+                            { text: 'Forearm'},
+                            { text: '0-90'},
+                            { text: 'Pronation'},
+                        ],
+                        [
+                            { text: 'Forarm'},
+                            { text: '0-90'},
+                            { text: 'Supination'},
+                        ],
+                        [
+                            { text: 'Impressions: ', colSpan:3},{},{},
+                        ],
+                    ];
 
             rof.forEach(function(element, index){
                 widths.push('*');
@@ -914,124 +924,124 @@
         function make_table_hand(){
             var widths = [50,50,50];
             var body = [
-                                [
-                                    { text: 'HAND', style: 'tableHeader', alignment: 'center', colSpan:3, fillColor: '#dddddd'},{},{},
-                                ],
-                                [
-                                    { text: '', colSpan:3},{},{},
-                                ],
-                                [
-                                    { text: 'Indicate', colSpan:3},{},{},
-                                ],
-                                [
-                                    { text: 'Wrist'},
-                                    { text: '0-90'},
-                                    { text: 'Flex'},
-                                ],
-                                [
-                                    { text: ''},
-                                    { text: '0-90'},
-                                    { text: 'Ext'},
-                                ],
-                                [
-                                    { text: ''},
-                                    { text: '0-30'},
-                                    { text: 'Ulna/Radial Deviation'},
-                                ],
-                                [
-                                    { text: 'Thumb'},
-                                    { text: '0-50'},
-                                    { text: 'Ext/Flex MP'},
-                                ],
-                                [
-                                    { text: ''},
-                                    { text: '0-80'},
-                                    { text: 'Ext/Flex IP'},
-                                ],
-                                [
-                                    { text: ''},
-                                    { text: '0-15'},
-                                    { text: 'Ext/Flex CMC'},
-                                ],
-                                [
-                                    { text: ''},
-                                    { text: '0-75'},
-                                    { text: 'Palmar Abduction'},
-                                ],
-                                [
-                                    { text: ''},
-                                    { text: ''},
-                                    { text: 'Opposition record in inches:\nThumb to tip 5th Digit'},
-                                ],
-                                [
-                                    { text: ''},
-                                    { text: ''},
-                                    { text: 'Thumb to base 5th Digit'},
-                                ],
-                                [
-                                    { text: 'Index'},
-                                    { text: '0-90'},
-                                    { text: 'MCP'},
-                                ], 
-                                [
-                                    { text: ''},
-                                    { text: '0-110'},
-                                    { text: 'PIP'},
-                                ], 
-                                [
-                                    { text: ''},
-                                    { text: '0-90'},
-                                    { text: 'DIP'},
-                                ], 
-                                [
-                                    { text: 'Middle'},
-                                    { text: '0-90'},
-                                    { text: 'MCP'},
-                                ], 
-                                [
-                                    { text: ''},
-                                    { text: '0-110'},
-                                    { text: 'PIP'},
-                                ], 
-                                [
-                                    { text: ''},
-                                    { text: '0-90'},
-                                    { text: 'DIP'},
-                                ], 
-                                [
-                                    { text: 'Ring'},
-                                    { text: '0-90'},
-                                    { text: 'MCP'},
-                                ], 
-                                [
-                                    { text: ''},
-                                    { text: '0-110'},
-                                    { text: 'PIP'},
-                                ], 
-                                [
-                                    { text: ''},
-                                    { text: '0-90'},
-                                    { text: 'DIP'},
-                                ], 
-                                [
-                                    { text: 'Little'},
-                                    { text: '0-90'},
-                                    { text: 'MCP'},
-                                ], 
-                                [
-                                    { text: ''},
-                                    { text: '0-110'},
-                                    { text: 'PIP'},
-                                ], 
-                                [
-                                    { text: ''},
-                                    { text: '0-90'},
-                                    { text: 'DIP'},
-                                ], 
-                                [
-                                    { text: 'Impressions: ', colSpan:3},{},{},
-                                ],
-                            ];
+                        [
+                            { text: 'HAND', style: 'tableHeader', alignment: 'center', colSpan:3, fillColor: '#dddddd'},{},{},
+                        ],
+                        [
+                            { text: '', colSpan:3},{},{},
+                        ],
+                        [
+                            { text: 'Indicate', colSpan:3},{},{},
+                        ],
+                        [
+                            { text: 'Wrist'},
+                            { text: '0-90'},
+                            { text: 'Flex'},
+                        ],
+                        [
+                            { text: ''},
+                            { text: '0-90'},
+                            { text: 'Ext'},
+                        ],
+                        [
+                            { text: ''},
+                            { text: '0-30'},
+                            { text: 'Ulna/Radial Deviation'},
+                        ],
+                        [
+                            { text: 'Thumb'},
+                            { text: '0-50'},
+                            { text: 'Ext/Flex MP'},
+                        ],
+                        [
+                            { text: ''},
+                            { text: '0-80'},
+                            { text: 'Ext/Flex IP'},
+                        ],
+                        [
+                            { text: ''},
+                            { text: '0-15'},
+                            { text: 'Ext/Flex CMC'},
+                        ],
+                        [
+                            { text: ''},
+                            { text: '0-75'},
+                            { text: 'Palmar Abduction'},
+                        ],
+                        [
+                            { text: ''},
+                            { text: ''},
+                            { text: 'Opposition record in inches:\nThumb to tip 5th Digit'},
+                        ],
+                        [
+                            { text: ''},
+                            { text: ''},
+                            { text: 'Thumb to base 5th Digit'},
+                        ],
+                        [
+                            { text: 'Index'},
+                            { text: '0-90'},
+                            { text: 'MCP'},
+                        ], 
+                        [
+                            { text: ''},
+                            { text: '0-110'},
+                            { text: 'PIP'},
+                        ], 
+                        [
+                            { text: ''},
+                            { text: '0-90'},
+                            { text: 'DIP'},
+                        ], 
+                        [
+                            { text: 'Middle'},
+                            { text: '0-90'},
+                            { text: 'MCP'},
+                        ], 
+                        [
+                            { text: ''},
+                            { text: '0-110'},
+                            { text: 'PIP'},
+                        ], 
+                        [
+                            { text: ''},
+                            { text: '0-90'},
+                            { text: 'DIP'},
+                        ], 
+                        [
+                            { text: 'Ring'},
+                            { text: '0-90'},
+                            { text: 'MCP'},
+                        ], 
+                        [
+                            { text: ''},
+                            { text: '0-110'},
+                            { text: 'PIP'},
+                        ], 
+                        [
+                            { text: ''},
+                            { text: '0-90'},
+                            { text: 'DIP'},
+                        ], 
+                        [
+                            { text: 'Little'},
+                            { text: '0-90'},
+                            { text: 'MCP'},
+                        ], 
+                        [
+                            { text: ''},
+                            { text: '0-110'},
+                            { text: 'PIP'},
+                        ], 
+                        [
+                            { text: ''},
+                            { text: '0-90'},
+                            { text: 'DIP'},
+                        ], 
+                        [
+                            { text: 'Impressions: ', colSpan:3},{},{},
+                        ],
+                    ];
 
             hand.forEach(function(element, index){
                 widths.push('*');
