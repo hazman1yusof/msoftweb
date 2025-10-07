@@ -1386,7 +1386,7 @@ class OccupTherapyUpperExtremityController extends defaultController
                 ->select('h.idno','h.mrn','h.episno','h.dateAssess','h.occupTherapist','h.handDominant','h.diagnosis','pm.Name','pm.Newic')
                 ->leftjoin('hisdb.pat_mast as pm', function ($join){
                     $join = $join->on('pm.MRN','=','h.mrn');
-                    $join = $join->on('pm.Episno','=','h.episno');
+                    // $join = $join->on('pm.Episno','=','h.episno');
                     $join = $join->where('pm.compcode','=',session('compcode'));
                 })
                 ->where('h.compcode','=',session('compcode'))
