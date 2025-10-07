@@ -1456,7 +1456,7 @@ $('#jqGridRequestFor_panel').on('shown.bs.collapse', function (){
     
     $(this).find('.nav a:first').tab('show');
     populate_otbookReqFor_getdata();
-    // populate_radClinicReqFor_getdata();
+    populate_radClinicReqFor_getdata();
     // populate_mriReqFor_getdata();
     // populate_physioReqFor_getdata();
     // populate_dressingReqFor_getdata();

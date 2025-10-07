@@ -2458,7 +2458,7 @@ $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function (){
 	
 	$(this).find('.nav a:first').tab('show');
 	populate_otbook_getdata();
-	// populate_radClinic_getdata();
+	populate_radClinic_getdata();
 	// populate_mri_getdata();
 	// populate_physio_getdata();
 	// populate_dressing_getdata();

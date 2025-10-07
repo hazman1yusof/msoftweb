@@ -1767,7 +1767,7 @@ $('#tab_requestFor').on('shown.bs.collapse', function (){
     
     $('#requestFor .top.menu .item').tab('change tab','otbookReqFor');
     populate_otbookReqFor_getdata();
-    // populate_radClinicReqFor_getdata();
+    populate_radClinicReqFor_getdata();
     // populate_mriReqFor_getdata();
     // populate_physioReqFor_getdata();
     // populate_dressingReqFor_getdata();
