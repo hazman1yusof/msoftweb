@@ -45,7 +45,7 @@
                     //                 { text: '{{$pat_mast->Name}}' },
                     //                 { text: 'Ward / Bed No.' },
                     //                 { text: ':' },
-                    //                 { text: '{{$pat_mast->ward}} / {{$pat_mast->bednum}}' }
+                    //                 { text: '{!!$pat_mast->ward!!} / {{$pat_mast->bednum}}' }
                     //             ],
                     //             [
                     //                 { text: 'MRN' },
