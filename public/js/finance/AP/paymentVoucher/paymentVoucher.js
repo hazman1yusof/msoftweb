@@ -57,22 +57,22 @@ $(document).ready(function () {
 				switch (oper) {
 					case state = 'add':
 					$("#jqGrid2").jqGrid("clearGridData", false);
-					$("#pg_jqGridPager2 table").show();
+					$("#jqGridPager2_left table").show();
 					hideatdialogForm(true);
 					enableForm('#formdata');
 					rdonly('#formdata');
 					alloc_button_status('wait');
 					break;
 				case state = 'edit':
-					$("#pg_jqGridPager2 table").show();
+					$("#jqGridPager2_left table").show();
 					hideatdialogForm(true);
 					enableForm('#formdata');
 					rdonly('#formdata');
-					alloc_button_status('add');
+					alloc_button_status('wait');
 					break;
 				case state = 'view':
 					disableForm('#formdata');
-					$("#pg_jqGridPager2 table").hide();
+					$("#jqGridPager2_left table").hide();
 					alloc_button_status('initial');
 					break;
 				}
@@ -320,8 +320,8 @@ $(document).ready(function () {
 			if(rowid != null) {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 				refreshGrid('#jqGrid2', urlParam2,'kosongkan');
-				$("#pg_jqGridPager3 table").hide();
-				$("#pg_jqGridPager2 table").show();
+				$("#jqGridPager3_left table").hide();
+				$("#jqGridPager2_left table").show();
 			}
 
 			if(selrowData("#jqGrid").apacthdr_trantype=='PV'){
@@ -349,22 +349,22 @@ $(document).ready(function () {
 
 			populate_form(selrowData("#jqGrid"));
 			
-			if(stat=='APPROVED' || stat=='PREPARED' || stat=='VERIFIED' || stat=='SUPPORT'){
+			if(stat=='APPROVED'){
 				$("#jqGridPager td[title='Edit Selected Row']").hide();
 			}else{
 				$("#jqGridPager td[title='Edit Selected Row']").show();
 			}
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
+			console.log('sini1');
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
-			if(stat=='APPROVED' || stat=='PREPARED' || stat=='VERIFIED' || stat=='SUPPORT'){
+			if(stat=='APPROVED'){
 				$("#jqGridPager td[title='View Selected Row']").click();
 				if(selrowData("#jqGrid").apacthdr_trantype=='PV'){
 					$('#save').hide()
 				} else {
 					$('#save').hide();
 				}
-				$("#jqGridPager td[title='Edit Selected Row']").hide();
 
 			}else{
 				$("#jqGridPager td[title='Edit Selected Row']").click();
@@ -413,7 +413,7 @@ $(document).ready(function () {
 		},
 		loadComplete: function(){
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
-			if(stat=='APPROVED' || stat=='PREPARED' || stat=='VERIFIED' || stat=='SUPPORT'){
+			if(stat=='APPROVED'){
 				$("#jqGridPager td[title='Edit Selected Row']").hide();
 			}else{
 				$("#jqGridPager td[title='Edit Selected Row']").show();
@@ -445,7 +445,7 @@ $(document).ready(function () {
 
 			if(selrowData("#jqGrid").apacthdr_recstatus != 'OPEN'){
 				disableForm('#formdata');
-				$("#pg_jqGridPager2 table").hide();
+				$("#jqGridPager2_left table").hide();
 				$('#apacthdr_amount').prop('readonly',true);
 				dialog_bankcode.off();
 				dialog_paymode.off();
@@ -455,7 +455,7 @@ $(document).ready(function () {
 			} else if(selrowData("#jqGrid").apacthdr_recstatus == 'CANCELLED'){
 				$('#save').hide();
 				disableForm('#formdata');
-				$("#pg_jqGridPager2 table").hide();
+				$("#jqGridPager2_left table").hide();
 				dialog_bankcode.off();
 				dialog_paymode.off();
 				dialog_cheqno.off();
@@ -474,19 +474,20 @@ $(document).ready(function () {
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			refreshGrid("#jqGrid2",urlParam2);
 
-			if(selrowData("#jqGrid").apacthdr_recstatus != 'OPEN'){
-				disableForm('#formdata');
-				$("#pg_jqGridPager2 table").hide();
+			if(['PREPARED','VERIFIED','SUPPORT'].includes(selrowData("#jqGrid").apacthdr_recstatus)){
+				$('#save').show();
+				disableForm('#formdata',['apacthdr_remarks']);
+				// $("#jqGridPager2_left table").hide();
 				$('#apacthdr_amount').prop('readonly',true);
 				dialog_bankcode.off();
 				dialog_paymode.off();
 				dialog_cheqno.off();
 				dialog_suppcode.off();
 				dialog_payto.off();
-			} else if(selrowData("#jqGrid").apacthdr_recstatus == 'CANCELLED'){
+			} else if(selrowData("#jqGrid").apacthdr_recstatus == 'CANCELLED' || selrowData("#jqGrid").apacthdr_recstatus == 'APPROVED'){
 				$('#save').hide();
 				disableForm('#formdata');
-				$("#pg_jqGridPager2 table").hide();
+				$("#jqGridPager2_left table").hide();
 				dialog_bankcode.off();
 				dialog_paymode.off();
 				dialog_cheqno.off();
@@ -1939,7 +1940,7 @@ function init_jq2(oper,urlParam2){
 		}
 	} else if(oper == 'edit'){
 		if($('#apacthdr_trantype').val() == 'PV'){
-			$('#save').hide();
+			// $('#save').hide();
 			$('#apacthdr_amount').prop('readonly',true);
 			$('#pvpd_detail').show();
 			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));

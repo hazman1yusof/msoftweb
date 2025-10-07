@@ -77,6 +77,7 @@ class DirectPaymentController extends defaultController
                         'ap.actdate AS actdate',
                         'ap.document AS document',
                         'ap.cheqno AS cheqno',
+                        'ap.cheqdate AS cheqdate',
                         'ap.deptcode AS deptcode',
                         'ap.amount AS amount',
                         'ap.outamount AS outamount',
@@ -1282,15 +1283,23 @@ class DirectPaymentController extends defaultController
             'actdate' => $request->actdate,
             'recdate' => $request->actdate,
             'paymode' => strtoupper($request->paymode),
-            'cheqno' => $request->cheqno,
             'remarks' => strtoupper($request->remarks),
             'TaxClaimable' => $request->TaxClaimable,
             'cheqdate' => $request->cheqdate,
-            'unit' => session('unit'),
-            'compcode' => session('compcode'),
+            'cheqno' => $request->cheqno,
+            // 'compcode' => session('compcode'),
             'upduser' => session('username'),
             'upddate' => Carbon::now("Asia/Kuala_Lumpur")
         ];
+
+        $dp_lama = DB::table("finance.apacthdr")
+                        ->where('idno','=',$request->idno)
+                        ->first();
+
+        if($dp_lama->paymode !== 'TT' && strtoupper($request->paymode) == 'TT'){
+            $last_tt = $this->defaultSysparam('CM','TT');
+            $array_update['cheqno'] = $last_tt;
+        }
 
         try {
             //////////where//////////

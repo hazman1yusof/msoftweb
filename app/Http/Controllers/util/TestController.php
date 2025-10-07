@@ -78,6 +78,8 @@ class TestController extends defaultController
                 return $this->itemcode_avgcost_ivdspdt($request);
             case 'betulkan_stockexp_semua':
                 return $this->betulkan_stockexp_semua($request);
+            case 'staff_adv':
+                return $this->staff_adv($request);
             // case 'betulkan_stockloc_2025':
             //     return $this->betulkan_stockloc_2025($request);
             // case 'netmvval_from_netmvqty':
@@ -8208,6 +8210,89 @@ class TestController extends defaultController
                     ->update([
                         'avgcost' => $obj->avgcost
                     ]);
+        }
+    }
+
+    public function staff_adv(Request $request){
+
+        $compcode = $request->compcode;
+        $month = $request->period;
+        $year = $request->year;
+
+        $firstDay = Carbon::createFromDate($year, $month, 1)->startOfDay();
+        $lastDay = Carbon::createFromDate($year, $month, 1)->endOfMonth()->startOfDay();
+
+        $apalloc = DB::table('finance.apalloc')
+                        ->where('compcode',$compcode)
+                        ->where('docsource','AP')
+                        ->where('doctrantype','PD')
+                        ->where('recstatus','POSTED')
+                        ->where('allocdate','>=',$firstDay)
+                        ->where('allocdate','<='$lastDay)
+                        ->get();
+
+        foreach ($apalloc as $obj) {
+            $supplier = DB::table('material.supplier')
+                            ->where('compcode',$compcode)
+                            ->where('suppcode',$obj->suppcode)
+                            ->first();
+
+            $gltran = DB::table('finance.gltran')
+                            ->where('compcode',$compcode)
+                            ->where('source',$obj->source)
+                            ->where('trantype',$obj->trantype)
+                            ->where('auditno',$obj->auditno)
+                            ->where('lineno_',$obj->lineno_);
+
+            if($gltran->exists()){
+                DB::table('finance.gltran')
+                    ->where('compcode',$compcode)
+                    ->where('source',$obj->source)
+                    ->where('trantype',$obj->trantype)
+                    ->where('auditno',$obj->auditno)
+                    ->where('lineno_',$obj->lineno_)
+                    ->update([
+                        'compcode' => $compcode,
+                        'adduser' => 'SYSTEM',
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'auditno' => $obj->auditno,
+                        'lineno_' => $obj->lineno_,
+                        'source' => $obj->source,
+                        'trantype' => $obj->trantype,
+                        'reference' => $obj->reference,
+                        'description' => $obj->remarks,
+                        'postdate' => $obj->allocdate,
+                        'year' => $year,
+                        'period' => $month,
+                        'drcostcode' => $supplier->costcode,
+                        'dracc' => $supplier->glaccno,
+                        'crcostcode' => $supplier->Advccode,
+                        'cracc' => $supplier->AdvGlaccno,
+                        'amount' => $obj->amount
+                    ]);
+
+            }else{
+                DB::table('finance.gltran')
+                    ->insert([
+                        'compcode' => $compcode,
+                        'adduser' => 'SYSTEM',
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'auditno' => $obj->auditno,
+                        'lineno_' => $obj->lineno_,
+                        'source' => $obj->source,
+                        'trantype' => $obj->trantype,
+                        'reference' => $obj->reference,
+                        'description' => $obj->remarks,
+                        'postdate' => $apacthdr_obj->postdate,
+                        'year' => $year,
+                        'period' => $month,
+                        'drcostcode' => $supplier->costcode,
+                        'dracc' => $supplier->glaccno,
+                        'crcostcode' => $supplier->Advccode,
+                        'cracc' => $supplier->AdvGlaccno,
+                        'amount' => $obj->amount
+                    ]);
+            }
         }
     }
 

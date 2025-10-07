@@ -1752,7 +1752,7 @@ $(document).ready(function () {
 			$('#chg_label').text('BD No');
 		}else if (paymode == "TT"){
 			$('#chg_div').show();
-			$('#cheqno').attr('disabled',true);
+			$('#cheqno').attr('readonly',true);
 			$('#chg_label').text('TT No');
 		}
 	}

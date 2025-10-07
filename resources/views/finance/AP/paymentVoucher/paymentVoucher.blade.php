@@ -411,42 +411,11 @@ div#fail_msg{
 					<div class="panel-body">
 						<div class="notiH" style="font-size: bold; color: red"><ol></ol></div>
 					</div>
-
-					<!-- <hr/>
-
-					<input type='checkbox' name='checkbox_selection' id='checkbox_selection_'>
-					<label for="checkbox_selection">Online Banking</label>
-
+					
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="apacthdr_prov_prod">Provider Product</label>	  
-							<div class="col-md-2">
-							  	<div class='input-group'>
-									<input id="apacthdr_prov_prod" name="apacthdr_prov_prod" type="text" maxlength="12" class="form-control input-sm text-uppercase" rdonly>
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							  	</div>
-							  	<span class="help-block"></span>
-						  	</div>
-					
-						<label class="col-md-2 control-label" for="apacthdr_destination">Destination</label>	  
-							<div class="col-md-2">
-							  	<div class='input-group'>
-									<input id="apacthdr_destination" name="apacthdr_destination" type="text" maxlength="12" class="form-control input-sm text-uppercase" rdonly>
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							  	</div>
-							  	<span class="help-block"></span>
-						  	</div>
+						<button type="button" id='save' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;margin-right: 20px;'>Save</button>
+					</div>
 
-						<label class="col-md-2 control-label" for="apacthdr_purp_of_trans">Purpose of Transfer</label>	  
-							<div class="col-md-2">
-							  	<div class='input-group'>
-									<input id="apacthdr_purp_of_trans" name="apacthdr_purp_of_trans" type="text" maxlength="12" class="form-control input-sm text-uppercase" rdonly>
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							  	</div>
-							  	<span class="help-block"></span>
-						  	</div>  	
-					</div>		  	 -->
-					
-					<button type="button" id='save' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;'>Save</button>
 					<div class="form-group data_info">
 						<div class="col-md-2 minuspad-15">
 							<label class="control-label" for="apacthdr_requestby">Prepared By</label>  
@@ -595,7 +564,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/finance/AP/paymentVoucher/paymentVoucher.js?V=1.14"></script>
+	<script src="js/finance/AP/paymentVoucher/paymentVoucher.js?V=1.15"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 
