@@ -67,6 +67,7 @@ $(document).ready(function () {
 						$("#db_deptcode").val($("#deptcode").val());
 						dialog_deptcode.check(errorField);
 						$('#save').hide();
+						get_auditno();
 						break;
 					case state = 'edit':
 						$("#pg_jqGridPager2 table").show();
@@ -664,8 +665,10 @@ $(document).ready(function () {
 			dialog_billtypeSO.on();
 			dialog_CustomerSO.on();
 			dialog_quoteno.on();
+			$("#saveDetailLabel").show();
 			$("#saveDetailLabel").attr('disabled',false)
 		}).done(function (data) {
+			$("#saveDetailLabel").show();
 			$("#saveDetailLabel").attr('disabled',false)
 			unsaved = false;
 			hideatdialogForm(false);
@@ -1827,7 +1830,8 @@ $(document).ready(function () {
 
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 	$("#saveDetailLabel").click(function () {
-		$("#saveDetailLabel").attr('disabled',true)
+		$("#saveDetailLabel").hide();
+		$("#saveDetailLabel").attr('disabled',true);
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
@@ -3529,6 +3533,10 @@ function Allocation(){
 			array.splice($.inArray(idno,array), 1);
 		}
 	}
+}
+
+function get_auditno(){
+
 }
 
 function setbal(idno,balance){

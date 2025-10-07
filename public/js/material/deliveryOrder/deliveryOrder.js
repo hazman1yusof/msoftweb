@@ -611,8 +611,10 @@ $(document).ready(function () {
 			dialog_deldept.on();
 			dialog_reqdept.on();
 			dialog_srcdocno.on();
+			$("#saveDetailLabel").show();
 			$("#saveDetailLabel").attr('disabled',false)
 		}).done(function (data) {
+			$("#saveDetailLabel").show();
 			$("#saveDetailLabel").attr('disabled',false)
 			hideatdialogForm(false);
 
@@ -1697,6 +1699,7 @@ $(document).ready(function () {
 
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 	$("#saveDetailLabel").click(function(){ //actually saving the header
+		$("#saveDetailLabel").hide();
 		$("#saveDetailLabel").attr('disabled',true);
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
@@ -1714,6 +1717,7 @@ $(document).ready(function () {
 			saveHeader("#formdata",oper,saveParam);
 			unsaved = false;
 		}else{
+			$("#saveDetailLabel").show();
 			$("#saveDetailLabel").attr('disabled',true)
 			mycurrency.formatOn();
 			dialog_authorise.on();

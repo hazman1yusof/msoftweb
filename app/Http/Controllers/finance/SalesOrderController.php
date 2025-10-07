@@ -362,7 +362,7 @@ class SalesOrderController extends defaultController
                                 ->where('trantype','IN');
 
             if($unique_recno->exists()){
-                throw new \Exception("ivtmphd already exists");
+                throw new \Exception("dbacthdr already exists");
             }
             
             $array_insert = [
