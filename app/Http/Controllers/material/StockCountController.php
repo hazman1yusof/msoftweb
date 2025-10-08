@@ -134,22 +134,23 @@ class StockCountController extends defaultController
                 $stockloc = $stockloc->select('s.itemcode','s.uomcode','p.avgcost','s.qtyonhand');
             }
 
-            $stockloc = $stockloc->leftjoin('material.product as p', function($join) use ($request){
-                            $join = $join->on('p.itemcode', '=', 's.itemcode');
-                            $join = $join->on('p.uomcode', '=', 's.uomcode');
+            $stockloc = $stockloc->join('material.product as p', function($join) use ($request){
                             $join = $join->where('p.compcode', '=', session('compcode'));
                             $join = $join->where('p.unit', '=', $unit);
+                            $join = $join->on('p.itemcode', '=', 's.itemcode');
+                            $join = $join->on('p.uomcode', '=', 's.uomcode');
+                            $join = $join->on('p.recstatus', 'ACTIVE');
                         });
 
             if($include_expiry){
-                $stockloc = $stockloc->leftjoin('material.stockexp as se', function($join) use ($request){
-                                $join = $join->on('se.itemcode', '=', 's.itemcode');
-                                $join = $join->on('se.deptcode', '=', 's.deptcode');
-                                $join = $join->on('se.uomcode', '=', 's.uomcode');
-                                $join = $join->where('se.compcode', '=', session('compcode'));
-                                $join = $join->where('se.unit', '=', $unit);
-                                $join = $join->on('se.year', '=', 's.year');
-                            });
+                // $stockloc = $stockloc->leftjoin('material.stockexp as se', function($join) use ($request){
+                //                 $join = $join->on('se.itemcode', '=', 's.itemcode');
+                //                 $join = $join->on('se.deptcode', '=', 's.deptcode');
+                //                 $join = $join->on('se.uomcode', '=', 's.uomcode');
+                //                 $join = $join->where('se.compcode', '=', session('compcode'));
+                //                 $join = $join->where('se.unit', '=', $unit);
+                //                 $join = $join->on('se.year', '=', 's.year');
+                //             });
             }
 
             if(!empty($request->rackno)){

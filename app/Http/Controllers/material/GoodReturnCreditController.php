@@ -61,7 +61,7 @@ class GoodReturnCreditController extends defaultController
         $table =  DB::table('material.delordhd as do');
         $table = $table->select('do.idno as delordhd_idno','do.compcode as delordhd_compcode','do.recno as delordhd_recno','do.prdept as delordhd_prdept','do.trantype as delordhd_trantype','do.docno as delordhd_docno','do.delordno as delordhd_delordno','do.invoiceno as delordhd_invoiceno','do.suppcode as delordhd_suppcode','do.srcdocno as delordhd_srcdocno','do.po_recno as delordhd_po_recno','do.deldept as delordhd_deldept','do.subamount as delordhd_subamount','do.amtdisc as delordhd_amtdisc','do.perdisc as delordhd_perdisc','do.totamount as delordhd_totamount','do.deliverydate as delordhd_deliverydate','do.trandate as delordhd_trandate','do.trantime as delordhd_trantime','do.respersonid as delordhd_respersonid','do.checkpersonid as delordhd_checkpersonid','do.checkdate as delordhd_checkdate','do.postedby as delordhd_postedby','do.recstatus as delordhd_recstatus','do.remarks as delordhd_remarks','do.adduser as delordhd_adduser','do.adddate as delordhd_adddate','do.upduser as delordhd_upduser','do.upddate as delordhd_upddate','do.reason as delordhd_reason','do.rtnflg as delordhd_rtnflg','do.reqdept as delordhd_reqdept','do.credcode as delordhd_credcode','do.impflg as delordhd_impflg','do.allocdate as delordhd_allocdate','do.postdate as delordhd_postdate','do.deluser as delordhd_deluser','do.taxclaimable as delordhd_taxclaimable','do.TaxAmt as delordhd_TaxAmt','do.prortdisc as delordhd_prortdisc','do.cancelby as delordhd_cancelby','do.canceldate as delordhd_canceldate','do.reopenby as delordhd_reopenby','do.reopendate as delordhd_reopendate','do.unit as delordhd_unit','do.postflag as delordhd_postflag','do.debtorcode as delordhd_debtorcode','do.mrn as delordhd_mrn','do.cnno as delordhd_cnno','pm.newmrn as pm_newmrn','do.hdrtype as delordhd_hdrtype','do.paymode as delordhd_paymode')
                     ->where('do.compcode',session('compcode'))
-                    ->where('do.trantype','GRT')
+                    ->where('do.trantype','RCN')
                     ->whereNotNull('do.cnno');
 
         // $table = $table->
@@ -265,7 +265,7 @@ class GoodReturnCreditController extends defaultController
             $table = DB::table("material.delordhd");
 
             $array_insert = [
-                'trantype' => 'GRT', 
+                'trantype' => 'RCN', 
                 'docno' => $request_no,
                 'recno' => $recno,
                 'compcode' => $compcode,
@@ -394,7 +394,7 @@ class GoodReturnCreditController extends defaultController
                         'reference'=>$delordhd_obj->delordno, 
                         'source'=>'IV', 
                         'txndept'=>$delordhd_obj->deldept, 
-                        'trantype'=>'GRT',
+                        'trantype'=>'RCN',
                         'docno'=>$delordhd_obj->docno, 
                         // 'srcdocno'=>$delordhd_obj->srcdocno, 
                         // 'sndrcv'=>$delordhd_obj->suppcode, 
@@ -549,7 +549,7 @@ class GoodReturnCreditController extends defaultController
                     $ivtxnhd_obj = DB::table('material.ivtxnhd')
                         ->where('compcode','=',session('compcode'))
                         ->where('source','IV')
-                        ->where('trantype','GRT')
+                        ->where('trantype','RCN')
                         ->where('recno',$delordhd_obj->recno)
                         ->first();
 
@@ -764,7 +764,7 @@ class GoodReturnCreditController extends defaultController
                 //--- 8. change recstatus to posted ---//
 
                 DB::table('material.delordhd')
-                    ->where('trantype','=','GRT')
+                    ->where('trantype','=','RCN')
                     ->where('recno','=',$recno)
                     ->where('compcode','=',session('compcode'))
                     ->update([

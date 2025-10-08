@@ -123,6 +123,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 							<option value="APPROVED">APPROVED</option>
 							<option value="COMPLETED">COMPLETED</option>
 							<option value="PARTIAL">PARTIAL</option>
+							<option value="CLOSE">CLOSE</option>
 						@elseif (Request::get('scope') == 'SUPPORT')
 							<option value="PREPARED">PREPARED</option>
 						@elseif (Request::get('scope') == 'VERIFIED')
@@ -135,6 +136,9 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 							<option value="OPEN">OPEN</option>
 							<option value="PREPARED">PREPARED</option>
 							<option value="VERIFIED">VERIFIED</option>
+						@elseif (Request::get('scope') == 'FORCE_CLOSE')
+							<option value="APPROVED" selected>APPROVED</option>
+							<option value="CLOSE">CLOSE</option>
 						@endif
 					</select>
 				</div>
@@ -170,6 +174,8 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 						$scope_use = 'reopen';
 					}else if(Request::get('scope') == 'CANCEL'){
 						$scope_use = 'cancel';
+					}else if(Request::get('scope') == 'FORCE_CLOSE'){
+						$scope_use = 'force_close';
 					}
 				?>
 
@@ -177,7 +183,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 
-					@if (Request::get('scope') != 'ALL' && Request::get('scope') != 'REOPEN' && Request::get('scope') != 'CANCEL')
+					@if (Request::get('scope') != 'ALL' && Request::get('scope') != 'REOPEN' && Request::get('scope') != 'CANCEL' && Request::get('scope') != 'FORCE_CLOSE')
 					<button type="button" class="btn btn-danger btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">REJECT</button>
 					@endif
 
@@ -704,7 +710,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 			
 		});
 	</script>
-	<script src="js/material/purchaseOrder/purchaseOrder.js?v=1.21"></script>
+	<script src="js/material/purchaseOrder/purchaseOrder.js?v=1.22"></script>
 	<!-- <script src="js/material/purchaseOrder/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

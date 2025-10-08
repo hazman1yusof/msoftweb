@@ -238,6 +238,10 @@ $(document).ready(function () {
 		recstatus_filter = [['OPEN']];
 		filterCol_urlParam = ['purordhd.compcode','queuepo.AuthorisedID'];
 		filterVal_urlParam = ['session.compcode','session.username'];
+	}else if($("#recstatus_use").val() == 'FORCE_CLOSE'){
+		recstatus_filter = [['APPROVED']];
+		filterCol_urlParam = ['purordhd.compcode','queuepo.AuthorisedID'];
+		filterVal_urlParam = ['session.compcode','session.username'];
 	}
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","purordhd_idno","purordhd_recstatus",recstatus_filter[0][0]);
 
@@ -1037,7 +1041,7 @@ $(document).ready(function () {
 						}
 					},
 			},
-			{ label: 'Quantity<br/>Balanced', name: 'qtyoutstand', width: 100, align: 'right', classes: 'wrap', editable:true,	
+			{ label: 'Undelivered<br/>Balanced', name: 'qtyoutstand', width: 100, align: 'right', classes: 'wrap', editable:true,	
 				formatter:'integer',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: false},editoptions:{readonly: "readonly"},
 			},
@@ -1278,6 +1282,10 @@ $(document).ready(function () {
 			}
 		}else if($('#recstatus_use').val() == 'REOPEN'){
 			if(rowObject.purordhd_recstatus == "CANCELLED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'FORCE_CLOSE'){
+			if(rowObject.purordhd_recstatus == "APPROVED"){
 				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 			}
 		}

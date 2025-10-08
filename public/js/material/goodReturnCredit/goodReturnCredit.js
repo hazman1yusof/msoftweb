@@ -234,7 +234,7 @@ $(document).ready(function () {
 			{ label: 'Purchase Department', name: 'delordhd_prdept', hidden:true},
 			{ label: 'Store Department', name: 'delordhd_deldept', width: 18, classes: 'wrap', canSearch:true, formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Request Department', name: 'delordhd_reqdept', width: 18, hidden: true, classes: 'wrap' },
-			{ label: 'GRT No', name: 'delordhd_docno', width: 15, classes: 'wrap', canSearch: true, align: 'right', formatter: padzero, unformat: unpadzero},
+			{ label: 'RCN No', name: 'delordhd_docno', width: 15, classes: 'wrap', canSearch: true, align: 'right', formatter: padzero, unformat: unpadzero},
 			{ label: 'CN No', name: 'delordhd_cnno', width: 15, classes: 'wrap', canSearch: true, align: 'right'},
 			{ label: 'Date', name: 'delordhd_trandate', width: 20, classes: 'wrap', canSearch: true , formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'HUKM MRN', name: 'pm_newmrn', width: 25, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},

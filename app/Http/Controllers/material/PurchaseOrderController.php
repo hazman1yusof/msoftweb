@@ -109,7 +109,7 @@ class PurchaseOrderController extends defaultController
                 $join = $join->on('s.SuppCode', '=', 'po.suppcode');
         });
 
-        if(!in_array($scope, ['ALL','CANCEL','REOPEN'])){
+        if(!in_array($scope, ['ALL','CANCEL','REOPEN','FORCE_CLOSE'])){
             $table = $table->join('material.queuepo as qpo', function($join) use ($request,$scope){
                 $join = $join
                     ->where('qpo.compcode',session('compcode'))
@@ -251,6 +251,8 @@ class PurchaseOrderController extends defaultController
                 return $this->verify($request);
             case 'approved':
                 return $this->approved($request);
+            case 'force_close':
+                return $this->force_close($request);
             case 'cancel':
                 return $this->cancel($request);
             case 'cancel_from_reject':
@@ -681,6 +683,71 @@ class PurchaseOrderController extends defaultController
                     ->where('recno','=',$purordhd_get->recno)
                     ->update([
                         'recstatus' => 'CANCELLED',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+                DB::table("material.queuepo")
+                    ->where('recno','=',$purordhd_get->recno)
+                    ->delete();
+            }
+
+
+            // $po_dt = DB::table('material.purorddt')
+            //     ->where('recno', '=', $purordhd_get->recno)
+            //     ->where('compcode', '=', session('compcode'))
+            //     ->where('recstatus', '<>', 'DELETE')
+            //     ->get();
+
+            // foreach ($po_dt as $key => $value) {
+            //     if($value->qtyorder != $value->qtyoutstand){
+            //         DB::rollback();
+                        
+            //         return response('Error: Please Cancel all DO before CANCEL', 500)
+            //             ->header('Content-Type', 'text/plain');
+            //     }
+            // }
+           
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e, 500);
+        }
+    }
+
+    public function force_close(Request $request){
+        DB::beginTransaction();
+
+        try{
+
+            foreach ($request->idno_array as $value){
+
+                $purordhd = DB::table("material.purordhd")
+                            ->where('compcode',session('compcode'))
+                            ->where('idno','=',$value);
+
+                $purordhd_get = $purordhd->first();
+
+                if(!in_array($purordhd_get->recstatus, ['APPROVED'])){
+                    throw new \Exception("Cant CLOSE this document, check document status (APPROVED only)");
+                }
+
+                DB::table("material.purordhd")
+                    ->where('compcode',session('compcode'))
+                    ->where('idno','=',$value)
+                    ->update([
+                        'recstatus' => 'CLOSE',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+                DB::table("material.purorddt")
+                    ->where('compcode',session('compcode'))
+                    ->where('recno','=',$purordhd_get->recno)
+                    ->update([
+                        'recstatus' => 'CLOSE',
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);

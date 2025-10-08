@@ -96,7 +96,7 @@ class GoodReturnCreditDetailController extends defaultController
 
             if($delordhd->exists()){
                 $delordhd = $delordhd->first();
-                $request_no = $this->request_no('GRT', $delordhd->deldept);
+                $request_no = $this->request_no('RCN', $delordhd->deldept);
                 $recno = $this->recno('IV','IT');
                 $compcode = session('compcode');
                 $cnno = $this->recno('PB','CN');

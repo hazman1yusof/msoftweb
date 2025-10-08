@@ -209,7 +209,7 @@ class DeliveryOrderDetailController extends defaultController
 
             if($delordhd->exists()){
                 $delordno = $this->request_no('DO',$delordhd->first()->prdept);
-                $recno = $this->recno('PUR','DO');
+                $recno = $this->recno('IV','IT');
 
                 $unique_recno = DB::table('material.delordhd')
                                 ->where('compcode',session('compcode'))
@@ -229,7 +229,7 @@ class DeliveryOrderDetailController extends defaultController
                     ]);
             }else if(empty($recno)){
                 $delordno = $this->request_no('DO',$request->prdept);
-                $recno = $this->recno('PUR','DO');
+                $recno = $this->recno('IV','IT');
 
                 DB::table("material.delordhd")
                     ->where('idno','=',$request->idno)

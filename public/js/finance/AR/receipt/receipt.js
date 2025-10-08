@@ -76,12 +76,12 @@ $(document).ready(function () {
 
 	function amountFunction(){
 		if(tabform=='#f_tab-cash'){
-			getCashBal();
-			getOutBal(true);
+			getCashBal(tabform);
+			getOutBal(true,null,tabform);
 		}else if(tabform=='#f_tab-card'||tabform=='#f_tab-cheque'||tabform=='#f_tab-forex'){
-			getOutBal(false);
+			getOutBal(false,null,tabform);
 		}else if(tabform=='#f_tab-debit'){
-			getOutBal(false,$(tabform+" input[name='dbacthdr_bankcharges']").val());
+			getOutBal(false,$(tabform+" input[name='dbacthdr_bankcharges']").val(),tabform);
 		}
 	}
 
@@ -102,9 +102,10 @@ $(document).ready(function () {
 		$("input[name='dbacthdr_outamount']").prop( "disabled", true );
 		$("input[name='dbacthdr_RCCASHbalance']").prop( "disabled", true );
 		$("input[name='dbacthdr_RCFinalbalance']").prop( "disabled", true );
+		$(tabform+" input[name='dbacthdr_amount']").on('blur',amountFunction);
 	}
 
-	function getCashBal(){
+	function getCashBal(tabform){
 		mycurrency.formatOff();
 		var pay=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_amount']").val()));
 		var out=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_outamount']").val()));
@@ -114,7 +115,7 @@ $(document).ready(function () {
 		mycurrency.formatOn();
 	}
 
-	function getOutBal(iscash,bc){
+	function getOutBal(iscash,bc,tabform){
 		mycurrency.formatOff();
 		var pay=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_amount']").val()));
 		var out=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_outamount']").val()));
