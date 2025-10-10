@@ -1087,5 +1087,9 @@ abstract class defaultController extends Controller{
         return (float) str_replace(',', '', $money);
     }
 
+    public function floatEquals($a, $b, $epsilon = 0.00001) {
+        return abs(floatval($a) - floatval($b)) < $epsilon;
+    }
+
 
 }

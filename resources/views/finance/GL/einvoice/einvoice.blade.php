@@ -72,6 +72,7 @@ i.fa {
                 <option value="IMP" selected>IMP</option>
                 <option value="W'HOUSE">W'HOUSE</option>
                 <option value="KHEALTH">KHEALTH</option>
+                <option value="MRS">MRS</option>
             </select>
         </div>
 			</fieldset> 

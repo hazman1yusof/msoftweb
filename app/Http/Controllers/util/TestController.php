@@ -7139,7 +7139,7 @@ class TestController extends defaultController
 
                 $all2 = $add2 - $minus2;
 
-                if(floatval($value_array['netmvqty'.$period]) != floatval($all) || floatval($value_array['netmvval'.$period]) != floatval($all2)){
+                if(!$this->floatEquals($value_array['netmvqty'.$period], $all) || !$this->floatEquals($value_array['netmvval'.$period], $all2)){
 
                     dump($x.'. '.$value->itemcode.' -> SAVED netmvqty'.$period.' => '.$value_array['netmvqty'.$period].' -> SAVED netmvval'.$period.' => '.$value_array['netmvval'.$period] );
                     dump($x.'. '.$value->itemcode.' -> REAL netmvqty'.$period.' => '.$all.' -> REAL netmvval => '.$all2);
@@ -7182,15 +7182,15 @@ class TestController extends defaultController
         DB::beginTransaction();
 
         try {
-            $deptcode='FKWSTR';
-            $period=7;
-            $day_start = '2025-08-01';
-            $day_end = '2025-08-20';
+            $deptcode='IMP';
+            $period=9;
+            $day_start = '2025-09-01';
+            $day_end = '2025-09-20';
             $day_now = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d');
 
             $phycntdt = DB::table('material.phycntdt')
                             ->where('compcode',session('compcode'))
-                            ->where('recno','5204984')
+                            ->where('recno','5205667')
                             ->get();
 
             foreach ($phycntdt as $obj) {
@@ -7203,7 +7203,7 @@ class TestController extends defaultController
                         ->where('year','2025')
                         ->first();
 
-                $openbalqty = $stockloc->openbalqty+$stockloc->netmvqty1+$stockloc->netmvqty2+$stockloc->netmvqty3+$stockloc->netmvqty4+$stockloc->netmvqty5+$stockloc->netmvqty6+$stockloc->netmvqty7;
+                $openbalqty = $stockloc->openbalqty+$stockloc->netmvqty1+$stockloc->netmvqty2+$stockloc->netmvqty3+$stockloc->netmvqty4+$stockloc->netmvqty5+$stockloc->netmvqty6+$stockloc->netmvqty7+$stockloc->netmvqty8;
                 // dd($openbalqty);
 
                 $ivdspdt = DB::table('material.ivdspdt')
@@ -7303,7 +7303,7 @@ class TestController extends defaultController
                 $qtyonhand = $obj->qtyonhand;
                 $real_qtyonhand = $obj->openbalqty + $obj->netmvqty1 + $obj->netmvqty2 + $obj->netmvqty3 + $obj->netmvqty4 + $obj->netmvqty5 + $obj->netmvqty6 + $obj->netmvqty7 + $obj->netmvqty8 + $obj->netmvqty9 + $obj->netmvqty10 + $obj->netmvqty11 + $obj->netmvqty12;
                 if($qtyonhand != $real_qtyonhand){
-                    dump($x.'. '.$obj->itemcode);
+                    dump($x.'. '.$obj->itemcode.' => '.$qtyonhand.' vs Real '.$real_qtyonhand);
                     $x++;
 
                     if($request->commit == 1){
@@ -8228,7 +8228,7 @@ class TestController extends defaultController
                         ->where('doctrantype','PD')
                         ->where('recstatus','POSTED')
                         ->where('allocdate','>=',$firstDay)
-                        ->where('allocdate','<='$lastDay)
+                        ->where('allocdate','<=',$lastDay)
                         ->get();
 
         foreach ($apalloc as $obj) {
