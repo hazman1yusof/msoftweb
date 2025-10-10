@@ -329,6 +329,7 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
     }
     
     public function ap_data($obj){
+        $responce = new stdClass();
         if($obj->trantype == 'PD'){
 
             $apacthdr = DB::table('finance.apacthdr as ap')
