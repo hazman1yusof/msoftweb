@@ -352,6 +352,28 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
 
             return $responce;
 
+        }else if($obj->trantype == 'AL'){
+            $apalloc = DB::table('finance.apalloc as ap')
+                            ->select('ap.suppcode','s.name','ap.remarks')
+                            ->leftJoin('material.supplier as s', function($join){
+                                $join = $join->on('s.suppcode', '=', 'ap.suppcode')
+                                                ->where('s.compcode','=',session('compcode'));
+                            })
+                            ->where('ap.compcode',session('compcode'))
+                            ->where('ap.source','=',$obj->source)
+                            ->where('ap.trantype','='$obj->trantype)
+                            ->where('ap.auditno','=',$obj->auditno)
+                            ->where('ap.lineno_','=',$obj->lineno_);
+
+            if($apalloc->exists()){
+                $apalloc = $apalloc->first();
+                $obj->description = $apalloc->remarks;
+                // $responce->desc = $dbacthdr->name;
+                $obj->reference = $apalloc->name;
+            }
+
+            // return $responce;
+
         }else{
             return 0;
         }
