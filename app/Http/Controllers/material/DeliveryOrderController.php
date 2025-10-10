@@ -381,31 +381,59 @@ class DeliveryOrderController extends defaultController
                                         ->where('trantype',$delordhd_obj->trantype);
 
                     if($unique_recno->exists()){
-                        throw new \Exception("ivtxnhd already exists");
+
+                        DB::table('material.ivtxnhd')
+                            ->where('compcode',session('compcode'))
+                            ->where('recno',$delordhd_obj->recno)
+                            ->where('trantype',$delordhd_obj->trantype)
+                            ->update([
+                                'compcode'=>session('compcode'), 
+                                'recno'=>$delordhd_obj->recno, 
+                                'reference'=>$delordhd_obj->delordno, 
+                                'source'=>'IV', 
+                                'txndept'=>$delordhd_obj->deldept, 
+                                'trantype'=>$delordhd_obj->trantype, 
+                                'docno'=>$delordhd_obj->docno, 
+                                'srcdocno'=>$delordhd_obj->srcdocno, 
+                                'sndrcv'=>$delordhd_obj->suppcode, 
+                                'sndrcvtype'=>'Supplier', 
+                                'trandate'=>Carbon::now("Asia/Kuala_Lumpur"), 
+                                'trantime'=>Carbon::now("Asia/Kuala_Lumpur"), 
+                                'datesupret'=>$delordhd_obj->deliverydate, 
+                                'respersonid'=>$delordhd_obj->checkpersonid, 
+                                'recstatus'=>$delordhd_obj->recstatus, 
+                                // 'adduser'=>$delordhd_obj->adduser, 
+                                // 'adddate'=>Carbon::now("Asia/Kuala_Lumpur"),
+                                'remarks'=>$delordhd_obj->remarks,
+                                'unit' =>session('unit')
+                            ]);
+                    }else{
+
+                        DB::table('material.ivtxnhd')
+                            ->insert([
+                                'compcode'=>session('compcode'), 
+                                'recno'=>$delordhd_obj->recno, 
+                                'reference'=>$delordhd_obj->delordno, 
+                                'source'=>'IV', 
+                                'txndept'=>$delordhd_obj->deldept, 
+                                'trantype'=>$delordhd_obj->trantype, 
+                                'docno'=>$delordhd_obj->docno, 
+                                'srcdocno'=>$delordhd_obj->srcdocno, 
+                                'sndrcv'=>$delordhd_obj->suppcode, 
+                                'sndrcvtype'=>'Supplier', 
+                                'trandate'=>Carbon::now("Asia/Kuala_Lumpur"), 
+                                'trantime'=>Carbon::now("Asia/Kuala_Lumpur"), 
+                                'datesupret'=>$delordhd_obj->deliverydate, 
+                                'respersonid'=>$delordhd_obj->checkpersonid, 
+                                'recstatus'=>$delordhd_obj->recstatus, 
+                                'adduser'=>$delordhd_obj->adduser, 
+                                'adddate'=>Carbon::now("Asia/Kuala_Lumpur"),
+                                'remarks'=>$delordhd_obj->remarks,
+                                'unit' =>session('unit')
+                            ]);
                     }
 
-                    DB::table('material.ivtxnhd')
-                        ->insert([
-                            'compcode'=>$delordhd_obj->compcode, 
-                            'recno'=>$delordhd_obj->recno, 
-                            'reference'=>$delordhd_obj->delordno, 
-                            'source'=>'IV', 
-                            'txndept'=>$delordhd_obj->deldept, 
-                            'trantype'=>$delordhd_obj->trantype, 
-                            'docno'=>$delordhd_obj->docno, 
-                            'srcdocno'=>$delordhd_obj->srcdocno, 
-                            'sndrcv'=>$delordhd_obj->suppcode, 
-                            'sndrcvtype'=>'Supplier', 
-                            'trandate'=>Carbon::now("Asia/Kuala_Lumpur"), 
-                            'trantime'=>Carbon::now("Asia/Kuala_Lumpur"), 
-                            'datesupret'=>$delordhd_obj->deliverydate, 
-                            'respersonid'=>$delordhd_obj->checkpersonid, 
-                            'recstatus'=>$delordhd_obj->recstatus, 
-                            'adduser'=>$delordhd_obj->adduser, 
-                            'adddate'=>Carbon::now("Asia/Kuala_Lumpur"),
-                            'remarks'=>$delordhd_obj->remarks,
-                            'unit' =>session('unit')
-                        ]);
+                    
                 }
                 
 

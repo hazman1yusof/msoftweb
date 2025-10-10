@@ -415,7 +415,7 @@ $(document).ready(function () {
 			
 	// 	});
 	// });
-	$("#but_post_jq").click(function(){
+	$("#but_cancel_jq,#but_post_jq").click(function(){
 		$(this).attr('disabled',true);
 		var self_ = this;
 		var idno_array = [];

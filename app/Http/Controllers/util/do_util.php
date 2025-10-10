@@ -11,38 +11,83 @@ use App\Http\Controllers\defaultController;
 class do_util extends defaultController{
 
 	public static function ivtxndt_ins($value,$txnqty,$netprice,$delordhd_obj,$productcat){
-		DB::table('material.ivtxndt')
-            ->insert([
-                'compcode' => $value->compcode, 
-                'unit' => session('unit'), //ikut unit delorddt
-                'recno' => $value->recno, 
-                'lineno_' => $value->lineno_, 
-                'itemcode' => $value->itemcode, 
-                'uomcode' => $value->pouom, 
-                'uomcoderecv' => $value->uomcode, 
-                'txnqty' => $value->qtydelivered, 
-                'netprice' => $value->netunitprice, 
-                'adduser' => $value->adduser, 
-                'adddate' => $value->adddate, 
-                'upduser' => $value->upduser, 
-                'upddate' => $value->upddate, 
-                'productcat' => $productcat, 
-                'draccno' => $value->draccno, 
-                'drccode' => $value->drccode, 
-                'craccno' => $value->craccno, 
-                'crccode' => $value->crccode, 
-                'expdate' => $value->expdate, 
-                'remarks' => $value->remarks, 
-                'qtyonhand' => 0, 
-                'batchno' => $value->batchno, 
-                'amount' => $value->amount, 
-                // 'amount' => round($value->netunitprice * $value->qtydelivered, 2), 
-                'trandate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                'trantype' => $delordhd_obj->trantype,
-                'deptcode' => $value->deldept, 
-                'gstamount' => $value->amtslstax, 
-                'totamount' => $value->totamount
-            ]);
+        $unique_recno = DB::table('material.ivtxndt')
+                            ->where('compcode',session('compcode'))
+                            ->where('recno',$value->recno)
+                            ->where('lineno_',$value->lineno_)
+                            ->where('trantype',$delordhd_obj->trantype);
+
+        if($unique_recno->exists()){
+            DB::table('material.ivtxndt')
+                ->where('compcode',session('compcode'))
+                ->where('recno',$value->recno)
+                ->where('lineno_',$value->lineno_)
+                ->where('trantype',$delordhd_obj->trantype)
+                ->update([
+                    'compcode' => session('compcode'), 
+                    'unit' => session('unit'), //ikut unit delorddt
+                    'recno' => $value->recno, 
+                    'lineno_' => $value->lineno_, 
+                    'itemcode' => $value->itemcode, 
+                    'uomcode' => $value->pouom, 
+                    'uomcoderecv' => $value->uomcode, 
+                    'txnqty' => $value->qtydelivered, 
+                    'netprice' => $value->netunitprice, 
+                    'adduser' => $value->adduser, 
+                    'adddate' => $value->adddate, 
+                    'upduser' => $value->upduser, 
+                    'upddate' => $value->upddate, 
+                    'productcat' => $productcat, 
+                    'draccno' => $value->draccno, 
+                    'drccode' => $value->drccode, 
+                    'craccno' => $value->craccno, 
+                    'crccode' => $value->crccode, 
+                    'expdate' => $value->expdate, 
+                    'remarks' => $value->remarks, 
+                    'qtyonhand' => 0, 
+                    'batchno' => $value->batchno, 
+                    'amount' => $value->amount, 
+                    // 'amount' => round($value->netunitprice * $value->qtydelivered, 2), 
+                    'trandate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'trantype' => $delordhd_obj->trantype,
+                    'deptcode' => $value->deldept, 
+                    'gstamount' => $value->amtslstax, 
+                    'totamount' => $value->totamount
+                ]);
+        }else{
+            DB::table('material.ivtxndt')
+                ->insert([
+                    'compcode' => session('compcode'), 
+                    'unit' => session('unit'), //ikut unit delorddt
+                    'recno' => $value->recno, 
+                    'lineno_' => $value->lineno_, 
+                    'itemcode' => $value->itemcode, 
+                    'uomcode' => $value->pouom, 
+                    'uomcoderecv' => $value->uomcode, 
+                    'txnqty' => $value->qtydelivered, 
+                    'netprice' => $value->netunitprice, 
+                    'adduser' => $value->adduser, 
+                    'adddate' => $value->adddate, 
+                    'upduser' => $value->upduser, 
+                    'upddate' => $value->upddate, 
+                    'productcat' => $productcat, 
+                    'draccno' => $value->draccno, 
+                    'drccode' => $value->drccode, 
+                    'craccno' => $value->craccno, 
+                    'crccode' => $value->crccode, 
+                    'expdate' => $value->expdate, 
+                    'remarks' => $value->remarks, 
+                    'qtyonhand' => 0, 
+                    'batchno' => $value->batchno, 
+                    'amount' => $value->amount, 
+                    // 'amount' => round($value->netunitprice * $value->qtydelivered, 2), 
+                    'trandate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'trantype' => $delordhd_obj->trantype,
+                    'deptcode' => $value->deldept, 
+                    'gstamount' => $value->amtslstax, 
+                    'totamount' => $value->totamount
+                ]);
+        }
 	}
 
 	public static function stockloc_ins($value,$txnqty,$netprice,$deldept_unit,$delordhd_obj){

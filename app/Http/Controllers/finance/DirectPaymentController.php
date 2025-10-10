@@ -1115,20 +1115,21 @@ class DirectPaymentController extends defaultController
 
                 }
 
-                // DB::table($queue)
-                //     ->where('recno','=',$apacthdr->auditno)
-                //     ->delete();
-
                 DB::table($queue)
                     ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$apacthdr->auditno)
-                    ->update([
-                        'AuthorisedID' => $apacthdr->adduser,
-                        'recstatus' => 'REJECTED',
-                        'trantype' => 'REOPEN',
-                        'adduser' => session('username'),
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
+                    ->delete();
+
+                // DB::table($queue)
+                //     ->where('compcode','=',session('compcode'))
+                //     ->where('recno','=',$apacthdr->auditno)
+                //     ->update([
+                //         'AuthorisedID' => $apacthdr->adduser,
+                //         'recstatus' => 'REJECTED',
+                //         'trantype' => 'REOPEN',
+                //         'adduser' => session('username'),
+                //         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                //     ]);
 
             }
            
