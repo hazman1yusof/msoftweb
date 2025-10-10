@@ -8364,72 +8364,70 @@ class TestController extends defaultController
             }
         }
 
-        // $detail = DB::table('recondb.gljnldtl')
-        //         ->get();
+        $detail = DB::table('recondb.gljnldtl')
+                ->get();
 
-        // foreach ($detail as $obj) {
-        //     $gljnlhdr = DB::table('finance.gljnldtl')
-        //                     ->where('compcode',session('compcode'))
-        //                     ->where('source',$obj->source)
-        //                     ->where('trantype',$obj->trantype)
-        //                     ->where('auditno',$obj->auditno);
+        foreach ($detail as $obj) {
+            $gljnldtl = DB::table('finance.gljnldtl')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$obj->source)
+                            ->where('trantype',$obj->trantype)
+                            ->where('auditno',$obj->auditno)
+                            ->where('lineno_',$obj->lineno_);
 
-        //     if($gljnldtl->exists()){
-        //         DB::table('finance.gljnldtl')
-        //             ->where('compcode',session('compcode'))
-        //             ->where('itemcode',$obj->itemcode)
-        //             ->update([
-        //                 'compcode' => $obj->compcode,
-        //                 'source' => $obj->source,
-        //                 'trantype' => $obj->trantype,
-        //                 'auditno' => $obj->auditno,
-        //                 'docno' => $obj->docno,
-        //                 'description' => $obj->description,
-        //                 'year' => $obj->year,
-        //                 'period' => $obj->period,
-        //                 'different' => $obj->different,
-        //                 'recstatus' => $obj->recstatus,
-        //                 'docdate' => $obj->docdate,
-        //                 'postdate' => $obj->postdate,
-        //                 'nprefid' => $obj->nprefid,
-        //                 'lastuser' => $obj->lastuser,
-        //                 'lastdate' => $obj->lastdate,
-        //                 'adduser' => $obj->adduser,
-        //                 'adddate' => $obj->adddate,
-        //                 'upduser' => $obj->upduser,
-        //                 'upddate' => $obj->upddate,
-        //                 'unit' => $obj->unit,
-        //                 'creditAmt' => $obj->creditAmt,
-        //                 'debitAmt' => $obj->debitAmt,
-        //             ]);
-        //     }else{
-        //         DB::table('finance.gljnlhdr')
-        //             ->insert([
-        //                 'compcode' => $obj->compcode,
-        //                 'source' => $obj->source,
-        //                 'trantype' => $obj->trantype,
-        //                 'auditno' => $obj->auditno,
-        //                 'docno' => $obj->docno,
-        //                 'description' => $obj->description,
-        //                 'year' => $obj->year,
-        //                 'period' => $obj->period,
-        //                 'different' => $obj->different,
-        //                 'recstatus' => $obj->recstatus,
-        //                 'docdate' => $obj->docdate,
-        //                 'postdate' => $obj->postdate,
-        //                 'nprefid' => $obj->nprefid,
-        //                 'lastuser' => $obj->lastuser,
-        //                 'lastdate' => $obj->lastdate,
-        //                 'adduser' => $obj->adduser,
-        //                 'adddate' => $obj->adddate,
-        //                 'upduser' => $obj->upduser,
-        //                 'upddate' => $obj->upddate,
-        //                 'unit' => $obj->unit,
-        //                 'creditAmt' => $obj->creditAmt,
-        //                 'debitAmt' => $obj->debitAmt,
-        //             ]);
-        //     }
-        // }
+            if($gljnldtl->exists()){
+                DB::table('finance.gljnldtl')
+                    ->where('compcode',session('compcode'))
+                    ->where('source',$obj->source)
+                    ->where('trantype',$obj->trantype)
+                    ->where('auditno',$obj->auditno)
+                    ->where('lineno_',$obj->lineno_)
+                    ->update([
+                        'compcode' => $obj->compcode,
+                        'source' => $obj->source,
+                        'trantype' => $obj->trantype,
+                        'auditno' => $obj->auditno,
+                        'docno' => $obj->docno,
+                        'lineno_' => $obj->lineno_,
+                        'costcode' => $obj->costcode,
+                        'glaccount' => $obj->glaccount,
+                        'drcrsign' => $obj->drcrsign,
+                        'amount' => $obj->amount,
+                        'lastuser' => $obj->lastuser,
+                        'lastdate' => $obj->lastdate,
+                        'description' => $obj->description,
+                        'adduser' => $obj->adduser,
+                        'adddate' => $obj->adddate,
+                        'upduser' => $obj->upduser,
+                        'upddate' => $obj->upddate,
+                        'recstatus' => $obj->recstatus,
+                        'unit' => $obj->unit,
+                    ]);
+            }else{
+                DB::table('finance.gljnldtl')
+                    ->insert([
+                        'compcode' => $obj->compcode,
+                        'source' => $obj->source,
+                        'trantype' => $obj->trantype,
+                        'auditno' => $obj->auditno,
+                        'docno' => $obj->docno,
+                        'lineno_' => $obj->lineno_,
+                        'costcode' => $obj->costcode,
+                        'glaccount' => $obj->glaccount,
+                        'drcrsign' => $obj->drcrsign,
+                        'amount' => $obj->amount,
+                        'lastuser' => $obj->lastuser,
+                        'lastdate' => $obj->lastdate,
+                        'description' => $obj->description,
+                        'adduser' => $obj->adduser,
+                        'adddate' => $obj->adddate,
+                        'upduser' => $obj->upduser,
+                        'upddate' => $obj->upddate,
+                        'recstatus' => $obj->recstatus,
+                        'unit' => $obj->unit,
+                    ]);
+            }
+        }
     }
 
 }
