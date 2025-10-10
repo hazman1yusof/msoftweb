@@ -8310,7 +8310,9 @@ class TestController extends defaultController
             if($gljnlhdr->exists()){
                 DB::table('finance.gljnlhdr')
                     ->where('compcode',session('compcode'))
-                    ->where('itemcode',$obj->itemcode)
+                    ->where('source',$obj->source)
+                    ->where('trantype',$obj->trantype)
+                    ->where('auditno',$obj->auditno)
                     ->update([
                         'compcode' => $obj->compcode,
                         'source' => $obj->source,
