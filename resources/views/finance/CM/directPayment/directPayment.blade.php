@@ -96,6 +96,7 @@ i.fa {
 				      <option value="SUPPORT">SUPPORT</option>
 				      <option value="VERIFIED">VERIFIED</option>
 				      <option value="APPROVED">APPROVED</option>
+				      <option value="REJECTED">REJECTED</option>
 						@elseif (Request::get('scope') == 'VERIFIED')
 							<option value="PREPARED">PREPARED</option>
 						@elseif (Request::get('scope') == 'APPROVED')

@@ -78,8 +78,8 @@ class TestController extends defaultController
                 return $this->itemcode_avgcost_ivdspdt($request);
             case 'betulkan_stockexp_semua':
                 return $this->betulkan_stockexp_semua($request);
-            case 'staff_adv':
-                return $this->staff_adv($request);
+            case 'gljnlhdr_add':
+                return $this->gljnlhdr_add($request);
             // case 'betulkan_stockloc_2025':
             //     return $this->betulkan_stockloc_2025($request);
             // case 'netmvval_from_netmvqty':
@@ -8294,6 +8294,142 @@ class TestController extends defaultController
                     ]);
             }
         }
+    }
+
+    public function gljnlhdr_add(Request $request){
+        $header = DB::table('recondb.gljnlhdr')
+                ->get();
+
+        foreach ($header as $obj) {
+            $gljnlhdr = DB::table('finance.gljnlhdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$obj->source)
+                            ->where('trantype',$obj->trantype)
+                            ->where('auditno',$obj->auditno);
+
+            if($gljnlhdr->exists()){
+                DB::table('finance.gljnlhdr')
+                    ->where('compcode',session('compcode'))
+                    ->where('itemcode',$obj->itemcode)
+                    ->update([
+                        'compcode' => $obj->compcode,
+                        'source' => $obj->source,
+                        'trantype' => $obj->trantype,
+                        'auditno' => $obj->auditno,
+                        'docno' => $obj->docno,
+                        'description' => $obj->description,
+                        'year' => $obj->year,
+                        'period' => $obj->period,
+                        'different' => $obj->different,
+                        'recstatus' => $obj->recstatus,
+                        'docdate' => $obj->docdate,
+                        'postdate' => $obj->postdate,
+                        'nprefid' => $obj->nprefid,
+                        'lastuser' => $obj->lastuser,
+                        'lastdate' => $obj->lastdate,
+                        'adduser' => $obj->adduser,
+                        'adddate' => $obj->adddate,
+                        'upduser' => $obj->upduser,
+                        'upddate' => $obj->upddate,
+                        'unit' => $obj->unit,
+                        'creditAmt' => $obj->creditAmt,
+                        'debitAmt' => $obj->debitAmt,
+                    ]);
+            }else{
+                DB::table('finance.gljnlhdr')
+                    ->insert([
+                        'compcode' => $obj->compcode,
+                        'source' => $obj->source,
+                        'trantype' => $obj->trantype,
+                        'auditno' => $obj->auditno,
+                        'docno' => $obj->docno,
+                        'description' => $obj->description,
+                        'year' => $obj->year,
+                        'period' => $obj->period,
+                        'different' => $obj->different,
+                        'recstatus' => $obj->recstatus,
+                        'docdate' => $obj->docdate,
+                        'postdate' => $obj->postdate,
+                        'nprefid' => $obj->nprefid,
+                        'lastuser' => $obj->lastuser,
+                        'lastdate' => $obj->lastdate,
+                        'adduser' => $obj->adduser,
+                        'adddate' => $obj->adddate,
+                        'upduser' => $obj->upduser,
+                        'upddate' => $obj->upddate,
+                        'unit' => $obj->unit,
+                        'creditAmt' => $obj->creditAmt,
+                        'debitAmt' => $obj->debitAmt,
+                    ]);
+            }
+        }
+
+        // $detail = DB::table('recondb.gljnldtl')
+        //         ->get();
+
+        // foreach ($detail as $obj) {
+        //     $gljnlhdr = DB::table('finance.gljnldtl')
+        //                     ->where('compcode',session('compcode'))
+        //                     ->where('source',$obj->source)
+        //                     ->where('trantype',$obj->trantype)
+        //                     ->where('auditno',$obj->auditno);
+
+        //     if($gljnldtl->exists()){
+        //         DB::table('finance.gljnldtl')
+        //             ->where('compcode',session('compcode'))
+        //             ->where('itemcode',$obj->itemcode)
+        //             ->update([
+        //                 'compcode' => $obj->compcode,
+        //                 'source' => $obj->source,
+        //                 'trantype' => $obj->trantype,
+        //                 'auditno' => $obj->auditno,
+        //                 'docno' => $obj->docno,
+        //                 'description' => $obj->description,
+        //                 'year' => $obj->year,
+        //                 'period' => $obj->period,
+        //                 'different' => $obj->different,
+        //                 'recstatus' => $obj->recstatus,
+        //                 'docdate' => $obj->docdate,
+        //                 'postdate' => $obj->postdate,
+        //                 'nprefid' => $obj->nprefid,
+        //                 'lastuser' => $obj->lastuser,
+        //                 'lastdate' => $obj->lastdate,
+        //                 'adduser' => $obj->adduser,
+        //                 'adddate' => $obj->adddate,
+        //                 'upduser' => $obj->upduser,
+        //                 'upddate' => $obj->upddate,
+        //                 'unit' => $obj->unit,
+        //                 'creditAmt' => $obj->creditAmt,
+        //                 'debitAmt' => $obj->debitAmt,
+        //             ]);
+        //     }else{
+        //         DB::table('finance.gljnlhdr')
+        //             ->insert([
+        //                 'compcode' => $obj->compcode,
+        //                 'source' => $obj->source,
+        //                 'trantype' => $obj->trantype,
+        //                 'auditno' => $obj->auditno,
+        //                 'docno' => $obj->docno,
+        //                 'description' => $obj->description,
+        //                 'year' => $obj->year,
+        //                 'period' => $obj->period,
+        //                 'different' => $obj->different,
+        //                 'recstatus' => $obj->recstatus,
+        //                 'docdate' => $obj->docdate,
+        //                 'postdate' => $obj->postdate,
+        //                 'nprefid' => $obj->nprefid,
+        //                 'lastuser' => $obj->lastuser,
+        //                 'lastdate' => $obj->lastdate,
+        //                 'adduser' => $obj->adduser,
+        //                 'adddate' => $obj->adddate,
+        //                 'upduser' => $obj->upduser,
+        //                 'upddate' => $obj->upddate,
+        //                 'unit' => $obj->unit,
+        //                 'creditAmt' => $obj->creditAmt,
+        //                 'debitAmt' => $obj->debitAmt,
+        //             ]);
+        //     }
+        // }
     }
 
 }
