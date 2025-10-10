@@ -37,7 +37,7 @@ $(document).ready(function () {
 	var myallocation = new Allocation();
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
-	var actdateObj = new setactdate(["#actdate"]);
+	var actdateObj = new setactdate(["#postdate"]);
 	actdateObj.getdata().set();
 
 	////////////////////////////////////start dialog//////////////////////////////////////
@@ -190,7 +190,8 @@ $(document).ready(function () {
 			{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap text-uppercase', canSearch: false, checked: false, hidden:true},
 			{ label: 'Audit No', name: 'auditno', width: 20,  canSearch: true, align: 'right', formatter: padzero, unformat: unpadzero},
 			{ label: 'Paymode', name: 'paymode', width: 15},
-			{ label: 'Post Date', name: 'actdate', width: 15, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Post Date', name: 'postdate', width: 15, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'actdate', name: 'actdate',hidden:true},
 			{ label: 'Amount', name: 'amount', width: 20,  align: 'right',formatter:'currency'},
 			{ label: 'Commision', name: 'commamt', width: 20,  align: 'right',formatter:'currency'},
 			{ label: 'Tot Detail Amt', name: 'totBankinAmt', width: 20,  align: 'right',formatter:'currency'},
@@ -435,7 +436,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 	function saveHeader(form,selfoper,saveParam,obj,needrefresh){
-		$('#saveDetailLabel').prop('disabled',true);
+		$('#saveDetailLabel').hide();
 		if(obj==null){
 			obj={};
 		}
@@ -445,11 +446,11 @@ $(document).ready(function () {
 			
 		},'json').fail(function (data) {
 			alert(data.responseText);
-			$('#saveDetailLabel').prop('disabled',false);
+			$('#saveDetailLabel').show();
 		}).done(function (data) {
 			mycurrency.formatOn();
 			unsaved = false;
-			$('#saveDetailLabel').prop('disabled',false);
+			$('#saveDetailLabel').show();
 			hideatdialogForm(false);
 			// addmore_jqgrid2.state = true;
 			// if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
@@ -692,6 +693,7 @@ $(document).ready(function () {
 			{ label: 'Amount Before GST', name: 'AmtB4GST', hidden:true},
 			{ label: 'Amount', name: 'amount', width: 80, hidden:true},
 			{ label: 'commamt', name: 'commamt', width: 80, hidden:true},
+			{ label: 'idno_dtl', name: 'idno_dtl', width: 80, hidden:true},
 			{ label: 'totBankinAmt', name: 'totBankinAmt', width: 80, hidden:true},
 		],
 		autowidth: true,
@@ -735,6 +737,12 @@ $(document).ready(function () {
 			// 		}
 			// 	}
 			// });
+
+			if($("#jqGrid2").jqGrid('getGridParam', 'reccount') == 1 && urlParam2.edit=='false'){
+				$('#delDetailLabel').show();
+			}else{
+				$('#delDetailLabel').hide();
+			}
 
 			delay(function(){
 	        	// $("#alloText").focus();//AlloTotal
@@ -1006,6 +1014,11 @@ $(document).ready(function () {
 		caption:"Save",cursor: "pointer",position: "last", 
 		buttonicon:"",
 		title:"Save"
+	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+		id: "delDetailLabel",
+		caption:"Delete",cursor: "pointer",position: "last", 
+		buttonicon:"",
+		title:"Delete"
 	});
 	
 	//////////////////////////formatter checkbox//////////////////////////////////////////////////
@@ -1154,7 +1167,7 @@ $(document).ready(function () {
 	});
 
 	$('#saveAndPost').click(function(){
-		$(this).prop('disabled',true);
+		$('#saveAndPost').hide();
 		mycurrency.formatOff();
 		let idno_array = [];
 		let rate_array = [];
@@ -1177,14 +1190,48 @@ $(document).ready(function () {
 		},'json').fail(function (data) {
 			mycurrency.formatOn();
 			alert(data.responseText);
-			$(this).prop('disabled',false);
+			$('#saveAndPost').show();
 		}).done(function (data) {
 			mycurrency.formatOn();
 			urlParam2.edit='true';
 			refreshGrid("#jqGrid2",urlParam2);
 			$('#auditno').val(data);
 			hideatdialogForm(false);
-			$(this).prop('disabled',false);
+			$('#saveAndPost').show();
+		});
+	});
+
+	$("#delDetailLabel").click(function () {
+		$('#delDetailLabel').hide();
+		if($("#jqGrid2").jqGrid('getGridParam', 'selrow') == null){
+			alert('Please select row');
+			$('#delDetailLabel').show();
+			return 0;
+		}
+
+		mycurrency.formatOff();
+
+		console.log(selrowData('#jqGrid2'));
+
+		var obj={
+			_token : $('#_token').val(),
+			amount : $('#amount').val(),
+			comamt : $('#commamt').val(),
+			dtlamt : $('#dtlamt').val(),
+			idno_dtl: selrowData('#jqGrid2').idno_dtl
+		}
+
+		$.post( "./bankInRegistrationDetail/form?oper=deldetail&idno="+$('#idno').val(), obj , function( data ) {
+			
+		},'json').fail(function (data) {
+			mycurrency.formatOn();
+			alert(data.responseText);
+			$('#delDetailLabel').show();
+		}).done(function (data) {
+			mycurrency.formatOn();
+			refreshGrid("#jqGrid2",urlParam2);
+			$('#auditno').val(data);
+			$('#delDetailLabel').show();
 		});
 	});
 

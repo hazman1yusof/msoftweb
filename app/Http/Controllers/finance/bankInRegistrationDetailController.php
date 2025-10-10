@@ -31,6 +31,8 @@ class bankInRegistrationDetailController extends defaultController
                 return $this->del($request);
             case 'saveandpost':
                 return $this->saveandpost($request);
+            case 'deldetail':
+                return $this->deldetail($request);
             default:
                 return 'error happen..';
         }
@@ -126,6 +128,54 @@ class bankInRegistrationDetailController extends defaultController
 
                 $lineno_ = $lineno_ + 1;
             }
+
+            DB::commit();
+            return response($auditno,200);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+    }
+
+    public function deldetail(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $apacthdr = DB::table('finance.apacthdr')
+                            // ->where('compcode',session('compcode'))
+                            ->where('idno',$request->idno)
+                            ->first();
+
+            if($apacthdr->compcode == 'DD'){
+                $auditno = $this->recno($apacthdr->source,$apacthdr->trantype);
+
+                DB::table('finance.apacthdr')
+                            ->where('idno',$request->idno)
+                            ->update([
+                                'compcode'=>session('compcode'),
+                                'auditno'=>$auditno
+                            ]);
+            }else{
+                $auditno = $apacthdr->auditno;
+            }
+
+            DB::table('finance.cbdtl')
+                    ->where('compcode',session('compcode'))
+                    ->where('source',$apacthdr->source)
+                    ->where('trantype',$apacthdr->trantype)
+                    ->where('auditno',$apacthdr->auditno)
+                    ->where('idno',$request->idno_dtl)
+                    ->delete();
+
+            DB::table('finance.apacthdr')
+                        ->where('idno',$request->idno)
+                        ->update([
+                            'commamt' => 0,
+                            'totBankinAmt' => 0,
+                        ]);
 
             DB::commit();
             return response($auditno,200);
@@ -325,7 +375,7 @@ class bankInRegistrationDetailController extends defaultController
 
         if($apacthdr->paymode == 'CARD'){
             $table = $table
-                        ->select('db.idno','cb.compcode','cb.bankcode','cb.source','cb.trantype','cb.auditno','cb.lineno_','cb.docdate','cb.document','cb.amount','cb.reference','cb.cbflag','cb.refsrc','cb.reftrantype','cb.refauditno','cb.paymode','cb.commamt','cb.category','cb.oldforexcode','cb.oldrate','cb.newforexcode','cb.newrate','db.trantype as reftype','db.auditno as allocauditno','db.paymode as refpaymode','db.recptno as refrecptno','db.posteddate as refdocdate','db.amount as refamount','db.reference as refreference','py.comrate')
+                        ->select('db.idno','cb.compcode','cb.bankcode','cb.source','cb.trantype','cb.auditno','cb.lineno_','cb.docdate','cb.document','cb.amount','cb.reference','cb.cbflag','cb.refsrc','cb.reftrantype','cb.refauditno','cb.paymode','cb.commamt','cb.category','cb.oldforexcode','cb.oldrate','cb.newforexcode','cb.newrate','db.trantype as reftype','db.auditno as allocauditno','db.paymode as refpaymode','db.recptno as refrecptno','db.posteddate as refdocdate','db.amount as refamount','db.reference as refreference','py.comrate','cb.idno as idno_dtl')
                         ->join('debtor.paymode as py', function($join) use ($apacthdr){
                             $join = $join
                                 ->where('py.compcode',session('compcode'))
@@ -336,7 +386,7 @@ class bankInRegistrationDetailController extends defaultController
                         });
         }else{
                 $table = $table
-                        ->select('db.idno','cb.compcode','cb.bankcode','cb.source','cb.trantype','cb.auditno','cb.lineno_','cb.docdate','cb.document','cb.amount','cb.reference','cb.cbflag','cb.refsrc','cb.reftrantype','cb.refauditno','cb.paymode','cb.commamt','cb.category','cb.oldforexcode','cb.oldrate','cb.newforexcode','cb.newrate','db.trantype as reftype','db.auditno as allocauditno','db.paymode as refpaymode','db.recptno as refrecptno','db.posteddate as refdocdate','db.amount as refamount','db.reference as refreference');
+                        ->select('db.idno','cb.compcode','cb.bankcode','cb.source','cb.trantype','cb.auditno','cb.lineno_','cb.docdate','cb.document','cb.amount','cb.reference','cb.cbflag','cb.refsrc','cb.reftrantype','cb.refauditno','cb.paymode','cb.commamt','cb.category','cb.oldforexcode','cb.oldrate','cb.newforexcode','cb.newrate','db.trantype as reftype','db.auditno as allocauditno','db.paymode as refpaymode','db.recptno as refrecptno','db.posteddate as refdocdate','db.amount as refamount','db.reference as refreference','cb.idno as idno_dtl');
         }
                 
         $table = $table
