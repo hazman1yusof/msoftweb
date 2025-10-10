@@ -361,7 +361,7 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
                             })
                             ->where('ap.compcode',session('compcode'))
                             ->where('ap.source','=',$obj->source)
-                            ->where('ap.trantype','='$obj->trantype)
+                            ->where('ap.trantype','=',$obj->trantype)
                             ->where('ap.auditno','=',$obj->auditno)
                             ->where('ap.lineno_','=',$obj->lineno_);
 
