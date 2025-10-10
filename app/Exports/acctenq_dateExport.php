@@ -78,7 +78,7 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
         //                 ->where('compcode')
 
         $table = DB::table('finance.gltran as gl')
-                        ->select('gl.id','gl.source','gl.trantype','gl.auditno','gl.postdate','gl.description','gl.reference','gl.drcostcode','gl.crcostcode','gl.cracc','gl.dracc','gl.amount','glcr.description as acctname_cr','gldr.description as acctname_dr')
+                        ->select('gl.id','gl.source','gl.trantype','gl.auditno','gl.lineno_','gl.postdate','gl.description','gl.reference','gl.drcostcode','gl.crcostcode','gl.cracc','gl.dracc','gl.amount','glcr.description as acctname_cr','gldr.description as acctname_dr')
                         ->where(function($table) use ($glaccount){
                             $table->orwhere('gl.dracc','=', $glaccount);
                             $table->orwhere('gl.cracc','=', $glaccount);
