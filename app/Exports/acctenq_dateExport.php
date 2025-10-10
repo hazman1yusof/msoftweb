@@ -329,7 +329,31 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
     }
     
     public function ap_data($obj){
-        return 0;
+        if($obj->trantype == 'PD'){
+
+            $apacthdr = DB::table('finance.apacthdr as ap')
+                            ->select('ap.suppcode','s.name')
+                            ->leftJoin('material.supplier as s', function($join){
+                                $join = $join->on('s.suppcode', '=', 'ap.suppcode')
+                                                ->where('s.compcode','=',session('compcode'));
+                            })
+                            ->where('ap.compcode',session('compcode'))
+                            ->where('ap.source','=',$obj->source)
+                            ->where('ap.trantype','=',$obj->trantype)
+                            ->where('ap.auditno','=',$obj->auditno);
+
+            if($apacthdr->exists()){
+                $apacthdr = $apacthdr->first();
+                // $obj->description = $dbacthdr->payercode;
+                // $responce->desc = $dbacthdr->name;
+                $obj->reference = $apacthdr->suppname;
+            }
+
+            return $responce;
+
+        }else{
+            return 0;
+        }
     }
     
     public function cm_data($obj){
