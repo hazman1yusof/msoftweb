@@ -346,7 +346,7 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
                 $apacthdr = $apacthdr->first();
                 // $obj->description = $dbacthdr->payercode;
                 // $responce->desc = $dbacthdr->name;
-                $obj->reference = $apacthdr->suppname;
+                $obj->reference = $apacthdr->name;
             }
 
             return $responce;
