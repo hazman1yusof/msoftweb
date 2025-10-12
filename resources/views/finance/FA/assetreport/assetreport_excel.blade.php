@@ -68,42 +68,44 @@
         @php($tot_nbvamt = 0.00)
 
         @foreach($faregister as $obj)
-            @if($obj->assetcode == $assetcode_obj->assetcode)
+            @if($obj->skip == 0)
+                @if($obj->assetcode == $assetcode_obj->assetcode)
 
-                @php($tot_dispcost=$tot_dispcost + $obj->dispcost)
-                @php($tot_closecost=$tot_closecost + $obj->closecost)
-                @php($tot_opendepr=$tot_opendepr + $obj->opendepr)
-                @php($tot_adddepr=$tot_adddepr + $obj->adddepr)
-                @php($tot_dispdepr=$tot_dispdepr + $obj->dispdepr)
-                @php($tot_closedepr=$tot_closedepr + $obj->closedepr)
-                @php($tot_nbvamt=$tot_nbvamt + $obj->nbvamt)
+                    @php($tot_dispcost=$tot_dispcost + $obj->dispcost)
+                    @php($tot_closecost=$tot_closecost + $obj->closecost)
+                    @php($tot_opendepr=$tot_opendepr + $obj->opendepr)
+                    @php($tot_adddepr=$tot_adddepr + $obj->adddepr)
+                    @php($tot_dispdepr=$tot_dispdepr + $obj->dispdepr)
+                    @php($tot_closedepr=$tot_closedepr + $obj->closedepr)
+                    @php($tot_nbvamt=$tot_nbvamt + $obj->nbvamt)
 
-                <tr>
-                    <td>{{$obj->assetno}}</td>
-                    <td>{{$obj->description}}</td>
-                    <td>{{$obj->purdate}}</td>
-                    <td>{{$obj->purprice}}</td>
-                    <td>{{$obj->startdepdate}}</td>
-                    <td>{{$obj->deptcode}}</td>
+                    <tr>
+                        <td>{{$obj->assetno}}</td>
+                        <td>{{$obj->description}}</td>
+                        <td>{{$obj->purdate}}</td>
+                        <td>{{$obj->purprice}}</td>
+                        <td>{{$obj->startdepdate}}</td>
+                        <td>{{$obj->deptcode}}</td>
 
-                    @if(\Carbon\Carbon::parse($obj->trandate)->lt(\Carbon\Carbon::parse($fdoydate)))
-                    @php($tot_opencost=$tot_opencost + $obj->origcost)
-                    <td>{{$obj->origcost}}</td>
-                    <td>0.00</td>
-                    @else
-                    @php($tot_addicost=$tot_addicost + $obj->origcost)
-                    <td>0.00</td>
-                    <td>{{$obj->origcost}}</td>
-                    @endif
+                        @if(\Carbon\Carbon::parse($obj->trandate)->lt(\Carbon\Carbon::parse($fdoydate)))
+                        @php($tot_opencost=$tot_opencost + $obj->origcost)
+                        <td>{{$obj->origcost}}</td>
+                        <td>0.00</td>
+                        @else
+                        @php($tot_addicost=$tot_addicost + $obj->origcost)
+                        <td>0.00</td>
+                        <td>{{$obj->origcost}}</td>
+                        @endif
 
-                    <td>{{$obj->dispcost}}</td>
-                    <td>{{$obj->closecost}}</td>
-                    <td>{{$obj->opendepr}}</td>
-                    <td>{{$obj->adddepr}}</td>
-                    <td>{{$obj->dispdepr}}</td>
-                    <td>{{$obj->closedepr}}</td>
-                    <td>{{$obj->nbvamt}}</td>
-                </tr>
+                        <td>{{$obj->dispcost}}</td>
+                        <td>{{$obj->closecost}}</td>
+                        <td>{{$obj->opendepr}}</td>
+                        <td>{{$obj->adddepr}}</td>
+                        <td>{{$obj->dispdepr}}</td>
+                        <td>{{$obj->closedepr}}</td>
+                        <td>{{$obj->nbvamt}}</td>
+                    </tr>
+                @endif
             @endif
         @endforeach
         <tr>

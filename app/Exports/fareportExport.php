@@ -146,15 +146,16 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
 
                 // dd($fatran);
 
-                if(Carbon::parse($fatran->trandate)->lt(Carbon::parse($fdoydate))){
-                    $obj->skip=1;
-                }
-
                 if($obj->recstatus == 'DEACTIVE'){
                     if($obj->trantype == 'WOF' || $obj->trantype == 'DIS'){
-                        if(Carbon::parse($fatran->trandate)->lte(Carbon::parse($datefrom))){
-                            $obj->dispcost = $obj->origcost;
-                            $obj->dispdepr = $opendepr + $adddepr;
+
+                        if(Carbon::parse($fatran->trandate)->lt(Carbon::parse($fdoydate))){
+                            $obj->skip=1;
+                        }else{
+                            if(Carbon::parse($fatran->trandate)->lte(Carbon::parse($datefrom))){
+                                $obj->dispcost = $obj->origcost;
+                                $obj->dispdepr = $opendepr + $adddepr;
+                            }
                         }
                     }
                 }

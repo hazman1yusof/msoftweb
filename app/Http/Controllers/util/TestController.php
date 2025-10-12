@@ -8222,9 +8222,9 @@ class TestController extends defaultController
         $firstDay = Carbon::createFromDate($year, $month, 1)->startOfDay();
         $lastDay = Carbon::createFromDate($year, $month, 1)->endOfMonth()->startOfDay();
 
-        $apalloc = DB::table('finance.apalloc')
+        $dballoc = DB::table('finance.dballoc')
                         ->where('compcode',$compcode)
-                        ->where('docsource','AP')
+                        ->where('docsource','PB')
                         ->where('doctrantype','PD')
                         ->where('recstatus','POSTED')
                         ->where('allocdate','>=',$firstDay)
@@ -8232,7 +8232,7 @@ class TestController extends defaultController
                         ->get();
 
         foreach ($apalloc as $obj) {
-            $supplier = DB::table('material.supplier')
+            $debtormast = DB::table('debtor.debtormast')
                             ->where('compcode',$compcode)
                             ->where('suppcode',$obj->suppcode)
                             ->first();
@@ -8259,15 +8259,15 @@ class TestController extends defaultController
                         'lineno_' => $obj->lineno_,
                         'source' => $obj->source,
                         'trantype' => $obj->trantype,
-                        'reference' => $obj->reference,
-                        'description' => $obj->remarks,
+                        'reference' => $obj->recptno,
+                        'description' => 'ALLOCATION DEPOSIT',
                         'postdate' => $obj->allocdate,
                         'year' => $year,
                         'period' => $month,
-                        'drcostcode' => $supplier->costcode,
-                        'dracc' => $supplier->glaccno,
-                        'crcostcode' => $supplier->Advccode,
-                        'cracc' => $supplier->AdvGlaccno,
+                        'drcostcode' => $debtormast->depccode,
+                        'dracc' => $debtormast->depglacc,
+                        'crcostcode' => $debtormast->actdebccode,
+                        'cracc' => $debtormast->actdebglacc,
                         'amount' => $obj->amount
                     ]);
 
@@ -8281,15 +8281,15 @@ class TestController extends defaultController
                         'lineno_' => $obj->lineno_,
                         'source' => $obj->source,
                         'trantype' => $obj->trantype,
-                        'reference' => $obj->reference,
-                        'description' => $obj->remarks,
-                        'postdate' => $apacthdr_obj->postdate,
+                        'reference' => $obj->recptno,
+                        'description' => 'ALLOCATION DEPOSIT',
+                        'postdate' => $obj->allocdate,
                         'year' => $year,
                         'period' => $month,
-                        'drcostcode' => $supplier->costcode,
-                        'dracc' => $supplier->glaccno,
-                        'crcostcode' => $supplier->Advccode,
-                        'cracc' => $supplier->AdvGlaccno,
+                        'drcostcode' => $debtormast->depccode,
+                        'dracc' => $debtormast->depglacc,
+                        'crcostcode' => $debtormast->actdebccode,
+                        'cracc' => $debtormast->actdebglacc,
                         'amount' => $obj->amount
                     ]);
             }
