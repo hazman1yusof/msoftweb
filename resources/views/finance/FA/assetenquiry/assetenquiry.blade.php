@@ -116,6 +116,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">Asset Enquiry Header
 				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span>Print</a>
+				<a class='pull-right pointer text-primary' id='writeoff_btn' style="padding-right:25px:display:hidden"><span class='fa fa-eraser'></span>Write Off</a>
 			</div>
 			<div class="panel-body">
     			<div class='col-md-12' style="padding:0 0 15px 0">
@@ -397,6 +398,45 @@
 		</form>
 	</div>
 	<!-------------------------------- Asset Enquiry Detail (inside) ---------------------->
+
+	<div id="dialog_writeoff" title="Write Off">
+		<div class="panel-body" style="position: relative;padding:0px;">
+		<form autocomplete="off" id="formdata_wo">
+			<div id="fail_msg_wo" style="color: darkred;"></div>
+			<div class="col-md-5" style="padding-top:5px">
+			  	<label class="control-label" for="assetno_wo">Tagging No.</label>  
+				<input id="assetno_wo" name="assetno_wo" type="text" class="form-control input-sm text-uppercase" autocomplete="off" readonly>
+			</div>
+			<div class="col-md-7" style="padding-top:5px">
+			  	<label class="control-label" for="desc_wo">Description</label>  
+				<input id="desc_wo" name="desc_wo" type="text" class="form-control input-sm text-uppercase" autocomplete="off" readonly>
+			</div>
+			<div class="col-md-5" style="padding-top:5px">
+			  	<label class="control-label" for="origcost_wo">Cost</label>  
+				<input id="origcost_wo" name="origcost_wo" type="text" class="form-control input-sm text-uppercase" autocomplete="off" readonly>
+			</div>
+			<div class="col-md-5" style="padding-top:5px">
+			  	<label class="control-label" for="date_wo">Date</label>  
+				<input id="date_wo" name="date_wo" type="date" class="form-control input-sm text-uppercase" autocomplete="off" data-validation="required">
+			</div>
+			<div class="col-md-12" style="padding-top:5px">
+			  	<label class="control-label" for="accum_wo">Accumulated</label>  
+				<input id="accum_wo" name="accum_wo" type="text" class="form-control input-sm text-uppercase" autocomplete="off" readonly style="width: 40%;">
+			</div>
+			<div class="col-md-12" style="padding-top:5px">
+			  	<label class="control-label" for="nbv_wo">NBV</label>  
+				<input id="nbv_wo" name="nbv_wo" type="text" class="form-control input-sm text-uppercase" autocomplete="off" readonly style="width: 40%;">
+			</div>
+			<div class="col-md-12" style="padding-top:5px">
+			  	<label class="control-label" for="remarks_wo">Reason</label>  
+				<input id="remarks_wo" name="remarks_wo" type="text" class="form-control input-sm text-uppercase" autocomplete="off" data-validation="required">
+			</div>
+			<div class="col-md-12" style="padding-top:5px">
+				<button class="btn btn-primary pull-right" id="save_wo" style="margin-top: 10px;">Save</button>
+			</div>
+		</form>
+		</div>
+	</div>
 
 @endsection
 

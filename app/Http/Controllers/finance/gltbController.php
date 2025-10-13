@@ -57,11 +57,22 @@ class  gltbController extends defaultController
     public function form(Request $request){   
         switch($request->action){
             case 'processLink':
-                $PYTHON_PATH = \config('get_config.PYTHON_PATH');
-                if($PYTHON_PATH != null){
-                    return $this->process($request);;
+
+                $month = $request->month;
+                $year = $request->year;
+
+                $date = Carbon::createFromDate($year, $month, 1);
+                $limit = Carbon::createFromDate('2025', 4, 1);
+
+                if ($date->lte($limit)) {
+                    return 'month equal or last than april 2025';
                 }else{
-                    return $this->processLink($request);
+                    $PYTHON_PATH = \config('get_config.PYTHON_PATH');
+                    if($PYTHON_PATH != null){
+                        return $this->process($request);;
+                    }else{
+                        return $this->processLink($request);
+                    }
                 }
             default:
                 return 'error happen..';

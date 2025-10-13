@@ -48,6 +48,8 @@ class assetenquiryController extends defaultController
         switch($request->action){
             case 'get_table':
                 return $this->get_table($request);
+            case 'writeoff_act':
+                return $this->writeoff_act($request);
             
             default:
                 return 'error happen..';
@@ -229,7 +231,10 @@ class assetenquiryController extends defaultController
 
             return response($e->getMessage(), 500);
         }
-        
+    }
+
+    public function writeoff_act(Request $request){
+
     }
     
     public function showpdf(Request $request){
@@ -298,7 +303,6 @@ class assetenquiryController extends defaultController
                     ->first();
         
         return view('finance.FA.assetenquiry.assetenquiry_pdfmake', compact('faregister','movement','curloccode','company'));
-        
     }
     
 }

@@ -63,10 +63,10 @@
 						<!-- <button name="gltb_run" type="button" class="mybtn btn btn-sm" data-btntype='gltb_run'>
 						 RUN GLTB
 						</button> -->
-						<button id="gltb" type="button" class="mybtn btn btn-primary" @if($process_ == 'true') {{'disabled'}} @endif style="width:50%">
+						<button id="gltb" type="button" class="mybtn btn btn-primary" @if($process_ == 'true') {{'disabled'}} @endif style="width:50%" >
 						  @if($process_ == 'true') {{'Processing..'}} <i class="fa fa-refresh fa-spin fa-fw">@else {{'Process'}} @endif</i>
 						</button>
-						<input type="month" id="month" value="{{\Carbon\Carbon::now()->subMonth()->format('Y-m')}}" class="form-control" style="width:50%;display: inline;">
+						<input type="month" id="month" value="{{\Carbon\Carbon::now()->subMonth()->format('Y-m')}}" min="2025-05" class="form-control" style="width:50%;display: inline;">
 						<br/><br/>
 						<p>Last Run Status : <span id="gltb_status"></span><p/>
 						<p>Last Run From : <span id="gltb_datefr"></span><p/>
@@ -91,20 +91,42 @@ $(document).ready(function () {
     $.get( './gltb/table?action=check_gltb_process', function( data ) {
 			
 		},'json').done(function(data) {
-			if(data.jobdone=='true'){
-				$('#gltb').attr('disabled',false);
-				$('#gltb').html('Process');
-			}else{
-				$('#gltb').attr('disabled',true);
-				$('#gltb').html('Processing.. <i class="fa fa-refresh fa-spin fa-fw">');
-			}
-			$('#gltb_status').text(data.status);
-			$('#gltb_datefr').text(data.datefr);
-			$('#gltb_dateto').text(data.dateto);
-			$('#gltb_period').text(data.period);
-			$('#gltb_year').text(data.year);
+	  	var val = $('#month').val();
+
+	    const [year, month] = val.split('-').map(Number);
+
+	    if (month <= 4 && year == '2025') {
+	    	$("#gltb").prop('disabled',true);
+	    }else{
+	    	$("#gltb").prop('disabled',false);
+	    	if(data.jobdone=='true'){
+					$('#gltb').attr('disabled',false);
+					$('#gltb').html('Process');
+				}else{
+					$('#gltb').attr('disabled',true);
+					$('#gltb').html('Processing.. <i class="fa fa-refresh fa-spin fa-fw">');
+				}
+				$('#gltb_status').text(data.status);
+				$('#gltb_datefr').text(data.datefr);
+				$('#gltb_dateto').text(data.dateto);
+				$('#gltb_period').text(data.period);
+				$('#gltb_year').text(data.year);
+	    }
 		});
   }
+
+  $('#month').change(function(){
+  	const val = $(this).val(); // e.g. "2025-03"
+    if (!val) return;
+
+    const [year, month] = val.split('-').map(Number);
+
+    if (month <= 4 && year == '2025') {
+    	$("#gltb").prop('disabled',true);
+    }else{
+    	$("#gltb").prop('disabled',false);
+    }
+  });
 
   // Run forever every 5 seconds (5000 ms)
   setInterval(myTask, 5000);

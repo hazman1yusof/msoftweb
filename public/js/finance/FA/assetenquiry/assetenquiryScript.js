@@ -28,6 +28,8 @@ $(document).ready(function () {
 	var fdl = new faster_detail_load();
 	var mycurrency =new currencymode(['#origcost','#purprice','#lstytddep','#cuytddep','#nbv']);
 	var showeditfunc = new showeditfunc();
+	var myfail_msg_wo = new fail_msg_func('div#fail_msg_wo');
+
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var butt1=[{
 		text: "Save",click: function() {
@@ -1224,6 +1226,77 @@ $(document).ready(function () {
 
 	$('#jqGridEnquiryDtl2_panel').on('shown.bs.collapse', function () {
 		SmoothScrollTo('#'+$('div.mainpanel[aria-expanded=true]').parent('div.panel.panel-default').attr('id'), 300,0,undefined);
+	});
+
+	$("#dialog_writeoff")
+	  .dialog({
+		width: 8/10 * $(window).width(),
+		modal: true,
+		autoOpen: false,
+		open: function( event, ui ) {
+			myfail_msg_wo.clear_fail();
+			let data = selrowData('#jqGrid');
+
+			$('#assetno_wo').val(data.assetno);
+			$('#desc_wo').val(data.description);
+			$('#origcost_wo').val(data.origcost);
+			$('#date_wo').val(moment().format('YYYY-MM-DD'));
+			$('#accum_wo').val(data.dep_calc);
+			$('#nbv_wo').val(data.nbv_calc);
+
+		},
+		close: function( event, ui ) {
+			refreshGrid("#jqGrid", urlParam);
+			myfail_msg_wo.clear_fail();
+
+			$('#assetno_wo').val('');
+			$('#desc_wo').val('');
+			$('#origcost_wo').val('');
+			$('#date_wo').val(moment().format('YYYY-MM-DD'));
+			$('#accum_wo').val('');
+			$('#nbv_wo').val('');
+			$('#remarks_wo').val('');
+		}
+	  });
+
+	$('#writeoff_btn').click(function(){
+		$("#dialog_writeoff").dialog('open');
+	});
+
+	$('#save_wo').click(function(){
+		myfail_msg_wo.clear_fail();
+
+    	if($('#formdata_wo').isValid({requiredFields:''},conf,true)){
+    		$('#save_wo').attr('disabled',true);
+
+			let seldata = selrowData('#jqGrid');
+
+			var param={
+				action:'writeoff_act',
+				url: './assetenquiry/table',
+				assetno_wo:$('#assetno_wo').val(),
+				desc_wo:$('#desc_wo').val(),
+				origcost_wo:$('#origcost_wo').val(),
+				date_wo:$('#date_wo').val(),
+				accum_wo:$('#accum_wo').val(),
+				nbv_wo:$('#nbv_wo').val(),
+				remarks_wo:$('#remarks_wo').val(),
+			}
+			$.get( param.url+"?"+$.param(param), function( data ) {
+				
+			}).fail(function(data) {
+				myfail_msg_wo.add_fail({
+					id:'response',
+					textfld:"",
+					msg:data.responseText,
+				});
+				$('#save_wo').attr('disabled',false);
+			}).success(function(data) {
+
+				$('#save_wo').attr('disabled',false);
+				$("#dialog_writeoff").dialog('close');
+			});
+    	}
 	});
 
 });

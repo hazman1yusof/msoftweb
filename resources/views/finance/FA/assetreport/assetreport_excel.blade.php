@@ -88,13 +88,13 @@
                         <td>{{$obj->deptcode}}</td>
 
                         @if(\Carbon\Carbon::parse($obj->trandate)->lt(\Carbon\Carbon::parse($fdoydate)))
-                        @php($tot_opencost=$tot_opencost + $obj->origcost)
-                        <td>{{$obj->origcost}}</td>
-                        <td>0.00</td>
+                            @php($tot_opencost=$tot_opencost + $obj->origcost)
+                            <td>{{$obj->origcost}}</td>
+                            <td>0.00</td>
                         @else
-                        @php($tot_addicost=$tot_addicost + $obj->origcost)
-                        <td>0.00</td>
-                        <td>{{$obj->origcost}}</td>
+                            @php($tot_addicost=$tot_addicost + $obj->origcost)
+                            <td>0.00</td>
+                            <td>{{$obj->origcost}}</td>
                         @endif
 
                         <td>{{$obj->dispcost}}</td>
