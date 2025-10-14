@@ -93,7 +93,9 @@
               
 			  <div class="col-md-1">
 			  	@if($jobdone == 'false')
-              		<button type="button" class="btn btn-primary" id="print_process" style="position:absolute;top:17px">Processing.. <i class="fa fa-refresh fa-spin fa-fw"></button disabled="disabled">
+              		<button type="button" class="btn btn-primary" id="print_process" style="position:absolute;top:17px">
+              			Processing.. <i class="fa fa-refresh fa-spin fa-fw"></i>
+              		<button disabled="disabled">
 			  	@else
               		<button type="button" class="btn btn-primary" id="print_process" style="position:absolute;top:17px"> Process Excel </button>
 			  	@endif
