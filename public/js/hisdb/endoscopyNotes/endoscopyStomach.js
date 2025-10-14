@@ -95,6 +95,10 @@ $(document).ready(function (){
     });
     ///////////////////////////////////////////body diagram ends///////////////////////////////////////////
     
+    $("#endoscopyStomach_chart").click(function (){
+        window.open('./endoscopyNotes/endoscopystomach_chart?mrn='+$('#mrn_endoscopyNotes').val()+'&episno='+$("#episno_endoscopyNotes").val()+'&age='+$("#age_endoscopyNotes").val()+'&type=STOMACH', '_blank');
+    });
+    
 });
 
 var errorField = [];
@@ -120,7 +124,7 @@ function button_state_endoscopyStomach(state){
         case 'empty':
             $("#toggle_endoscopyNotes").removeAttr('data-toggle');
             $('#cancel_endoscopyStomach').data('oper','add');
-            $('#new_endoscopyStomach,#save_endoscopyStomach,#cancel_endoscopyStomach,#edit_endoscopyStomach').attr('disabled',true);
+            $('#new_endoscopyStomach,#save_endoscopyStomach,#cancel_endoscopyStomach,#edit_endoscopyStomach,#endoscopyStomach_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_endoscopyNotes").attr('data-toggle','collapse');
@@ -137,7 +141,7 @@ function button_state_endoscopyStomach(state){
         case 'wait':
             $("#toggle_endoscopyNotes").attr('data-toggle','collapse');
             $("#save_endoscopyStomach,#cancel_endoscopyStomach").attr('disabled',false);
-            $('#edit_endoscopyStomach,#new_endoscopyStomach').attr('disabled',true);
+            $('#edit_endoscopyStomach,#new_endoscopyStomach,#endoscopyStomach_chart').attr('disabled',true);
             break;
     }
 }
@@ -260,10 +264,12 @@ function getdata_endoscopyStomach(){
         alert('there is an error');
     }).done(function (data){
         if(!$.isEmptyObject(data.endoscopyStomach)){
-            button_state_endoscopyStomach('edit');
             autoinsert_rowdata("#formEndoscopyStomach",data.endoscopyStomach);
+            button_state_endoscopyStomach('edit');
+            $('#endoscopyStomach_chart').attr('disabled',false);
         }else{
             button_state_endoscopyStomach('add');
+            $('#endoscopyStomach_chart').attr('disabled',true);
         }
         
         $("#endoscopyStomach_iPesakit").val(data.iPesakit);

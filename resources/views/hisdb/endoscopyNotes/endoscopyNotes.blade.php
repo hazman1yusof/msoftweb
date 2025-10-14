@@ -18,6 +18,7 @@
             <div class="ui grid">
                 <input id="mrn_endoscopyNotes" name="mrn_endoscopyNotes" type="hidden">
                 <input id="episno_endoscopyNotes" name="episno_endoscopyNotes" type="hidden">
+                <input id="age_endoscopyNotes" name="age_endoscopyNotes" type="hidden">
             </div>
         </form>
         

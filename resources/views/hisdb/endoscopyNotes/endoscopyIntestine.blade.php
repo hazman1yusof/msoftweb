@@ -9,7 +9,7 @@
             <button class="ui button" id="edit_endoscopyIntestine"><span class="fa fa-edit fa-lg"></span>Edit</button>
             <button class="ui button" id="save_endoscopyIntestine"><span class="fa fa-save fa-lg"></span>Save</button>
             <button class="ui button" id="cancel_endoscopyIntestine"><span class="fa fa-ban fa-lg"></span>Cancel</button>
-            <!-- <button class="ui button" id="endoscopyIntestine_chart"><span class="fa fa-print fa-lg"></span>Print</button> -->
+            <button class="ui button" id="endoscopyIntestine_chart"><span class="fa fa-print fa-lg"></span>Print</button>
         </div>
     </div>
     <div class="ui segment">
@@ -73,14 +73,24 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2">HBsAG : 
-                                        <input type="checkbox" name="HBsAGpositive" id="endoscopyIntestine_HBsAGpositive" value="1" style="margin-left: 15px;">
+                                        <!-- <input type="checkbox" name="HBsAGpositive" id="endoscopyIntestine_HBsAGpositive" value="1" style="margin-left: 15px;">
                                         <label class="checkbox-inline" style="padding-left: 5px;">Positive</label>
                                         
                                         <input type="checkbox" name="HBsAGnegative" id="endoscopyIntestine_HBsAGnegative" value="1" style="margin-left: 15px;">
                                         <label class="checkbox-inline" style="padding-left: 5px;">Negative</label>
                                         
                                         <input type="checkbox" name="HBsAGnotknow" id="endoscopyIntestine_HBsAGnotknow" value="1" style="margin-left: 15px;">
-                                        <label class="checkbox-inline" style="padding-left: 5px;">Not Know</label>
+                                        <label class="checkbox-inline" style="padding-left: 5px;">Not Know</label> -->
+                                        
+                                        <label class="radio-inline" style="padding-left: 30px;">
+                                            <input type="radio" name="HBsAG" value="Positive">Positive
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="HBsAG" value="Negative">Negative
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="HBsAG" value="Not Know">Not Know
+                                        </label>
                                     </td>
                                     <td></td>
                                 </tr>

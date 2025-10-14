@@ -333,6 +333,8 @@ Route::post('/otdischarge/form','hisdb\OTDischargeController@form');
 Route::get('/endoscopyNotes','hisdb\EndoscopyNotesController@show');
 Route::get('/endoscopyNotes/table','hisdb\EndoscopyNotesController@table');
 Route::post('/endoscopyNotes/form','hisdb\EndoscopyNotesController@form');
+Route::get('/endoscopyNotes/endoscopystomach_chart','hisdb\EndoscopyNotesController@endoscopystomach_chart');
+Route::get('/endoscopyNotes/endoscopyintestine_chart','hisdb\EndoscopyNotesController@endoscopyintestine_chart');
 
 //// OT Status setup page ///
 Route::get('/ot_status','hisdb\OTStatusController@show');
