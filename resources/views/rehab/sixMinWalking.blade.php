@@ -92,7 +92,7 @@
                                                 
                                                 <label>Date:</label>
                                                 <div class="field">
-                                                    <input type="date" class="form-control" id="sixMinWalking_entereddate" name="entereddate">
+                                                    <input type="date" class="form-control" id="sixMinWalking_entereddate" name="entereddate" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                                 </div>
                                             </div>
                                         </td>

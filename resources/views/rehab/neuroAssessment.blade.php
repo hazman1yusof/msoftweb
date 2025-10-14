@@ -49,7 +49,7 @@
                         <div class="inline fields">
                             <label>DATE</label>
                             <div class="field" style="padding-left: 50px;">
-                                <input id="neuroAssessment_entereddate" name="entereddate" type="date">
+                                <input id="neuroAssessment_entereddate" name="entereddate" type="date" data-validation="required" data-validation-error-msg-required="Please enter information.">
                             </div>
                         </div>
                         
