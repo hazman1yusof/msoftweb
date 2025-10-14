@@ -154,7 +154,6 @@ $(document).ready(function () {
 				$('#print_process').attr('disabled',false);
 				$('#print_process').html('Process');
 			}else{
-				startProcessInterval();
 				$('#print_process').attr('disabled',true);
 				$('#print_process').html('Processing.. <i class="fa fa-refresh fa-spin fa-fw">');
 			}
@@ -182,7 +181,8 @@ $(document).ready(function () {
 			}).success(function(data){
 
 			});
-
+			
+			startProcessInterval();
 		}
 	});
 
