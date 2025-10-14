@@ -332,7 +332,7 @@ div#fail_msg{
 						<label class="col-md-2 control-label" for="apacthdr_bankcode" id="bankcode_parent">Bank Code</label>	 
 						 	<div class="col-md-2">
 							  	<div class='input-group'>
-									<input id="apacthdr_bankcode" name="apacthdr_bankcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+									<input id="apacthdr_bankcode" name="apacthdr_bankcode" type="text" maxlength="22" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 									<a class='input-group-addon btn btn-primary' id="bankcode_dh"><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block" ></span>
@@ -564,7 +564,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/finance/AP/paymentVoucher/paymentVoucher.js?V=1.15"></script>
+	<script src="js/finance/AP/paymentVoucher/paymentVoucher.js?V=1.16"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 

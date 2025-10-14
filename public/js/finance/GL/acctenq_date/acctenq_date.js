@@ -131,12 +131,65 @@ $(document).ready(function () {
 		}
 	});
 
-	$('#pdfgen1').click(function(){
-		if($('#searchform').isValid({requiredFields:''},conf,true)){
-			let href = './acctenq_date/table?action=print&glaccount='+$('#glaccount').val()+'&fromdate='+$('#fromdate').val()+'&todate='+$('#todate').val();
+  	let intervalId = null;
+  	function startProcessInterval() {
+	    intervalId = setInterval(check_running_process, 5000);
+	}
+	function stopProcessInterval() {
+	    if (intervalId !== null) {
+	        clearInterval(intervalId);
+	        intervalId = null;
+	    }
+	}
+	if($('#jobdone').val() == 'false'){
+		startProcessInterval();
+	}
 
-			window.open(href);
+	function check_running_process() {
+		$.get( './acctenq_date/table?action=check_running_process', function( data ) {
+			
+		},'json').done(function(data) {
+	    	if(data.jobdone=='true'){
+	    		stopProcessInterval();
+				$('#print_process').attr('disabled',false);
+				$('#print_process').html('Process');
+			}else{
+				startProcessInterval();
+				$('#print_process').attr('disabled',true);
+				$('#print_process').html('Processing.. <i class="fa fa-refresh fa-spin fa-fw">');
+			}
+		});
+	}
+
+	$("#print_process").click(function() {
+
+		if($('#searchform').isValid({requiredFields:''},conf,true)){
+			$('#print_process').prop('disabled',true);
+			$('#print_process').html('Processing.. <i class="fa fa-refresh fa-spin fa-fw">');
+
+			var obj = {
+				_token:$('#_token').val(),
+				glaccount:$('#glaccount').val(),
+				fromdate:$('#fromdate').val(),
+				todate:$('#todate').val(),
+			}
+			let href = './acctenq_date/form?action=processLink';
+
+			$.post( href,obj, function( data ) {
+
+			}).fail(function(data) {
+
+			}).success(function(data){
+
+			});
+
 		}
+	});
+
+	$('#pdfgen1').click(function(){
+		let href = './acctenq_date/table?action=download';
+
+		window.open(href);
 	});
 	
 

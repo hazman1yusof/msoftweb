@@ -62,6 +62,8 @@
 @section('body')
 
 	<!-------------------------------- Search + table ---------------------->
+	<input id="jobdone" name="jobdone" type="hidden" value="{{$jobdone}}">
+	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 	<div class='row'>
 		<div class='col-md-12' style="padding:0 0 15px 0;">
 			<form id="searchform" name="searchform" class="col-md-12"> 
@@ -88,11 +90,20 @@
 			  <div class="col-md-1">
 				<button type="button" id="search" class="btn btn-primary" style="position:absolute;top:17px">Search</button>
               </div>
+              
+			  <div class="col-md-1">
+			  	@if($jobdone == 'false')
+              		<button type="button" class="btn btn-primary" id="print_process" style="position:absolute;top:17px">Processing.. <i class="fa fa-refresh fa-spin fa-fw"></button disabled="disabled">
+			  	@else
+              		<button type="button" class="btn btn-primary" id="print_process" style="position:absolute;top:17px"> Process Excel </button>
+			  	@endif
+              </div>
 
-				<a class='pull-right pointer text-primary' style="position: absolute;
+	            <a class="pull-right pointer text-primary" style="position: absolute;
 				    right: 40px;
-				    bottom: 0px;" id='pdfgen1' target="_blank">
-			    <span class='fa fa-print'></span> Print 
+				    bottom: -33px;
+				    z-index: 1000;" id="pdfgen1" target="_blank">
+			    <span class="fa fa-print"></span> Download last Excel 
 				</a>
 
             </form>

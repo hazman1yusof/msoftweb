@@ -66,6 +66,87 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
             'L' => 18,
         ];
     }
+
+    public function process(){
+        $this->glaccount = $request->glaccount;
+        $this->fromdate = $request->fromdate;
+        $this->todate = $request->todate;
+
+        $idno_job_queue = $this->start_job_queue('acctenq_date');
+
+        $table = DB::table('finance.gltran as gl')
+                        ->select('gl.id','gl.source','gl.trantype','gl.auditno','gl.lineno_','gl.postdate','gl.description','gl.reference','gl.drcostcode','gl.crcostcode','gl.cracc','gl.dracc','gl.amount','glcr.description as acctname_cr','gldr.description as acctname_dr')
+                        ->where(function($table) use ($this->glaccount){
+                            $table->orwhere('gl.dracc','=', $this->glaccount);
+                            $table->orwhere('gl.cracc','=', $this->glaccount);
+                        })
+                        ->leftJoin('finance.glmasref as glcr', function($join){
+                            $join = $join->on('glcr.glaccno', '=', 'gl.cracc')
+                                            ->where('glcr.compcode','=',session('compcode'));
+                        })
+                        ->leftJoin('finance.glmasref as gldr', function($join){
+                            $join = $join->on('gldr.glaccno', '=', 'gl.dracc')
+                                            ->where('gldr.compcode','=',session('compcode'));
+                        })
+                        ->where('gl.amount','!=','0')
+                        ->where('gl.postdate', '>=', $this->fromdate)
+                        ->where('gl.postdate', '<=', $this->todate)
+                        ->where('gl.compcode', session('compcode'))
+                        ->orderBy('gl.postdate', 'asc')
+                        ->get();
+
+        $same_acc = [];
+        foreach ($table as $key => $value) {
+
+            if($value->dracc == $this->glaccount){
+                $value->acccode = $value->cracc;
+                $value->costcode = $value->crcostcode;
+                $value->costcode_ = $value->drcostcode;
+                $value->cramount = 0;
+                $value->dramount = $value->amount;
+                $value->acctname = $value->acctname_cr;
+            }else{
+                $value->acccode = $value->dracc;
+                $value->costcode = $value->drcostcode;
+                $value->costcode_ = $value->crcostcode;
+                $value->cramount = $value->amount;
+                $value->dramount = 0;
+                $value->acctname = $value->acctname_dr;
+            }
+
+            if($value->dracc == $value->cracc){
+                array_push($same_acc, clone $value);
+            }
+
+            switch ($value->source) {
+                case 'OE':
+                    $data = $this->oe_data($value);
+                    break;
+                case 'PB':
+                    $data = $this->pb_data($value);
+                    break;
+                case 'AP':
+                    $data = $this->ap_data($value);
+                    break;
+                case 'CM':
+                    $data = $this->cm_data($value);
+                    break;
+                default:
+                    $data = $this->oth_data($value);
+                    break;
+            }
+        }
+
+        foreach ($same_acc as $obj) {
+            $obj->cramount = $obj->amount;
+            $obj->dramount = 0;
+            $table = $table->merge([$obj]);
+        }
+
+        $this->store_to_db($table,$idno_job_queue);
+
+        $this->stop_job_queue($idno_job_queue);
+    }
     
     public function view(): View
     {
@@ -394,6 +475,64 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
         $responce->refe = $obj->reference;
 
         return $responce;
+    }
+
+    public function start_job_queue($page){
+        $idno_job_queue = DB::table('sysdb.job_queue')
+                            ->insertGetId([
+                                'compcode' => $this->compcode,
+                                'page' => $page,
+                                'filename' => 'acctenq_dateExport.xlsx',
+                                // 'process' => $this->process,
+                                'adduser' => $this->username,
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'status' => 'PENDING',
+                                'remarks' => 'acctenq_date',
+                                'type' => $this->glaccount,
+                                'date' => $this->fromdate,
+                                'date_to' => $this->todate,
+                            ]);
+
+        return $idno_job_queue;
+    }
+
+    public function stop_job_queue($idno_job_queue){
+        DB::table('sysdb.job_queue')
+                ->where('idno',$idno_job_queue)
+                ->update([
+                    'finishdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'status' => 'DONE'
+                ]);
+    }
+
+    public function store_to_db($table,$idno_job_queue){
+        foreach ($table as $obj){
+            DB::table('finance.acctenq_date')
+                ->insert([
+                    'job_id' => $idno_job_queue,
+                    'id' => $obj->id,
+                    'source' => $obj->source,
+                    'trantype' => $obj->trantype,
+                    'auditno' => $obj->auditno,
+                    'lineno_' => $obj->lineno_,
+                    'postdate' => $obj->postdate,
+                    'description' => $obj->description,
+                    'reference' => $obj->reference,
+                    'drcostcode' => $obj->drcostcode,
+                    'crcostcode' => $obj->crcostcode,
+                    'cracc' => $obj->cracc,
+                    'dracc' => $obj->dracc,
+                    'amount' => $obj->amount,
+                    'acctname_cr' => $obj->acctname_cr,
+                    'acctname_dr' => $obj->acctname_dr,
+                    'acccode' => $obj->acccode,
+                    'costcode' => $obj->costcode,
+                    'costcode_' => $obj->costcode_,
+                    'cramount' => $obj->cramount,
+                    'dramount' => $obj->dramount,
+                    'acctname' => $obj->acctname,
+                ]);
+        }
     }
     
 }

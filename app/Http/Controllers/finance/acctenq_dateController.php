@@ -8,32 +8,37 @@ use DB;
 use stdClass;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\acctenq_dateExport;
+use App\Exports\acctenq_dateExport_2;
+use Symfony\Component\Process\Process;
 
 class acctenq_dateController extends defaultController
 {   
 
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     public function show(Request $request)
     {   
-        return view('finance.GL.acctenq_date.acctenq_date');
-    }
 
-    public function form(Request $request)
-    {   
-        switch($request->oper){
-            case 'add':
-                return $this->defaultAdd($request);
-            case 'edit':
-                return $this->defaultEdit($request);
-            case 'del':
-                return $this->defaultDel($request);
-            default:
-                return 'error happen..';
+        $last_job = DB::table('sysdb.job_queue')
+                        ->where('compcode', session('compcode'))
+                        ->where('page', 'acctenq_date')
+                        ->orderBy('idno', 'desc');
+
+        if(!$last_job->exists()){
+            $jobdone = 'true';
+        }else{
+            $last_job = $last_job->first();
+            if($last_job->status != 'DONE'){
+                $jobdone = 'false';
+            }else{
+                $jobdone = 'true';
+            }
         }
+
+        return view('finance.GL.acctenq_date.acctenq_date',compact('jobdone'));
     }
 
     public function table(Request $request){
@@ -44,9 +49,135 @@ class acctenq_dateController extends defaultController
                 return $this->openprint($request);
             case 'get_auditno_forsrc';
                 return $this->get_auditno_forsrc($request);
+            case 'download':
+                return $this->download($request);
             case 'print':
                 return $this->print($request);
+            case 'process':
+                return $this->process($request);
+            case 'check_running_process':
+                return $this->check_running_process($request);
         }
+    }
+
+    public function form(Request $request){   
+        switch($request->action){
+            case 'processLink':
+                $PYTHON_PATH = \config('get_config.PYTHON_PATH');
+                if($PYTHON_PATH != null){ // pastikan msserver sahaja xde python_path
+                    return $this->process($request);
+                }else{
+                    return $this->processLink($request);
+                }
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function processLink(Request $request){
+        $client = new \GuzzleHttp\Client();
+
+        $url='http://192.168.0.13:8443/msoftweb/public/acctenq_date/table?action=process&glaccount='.$request->glaccount.'&fromdate='.$request->fromdate.'&todate='.$request->todate.'&username='.session('username').'&compcode='.session('compcode');
+
+        $response = $client->request('GET', $url, [
+          'headers' => [
+            'accept' => 'application/json',
+          ],
+        ]);
+    }
+
+    public function check_running_process(Request $request){
+
+        $responce = new stdClass();
+
+        $last_job = DB::table('sysdb.job_queue')
+                        ->where('compcode', session('compcode'))
+                        ->where('page', 'acctenq_date')
+                        ->orderBy('idno', 'desc');
+
+        if(!$last_job->exists()){
+            $responce->jobdone = 'true';
+            return json_encode($responce);
+        }
+
+        $last_job = $last_job->first();
+        $responce->status = $last_job->status;
+        $responce->datefr = $last_job->adddate;
+        $responce->dateto = $last_job->finishdate;
+
+        if($last_job->status != 'DONE'){
+            $responce->jobdone = 'false';
+        }else{
+            $responce->jobdone = 'true';
+        }
+        return json_encode($responce);
+    }
+
+    public function process(Request $request){
+        $data = [
+            'DATA1' => [
+                'username' => ($request->username)?$request->username:'-',
+                'compcode' => ($request->compcode)?$request->compcode:'9B',
+                'glaccount' => $request->glaccount,
+                'fromdate' => $request->fromdate,
+                'todate' => $request->todate,
+            ]
+        ];
+
+        $iniString = '';
+        foreach ($data as $section => $settings) {
+            $iniString .= "[$section]\n";
+            foreach ($settings as $key => $value) {
+                $iniString .= "$key=$value\n";
+            }
+            $iniString .= "\n";
+        }
+
+        $path = \config('get_config.EXEC_PATH').'\\acctenq_date.ini';
+        file_put_contents($path, $iniString);
+
+        if($this->block_if_job_pending()){
+            return response()->json([
+                'status' => 'Other job still pending'
+            ]);
+        }else{
+            // Path to your Python script
+            $scriptPath = \config('get_config.EXEC_PATH').'\\acctenq_date.py'; // double backslashes for Windows paths
+            $pythonPath = \config('get_config.PYTHON_PATH');
+
+            // Create a process (use 'python' on Windows)
+            $process = new Process([$pythonPath, $scriptPath]);
+
+            // Don’t wait for it
+            $process->setTimeout(null);
+
+            // Force detached mode on Windows
+            $process->setOptions(['create_new_console' => true]);
+
+            $process->start();
+
+            return response()->json([
+                'status' => 'Python script started in background (Windows)'
+            ]);
+        }
+    }
+
+    public function block_if_job_pending(){
+        $last_job = DB::table('sysdb.job_queue')
+                        ->where('compcode', session('compcode'))
+                        ->where('page', 'acctenq_date')
+                        ->orderBy('idno', 'desc');
+
+        if(!$last_job->exists()){
+            return false;
+        }
+
+        $last_job = $last_job->first();
+        if($last_job->status != 'DONE'){
+            return true;
+        }
+
+        return false;
     }
 
     public function getdata(Request $request){
@@ -526,5 +657,16 @@ class acctenq_dateController extends defaultController
             abort(404);
         }
         return Excel::download(new acctenq_dateExport($request->glaccount,$request->fromdate,$request->todate), 'acctenq_dateExport.xlsx');
+    }
+
+    public function download(Request $request){
+        $job_queue = DB::table('sysdb.job_queue')
+                        ->where('compcode', session('compcode'))
+                        ->where('page', 'acctenq_date')
+                        ->where('status', 'DONE')
+                        ->orderBy('idno', 'desc')
+                        ->first();
+
+        return Excel::download(new acctenq_dateExport_2($job_queue->idno,$job_queue->type,$job_queue->date,$job_queue->date_to), 'acctenq_dateExport.xlsx');
     }
 }

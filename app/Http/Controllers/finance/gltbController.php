@@ -68,7 +68,7 @@ class  gltbController extends defaultController
                     return 'month equal or last than april 2025';
                 }else{
                     $PYTHON_PATH = \config('get_config.PYTHON_PATH');
-                    if($PYTHON_PATH != null){
+                    if($PYTHON_PATH != null){ // pastikan msserver sahaja xde python_path
                         return $this->process($request);;
                     }else{
                         return $this->processLink($request);
