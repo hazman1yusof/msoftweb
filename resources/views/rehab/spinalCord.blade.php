@@ -43,7 +43,7 @@
                             <div class="inline fields">
                                 <label>Date</label>
                                 <div class="field">
-                                    <input id="spinalCord_entereddate" name="entereddate" type="date">
+                                    <input id="spinalCord_entereddate" name="entereddate" type="date" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                 </div>
                             </div>
                             

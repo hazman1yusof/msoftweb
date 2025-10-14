@@ -450,8 +450,8 @@
     <script type="text/javascript" src="js/hisdb/otswab/otswab.js?v=1.1"></script>
     <script type="text/javascript" src="js/hisdb/ottime/ottime.js?v=1.2"></script>
     <script type="text/javascript" src="js/hisdb/otdischarge/otdischarge.js?v=1.1"></script>
-    <script type="text/javascript" src="js/hisdb/endoscopyNotes/endoscopyStomach.js"></script>
-    <script type="text/javascript" src="js/hisdb/endoscopyNotes/endoscopyIntestine.js"></script>
-    <script type="text/javascript" src="js/hisdb/endoscopyNotes/endoscopyNotes.js?v=1.1"></script>
+    <script type="text/javascript" src="js/hisdb/endoscopyNotes/endoscopyStomach.js?v=1.1"></script>
+    <script type="text/javascript" src="js/hisdb/endoscopyNotes/endoscopyIntestine.js?v=1.1"></script>
+    <script type="text/javascript" src="js/hisdb/endoscopyNotes/endoscopyNotes.js?v=1.2"></script>
     
 @endsection

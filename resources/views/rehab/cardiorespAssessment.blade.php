@@ -54,7 +54,7 @@
                                             <div class="inline fields">
                                                 <label>DATE:</label>
                                                 <div class="field">
-                                                    <input type="date" class="form-control" id="cardiorespAssessment_entereddate" name="entereddate">
+                                                    <input type="date" class="form-control" id="cardiorespAssessment_entereddate" name="entereddate" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                                 </div>
                                             </div>
                                         </td>

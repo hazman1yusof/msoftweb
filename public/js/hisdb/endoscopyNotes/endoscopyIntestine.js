@@ -95,6 +95,10 @@ $(document).ready(function (){
     });
     ///////////////////////////////////////////body diagram ends///////////////////////////////////////////
     
+    $("#endoscopyIntestine_chart").click(function (){
+        window.open('./endoscopyNotes/endoscopyintestine_chart?mrn='+$('#mrn_endoscopyNotes').val()+'&episno='+$("#episno_endoscopyNotes").val()+'&age='+$("#age_endoscopyNotes").val()+'&type=INTESTINE', '_blank');
+    });
+    
 });
 
 var errorField = [];
@@ -120,7 +124,7 @@ function button_state_endoscopyIntestine(state){
         case 'empty':
             $("#toggle_endoscopyNotes").removeAttr('data-toggle');
             $('#cancel_endoscopyIntestine').data('oper','add');
-            $('#new_endoscopyIntestine,#save_endoscopyIntestine,#cancel_endoscopyIntestine,#edit_endoscopyIntestine').attr('disabled',true);
+            $('#new_endoscopyIntestine,#save_endoscopyIntestine,#cancel_endoscopyIntestine,#edit_endoscopyIntestine,#endoscopyIntestine_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_endoscopyNotes").attr('data-toggle','collapse');
@@ -137,7 +141,7 @@ function button_state_endoscopyIntestine(state){
         case 'wait':
             $("#toggle_endoscopyNotes").attr('data-toggle','collapse');
             $("#save_endoscopyIntestine,#cancel_endoscopyIntestine").attr('disabled',false);
-            $('#edit_endoscopyIntestine,#new_endoscopyIntestine').attr('disabled',true);
+            $('#edit_endoscopyIntestine,#new_endoscopyIntestine,#endoscopyIntestine_chart').attr('disabled',true);
             break;
     }
 }
@@ -260,10 +264,12 @@ function getdata_endoscopyIntestine(){
         alert('there is an error');
     }).done(function (data){
         if(!$.isEmptyObject(data.endoscopyintestine)){
-            button_state_endoscopyIntestine('edit');
             autoinsert_rowdata("#formEndoscopyIntestine",data.endoscopyintestine);
+            button_state_endoscopyIntestine('edit');
+            $('#endoscopyIntestine_chart').attr('disabled',false);
         }else{
             button_state_endoscopyIntestine('add');
+            $('#endoscopyIntestine_chart').attr('disabled',true);
         }
         
         $("#endoscopyIntestine_iPesakit").val(data.iPesakit);
