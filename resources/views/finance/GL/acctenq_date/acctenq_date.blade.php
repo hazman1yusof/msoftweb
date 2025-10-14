@@ -93,9 +93,9 @@
               
 			  <div class="col-md-1">
 			  	@if($jobdone == 'false')
-              		<button type="button" class="btn btn-primary" id="print_process" style="position:absolute;top:17px">
+              		<button type="button" class="btn btn-primary" id="print_process" style="position:absolute;top:17px"  disabled="disabled">
               			Processing.. <i class="fa fa-refresh fa-spin fa-fw"></i>
-              		<button disabled="disabled">
+              		</button>
 			  	@else
               		<button type="button" class="btn btn-primary" id="print_process" style="position:absolute;top:17px"> Process Excel </button>
 			  	@endif
@@ -156,7 +156,7 @@
 
 @section('scripts')
 
-	<script src="js/finance/GL/acctenq_date/acctenq_date.js?v=1.4"></script>
+	<script src="js/finance/GL/acctenq_date/acctenq_date.js?v=1.5"></script>
 	<script src="plugins/datatables/js/jquery.datatables.min.js"></script>
 	
 @endsection
