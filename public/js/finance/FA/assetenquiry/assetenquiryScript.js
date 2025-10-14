@@ -341,7 +341,7 @@ $(document).ready(function () {
             { label: 'DO Date', name:'delorddate', classes:'wrap', hidden:true},
 			{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', hidden:false},
 			{ label: 'nprefid', name: 'nprefid', width: 90,hidden:true},
-			{ label: 'idno', name: 'idno', hidden: true},
+			{ label: 'idno', name: 'idno', hidden: true,key:true},
 			{ label: 'Tran Type', name:'trantype', width:20, classes:'wrap', hidden:true},
 			{ label: 'Add User', name:'adduser', width:20, classes:'wrap',  hidden:true},
 			{ label: 'Add Date', name:'adddate', width:20, classes:'wrap',  hidden:true},
@@ -371,6 +371,12 @@ $(document).ready(function () {
 		onSelectRow:function(rowid, selected){
 			if (rowid != null) {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
+				if(rowData.recstatus == 'ACTIVE'){
+					$('#writeoff_btn').show();
+				}else{
+					$('#writeoff_btn').hide();
+				}
+
 				//var rowData = $('#jqGrid2').jqGrid('getRowData', rowid);
 
 				refreshGrid('#jqGrid2', urlParam2,'kosongkan');
@@ -1274,6 +1280,7 @@ $(document).ready(function () {
 			var param={
 				action:'writeoff_act',
 				url: './assetenquiry/table',
+				idno_h: seldata.idno,
 				assetno_wo:$('#assetno_wo').val(),
 				desc_wo:$('#desc_wo').val(),
 				origcost_wo:$('#origcost_wo').val(),

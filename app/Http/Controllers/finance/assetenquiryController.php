@@ -104,11 +104,11 @@ class assetenquiryController extends defaultController
             }
 
             $fatran_amount = DB::table('finance.fatran')
-                            ->where('compcode',session('compcode'))
-                            ->where('trantype','DEP')
-                            ->where('assetno',$value->assetno)
-                            ->where('trandate','<=',Carbon::now("Asia/Kuala_Lumpur"))
-                            ->sum('amount');
+                                ->where('compcode',session('compcode'))
+                                ->where('trantype','DEP')
+                                ->where('assetno',$value->assetno)
+                                ->where('trandate','<=',Carbon::now("Asia/Kuala_Lumpur"))
+                                ->sum('amount');
 
             $value->dep_calc = $fatran_amount;
             $value->nbv_calc = $value->origcost - $fatran_amount;
@@ -234,7 +234,139 @@ class assetenquiryController extends defaultController
     }
 
     public function writeoff_act(Request $request){
+        DB::beginTransaction();
+        try {
 
+            $date_wo = $request->date_wo;
+            $remarks_wo = $request->remarks_wo;
+            $nbv_wo = $request->nbv_wo;
+            $faregister = DB::table('finance.faregister')
+                            ->where('compcode',session('compcode'))
+                            ->where('idno','=',$request->idno_h)
+                            ->first();
+
+            $facode = DB::table('finance.facode')
+                            ->where('compcode',session('compcode'))
+                            ->where('assetcode',$faregister->assetcode)
+                            ->first();
+
+            $origcost = $faregister->origcost;
+            $accummulated = DB::table('finance.fatran')
+                                ->where('compcode',session('compcode'))
+                                ->where('trantype','DEP')
+                                ->where('assetno',$faregister->assetno)
+                                ->where('trandate','<=',$date_wo)
+                                ->sum('amount');
+            $nbv = $origcost - $accummulated;
+
+            if($faregister->recstatus != 'ACTIVE'){
+                throw new \Exception("asset is already deactive");
+            }
+
+            $recno = $this->recno('FA','WOF');
+
+            DB::table('finance.faregister')
+                    ->where('compcode',session('compcode'))
+                    ->where('idno','=',$request->idno_h)
+                    ->update([
+                        'recstatus' => 'DEACTIVE',
+                        'trantype' => 'WOF',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    ]);
+
+            DB::table('finance.fatran')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'assetcode' => $faregister->assetcode,
+                        'assettype' => $faregister->assettype,
+                        'auditno' => $recno,
+                        'assetno' => $faregister->assetno,
+                        'deptcode' => $faregister->deptcode,
+                        'olddeptcode' => $faregister->deptcode,
+                        'trantype' => 'WOF',
+                        'trandate' => $date_wo,
+                        // 'compntdate' => $faregister->,
+                        'reference' => $remarks_wo,
+                        // 'oldassetno' => $faregister->,
+                        'curloccode' => $faregister->loccode,
+                        // 'oldloccode' => $faregister->,
+                        // 'debtorcode' => $faregister->,
+                        'amount' => $nbv,
+                        // 'adjstatus' => $faregister->,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recstatus' => 'ACTIVE',
+                    ]);
+
+            $yearperiod = $this->getyearperiod($date_wo);
+
+            DB::table('finance.gltran')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'auditno' => $recno,
+                    'lineno_' => 1,
+                    'source' => 'FA', //kalau stock 'IV', lain dari stock 'DO'
+                    'trantype' => 'WOF',
+                    'reference' => $remarks_wo,
+                    'description' => "POSTING FROM WRITE-OFF(FA) Tagging No: ".$faregister->assetno, 
+                    'postdate' => $date_wo,
+                    'year' => $yearperiod->year,
+                    'period' => $yearperiod->period,
+                    'drcostcode' => $facode->glrevccode,
+                    'dracc' => $facode->glrevaluation,
+                    'crcostcode' => $facode->glassetccode,
+                    'cracc' => $facode->glasset,
+                    'amount' => $faregister->origcost
+                ]);
+
+            $this->init_glmastdtl(
+                        $facode->glrevccode,//drcostcode
+                        $facode->glrevaluation,//dracc
+                        $facode->glassetccode,//crcostcode
+                        $facode->glasset,//cracc
+                        $yearperiod,
+                        $faregister->origcost
+                    );
+
+            DB::table('finance.gltran')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'auditno' => $recno,
+                    'lineno_' => 2,
+                    'source' => 'FA', //kalau stock 'IV', lain dari stock 'DO'
+                    'trantype' => 'WOF',
+                    'reference' => $remarks_wo,
+                    'description' => "POSTING FROM WRITE-OFF(FA) Tagging No: ".$faregister->assetno, 
+                    'postdate' => $date_wo,
+                    'year' => $yearperiod->year,
+                    'period' => $yearperiod->period,
+                    'drcostcode' => $facode->glprovccode,
+                    'dracc' => $facode->glprovdep,
+                    'crcostcode' => $facode->glrevccode,
+                    'cracc' => $facode->glrevaluation,
+                    'amount' => $nbv
+                ]);
+
+            $this->init_glmastdtl(
+                        $facode->glprovccode,//drcostcode
+                        $facode->glprovdep,//dracc
+                        $facode->glrevccode,//crcostcode
+                        $facode->glrevaluation,//cracc
+                        $yearperiod,
+                        $nbv
+                    );
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
     }
     
     public function showpdf(Request $request){
@@ -303,6 +435,66 @@ class assetenquiryController extends defaultController
                     ->first();
         
         return view('finance.FA.assetenquiry.assetenquiry_pdfmake', compact('faregister','movement','curloccode','company'));
+    }
+
+    public function init_glmastdtl($dbcc,$dbacc,$crcc,$cracc,$yearperiod,$amount){
+        //2. check glmastdtl utk debit, kalu ada update kalu xde create
+        $gltranAmount =  $this->isGltranExist($dbcc,$dbacc,$yearperiod->year,$yearperiod->period);
+
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$dbcc)
+                ->where('glaccount','=',$dbacc)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => floatval($amount) + $gltranAmount,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $dbcc,
+                    'glaccount' => $dbacc,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => floatval($amount),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+
+        //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+        $gltranAmount = $this->isGltranExist($crcc,$cracc,$yearperiod->year,$yearperiod->period);
+
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$crcc)
+                ->where('glaccount','=',$cracc)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => $gltranAmount - floatval($amount),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $crcc,
+                    'glaccount' => $cracc,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => -floatval($amount),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
     }
     
 }

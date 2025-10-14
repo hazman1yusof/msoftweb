@@ -115,8 +115,8 @@
 		
 		<div class="panel panel-default">
 			<div class="panel-heading">Asset Enquiry Header
-				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span>Print</a>
-				<a class='pull-right pointer text-primary' id='writeoff_btn' style="padding-right:25px:display:hidden"><span class='fa fa-eraser'></span>Write Off</a>
+				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print' style="padding-right: 5px;"></span>Print</a>
+				<a class='pull-right pointer text-primary' id='writeoff_btn' style="padding-right:25px; display:none"><span class='fa fa-eraser' style="padding-right: 5px;"></span>Write Off</a>
 			</div>
 			<div class="panel-body">
     			<div class='col-md-12' style="padding:0 0 15px 0">

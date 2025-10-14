@@ -119,8 +119,9 @@ class JTRController extends defaultController
                             ->select('s.idno','s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit','p.avgcost')
                             ->join('material.product as p', function($join){
                                 $join = $join->on('p.itemcode', '=', 's.itemcode')
-                                              ->where('p.avgcost','!=',0)
-                                              ->where('p.compcode',session('compcode'));
+                                                ->where('p.recstatus','ACTIVE')
+                                                ->where('p.avgcost','!=',0)
+                                                ->where('p.compcode',session('compcode'));
                             })
                             ->where('s.compcode',session('compcode'))
                             ->where('s.deptcode',$dept)
@@ -136,7 +137,7 @@ class JTRController extends defaultController
                 // dd($get_bal);
                 $variance = floatval($get_bal->variance);
 
-                if($variance != 0){
+                if(round($variance, 2) != 0.00){
                     $x = $x + 1;
                     DB::table('material.ivtxndt')
                             ->insert([
@@ -151,7 +152,7 @@ class JTRController extends defaultController
                                 'adduser' => 'system', 
                                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                                 'upduser' => 'system', 
-                                'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'upddate' => $trandate,
                                 'TranType' => 'JTR',
                                 'deptcode'  => $dept,
                                 // 'productcat' => $productcat, 
