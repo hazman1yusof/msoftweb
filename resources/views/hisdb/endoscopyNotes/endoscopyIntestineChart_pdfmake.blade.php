@@ -86,7 +86,11 @@
                                 [
                                     { text: '12. Name of Referring Doctor : \n\n{{$endoscopyintestine->refDoctor}}' },
                                     { text: '13. Signature : \n\n\n\n' },
-                                    { text: '14. Date : \n\n{{\Carbon\Carbon::createFromFormat('Y-m-d',$endoscopyintestine->refDoctorDate)->format('d-m-Y')}}' },
+                                    @if(!empty($endoscopyintestine->refDoctorDate))
+                                        { text: '14. Date : \n\n{{\Carbon\Carbon::createFromFormat('Y-m-d',$endoscopyintestine->refDoctorDate)->format('d-m-Y')}}' },
+                                    @else
+                                        { text: '14. Date : \n\n' },
+                                    @endif
                                 ],
                                 [
                                     { text: '15. Instruments : \u200B\t{{$endoscopyintestine->instruments}}' },
@@ -110,7 +114,11 @@
                                     {
                                         text: [
                                             { text: `23. Endoscopist\u2019s Name : \u200B\t{!!$endoscopyintestine->endoscopistName!!}` },
-                                            { text: '\n\n24. Date : \u200B\t{{\Carbon\Carbon::createFromFormat('Y-m-d',$endoscopyintestine->endoscopistDate)->format('d-m-Y')}}' },
+                                            @if(!empty($endoscopyintestine->endoscopistDate))
+                                                { text: '\n\n24. Date : \u200B\t{{\Carbon\Carbon::createFromFormat('Y-m-d',$endoscopyintestine->endoscopistDate)->format('d-m-Y')}}' },
+                                            @else
+                                                { text: '\n\n24. Date : \u200B\t' },
+                                            @endif
                                         ], colSpan: 2
                                     },{},
                                     {
