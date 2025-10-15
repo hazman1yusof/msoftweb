@@ -87,6 +87,23 @@
 
 <script>
 $(document).ready(function () {
+
+
+	let intervalId = null;
+
+	function startProcessInterval() {
+	  intervalId = setInterval(myTask, 5000);
+	}
+	function stopProcessInterval() {
+	  if (intervalId !== null) {
+	      clearInterval(intervalId);
+	      intervalId = null;
+	  }
+	}
+	if($('#process_').val() == 'false'){
+		startProcessInterval();
+	}
+
   function myTask() {
     $.get( './gltb/table?action=check_gltb_process', function( data ) {
 			
@@ -100,6 +117,7 @@ $(document).ready(function () {
 	    }else{
 	    	$("#gltb").prop('disabled',false);
 	    	if(data.jobdone=='true'){
+	    		stopProcessInterval();
 					$('#gltb').attr('disabled',false);
 					$('#gltb').html('Process');
 				}else{
@@ -128,9 +146,6 @@ $(document).ready(function () {
     }
   });
 
-  // Run forever every 5 seconds (5000 ms)
-  setInterval(myTask, 5000);
-
 	$("#gltb").click(function() {
 			$('#gltb').attr('disabled',true);
 			$('#gltb').html('Processing.. <i class="fa fa-refresh fa-spin fa-fw">');
@@ -145,7 +160,7 @@ $(document).ready(function () {
       }).fail(function(data) {
 
       }).success(function(data){
-
+				startProcessInterval();
       });
 	});
 });
