@@ -78,8 +78,8 @@ class TestController extends defaultController
                 return $this->itemcode_avgcost_ivdspdt($request);
             case 'betulkan_stockexp_semua':
                 return $this->betulkan_stockexp_semua($request);
-            case 'gljnlhdr_add':
-                return $this->gljnlhdr_add($request);
+            case 'len_len':
+                return $this->len_len($request);
             // case 'betulkan_stockloc_2025':
             //     return $this->betulkan_stockloc_2025($request);
             // case 'netmvval_from_netmvqty':
@@ -8168,29 +8168,64 @@ class TestController extends defaultController
     }
 
     public function len_len(Request $request){
-        $apalloc = DB::table('finance.apalloc')
-                        ->where('compcode',session('compcode'))
-                        ->where('source','AP')
-                        ->where('trantype','AL')
-                        ->where('docsource','AP')
-                        ->where('doctrantype','PV')
-                        ->where('docauditno','5201835')
-                        ->where('recstatus','!=','DELETE')
-                        ->where('recstatus','!=','CANCELLED')
+        $dbacthistory = DB::table('recondb.dbacthistory')
                         ->get();
 
-        foreach($apalloc as $obj){
-            DB::table('finance.apacthdr')
-                    ->where('compcode','=',session('compcode'))
-                    // ->where('unit','=',session('unit'))
-                    ->where('source','=',$obj->refsource)
-                    ->where('trantype','=',$obj->reftrantype)
-                    ->where('auditno','=',$obj->refauditno)
-                    ->update([
-                        'outamount' => 0
+        foreach($dbacthistory as $obj){
+            $pat_mast = DB::table('hisdb.pat_mast')
+                            ->where('compcode',session('compcode'))
+                            ->where('newmrn',$obj->mrn);
+
+            if(!$pat_mast->exists()){
+                $mrn_ = $this->recno('HIS','MRN');
+                DB::table('hisdb.pat_mast')
+                    ->insert([
+                        'CompCode' => session('compcode'),
+                        'MRN' => $mrn_,
+                        'Name' => strtoupper($obj->payername),
+                        'Reg_Date' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'Active' => 1,
+                        'AddUser' => 'SYSTEM',
+                        'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'LastUser' => 'SYSTEM',
+                        'NewMrn' => strtoupper($obj->mrn),
+                        'PatClass' => 'HIS'
                     ]);
 
-            dump($obj->refauditno);
+                dump('insert mrn');
+            }
+
+
+            $dbacthdr = DB::table('debtor.dbacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$obj->source)
+                            ->where('trantype',$obj->trantype)
+                            ->where('auditno',$obj->auditno);
+
+            if(!$dbacthdr->exists()){
+
+                DB::table('debtor.dbacthdr')
+                        ->insert([
+                            'compcode' => $obj->compcode,
+                            'source' => $obj->source,
+                            'trantype' => $obj->trantype,
+                            'auditno' => $obj->auditno,
+                            'lineno_' => $obj->lineno_,
+                            'amount' => $obj->amount,
+                            'outamount' => $obj->outamount,
+                            'entrydate' => $obj->entrydate,
+                            'reference' => $obj->reference,
+                            'debtorcode' => $obj->debtorcode,
+                            'payercode' => $obj->payercode,
+                            'billdebtor' => $obj->billdebtor,
+                            'mrn' => $obj->mrn,
+                            'episno' => $obj->episno,
+                            'payername' => $obj->payername,
+                        ]);
+
+                dump('insert dbacthdr');
+            }
         }
     }
 
