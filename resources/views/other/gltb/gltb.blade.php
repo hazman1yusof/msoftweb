@@ -147,6 +147,7 @@ $(document).ready(function () {
   });
 
 	$("#gltb").click(function() {
+	    stopProcessInterval();
 			$('#gltb').attr('disabled',true);
 			$('#gltb').html('Processing.. <i class="fa fa-refresh fa-spin fa-fw">');
 			let dateStr = $('#month').val();

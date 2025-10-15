@@ -38,6 +38,19 @@
         <td></td>
         <td></td>
     </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td style="text-align: center" colspan="4">Date From {{$fromdate}} to {{$todate}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
     <tr></tr>
     <tr>
         <td style="font-weight: bold">Src</td>
