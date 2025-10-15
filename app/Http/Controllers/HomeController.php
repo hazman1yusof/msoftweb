@@ -465,7 +465,7 @@ class HomeController extends Controller
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Enquiry' class=''><b>Item Enquiry</b></a></li>";
         $menu.="<li><a style='padding-left:21px' title='Item Enquiry Pharmacy' class='clickable' programid='ItemPhar' targeturl='./itemEnquiry?Class=Pharmacy'>Pharmacy</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Item Enquiry Non-Pharmacy' class='clickable' programid='ItemNonPhar' targeturl='./itemEnquiry?Class=Non-Pharmacy'>Non-Pharmacy</a></li>";
-        $menu.="<li><a style='padding-left:21px' title='Item Enquiry Consignment' class='clickable' programid='ItemNonPhar' targeturl='./itemEnquiry?Class=Consignment'>Consignment</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Item Enquiry Consignment' class='clickable' programid='ItemConsign' targeturl='./itemEnquiry?Class=Consignment'>Consignment</a></li>";
 
         //header
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Enquiry' class=''><b>Stock Take</b></a></li>";
@@ -536,8 +536,8 @@ class HomeController extends Controller
 
         //header
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Enquiry' class=''><b>Item Enquiry</b></a></li>";
-        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ItemPhar' targeturl='./itemEnquiry?Class=Pharmacy'>Pharmacy</a></li>";
-        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ItemNonPhar' targeturl='./itemEnquiry?Class=Non-Pharmacy'>Non-Pharmacy</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Item Enquiry Pharmacy' class='clickable' programid='ItemPhar' targeturl='./itemEnquiry?Class=Pharmacy'>Pharmacy</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Item Enquiry Consignment' class='clickable' programid='ItemConsign' targeturl='./itemEnquiry?Class=Consignment'>Consignment</a></li>";
 
         //header
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Enquiry' class=''><b>Stock Take</b></a></li>";
