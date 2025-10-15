@@ -8,17 +8,25 @@
         <td style="font-weight:bold">Dispending Qty</td>
         <td style="font-weight:bold">Dispensing Cost</td>
         <td style="font-weight:bold">Sales Amount</td>
+        @if($deptcode=='FKWSTR')
+        <td style="font-weight:bold">TUO Qty</td>
+        <td style="font-weight:bold">TUO Cost</td>
+        @endif
     </tr>
     @foreach($ivdspdt_array as $obj)
             <tr>
                 <td>{{$obj['itemcode']}}</td>
                 <td>{{$obj['description']}}</td>
                 <td>{{$obj['uomcode']}}</td>
-                <td>{{number_format($obj['qtyonhand'], 2, '.', ',')}}</td>
-                <td>{{number_format($obj['qtyonhandval'], 2, '.', ',')}}</td>
-                <td>{{number_format($obj['disp_qty'], 2, '.', ',')}}</td>
-                <td>{{number_format($obj['disp_cost'], 2, '.', ',')}}</td>
-                <td>{{number_format($obj['disp_saleamt'], 2, '.', ',')}}</td>
+                <td>{{$obj['qtyonhand']}}</td>
+                <td>{{$obj['qtyonhandval']}}</td>
+                <td>{{$obj['disp_qty']}}</td>
+                <td>{{$obj['disp_cost']}}</td>
+                <td>{{$obj['disp_saleamt']}}</td>
+                @if($deptcode=='FKWSTR')
+                <td>{{$obj['txndt_qty']}}</td>
+                <td>{{$obj['txndt_cost']}}</td>
+                @endif
             </tr>
     @endforeach
 </table>

@@ -59,7 +59,7 @@
 					<div class="form-group">
 
 						<div class="col-md-6">
-						  <label class="control-label" for="Scol">Dept From</label> 
+						  <label class="control-label" for="Scol">Department</label> 
 							<div class='input-group'> 
 								<input id="dept_from" name="dept_from" type="text" class="form-control input-sm" autocomplete="off" value="">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
@@ -67,14 +67,14 @@
 							<span class="help-block"></span>
 			      </div>
 
-						<div class="col-md-6">
+						<!-- <div class="col-md-6">
 						  <label class="control-label" for="Scol">Dept To</label>  
 							<div class='input-group'>
 								<input id="dept_to" name="dept_to" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="ZZZ">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
-			      </div>
+			      </div> -->
 			    </div>
 
 					<div class="form-group">
@@ -99,9 +99,9 @@
 				<div class='col-md-12 btnform' style="padding:0px">
 				 <fieldset>
 				  <legend>Slow Item Movement :</legend>
-					<button name="itemMovSlow_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" data-btntype='pdf'>
+					<!-- <button name="itemMovSlow_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" data-btntype='pdf'>
 						<span class="fa fa-file-pdf-o fa-lg"></span> Slow Item Movement PDF
-					</button>
+					</button> -->
 					<button name="itemMovSlow_excel" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='xls'>
 						<span class="fa fa-file-excel-o fa-lg"></span> Slow Item Movement XLS
 					</button>
@@ -109,9 +109,9 @@
 
 				 <fieldset>
 				  <legend>Fast Item Movement :</legend>
-					<button name="itemMovFast_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" data-btntype='pdf'>
+					<!-- <button name="itemMovFast_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" data-btntype='pdf'>
 						<span class="fa fa-file-pdf-o fa-lg"></span> Fast Item Movement PDF
-					</button>
+					</button> -->
 					<button name="itemMovFast_excel" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='xls'>
 						<span class="fa fa-file-excel-o fa-lg"></span> Fast Item Movement XLS
 					</button>

@@ -251,7 +251,7 @@ class ItemMovReportController extends defaultController
 
     public function itemMovFast_excel(Request $request){
         $validator = Validator::make($request->all(), [
-            'dept_to' => 'required',
+            'dept_from' => 'required',
             'datefrom' => 'required',
             'dateto' => 'required',
         ]);
@@ -271,7 +271,7 @@ class ItemMovReportController extends defaultController
 
     public function itemMovSlow_excel(Request $request){
         $validator = Validator::make($request->all(), [
-            'dept_to' => 'required',
+            'dept_from' => 'required',
             'datefrom' => 'required',
             'dateto' => 'required',
         ]);
