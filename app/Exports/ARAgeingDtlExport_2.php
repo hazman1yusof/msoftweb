@@ -144,6 +144,7 @@ class ARAgeingDtlExport_2 implements FromView, WithEvents, WithColumnWidths, Wit
 
         $array_report = DB::table('debtor.ARAgeing')
                             ->where('job_id',$this->job_id)
+                            ->orderBy('posteddate', 'asc')
                             ->get();
 
         if($groupby == 'debtortype'){
