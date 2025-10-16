@@ -80,6 +80,8 @@ class TestController extends defaultController
                 return $this->betulkan_stockexp_semua($request);
             case 'len_len':
                 return $this->len_len($request);
+            case 'apalloc_osamt':
+                return $this->apalloc_osamt($request);
             // case 'betulkan_stockloc_2025':
             //     return $this->betulkan_stockloc_2025($request);
             // case 'netmvval_from_netmvqty':

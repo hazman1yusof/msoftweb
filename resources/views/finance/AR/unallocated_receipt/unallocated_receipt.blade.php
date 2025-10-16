@@ -107,7 +107,7 @@
                               <option value="ALL" selected>ALL</option>
                               <option value="IMP">IMP</option>
                               <option value="KHEALTH">KHEALTH</option>
-                              <option value="FKWSTR">FKWSTR</option>
+                              <option value="W'HOUSE">FKWSTR</option>
                             </select>
                         </div>
                     </div>

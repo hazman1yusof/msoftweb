@@ -35,7 +35,7 @@
         <td style="font-weight:bold; text-align: left">Unit</td>
     </tr>     
     @foreach ($dbacthdr as $obj)
-    @if($obj->pamt != 0)
+    @if(round($obj->pamt, 2) != 0.00)
     <tr>
         <td>{{$obj->posteddate}}</td>
         <td>{{$obj->recptno}}</td>
