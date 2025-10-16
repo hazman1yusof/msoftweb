@@ -71,6 +71,10 @@ use Carbon\Carbon;
                     ->where('ap.source','=',$request->source)
                     ->where('ap.trantype','=',$request->trantype);
 
+        if(strtoupper(session('unit')) != 'MRS'){
+                 $table = $table->where('ap.unit','=',session('compcode'))
+        }
+
         if(!empty($request->filterCol)){
             $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
         }
