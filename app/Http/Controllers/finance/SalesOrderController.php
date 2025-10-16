@@ -2870,11 +2870,23 @@ class SalesOrderController extends defaultController
             'batchno' => $stockexp_use->batchno
         ];
 
+        $unique_recno = DB::table('material.ivdspdt')
+                            ->where('compcode',session('compcode'))
+                            ->where('recno',$billsum_obj->auditno)
+                            ->where('trantype','DS');
 
-        $insertGetId = DB::table('material.ivdspdt')
-                            ->insertGetId($ivdspdt_arr);
+        if($unique_recno->exists()){
+            DB::table('material.ivdspdt')
+                    ->where('compcode',session('compcode'))
+                    ->where('recno',$billsum_obj->auditno)
+                    ->where('trantype','DS')
+                    ->update($ivdspdt_arr);
+        }else{
+            DB::table('material.ivdspdt')
+                    ->insert($ivdspdt_arr);
+        }
 
-        return $insertGetId;
+        return 0;
     }
 
     public function updivdspdt($billsum_obj,$dbacthdr){

@@ -220,8 +220,14 @@ class do_util extends defaultController{
 	        $newqtyonhand = $OldQtyOnHand + $txnqty;
             if($OldQtyOnHand + $txnqty == 0){
                 $newAvgCost = 0; //ini kes item baru (qtyonhand 0) dan txnqty kosong
+            }else if($OldQtyOnHand<0){
+                $newAvgCost = $currprice;
             }else{
                 $newAvgCost = ($OldAmount + $NewAmount) / ($OldQtyOnHand + $txnqty);
+
+                if($newAvgCost < 0 ){
+                    $newAvgCost = $currprice;
+                }
             }
 
             if($value->pricecode == ['BO']){
