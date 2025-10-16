@@ -5,6 +5,7 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
         <td style="text-align: center" colspan="4">{{$comp_name}}</td>
         <td></td>
         <td></td>
@@ -15,6 +16,7 @@
         <td></td>
     </tr>
     <tr>
+        <td></td>
         <td></td>
         <td></td>
         <td></td>
@@ -36,6 +38,7 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
         <td style="text-align: center" colspan="4">As at : {{$date_at}}</td>
         <td></td>
         <td></td>
@@ -50,6 +53,7 @@
     <tr>
         <td style="font-weight:bold; text-align: left">Code</td>
         <td style="font-weight:bold; text-align: left">Company</td>
+        <td style="font-weight:bold; text-align: left">Audit No.</td>
         <td style="font-weight:bold; text-align: left">Document No.</td>
         <td style="font-weight:bold; text-align: left">Date</td>
         @foreach ($grouping as $key => $group)
@@ -88,6 +92,7 @@
                         <tr>
                             <td></td>
                             <td>{{$obj_ar->remark}}</td>
+                            <td>{{$obj_ar->auditno}}</td>
                             <td>{{$obj_ar->doc_no}}</td>
                             <td>{{$obj_ar->posteddate}}</td>
 
@@ -118,6 +123,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
 
                     @foreach ($grouping as $key => $group)
                         @if($key+1 == count($grouping))
@@ -138,6 +144,7 @@
     @endforeach
 
     <tr>
+        <td></td>
         <td></td>
         <td></td>
         <td></td>
