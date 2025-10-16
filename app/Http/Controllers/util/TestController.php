@@ -7140,6 +7140,7 @@ class TestController extends defaultController
                 $minus2 = $ivdspdt2;
 
                 $all2 = $add2 - $minus2;
+                $all2 = round($all2,2);
 
                 if(!$this->floatEquals($value_array['netmvqty'.$period], $all) || !$this->floatEquals($value_array['netmvval'.$period], $all2)){
 
