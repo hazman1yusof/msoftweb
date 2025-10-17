@@ -561,6 +561,7 @@ $(document).ready(function () {
 		$.get( "util/get_value_default?"+$.param(param), function( data ) {
 					
 		},'json').done(function(data) {
+    		$('#search').prop('disabled',false);
 			if(!$.isEmptyObject(data.rows)){
 	            var accumqty=ret_parsefloat(data.rows[0].openbalqty);
 	            if(isNaN(accumqty)){
@@ -604,6 +605,7 @@ $(document).ready(function () {
 	}
 
     $('#search').click(function(){
+    	$('#search').prop('disabled',true);
     	DataTable.clear().draw();
 		populateSummary($('#itemcodedtl').val(),$('#uomcodedtl').val(),$('#deptcodedtl').val());
 	});
