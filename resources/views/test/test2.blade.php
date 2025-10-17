@@ -1,18 +1,40 @@
 @extends('layouts.main')
 
-@section('title', 'Race Setup')
+@section('title', 'test')
 
 @section('body')
 
-<form id='testform'>
-	<a type="button" name="submit" id="submit" value="submit" href="http://patientcare.test/doctornote" class="btn btn-default">goto patientcare</a>
-</form>	
+<table class="table" style="background: white;">
+    <thead>
+        <tr>
+            <th>Source</th>
+            <th>Tran Type</th>
+            <th>Audit No</th>
+            <th>Post Date</th>
+            <th>Amount</th>
+            <th>Out Amount</th>
+            <th>OS Amt Alloc</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($array as $row)
+            <tr>
+                <td>{{ $row->source }}</td>
+                <td>{{ $row->trantype }}</td>
+                <td>{{ $row->auditno }}</td>
+                <td>{{ \Carbon\Carbon::parse($row->postdate)->format('d/m/Y') }}</td>
+                <td class="text-end">{{ number_format((float)$row->amount, 2) }}</td>
+                <td class="text-end">{{ number_format((float)$row->outamount, 2) }}</td>
+                <td class="text-end">{{ number_format((float)$row->osamt_alloc, 2) }}</td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
 
 @endsection
 
 
 @section('scripts')
 
-	<script src="js/test/test.js"></script>
 	
 @endsection
