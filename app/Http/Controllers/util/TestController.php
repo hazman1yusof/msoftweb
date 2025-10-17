@@ -8470,9 +8470,50 @@ class TestController extends defaultController
         }
     }
 
-    // public function apalloc_osamt(Request $request){
-    //     $apacthdr=DB::table('finance.apacthdr')
-                    
-    // }
+    public function apalloc_osamt(Request $request){
+        $datefrom = $request->datefrom;
+        if($datefrom == null){
+            $datefrom = '2025-05-01';
+        }
+
+        $dateto = $request->dateto;
+        if($dateto == null){
+            $dateto = '2025-05-31';
+        }
+
+        $apacthdr = DB::table('finance.apacthdr as ap')
+                        ->select('ap.source','ap.trantype','ap.auditno','ap.postdate','ap.source','ap.amount','ap.outamount')
+                        ->where('ap.compcode',session('compcode'))
+                        ->where('ap.source','AP')
+                        ->where('ap.trantype','IN')
+                        ->where('ap.recstatus','POSTED')
+                        ->whereDate('ap.postdate','>=',$datefrom)
+                        ->whereDate('ap.postdate','<=',$dateto)
+                        ->get();
+
+        $array = [];
+        foreach ($apacthdr as $obj) {
+            $osamt = $obj->amount;
+
+            $apalloc = DB::table('finance.apalloc')
+                        ->where('compcode',session('compcode'))
+                        ->where('refsource',$obj->source)
+                        ->where('reftrantype',$obj->trantype)
+                        ->where('refauditno',$obj->auditno)
+                        ->where('recstatus', 'POSTED')
+                        ->get();
+
+            foreach ($apalloc as $obj_alloc){
+                $osamt = $osamt - $obj_alloc->allocamount;
+            }
+
+            if(!$this->floatEquals($obj->outamount,$osamt)){
+                $obj->osamt_alloc = $osamt;
+                array_push($array, $obj);
+            }
+        }
+        
+        dd($array);       
+    }
 
 }
