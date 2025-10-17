@@ -4,7 +4,8 @@
 
 @section('body')
 
-<table class="table" style="background: white;">
+<table class="table" style="background: white;margin: 15px;
+    border: 1px solid black;">
     <thead>
         <tr>
             <th>Source</th>
