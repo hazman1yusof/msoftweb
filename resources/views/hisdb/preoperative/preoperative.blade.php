@@ -112,10 +112,10 @@
                                         <tr>
                                             <td>1</td>
                                             <td>
-                                                <label class="checkbox-inline" style="padding-left: 0px;">Patient's Name</label>
+                                                <label for="preop_patName" class="checkbox-inline" style="padding-left: 0px;">Patient's Name</label>
                                                 <input type="checkbox" name="patName" id="preop_patName" value="1">
                                                 
-                                                <label class="checkbox-inline">Identity Tag</label>
+                                                <label for="preop_identitytag" class="checkbox-inline">Identity Tag</label>
                                                 <input type="checkbox" name="identitytag" id="preop_identitytag" value="1">
                                             </td>
                                             <td><input type="checkbox" name="pat_ward" value="1"></td>
@@ -126,13 +126,13 @@
                                             <td>2</td>
                                             <td>Consent for
                                                 <input type="checkbox" name="consentSurgery" id="preop_consentSurgery" value="1" style="margin-left: 15px;">
-                                                <label class="checkbox-inline" style="padding-left: 5px;">Surgery</label>
+                                                <label for="preop_consentSurgery" class="checkbox-inline" style="padding-left: 5px;">Surgery</label>
                                                 
                                                 <input type="checkbox" name="consentAnaesth" id="preop_consentAnaesth" value="1" style="margin-left: 15px;">
-                                                <label class="checkbox-inline" style="padding-left: 5px;">Anaesthesia</label>
+                                                <label for="preop_consentAnaesth" class="checkbox-inline" style="padding-left: 5px;">Anaesthesia</label>
                                                 
                                                 <input type="checkbox" name="consentTransf" id="preop_consentTransf" value="1" style="margin-left: 15px;">
-                                                <label class="checkbox-inline" style="padding-left: 5px;">Transfusion</label>
+                                                <label for="preop_consentTransf" class="checkbox-inline" style="padding-left: 5px;">Transfusion</label>
                                             </td>
                                             <td><input type="checkbox" name="consent_ward" value="1"></td>
                                             <td><input type="checkbox" name="consent_ot" value="1"></td>
@@ -162,11 +162,17 @@
                                                     <input type="radio" name="opSite_mark" value="1">Yes
                                                 </label>
                                                 <label class="radio-inline">
+                                                    <input type="radio" name="opSite_mark" value="0">No
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="opSite_mark" value="NA">NA
+                                                </label>
+                                                <!-- <label class="radio-inline">
                                                     <input type="radio" name="opSite_mark" value="0">No &nbsp; &nbsp;
                                                 </label>
                                                 <label class="checkbox-inline">
                                                     <input type="checkbox" id="preop_opSite_na" name="opSite_na" value="1">NA
-                                                </label>
+                                                </label> -->
                                             </td>
                                             <td><input type="checkbox" name="opSite_ward" value="1"></td>
                                             <td><input type="checkbox" name="opSite_ot" value="1"></td>
@@ -214,13 +220,13 @@
                                         <tr>
                                             <td>9</td>
                                             <td>
-                                                <label class="checkbox-inline" style="padding-left: 0px;">Case notes</label>
+                                                <label for="preop_casenotes" class="checkbox-inline" style="padding-left: 0px;">Case notes</label>
                                                 <input type="checkbox" name="casenotes" id="preop_casenotes" value="1">
                                                 
-                                                <label class="checkbox-inline">Old notes</label>
+                                                <label for="preop_oldnotes" class="checkbox-inline">Old notes</label>
                                                 <input type="checkbox" name="oldnotes" id="preop_oldnotes" value="1">
                                                 
-                                                <label class="checkbox-inline">X-rays</label>
+                                                <label for="preop_xrays" class="checkbox-inline">X-rays</label>
                                                 <input type="checkbox" name="xrays" id="preop_xrays" value="1">
                                             </td>
                                             <td><input type="checkbox" name="casenotes_ward" value="1"></td>
