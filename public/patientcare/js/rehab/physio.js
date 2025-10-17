@@ -18,6 +18,7 @@ $(document).ready(function (){
     disableForm('#formNeuroAssessment');
     disableForm('#formMotorScale');
     disableForm('#formSpinalCord');
+    disableForm('#formPhysioNotes');
     
     // to format number input to two decimal places (0.00)
     $(".floatNumberField").change(function (){
@@ -178,6 +179,21 @@ $(document).ready(function (){
                 // $('#tbl_spinalCord_date').DataTable().ajax.reload();
                 getdata_spinalCord();
                 break;
+            case 'physioNotes':
+                var urlparam_tbl_physioNotes = {
+                    action: 'get_datetime_physioNotes',
+                    mrn: $("#mrn_physio").val(),
+                    episno: $("#episno_physio").val()
+                }
+                
+                tbl_physioNotes_date.ajax.url("./physioNotes/table?"+$.param(urlparam_tbl_physioNotes)).load(function (data){
+                    emptyFormdata_div("#formPhysioNotes",['#mrn_physio','#episno_physio']);
+                    $('#tbl_physioNotes_date tbody tr:eq(0)').click(); // to select first row
+                });
+                
+                // $('#tbl_physioNotes_date').DataTable().ajax.reload();
+                getdata_physioNotes();
+                break;
         }
     }});
     
@@ -210,6 +226,7 @@ function empty_physio(){
     emptyFormdata_div("#formNeuroAssessment");
     emptyFormdata_div("#formMotorScale");
     emptyFormdata_div("#formSpinalCord");
+    emptyFormdata_div("#formPhysioNotes");
     button_state_sixMinWalking('empty');
     button_state_bergBalanceTest('empty');
     button_state_musculoAssessment('empty');
@@ -219,6 +236,7 @@ function empty_physio(){
     button_state_neuroAssessment('empty');
     button_state_motorScale('empty');
     button_state_spinalCord('empty');
+    button_state_physioNotes('empty');
     
     // panel header
     $('#name_show_physio').text('');
@@ -247,6 +265,7 @@ function populate_physio(obj){
     emptyFormdata_div("#formNeuroAssessment",['#mrn_physio','#episno_physio']);
     emptyFormdata_div("#formMotorScale",['#mrn_physio','#episno_physio']);
     emptyFormdata_div("#formSpinalCord",['#mrn_physio','#episno_physio']);
+    emptyFormdata_div("#formPhysioNotes",['#mrn_physio','#episno_physio']);
     
     // panel header
     $('#name_show_physio').text(obj.Name);
@@ -316,6 +335,7 @@ $('#tab_physio').on('shown.bs.collapse', function (){
     //     getdata_neuroAssessment();
     //     getdata_motorScale();
     //     getdata_spinalCord();
+    //     getdata_physioNotes();
     // }
 });
 
@@ -330,6 +350,7 @@ $('#tab_physio').on('hide.bs.collapse', function (){
     button_state_neuroAssessment('empty');
     button_state_motorScale('empty');
     button_state_spinalCord('empty');
+    button_state_physioNotes('empty');
 });
 
 function check_same_usr_edit(data){

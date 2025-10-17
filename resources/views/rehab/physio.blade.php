@@ -34,6 +34,7 @@
                 <a class="item" data-tab="neuroAssessment" id="navtab_neuroAssessment">Neurological<br>Physiotherapy<br>Assessment</a>
                 <a class="item" data-tab="motorScale" id="navtab_motorScale">Motor<br>Assessment<br>Scale</a>
                 <a class="item" data-tab="spinalCord" id="navtab_spinalCord">Spinal<br>Cord<br>Injury</a>
+                <a class="item" data-tab="physioNotes" id="navtab_physioNotes">Notes</a>
             </div>
             
             <div class="ui bottom attached tab raised segment active" data-tab="sixMinWalking">
@@ -70,6 +71,10 @@
             
             <div class="ui bottom attached tab raised segment" data-tab="spinalCord">
                 @include('rehab.spinalCord')
+            </div>
+            
+            <div class="ui bottom attached tab raised segment" data-tab="physioNotes">
+                @include('rehab.physioNotes')
             </div>
         </div>
     </div>
