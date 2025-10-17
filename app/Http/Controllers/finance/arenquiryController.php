@@ -140,6 +140,18 @@ class arenquiryController extends defaultController
                 // ->where('db.recstatus','=','POSTED')
                 ->where('db.source','=','PB');
                 // ->where('db.trantype','=','IN','DN',);
+
+        if(strtoupper($request->trantype) != 'ALL'){
+            $table = $table->where('db.trantype','=',$request->trantype);
+        }
+
+        if(strtoupper($request->status) != 'ALL'){
+            $table = $table->where('db.status','=',$request->status);
+        }
+
+        if(strtoupper($request->unit) != 'ALL'){
+            $table = $table->where('db.unit','=',$request->unit);
+        }
         
         if(!empty($request->filterCol)){
             $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
@@ -502,6 +514,7 @@ class arenquiryController extends defaultController
                         'dc.compcode',
                         'dc.lineno_',
                         'dc.idno',
+                        'dr.invno',
                     )
                     ->join('debtor.dbacthdr as da', function ($join) use ($request){
                         $join = $join
@@ -509,6 +522,13 @@ class arenquiryController extends defaultController
                                     ->on('dc.docsource', '=', 'da.source')
                                     ->on('dc.doctrantype', '=', 'da.trantype')
                                     ->on('dc.docauditno', '=', 'da.auditno');
+                    })
+                    ->join('debtor.dbacthdr as dr', function ($join) use ($request){
+                        $join = $join
+                                    ->where('dr.compcode', session('compcode'))
+                                    ->on('dc.refsource', '=', 'dr.source')
+                                    ->on('dc.reftrantype', '=', 'dr.trantype')
+                                    ->on('dc.refauditno', '=', 'dr.auditno');
                     })
                     ->where('dc.compcode','=',session('compcode'))
                     ->where('dc.docsource','=',$dbacthdr->source)
@@ -540,7 +560,7 @@ class arenquiryController extends defaultController
                         'dc.episno',
                         'dc.compcode',
                         'dc.lineno_',
-                        'dc.idno',
+                        'da.invno',
                     )
                     ->join('debtor.dbacthdr as da', function ($join) use ($request){
                         $join = $join
@@ -561,6 +581,7 @@ class arenquiryController extends defaultController
                 $auditno = str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
                 
                 $value->sysAutoNo = $value->source.'-'.$value->trantype.'-'.$auditno;
+                $value->invno = '-';
             }
 
             $table = $table->merge($table2);
@@ -599,6 +620,7 @@ class arenquiryController extends defaultController
                         'dc.compcode',
                         'dc.lineno_',
                         'dc.idno',
+                        'da.invno',
                     )
                     ->join('debtor.dbacthdr as da', function ($join) use ($request){
                         $join = $join
@@ -620,6 +642,7 @@ class arenquiryController extends defaultController
                 $auditno = str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
                 
                 $value->sysAutoNo = $value->source.'-'.$value->trantype.'-'.$auditno;
+                $value->invno = '-';
             }
             
             $responce = new stdClass();

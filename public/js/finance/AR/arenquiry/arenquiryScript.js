@@ -728,6 +728,9 @@ $(document).ready(function (){
 	var urlParam = {
 		action: 'maintable',
 		url: './arenquiry/table',
+		trantype: $('#Trantype option:selected').val(),
+		status: $('#Status option:selected').val(),
+		unit: $('#unit option:selected').val(),
 		// source: $('#db_source').val(),
 		// trantype: $('#db_trantype').val(),
 	}
@@ -739,17 +742,17 @@ $(document).ready(function (){
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
 			// { label: 'Debtor Code', name: 'db_debtorcode', width: 30, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat: un_showdetail },
 			{ label: 'Debtor Code', name: 'db_debtorcode', width: 10, classes: 'text-uppercase', canSearch: true },
-			{ label: 'Debtor Name', name: 'dm_name', width: 28, classes: 'wrap text-uppercase', canSearch: true, selected: true },
+			{ label: 'Debtor Name', name: 'dm_name', classes: 'wrap', width: 28, canSearch: true, selected: true },
 			{ label: 'Payer Code', name: 'db_payercode', width: 20, hidden: true },
 			{ label: 'Audit No', name: 'db_auditno', width: 9, align: 'right', canSearch: true, formatter: padzero, unformat: unpadzero },
 			{ label: 'Invoice No', name: 'db_invno', hidden: true, canSearch: true },
-			{ label: 'Sector', name: 'db_unit', width: 10, hidden: true, classes: 'wrap' },
+			{ label: 'Sector', name: 'db_unit', width: 10, hidden: true },
 			{ label: 'PO No', name: 'db_ponum', width: 8, formatter: padzero5, unformat: unpadzero, hidden: true },
 			{ label: 'Document No', name: 'db_recptno', width: 17, align: 'right', canSearch: true },
 			{ label: 'Doc Date', name: 'db_entrydate', width: 10, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'Post Date', name: 'db_posteddate', width: 10, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
-			{ label: 'Amount', name: 'db_amount', width: 12, classes: 'wrap', align: 'right', formatter: 'currency' },
-			{ label: 'Outamount', name: 'db_outamount', width: 12, classes: 'wrap', align: 'right', formatter: 'currency' },
+			{ label: 'Amount', name: 'db_amount', width: 12, align: 'right', formatter: 'currency' },
+			{ label: 'Outamount', name: 'db_outamount', width: 12, align: 'right', formatter: 'currency' },
 			{ label: 'Status', name: 'db_recstatus', width: 12 },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
 			{ label: 'Type', name: 'db_trantype', width: 5, canSearch: true, },
@@ -1004,17 +1007,18 @@ $(document).ready(function (){
 			// { label: 'compcode', name: 'compcode', width: 20, hidden: true },
 			// { label: 'lineno_', name: 'lineno_', width: 20, hidden: true },
 			// { label: 'idno', name: 'idno', width: 20, hidden: true },
-			{ label: 'System Auto No.', name: 'sysAutoNo', width: 50, classes: 'wrap' },
-			{ label: 'Source', name: 'source', width: 10, classes: 'wrap', hidden: true },
-			{ label: 'TT', name: 'trantype', width: 10, classes: 'wrap', hidden: true },
-			{ label: 'Audit No', name: 'auditno', width: 10, classes: 'wrap', formatter: padzero, unformat: unpadzero, hidden: true },
+			{ label: 'System Auto No.', name: 'sysAutoNo', width: 50 },
+			{ label: 'Inv no.', name: 'invno', width: 50 },
+			{ label: 'Source', name: 'source', width: 10, hidden: true },
+			{ label: 'TT', name: 'trantype', width: 10, hidden: true },
+			{ label: 'Audit No', name: 'auditno', width: 10, formatter: padzero, unformat: unpadzero, hidden: true },
 			{ label: 'Debtor', name: 'debtorcode', width: 50, classes: 'wrap text-uppercase', formatter: showdetail, unformat: un_showdetail },
 			{ label: 'Payer', name: 'payercode', width: 50, classes: 'wrap text-uppercase', formatter: showdetail, unformat: un_showdetail },
-			{ label: 'Amount', name: 'amount', width: 40, classes: 'wrap', align: 'right', formatter: 'currency' },
+			{ label: 'Amount', name: 'amount', width: 40, align: 'right', formatter: 'currency' },
 			{ label: 'Document No', name: 'recptno', width: 50, align: 'right' },
-			{ label: 'Paymode', name: 'paymode', width: 50, classes: 'wrap text-uppercase', formatter: showdetail, unformat: un_showdetail },
+			{ label: 'Paymode', name: 'paymode', width: 50, formatter: showdetail, unformat: un_showdetail },
 			{ label: 'Alloc Date', name: 'allocdate', width: 50, formatter: dateFormatter, unformat: dateUNFormatter },
-			{ label: 'MRN', name: 'mrn', width: 50, align: 'right', classes: 'wrap text-uppercase', formatter: showdetail, unformat: un_showdetail },
+			{ label: 'MRN', name: 'mrn', width: 50, align: 'right', formatter: showdetail, unformat: un_showdetail },
 			{ label: 'Episno', name: 'episno', width: 20, align: 'right' },
 		],
 		shrinkToFit: true,
@@ -2611,8 +2615,9 @@ $(document).ready(function (){
 	
 	////////////////////////////changing status and trigger search////////////////////////////
 	$('#Scol').on('change', whenchangetodate);
-	$('#Trantype').on('change', searchTrantype);
+	$('#Trantype').on('change', searchChange);
 	$('#Status').on('change', searchChange);
+	$('#unit').on('change', searchChange);
 	$('#docuDate_search').on('click', searchDate);
 	
 	function whenchangetodate(){
@@ -3036,19 +3041,9 @@ $(document).ready(function (){
 	}
 	
 	function searchChange(){
-		var arrtemp = [$('#Status option:selected').val()];
-		var filter = arrtemp.reduce(function (a,b,c){
-			if(b == 'All'){
-				return a;
-			}else{
-				a.fc = a.fc.concat(a.fct[c]);
-				a.fv = a.fv.concat(b);
-				return a;
-			}
-		},{fct:['db.recstatus'],fv:[],fc:[]});
-		
-		urlParam.filterCol = filter.fc;
-		urlParam.filterVal = filter.fv;
+		urlParam.trantype = $('#Trantype option:selected').val();
+		urlParam.status = $('#Status option:selected').val();
+		urlParam.unit = $('#unit option:selected').val();
 		refreshGrid('#jqGrid',urlParam);
 	}
 	

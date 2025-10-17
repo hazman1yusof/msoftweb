@@ -153,6 +153,37 @@
 						<option value="Cancelled">CANCELLED</option>
 					</select>
 				</div>
+				
+				<div class="col-md-2">
+					<label class="control-label" for="unit">Unit</label>
+					<select id="unit" name="unit" class="form-control input-sm">
+						@if(session('unit') == 'IMP')
+						<option value="All">ALL</option>
+						<option value="W'HOUSE">W'HOUSE</option>
+						<option value="IMP" selected>IMP</option>
+						<option value="KHEALTH">KHEALTH</option>
+						<option value="MRS">MRS</option>
+						@elseif(session('unit') == "W'HOUSE")
+						<option value="All">ALL</option>
+						<option value="W'HOUSE" selected>W'HOUSE</option>
+						<option value="IMP">IMP</option>
+						<option value="KHEALTH">KHEALTH</option>
+						<option value="MRS">MRS</option>
+						@elseif(session('unit') == 'KHEALTH')
+						<option value="All">ALL</option>
+						<option value="W'HOUSE">W'HOUSE</option>
+						<option value="IMP">IMP</option>
+						<option value="KHEALTH" selected>KHEALTH</option>
+						<option value="MRS">MRS</option>
+						@else
+						<option value="All" selected>ALL</option>
+						<option value="W'HOUSE">W'HOUSE</option>
+						<option value="IMP">IMP</option>
+						<option value="KHEALTH">KHEALTH</option>
+						<option value="MRS">MRS</option>
+						@endif
+					</select>
+				</div>
 			</fieldset>
 		</form>
 		
@@ -1661,6 +1692,6 @@
 			}
 		});
 	</script>
-	<script src="js/finance/AR/arenquiry/arenquiryScript.js?v=1.19"></script>
+	<script src="js/finance/AR/arenquiry/arenquiryScript.js?v=1.20"></script>
 	<script src="js/finance/AR/arenquiry/allocateDialog_cancel.js?v=1"></script>
 @endsection
