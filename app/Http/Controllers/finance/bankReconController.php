@@ -328,6 +328,10 @@ class bankReconController extends defaultController
                 $table = $table->Where(function ($table) use ($request) {
                         $table->Where('cbdt.auditno','like',$request->searchVal[0]);
                     });
+            }else if($request->searchCol[0] == 'postdate'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->WhereDate('cb.docdate',$request->wholeword);
+                    });
             }else{
                 $table = $table->Where(function ($table) use ($request) {
                         $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
@@ -474,6 +478,10 @@ class bankReconController extends defaultController
             }else if($request->searchCol[0] == 'auditno'){
                 $table = $table->Where(function ($table) use ($request) {
                         $table->Where('cb.auditno','like',$request->searchVal[0]);
+                    });
+            }else if($request->searchCol[0] == 'postdate'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->WhereDate('cb.postdate',$request->wholeword);
                     });
             }else{
                 $table = $table->Where(function ($table) use ($request) {

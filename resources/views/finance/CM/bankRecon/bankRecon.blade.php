@@ -162,11 +162,17 @@ i.fa {
 						<option value="amount" >Amount</option>
 						<option value="source" >Source</option>
 						<option value="trantype" >Trantype</option>
+						<option value="auditno" >Auditno</option>
 					</select>
 					<input id="alloText" placeholder="Search Here.." type="text" class="form-control input-sm" style="width: 200px;
 				    position: absolute;
 				    top: 20px;
 				    right: 10px;">
+					<input id="alloDate" type="date" class="form-control input-sm" style="width: 200px;
+				    position: absolute;
+				    top: 20px;
+				    right: 10px;
+				    display: none;">
 			</div>
 			<div class='col-md-5' id="jqGrid2_c" style="padding:0 0 15px 0">
 				<button id="btn_cbrecdtl_del"  type="button" class="btn btn-default" style="
@@ -249,5 +255,5 @@ i.fa {
 			
 		});
 	</script>
-	<script src="js/finance/CM/bankRecon/bankRecon.js?v=1.1"></script>
+	<script src="js/finance/CM/bankRecon/bankRecon.js?v=1.2"></script>
 @endsection

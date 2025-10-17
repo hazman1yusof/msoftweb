@@ -8470,4 +8470,9 @@ class TestController extends defaultController
         }
     }
 
+    // public function apalloc_osamt(Request $request){
+    //     $apacthdr=DB::table('finance.apacthdr')
+                    
+    // }
+
 }
