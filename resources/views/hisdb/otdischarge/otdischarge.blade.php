@@ -45,10 +45,10 @@
                                         <tr>
                                             <td>1</td>
                                             <td>
-                                                <label class="checkbox-inline" style="padding-left: 0px;">Patient's name</label>
+                                                <label for="predischg_patName" class="checkbox-inline" style="padding-left: 0px;">Patient's name</label>
                                                 <input type="checkbox" name="patName" id="predischg_patName" value="1">
                                                 
-                                                <label class="checkbox-inline">Identity tag</label>
+                                                <label for="predischg_identitytag" class="checkbox-inline">Identity tag</label>
                                                 <input type="checkbox" name="identitytag" id="predischg_identitytag" value="1">
                                             </td>
                                             <td><input type="checkbox" name="pat_checked" value="1"></td>
@@ -122,21 +122,21 @@
                                         <tr>
                                             <td>9</td>
                                             <td>
-                                                <label class="checkbox-inline" style="padding-left: 0px;">Case Notes</label>
+                                                <label for="predischg_casenotes" class="checkbox-inline" style="padding-left: 0px;">Case Notes</label>
                                                 <input type="checkbox" name="casenotes" id="predischg_casenotes" value="1">
                                                 
-                                                <label class="checkbox-inline">Old Notes</label>
+                                                <label for="predischg_oldnotes" class="checkbox-inline">Old Notes</label>
                                                 <input type="checkbox" name="oldnotes" id="predischg_oldnotes" value="1">
                                                 
-                                                <label class="checkbox-inline">X-rays</label>
+                                                <label for="predischg_xrays" class="checkbox-inline">X-rays</label>
                                                 <input type="checkbox" name="xrays" id="predischg_xrays" value="1">
                                                 
                                                 <br>
                                                 
-                                                <label class="checkbox-inline" style="padding-left: 0px;">Operatives Notes</label>
+                                                <label for="predischg_opernotes" class="checkbox-inline" style="padding-left: 0px;">Operatives Notes</label>
                                                 <input type="checkbox" name="opernotes" id="predischg_opernotes" value="1">
                                                 
-                                                <label class="checkbox-inline">GA Form</label>
+                                                <label for="predischg_gaform" class="checkbox-inline">GA Form</label>
                                                 <input type="checkbox" name="gaform" id="predischg_gaform" value="1">
                                             </td>
                                             <td><input type="checkbox" name="docs_checked" value="1"></td>

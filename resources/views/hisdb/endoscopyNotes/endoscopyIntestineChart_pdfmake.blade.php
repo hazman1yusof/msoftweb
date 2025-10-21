@@ -51,7 +51,7 @@
                             body: [
                                 [
                                     { text: `1. Patient\u2019s Name : \u200B\t{!!$endoscopyintestine->Name!!}`, colSpan: 2 },{},
-                                    { text: '2. MRN : \u200B\t{{$endoscopyintestine->mrn}}' },
+                                    { text: '2. MRN : \u200B\t{{str_pad($endoscopyintestine->mrn, 7, "0", STR_PAD_LEFT)}}' },
                                 ],
                                 [
                                     { text: `3. Address : \u200B\t{!!$endoscopyintestine->Address1!!}\n{!!$endoscopyintestine->Address2!!}\n{!!$endoscopyintestine->Address3!!}`, colSpan: 2 },{},

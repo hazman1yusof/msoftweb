@@ -1726,6 +1726,11 @@ Route::get('/spinalCord/table','rehab\SpinalCordController@table');
 Route::post('/spinalCord/form','rehab\SpinalCordController@form');
 Route::get('/spinalCord/spinalcord_chart','rehab\SpinalCordController@spinalcord_chart');
 
+Route::get('/physioNotes','rehab\PhysioNotesController@show');
+Route::get('/physioNotes/table','rehab\PhysioNotesController@table');
+Route::post('/physioNotes/form','rehab\PhysioNotesController@form');
+Route::get('/physioNotes/physionotes_chart','rehab\PhysioNotesController@physionotes_chart');
+
 /// occuptherapy
 Route::get('/occupTherapy','rehab\OccupTherapyController@show');
 Route::get('/occupTherapy/table','rehab\OccupTherapyController@table');
