@@ -63,7 +63,7 @@ class JournalEntryDetailController extends defaultController
             $sqlln = DB::table('finance.gljnldtl')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
                         ->where('auditno','=',$auditno)
-                        ->count('lineno_');
+                        ->max('lineno_');
 
             $li=intval($sqlln)+1;
             
