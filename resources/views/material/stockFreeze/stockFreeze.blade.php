@@ -349,7 +349,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/material/stockFreeze/stockFreeze.js?v=1.2"></script>
+	<script src="js/material/stockFreeze/stockFreeze.js?v=1.3"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	
