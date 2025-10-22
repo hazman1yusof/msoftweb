@@ -1136,7 +1136,7 @@ table#jqGrid td{
 		</script>
 
 		<script src="js/myjs/till_part.js"></script>
-		<script src="js/finance/PointOfSales/PointOfSales.js?v=1.10"></script>
+		<script src="js/finance/PointOfSales/PointOfSales.js?v=1.11"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	

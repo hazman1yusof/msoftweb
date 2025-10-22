@@ -1549,7 +1549,9 @@ class PointOfSalesController extends defaultController
             }
             $payercode = $payercode->first();
             if($payercode->outamount == 0){
-                throw new \Exception("Outstanding already zero");
+                if($payercode->amount != 0){
+                    throw new \Exception("Outstanding already zero");
+                }
             }
 
             $dbacthdr_amount = $request->dbacthdr_amount;

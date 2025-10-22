@@ -637,7 +637,7 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 			},'json')
 		.fail(function (data) {
-			$("#saveDetailLabel").attr('disabled',false)
+			$("#saveDetailLabel").show();
 			myfail_msg.add_fail({
 				id:'response',
 				textfld:"",
@@ -650,7 +650,7 @@ $(document).ready(function () {
 			// $('#db_hdrtype').focus();
 			// $('.noti').text(data.responseText);
 		}).done(function (data) {
-			$("#saveDetailLabel").attr('disabled',false)
+			$("#saveDetailLabel").show();
 			unsaved = false;
 			hideatdialogForm(false);
 			
@@ -1638,7 +1638,7 @@ $(document).ready(function () {
 
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 	$("#saveDetailLabel").click(function (){
-		$("#saveDetailLabel").attr('disabled',true)
+		$("#saveDetailLabel").hide();
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
@@ -1655,6 +1655,7 @@ $(document).ready(function () {
 			mycurrency.formatOn();
 			unsaved = false;
 		} else {
+			$("#saveDetailLabel").hide();
 			mycurrency.formatOn();
 			dialog_deptcode.on();
 			dialog_billtypeSO.on();
