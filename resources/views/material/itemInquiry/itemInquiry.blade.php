@@ -295,7 +295,7 @@
 			
 		});
 	</script>
-	<script src="js/material/itemInquiry/itemInquiry.js?v=1.5"></script>
+	<script src="js/material/itemInquiry/itemInquiry.js?v=1.6"></script>
 	<script src="plugins/datatables/js/jquery.datatables.min.js"></script>
 
 @endsection

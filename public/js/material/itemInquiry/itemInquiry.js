@@ -438,6 +438,7 @@ $(document).ready(function () {
 		$.get( "./itemEnquiry/form?"+$.param(param), function( data ) {
 				
 		},'json').done(function(data) {
+    		$('#search').prop('disabled',false);
 			if(!$.isEmptyObject(data.rows)){
 				let accumamt = ret_parsefloat(openbalval);
 				let accumqty = parseInt(openbalqty);
@@ -561,7 +562,6 @@ $(document).ready(function () {
 		$.get( "util/get_value_default?"+$.param(param), function( data ) {
 					
 		},'json').done(function(data) {
-    		$('#search').prop('disabled',false);
 			if(!$.isEmptyObject(data.rows)){
 	            var accumqty=ret_parsefloat(data.rows[0].openbalqty);
 	            if(isNaN(accumqty)){
