@@ -52,7 +52,7 @@ div#fail_msg{
 @section('body')
 
 	<input id="deptcode" name="deptcode" type="hidden" value="{{Session::get('deptcode')}}">
-	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
+	<input id="scope" name="scope" type="hidden" value="{{$scope}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
 	 
@@ -112,13 +112,21 @@ div#fail_msg{
 
 					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
 
+					<?php 
+						if($scope == 'POSTER'){
+							$data_oper='posted';
+						}else if($scope == 'COUNTER'){
+							$data_oper='counted';
+						}
+					?>
+
 					<button 
 						type="button" 
 						class="btn btn-primary btn-sm" 
 						id="but_post_jq" 
-						data-oper="posted" 
+						data-oper="{{$data_oper}}" 
 						style="display: none;">
-						POST
+						{{strtoupper($data_oper)}}
 					</button>
 
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>

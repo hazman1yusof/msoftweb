@@ -24,7 +24,12 @@ class StockCountController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('material.stockCount.stockCount');
+        if(session('unit') == 'MRS'){
+            $scope = 'POSTER';
+        }else{
+            $scope = 'COUNTER';
+        }
+        return view('material.stockCount.stockCount',compact('scope'));
     }
 
     public function table(Request $request)
@@ -57,6 +62,8 @@ class StockCountController extends defaultController
                 return $this->edit($request);
             case 'del':
                 return $this->del($request);
+            case 'counted':
+                return $this->counted($request);
             case 'posted':
                 return $this->posted($request);
             case 'cancel':
@@ -269,6 +276,56 @@ class StockCountController extends defaultController
         }
     }
 
+    public function counted(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            foreach ($request->idno_array as $idno){
+
+                $phycntdate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d');
+                $phycnttime = Carbon::now("Asia/Kuala_Lumpur")->format('h:i:s');
+
+                //-- 1. transfer from ivtmphd to ivtxnhd --//
+                $phycnthd_obj = DB::table('material.phycnthd')
+                                ->where('idno','=',$idno)
+                                ->first();
+
+                if(strtoupper($phycnthd_obj->recstatus) != 'OPEN'){
+                    throw new \Exception("Stock Count need to be OPEN only");
+                }
+
+                DB::table('material.phycnthd')
+                        ->where('idno','=',$idno)
+                        ->update([
+                            'recstatus' => 'COUNTED',
+                            'phycntdate' => $phycntdate,
+                            'phycnttime' => $phycnttime,
+                            'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                            'upduser'  => session('username'),
+                        ]);
+
+                DB::table('material.phycntdt')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recno','=',$phycnthd_obj->recno)
+                        ->update([
+                            'phycntdate' => $phycntdate,
+                            'phycnttime' => $phycnttime,
+                            'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                            'upduser'  => session('username'),
+                        ]);
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            
+            return response($e, 500);
+        }
+    }
+
     public function posted(Request $request){
 
         DB::beginTransaction();
@@ -279,15 +336,16 @@ class StockCountController extends defaultController
 
                 $needheader = false;
                 $full_amount = 0;
-                $phycntdate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d');
-                $phycnttime = Carbon::now("Asia/Kuala_Lumpur")->format('h:i:s');
 
                 //-- 1. transfer from ivtmphd to ivtxnhd --//
                 $phycnthd_obj = DB::table('material.phycnthd')
                                 ->where('idno','=',$idno)
                                 ->first();
 
-                if($phycnthd_obj->recstatus == 'POSTED'){
+                $phycntdate = $phycnthd_obj->phycntdate;
+                $phycnttime = $phycnthd_obj->phycnttime;
+
+                if($phycnthd_obj->recstatus != 'COUNTED'){
                     throw new \Exception("Stock Count Already POSTED!");
                 }
 
@@ -390,7 +448,7 @@ class StockCountController extends defaultController
                             'amount' => $amount, 
                             'gstamount' => 0.00, 
                             'totamount' => $amount, 
-                            'trandate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'trandate' => $phycntdate,
                             // 'sndrcv' => $value->srcdept,
                         ]);
 
@@ -433,71 +491,6 @@ class StockCountController extends defaultController
 
                     //4. tambah expdate, kalu ada batchno
                         $this->betulkan_stockexp($value->itemcode,$QtyOnHand,$value->srcdept);
-                        // $expdate_obj = DB::table('material.stockexp')
-                        //     ->where('compcode','=',session('compcode'))
-                        //     ->where('unit','=',$unit_)
-                        //     ->where('Year','=',defaultController::toYear($phycntdate))
-                        //     ->where('DeptCode','=',$value->srcdept)
-                        //     ->where('ItemCode','=',$value->itemcode)
-                        //     ->where('UomCode','=',$value->uomcode)
-                        //     ->where('BatchNo','=',$value->batchno);
-
-                        // if($value->expdate == NULL){ //ni kalu expdate dia xde @ NULL
-                        //     $expdate_obj
-                        //         // ->where('expdate','=',$value->expdate)
-                        //         ->orderBy('expdate', 'asc');
-                        // }else{ // ni kalu expdate dia exist
-                        //      $expdate_obj
-                        //         ->where('expdate','<=',$value->expdate)
-                        //         ->orderBy('expdate', 'asc');
-                        // }
-
-                        // $expdate_first = $expdate_obj->first();
-
-                        // if($expdate_obj->exists()){
-                            
-                        //     // if($expdate_obj->count() > 1){
-                        //     //     $year_stockexp = defaultController::toYear($phycntdate);
-                        //     //     dd("lagi besr dari satu, year $year_stockexp , dept $value->srcdept , itemcode $value->itemcode , uomcode $value->uomcode , batchno $value->batchno , expdate $value->expdate");
-
-                        //     //     DB::table('material.stockexp')
-                        //     //         ->where('Year','=',defaultController::toYear($phycntdate))
-                        //     //         ->where('DeptCode','=',$value->srcdept)
-                        //     //         ->where('ItemCode','=',$value->itemcode)
-                        //     //         ->where('UomCode','=',$value->uomcode)
-                        //     //         ->where('BatchNo','=',$value->batchno)
-                        //     //         ->where('idno','!=',$expdate_first->idno)
-                        //     //         ->delete();
-                        //     // }
-
-                        //     $balqty_new = $expdate_first->balqty + floatval($vrqty) - $dspqty;
-
-                        //     DB::table('material.stockexp')
-                        //         ->where('compcode','=',session('compcode'))
-                        //         ->where('unit','=',$unit_)
-                        //         ->where('Year','=',defaultController::toYear($phycntdate))
-                        //         ->where('DeptCode','=',$value->srcdept)
-                        //         ->where('ItemCode','=',$value->itemcode)
-                        //         ->where('UomCode','=',$value->uomcode)
-                        //         ->where('BatchNo','=',$value->batchno)
-                        //         ->where('idno','=',$expdate_first->idno)
-                        //             ->update([
-                        //             'balqty' => $balqty_new
-                        //         ]);
-                        // }else{ 
-                        //     DB::table('material.stockexp')
-                        //         ->insert([
-                        //             'compcode' => session('compcode'),
-                        //             'unit' => $unit_,
-                        //             'Year' => defaultController::toYear($phycntdate),
-                        //             'DeptCode' => $value->srcdept,
-                        //             'ItemCode' => $value->itemcode,
-                        //             'UomCode' => $value->uomcode,
-                        //             'BatchNo' => $value->batchno,
-                        //             'expdate' => $value->expdate,
-                        //             'balqty' => $QtyOnHand
-                        //         ]);
-                        // }
 
                     }else{
                         //ni utk kalu xde stockloc
@@ -546,84 +539,84 @@ class StockCountController extends defaultController
                     //--- 7. posting GL ---//
 
                     //amik yearperiod
-                    $yearperiod = $this->getyearperiod($phycntdate);
+                    // $yearperiod = $this->getyearperiod($phycntdate);
      
-                    //1. buat gltran
-                    DB::table('finance.gltran')
-                        ->insert([
-                            'compcode' => session('compcode'),
-                            'adduser' => session('username'),
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'auditno' => $value->recno,
-                            'lineno_' => $value->lineno_,
-                            'source' => 'IV',
-                            'trantype' => 'PHYCNT',
-                            'reference' => $value->srcdept .' '. $value->recno,
-                            'description' => $value->srcdept,
-                            'postdate' => $phycntdate,
-                            'year' => $yearperiod->year,
-                            'period' => $yearperiod->period,
-                            'drcostcode' => $drccode,
-                            'dracc' => $draccno,
-                            'crcostcode' => $crccode,
-                            'cracc' => $craccno,
-                            'amount' => $amount,
-                            'idno' => $value->itemcode
-                        ]);
+                    // //1. buat gltran
+                    // DB::table('finance.gltran')
+                    //     ->insert([
+                    //         'compcode' => session('compcode'),
+                    //         'adduser' => session('username'),
+                    //         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    //         'auditno' => $value->recno,
+                    //         'lineno_' => $value->lineno_,
+                    //         'source' => 'IV',
+                    //         'trantype' => 'PHYCNT',
+                    //         'reference' => $value->srcdept .' '. $value->recno,
+                    //         'description' => $value->srcdept,
+                    //         'postdate' => $phycntdate,
+                    //         'year' => $yearperiod->year,
+                    //         'period' => $yearperiod->period,
+                    //         'drcostcode' => $drccode,
+                    //         'dracc' => $draccno,
+                    //         'crcostcode' => $crccode,
+                    //         'cracc' => $craccno,
+                    //         'amount' => $amount,
+                    //         'idno' => $value->itemcode
+                    //     ]);
 
-                    //2. check glmastdtl utk debit, kalu ada update kalu xde create
-                    if($this->isGltranExist($drccode,$draccno,$yearperiod->year,$yearperiod->period)){
-                        DB::table('finance.glmasdtl')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('costcode','=',$drccode)
-                            ->where('glaccount','=',$draccno)
-                            ->where('year','=',$yearperiod->year)
-                            ->update([
-                                'upduser' => session('username'),
-                                'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                                'actamount'.$yearperiod->period => $amount + $this->gltranAmount,
-                                'recstatus' => 'ACTIVE'
-                            ]);
-                    }else{
-                        DB::table('finance.glmasdtl')
-                            ->insert([
-                                'compcode' => session('compcode'),
-                                'costcode' => $drccode,
-                                'glaccount' => $draccno,
-                                'year' => $yearperiod->year,
-                                'actamount'.$yearperiod->period => $amount,
-                                'adduser' => session('username'),
-                                'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                                'recstatus' => 'ACTIVE'
-                            ]);
-                    }
+                    // //2. check glmastdtl utk debit, kalu ada update kalu xde create
+                    // if($this->isGltranExist($drccode,$draccno,$yearperiod->year,$yearperiod->period)){
+                    //     DB::table('finance.glmasdtl')
+                    //         ->where('compcode','=',session('compcode'))
+                    //         ->where('costcode','=',$drccode)
+                    //         ->where('glaccount','=',$draccno)
+                    //         ->where('year','=',$yearperiod->year)
+                    //         ->update([
+                    //             'upduser' => session('username'),
+                    //             'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    //             'actamount'.$yearperiod->period => $amount + $this->gltranAmount,
+                    //             'recstatus' => 'ACTIVE'
+                    //         ]);
+                    // }else{
+                    //     DB::table('finance.glmasdtl')
+                    //         ->insert([
+                    //             'compcode' => session('compcode'),
+                    //             'costcode' => $drccode,
+                    //             'glaccount' => $draccno,
+                    //             'year' => $yearperiod->year,
+                    //             'actamount'.$yearperiod->period => $amount,
+                    //             'adduser' => session('username'),
+                    //             'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    //             'recstatus' => 'ACTIVE'
+                    //         ]);
+                    // }
 
-                    //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
-                    if($this->isGltranExist($crccode,$craccno,$yearperiod->year,$yearperiod->period)){
-                        DB::table('finance.glmasdtl')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('costcode','=',$crccode)
-                            ->where('glaccount','=',$craccno)
-                            ->where('year','=',$yearperiod->year)
-                            ->update([
-                                'upduser' => session('username'),
-                                'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                                'actamount'.$yearperiod->period => $this->gltranAmount - $amount,
-                                'recstatus' => 'ACTIVE'
-                            ]);
-                    }else{
-                        DB::table('finance.glmasdtl')
-                            ->insert([
-                                'compcode' => session('compcode'),
-                                'costcode' => $crccode,
-                                'glaccount' => $craccno,
-                                'year' => $yearperiod->year,
-                                'actamount'.$yearperiod->period => -$amount,
-                                'adduser' => session('username'),
-                                'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                                'recstatus' => 'ACTIVE'
-                            ]);
-                    }
+                    // //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+                    // if($this->isGltranExist($crccode,$craccno,$yearperiod->year,$yearperiod->period)){
+                    //     DB::table('finance.glmasdtl')
+                    //         ->where('compcode','=',session('compcode'))
+                    //         ->where('costcode','=',$crccode)
+                    //         ->where('glaccount','=',$craccno)
+                    //         ->where('year','=',$yearperiod->year)
+                    //         ->update([
+                    //             'upduser' => session('username'),
+                    //             'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    //             'actamount'.$yearperiod->period => $this->gltranAmount - $amount,
+                    //             'recstatus' => 'ACTIVE'
+                    //         ]);
+                    // }else{
+                    //     DB::table('finance.glmasdtl')
+                    //         ->insert([
+                    //             'compcode' => session('compcode'),
+                    //             'costcode' => $crccode,
+                    //             'glaccount' => $craccno,
+                    //             'year' => $yearperiod->year,
+                    //             'actamount'.$yearperiod->period => -$amount,
+                    //             'adduser' => session('username'),
+                    //             'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    //             'recstatus' => 'ACTIVE'
+                    //         ]);
+                    // }
 
                     DB::table('material.stockloc')
                             ->where('compcode','=',session('compcode'))
@@ -679,8 +672,8 @@ class StockCountController extends defaultController
                             ->where('idno','=',$idno)
                             ->update([
                                 'recstatus' => 'POSTED',
-                                'phycntdate' => $phycntdate,
-                                'phycnttime' => $phycnttime,
+                                // 'phycntdate' => $phycntdate,
+                                // 'phycnttime' => $phycnttime,
                                 'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                                 'upduser'  => session('username'),
                             ]);
@@ -689,8 +682,8 @@ class StockCountController extends defaultController
                             ->where('compcode','=',session('compcode'))
                             ->where('recno','=',$phycnthd_obj->recno)
                             ->update([
-                                'phycntdate' => $phycntdate,
-                                'phycnttime' => $phycnttime,
+                                // 'phycntdate' => $phycntdate,
+                                // 'phycnttime' => $phycnttime,
                                 'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                                 'upduser'  => session('username'),
                             ]);
@@ -983,6 +976,7 @@ class StockCountController extends defaultController
                     })
             ->where('pdt.compcode','=',session('compcode'))
             ->where('pdt.recno','=',$recno)
+            ->orderBy('pdt.itemcode', 'ASC')
             ->get();
         
         $company = DB::table('sysdb.company')

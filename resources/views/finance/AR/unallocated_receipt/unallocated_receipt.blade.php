@@ -91,11 +91,11 @@
         </div>
     </div>
     <div class="col-md-6">
-        <form method="get" id="genreport" action="./ARAgeingDtl_Report/showExcel">
+        <form>
             <!-- <h7 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h7> -->
             
             <div style="margin: 0 auto;">
-                <div class="col-md-5" style="margin-left: 50px;">
+                <div class="col-md-6" style="">
                     <div class="form-group">
                         <div class="col-md-12">
                             <label class="control-label" for="Scol">As of Date</label>
@@ -113,7 +113,7 @@
                     </div>
                 </div>
                 
-                <div class="col-md-4" style="margin-left: 50px;padding-top: 30px;">
+                <div class="col-md-6" style="padding-top: 30px;">
                     <div class="panel panel-default" style="height: 87px;">
                         <div class="panel-body">
                             <fieldset>

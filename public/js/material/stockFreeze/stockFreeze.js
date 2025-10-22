@@ -312,6 +312,7 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 			
 		},'json').fail(function (data) {
+			$("#saveDetailLabel").show();
 			// alert(data.responseJSON.message);
 			myfail_msg.add_fail({
 				id:'response',
@@ -325,6 +326,7 @@ $(document).ready(function () {
 			$('#saveDetailLabel').removeClass('ui-state-disabled');
 		}).done(function (data) {
 			
+			$("#saveDetailLabel").show();
 			addmore_jqgrid2.state = false;
 			
 			if(selfoper=='add'){
@@ -659,6 +661,7 @@ $(document).ready(function () {
 
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 	$("#saveDetailLabel").click(function(){
+		$("#saveDetailLabel").hide();
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
@@ -671,6 +674,7 @@ $(document).ready(function () {
 			saveHeader("#formdata",oper,saveParam);
 			unsaved = false;
 		}else{
+			$("#saveDetailLabel").show();
 			mycurrency.formatOn();
 		}
 	});

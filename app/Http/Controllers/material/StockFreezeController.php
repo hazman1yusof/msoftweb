@@ -80,6 +80,9 @@ class StockFreezeController extends defaultController
             $unit = $dept->sector;
             $include_expiry = false;
 
+            $frzdate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d');
+            $frztime = Carbon::now("Asia/Kuala_Lumpur")->format('h:i:s');
+
             $table = DB::table("material.phycnthd");
 
             $array_insert = [
@@ -88,10 +91,10 @@ class StockFreezeController extends defaultController
                 'srcdept' => $request->srcdept,
                 'itemfrom' => $request->itemfrom,
                 'itemto' => $request->itemto,
-                'frzdate' => Carbon::now("Asia/Kuala_Lumpur"),//freeze date
-                'frztime' => Carbon::now("Asia/Kuala_Lumpur")->format('h:i:s'),//freeze time
-                'phycntdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'phycnttime' => Carbon::now("Asia/Kuala_Lumpur"),
+                'frzdate' => $frzdate,//freeze date
+                'frztime' => $frztime,//freeze time
+                // 'phycntdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                // 'phycnttime' => Carbon::now("Asia/Kuala_Lumpur"),
                 'respersonid' => session('username'), //freeze user
                 'remarks' => strtoupper($request->remarks),
                 'rackno' => $request->rackno,
@@ -124,7 +127,7 @@ class StockFreezeController extends defaultController
 
             $stockloc = $stockloc->join('material.product as p', function($join) use ($request,$unit){
                                 $join = $join->on('p.itemcode', '=', 's.itemcode');
-                                // $join = $join->on('p.uomcode', '=', 's.uomcode');
+                                $join = $join->on('p.uomcode', '=', 's.uomcode');
                                 $join = $join->where('p.compcode', '=', session('compcode'));
                                 $join = $join->where('p.unit', '=', $unit);
                                 $join = $join->where('p.groupcode', '=', 'STOCK');
@@ -146,23 +149,33 @@ class StockFreezeController extends defaultController
                 $stockloc = $stockloc->where('rackno',$request->rackno);
             }
 
-            if(empty($request->itemfrom)){
-                $itemfrom = '0';
+            if(empty($request->itemfrom) && empty($request->itemto)){
+                $bothempty = true;
             }else{
-                $itemfrom = $request->itemfrom.'%';
-            }
+                $bothempty = false;
+                if(empty($request->itemfrom)){
+                    $itemfrom = '0';
+                }else{
+                    $itemfrom = $request->itemfrom.'%';
+                }
 
-            if(empty($request->itemto)){
-                $itemto = 'Z';
-            }else{
-                $itemto = $request->itemto.'%';
+                if(empty($request->itemto)){
+                    $itemto = 'Z';
+                }else{
+                    $itemto = $request->itemto.'%';
+                }
             }
 
             $stockloc =  $stockloc
                             ->where('s.compcode',session('compcode'))
                             ->where('s.unit',$unit)
-                            ->where('s.deptcode',$request->srcdept)
-                            ->whereBetween('s.itemcode',[$itemfrom,$itemto])
+                            ->where('s.deptcode',$request->srcdept);
+
+            if(!$bothempty){
+                $stockloc = $stockloc->whereBetween('s.itemcode',[$itemfrom,$itemto]);
+            }
+
+            $stockloc = $stockloc
                             ->where('s.year', '=', Carbon::now("Asia/Kuala_Lumpur")->format('Y'))
                             ->orderBy('s.itemcode', 'DESC')
                             ->get();
@@ -187,8 +200,8 @@ class StockFreezeController extends defaultController
                     ->insert([
                         'compcode' => session('compcode'),
                         'srcdept' => $phycnthd->srcdept,
-                        'phycntdate' => $phycnthd->phycntdate,
-                        'phycnttime' => $phycnthd->phycnttime,
+                        // 'phycntdate' => $phycnthd->phycntdate,
+                        // 'phycnttime' => $phycnthd->phycnttime,
                         'lineno_' => $key,
                         'itemcode' => $value->itemcode,
                         'uomcode' => $value->uomcode,
@@ -199,8 +212,8 @@ class StockFreezeController extends defaultController
                         'phyqty' => $qtyonhand,
                         'recno' => $phycnthd->recno,
                         'expdate' => $expdate,
-                        'frzdate' => $phycnthd->frzdate,
-                        'frztime' => $phycnthd->frztime,
+                        'frzdate' => $frzdate,
+                        'frztime' => $frztime,
                         'batchno' => $batchno,
                     ]);
 
@@ -222,8 +235,8 @@ class StockFreezeController extends defaultController
             $responce->docno = $request_no;
             $responce->recno = $recno;
             $responce->idno = $idno;
-            $responce->frzdate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d');
-            $responce->frztime = Carbon::now("Asia/Kuala_Lumpur")->format('h:i:s');
+            $responce->frzdate = $frzdate;
+            $responce->frztime = $frztime;
             $responce->respersonid = session('username');
             $responce->adduser = session('username');
             $responce->adddate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d h:i:s');

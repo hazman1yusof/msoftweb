@@ -100,18 +100,19 @@ class unallocated_receiptController extends defaultController
     
     public function showExcel(Request $request){
 
-        $filename = 'Unallocated_receipt '.Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d g:i A').'.xlsx';
 
         if($request->ttype == 'RC'){
             $page = 'unallocated_receipt';
+            $filename = 'Unallocated_receipt '.Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d g:i A').'.xlsx';
         }else{
             $page = 'unallocated_deposit';
+            $filename = 'Unallocated_deposit '.Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d g:i A').'.xlsx';
         }
 
         $bytes = random_bytes(20);
         $process = bin2hex($bytes).'.xlsx';
 
-        (new Unallocated_receiptExport($process,$page,$filename,$request->date,$request->unit))->store($process, \config('get_config.ATTACHMENT_UPLOAD'));
+        (new Unallocated_receiptExport($process,$page,$filename,$request->date,$request->unit,$request->ttype))->store($process, \config('get_config.ATTACHMENT_UPLOAD'));
 
     }
 }

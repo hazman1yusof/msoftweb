@@ -8686,7 +8686,12 @@ class TestController extends defaultController
 
             if(!$this->floatEquals($obj->outamount,$osamt)){
                 $obj->osamt_alloc = $osamt;
-                array_push($array, $obj);
+                DB::table('finance.apacthdr as ap')
+                    ->where('compcode',session('compcode'))
+                    ->where('idno',$obj->idno)
+                    ->update([
+                        'outamount' => $osamt
+                    ]);
             }
         }
     }

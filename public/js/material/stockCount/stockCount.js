@@ -849,8 +849,15 @@ $(document).ready(function () {
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
-		if(options.gid == "jqGrid" && rowObject.recstatus == 'OPEN'){
-			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject.idno+"' data-idno='"+rowObject.idno+"' data-rowid='"+options.rowId+"'>";
+		let scope = $('#scope').val();
+		if(options.gid == "jqGrid"){
+			if(scope=='COUNTER' && rowObject.recstatus == 'OPEN'){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject.idno+"' data-idno='"+rowObject.idno+"' data-rowid='"+options.rowId+"'>";
+			}else if(scope=='POSTER' && rowObject.recstatus == 'COUNTED'){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject.idno+"' data-idno='"+rowObject.idno+"' data-rowid='"+options.rowId+"'>";
+			}else{
+				return ' ';
+			}
 		}else if(options.gid != "jqGrid" && rowObject.recstatus == 'OPEN'){
 			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject.idno+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
 		}else{

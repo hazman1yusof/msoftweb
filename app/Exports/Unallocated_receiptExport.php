@@ -34,7 +34,7 @@ class Unallocated_receiptExport implements FromView, ShouldQueue, WithEvents, Wi
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($process,$page,$filename,$date,$unit)
+    public function __construct($process,$page,$filename,$date,$unit,$ttype)
     {
         
         $this->process = $process;
@@ -42,6 +42,7 @@ class Unallocated_receiptExport implements FromView, ShouldQueue, WithEvents, Wi
         $this->page = $page;
         $this->date = Carbon::parse($date)->format('Y-m-d');
         $this->unit = $unit;
+        $this->ttype = $ttype;
 
         $this->comp = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
@@ -75,6 +76,7 @@ class Unallocated_receiptExport implements FromView, ShouldQueue, WithEvents, Wi
 
         $date = $this->date;
         $unit = $this->unit;
+        $ttype = $this->ttype;
 
         $dbacthdr = DB::table('debtor.dbacthdr as db')
                         ->select('db.idno','db.compcode','db.source','db.trantype','db.auditno','db.lineno_','db.amount','db.outamount','db.recstatus','db.entrydate','db.entrytime','db.entryuser','db.reference','db.recptno','db.paymode','db.tillcode','db.tillno','db.debtortype','db.debtorcode','db.payercode','db.billdebtor','db.remark','db.mrn','db.episno','db.authno','db.expdate','db.adddate','db.adduser','db.upddate','db.upduser','db.deldate','db.deluser','db.epistype','db.cbflag','db.conversion','db.payername','db.hdrtype','db.currency','db.rate','db.unit','db.invno','db.paytype','db.bankcharges','db.RCCASHbalance','db.RCOSbalance','db.RCFinalbalance','db.PymtDescription','db.orderno','db.ponum','db.podate','db.termdays','db.termmode','db.deptcode','db.posteddate','db.approvedby','db.approveddate','db.approved_remark','db.unallocated','db.datesend','db.quoteno','db.preparedby','db.prepareddate','db.cancelby','db.canceldate','db.cancelled_remark','db.pointofsales','db.doctorcode','db.LHDNStatus','db.LHDNSubID','db.LHDNCodeNo','db.LHDNDocID','db.LHDNSubBy','db.category','db.categorydept','dm.name as dm_name')
@@ -84,7 +86,7 @@ class Unallocated_receiptExport implements FromView, ShouldQueue, WithEvents, Wi
                         })
                         ->where('db.compcode', '=', session('compcode'))
                         ->where('db.source', 'PB')
-                        ->where('db.trantype', 'RC')
+                        ->where('db.trantype', $ttype)
                         ->where('db.debtorcode','<>', 'ND0001')
                         ->where('db.recstatus','POSTED')
                         ->whereDate('db.posteddate','<=',$date)
