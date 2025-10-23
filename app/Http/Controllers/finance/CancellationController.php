@@ -624,6 +624,28 @@ class CancellationController extends defaultController
                     'canceldate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'cancelled_remark' => $request->cancelled_remark
                 ]);
+
+            DB::table('finance.cbtran')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=',$dbacthdr->source)
+                ->where('trantype','=',$dbacthdr->trantype)
+                ->where('auditno','=',$dbacthdr->auditno)
+                ->update([
+                    'compcode' => 'xx',
+                    'upduser' => session('username'), 
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                ]);
+
+            DB::table('finance.gltran')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=',$dbacthdr->source)
+                ->where('trantype','=',$dbacthdr->trantype)
+                ->where('auditno','=',$dbacthdr->auditno)
+                ->update([
+                    'compcode' => 'xx',
+                    'upduser' => session('username'), 
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                ]);
             
             DB::commit();
             
