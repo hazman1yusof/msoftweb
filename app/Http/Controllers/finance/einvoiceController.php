@@ -147,8 +147,8 @@ class einvoiceController extends defaultController
                 $table = $table->orderBy($request->sidx, $request->sord);
             }else{
                 foreach ($pieces as $key => $value) {
-                    $value_ = substr_replace($value,"db.",0,strpos($value,"_")+1);
-                    $pieces_inside = explode(" ", $value_);
+                    // $value_ = substr_replace($value,"db.",0,strpos($value,"_")+1);
+                    $pieces_inside = explode(" ", $value);
                     $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
                 }
             }
