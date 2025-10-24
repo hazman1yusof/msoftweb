@@ -116,7 +116,8 @@ class PatmastController extends defaultController
         }
         
         
-        if(\config('get_config.ISDEMO' != null )){
+        $ISDEMO = \config('get_config.ISDEMO');
+        if($ISDEMO != null ){
 
             return view('hisdb.pat_mgmt.landing2',$data_send);
         }else{
