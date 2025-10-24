@@ -356,10 +356,10 @@ class PatmastController extends defaultController
                 }
             }
 
-            $table_patm = $table_patm
-                        ->where('Active','=','1')
-                        ->where('compcode','=',session('compcode'))
-                        ->whereBetween('MRN',$mrn_range);
+            // $table_patm = $table_patm
+            //             ->where('Active','=','1')
+            //             ->where('compcode','=',session('compcode'))
+            //             ->whereBetween('MRN',$mrn_range);
 
 
             if(!empty($request->sort)){
