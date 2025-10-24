@@ -4,6 +4,6 @@ return [
   'ATTACHMENT_UPLOAD' => env('ATTACHMENT_UPLOAD'),
   'NOT_USE_MAIL' => env('NOT_USE_MAIL'),
   'EXEC_PATH' => env('EXEC_PATH'),
-  'PYTHON_PATH' => env('PYTHON_PATH')
+  'PYTHON_PATH' => env('PYTHON_PATH'),
   'ISDEMO' => env('ISDEMO')
 ];

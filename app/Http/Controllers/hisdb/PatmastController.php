@@ -385,30 +385,30 @@ class PatmastController extends defaultController
             //////////paginate/////////
             $paginate = $table_patm->paginate($request->rowCount);
 
-            foreach ($paginate->items() as $key => $value) {
-                // if($value->PatStatus==1){
-                //     // $queue = DB::table('hisdb.queue')
-                //     //             ->select(['queue.mrn','doctor.doctorname','queue.epistycode'])
-                //     //             ->leftJoin('hisdb.doctor','doctor.doctorcode','=','queue.admdoctor')
-                //     //             ->where('queue.mrn','=',$value->MRN)
-                //     //             ->where('queue.episno','=',$value->Episno)
-                //     //             ->where('queue.deptcode','=',"ALL");
-                //     $episode = DB::table('hisdb.episode')
-                //                 ->select(['episode.mrn','doctor.doctorname','episode.epistycode'])
-                //                 ->leftJoin('hisdb.doctor','doctor.doctorcode','=','episode.admdoctor')
-                //                 ->where('episode.mrn','=',$value->MRN)
-                //                 ->where('episode.episno','=',$value->Episno)
-                //                 ->where('episode.compcode','=',session('compcode'));
+            // foreach ($paginate->items() as $key => $value) {
+            //     // if($value->PatStatus==1){
+            //     //     // $queue = DB::table('hisdb.queue')
+            //     //     //             ->select(['queue.mrn','doctor.doctorname','queue.epistycode'])
+            //     //     //             ->leftJoin('hisdb.doctor','doctor.doctorcode','=','queue.admdoctor')
+            //     //     //             ->where('queue.mrn','=',$value->MRN)
+            //     //     //             ->where('queue.episno','=',$value->Episno)
+            //     //     //             ->where('queue.deptcode','=',"ALL");
+            //     //     $episode = DB::table('hisdb.episode')
+            //     //                 ->select(['episode.mrn','doctor.doctorname','episode.epistycode'])
+            //     //                 ->leftJoin('hisdb.doctor','doctor.doctorcode','=','episode.admdoctor')
+            //     //                 ->where('episode.mrn','=',$value->MRN)
+            //     //                 ->where('episode.episno','=',$value->Episno)
+            //     //                 ->where('episode.compcode','=',session('compcode'));
 
 
-                //     if($episode->exists()){
-                //         $episode = $episode->first();
-                //     // dump($episode->epistycode);
-                //         $value->q_epistycode = $episode->epistycode;
-                //         $value->q_doctorname = $episode->doctorname;
-                //     }
-                // }
-            }
+            //     //     if($episode->exists()){
+            //     //         $episode = $episode->first();
+            //     //     // dump($episode->epistycode);
+            //     //         $value->q_epistycode = $episode->epistycode;
+            //     //         $value->q_doctorname = $episode->doctorname;
+            //     //     }
+            //     // }
+            // }
 
             $responce = new stdClass();
             $responce->current = $paginate->currentPage();

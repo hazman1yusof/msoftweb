@@ -1320,6 +1320,7 @@ Route::get('/pat_mast','hisdb\PatmastController@show');
 Route::get('/pat_mast/get_entry','hisdb\PatmastController@get_entry');
 Route::get('/pat_mast/table','hisdb\PatmastController@table');
 Route::post('/pat_mast/post_entry','hisdb\PatmastController@post_entry');
+Route::get('/pat_mast/post_entry','hisdb\PatmastController@post_entry');
 Route::post('/pat_mast/save_patient','hisdb\PatmastController@save_patient');
 Route::post('/pat_mast/save_episode','hisdb\PatmastController@save_episode');
 Route::post('/pat_mast/save_adm','hisdb\PatmastController@save_adm');

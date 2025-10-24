@@ -29,6 +29,7 @@ $(document).ready(function() {
         columnSelection: false,
         ajax: true,
         ajaxSettings: {
+            method: "GET",
             cache: false
         },
         multiSelect: false,
@@ -142,6 +143,7 @@ $(document).ready(function() {
             }
         }
     }).on("loaded.rs.jquery.bootgrid", function(){
+        console.log('loaded');
         counter = 0;
 
         if(!$("#Scol").length){ //tambah search col kat atas utk search by field
