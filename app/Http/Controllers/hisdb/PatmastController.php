@@ -294,25 +294,25 @@ class PatmastController extends defaultController
                 //     }
                 // }
 
-                $episode = DB::table('hisdb.episode')
-                            ->select('newcaseP','newcaseNP','followupP','followupNP','billtype','regdept')
-                            ->where('compcode',session('compcode'))
-                            ->where('mrn','=',$value->MRN)
-                            ->where('episno','=',$value->Episno);
+                // $episode = DB::table('hisdb.episode')
+                //             ->select('newcaseP','newcaseNP','followupP','followupNP','billtype','regdept')
+                //             ->where('compcode',session('compcode'))
+                //             ->where('mrn','=',$value->MRN)
+                //             ->where('episno','=',$value->Episno);
 
-                if($episode->exists()){
-                    $totamount = $this->get_ordcom_totamount($value->MRN,$value->Episno);
-                    $episode = $episode->first();
-                    if($episode->newcaseP == 1 || $episode->followupP == 1){
-                        $value->pregnant = 1;
-                    }else{
-                        $value->pregnant = 0;
-                    }
+                // if($episode->exists()){
+                //     $totamount = $this->get_ordcom_totamount($value->MRN,$value->Episno);
+                //     $episode = $episode->first();
+                //     if($episode->newcaseP == 1 || $episode->followupP == 1){
+                //         $value->pregnant = 1;
+                //     }else{
+                //         $value->pregnant = 0;
+                //     }
 
-                    $value->billtype = $episode->billtype;
-                    $value->regdept = $episode->regdept;
-                    $value->totamount = $totamount;
-                }
+                //     $value->billtype = $episode->billtype;
+                //     $value->regdept = $episode->regdept;
+                //     $value->totamount = $totamount;
+                // }
 
 
             }
