@@ -145,7 +145,7 @@ class PatmastController extends defaultController
 
     public function post_entry(Request $request){  //get_patient_list 
 
-        $mrn_range = $this->mrn_range($request);
+        // $mrn_range = $this->mrn_range($request);
 
         if($request->curpat == 'true'){
 
@@ -177,9 +177,9 @@ class PatmastController extends defaultController
 
             $table_patm = $table_patm->join('hisdb.pat_mast', function($join) use ($mrn_range){
                                 $join = $join->where('pat_mast.compcode','=',session('compcode'))
-                                                ->on('queue.mrn', '=', 'pat_mast.MRN')
-                                                ->where('pat_mast.Active','=','1')
-                                                ->whereBetween('pat_mast.MRN',$mrn_range);
+                                                ->on('queue.mrn', '=', 'pat_mast.MRN');
+                                                // ->where('pat_mast.Active','=','1')
+                                                // ->whereBetween('pat_mast.MRN',$mrn_range);
                                             
                             })
                             // ->leftJoin('hisdb.epispayer', function($join) use ($request){
