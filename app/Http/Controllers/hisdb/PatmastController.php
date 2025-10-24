@@ -163,9 +163,9 @@ class PatmastController extends defaultController
 
             $sel_epistycode = $request->epistycode;
 
-            $select_array = ['pat_mast.idno','pat_mast.CompCode','pat_mast.MRN','queue.Episno','pat_mast.Name','pat_mast.Call_Name','pat_mast.addtype','pat_mast.Address1','pat_mast.Address2','pat_mast.Address3','pat_mast.Postcode','pat_mast.citycode','pat_mast.AreaCode','pat_mast.StateCode','pat_mast.CountryCode','pat_mast.telh','pat_mast.telhp','pat_mast.telo','pat_mast.Tel_O_Ext','pat_mast.ptel','pat_mast.ptel_hp','pat_mast.ID_Type','pat_mast.idnumber','pat_mast.Newic','pat_mast.Oldic','pat_mast.icolor','pat_mast.Sex','pat_mast.DOB','pat_mast.Religion','pat_mast.AllergyCode1','pat_mast.AllergyCode2','pat_mast.Century','pat_mast.Citizencode','pat_mast.OccupCode','pat_mast.Staffid','pat_mast.MaritalCode','pat_mast.LanguageCode','pat_mast.TitleCode','pat_mast.RaceCode','pat_mast.bloodgrp','pat_mast.Accum_chg','pat_mast.Accum_Paid','pat_mast.first_visit_date','pat_mast.last_visit_date','pat_mast.last_episno','pat_mast.PatStatus','pat_mast.Confidential','pat_mast.Active','pat_mast.FirstIpEpisNo','pat_mast.FirstOpEpisNo','pat_mast.AddUser','pat_mast.AddDate','pat_mast.Lastupdate','pat_mast.LastUser','pat_mast.OffAdd1','pat_mast.OffAdd2','pat_mast.OffAdd3','pat_mast.OffPostcode','pat_mast.MRFolder','pat_mast.MRLoc','pat_mast.MRActive','pat_mast.OldMrn','pat_mast.NewMrn','pat_mast.Remarks','pat_mast.RelateCode','pat_mast.ChildNo','pat_mast.CorpComp','pat_mast.Email','pat_mast.Email_official','pat_mast.CurrentEpis','pat_mast.NameSndx','pat_mast.BirthPlace','pat_mast.TngID','pat_mast.PatientImage','pat_mast.pAdd1','pat_mast.pAdd2','pat_mast.pAdd3','pat_mast.pPostCode','pat_mast.DeptCode','pat_mast.DeceasedDate','pat_mast.PatientCat','pat_mast.PatType','pat_mast.PatClass','pat_mast.upduser','pat_mast.upddate','pat_mast.recstatus','pat_mast.loginid','pat_mast.pat_category','pat_mast.idnumber_exp','pat_mast.PatientImage','queue.epistycode as q_epistycode', 'queue.reg_date', 'queue.QueueNo','episode.bed as bednum','pat_mast.iPesakit','doctor.doctorname as q_doctorname'];
+            $select_array = ['pat_mast.idno','pat_mast.CompCode','pat_mast.MRN','queue.Episno','pat_mast.Name','pat_mast.Call_Name','pat_mast.addtype','pat_mast.Address1','pat_mast.Address2','pat_mast.Address3','pat_mast.Postcode','pat_mast.citycode','pat_mast.AreaCode','pat_mast.StateCode','pat_mast.CountryCode','pat_mast.telh','pat_mast.telhp','pat_mast.telo','pat_mast.Tel_O_Ext','pat_mast.ptel','pat_mast.ptel_hp','pat_mast.ID_Type','pat_mast.idnumber','pat_mast.Newic','pat_mast.Oldic','pat_mast.icolor','pat_mast.Sex','pat_mast.DOB','pat_mast.Religion','pat_mast.AllergyCode1','pat_mast.AllergyCode2','pat_mast.Century','pat_mast.Citizencode','pat_mast.OccupCode','pat_mast.Staffid','pat_mast.MaritalCode','pat_mast.LanguageCode','pat_mast.TitleCode','pat_mast.RaceCode','pat_mast.bloodgrp','pat_mast.Accum_chg','pat_mast.Accum_Paid','pat_mast.first_visit_date','pat_mast.last_visit_date','pat_mast.last_episno','pat_mast.PatStatus','pat_mast.Confidential','pat_mast.Active','pat_mast.FirstIpEpisNo','pat_mast.FirstOpEpisNo','pat_mast.AddUser','pat_mast.AddDate','pat_mast.Lastupdate','pat_mast.LastUser','pat_mast.OffAdd1','pat_mast.OffAdd2','pat_mast.OffAdd3','pat_mast.OffPostcode','pat_mast.MRFolder','pat_mast.MRLoc','pat_mast.MRActive','pat_mast.OldMrn','pat_mast.NewMrn','pat_mast.Remarks','pat_mast.RelateCode','pat_mast.ChildNo','pat_mast.CorpComp','pat_mast.Email','pat_mast.Email_official','pat_mast.CurrentEpis','pat_mast.NameSndx','pat_mast.BirthPlace','pat_mast.TngID','pat_mast.PatientImage','pat_mast.pAdd1','pat_mast.pAdd2','pat_mast.pAdd3','pat_mast.pPostCode','pat_mast.DeptCode','pat_mast.DeceasedDate','pat_mast.PatientCat','pat_mast.PatType','pat_mast.PatClass','pat_mast.upduser','pat_mast.upddate','pat_mast.recstatus','pat_mast.loginid','pat_mast.pat_category','pat_mast.idnumber_exp','pat_mast.PatientImage','queue.epistycode as q_epistycode', 'queue.reg_date', 'queue.QueueNo','episode.bed as bednum','pat_mast.iPesakit','doctor.doctorname as q_doctorname','epispayer.payercode','debtormast.name as payername'];
 
-            // ,'bed.ward as ward','epispayer.payercode','debtormast.name as payername'
+            // ,'bed.ward as ward'
 
             if($sel_epistycode == 'IP'){
                 // array_push($select_array, 'bedalloc.ward','bedalloc.bednum');
@@ -194,25 +194,25 @@ class PatmastController extends defaultController
                                                 // ->whereBetween('pat_mast.MRN',$mrn_range);
                                             
                             })
-                            // ->leftJoin('hisdb.epispayer', function($join) use ($request){
-                            //     $join = $join->on('epispayer.mrn', '=', 'pat_mast.MRN')
-                            //                     ->on('epispayer.episno','=','pat_mast.Episno')
-                            //                     ->where('epispayer.compcode','=',session('compcode'))
-                            //                     ->where('epispayer.lineno','=','1');
-                            // })
+                            ->leftJoin('hisdb.epispayer', function($join) use ($request){
+                                $join = $join->on('epispayer.mrn', '=', 'pat_mast.MRN')
+                                                ->on('epispayer.episno','=','pat_mast.Episno')
+                                                ->where('epispayer.compcode','=',session('compcode'))
+                                                ->where('epispayer.lineno','=','1');
+                            })
                             ->leftJoin('hisdb.episode', function($join) use ($request){
                                 $join = $join->on('episode.mrn', '=', 'queue.MRN')
                                                 ->on('episode.episno','=','queue.Episno')
                                                 ->where('episode.compcode','=',session('compcode'));
-                            });
+                            })
                             // ->leftJoin('hisdb.bed', function($join) use ($request){
                             //     $join = $join->where('bed.compcode','=',session('compcode'))
                             //                     ->on('bed.bednum','=','episode.bed');
                             // })
-                            // ->leftJoin('debtor.debtormast', function($join) use ($request){
-                            //     $join = $join->on('epispayer.payercode', '=', 'debtormast.debtorcode')
-                            //                     ->where('debtormast.compcode','=',session('compcode'));
-                            // });
+                            ->leftJoin('debtor.debtormast', function($join) use ($request){
+                                $join = $join->on('epispayer.payercode', '=', 'debtormast.debtorcode')
+                                                ->where('debtormast.compcode','=',session('compcode'));
+                            });
                             // ->leftJoin('hisdb.racecode', function($join) use ($request){
                             //     $join = $join->on('racecode.Code', '=', 'pat_mast.RaceCode')
                             //                     ->where('racecode.compcode','=',session('compcode'));
