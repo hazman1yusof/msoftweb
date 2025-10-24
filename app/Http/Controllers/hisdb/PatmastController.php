@@ -162,10 +162,11 @@ class PatmastController extends defaultController
 
             $table_patm = DB::table('hisdb.queue') //ambil dari patmast balik
             // ->select($select_array)
-                                ->where('queue.compcode','=','xx')
+                                ->where('queue.compcode','=',session('compcode'))
                                 ->where('queue.billflag','=',0)
                                 ->where('queue.deptcode','=',"ALL")
-                                ->whereIn('queue.epistycode', ['IP','DP']);
+                                ->where('queue.epistycode','=',"IP")
+                                // ->whereIn('queue.epistycode', ['IP','DP']);
 
             // if($sel_epistycode == 'OP'){
             //     $table_patm = $table_patm->whereIn('queue.epistycode', ['OP','OTC']);
@@ -276,36 +277,36 @@ class PatmastController extends defaultController
             $paginate_patm = $table_patm->paginate($request->rows);
 
 
-            // foreach ($paginate_patm->items() as $key => $value) {
-            //     // foreach ($paginate->items() as $key2 => $value2) {
-            //     //     if($value->MRN == $value2->mrn){
-            //     //         $value->q_doctorname = $value2->doctorname;
-            //     //         $value->q_epistycode = $value2->epistycode;
-            //     //     }
-            //     // }
+            foreach ($paginate_patm->items() as $key => $value) {
+                // foreach ($paginate->items() as $key2 => $value2) {
+                //     if($value->MRN == $value2->mrn){
+                //         $value->q_doctorname = $value2->doctorname;
+                //         $value->q_epistycode = $value2->epistycode;
+                //     }
+                // }
 
-            //     $episode = DB::table('hisdb.episode')
-            //                 ->select('newcaseP','newcaseNP','followupP','followupNP','billtype','regdept')
-            //                 ->where('compcode',session('compcode'))
-            //                 ->where('mrn','=',$value->MRN)
-            //                 ->where('episno','=',$value->Episno);
+                $episode = DB::table('hisdb.episode')
+                            ->select('newcaseP','newcaseNP','followupP','followupNP','billtype','regdept')
+                            ->where('compcode',session('compcode'))
+                            ->where('mrn','=',$value->MRN)
+                            ->where('episno','=',$value->Episno);
 
-            //     if($episode->exists()){
-            //         $totamount = $this->get_ordcom_totamount($value->MRN,$value->Episno);
-            //         $episode = $episode->first();
-            //         if($episode->newcaseP == 1 || $episode->followupP == 1){
-            //             $value->pregnant = 1;
-            //         }else{
-            //             $value->pregnant = 0;
-            //         }
+                if($episode->exists()){
+                    $totamount = $this->get_ordcom_totamount($value->MRN,$value->Episno);
+                    $episode = $episode->first();
+                    if($episode->newcaseP == 1 || $episode->followupP == 1){
+                        $value->pregnant = 1;
+                    }else{
+                        $value->pregnant = 0;
+                    }
 
-            //         $value->billtype = $episode->billtype;
-            //         $value->regdept = $episode->regdept;
-            //         $value->totamount = $totamount;
-            //     }
+                    $value->billtype = $episode->billtype;
+                    $value->regdept = $episode->regdept;
+                    $value->totamount = $totamount;
+                }
 
 
-            // }
+            }
 
             $responce = new stdClass();
             $responce->current = $paginate_patm->currentPage();
