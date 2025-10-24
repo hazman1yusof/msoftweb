@@ -164,13 +164,14 @@ class PatmastController extends defaultController
             // ->select($select_array)
                                 ->where('queue.compcode','=',session('compcode'))
                                 ->where('queue.billflag','=',0)
-                                ->where('queue.deptcode','=',"ALL");
+                                ->where('queue.deptcode','=',"ALL")
+                                ->whereIn('queue.epistycode', ['IP','DP']);
 
-            if($sel_epistycode == 'OP'){
-                $table_patm = $table_patm->whereIn('queue.epistycode', ['OP','OTC']);
-            }else{
-                $table_patm = $table_patm->whereIn('queue.epistycode', ['IP','DP']);
-            }
+            // if($sel_epistycode == 'OP'){
+            //     $table_patm = $table_patm->whereIn('queue.epistycode', ['OP','OTC']);
+            // }else{
+            //     $table_patm = $table_patm->whereIn('queue.epistycode', ['IP','DP']);
+            // }
                             
 
 
