@@ -160,19 +160,26 @@ class PatmastController extends defaultController
                 // array_push($select_array, 'bedalloc.ward','bedalloc.bednum');
             }
 
-            $table_patm = DB::table('hisdb.pat_mast') //ambil dari patmast balik
-                            // ->select($select_array)
-                            ->join('hisdb.queue', function($join) use ($request,$sel_epistycode){
-                                $join = $join->on('queue.mrn', '=', 'pat_mast.MRN')
-                                            ->where('queue.billflag','=',0)
-                                            ->where('queue.compcode','=',session('compcode'))
-                                            ->where('queue.deptcode','=',"ALL");
+            $table_patm = DB::table('hisdb.queue') //ambil dari patmast balik
+            // ->select($select_array)
+                                ->where('queue.compcode','=',session('compcode'))
+                                ->where('queue.billflag','=',0)
+                                ->where('queue.deptcode','=',"ALL");
 
-                                if($sel_epistycode == 'OP'){
-                                    $join = $join->whereIn('queue.epistycode', ['OP','OTC']);
-                                }else{
-                                    $join = $join->whereIn('queue.epistycode', ['IP','DP']);
-                                }
+            if($sel_epistycode == 'OP'){
+                $table_patm = $table_patm->whereIn('queue.epistycode', ['OP','OTC']);
+            }else{
+                $table_patm = $table_patm->whereIn('queue.epistycode', ['IP','DP']);
+            }
+                            
+
+
+            $table_patm = $table_patm->join('hisdb.pat_mast', function($join) use ($mrn_range){
+                                $join = $join->where('pat_mast.compcode','=',session('compcode'))
+                                                ->on('queue.mrn', '=', 'pat_mast.MRN')
+                                                ->where('pat_mast.Active','=','1')
+                                                ->whereBetween('pat_mast.MRN',$mrn_range);
+                                            
                             })
                             // ->leftJoin('hisdb.epispayer', function($join) use ($request){
                             //     $join = $join->on('epispayer.mrn', '=', 'pat_mast.MRN')
@@ -250,11 +257,6 @@ class PatmastController extends defaultController
                             // ->leftJoin('hisdb.occupation','occupation.occupcode','=','pat_mast.OccupCode')
                             // ->leftJoin('hisdb.citizen','citizen.Code','=','pat_mast.Citizencode')
                             // ->leftJoin('hisdb.areacode','areacode.areacode','=','pat_mast.AreaCode')
-            $table_patm = $table_patm
-                            ->where('pat_mast.compcode','=',session('compcode'))
-                            ->where('pat_mast.Active','=','1')
-                            // ->whereIn('pat_mast.mrn', $arr_mrn)
-                            ->whereBetween('pat_mast.MRN',$mrn_range);
             // dump($table_patm->get());
             // dd($table_patm->paginate());
 
@@ -373,28 +375,28 @@ class PatmastController extends defaultController
             $paginate = $table_patm->paginate($request->rowCount);
 
             foreach ($paginate->items() as $key => $value) {
-                if($value->PatStatus==1){
-                    // $queue = DB::table('hisdb.queue')
-                    //             ->select(['queue.mrn','doctor.doctorname','queue.epistycode'])
-                    //             ->leftJoin('hisdb.doctor','doctor.doctorcode','=','queue.admdoctor')
-                    //             ->where('queue.mrn','=',$value->MRN)
-                    //             ->where('queue.episno','=',$value->Episno)
-                    //             ->where('queue.deptcode','=',"ALL");
-                    $episode = DB::table('hisdb.episode')
-                                ->select(['episode.mrn','doctor.doctorname','episode.epistycode'])
-                                ->leftJoin('hisdb.doctor','doctor.doctorcode','=','episode.admdoctor')
-                                ->where('episode.mrn','=',$value->MRN)
-                                ->where('episode.episno','=',$value->Episno)
-                                ->where('episode.compcode','=',session('compcode'));
+                // if($value->PatStatus==1){
+                //     // $queue = DB::table('hisdb.queue')
+                //     //             ->select(['queue.mrn','doctor.doctorname','queue.epistycode'])
+                //     //             ->leftJoin('hisdb.doctor','doctor.doctorcode','=','queue.admdoctor')
+                //     //             ->where('queue.mrn','=',$value->MRN)
+                //     //             ->where('queue.episno','=',$value->Episno)
+                //     //             ->where('queue.deptcode','=',"ALL");
+                //     $episode = DB::table('hisdb.episode')
+                //                 ->select(['episode.mrn','doctor.doctorname','episode.epistycode'])
+                //                 ->leftJoin('hisdb.doctor','doctor.doctorcode','=','episode.admdoctor')
+                //                 ->where('episode.mrn','=',$value->MRN)
+                //                 ->where('episode.episno','=',$value->Episno)
+                //                 ->where('episode.compcode','=',session('compcode'));
 
 
-                    if($episode->exists()){
-                        $episode = $episode->first();
-                    // dump($episode->epistycode);
-                        $value->q_epistycode = $episode->epistycode;
-                        $value->q_doctorname = $episode->doctorname;
-                    }
-                }
+                //     if($episode->exists()){
+                //         $episode = $episode->first();
+                //     // dump($episode->epistycode);
+                //         $value->q_epistycode = $episode->epistycode;
+                //         $value->q_doctorname = $episode->doctorname;
+                //     }
+                // }
             }
 
             $responce = new stdClass();

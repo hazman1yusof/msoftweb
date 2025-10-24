@@ -260,12 +260,12 @@ $(document).ready(function() {
 
         if($("#load_from_addupd").data('info') == "true"){
             if($("#load_from_addupd").data('oper') == "add"){
-                $("table#grid-command-buttons tr:nth-child(1)").click();
+                $("table#grid-command-buttons tr:nth-child(2)").click();
             }else{
                 $("table#grid-command-buttons tr[data-row-id='"+bootgrid_last_rowid+"']").eq(0).click();
             }
         }else{
-            $("table#grid-command-buttons tr:nth-child(1)").click();
+            $("table#grid-command-buttons tr:nth-child(2)").click();
         }
         $("#load_from_addupd").data('info','false');
 
