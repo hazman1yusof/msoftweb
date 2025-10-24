@@ -352,18 +352,6 @@
 					@include('hisdb.discharge.discharge',['type' => "IP",'type_desc' => "In Patient"])
 				</div>
 			@endif
-
-			@if (request()->get('epistycode') == 'IP2')
-				@if (Auth::user()->billing == 1)
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.ordcom.ordcom',['phase' => '1'])
-					</div>
-				@endif
-				
-				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-					@include('hisdb.discharge.discharge',['type' => "IP",'type_desc' => "In Patient"])
-				</div>
-			@endif
 			
 		@endif
 		
@@ -591,32 +579,6 @@
 				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_pkg.js"></script>
 			@endif
 			
-			<script type="text/javascript" src="js/hisdb/discharge/discharge.js"></script>
-		@endif
-
-		@if (request()->get('epistycode') == 'IP2')
-			@if (Auth::user()->billing == 1)
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_main.js"></script>
-				<!-- <script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar_doc.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp_doc.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab_doc.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad_doc.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee_doc.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys_doc.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rehab_doc.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_diet_doc.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth_doc.js"></script> -->
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rehab.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_diet.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_pkg.js"></script>
-			@endif
 			<script type="text/javascript" src="js/hisdb/discharge/discharge.js"></script>
 		@endif
 		
