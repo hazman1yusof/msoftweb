@@ -175,7 +175,7 @@ class PatmastController extends defaultController
                             
 
 
-            $table_patm = $table_patm->join('hisdb.pat_mast', function($join) use ($mrn_range){
+            $table_patm = $table_patm->join('hisdb.pat_mast', function($join){
                                 $join = $join->where('pat_mast.compcode','=',session('compcode'))
                                                 ->on('queue.mrn', '=', 'pat_mast.MRN');
                                                 // ->where('pat_mast.Active','=','1')
