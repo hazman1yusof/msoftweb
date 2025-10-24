@@ -115,12 +115,20 @@ class PatmastController extends defaultController
        
         }
         
-        // untuk tabs nursing note
-        $invest_type = DB::table('nursing.nurs_invest_type')
+        
+        if(\config('get_config.ISDEMO' != null )){
+
+            return view('hisdb.pat_mgmt.landing2',$data_send);
+        }else{
+
+            // untuk tabs nursing note
+            $invest_type = DB::table('nursing.nurs_invest_type')
                         ->where('compcode','=',session('compcode'))
                         ->get();
-        
-        return view('hisdb.pat_mgmt.landing2',$data_send,compact('invest_type'));
+
+            return view('hisdb.pat_mgmt.landing',$data_send,compact('invest_type'));
+        }
+
     }
 
     public function save_patient(Request $request){
