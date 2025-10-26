@@ -388,7 +388,7 @@
 	
 	<script type="text/javascript" src="plugins/bootgrid/js/jquery.bootgrid.js"></script>
 	<script type="text/javascript" src="js/myjs/modal-fix.js"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/biodata.js"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/biodata.js?v=1.1"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/episode.js?v=1.4"></script>
 	
 	<input type="hidden" id="user_billing" value="{{Auth::user()->billing}}">
