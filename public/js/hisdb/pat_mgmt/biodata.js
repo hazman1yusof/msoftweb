@@ -473,7 +473,7 @@ function populate_patient(rowdata) {
     $('#hid_RaceCode').val(rowdata.RaceCode);
     $('#hid_Religion').val(rowdata.Religion);
     $('#hid_ID_Type').val(rowdata.ID_Type);
-    $('#txt_pat_dob').val(rowdata.DOB);
+    $('#txt_pat_dob').val(moment(rowdata.DOB).format('Y-MM-DD'));
     $('#txt_pat_age').val(gettheage(rowdata.DOB));
     $('#txt_pat_telh').val(rowdata.telh);
     $('#txt_pat_telhp').val(rowdata.telhp);
