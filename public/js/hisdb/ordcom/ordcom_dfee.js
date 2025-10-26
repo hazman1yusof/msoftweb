@@ -430,13 +430,20 @@ var myEditOptions_edit_dfee = {
     	// $("#jqGrid_dfee_pagerRefresh,#jqGrid_dfee_pagerDelete").show();
     },
 	beforeSaveRow: function (options, rowid) {
-    	if(errorField.length>0)return false;
+    	// if(errorField.length>0){
+    	// 	console.log(errorField);
+    	// 	return false;
+    	// }
 		mycurrency_dfee.formatOff();
 		mycurrency_np_dfee.formatOff();
 
-		if(parseInt($('#jqGrid_dfee input[name="quantity"]').val()) <= 0)return false;
+		if(parseInt($('#jqGrid_dfee input[name="quantity"]').val()) <= 0){
+    		console.log('quantity less thatn 0');
+			return false;
+		}
 
 		if(myfail_msg_dfee.fail_msg_array.length>0){
+    		console.log(myfail_msg_dfee);
 			return false;
 		}
 

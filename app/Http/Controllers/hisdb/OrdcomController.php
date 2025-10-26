@@ -575,6 +575,11 @@ class OrdcomController extends defaultController
                             ->where('id','=',$request->id)
                             ->first();
 
+            if(empty($request->uom)){
+                $request->uom = "1's";
+                $request->uom_recv = "1's";
+            }
+
             // if(!empty($request->uom_recv)){
             //     $chgmast = DB::table("hisdb.chgmast")
             //             ->where('compcode','=',session('compcode'))
@@ -592,38 +597,38 @@ class OrdcomController extends defaultController
             //     $updinv = 0;
             // }
 
-            if($chargetrx_lama->chgcode != $request->chgcode || $chargetrx_lama->uom_recv != $request->uom_recv){
+            // if($chargetrx_lama->chgcode != $request->chgcode){
 
-                // $edit_lain_chggroup = true;
-                $product_lama = DB::table('material.product')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('uomcode','=',$chargetrx_lama->uom_recv)
-                        ->where('itemcode','=',$chargetrx_lama->chgcode);
+            //     // $edit_lain_chggroup = true;
+            //     $product_lama = DB::table('material.product')
+            //             ->where('compcode','=',session('compcode'))
+            //             ->where('uomcode','=',$chargetrx_lama->uom_recv)
+            //             ->where('itemcode','=',$chargetrx_lama->chgcode);
 
-                if($product_lama->exists()){
-                    $this->delivdspdt($chargetrx_lama);
-                }
+            //     if($product_lama->exists()){
+            //         $this->delivdspdt($chargetrx_lama);
+            //     }
 
-                $chg_oe = DB::table('hisdb.chargetrx')
-                        ->where('compcode',session('compcode'))
-                        ->where('mrn', $request->mrn)
-                        ->where('episno', $request->episno)
-                        ->where('chgcode', $request->chgcode)
-                        ->where('uom', $request->uom)
-                        ->where('issdept', $request->deptcode)
-                        ->where('trxtype', 'OE');
+                // $chg_oe = DB::table('hisdb.chargetrx')
+                //         ->where('compcode',session('compcode'))
+                //         ->where('mrn', $request->mrn)
+                //         ->where('episno', $request->episno)
+                //         ->where('chgcode', $request->chgcode)
+                //         ->where('uom', $request->uom)
+                //         ->where('issdept', $request->deptcode)
+                //         ->where('trxtype', 'OE');
 
 
 
-                if(!$chg_oe->exists()){
-                    //add
-                    $quan_oe = $request->quantity;
-                    $this->add_chargetrx_oe($request,$quan_oe);
-                }else if($chg_oe->exists()){
+            //     if(!$chg_oe->exists()){
+            //         //add
+            //         $quan_oe = $request->quantity;
+            //         $this->add_chargetrx_oe($request,$quan_oe);
+            //     }else if($chg_oe->exists()){
                     //upd
-                    $quan_oe = $request->quantity + $chg_oe->first()->quantity;
-                    $this->upd_chargetrx_oe($request,$quan_oe);
-                }
+                    // $quan_oe = $request->quantity + $chg_oe->first()->quantity;
+                    $this->upd_chargetrx_oe($request,$request->quantity);
+                // }
 
                 // $this->sysdb_log('update',$chargetrx_lama,'sysdb.chargetrxlog');
 
@@ -665,28 +670,28 @@ class OrdcomController extends defaultController
                 //             'ftxtdosage' => $this->givenullifempty($request->ftxtdosage),
                 //             'addinstruction' => $this->givenullifempty($request->addinstruction),
                 //         ]);
-            }else{
+            // }else{
 
-                // $edit_lain_chggroup = false;
+            //     // $edit_lain_chggroup = false;
 
-                $chg_oe = DB::table('hisdb.chargetrx')
-                        ->where('compcode',session('compcode'))
-                        ->where('mrn', $request->mrn)
-                        ->where('episno', $request->episno)
-                        ->where('chgcode', $request->chgcode)
-                        ->where('uom', $request->uom)
-                        ->where('issdept', $request->deptcode)
-                        ->where('trxtype', 'OE');
+            //     $chg_oe = DB::table('hisdb.chargetrx')
+            //             ->where('compcode',session('compcode'))
+            //             ->where('mrn', $request->mrn)
+            //             ->where('episno', $request->episno)
+            //             ->where('chgcode', $request->chgcode)
+            //             ->where('uom', $request->uom)
+            //             ->where('issdept', $request->deptcode)
+            //             ->where('trxtype', 'OE');
 
-                if(!$chg_oe->exists()){
-                    //add
-                    $quan_oe = $request->quantity;
-                    $this->add_chargetrx_oe($request,$quan_oe);
-                }else if($chg_oe->exists()){
-                    //upd
-                    $quan_oe = $request->quantity;
-                    $this->upd_chargetrx_oe($request,$quan_oe);
-                }
+            //     if(!$chg_oe->exists()){
+            //         //add
+            //         $quan_oe = $request->quantity;
+            //         $this->add_chargetrx_oe($request,$quan_oe);
+            //     }else if($chg_oe->exists()){
+            //         //upd
+            //         $quan_oe = $request->quantity;
+            //         $this->upd_chargetrx_oe($request,$quan_oe);
+            //     }
 
                 // $this->sysdb_log('update',$chargetrx_lama,'sysdb.chargetrxlog');
 
@@ -727,7 +732,7 @@ class OrdcomController extends defaultController
                 //             'ftxtdosage' => $this->givenullifempty($request->ftxtdosage),
                 //             'addinstruction' => $this->givenullifempty($request->addinstruction),
                 //         ]);
-            }
+            // }
             
             // $chargetrx_obj = db::table('hisdb.chargetrx')
             //                 ->where('compcode','=',session('compcode'))
@@ -1584,7 +1589,7 @@ class OrdcomController extends defaultController
         $chgmast = DB::table("hisdb.chgmast")
                 ->where('compcode','=',session('compcode'))
                 ->where('chgcode','=',$request->chgcode)
-                ->where('uom','=',$request->uom)
+                // ->where('uom','=',$request->uom)
                 ->first();
 
         $updinv = ($chgmast->invflag == '1')? 1 : 0;
