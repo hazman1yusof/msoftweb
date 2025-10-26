@@ -34,6 +34,7 @@ class PatmastController extends defaultController
         $user = DB::table('sysdb.users')->where('username','=',session('username'))->where('compcode',session('compcode'))->first();
         $dept = DB::table('sysdb.department')->where('deptcode','=',$user->dept)->where('compcode',session('compcode'))->first();
         $btype = DB::table('sysdb.sysparam')->where('source','=','OP')->where('trantype','=','BILLTYPE')->where('compcode',session('compcode'))->first();
+        $epistype = DB::table('hisdb.epistype')->where('epistycode',$request->epistycode)->where('compcode',session('compcode'))->first();
         $cashier = DB::table('debtor.tilldetl')
                         ->where('compcode',session('compcode'))
                         ->where('cashier',session('username'))
@@ -43,6 +44,7 @@ class PatmastController extends defaultController
         $btype_ = DB::table('hisdb.billtymst')->where('compcode','=',session('compcode'))->where('billtype','=',$btype->pvalue1)->first();
 
         $data_send = [
+                'epistycode_label' => $epistype->label,
                 'userdeptcode' => $dept->deptcode,
                 'userdeptdesc' => $dept->description,
                 'billtype_def_code' => $btype_->billtype,
@@ -2498,7 +2500,7 @@ class PatmastController extends defaultController
                     ->update([
                         'pvalue1' => $current_pvalue1+1
                     ]);
-                    
+
                 DB::table('hisdb.queue')
                     ->insert([
                         'AdmDoctor' => $epis_doctor,

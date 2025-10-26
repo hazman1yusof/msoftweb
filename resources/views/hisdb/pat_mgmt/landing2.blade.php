@@ -36,6 +36,7 @@
 	<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
 	<input type="hidden" name="rng" id="rng">
 	<input type="hidden" name="ismobile" id="ismobile" value="false">
+	<input type="hidden" name="epistycode_label" id="epistycode_label" value="{{$epistycode_label}}">
 
     <div class="wrapper">
     	<input type="hidden" id="load_from_addupd" data-info="false" data-oper="edit">
@@ -248,7 +249,7 @@
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_emr.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/textfield_modal.js"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js?v=1.5"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js?v=1.6"></script>
 	
 	</div>
 
