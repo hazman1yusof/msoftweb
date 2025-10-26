@@ -5316,7 +5316,7 @@ class OrdcomController extends defaultController
                         ->where('trx.taxflag',0)
                         ->where('trx.discflag',0)
                         // ->orderBy('trx.adddate','asc')
-                        ->join('hisdb.chgmast as chgm', function($join) use ($request){
+                        ->leftjoin('hisdb.chgmast as chgm', function($join) use ($request){
                             $join = $join->where('chgm.compcode', '=', session('compcode'));
                             $join = $join->on('chgm.chgcode', '=', 'trx.chgcode');
                             $join = $join->on('chgm.uom', '=', 'trx.uom');
@@ -5419,7 +5419,7 @@ class OrdcomController extends defaultController
                         ->where('trx.taxflag',0)
                         ->where('trx.discflag',0)
                         // ->orderBy('trx.adddate','asc')
-                        ->join('hisdb.chgmast as chgm', function($join) use ($request){
+                        ->leftjoin('hisdb.chgmast as chgm', function($join) use ($request){
                             $join = $join->where('chgm.compcode', '=', session('compcode'));
                             $join = $join->on('chgm.chgcode', '=', 'trx.chgcode');
                             $join = $join->on('chgm.uom', '=', 'trx.uom');

@@ -130,7 +130,7 @@
                         layout: 'noBorders',
                     }
 
-                var image = {image: 'letterhead', width: 200, height: 40, style: 'tableHeader', colSpan: 5, alignment: 'center',margin:[0,10,0,0]};
+                var image = {image: 'letterhead', width: 200, style: 'tableHeader', colSpan: 5, alignment: 'center',margin:[0,10,0,0]};
                 retval.push(image);
 
                 retval.push(header_tbl);
@@ -194,7 +194,7 @@
             },
             images: {
                 letterhead: {
-                    url: '{{asset('/img/MSLetterHead.jpg')}}',
+                    url: '{{asset('/img/letterheadukm.png')}}',
                     headers: {
                         myheader: '123',
                         myotherheader: 'abc',
