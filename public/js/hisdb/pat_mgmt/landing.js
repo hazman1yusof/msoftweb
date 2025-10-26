@@ -89,8 +89,10 @@ var grid = $("#grid-command-buttons").bootgrid({
             let retval = '';
             if(row.q_epistycode == '' || row.q_epistycode == undefined){
                 retval = "<span style='float: right;'><button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button> " +
-                       "<div class='btn-group'><button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" data-patstatus=\"" + row.PatStatus + "\"  id=\"cmd_history" + row.MRN + "\"><b>"+$("#epistycode").val()+"</b></button>" +
-                       "<button title='OTC Episode' type='button' class='btn btn-xs btn-danger btn-md command-otc-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" id=\"cmd_otc" + row.MRN + "\"><b>"+$("#epistycode2").val()+"</b></button></div></span>";
+                       "<div class='btn-group'><button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" data-patstatus=\"" + row.PatStatus + "\"  id=\"cmd_history" + row.MRN + "\"><b>"+$("#epistycode").val()+"</b></button>"; 
+                       // +
+
+                       // "<button title='OTC Episode' type='button' class='btn btn-xs btn-danger btn-md command-otc-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" id=\"cmd_otc" + row.MRN + "\"><b>"+$("#epistycode2").val()+"</b></button></div></span>";
 
             }else{
                 if(row.q_epistycode == $("#epistycode").val() && $('#curpat').val() == 'true'){
