@@ -292,8 +292,12 @@ function calc_discamt_main(chggroup,chgcode,unitprce,quantity){
 	});
 
 	var discamount = ((((100-percent)/100)*unitprce*-1)*quantity) - amount;
+	console.log('asd');
+	if(isNan(discamount)){
+		return 0.00;
+	}
 
-	return discamount;
+	return numeral(discamount).format('0,0.00');
 }
 
 function abscurrency(val,opt,rowObject ){
@@ -310,10 +314,11 @@ function abscurrency_unformat(val,opt,rowObject ){
 function set_userdeptcode(tab){
 	if($('#epistycode').val() == 'IP' || $('#epistycode').val() == 'DP'){
 		let rowdata = getrow_bootgrid_();
-		$('#'+tab+'dept_dflt').val(rowdata.ward);
+		$('#'+tab+'dept_dflt').val('');
 	}else{
 		let rowdata = getrow_bootgrid_();
-		$('#'+tab+'dept_dflt').val(rowdata.regdept);
+		// $('#'+tab+'dept_dflt').val(rowdata.regdept);
+		$('#'+tab+'dept_dflt').val('');
 	}
 }
 

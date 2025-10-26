@@ -652,8 +652,8 @@ var dialog_deptcode_disp = new ordialog(
 			{label:'Description', name:'description', width:400, classes:'pointer', canSearch:true, checked:true, or_search:true},
 		],
 		urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','ACTIVE']
+					filterCol:['compcode','recstatus','chgdept'],
+					filterVal:['session.compcode','ACTIVE','1']
 				},
 		ondblClickRow:function(event){
 			if(event.type == 'keydown'){
@@ -683,8 +683,8 @@ var dialog_deptcode_disp = new ordialog(
 		title:"Select Tax Code For Item",
 		open:function(obj_){
 
-			dialog_deptcode_disp.urlParam.filterCol=['compcode','recstatus'];
-			dialog_deptcode_disp.urlParam.filterVal=['session.compcode','ACTIVE'];
+			dialog_deptcode_disp.urlParam.filterCol=['compcode','recstatus','chgdept'];
+			dialog_deptcode_disp.urlParam.filterVal=['session.compcode','ACTIVE','1'];
 		},
 		close: function(){
 			// $(dialog_deptcode_disp.textfield)			//lepas close dialog focus on next textfield 

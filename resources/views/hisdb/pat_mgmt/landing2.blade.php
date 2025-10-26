@@ -218,7 +218,7 @@
 		    $('#ReqFor_bedtype').val(data.bedtype);
 		};
 	</script>
-	<script type="text/javascript" src="js/hisdb/ordcom/ordcom_main.js"></script>
+	<script type="text/javascript" src="js/hisdb/ordcom/ordcom_main.js?v=1.1"></script>
 	<!-- <script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar_doc.js"></script>
 	<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp_doc.js"></script>
 	<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab_doc.js"></script>
@@ -228,7 +228,7 @@
 	<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rehab_doc.js"></script>
 	<script type="text/javascript" src="js/hisdb/ordcom/ordcom_diet_doc.js"></script>
 	<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth_doc.js"></script> -->
-	<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar.js"></script>
+	<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar.js?v=1.1"></script>
 	<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp.js"></script>
 	<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab.js"></script>
 	<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad.js"></script>

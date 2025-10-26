@@ -365,7 +365,7 @@ div.oe_phar_div{
 div.panel.jqgrid_detail{
     background: #e6ffff;
     margin: 10px 5px;
-    width: 49%;
+    width: 49% !important;
 }
 div.panel.jqgrid_detail div.panel-body{
 	padding: 5px 15px;

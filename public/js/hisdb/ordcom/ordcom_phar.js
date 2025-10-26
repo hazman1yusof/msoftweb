@@ -90,7 +90,7 @@ $(document).ready(function(){
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'Discount<br>Amount', name: 'discamt', width: 80, align: 'right', classes: 'wrap txnum', editable:true,formatter:abscurrency,unformat:abscurrency_unformat,
+			{ label: 'Discount<br>Amount', name: 'discamt', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
 				editrules:{required: true},editoptions:{readonly: "readonly"}},
 			// { label: 'Bill Type <br>%', name: 'billtypeperct', width: 100, align: 'right', classes: 'wrap txnum', hidden: true},
 			// { label: 'Bill Type <br>Amount ', name: 'billtypeamt', width: 100, align: 'right', classes: 'wrap txnum', hidden: true},
@@ -398,11 +398,11 @@ var myEditOptions_phar = {
 
 		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-241);
 		$("#jqGrid_phar input[name='trxdate']").on('focus',function(){
-			let focus = $(this).data('focus');
-			if(focus == undefined){
-				$(this).data('focus',1);
-				$("#jqGrid_phar input#"+rowid+"_chgcode").focus();
-			}
+			// let focus = $(this).data('focus');
+			// if(focus == undefined){
+			// 	$(this).data('focus',1);
+			// 	$("#jqGrid_phar input#"+rowid+"_chgcode").focus();
+			// }
 		});
 
 		$("input[name='totamount']").keydown(function(e) {//when click tab at batchno, auto save
@@ -755,13 +755,13 @@ function calculate_line_totgst_and_totamt_phar(event) {
 
 	var totamount = amount + discamt + taxamount;
 
-	$("#"+id_optid+"_discamt").val(numeral(discamt).format('0,0.00'));
+	$("#"+id_optid+"_discamt").val(discamt);
 	$("#"+id_optid+"_amount").val(amount);
 	$("#"+id_optid+"_taxamount").val(taxamount);
 	$("#"+id_optid+"_totamount").val(totamount);
 
 	write_detail_phar('#jqgrid_detail_phar_taxamt',taxamount,id_optid);
-	write_detail_phar('#jqgrid_detail_phar_discamt',numeral(discamt).format('0,0.00'),id_optid);
+	write_detail_phar('#jqgrid_detail_phar_discamt',discamt,id_optid);
 	
 	var id="#jqGrid_phar #"+id_optid+"_quantity";
 	var name = "quantityrequest";
@@ -780,8 +780,8 @@ var dialog_deptcode_phar = new ordialog(
 			{label:'Description', name:'description', width:400, classes:'pointer', canSearch:true, checked:true, or_search:true},
 		],
 		urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','ACTIVE']
+					filterCol:['compcode','recstatus','chgdept'],
+					filterVal:['session.compcode','ACTIVE','1']
 				},
 		ondblClickRow:function(event){
 			if(event.type == 'keydown'){
@@ -813,8 +813,8 @@ var dialog_deptcode_phar = new ordialog(
 		title:"Select Department Code",
 		open:function(obj_){
 
-			dialog_deptcode_phar.urlParam.filterCol=['compcode','recstatus'];
-			dialog_deptcode_phar.urlParam.filterVal=['session.compcode','ACTIVE'];
+			dialog_deptcode_phar.urlParam.filterCol=['compcode','recstatus','chgdept'];
+			dialog_deptcode_phar.urlParam.filterVal=['session.compcode','ACTIVE','1'];
 		},
 		close: function(){
 			// $(dialog_deptcode_phar.textfield)			//lepas close dialog focus on next textfield 
