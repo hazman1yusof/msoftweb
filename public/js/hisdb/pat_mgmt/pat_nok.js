@@ -122,7 +122,7 @@ $(document).ready(function () {
 				// $(search_relate_pat.textfield).parent().next().html('');
 			}
 		},{
-			title: "Select Bed Type search",
+			title: "Select Relationship search",
 			open: function () {
 				if($('#ismobile').val() == 'true'){
 					

@@ -115,16 +115,16 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
 				// $(search_relate.textfield).parent().next().html('');
 			}
 		},{
-			title: "Select Bed Type search",
+			title: "Select Relationship search",
 			open: function () {
 				search_relate.urlParam.filterCol=['compcode', 'recstatus'];
-				search_relate.urlParam.filterVal=['session.compcode', 'A'];
+				search_relate.urlParam.filterVal=['session.compcode', 'ACTIVE'];
 
 				$('div[aria-describedby="otherdialog_search_relate"]').css("z-index", "1100");
 				$('div.ui-widget-overlay.ui-front').css("z-index", "1099");
