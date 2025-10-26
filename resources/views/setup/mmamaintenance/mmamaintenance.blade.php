@@ -134,6 +134,6 @@ i.fa {
 		});
 	</script>
 	
-	<script src="js/setup/mmamaintenance/mmamaintenance.js"></script>
+	<script src="js/setup/mmamaintenance/mmamaintenance.js?v=1.1"></script>
 
 @endsection

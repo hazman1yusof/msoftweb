@@ -241,7 +241,7 @@
 	
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/patlabel.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_doctor.js"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js?v=1.1"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_payer.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_coverage.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_deposit.js"></script>

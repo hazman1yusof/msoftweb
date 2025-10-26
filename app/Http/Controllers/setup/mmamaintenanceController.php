@@ -36,8 +36,7 @@ class mmamaintenanceController extends defaultController
                         ->first();
 
         $table = DB::table('hisdb.mmamaster')
-                    ->where('version','=',$mmaver->pvalue1)
-                    ->orderBy('idno','desc');
+                    ->where('version','=',$mmaver->pvalue1);
 
         if(!empty($request->searchCol)){
             $searchCol_array = $request->searchCol;
@@ -56,6 +55,19 @@ class mmamaintenanceController extends defaultController
                         }
                     }
                 });
+            }
+        }
+
+        if(!empty($request->sidx)){
+            
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+                    $pieces_inside = explode(" ", $pieces[$i]);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
             }
         }
 

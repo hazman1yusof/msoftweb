@@ -34,8 +34,6 @@ $(document).ready(function () {
         url:'mmamaintenance/table',
 		field:'',
 		table_name:'hisdb.mmamaster',
-		table_id:'idno',
-		sort_idno: true
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -69,8 +67,6 @@ $(document).ready(function () {
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
-		sortname: 'idno',
-		sortorder: 'desc',
 		width: 900,
 		height: 350,
 		rowNum: 30,
