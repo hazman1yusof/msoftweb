@@ -236,6 +236,7 @@ var myEditOptions_dfee = {
 		$("#jqGrid_dfee input[name='trxdate']").val(moment().format('YYYY-MM-DD'));
 		errorField.length=0;
     	$("#jqGrid_dfee_pagerRefresh,#jqGrid_dfee_pagerDelete").hide();
+		$("#jqGrid_dfee input[name='deptcode']").val($('#dfeedept_dflt').val());
 
 		dialog_deptcode_dfee.on();
 		dialog_deptcode_dfee.check(errorField);

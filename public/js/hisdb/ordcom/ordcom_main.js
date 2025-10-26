@@ -292,7 +292,6 @@ function calc_discamt_main(chggroup,chgcode,unitprce,quantity){
 	});
 
 	var discamount = ((((100-percent)/100)*unitprce*-1)*quantity) - amount;
-	console.log('asd');
 	if(isNan(discamount)){
 		return 0.00;
 	}

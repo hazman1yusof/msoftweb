@@ -56,16 +56,16 @@
         <input name="lastMrn" id="lastMrn" type="hidden" >
         <input name="lastidno" id="lastidno" type="hidden" >
         <input name="isdoctor" id="isdoctor" type="hidden" value="{{Auth::user()->doctor}}">
-        <input name="phardept_dflt" id="phardept_dflt" type="hidden" value="{{$phardept_dflt ?? 'PHAR'}}">
-        <input name="dispdept_dflt" id="dispdept_dflt" type="hidden" value="{{$userdeptcode ?? 'PHAR'}}">
+        <input name="phardept_dflt" id="phardept_dflt" type="hidden" value="">
+        <input name="dispdept_dflt" id="dispdept_dflt" type="hidden" value="">
         <input name="labdept_dflt" id="labdept_dflt" type="hidden" value="{{$labdept_dflt ?? 'LAB'}}">
         <input name="raddept_dflt" id="raddept_dflt" type="hidden" value="{{$raddept_dflt ?? 'RAD'}}">
         <input name="physdept_dflt" id="physdept_dflt" type="hidden" value="{{$physdept_dflt ?? 'PHY'}}">
-        <input name="rehabdept_dflt" id="rehabdept_dflt" type="hidden" value="{{$rehabsdept_dflt ?? 'REHAB'}}">
-        <input name="dfeedept_dflt" id="dfeedept_dflt" type="hidden" value="{{$dfeedept_dflt ?? 'PHAR'}}">
+        <input name="rehabdept_dflt" id="rehabdept_dflt" type="hidden" value="{{$physdept_dflt ?? 'PHY'}}">
+        <input name="dfeedept_dflt" id="dfeedept_dflt" type="hidden" value="">
         <input name="dietdept_dflt" id="dietdept_dflt" type="hidden" value="{{$dietdept_dflt ?? 'DIET'}}">
-        <input name="pkgdept_dflt" id="pkgdept_dflt" type="hidden" value="{{$pkgdept_dflt ?? 'PHAR'}}">
-        <input name="othdept_dflt" id="othdept_dflt" type="hidden" value="{{$othdept_dflt ?? 'PHAR'}}">
+        <input name="pkgdept_dflt" id="pkgdept_dflt" type="hidden" value="">
+        <input name="othdept_dflt" id="othdept_dflt" type="hidden" value="">
 
         <div id="info"></div>
 
