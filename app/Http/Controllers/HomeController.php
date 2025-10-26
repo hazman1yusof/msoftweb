@@ -339,7 +339,7 @@ class HomeController extends Controller
         if($ISDEMO != null ){
         
             $menu="<li><a style='padding-left:9px;' title='Patient List' class='clickable' programid='pat_list' targetURL='pat_mast?epistycode=OP&curpat=false&PatClass=HIS' >Patient List</a></li>";
-            $menu.="<li><a style='padding-left:9px;' title='GP List' class='clickable' programid='gp_list' targetURL='pat_mast?epistycode=OP&curpat=false&PatClass=OTC' >GP List</a></li>";
+            $menu.="<li><a style='padding-left:9px;' title='GP List' class='clickable' programid='gp_list' targetURL='pat_mast?epistycode=OTC&curpat=false&PatClass=OTC' >GP List</a></li>";
             $menu.="<li><a style='padding-left:9px;' title='Case Note' class='clickable' programid='casenote' targetURL='ptcare_doctornote' >Case Note</a></li>";
             $menu.="<li><a style='padding-left:9px;' title='Rehabilitation' class='clickable' programid='rehab' targetURL='rehab' >Rehabilitation</a></li>";
             
