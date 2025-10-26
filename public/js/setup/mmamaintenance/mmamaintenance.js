@@ -289,7 +289,7 @@ $(document).ready(function () {
 								mmacode: $('#mmacode').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/mmamaintenance/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./mmamaintenance/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
@@ -317,7 +317,7 @@ $(document).ready(function () {
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'./util/get_table_default',
 		field: '',
 		table_name: 'hisdb.mmaprice',
 		table_id: 'idno',
@@ -463,7 +463,7 @@ $(document).ready(function () {
 			//if(errorField.length>0)return false;  
 
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
-			let editurl = "/mmamaintenanceDetail/form?"+
+			let editurl = "./mmamaintenanceDetail/form?"+
 				$.param({
 					action: 'mmamaintenanceDetail_save',
 					oper: 'add',
@@ -508,7 +508,7 @@ $(document).ready(function () {
 								action: 'mmamaintenanceDetail_save',
 								idno: selrowData('#jqGrid2').idno,
 							}
-							$.post( "/mmamaintenanceDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+							$.post( "./mmamaintenanceDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 							}).fail(function(data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function(data){
@@ -572,7 +572,7 @@ $(document).ready(function () {
 				_token: $("#_token").val()
 			}
 
-			$.post( "/mmamaintenanceDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+			$.post( "./mmamaintenanceDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 			}).fail(function(data) {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function(data){
