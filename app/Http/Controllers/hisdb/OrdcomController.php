@@ -1706,6 +1706,7 @@ class OrdcomController extends defaultController
                     'uom' => $request->uom,
                     'uom_recv' => $request->uom_recv,
                     'invgroup' => $chgmast->invgroup,
+                    'mmacode' => $request->mmacode,
                     'reqdept' => $request->deptcode,
                     'issdept' => $request->deptcode,
                     'invcode' => $chgmast->chggroup,
