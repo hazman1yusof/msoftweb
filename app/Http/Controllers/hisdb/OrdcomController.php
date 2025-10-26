@@ -4064,7 +4064,7 @@ class OrdcomController extends defaultController
             $this->make_gst_discount($gst,$disc,$mrn,$episno,$episode->billtype,$billno,$invno);
             $this->make_billsum_and_round($mrn,$episno);
             $this->make_dbacthdr_and_GL($mrn,$episno);
-            $this->make_discharge($mrn,$episno);
+            // $this->make_discharge($mrn,$episno);
             
             DB::commit();
         } catch (\Exception $e) {
@@ -5221,7 +5221,7 @@ class OrdcomController extends defaultController
                         ->where('trx.taxflag',0)
                         ->where('trx.discflag',0)
                         // ->orderBy('trx.adddate','asc')
-                        ->join('hisdb.chgmast as chgm', function($join) use ($request){
+                        ->leftjoin('hisdb.chgmast as chgm', function($join) use ($request){
                             $join = $join->where('chgm.compcode', '=', session('compcode'));
                             $join = $join->on('chgm.chgcode', '=', 'trx.chgcode');
                             $join = $join->on('chgm.uom', '=', 'trx.uom');
