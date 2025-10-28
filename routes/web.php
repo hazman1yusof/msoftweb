@@ -1245,6 +1245,11 @@ Route::post('/unallocated_receipt/form','finance\unallocated_receiptController@f
 Route::get('/unallocated_receipt/showExcel','finance\unallocated_receiptController@showExcel');
 Route::get('/unallocated_receipt/showpdf','finance\unallocated_receiptController@showpdf');
 
+//// uninvgrn -- Report
+Route::get('/uninvgrn','finance\UnInvGRNController@show');
+Route::get('/uninvgrn/table','finance\UnInvGRNController@table');
+Route::post('/uninvgrn/form','finance\UnInvGRNController@form');
+
 //// Debtor List -- Report
 Route::get('/DebtorList_Report','finance\DebtorList_ReportController@show');
 Route::get('/DebtorList_Report/table','finance\DebtorList_ReportController@table');

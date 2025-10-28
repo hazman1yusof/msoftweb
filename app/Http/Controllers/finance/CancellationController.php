@@ -207,8 +207,7 @@ class CancellationController extends defaultController
         $responce->sql_bind = $table->getBindings();
         $responce->sql_query = $this->getQueries($table);
         
-        return json_encode($responce);
-        
+        return json_encode($responce);        
     }
     
     public function get_jqGrid_rd(Request $request){
@@ -364,8 +363,7 @@ class CancellationController extends defaultController
         $responce->sql_bind = $table->getBindings();
         $responce->sql_query = $this->getQueries($table);
         
-        return json_encode($responce);
-        
+        return json_encode($responce);        
     }
     
     public function get_jqGrid_rf(Request $request){

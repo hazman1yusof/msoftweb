@@ -313,6 +313,8 @@ class DeliveryOrderController extends defaultController
                     ->where('idno', '=', $idno);
 
                 $delordhd_obj = $delordhd->first();
+                
+                $this->check_sequence_backdated($delordhd_obj);
 
                 $deldept_unit = DB::table('sysdb.department')
                                 ->where('compcode',session('compcode'))
@@ -598,6 +600,29 @@ class DeliveryOrderController extends defaultController
 
             return response($e->getMessage(), 500);
         }
+    }
+
+    public function check_sequence_backdated($delordhd_obj){
+
+        $sequence_obj = DB::table('material.sequence')
+                ->where('trantype','=',$delordhd_obj->trantype)
+                ->where('dept','=',$delordhd_obj->deldept);
+
+        if(!$sequence_obj->exists()){
+            throw new \Exception("sequence doesnt exists", 500);
+        }
+
+        $sequence = $sequence_obj->first();
+
+        $date = Carbon::parse($delordhd_obj->trandate);
+        $now = Carbon::now();
+
+        $diff = $date->diffInDays($now);
+
+        if($diff > intval($sequence->backday)){
+            throw new \Exception("backdated sequence exceed ".$sequence->backday.' days', 500);
+        }
+
     }
 
     public function reopen(Request $request){
