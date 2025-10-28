@@ -118,19 +118,13 @@ class PatmastController extends defaultController
         }
         
         
-        $ISDEMO = \config('get_config.ISDEMO');
-        if($ISDEMO != null ){
 
-            return view('hisdb.pat_mgmt.landing2',$data_send);
-        }else{
+        // untuk tabs nursing note
+        $invest_type = DB::table('nursing.nurs_invest_type')
+                    ->where('compcode','=',session('compcode'))
+                    ->get();
 
-            // untuk tabs nursing note
-            $invest_type = DB::table('nursing.nurs_invest_type')
-                        ->where('compcode','=',session('compcode'))
-                        ->get();
-
-            return view('hisdb.pat_mgmt.landing',$data_send,compact('invest_type'));
-        }
+        return view('hisdb.pat_mgmt.landing',$data_send,compact('invest_type'));
 
     }
 
