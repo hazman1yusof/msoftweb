@@ -291,7 +291,9 @@ function emptyFormdata(errorField,form,except=[]){
 			temp.push($(value).val());
 		});
 	}
-	errorField.length=0;
+	if(errorField != null){
+		errorField.length=0;
+	}
 	$(form).trigger('reset');
 	$(form+' input[type=hidden]').val('');
 	$(form+' .help-block').html('');

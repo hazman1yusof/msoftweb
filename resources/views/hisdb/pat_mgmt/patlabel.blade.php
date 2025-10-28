@@ -1,4 +1,4 @@
-<div id="dialog_patlabel" title="Print Form" >
+<div id="dialog_patlabel" title="Print Form" style="display: none;">
 	<div class="panel-body" style="position: relative;">
 		<label class="col-md-2 control-label" for="delordhd_credcode" style="margin-top: 10px;padding: 0px;">Pages</label>	  
 		<div class="col-md-7">

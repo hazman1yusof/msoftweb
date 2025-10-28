@@ -2147,7 +2147,7 @@ function button_state_header(state){
 
 // screen current patient //
 function populate_nursingActionPlan(obj){
-    $("#jqGridNursActionPlan_panel").collapse('hide');
+    // $("#jqGridNursActionPlan_panel").collapse('hide');
 
     // panel header
     $('#name_show_nursActionPlan').text(obj.Name);

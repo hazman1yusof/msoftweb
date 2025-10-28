@@ -229,12 +229,6 @@
 			    padding: 5px 5px 15px 5px !important;
 			    border-top-left-radius: 30px;
 			    border-top-right-radius: 30px;
-			    /*border-bottom-left-radius: 30px;
-			    border-bottom-right-radius: 30px;*/
-			    /*position: absolute;
-			    bottom: 0px;
-			    right: 0px;*/
-/*			    cursor: pointer;*/
 			    display: block;
 			}
 			.data_info .col-md-2.minuspad-15 .my_remark{

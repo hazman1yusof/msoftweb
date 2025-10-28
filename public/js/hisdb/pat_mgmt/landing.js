@@ -301,7 +301,7 @@ var grid = $("#grid-command-buttons").bootgrid({
                 populate_triage_currpt(lastrowdata);
                 // populate_nursAssessment_currpt(lastrowdata);
                 populate_nursingActionPlan(lastrowdata);
-                populate_header_getdata(lastrowdata);
+                // populate_header_getdata(lastrowdata);
                 populate_nursingnote(lastrowdata);
                 // populate_invHeader_getdata(lastrowdata);
                 populate_antenatal(lastrowdata);
@@ -316,7 +316,7 @@ var grid = $("#grid-command-buttons").bootgrid({
                 populate_triage_currpt(lastrowdata);
                 // populate_nursAssessment_currpt(lastrowdata);
                 populate_nursingActionPlan(lastrowdata);
-                populate_header_getdata(lastrowdata);
+                // populate_header_getdata(lastrowdata);
                 populate_nursingnote(lastrowdata);
                 // populate_invHeader_getdata(lastrowdata);
                 populate_clientProgNote_currpt(lastrowdata);
@@ -354,7 +354,7 @@ var grid = $("#grid-command-buttons").bootgrid({
 var bootgrid_last_rowid = 0;
 
 $(document).ready(function() {
-    $(".preloader").fadeOut();
+    // $(".preloader").fadeOut();
     stop_scroll_on();
     $('#tab_patient_info a:last').hide();    // hide Medical Info tab
     jQuery.validator.setDefaults({

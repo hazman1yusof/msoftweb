@@ -36,7 +36,7 @@
 	<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
 	<input type="hidden" name="rng" id="rng">
 	<input type="hidden" name="ismobile" id="ismobile" value="false">
-	<input type="hidden" name="epistycode_label" id="epistycode_label" value="{{$epistycode_label')}}">
+	<input type="hidden" name="epistycode_label" id="epistycode_label" value="{{$epistycode_label}}">
 
     <div class="wrapper">
     	<input type="hidden" id="load_from_addupd" data-info="false" data-oper="edit">
@@ -359,6 +359,10 @@
 	<script type="text/javascript">
 	    let mql = window.matchMedia("(max-width: 768px)");
 	    document.getElementById("ismobile").value = mql.matches;
+		document.addEventListener("DOMContentLoaded", function() {
+		    $(".preloader").fadeOut();
+		});
+
 	</script>
 	
 	<script type="text/ecmascript" src="plugins/jquery-3.2.1.min.js"></script> 

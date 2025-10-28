@@ -261,7 +261,7 @@ button_state_discharge('empty');
 	}
 
 	function populate_discharge(obj,rowdata){
-		emptyFormdata(errorField,"#form_discharge");
+		emptyFormdata(null,"#form_discharge");
 		
 		// panel header
 		$('#name_show_discharge').text(obj.name);
@@ -310,7 +310,7 @@ button_state_discharge('empty');
 
 	// screen current patient //
 	function populate_discharge_currpt(obj){
-		emptyFormdata(errorField,"#form_discharge");
+		emptyFormdata(null,"#form_discharge");
 		
 		// panel header
 		$('#name_show_discharge').text(obj.Name);
