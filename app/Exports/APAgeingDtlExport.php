@@ -143,6 +143,7 @@ class APAgeingDtlExport implements FromView, ShouldQueue, WithEvents, WithColumn
                         $join = $join->on('sg.suppgroup', '=', 'su.suppgroup');
                         $join = $join->where('sg.compcode', '=', session('compcode'));
                     })
+                    ->where('ap.trantype','!=',['PD'])
                     ->where('ap.compcode','=',session('compcode'))
                     // ->where('ap.unit',session('unit'))
                     ->where('ap.recstatus', '=', 'POSTED')
@@ -178,7 +179,21 @@ class APAgeingDtlExport implements FromView, ShouldQueue, WithEvents, WithColumn
                     ->whereDate('allocdate', '<=', $date)
                     ->sum('allocamount');
 
-            $newamt = $hdr_amount - $alloc_sum;
+            $alloc_sum2 = DB::table('finance.apalloc')
+                    ->where('compcode', '=', session('compcode'))
+                    ->where('suppcode', '=', $value->suppcode)
+                    ->where('docsource', '=', $value->source)
+                    ->where('doctrantype', '=', $value->trantype)
+                    ->where('docauditno', '=', $value->auditno)
+                    ->where('recstatus', '=', "POSTED")
+                    ->whereDate('allocdate', '<=', $date)
+                    ->sum('allocamount');
+
+            $newamt = $hdr_amount - $alloc_sum - $alloc_sum2;
+
+            if(in_array($value->trantype, ['CN','PV'])){
+                $newamt = $newamt * -1;
+            }
 
             if(floatval($newamt) != 0.00){
                 $value->newamt = $newamt;
