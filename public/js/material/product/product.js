@@ -1569,8 +1569,8 @@ $(document).ready(function () {
 							title:"Select Product Category",
 							open: function(){
 								var gc2 = $('#groupcode2').val();
-								dialog_cat.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
-								dialog_cat.urlParam.filterVal=['Stock', 'PO', 'ACTIVE',$('#Class2').val()];
+								dialog_cat.urlParam.filterCol=['cattype', 'source', 'recstatus'];
+								dialog_cat.urlParam.filterVal=['Stock', 'PO', 'ACTIVE'];
 							}
 						},'urlParam'
 					);
@@ -1621,8 +1621,8 @@ $(document).ready(function () {
 						},{
 							title:"Select Product Category",
 							open: function(){
-								dialog_cat.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
-								dialog_cat.urlParam.filterVal=['Other', 'PO', 'ACTIVE',$('#Class2').val()];
+								dialog_cat.urlParam.filterCol=['cattype', 'source', 'recstatus'];
+								dialog_cat.urlParam.filterVal=['Other', 'PO', 'ACTIVE'];
 							}
 						},'urlParam'
 					);
@@ -1647,8 +1647,8 @@ $(document).ready(function () {
 							title:"Select Product Category",
 							open: function(){
 								// var gc2 = $('#groupcode2').val();
-								dialog_cat.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
-								dialog_cat.urlParam.filterVal=['Stock', 'PO', 'ACTIVE',$('#Class2').val()];
+								dialog_cat.urlParam.filterCol=['cattype', 'source', 'recstatus'];
+								dialog_cat.urlParam.filterVal=['Stock', 'PO', 'ACTIVE'];
 							}
 						},'urlParam'
 					);

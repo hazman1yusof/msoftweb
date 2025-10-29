@@ -669,6 +669,6 @@
 			
 		});
 	</script>
-	<script src="js/material/product/product.js?v=1.5"></script>
+	<script src="js/material/product/product.js?v=1.6"></script>
 
 @endsection
