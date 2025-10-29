@@ -8650,6 +8650,13 @@ class TestController extends defaultController
     }
 
     public function apalloc_osamt_in(Request $request){
+        $commit = $request->commit;
+        if($commit == null){
+            $commit = false;
+        }else{
+            $commit = true;
+        }
+        
         $datefrom = $request->datefrom;
         if($datefrom == null){
             $datefrom = '2025-05-01';
@@ -8687,14 +8694,23 @@ class TestController extends defaultController
             }
 
             if(!$this->floatEquals($obj->outamount,$osamt)){
-                $obj->osamt_alloc = $osamt;
-                DB::table('finance.apacthdr as ap')
-                    ->where('compcode',session('compcode'))
-                    ->where('idno',$obj->idno)
-                    ->update([
-                        'outamount' => $osamt
-                    ]);
+                if($commit){
+                    $obj->osamt_alloc = $osamt;
+                    DB::table('finance.apacthdr as ap')
+                        ->where('compcode',session('compcode'))
+                        ->where('idno',$obj->idno)
+                        ->update([
+                            'outamount' => $osamt
+                        ]);
+                }else{
+                    $obj->osamt_alloc = $osamt;
+                    array_push($array, $obj);
+                }
             }
+        }
+
+        if(!$commit){
+            return view('test.test2',compact('array'));
         }
     }
 
