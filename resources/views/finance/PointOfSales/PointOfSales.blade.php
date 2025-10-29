@@ -264,6 +264,7 @@ table#jqGrid td{
     <div class="panel panel-default">
 			<div class="panel-heading">Point of Sales Data Entry Header
 				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print POS</a>
+				<a class='pull-right pointer text-primary' id='pdfgen1_refund' href="" target="_blank" style="display:none; padding-right: 10px;"><span class='fa fa-print'></span> Print Refund </a>
 			</div>
 			
 			<div class="panel-body">
@@ -605,6 +606,7 @@ table#jqGrid td{
 		<div class='panel panel-info'>
 			<div class="panel-heading">Point of Sales Header
 				<a class='pull-right pointer text-primary' id='pdfgen2' href="" target="_blank"><span class='fa fa-print'></span> Print POS</a>
+				<a class='pull-right pointer text-primary' id='pdfgen2_refund' href="" target="_blank" style="padding-right: 15px;display: none;"><span class='fa fa-print'></span> Print Refund</a>
 				<a class='pull-right pointer text-primary' id='payment_inside' style="padding-right: 15px;"><span class='fa fa-credit-card'></span> Payment</a>
 			</div>
 
@@ -889,6 +891,12 @@ table#jqGrid td{
 										<input id="dbacthdr_RCFinalbalance" name="dbacthdr_RCFinalbalance" type="text" class="form-control input-sm" value="0.00" rdonly>
 									</div>
 								</div>
+								<div class="form-group">
+									<label class="control-label col-md-2" for="dbacthdr_RCCASHbalance">Reference</label> 
+							  	<div class='col-md-10'> 
+										<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" >
+									</div>
+								</div>
 								</form>
 							</div>
 							<div id="tab-card2" class="tab-pane fade">
@@ -1136,7 +1144,7 @@ table#jqGrid td{
 		</script>
 
 		<script src="js/myjs/till_part.js"></script>
-		<script src="js/finance/PointOfSales/PointOfSales.js?v=1.11"></script>
+		<script src="js/finance/PointOfSales/PointOfSales.js?v=1.12"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	

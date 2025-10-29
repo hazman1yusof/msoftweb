@@ -2647,6 +2647,11 @@ class PointOfSalesController extends defaultController
     }
 
     public function showpdf(Request $request){
+
+        if(isset($request->refund)){
+            return $this->showpdf_refund($request);
+        }
+
         $idno = $request->idno;
         if(!$idno){
             abort(404);
@@ -2802,6 +2807,137 @@ class PointOfSalesController extends defaultController
         // return $pdf->stream();
         
         return view('finance.PointOfSales.PointOfSales_pdfmake',compact('tilldetl','dbacthdr','receipt','billsum','totamt_bm','company', 'title'));
+    }
+
+    public function showpdf_refund(Request $request){
+        $idno = $request->idno;
+        if(!$idno){
+            abort(404);
+        }
+
+        $tilldetl = DB::table('debtor.tilldetl')
+                    ->where('compcode',session('compcode'))
+                    ->where('cashier',session('username'))
+                    ->whereNull('closedate');
+        
+        if($tilldetl->exists()){
+            $tilldetl = $tilldetl->first();
+        }else{
+            $tilldetl->cashier = '-';
+        }
+
+        $dbacthdr = DB::table('debtor.dbacthdr as h')
+            ->select('h.source','h.trantype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate', 'h.entrytime','h.hdrtype','h.recptno',
+            'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4', 'm.creditterm as crterm','m.billtype as billtype','dt.debtortycode as dt_debtortycode', 'dt.description as dt_description','bt.description as bt_desc','pm.Name as pm_name','pm.address1 as pm_address1','pm.address2 as pm_address2','pm.address3 as pm_address3','pm.postcode as pm_postcode','h.doctorcode','dc.doctorname', 'h.payercode', 'h.payername','h.entryuser','h.paymode','h.authno','h.reference','h.posteddate')
+            ->leftJoin('debtor.debtormast as m', function($join) use ($request){
+                $join = $join->on("m.debtorcode", '=', 'h.debtorcode');    
+                $join = $join->where("m.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('debtor.debtortype as dt', function($join) use ($request){
+                $join = $join->on("dt.debtortycode", '=', 'm.debtortype');    
+                $join = $join->where("dt.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('hisdb.billtymst as bt', function($join) use ($request){
+                $join = $join->on("bt.billtype", '=', 'h.hdrtype');    
+                $join = $join->where("bt.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('hisdb.pat_mast as pm', function($join) use ($request){
+                $join = $join->on("pm.newmrn", '=', 'h.mrn');    
+                $join = $join->where("pm.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('hisdb.doctor as dc', function($join) use ($request){
+                $join = $join->on("dc.doctorcode", '=', 'h.doctorcode');    
+                $join = $join->where("dc.compcode", '=', session('compcode'));
+            })
+            ->where('h.idno','=',$idno)
+            // ->where('h.mrn','=','0')
+            ->whereIn('h.compcode',[session('compcode'),'xx'])
+            ->first();
+
+        if($dbacthdr->trantype == 'RC'){
+
+            $receipt = DB::table('debtor.dballoc as a')
+                ->select('h.source','h.trantype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate', 'h.entrytime','h.hdrtype','h.recptno','h.doctorcode','h.reference','h.paymode','h.payername','h.doctorcode','h.RCCASHbalance','a.refsource','a.reftrantype','a.refauditno')
+                ->join('debtor.dbacthdr as h', function($join) use ($request,$dbacthdr){
+                    $join = $join->where("h.source", '=', 'PB');
+                    $join = $join->where("h.trantype", '=', 'RC');
+                    $join = $join->on("h.auditno", '=', 'a.docauditno');
+                })
+                ->whereIn('a.compcode',[session('compcode'),'xx'])
+                ->where("a.docsource", '=', 'PB')
+                ->where("a.doctrantype", '=', 'RC')
+                ->where("a.docauditno", '=', $dbacthdr->auditno);
+        }else{
+
+            $receipt = DB::table('debtor.dballoc as a')
+                ->select('h.source','h.trantype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate', 'h.entrytime','h.hdrtype','h.recptno','h.doctorcode','h.reference','h.paymode','h.payername','h.doctorcode','h.RCCASHbalance')
+                ->join('debtor.dbacthdr as h', function($join) use ($request,$dbacthdr){
+                    $join = $join->where("h.source", '=', 'PB');
+                    $join = $join->where("h.trantype", '=', 'RC');
+                    $join = $join->on("h.auditno", '=', 'a.docauditno');
+                })
+                ->whereIn('a.compcode',[session('compcode'),'xx'])
+                ->where("a.refsource", '=', 'PB')
+                ->where("a.reftrantype", '=', 'IN')
+                ->where("a.refauditno", '=', $dbacthdr->auditno);
+        }
+
+        if(!$receipt->exists()){
+            abort(403, 'No Payment');
+        }else{
+            $receipt = $receipt->get();
+        }
+
+
+        if($dbacthdr->trantype == 'RC'){
+
+            $source = $receipt[0]->refsource;
+            $trantype = $receipt[0]->reftrantype;
+            $auditno = $receipt[0]->refauditno;
+
+        }else{
+
+            $source = $dbacthdr->source;
+            $trantype = $dbacthdr->trantype;
+            $auditno = $dbacthdr->auditno;
+        }
+
+        $title = "OFFICIAL REFUND";
+        $dballoc = [];
+        $dbacthdr->trantype = 'RF';
+        $dbacthdr->Newic = '-';
+        $dbacthdr->reference = $receipt[0]->reference;
+        $dbacthdr->paymode = $receipt[0]->paymode;
+        $dbacthdr->payername = $receipt[0]->payername;
+        $dbacthdr->remark = $receipt[0]->reference;
+        $dbacthdr->recptno = $receipt[0]->recptno;
+        $dbacthdr->entryuser = strtoupper($tilldetl->cashier);
+        
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+        $totamount_expld = explode(".", (float)$dbacthdr->amount);
+        
+        // $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
+        // $totamt_bm = $totamt_bm_rm." SAHAJA";
+        
+        // if(count($totamount_expld) > 1){
+        //     $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
+        //     $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
+        // }
+        
+        $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
+        $totamt_eng = $totamt_eng_rm." ONLY";
+        
+        if(count($totamount_expld) > 1){
+            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
+            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
+        }
+        
+        
+        // return view('finance.AR.receipt.receipt_pdfmake',compact('tilldetl','dbacthdr','receipt','billsum','totamt_bm','company', 'title'));
+        return view('finance.AR.receipt.receipt_pdfmake',compact('tilldetl','dbacthdr','title','dballoc','company','totamt_eng'));
     }
 
     //function sendmeail($data) -- nak kena ada atau tak

@@ -95,6 +95,12 @@ $(document).ready(function () {
 					// dialog_quoteno.urlParam.deptcode = $('#db_deptcode').val();
 					// dialog_quoteno.check(errorField);
 					// dialog_approvedbySO.check(errorField);
+					let check_refund = parseFloat($('#db_amount').val());
+					if(check_refund < 0){
+						$("#pdfgen2_refund").show();
+					}else{
+						$("#pdfgen2_refund").hide();
+					}
 				} if (oper != 'view') {
 					dialog_deptcode.on();
 					dialog_billtypeSO.on();
@@ -310,7 +316,9 @@ $(document).ready(function () {
 			populate_form(selrowData("#jqGrid"));
 
 			$("#pdfgen1").attr('href','./PointOfSales/showpdf?idno='+selrowData("#jqGrid").db_idno);
+			$("#pdfgen1_refund").attr('href','./PointOfSales/showpdf?idno='+selrowData("#jqGrid").db_idno+'&refund=true');
 			$("#pdfgen2").attr('href','./PointOfSales/showpdf?idno='+selrowData("#jqGrid").db_idno);
+			$("#pdfgen2_refund").attr('href','./PointOfSales/showpdf?idno='+selrowData("#jqGrid").db_idno+'&refund=true');
 			$("#pdfgen3").attr('href','./PointOfSales/showpdf?idno='+selrowData("#jqGrid").db_idno);
 			if_cancel_hide();
 			$('#receipt_panel').collapse('hide');
@@ -318,6 +326,13 @@ $(document).ready(function () {
 				$('#receipt_c').hide();
 			}else{
 				$('#receipt_c').show();
+			}
+
+			let check_refund = parseFloat(selrowData("#jqGrid").db_amount);
+			if(check_refund < 0){
+				$("#pdfgen1_refund").show();
+			}else{
+				$("#pdfgen1_refund").hide();
 			}
 
 			urlParamAlloc.idno = selrowData("#jqGrid").db_idno;
@@ -666,6 +681,7 @@ $(document).ready(function () {
 				$("#jqGrid").data('lastselrow',data.idno);
 				$("#pdfgen1").attr('href','./PointOfSales/showpdf?idno='+data.idno);
 				$("#pdfgen2").attr('href','./PointOfSales/showpdf?idno='+data.idno);
+				$("#pdfgen2_refund").attr('href','./PointOfSales/showpdf?idno='+data.idno+'&refund=true');
 				$("#pdfgen3").attr('href','./PointOfSales/showpdf?idno='+data.idno);
 				$('#db_amount').val(data.totalAmount);
 				
@@ -681,6 +697,7 @@ $(document).ready(function () {
 				$("#jqGrid").data('lastselrow',data.idno);
 				$("#pdfgen1").attr('href','./PointOfSales/showpdf?idno='+data.idno);
 				$("#pdfgen2").attr('href','./PointOfSales/showpdf?idno='+data.idno);
+				$("#pdfgen2_refund").attr('href','./PointOfSales/showpdf?idno='+data.idno+'&refund=true');
 				$("#pdfgen3").attr('href','./PointOfSales/showpdf?idno='+data.idno);
 
 				urlParam2.source = 'PB';
