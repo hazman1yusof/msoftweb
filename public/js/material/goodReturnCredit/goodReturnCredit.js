@@ -487,7 +487,7 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 		
 		},'json').fail(function (data) {
-			$("#saveDetailLabel").attr('disabled',false);
+			$("#saveDetailLabel").show();
 			alert(data.responseText);
 		}).done(function (data) {
 			unsaved = false;
@@ -509,7 +509,7 @@ $(document).ready(function () {
 				//doesnt need to do anything
 			}
 			disableForm('#formdata');
-			$("#saveDetailLabel").attr('disabled',false);
+			$("#saveDetailLabel").show();
 		});
 	}
 	
@@ -1151,7 +1151,7 @@ $(document).ready(function () {
 
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 	$("#saveDetailLabel").click(function(){ //actually saving the header
-		$("#saveDetailLabel").attr('disabled',true);
+		$("#saveDetailLabel").hide();
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
@@ -1164,7 +1164,7 @@ $(document).ready(function () {
 			saveHeader("#formdata",oper,saveParam);
 			unsaved = false;
 		}else{
-			$("#saveDetailLabel").attr('disabled',false);
+			$("#saveDetailLabel").show();
 			mycurrency.formatOn();
 			// dialog_paymodeAR.on();
 			dialog_CustomerSO.on();
@@ -1596,6 +1596,10 @@ $(document).ready(function () {
 				}
 
 				let data=selrowData('#'+dialog_chggroup.gridname);
+
+				if(data.overwrite == '1'){
+                    $("#jqGrid2 #"+id_optid+"_unitprice").prop('readonly',false);
+                }
 
 				var rowid = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
 				$("#jqGrid2").jqGrid('setRowData', rowid ,{description:data['description']});

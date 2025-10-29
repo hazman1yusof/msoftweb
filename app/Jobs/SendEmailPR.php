@@ -47,6 +47,10 @@ class SendEmailPR implements ShouldQueue
             $reqdept = $value->reqdept.' - '.$value->purreqno;
             $prepredon = Carbon::parse($value->purreqdt)->format('d-m-Y').' by '.$value->adduser;
 
+            if($curr_stats == 'APPROVED'){
+                $subject = "Your Purchase Request are APPROVED";
+            }
+
             DB::table('sysdb.sendemail')
                     ->insert([
                         'email' => $email,

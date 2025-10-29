@@ -423,7 +423,7 @@ i.fa {
 			
 		});
 	</script>
-	<script src="js/material/goodReturnCredit/goodReturnCredit.js?v=1.5"></script>
+	<script src="js/material/goodReturnCredit/goodReturnCredit.js?v=1.6"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	

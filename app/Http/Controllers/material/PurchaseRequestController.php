@@ -1365,7 +1365,7 @@ class PurchaseRequestController extends defaultController
                 $data->email_to = 'hazman.yusof@gmail.com';
                 $data->whatsapp = '01123090948';
 
-                //$this->sendemail($data);
+                $this->sendemail_DONE('DONE',$purreqhd_get->recno);
 
                 // $purreqhd = DB::table("material.purreqhd")
                 //     ->where('idno','=',$value);
@@ -1547,6 +1547,31 @@ class PurchaseRequestController extends defaultController
                             ->where('users.compcode',session('compcode'))
                             // ->where('users.email','HAZMAN.YUSOF@GMAIL.COM')
                             ->on('users.username','adtl.authorid');
+                    })
+                    ->where('qpr.compcode',session('compcode'))
+                    ->where('qpr.trantype',$trantype)
+                    ->where('qpr.recno',$recno)
+                    ->get();
+                    
+        SendEmailPR::dispatch($qpr);
+    }
+
+    function sendemail_DONE($trantype,$recno){
+        // $trantype = 'SUPPORT';
+        // $recno = '64';
+        $qpr = DB::table('material.queuepr as qpr')
+                    ->select('qpr.trantype','prhd.requestby as authorid','prhd.recno','prhd.reqdept','prhd.purreqno','prhd.purreqdt','prhd.recstatus','prhd.totamount','prhd.adduser','users.email')
+                    ->join('material.purreqhd as prhd', function($join){
+                        $join = $join
+                            ->where('prhd.compcode',session('compcode'))
+                            ->on('prhd.recno','qpr.recno')
+                            ->on('prhd.recstatus','qpr.recstatus');
+                    })
+                    ->join('sysdb.users as users', function($join){
+                        $join = $join
+                            ->where('users.compcode',session('compcode'))
+                            // ->where('users.email','HAZMAN.YUSOF@GMAIL.COM')
+                            ->on('users.username','prhd.requestby');
                     })
                     ->where('qpr.compcode',session('compcode'))
                     ->where('qpr.trantype',$trantype)
