@@ -75,11 +75,16 @@ i.fa {
 				<div class="col-md-2">
 				  	<label class="control-label" for="Status">Status</label>  
 					  	<select id="Status" name="Status" class="form-control input-sm">
+			      		@if(Request::get('scope') == 'CANCEL')
+					      <option value="All" selected>ALL</option>
+					      <option value="Open">OPEN</option>
+					      @else
 					      <option value="All" selected>ALL</option>
 					      <option value="Open">OPEN</option>
 					      <option value="Confirmed">CONFIRMED</option>
 					      <option value="Posted">POSTED</option>
 					      <option value="Cancelled">CANCELLED</option>
+					      @endif
 					    </select>
 	            </div>
 
@@ -99,18 +104,33 @@ i.fa {
 				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 					<span id="error_infront" style="color: red"></span>
-					<!-- <button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button> -->
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
-					<!-- <button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
-						@if (Request::get('scope') == 'all')
+
+
+					<?php 
+
+						$data_oper = 'posted';
+						if(strtoupper(Request::get('scope')) == 'ALL'){
+							$data_oper='posted';
+						}else if(strtoupper(Request::get('scope')) == 'CANCEL'){
+							$data_oper='cancel';
+						}else if(strtoupper(Request::get('scope')) == 'REOPEN'){
+							$data_oper='reopen';
+						}
+
+					?>
+					<button 
+						type="button" 
+						class="btn btn-primary btn-sm" 
+						id="but_post_jq"
+						data-oper="{{$data_oper}}"
+						style="display: none;">
+						@if (strtoupper(Request::get('scope')) == 'ALL')
 							{{'POST'}}
 						@else
 							{{Request::get('scope')}}
 						@endif
-					</button> -->
+					</button>
 
-					<!-- <button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button> -->
 				</div>
 
 			 </fieldset> 
@@ -403,7 +423,7 @@ i.fa {
 			
 		});
 	</script>
-	<script src="js/material/goodReturnCredit/goodReturnCredit.js?v=1.4"></script>
+	<script src="js/material/goodReturnCredit/goodReturnCredit.js?v=1.5"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	

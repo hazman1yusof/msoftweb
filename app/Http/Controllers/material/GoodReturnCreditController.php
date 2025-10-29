@@ -103,6 +103,14 @@ class GoodReturnCreditController extends defaultController
             }
         }
 
+        if(strtoupper($request->status)!='ALL'){
+            $table->Where('do.recstatus',$request->status);
+        }
+
+        if(strtoupper($request->trandept)!='ALL'){
+            $table->Where('do.deldept',$request->trandept);
+        }
+
         // if(!empty($request->filterCol)){
         //     foreach ($request->filterCol as $key => $value) {
         //         $pieces = explode(".", $request->filterVal[$key], 2);
@@ -812,22 +820,43 @@ class GoodReturnCreditController extends defaultController
     }
 
     public function cancel(Request $request){
-        DB::table('material.delordhd')
-                ->where('recno','=',$request->recno)
-                ->where('compcode','=',session('compcode'))
-                ->update([
-                    'postedby' => session('username'),
-                    'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'recstatus' => 'CANCELLED' 
-                ]);
+        DB::beginTransaction();
 
-            DB::table('material.delorddt')
-                ->where('recno','=',$request->recno)
-                ->where('compcode','=',session('compcode'))
-                ->where('recstatus','!=','DELETE')
-                ->update([
-                    'recstatus' => 'CANCELLED' 
-                ]);           
+        try{
+
+            foreach ($request->idno_array as $idno){
+                
+                $delordhd_obj = DB::table('material.delordhd')
+                    ->where('idno', '=', $idno)
+                    ->where('compcode', '=' ,session('compcode'))
+                    ->first();
+
+                DB::table('material.delordhd')
+                    ->where('idno', '=', $idno)
+                    ->where('compcode', '=' ,session('compcode'))
+                    ->update([
+                        'cancelby' => session('username'),
+                        'canceldate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'recstatus' => 'CANCELLED' 
+                    ]);
+
+                DB::table('material.delorddt')
+                    ->where('recno','=',$delordhd_obj->recno)
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recstatus','!=','DELETE')
+                    ->update([
+                        'recstatus' => 'CANCELLED' 
+                    ]); 
+
+            } 
+
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }          
     }
 
     public function reopen(Request $request){

@@ -639,6 +639,8 @@ $(document).ready(function () {
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
+		urlParam.status = $('#Status').val();
+		urlParam.trandept = $('#trandept').val();
 		refreshGrid('#jqGrid',urlParam);
 	}
 
