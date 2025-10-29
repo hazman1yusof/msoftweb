@@ -1309,8 +1309,13 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 				// delay(function(){
 						textfield.on('blur',{data:obj,errorField:errorField},onBlur);
 					// },500);
-				if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow(event);
-				$("#"+obj.dialogname).dialog( "close" );
+				if(obj.jqgrid_.hasOwnProperty('ondblClickRow')){
+					let retval_odbr = obj.jqgrid_.ondblClickRow(event);
+					
+					if(retval_odbr != 'dontclose'){
+						$("#"+obj.dialogname).dialog( "close" );
+					}
+				}
 			}
 
 			// var idtopush = (obj.textfield.substring(0, 1) == '#')?obj.textfield.substring(1):obj.textfield;

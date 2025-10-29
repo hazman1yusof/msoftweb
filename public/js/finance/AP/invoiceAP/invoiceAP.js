@@ -2193,19 +2193,24 @@ $(document).ready(function () {
 
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_document.gridname);
-				console.log(data);
-				$("#jqGrid2 input[name='document']").val(data['delordno']);
-				$("#jqGrid2 input[name='reference']").val(data['srcdocno']);
-				$("#jqGrid2 input[name='amount']").val(data['amount']);
-				$("#jqGrid2 input[name='GSTCode']").val(data['taxclaimable']);
-				$("#jqGrid2 input[name='AmtB4GST']").val(data['TaxAmt']);
-				$("#jqGrid2 input[name='dorecno']").val(data['recno']);
-				$("#jqGrid2 input[name='grnno']").val(data['docno']);
-				$("#jqGrid2 input[name='entrydate']").val(data['deliverydate']);
-				$("#jqGrid2 input[name='deptcode']").val(data['prdept']);
+				let confirm_msg = 'Do yo want to add DO no: "'+data['delordno']+'" to document invoice: "'+$('#apacthdr_document').val()+'"';
 
-				addmore_jqgrid2.state = true;
-				$('#jqGrid2_ilsave').click();
+				if (confirm(confirm_msg) == true) {
+					$("#jqGrid2 input[name='document']").val(data['delordno']);
+					$("#jqGrid2 input[name='reference']").val(data['srcdocno']);
+					$("#jqGrid2 input[name='amount']").val(data['amount']);
+					$("#jqGrid2 input[name='GSTCode']").val(data['taxclaimable']);
+					$("#jqGrid2 input[name='AmtB4GST']").val(data['TaxAmt']);
+					$("#jqGrid2 input[name='dorecno']").val(data['recno']);
+					$("#jqGrid2 input[name='grnno']").val(data['docno']);
+					$("#jqGrid2 input[name='entrydate']").val(data['deliverydate']);
+					$("#jqGrid2 input[name='deptcode']").val(data['prdept']);
+
+					addmore_jqgrid2.state = true;
+					$('#jqGrid2_ilsave').click();
+				}else{
+					return 'dontclose';
+				}
 
 			}
 		},{
