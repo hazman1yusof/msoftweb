@@ -11,11 +11,11 @@ $(document).ready(function () {
 	});
    
 	$("#pdfgen1").click(function() {
-		window.open('./SalesItem_Report/showpdf?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&deptcode='+$("#deptcode").val(), '_blank');
+		window.open('./SalesItem_Report/showpdf?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&deptcode='+$("#deptcode").val()+'&scope='+$("#scope").val(), '_blank');
 	});
 	
 	$("#excelgen1").click(function() {
-		window.open('./SalesItem_Report/showExcel?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&deptcode='+$("#deptcode").val(), '_blank');
+		window.open('./SalesItem_Report/showExcel?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&deptcode='+$("#deptcode").val()+'&scope='+$("#scope").val(), '_blank');
 	});
 
 	var dialog_deptcode = new ordialog(

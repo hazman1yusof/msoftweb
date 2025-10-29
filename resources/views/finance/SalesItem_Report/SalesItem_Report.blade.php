@@ -44,10 +44,11 @@
 @endsection
 
 @section('body')
+	<input type="hidden" name="scope" id="scope" value="{{request()->get('scope')}}">
 	<div class="container mycontainer">
         <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 350px;">
             <form method="get" id="genreport" action="./SalesItem_Report/showExcel">
-                <h4>SALES BY ITEM</h4>
+                @if(request()->get('scope')=='CAT')<h4>SALES BY CATEGORY</h4>@else<h4>SALES BY ITEM</h4>@endif
                 <h7 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h7>
 				
 				<div style="width: 800px;margin: 0 auto;">
@@ -78,14 +79,14 @@
 					</div>
 					
 					<div class="col-md-4" style="margin-left: 100px;">
-						<div class="panel panel-default" style="height: 137px;">
+						<div class="panel panel-default" style="height: 107px;">
 							<div class="panel-body">
 								<div class='col-md-12 btnform' style="padding: 20px 0px">
 									<fieldset>
 										<!-- <legend>Stock Sheet :</legend> -->
-										<button name="SummaryRcptListing_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" id="pdfgen1">
+										<!-- <button name="SummaryRcptListing_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" id="pdfgen1">
 											<span class="fa fa-file-pdf-o fa-lg"></span> Generate Report PDF
-										</button>
+										</button> -->
 										<button name="SummaryRcptListing_xls" type="button" class="mybtn btn btn-sm mybtnxls" id="excelgen1">
 											<span class="fa fa-file-excel-o fa-lg"></span> Generate Report Excel
 										</button>
@@ -101,5 +102,5 @@
 @endsection
 
 @section('scripts')
-	<script src="js/finance/SalesItem_Report/SalesItem_Report.js?v=1.3"></script>
+	<script src="js/finance/SalesItem_Report/SalesItem_Report.js?v=1.4"></script>
 @endsection

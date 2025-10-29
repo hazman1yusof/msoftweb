@@ -1603,7 +1603,6 @@ $(document).ready(function () {
 					dialog_cat.makedialog();
 					dialog_cat.on();
 				}
-
 			} else if($('#groupcode2').val()=="Others" && $('#othergrid_productcatAddNew3').length == 0) {
 				if(dialog_cat == null){
 					let dialog_cat = new ordialog(

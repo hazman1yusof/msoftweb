@@ -22,7 +22,7 @@ use Illuminate\Contracts\View\View;
 use DateTime;
 use Carbon\Carbon;
 
-class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithColumnFormatting
+class SalesCatExport implements FromView, WithEvents, WithColumnWidths, WithColumnFormatting
 {
     
     /**
@@ -44,12 +44,12 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
     public function columnFormats(): array
     {
         return [
-            'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
         ];
     }
     
@@ -58,12 +58,14 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
         return [
             'A' => 15,
             'B' => 13,
-            'C' => 40,
-            'D' => 10,
-            'E' => 13,
+            'C' => 13,
+            'D' => 40,
+            'E' => 10,
             'F' => 13,
             'G' => 13,
             'H' => 13,
+            'I' => 13,
+            'J' => 13,
         ];
     }
     
@@ -95,7 +97,7 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
         // dd($billdet);
         
         $dbacthdr = DB::table('debtor.dbacthdr as d')
-                    ->select('d.debtorcode', 'dm.name AS dm_desc', 'd.invno','d.mrn','b.idno', 'b.compcode', 'b.trxdate', 'b.chgcode', 'b.quantity', 'b.amount', 'b.invno', 'b.taxamount', 'c.description AS cm_desc', 'd.trantype','d.source','d.debtorcode AS debtorcode','pm.Name as pm_name','p.avgcost as costprice')
+                    ->select('d.debtorcode', 'dm.name AS dm_desc', 'd.invno','d.mrn','b.idno', 'b.compcode', 'b.trxdate', 'b.chgcode','c.chgtype','ct.description as ct_desc', 'b.quantity', 'b.amount', 'b.invno', 'b.taxamount', 'c.description AS cm_desc', 'd.trantype','d.source','d.debtorcode AS debtorcode','pm.Name as pm_name','p.avgcost as costprice')
                     ->leftJoin('debtor.debtormast as dm', function($join){
                         $join = $join->on('dm.debtorcode', '=', 'd.debtorcode')
                                     ->where('dm.compcode', '=', session('compcode'));
@@ -111,8 +113,11 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
                     ->leftJoin('hisdb.chgmast as c', function($join){
                         $join = $join->on('c.chgcode', '=', 'b.chgcode')
                                     ->on('c.uom', '=', 'b.uom')
-                                    ->where('c.unit', '=', session('unit'))
                                     ->where('c.compcode', '=', session('compcode'));
+                    })
+                    ->leftJoin('hisdb.chgtype as ct', function($join){
+                        $join = $join->on('ct.chgtype', '=', 'c.chgtype')
+                                    ->where('ct.compcode', '=', session('compcode'));
                     })
                     ->leftJoin('hisdb.pat_mast as pm', function($join){
                         $join = $join->on("pm.newmrn", '=', 'd.mrn');    
@@ -132,12 +137,12 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
                     ->whereBetween('b.trxdate', [$datefr, $dateto])
                     ->get();
 
-        $invno_array = [];
-        foreach ($dbacthdr as $obj) {
-            if(!in_array($obj->invno, $invno_array)){
-                array_push($invno_array, $obj->invno);
-            }
-        }
+        // $invno_array = [];
+        // foreach ($dbacthdr as $obj) {
+        //     if(!in_array($obj->invno, $invno_array)){
+        //         array_push($invno_array, $obj->invno);
+        //     }
+        // }
 
         foreach ($dbacthdr as $obj) {
             if($obj->costprice == ''){
@@ -159,6 +164,8 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
             //     $obj->costprice = 0.00;
             // }
         }
+
+        $chgtype = $dbacthdr->unique('chgtype');
         
         // $dbacthdr = $dbacthdr->get(['dh.debtorcode']);
         
@@ -174,7 +181,7 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
         
-        return view('finance.SalesItem_Report.SalesItem_Report_excel',compact('dbacthdr','invno_array'));
+        return view('finance.SalesItem_Report.SalesCat_Report_excel',compact('dbacthdr','chgtype'));
     }
     
     public function registerEvents(): array

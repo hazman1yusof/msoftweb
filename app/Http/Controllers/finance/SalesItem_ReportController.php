@@ -9,6 +9,7 @@ use DateTime;
 use stdClass;
 use Carbon\Carbon;
 use App\Exports\SalesItemExport;
+use App\Exports\SalesCatExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class SalesItem_ReportController extends defaultController
@@ -48,7 +49,11 @@ class SalesItem_ReportController extends defaultController
     }
     
     public function showExcel(Request $request){
-        return Excel::download(new SalesItemExport($request->datefr,$request->dateto,$request->deptcode), 'SalesItemExport.xlsx');
+        if($request->scope=='CAT'){
+            return Excel::download(new SalesCatExport($request->datefr,$request->dateto,$request->deptcode), 'SalesByCategoryExport.xlsx');
+        }else{
+            return Excel::download(new SalesItemExport($request->datefr,$request->dateto,$request->deptcode), 'SalesItemExport.xlsx');
+        }
     }
     
     public function showpdf(Request $request){
