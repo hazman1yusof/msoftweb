@@ -116,8 +116,10 @@ class TestController extends defaultController
                 return $this->betulkan_stockexp_semua($request);
             case 'len_len':
                 return $this->len_len($request);
-            case 'apalloc_osamt':
-                return $this->apalloc_osamt($request);
+            case 'apalloc_osamt_in':
+                return $this->apalloc_osamt_in($request);
+            case 'apalloc_osamt_cn':
+                return $this->apalloc_osamt_cn($request);
             // case 'betulkan_stockloc_2025':
             //     return $this->betulkan_stockloc_2025($request);
             // case 'netmvval_from_netmvqty':
@@ -8647,7 +8649,7 @@ class TestController extends defaultController
         }
     }
 
-    public function apalloc_osamt(Request $request){
+    public function apalloc_osamt_in(Request $request){
         $datefrom = $request->datefrom;
         if($datefrom == null){
             $datefrom = '2025-05-01';
@@ -8659,7 +8661,7 @@ class TestController extends defaultController
         }
 
         $apacthdr = DB::table('finance.apacthdr as ap')
-                        ->select('ap.source','ap.trantype','ap.auditno','ap.postdate','ap.source','ap.amount','ap.outamount')
+                        ->select('ap.idno','ap.source','ap.trantype','ap.auditno','ap.postdate','ap.source','ap.amount','ap.outamount')
                         ->where('ap.compcode',session('compcode'))
                         ->where('ap.source','AP')
                         ->where('ap.trantype','IN')
@@ -8693,6 +8695,71 @@ class TestController extends defaultController
                         'outamount' => $osamt
                     ]);
             }
+        }
+    }
+
+    public function apalloc_osamt_cn(Request $request){
+        $commit = $request->commit;
+        if($commit == null){
+            $commit = false;
+        }else{
+            $commit = true;
+        }
+
+        $datefrom = $request->datefrom;
+        if($datefrom == null){
+            $datefrom = '2025-05-01';
+        }
+
+        $dateto = $request->dateto;
+        if($dateto == null){
+            $dateto = '2025-05-31';
+        }
+
+        $apacthdr = DB::table('finance.apacthdr as ap')
+                        ->select('ap.idno','ap.source','ap.trantype','ap.auditno','ap.postdate','ap.source','ap.amount','ap.outamount')
+                        ->where('ap.compcode',session('compcode'))
+                        ->where('ap.source','AP')
+                        ->where('ap.trantype','CN')
+                        ->where('ap.recstatus','POSTED')
+                        ->whereDate('ap.postdate','>=',$datefrom)
+                        ->whereDate('ap.postdate','<=',$dateto)
+                        ->get();
+
+        $array = [];
+        foreach ($apacthdr as $obj) {
+            $osamt = $obj->amount;
+
+            $apalloc = DB::table('finance.apalloc')
+                        ->where('compcode',session('compcode'))
+                        ->where('docsource',$obj->source)
+                        ->where('doctrantype',$obj->trantype)
+                        ->where('docauditno',$obj->auditno)
+                        ->where('recstatus', 'POSTED')
+                        ->get();
+
+            foreach ($apalloc as $obj_alloc){
+                $osamt = $osamt - $obj_alloc->allocamount;
+            }
+
+            if(!$this->floatEquals($obj->outamount,$osamt)){
+                if($commit){
+                    $obj->osamt_alloc = $osamt;
+                    DB::table('finance.apacthdr as ap')
+                        ->where('compcode',session('compcode'))
+                        ->where('idno',$obj->idno)
+                        ->update([
+                            'outamount' => $osamt
+                        ]);
+                }else{
+                    $obj->osamt_alloc = $osamt;
+                    array_push($array, $obj);
+                }
+            }
+        }
+
+        if(!$commit){
+            return view('test.test2',compact('array'));
         }
     }
 

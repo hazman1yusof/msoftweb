@@ -13,11 +13,11 @@
     @foreach ($do_hd as $hd_obj)
     @php($fulltot = $fulltot + $hd_obj->totamount)
     <tr>
-        <td style="font-weight:bold; text-align: left">Delivery Dept : {{$hd_obj->deldept_desc}}</td>
-        <td style="font-weight:bold; text-align: left">DO No : {{$hd_obj->delordno}}</td>
-        <td style="font-weight:bold; text-align: left">GRN No : {{$hd_obj->docno}}</td>
-        <td style="font-weight:bold; text-align: left">Supplier : {{$hd_obj->suppcode_desc}}</td>
-        <td style="font-weight:bold; text-align: left"></td>
+        <td style="font-weight:bold; text-align: left" colspan="2">Delivery Dept : {{$hd_obj->deldept_desc}}</td>
+        <td style="font-weight:bold; text-align: left" >DO No : {{$hd_obj->delordno}}</td>
+        <td style="font-weight:bold; text-align: left" colspan="2">GRN No : {{$hd_obj->docno}}</td>
+        <td style="font-weight:bold; text-align: left" colspan="2">Supplier : {{$hd_obj->suppcode_desc}}</td>
+        <td style="font-weight:bold; text-align: left" colspan="2">Invoice No. : {{$hd_obj->invoiceno}}</td>
         <td style="font-weight:bold; text-align: left"></td>
     </tr>
         @foreach ($delordhd as $dt_obj)
