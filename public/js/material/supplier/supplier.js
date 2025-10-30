@@ -325,7 +325,7 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'Supplier Code', name: 'SuppCode', width: 35 , sorttype: 'text', classes: 'wrap', canSearch: true},
 			{ label: 'Supplier Name', name: 'Name', width: 100, editable: true, classes: 'wrap',checked:true, canSearch: true },
-			{ label: 'Supplier Group', name: 'SuppGroup', width: 35, editable: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Supplier Group', name: 'SuppGroup', width: 35, editable: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail,canSearch: true},
 			{ label: 'Cont Pers', name: 'ContPers', width: 90, hidden: true},
 			{ label: 'Addr1', name: 'Addr1', width: 30, hidden: true}, 
 			{ label: 'Addr2', name: 'Addr2', width: 90, hidden:true},
