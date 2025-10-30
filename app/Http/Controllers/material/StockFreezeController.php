@@ -81,7 +81,7 @@ class StockFreezeController extends defaultController
             $include_expiry = false;
 
             $frzdate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d');
-            $frztime = Carbon::now("Asia/Kuala_Lumpur")->format('h:i:s');
+            $frztime = Carbon::now("Asia/Kuala_Lumpur")->format('H:i:s');
 
             $table = DB::table("material.phycnthd");
 
@@ -239,7 +239,7 @@ class StockFreezeController extends defaultController
             $responce->frztime = $frztime;
             $responce->respersonid = session('username');
             $responce->adduser = session('username');
-            $responce->adddate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d h:i:s');
+            $responce->adddate = Carbon::now("Asia/Kuala_Lumpur");
             echo json_encode($responce);
 
             // $queries = DB::getQueryLog();

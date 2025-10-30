@@ -24,7 +24,13 @@ class StockCountController extends defaultController
 
     public function show(Request $request)
     {   
-        if(session('unit') == 'MRS'){
+        $sysparam = DB::table('sysdb.sysparam')->select('pvalue1')
+            ->where('compcode',session('compcode'))
+            ->where('source', 'IV')
+            ->where('trantype', 'PHYCNT_POST_DEPT')
+            ->first();
+
+        if(session('deptcode') == $sysparam->pvalue1){
             $scope = 'POSTER';
         }else{
             $scope = 'COUNTER';
@@ -108,7 +114,7 @@ class StockCountController extends defaultController
                 'itemfrom' => $request->itemfrom,
                 'itemto' => $request->itemto,
                 'frzdate' => Carbon::now("Asia/Kuala_Lumpur"),//freeze date
-                'frztime' => Carbon::now("Asia/Kuala_Lumpur")->format('h:i:s'),//freeze time
+                'frztime' => Carbon::now("Asia/Kuala_Lumpur")->format('H:i:s'),//freeze time
                 'phycntdate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'phycnttime' => Carbon::now("Asia/Kuala_Lumpur"),
                 'respersonid' => session('username'), //freeze user
@@ -220,10 +226,10 @@ class StockCountController extends defaultController
             $responce->recno = $recno;
             $responce->idno = $idno;
             $responce->frzdate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d');
-            $responce->frztime = Carbon::now("Asia/Kuala_Lumpur")->format('h:i:s');
+            $responce->frztime = Carbon::now("Asia/Kuala_Lumpur")->format('H:i:s');
             $responce->respersonid = session('username');
             $responce->adduser = session('username');
-            $responce->adddate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d h:i:s');
+            $responce->adddate = Carbon::now("Asia/Kuala_Lumpur");
             echo json_encode($responce);
 
             // $queries = DB::getQueryLog();
@@ -285,7 +291,7 @@ class StockCountController extends defaultController
             foreach ($request->idno_array as $idno){
 
                 $phycntdate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d');
-                $phycnttime = Carbon::now("Asia/Kuala_Lumpur")->format('h:i:s');
+                $phycnttime = Carbon::now("Asia/Kuala_Lumpur")->format('H:i:s');
 
                 //-- 1. transfer from ivtmphd to ivtxnhd --//
                 $phycnthd_obj = DB::table('material.phycnthd')
@@ -539,7 +545,7 @@ class StockCountController extends defaultController
                     //--- 7. posting GL ---//
 
                     //amik yearperiod
-                    // $yearperiod = $this->getyearperiod($phycntdate);
+                    $yearperiod = $this->getyearperiod($phycntdate);
      
                     // //1. buat gltran
                     // DB::table('finance.gltran')
@@ -687,8 +693,6 @@ class StockCountController extends defaultController
                                 'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                                 'upduser'  => session('username'),
                             ]);
-
-
                 }
             }
             // $queries = DB::getQueryLog();
@@ -711,7 +715,7 @@ class StockCountController extends defaultController
 
             foreach ($request->idno_array as $idno){
                 $phycntdate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d');
-                $phycnttime = Carbon::now("Asia/Kuala_Lumpur")->format('h:i:s');
+                $phycnttime = Carbon::now("Asia/Kuala_Lumpur")->format('H:i:s');
 
                 //-- 1. transfer from ivtmphd to ivtxnhd --//
                 $phycnthd_obj = DB::table('material.phycnthd')
