@@ -170,6 +170,8 @@ class TestController extends defaultController
             //     return $this->tunjuk_doctorcode($request);
             case 'dmmc_einvoice_amik_invalid':
                 return $this->dmmc_einvoice_amik_invalid($request);
+            case 'apinposted':
+                return $this->apinposted($request);
             default:
                 return 'error happen..';
         }
@@ -8793,6 +8795,67 @@ class TestController extends defaultController
 
         if(!$commit){
             return view('test.test2',compact('array'));
+        }
+    }
+
+    public function apinposted(Request $request){
+        $auditno = $request->auditno;
+        if(empty($auditno)){
+            dd('no auditno');
+        }
+
+        DB::beginTransaction();
+        try {
+
+            $apacthdr = DB::table('finance.apacthdr')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=','AP')
+                        ->where('trantype','=','IN')
+                        ->where('auditno','=',$auditno)
+                        ->first();
+
+            $yearperiod = defaultController::getyearperiod_($apacthdr->postdate);
+
+            $supp_obj = DB::table('material.supplier')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('suppcode','=',$apacthdr->suppcode)
+                        ->first();
+
+            $ccode_obj = DB::table("sysdb.sysparam")
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=','AP')
+                        ->where('trantype','=','ACC')
+                        ->first();
+
+            //1. buat gltran
+            DB::table('finance.gltran')
+                ->insert([
+                    'compcode' => $apacthdr->compcode,
+                    'adduser' => $apacthdr->adduser,
+                    'adddate' => $apacthdr->adddate,
+                    'auditno' => $apacthdr->auditno,
+                    'lineno_' => 1,
+                    'source' => $apacthdr->source,
+                    'trantype' => $apacthdr->trantype,
+                    'reference' => $apacthdr->document,
+                    'postdate' => $apacthdr->postdate,
+                    'description' => $supp_obj->SuppCode.'</br>'.$supp_obj->Name, //suppliercode + suppliername
+                    'postdate' => $apacthdr->recdate,
+                    'year' => $yearperiod->year,
+                    'period' => $yearperiod->period,
+                    'drcostcode' => $ccode_obj->pvalue1,
+                    'dracc' => $ccode_obj->pvalue2,
+                    'crcostcode' => $supp_obj->costcode,
+                    'cracc' => $supp_obj->glaccno,
+                    'amount' => $apacthdr->amount,
+                    'idno' => null
+                ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
         }
     }
 
