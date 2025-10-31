@@ -237,7 +237,7 @@ class UnInvGRNController extends defaultController
                                             ->on('sp.suppcode','do.suppcode');
                             })
                             ->where('do.compcode',session('compcode'))
-                            ->whereDate('do.trandate','>=',$this->fromdate)
+                            // ->whereDate('do.trandate','>=',$this->fromdate)
                             ->whereDate('do.trandate','<=',$this->todate)
                             ->where('do.trantype','GRN')
                             ->where('do.recstatus','POSTED')

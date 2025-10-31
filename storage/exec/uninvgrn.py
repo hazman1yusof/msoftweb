@@ -70,10 +70,10 @@ class UninvGrnJob:
             WHERE do.compcode = %s
               AND do.trantype = 'GRN'
               AND do.recstatus = 'POSTED'
-              AND do.trandate >= %s
+              -- AND do.trandate >= %s , self.fromdate
               AND do.trandate <= %s
         """
-        self.cursor.execute(sql_grn, (self.compcode, self.fromdate, self.todate))
+        self.cursor.execute(sql_grn, (self.compcode, self.todate)) 
         grn_list = self.cursor.fetchall()
 
         # ---- Step 2: Loop through GRNs ----

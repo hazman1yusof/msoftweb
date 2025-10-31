@@ -67,16 +67,16 @@
             
             <div style="margin: 0 auto;">
                 <div class="col-md-5" >
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <div class="col-md-12">
                             <label class="control-label" for="dateFrom">Date From</label>
                             <input id="dateFrom" name="dateFrom" type="date" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                         <div class="col-md-12 toppad">
-                            <label class="control-label" for="dateTo">Date To</label>
+                            <label class="control-label" for="dateTo">Date</label>
                             <input id="dateTo" name="dateTo" type="date" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
                         </div>
                     </div>
