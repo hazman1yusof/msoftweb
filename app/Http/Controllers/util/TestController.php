@@ -8827,35 +8827,44 @@ class TestController extends defaultController
                         ->where('trantype','=','ACC')
                         ->first();
 
-            //1. buat gltran
-            DB::table('finance.gltran')
-                ->insert([
-                    'compcode' => $apacthdr->compcode,
-                    'adduser' => $apacthdr->adduser,
-                    'adddate' => $apacthdr->adddate,
-                    'auditno' => $apacthdr->auditno,
-                    'lineno_' => 1,
-                    'source' => $apacthdr->source,
-                    'trantype' => $apacthdr->trantype,
-                    'reference' => $apacthdr->document,
-                    'postdate' => $apacthdr->postdate,
-                    'description' => $supp_obj->SuppCode.'</br>'.$supp_obj->Name, //suppliercode + suppliername
-                    'postdate' => $apacthdr->recdate,
-                    'year' => $yearperiod->year,
-                    'period' => $yearperiod->period,
-                    'drcostcode' => $ccode_obj->pvalue1,
-                    'dracc' => $ccode_obj->pvalue2,
-                    'crcostcode' => $supp_obj->costcode,
-                    'cracc' => $supp_obj->glaccno,
-                    'amount' => $apacthdr->amount,
-                    'idno' => null
-                ]);
+            $gltran = DB::table('finance.gltran')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=',$apacthdr->source)
+                        ->where('trantype','=',$apacthdr->trantype)
+                        ->where('auditno','=',$apacthdr->auditno);
+
+            if(!$gltran->exists()){
+                DB::table('finance.gltran')
+                    ->insert([
+                        'compcode' => $apacthdr->compcode,
+                        'adduser' => $apacthdr->adduser,
+                        'adddate' => $apacthdr->adddate,
+                        'auditno' => $apacthdr->auditno,
+                        'lineno_' => 1,
+                        'source' => $apacthdr->source,
+                        'trantype' => $apacthdr->trantype,
+                        'reference' => $apacthdr->document,
+                        'postdate' => $apacthdr->postdate,
+                        'description' => $supp_obj->SuppCode.'</br>'.$supp_obj->Name, //suppliercode + suppliername
+                        'postdate' => $apacthdr->recdate,
+                        'year' => $yearperiod->year,
+                        'period' => $yearperiod->period,
+                        'drcostcode' => $ccode_obj->pvalue1,
+                        'dracc' => $ccode_obj->pvalue2,
+                        'crcostcode' => $supp_obj->CostCode,
+                        'cracc' => $supp_obj->GlAccNo,
+                        'amount' => $apacthdr->amount,
+                        'idno' => null
+                    ]);
+
+                dump('added gltran auditno: '.$apacthdr->source.'-'.$apacthdr->trantype.'-'.$apacthdr->auditno);
+            }
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage(), 500);
+            return response($e, 500);
         }
     }
 
