@@ -103,7 +103,7 @@ class SalesRCNExport implements FromView, WithEvents, WithColumnWidths, WithColu
                     })
                     ->join('material.delorddt as b', function($join){
                         $join = $join->on('b.recno', '=', 'do.recno')
-                                    ->whereIn('b.recstatus', '!=', ['CANCELLED','DELETE'])
+                                    ->whereNotIn('b.recstatus',['CANCELLED','DELETE'])
                                     ->where('b.compcode', '=', session('compcode'));
                     })
                     ->leftJoin('debtor.debtormast as dm', function($join){
