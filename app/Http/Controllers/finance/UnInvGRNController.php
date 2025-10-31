@@ -93,7 +93,7 @@ class UnInvGRNController extends defaultController
             'DATA1' => [
                 'username' => ($request->username)?$request->username:'-',
                 'compcode' => ($request->compcode)?$request->compcode:'9B',
-                'dateFrom' => $request->dateFrom,
+                // 'dateFrom' => $request->dateFrom,
                 'dateTo' => $request->dateTo,
             ]
         ];
