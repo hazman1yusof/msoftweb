@@ -31,12 +31,12 @@ class UninvGrnJob:
     def start_job_queue(self):
         sql = """
             INSERT INTO sysdb.job_queue
-            (compcode, page, filename, adduser, adddate, status, date, date_to)
+            (compcode, page, filename, adduser, adddate, status, date_to)
             VALUES (%s,%s,%s,%s,NOW(),'PENDING',%s,%s)
         """
         self.cursor.execute(sql, (
             self.compcode, self.page, self.filename,
-            self.username, self.fromdate, self.todate
+            self.username, self.todate
         ))
         self.conn.commit()
         return self.cursor.lastrowid
