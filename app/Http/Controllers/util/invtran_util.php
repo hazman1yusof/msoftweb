@@ -511,7 +511,7 @@ class invtran_util extends defaultController{
             ->where('StockLoc.CompCode','=',session('compcode'))
             ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
             ->where('StockLoc.ItemCode','=',$value->itemcode)
-            ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->trandate))
+            ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->postdate))
             ->where('StockLoc.UomCode','=',$value->uomcode);
 
         $stockloc_first = $stockloc_obj->first();
@@ -521,7 +521,7 @@ class invtran_util extends defaultController{
 
             //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
             $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
-            $month = defaultController::toMonth(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+            $month = defaultController::toMonth($ivtmphd->postdate);
             $QtyOnHand = $stockloc_first->qtyonhand - $value->txnqty; 
             $NetMvQty = $stockloc_arr['netmvqty'.$month] - $value->txnqty;
             $NetMvVal = $stockloc_arr['netmvval'.$month] - round($value->netprice * $value->txnqty,2);
@@ -775,7 +775,7 @@ class invtran_util extends defaultController{
             ->where('StockLoc.CompCode','=',session('compcode'))
             ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
             ->where('StockLoc.ItemCode','=',$value->itemcode)
-            ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->trandate))
+            ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->postdate))
             ->where('StockLoc.UomCode','=',$value->uomcode);
 
         $stockloc_first = $stockloc_obj->first();
@@ -785,7 +785,7 @@ class invtran_util extends defaultController{
 
             //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
             $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
-            $month = defaultController::toMonth(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+            $month = defaultController::toMonth($ivtmphd->postdate);
             $QtyOnHand = $stockloc_first->qtyonhand + $value->txnqty; 
             $NetMvQty = $stockloc_arr['netmvqty'.$month] + $value->txnqty;
             $NetMvVal = $stockloc_arr['netmvval'.$month] + round($value->netprice * $value->txnqty,2);
@@ -858,7 +858,7 @@ class invtran_util extends defaultController{
             ->where('StockLoc.unit',session('unit'))
             ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
             ->where('StockLoc.ItemCode','=',$value->itemcode)
-            ->where('StockLoc.Year','=', defaultController::toYear(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d')))
+            ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->postdate))
             ->where('StockLoc.UomCode','=',$value->uomcode);
 
         $stockloc_first = $stockloc_obj->first();
@@ -868,7 +868,7 @@ class invtran_util extends defaultController{
 
             //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
             $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
-            $month = defaultController::toMonth(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+            $month = defaultController::toMonth($ivtmphd->postdate);
             $QtyOnHand = $stockloc_first->qtyonhand + $value->txnqty; 
             $NetMvQty = $stockloc_arr['netmvqty'.$month] + $value->txnqty;
             $NetMvVal = $stockloc_arr['netmvval'.$month] + round($value->netprice * $value->txnqty,2);
@@ -913,7 +913,7 @@ class invtran_util extends defaultController{
             ->where('StockLoc.CompCode','=',session('compcode'))
             ->where('StockLoc.DeptCode','=',$ivtmphd->sndrcv)
             ->where('StockLoc.ItemCode','=',$value->itemcode)
-            ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->trandate))
+            ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->postdate))
             ->where('StockLoc.UomCode','=',$value->uomcoderecv);
 
         $stockloc_first = $stockloc_obj->first();
@@ -923,7 +923,7 @@ class invtran_util extends defaultController{
             if($stockloc_first->stocktxntype != 'IS'){
                 //5. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
                 $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
-                $month = defaultController::toMonth(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+                $month = defaultController::toMonth($ivtmphd->postdate);
                 $QtyOnHand = $stockloc_first->qtyonhand - $txnqty; 
                 $NetMvQty = $stockloc_arr['netmvqty'.$month] - $txnqty;
                 $NetMvVal = $stockloc_arr['netmvval'.$month] - round($netprice * $txnqty,2);
@@ -1036,7 +1036,7 @@ class invtran_util extends defaultController{
             ->where('StockLoc.CompCode','=',session('compcode'))
             ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
             ->where('StockLoc.ItemCode','=',$value->itemcode)
-            ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->trandate))
+            ->where('StockLoc.Year','=', defaultController::toYear(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d')))
             ->where('StockLoc.UomCode','=',$value->uomcode);
 
         $stockloc_first = $stockloc_obj->first();
@@ -1229,7 +1229,7 @@ class invtran_util extends defaultController{
             ->where('StockLoc.CompCode','=',session('compcode'))
             ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
             ->where('StockLoc.ItemCode','=',$value->itemcode)
-            ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->trandate))
+            ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->postdate))
             ->where('StockLoc.UomCode','=',$value->uomcode);
 
         $stockloc_first = $stockloc_obj->first();
@@ -1309,7 +1309,7 @@ class invtran_util extends defaultController{
         if($product_obj->exists()){ // kalu jumpa
             $product_obj = $product_obj->first();
             
-            $month = defaultController::toMonth($ivtmphd->trandate);
+            // $month = defaultController::toMonth($ivtmphd->trandate);
             $netprice = $value->netprice;
             $txnqty = $value->txnqty;
 
@@ -1362,7 +1362,7 @@ class invtran_util extends defaultController{
             ->where('StockLoc.CompCode','=',session('compcode'))
             ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
             ->where('StockLoc.ItemCode','=',$value->itemcode)
-            ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->trandate))
+            ->where('StockLoc.Year','=', defaultController::toYear(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d')))
             ->where('StockLoc.UomCode','=',$value->uomcode);
 
         $stockloc_first = $stockloc_obj->first();
@@ -1372,7 +1372,7 @@ class invtran_util extends defaultController{
 
         //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
         $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
-        $month = defaultController::toMonth($ivtmphd->postdate);
+        $month = defaultController::toMonth(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
         $QtyOnHand = $stockloc_first->qtyonhand + $value->txnqty; 
         $NetMvQty = $stockloc_arr['netmvqty'.$month] + $value->txnqty;
         $NetMvVal = $stockloc_arr['netmvval'.$month] + round($value->netprice * $value->txnqty,2);
@@ -1495,7 +1495,7 @@ class invtran_util extends defaultController{
             ->where('StockLoc.CompCode','=',session('compcode'))
             ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
             ->where('StockLoc.ItemCode','=',$value->itemcode)
-            ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->trandate))
+            ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->postdate))
             ->where('StockLoc.UomCode','=',$value->uomcode);
 
         $stockloc_first = $stockloc_obj->first();
@@ -1575,7 +1575,7 @@ class invtran_util extends defaultController{
         if($product_obj->exists()){ // kalu jumpa
             $product_obj = $product_obj->first();
             
-            $month = defaultController::toMonth($ivtmphd->trandate);
+            // $month = defaultController::toMonth($ivtmphd->trandate);
             $netprice = $value->netprice;
             $txnqty = $value->txnqty;
 

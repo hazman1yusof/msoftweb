@@ -70,7 +70,6 @@ class UninvGrnJob:
             WHERE do.compcode = %s
               AND do.trantype = 'GRN'
               AND do.recstatus = 'POSTED'
-              -- AND do.trandate >= %s , self.fromdate
               AND do.trandate <= %s
         """
         self.cursor.execute(sql_grn, (self.compcode, self.todate)) 
@@ -117,7 +116,7 @@ class UninvGrnJob:
             inv_postdate = row_inv["postdate"] if row_inv else None
 
             # ---- Step 5: Calculate balance ----
-            total_bal = grn_amt - grt_amt - invoice_amt
+            total_bal = (grn_amt or 0) - (grt_amt or 0) - (invoice_amt or 0)
             if round(total_bal, 2) != 0.00:
                 pono = "-"
                 if obj.get("srcdocno"):
