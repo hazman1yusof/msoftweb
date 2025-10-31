@@ -227,7 +227,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 	datatype: "local",
 	colModel: [
-		{ label: 'Audit <br> No', name: 'apacthdr_auditno', width: 13, classes: 'wrap',formatter: padzero, unformat: unpadzero},
+		{ label: 'Audit <br> No', name: 'apacthdr_auditno', width: 13, classes: 'wrap'},
 		{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap'},
 		{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap', hidden:true},
 		{ label: 'Creditor', name: 'apacthdr_suppcode', width: 60, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},

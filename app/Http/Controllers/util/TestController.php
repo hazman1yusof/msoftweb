@@ -7095,15 +7095,25 @@ class TestController extends defaultController
         DB::beginTransaction();
 
         try {
+            $ret_array = [];
+            $class_ = new stdClass();
 
             $deptcode=$request->deptcode;
             if(empty($deptcode)){
+                return view('test.test_netmvqty_calc',compact('ret_array'));
                 dd('no deptcode');
             }
             $period=intval($request->period);
             if(empty($period)){
+                return view('test.test_netmvqty_calc',compact('ret_array'));
                 dd('no period');
             }
+
+            $commit=intval($request->commit);
+            if(empty($commit)){
+                $commit = 0;
+            }
+            dd($commit);
 
             $day_start = Carbon::createFromFormat('Y-m-d','2025-'.$period.'-01')->startOfMonth()->format('Y-m-d');
             $day_end = Carbon::createFromFormat('Y-m-d','2025-'.$period.'-01')->endOfMonth()->format('Y-m-d');
@@ -7181,6 +7191,13 @@ class TestController extends defaultController
                 $all2 = round($all2,2);
 
                 if(!$this->floatEquals($value_array['netmvqty'.$period], $all) || !$this->floatEquals($value_array['netmvval'.$period], $all2)){
+
+                    $class_->itemcode = 'HAZMAN.YUSOF@GMAIL.COM';
+                    $class_->system_qty = 'PV';
+                    $class_->real_qty = '111';
+                    $class_->system_val = 'PV';
+                    $class_->real_val = '111';
+                    array_push($array, $obj);
 
                     dump($x.'. '.$value->itemcode.' -> SAVED netmvqty'.$period.' => '.$value_array['netmvqty'.$period].' -> SAVED netmvval'.$period.' => '.$value_array['netmvval'.$period] );
                     dump($x.'. '.$value->itemcode.' -> REAL netmvqty'.$period.' => '.$all.' -> REAL netmvval => '.$all2);

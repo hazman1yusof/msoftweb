@@ -829,7 +829,7 @@ class DeliveryOrderController extends defaultController
                         ->where('StockLoc.CompCode','=',session('compcode'))
                         ->where('StockLoc.DeptCode','=',$value->deldept)
                         ->where('StockLoc.ItemCode','=',$value->itemcode)
-                        ->where('StockLoc.Year','=', defaultController::toYear($value->trandate))
+                        ->where('StockLoc.Year','=', defaultController::toYear($delordhd_obj->postdate))
                         ->where('StockLoc.UomCode','=',$value->uomcode);
 
                     //2.kalu ada stockloc, update 
@@ -838,7 +838,7 @@ class DeliveryOrderController extends defaultController
 
                         //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
                         $stockloc_arr = (array)$stockloc_obj;
-                        $month = defaultController::toMonth($value->trandate);
+                        $month = defaultController::toMonth($delordhd_obj->postdate);
                         $QtyOnHand = $stockloc_obj->qtyonhand - $txnqty; 
                         $NetMvQty = $stockloc_arr['netmvqty'.$month] - $txnqty;
                         $NetMvVal = $stockloc_arr['netmvval'.$month] - ($netprice * $txnqty);
@@ -848,7 +848,7 @@ class DeliveryOrderController extends defaultController
                             ->where('StockLoc.CompCode','=',session('compcode'))
                             ->where('StockLoc.DeptCode','=',$value->deldept)
                             ->where('StockLoc.ItemCode','=',$value->itemcode)
-                            ->where('StockLoc.Year','=', defaultController::toYear($value->trandate))
+                            ->where('StockLoc.Year','=', defaultController::toYear($delordhd_obj->postdate))
                             ->where('StockLoc.UomCode','=',$value->uomcode)
                             ->update([
                                 'QtyOnHand' => $QtyOnHand,
@@ -869,7 +869,7 @@ class DeliveryOrderController extends defaultController
                         ->where('stockexp.deptcode','=',$value->deldept)
                         ->where('stockexp.itemcode','=',$value->itemcode)
                         ->where('stockexp.expdate','=',$value->expdate)
-                        ->where('stockexp.year','=', defaultController::toYear($value->trandate))
+                        ->where('stockexp.year','=', defaultController::toYear($delordhd_obj->postdate))
                         ->where('stockexp.uomcode','=',$value->uomcode)
                         ->where('stockexp.batchno','=',$value->batchno);
                        // ->where('stockexp.lasttt','=','GRN')
@@ -887,7 +887,7 @@ class DeliveryOrderController extends defaultController
                             ->where('stockexp.deptcode','=',$value->deldept)
                             ->where('stockexp.itemcode','=',$value->itemcode)
                             ->where('stockexp.expdate','=',$value->expdate)
-                            ->where('stockexp.year','=', defaultController::toYear($value->trandate))
+                            ->where('stockexp.year','=', defaultController::toYear($delordhd_obj->postdate))
                             ->where('stockexp.uomcode','=',$value->uomcode)
                             ->where('stockexp.batchno','=',$value->batchno)
                          //   ->where('stockexp.lasttt','=','GRN')
@@ -909,7 +909,7 @@ class DeliveryOrderController extends defaultController
 
                     if($product_obj->exists()){ // kalu jumpa
                         $product_obj = $product_obj->first();
-                        $month = defaultController::toMonth($value->trandate);
+                        $month = defaultController::toMonth($delordhd_obj->postdate);
                         $OldQtyOnHand = $product_obj->qtyonhand;
                         $currprice = $netprice;
                         $Oldavgcost = $product_obj->avgcost;
