@@ -17,7 +17,7 @@ class UninvGrnJob:
         self.cursor = self.conn.cursor()
 
         self.page = "uninvgrn"
-        self.fromdate = request["datefrom"]
+        # self.fromdate = request["datefrom"]
         self.todate = request["dateto"]
         self.username = request["username"]
         self.compcode = request["compcode"]
