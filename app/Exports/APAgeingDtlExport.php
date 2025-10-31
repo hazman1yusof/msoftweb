@@ -138,6 +138,7 @@ class APAgeingDtlExport implements FromView, ShouldQueue, WithEvents, WithColumn
                     ->join('material.supplier as su', function($join) {
                         $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
                         $join = $join->where('su.compcode', '=', session('compcode'));
+                        $join = $join->whereNotIn('su.suppgroup', ['ukmh','sa']);
                     })
                     ->leftjoin('material.suppgroup as sg', function($join) {
                         $join = $join->on('sg.suppgroup', '=', 'su.suppgroup');
