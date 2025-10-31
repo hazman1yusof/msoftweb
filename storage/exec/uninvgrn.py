@@ -32,7 +32,7 @@ class UninvGrnJob:
         sql = """
             INSERT INTO sysdb.job_queue
             (compcode, page, filename, adduser, adddate, status, date_to)
-            VALUES (%s,%s,%s,%s,NOW(),'PENDING',%s,%s)
+            VALUES (%s,%s,%s,%s,NOW(),'PENDING',%s)
         """
         self.cursor.execute(sql, (
             self.compcode, self.page, self.filename,
