@@ -1,5 +1,30 @@
 <table>
     <tr>    
+        <td style="font-weight:bold" colspan="5">{{$title1}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>   
+    <tr>    
+        <td style="font-weight:bold" colspan="5">{{$title2}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr> 
+    <tr></tr>
+    <tr>    
         <td style="font-weight:bold">DATE</td>
         <td style="font-weight:bold">CHARGE CODE</td>
         <td style="font-weight:bold">DESCRIPTION</td>

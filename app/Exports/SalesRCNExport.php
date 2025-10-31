@@ -22,7 +22,7 @@ use Illuminate\Contracts\View\View;
 use DateTime;
 use Carbon\Carbon;
 
-class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithColumnFormatting
+class SalesRCNExport implements FromView, WithEvents, WithColumnWidths, WithColumnFormatting
 {
     
     /**
@@ -34,7 +34,6 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
         $this->datefr = $datefr;
         $this->dateto = $dateto;
         $this->deptcode = $deptcode;
-        $this->dbacthdr_len=0;
         
         $this->comp = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
@@ -95,23 +94,28 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
         // dd($billdet);
         
         $dbacthdr = DB::table('debtor.dbacthdr as d')
-                    ->select('d.debtorcode', 'dm.name AS dm_desc', 'd.invno','d.mrn','b.idno', 'b.compcode', 'b.trxdate', 'b.chgcode', 'b.quantity', 'b.amount', 'b.invno', 'b.taxamount', 'c.description AS cm_desc', 'd.trantype','d.source','d.debtorcode AS debtorcode','pm.Name as pm_name','p.avgcost as costprice')
+                    ->select('d.debtorcode', 'dm.name AS dm_desc', 'd.invno','d.mrn','b.idno', 'b.compcode', 'b.adddate', 'b.itemcode as chgcode', 'b.qtyreturned as quantity', 'b.amount', 'b.amtslstax as taxamount', 'b.adddate as trxdate', 'c.description AS cm_desc', 'd.trantype','d.source','d.debtorcode AS debtorcode','pm.Name as pm_name','p.avgcost as costprice')
+                    ->join('material.delordhd as do', function($join){
+                        $join = $join->on('do.cnno', '=', 'd.recptno')
+                                    ->on('do.deldept', '=', 'd.deptcode')
+                                    ->where('do.compcode', '=', session('compcode'));
+                    })
+                    ->join('material.delorddt as b', function($join){
+                        $join = $join->on('b.recno', '=', 'do.recno')
+                                    ->where('b.compcode', '=', session('compcode'));
+                    })
                     ->leftJoin('debtor.debtormast as dm', function($join){
                         $join = $join->on('dm.debtorcode', '=', 'd.debtorcode')
                                     ->where('dm.compcode', '=', session('compcode'));
                     })
-                    ->join('hisdb.billdet as b', function($join){
-                        $join = $join->on('b.invno', '=', 'd.invno')
-                                    ->where('b.compcode', '=', session('compcode'));
-                    })
                     ->leftJoin('material.product as p', function($join){
-                        $join = $join->on('p.itemcode', '=', 'b.chgcode')
+                        $join = $join->on('p.itemcode', '=', 'b.itemcode')
                                     ->where('p.compcode', '=', session('compcode'));
                     })
                     ->leftJoin('hisdb.chgmast as c', function($join){
-                        $join = $join->on('c.chgcode', '=', 'b.chgcode')
-                                    ->on('c.uom', '=', 'b.uom')
-                                    ->where('c.unit', '=', session('unit'))
+                        $join = $join->on('c.chgcode', '=', 'b.itemcode')
+                                    ->on('c.uom', '=', 'b.uomcode')
+                                    // ->where('c.unit', '=', session('unit'))
                                     ->where('c.compcode', '=', session('compcode'));
                     })
                     ->leftJoin('hisdb.pat_mast as pm', function($join){
@@ -120,17 +124,20 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
                     })
                     ->where('d.compcode','=',session('compcode'))
                     ->where('d.source', '=', 'PB')
-                    ->where('d.trantype', '=', 'IN')
+                    ->where('d.trantype', '=', 'CN')
                     ->where('d.recstatus', '=', 'POSTED');
                     if(!empty($deptcode)){
                         $dbacthdr = $dbacthdr
                                     ->where('d.deptcode', '=', $deptcode);
                     }
-                    $dbacthdr = $dbacthdr->where('d.amount','!=','0')
+                    $dbacthdr = $dbacthdr
+                    ->where('d.amount','!=','0')
                     ->orderBy('d.debtorcode','DESC')
                     ->orderBy('d.invno','DESC')
-                    ->whereBetween('b.trxdate', [$datefr, $dateto])
+                    ->whereBetween('d.posteddate', [$datefr, $dateto])
                     ->get();
+
+                    // dd($this->getQueries($dbacthdr));
 
         $invno_array = [];
         foreach ($dbacthdr as $obj) {
@@ -173,10 +180,11 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
         //     $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
-        $title1 = 'Sales by Item Report for dept: '.$deptcode;
-        $title2 = 'Date From '.$datefr.' To '.$dateto;
         
-        return view('finance.SalesItem_Report.SalesItem_Report_excel',compact('dbacthdr','invno_array'));
+        $title1 = 'RCN Report for dept: '.$deptcode;
+        $title2 = 'Date From '.$datefr.' To '.$dateto;
+
+        return view('finance.SalesItem_Report.SalesItem_Report_excel',compact('dbacthdr','invno_array','title1','title2'));
     }
     
     public function registerEvents(): array

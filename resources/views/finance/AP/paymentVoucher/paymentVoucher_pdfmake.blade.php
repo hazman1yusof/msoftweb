@@ -29,6 +29,7 @@
 		@endforeach
 	]
 	var ini_header={
+		auditno:`{{str_pad($apacthdr->auditno, 7, '0', STR_PAD_LEFT)}}`,
 		@if(!empty($apacthdr->pvno))
 		pvno:`{{str_pad($apacthdr->pvno, 7, '0', STR_PAD_LEFT)}}`,
 		@else
@@ -125,7 +126,7 @@
 						]
 					}
 					var title = {text: '\n{{$title}}',fontSize:14,alignment: 'center',bold: true};
-					var compbankdet = {text: 'COMP A/C NO: '+ini_header.bankaccno_desc,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};
+					var compbankdet = {text: 'COMP A/C NO: '+ini_header.bankaccno_desc+' ('+ini_header.auditno+')',fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};
 					var pageno = {text: 'Page: '+currentPage+'/'+pageCount,fontSize:9,alignment: 'right', margin: [0, 0, 50, -8]};
 					retval.push(header_tbl_bangi);
 					retval.push(title);

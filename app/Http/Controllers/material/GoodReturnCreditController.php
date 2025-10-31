@@ -8,6 +8,7 @@ use stdClass;
 use DB;
 use DateTime;
 use Carbon\Carbon;
+use App\Exports\RCNExport;
 
 class GoodReturnCreditController extends defaultController
 {   

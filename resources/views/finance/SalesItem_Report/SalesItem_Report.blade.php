@@ -48,7 +48,13 @@
 	<div class="container mycontainer">
         <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 350px;">
             <form method="get" id="genreport" action="./SalesItem_Report/showExcel">
-                @if(request()->get('scope')=='CAT')<h4>SALES BY CATEGORY</h4>@else<h4>SALES BY ITEM</h4>@endif
+                @if(request()->get('scope')=='CAT')
+                	<h4>SALES BY CATEGORY</h4>
+                @elseif(request()->get('scope')=='RCN')
+                	<h4>RCN REPORT</h4>
+                @else
+                	<h4>SALES BY ITEM</h4>
+                @endif
                 <h7 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h7>
 				
 				<div style="width: 800px;margin: 0 auto;">

@@ -371,6 +371,7 @@ class PaymentVoucherController extends defaultController
             
             $auditno = $this->defaultSysparam($request->apacthdr_source, $request->apacthdr_trantype);
             $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
+            $pvno = $this->defaultSysparam('HIS','PV');
             
             if ($request->apacthdr_trantype == 'PV'){
 
@@ -385,7 +386,7 @@ class PaymentVoucherController extends defaultController
                     'actdate' => $request->apacthdr_actdate,
                     'recdate' => $request->apacthdr_postdate,
                     'postdate' => $request->apacthdr_postdate,
-                    // 'pvno' => $pvno,
+                    'pvno' => $pvno,
                     'doctype' => $request->apacthdr_doctype,
                     'document' => strtoupper($request->apacthdr_document),
                     'paymode' => $request->apacthdr_paymode,
@@ -520,7 +521,7 @@ class PaymentVoucherController extends defaultController
                     'actdate' => $request->apacthdr_actdate,
                     'recdate' => $request->apacthdr_postdate,
                     'postdate' => $request->apacthdr_postdate,
-                    // 'pvno' => $pvno,
+                    'pvno' => $pvno,
                     'doctype' => $request->apacthdr_doctype,
                     'document' => strtoupper($request->apacthdr_document),
                     'paymode' => $request->apacthdr_paymode,
@@ -1136,7 +1137,11 @@ class PaymentVoucherController extends defaultController
                     throw new \Exception('Auditno: '.$apacthdr->auditno.' Period already close, Year: '.$yearperiod->year.' Month: '.$yearperiod->period, 500);
                 }
 
-                $pvno = $this->defaultSysparam('HIS','PV');
+                if(empty($apacthdr->pvno)){
+                    $pvno = $this->defaultSysparam('HIS','PV');
+                }else{
+                    $pvno = $apacthdr->pvno;
+                }
 
                 DB::table('finance.apacthdr')
                     ->where('idno','=',$idno_obj)

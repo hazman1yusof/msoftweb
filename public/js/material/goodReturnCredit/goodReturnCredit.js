@@ -925,15 +925,15 @@ $(document).ready(function () {
 
 			// dialog_pricecode.on();//start binding event on jqgrid2
 			dialog_chggroup.on();
-			dialog_uomcode.on();
-			dialog_pouom.on();
-			dialog_taxcode.on();
+			// dialog_uomcode.on();
+			// dialog_pouom.on();
+			// dialog_taxcode.on();
 
 			$("#jqGrid2 input[name='qtyreturned'], #jqGrid2 input[name='itemcode'], #jqGrid2 input[name='pouom'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='taxcode'], #jqGrid2 input[name='perdisc'], #jqGrid2 input[name='tot_gst'], #jqGrid2 input[name='totamount']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
 			// $("#jqGrid2 input[name='qtyreturned']").on('blur',calculate_conversion_factor);
 
-			$("input[name='unitprice']").keydown(function(e) {//when click tab at batchno, auto save
+			$("input[name='taxcode']").keydown(function(e) {//when click tab at batchno, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid2_ilsave').click();
 			});
