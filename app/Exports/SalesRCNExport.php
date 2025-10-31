@@ -98,6 +98,7 @@ class SalesRCNExport implements FromView, WithEvents, WithColumnWidths, WithColu
                     ->join('material.delordhd as do', function($join){
                         $join = $join->on('do.cnno', '=', 'd.recptno')
                                     ->on('do.deldept', '=', 'd.deptcode')
+                                    ->where('do.recstatus', '=', 'POSTED')
                                     ->where('do.compcode', '=', session('compcode'));
                     })
                     ->join('material.delorddt as b', function($join){
