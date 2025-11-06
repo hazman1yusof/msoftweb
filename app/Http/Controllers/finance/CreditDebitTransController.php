@@ -153,7 +153,7 @@ class CreditDebitTransController extends defaultController
         try{
 
             $auditno = $this->defaultSysparam('CM','CA');
-            $pvno = $this->defaultSysparam('HIS','PV');
+            // $pvno = $this->defaultSysparam('HIS','PV');
             $amount = 0;
 
             $idno = DB::table('finance.apacthdr')
@@ -165,7 +165,7 @@ class CreditDebitTransController extends defaultController
                         'refsource' => strtoupper($request->refsource),
                         'remarks' => strtoupper($request->remarks),
                         'TaxClaimable' => $request->TaxClaimable,
-                        'pvno' => $pvno,
+                        // 'pvno' => $pvno,
                         'source' => $request->source,
                         'trantype' => $request->trantype,
                         'compcode' => session('compcode'),
