@@ -94,18 +94,34 @@
                                     { text: 'Particular', style: 'tableHeader' },
                                     { text: 'Amount', style: 'tableHeader', alignment: 'right' },
                                 ],
+                                @php($total_amt = 0)
                                 @foreach ($dballoc as $obj)
-                                [
-                                    { text: "{{\Carbon\Carbon::parse($obj->entrydate_hdr)->format('d/m/Y')}}"},
-                                    { text: '{{$obj->reftrantype}}-{{str_pad($obj->refauditno, 5, "0", STR_PAD_LEFT)}}' },
-                                    @if ($obj->reftrantype == 'DN')
-                                       { text: '{{$dbacthdr->remark}}' },
-                                    @elseif ($obj->reftrantype == 'IN')
-                                       { text: '{{$obj->pt_name}}' },
-                                    @endif
-                                    { text: '{{number_format($obj->amount,2)}}', alignment: 'right' },
-                                ],
+                                    @php($total_amt = $total_amt + $obj->amount)
+                                    [
+                                        { text: "{{\Carbon\Carbon::parse($obj->entrydate_hdr)->format('d/m/Y')}}"},
+                                        { text: '{{$obj->reftrantype}}-{{str_pad($obj->refauditno, 5, "0", STR_PAD_LEFT)}}' },
+                                        @if ($obj->reftrantype == 'DN')
+                                           { text: '{{$dbacthdr->remark}}' },
+                                        @elseif ($obj->reftrantype == 'IN')
+                                           { text: '{{$obj->pt_name}}' },
+                                        @endif
+                                        { text: '{{number_format($obj->amount,2)}}', alignment: 'right' },
+                                    ],
                                 @endforeach
+                                [
+                                    { text: '', style: 'tableHeader' },
+                                    { text: '', style: 'tableHeader' },
+                                    { text: 'TOTAL', style: 'tableHeader' },
+                                    { text: '{{number_format($total_amt,2)}}', style: 'tableHeader', alignment: 'right' },
+                                ],
+                                @if($dbacthdr->amount - $total_amt != 0)
+                                [
+                                    { text: '', style: 'tableHeader' },
+                                    { text: '', style: 'tableHeader' },
+                                    { text: 'UNALLOCATED', style: 'tableHeader' },
+                                    { text: '{{number_format($dbacthdr->amount - $total_amt,2)}}', style: 'tableHeader', alignment: 'right' },
+                                ],
+                                @endif
                             ]
                         },
                         layout: 'lightHorizontalLines',
