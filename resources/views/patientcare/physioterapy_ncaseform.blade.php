@@ -2,7 +2,7 @@
 	<div class="inline field" style="position: absolute; top: 10px; left: 10px;">
 		<div class="ui checkbox rehab box">
 			<input type="checkbox" class="hidden" name="Rehabilitation" value="Rehabilitation">
-			<label>Rehabilitation</label>
+			<label>Occupational Therapy</label>
 		</div>
 		<div class="ui checkbox phys box">
 			<input type="checkbox" class="hidden" name="Physioteraphy" value="Physioteraphy">
