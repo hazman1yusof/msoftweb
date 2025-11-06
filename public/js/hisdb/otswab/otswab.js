@@ -171,9 +171,11 @@ $(document).ready(function (){
         oneditfunc: function (rowid){
             $("#jqGridPagerDelete_otswab,#jqGridPagerRefresh_otswab").hide();
             
-            $("#jqGrid_otswab input[name='countInitial'],#jqGrid_otswab input[name='add1'],#jqGrid_otswab input[name='add2'],#jqGrid_otswab input[name='add3'],#jqGrid_otswab input[name='add4']").on('blur', calculate1stCount);
-            $("#jqGrid_otswab input[name='count1st'],#jqGrid_otswab input[name='add5'],#jqGrid_otswab input[name='add6'],#jqGrid_otswab input[name='add7'],#jqGrid_otswab input[name='add8']").on('blur', calculate2ndCount);
-            $("#jqGrid_otswab input[name='count2nd'],#jqGrid_otswab input[name='add9'],#jqGrid_otswab input[name='add10'],#jqGrid_otswab input[name='add11'],#jqGrid_otswab input[name='add12']").on('blur', calculateFinalCount);
+            $("#jqGrid_otswab input[name='countInitial'],#jqGrid_otswab input[name='add1'],#jqGrid_otswab input[name='add2'],#jqGrid_otswab input[name='add3'],#jqGrid_otswab input[name='add4'],#jqGrid_otswab input[name='count1st'],#jqGrid_otswab input[name='add5'],#jqGrid_otswab input[name='add6'],#jqGrid_otswab input[name='add7'],#jqGrid_otswab input[name='add8'],#jqGrid_otswab input[name='count2nd'],#jqGrid_otswab input[name='add9'],#jqGrid_otswab input[name='add10'],#jqGrid_otswab input[name='add11'],#jqGrid_otswab input[name='add12']").on('blur', calculateCount);
+            
+            // $("#jqGrid_otswab input[name='countInitial'],#jqGrid_otswab input[name='add1'],#jqGrid_otswab input[name='add2'],#jqGrid_otswab input[name='add3'],#jqGrid_otswab input[name='add4']").on('blur', calculate1stCount);
+            // $("#jqGrid_otswab input[name='count1st'],#jqGrid_otswab input[name='add5'],#jqGrid_otswab input[name='add6'],#jqGrid_otswab input[name='add7'],#jqGrid_otswab input[name='add8']").on('blur', calculate2ndCount);
+            // $("#jqGrid_otswab input[name='count2nd'],#jqGrid_otswab input[name='add9'],#jqGrid_otswab input[name='add10'],#jqGrid_otswab input[name='add11'],#jqGrid_otswab input[name='add12']").on('blur', calculateFinalCount);
             
             $("input[name='countFinal']").keydown(function (e){ // when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
@@ -403,32 +405,32 @@ $(document).ready(function (){
         var optid = event.currentTarget.id;
         var id_optid = optid.substring(0,optid.search("_"));
         
-        let countInitial = parseFloat($("#jqGrid_otswab #"+id_optid+"_countInitial").val());
-        let add1 = parseFloat($("#jqGrid_otswab #"+id_optid+"_add1").val());
-        let add2 = parseFloat($("#jqGrid_otswab #"+id_optid+"_add2").val());
-        let add3 = parseFloat($("#jqGrid_otswab #"+id_optid+"_add3").val());
-        let add4 = parseFloat($("#jqGrid_otswab #"+id_optid+"_add4").val());
-        let count1st = parseFloat($("#jqGrid_otswab #"+id_optid+"_count1st").val());
-        let add5 = parseFloat($("#jqGrid_otswab #"+id_optid+"_add5").val());
-        let add6 = parseFloat($("#jqGrid_otswab #"+id_optid+"_add6").val());
-        let add7 = parseFloat($("#jqGrid_otswab #"+id_optid+"_add7").val());
-        let add8 = parseFloat($("#jqGrid_otswab #"+id_optid+"_add8").val());
-        let count2nd = parseFloat($("#jqGrid_otswab #"+id_optid+"_count2nd").val());
-        let add9 = parseFloat($("#jqGrid_otswab #"+id_optid+"_add9").val());
-        let add10 = parseFloat($("#jqGrid_otswab #"+id_optid+"_add10").val());
-        let add11 = parseFloat($("#jqGrid_otswab #"+id_optid+"_add11").val());
-        let add12 = parseFloat($("#jqGrid_otswab #"+id_optid+"_add12").val());
+        let countInitial = parseInt($("#jqGrid_otswab #"+id_optid+"_countInitial").val());
+        let add1 = parseInt($("#jqGrid_otswab #"+id_optid+"_add1").val());
+        let add2 = parseInt($("#jqGrid_otswab #"+id_optid+"_add2").val());
+        let add3 = parseInt($("#jqGrid_otswab #"+id_optid+"_add3").val());
+        let add4 = parseInt($("#jqGrid_otswab #"+id_optid+"_add4").val());
+        let count1st = parseInt($("#jqGrid_otswab #"+id_optid+"_count1st").val());
+        let add5 = parseInt($("#jqGrid_otswab #"+id_optid+"_add5").val());
+        let add6 = parseInt($("#jqGrid_otswab #"+id_optid+"_add6").val());
+        let add7 = parseInt($("#jqGrid_otswab #"+id_optid+"_add7").val());
+        let add8 = parseInt($("#jqGrid_otswab #"+id_optid+"_add8").val());
+        let count2nd = parseInt($("#jqGrid_otswab #"+id_optid+"_count2nd").val());
+        let add9 = parseInt($("#jqGrid_otswab #"+id_optid+"_add9").val());
+        let add10 = parseInt($("#jqGrid_otswab #"+id_optid+"_add10").val());
+        let add11 = parseInt($("#jqGrid_otswab #"+id_optid+"_add11").val());
+        let add12 = parseInt($("#jqGrid_otswab #"+id_optid+"_add12").val());
         
         if(isNaN(countInitial))countInitial = 0;
         if(isNaN(add1))add1 = 0;
         if(isNaN(add2))add2 = 0;
         if(isNaN(add3))add3 = 0;
         if(isNaN(add4))add4 = 0;
-        if(isNaN(count2nd))count2nd = 0;
-        if(isNaN(add9))add9 = 0;
-        if(isNaN(add10))add10 = 0;
-        if(isNaN(add11))add11 = 0;
-        if(isNaN(add12))add12 = 0;
+        if(isNaN(count1st))count1st = 0;
+        if(isNaN(add5))add5 = 0;
+        if(isNaN(add6))add6 = 0;
+        if(isNaN(add7))add7 = 0;
+        if(isNaN(add8))add8 = 0;
         if(isNaN(count2nd))count2nd = 0;
         if(isNaN(add9))add9 = 0;
         if(isNaN(add10))add10 = 0;
