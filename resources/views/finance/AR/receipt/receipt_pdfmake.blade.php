@@ -46,7 +46,7 @@
                                 [
                                     { text: 'RECEIVED FROM' },
                                     { text: ':' },
-                                    { text: '({!!$dbacthdr->payercode!!}) {!!$dbacthdr->payername!!}' },
+                                    { text: `({!!$dbacthdr->payercode!!}) {!!$dbacthdr->payername!!}` },
                                     { text: 'DATE' },
                                     { text: ':' },
                                     @if(!empty($dbacthdr->posteddate))
