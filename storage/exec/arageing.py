@@ -164,8 +164,8 @@ class ARAgeingJob:
             if row["trantype"] in ("IN", "DN"):
                 self.cursor.execute("""
                     SELECT SUM(amount) as alloc_sum FROM debtor.dballoc
-                    WHERE compcode=%s AND recstatus='POSTED' AND refsource=%s AND reftrantype=%s AND refauditno=%s AND reflineno=%s AND allocdate <= %s
-                """, (self.compcode, row["source"], row["trantype"], row["auditno"], row["lineno_"], self.date))
+                    WHERE compcode=%s AND recstatus='POSTED' AND refsource=%s AND reftrantype=%s AND refauditno=%s AND allocdate <= %s
+                """, (self.compcode, row["source"], row["trantype"], row["auditno"], self.date))
                 alloc_sum = self.cursor.fetchone()["alloc_sum"] or 0
                 newamt = hdr_amount - alloc_sum
             else:
