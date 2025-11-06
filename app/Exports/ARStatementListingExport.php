@@ -126,6 +126,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                         // })
                         ->join('debtor.dbacthdr as dh', function($join) use ($date){
                             $join = $join->on('dh.debtorcode', '=', 'dm.debtorcode')
+                                         // ->where('dh.auditno', '5213940')
                                          ->whereDate('dh.posteddate', '<=', $date)
                                          ->where('dh.compcode', '=', session('compcode'))
                                          ->where('dh.recstatus', '=', 'POSTED');
@@ -174,8 +175,12 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                         ->where('da.refsource', '=', $value->source)
                         ->where('da.reftrantype', '=', $value->trantype)
                         ->where('da.refauditno', '=', $value->auditno)
-                        ->where('da.reflineno', '=', $value->lineno_)
+                        // ->where('da.reflineno', '=', $value->lineno_)
                         ->whereDate('da.allocdate', '<=', $date)
+
+                // dd($this->getQueries($alloc_sum));
+
+
                         ->sum('da.amount');
                 
                 $newamt = $hdr_amount - $alloc_sum;
