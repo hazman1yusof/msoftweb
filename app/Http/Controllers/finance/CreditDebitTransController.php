@@ -178,7 +178,7 @@ class CreditDebitTransController extends defaultController
 
             $responce = new stdClass();
             $responce->auditno = $auditno;
-            $responce->pvno = $pvno;
+            // $responce->pvno = $pvno;
             $responce->idno = $idno;
             $responce->amount = 0;
 
