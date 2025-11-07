@@ -245,10 +245,6 @@ class acctenq_dateController extends defaultController
                 $value->acctname = $value->acctname_dr;
             }
 
-            if($value->dracc == $value->cracc){
-                array_push($same_acc, clone $value);
-            }
-
             switch ($value->source) {
                 case 'OE':
                     $data = $this->oe_data($value);
@@ -272,6 +268,10 @@ class acctenq_dateController extends defaultController
             //     $value->reference = $data->refe;
             }else{
                 $value->desc_ = ' ';
+            }
+
+            if($value->dracc == $value->cracc){
+                array_push($same_acc, clone $value);
             }
         }
 

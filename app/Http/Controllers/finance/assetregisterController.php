@@ -318,7 +318,7 @@ class assetregisterController extends defaultController
                 }else{
                     // $tagnextno_counter = 2;
                     // $assetno = str_pad(1,6,"0",STR_PAD_LEFT);
-                    throw new Exception("facode not exist", 1);
+                    throw new \Exception("facode not exist", 1);
                 }
 
                 if($fatemp->individualtag == 'N'){
@@ -333,7 +333,7 @@ class assetregisterController extends defaultController
 
                     $this->crt_fareg_indv($fatemp,$product,$facode->tagnextno);
                 }else{
-                    throw new Exception("individualtag not exist", 1);
+                    throw new \Exception("individualtag not exist", 1);
                 }
 
                 ////delete from fatemp
