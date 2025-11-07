@@ -176,7 +176,7 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
         $title1 = 'Sales by Item Report for dept: '.$deptcode;
         $title2 = 'Date From '.$datefr.' To '.$dateto;
         
-        return view('finance.SalesItem_Report.SalesItem_Report_excel',compact('dbacthdr','invno_array'));
+        return view('finance.SalesItem_Report.SalesItem_Report_excel',compact('dbacthdr','invno_array','title1','title2'));
     }
     
     public function registerEvents(): array
