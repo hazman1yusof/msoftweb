@@ -134,6 +134,8 @@ class TestController extends defaultController
                 return $this->display_glmasref_xde($request);
             case 'display_glmasref_header':
                 return $this->display_glmasref_header($request);
+            case 'gltran_jnl_calc':
+                return $this->gltran_jnl_calc($request);
 
                 
             case 'gltran_step1':
@@ -8933,6 +8935,51 @@ class TestController extends defaultController
 
             return response($e, 500);
         }
+    }
+
+    public function gltran_jnl_calc(Request $request){
+        $jnl = DB::table('finance.gltran')
+                        ->where('compcode','9B')
+                        ->where('year','2025')
+                        ->where('period','10')
+                        ->where('trantype','jnl')
+                        ->get();
+
+        $jnl = $jnl->unique('auditno');
+
+        $array = [];
+        foreach ($jnl as $obj) {
+
+            $drtotal = DB::table('finance.gltran')
+                        ->where('compcode','9B')
+                        ->where('year','2025')
+                        ->where('period','10')
+                        ->where('trantype','jnl')
+                        ->where('auditno',$obj->auditno)
+                        ->whereNotNull('drcostcode')
+                        ->sum('amount');
+
+            $crtotal = DB::table('finance.gltran')
+                        ->where('compcode','9B')
+                        ->where('year','2025')
+                        ->where('period','10')
+                        ->where('trantype','jnl')
+                        ->where('auditno',$obj->auditno)
+                        ->whereNotNull('crcostcode')
+                        ->sum('amount');
+
+            $altotal = $drtotal - $crtotal;
+
+            $obj->drtotal = $drtotal;
+            $obj->crtotal = $crtotal;
+            $obj->altotal = $altotal;
+
+            array_push($array, $obj);
+
+        }
+
+
+            return view('test.test3',compact('array'));
     }
 
 }
