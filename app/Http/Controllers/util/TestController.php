@@ -8884,44 +8884,46 @@ class TestController extends defaultController
                     ->where('recptno',$obj->recptno);
 
                 if($dbacthdr->exists()){
-                    $dbacthdr_f = DB::table('debtor.dbacthdr')
-                        ->where('source','PB')
-                        ->where('trantype','RD')
-                        ->where('recptno',$obj->recptno)
-                        ->count();
+                    // $dbacthdr_f = DB::table('debtor.dbacthdr')
+                    //     ->where('source','PB')
+                    //     ->where('trantype','RD')
+                    //     ->where('recptno',$obj->recptno)
+                    //     ->count();
 
-                    if($dbacthdr_f > 1){
-                        dump($obj->recptno);
-                    }
+                    // if($dbacthdr_f > 1){
+                    //     dump($obj->recptno);
+                    // }
 
                     DB::table('debtor.dbacthdr')
                         ->where('source','PB')
                         ->where('trantype','RD')
                         ->where('recptno',$obj->recptno)
                         ->update([
-                            'compcode' =>'9B',
-                            'amount' => $obj->amount,
+                            // 'compcode' =>'9B',
+                            'amount' => $obj->outamount,
                             'outamount' => $obj->outamount,
                         ]);
                 }else{
-                    DB::table('debtor.dbacthdr')
-                        ->insert([
-                            'compcode' => '9B',
-                            'source' => 'PB',
-                            'trantype' => "RD",
-                            'auditno' => $obj->auditno,
-                            'lineno_' => 1,
-                            'amount' => $obj->amount,
-                            'outamount' => $obj->outamount,
-                            'entrydate' => $obj->date,
-                            // 'reference' => $obj->reference,
-                            'debtorcode' => $obj->mrn,
-                            'payercode' => $obj->mrn,
-                            // 'billdebtor' => $obj->billdebtor,
-                            'mrn' => $obj->mrn,
-                            'episno' => $obj->episno,
-                            'payername' => $obj->name,
-                        ]);
+                    dump($obj->recptno);
+                    // DB::table('debtor.dbacthdr')
+                    //     ->insert([
+                    //         'compcode' => '9B',
+                    //         'source' => 'PB',
+                    //         'trantype' => "RD",
+                    //         'recptno' => $obj->recptno,
+                    //         'auditno' => $obj->auditno,
+                    //         'lineno_' => 1,
+                    //         'amount' => $obj->outamount,
+                    //         'outamount' => $obj->outamount,
+                    //         'entrydate' => $obj->date,
+                    //         // 'reference' => $obj->reference,
+                    //         'debtorcode' => $obj->mrn,
+                    //         'payercode' => $obj->mrn,
+                    //         // 'billdebtor' => $obj->billdebtor,
+                    //         'mrn' => $obj->mrn,
+                    //         'episno' => $obj->episno,
+                    //         'payername' => $obj->name,
+                    //     ]);
                 }
             }
 
