@@ -8879,34 +8879,48 @@ class TestController extends defaultController
 
             foreach ($recondb as $obj) {
                 $dbacthdr = DB::table('debtor.dbacthdr')
-                    ->where('compcode','!=','9B')
                     ->where('source','PB')
                     ->where('trantype','RD')
                     ->where('recptno',$obj->recptno);
 
                 if($dbacthdr->exists()){
                     $dbacthdr_f = DB::table('debtor.dbacthdr')
-                        ->where('compcode','!=','9B')
                         ->where('source','PB')
                         ->where('trantype','RD')
                         ->where('recptno',$obj->recptno)
-                        ->first();
+                        ->count();
 
-                    DB::table('recondb.deposit202504')
-                        ->where('idno',$obj->idno)
+                    if($dbacthdr_f > 1){
+                        dump($obj->recptno);
+                    }
+
+                    DB::table('debtor.dbacthdr')
+                        ->where('source','PB')
+                        ->where('trantype','RD')
+                        ->where('recptno',$obj->recptno)
                         ->update([
-                            'mrn' => $dbacthdr_f->mrn,
-                            'episno' => $dbacthdr_f->episno,
-                            'source' => $dbacthdr_f->source,
-                            'trantype' => $dbacthdr_f->trantype,
-                            'auditno' => $dbacthdr_f->auditno,
-                            'exists'=>1
+                            'compcode' =>'9B',
+                            'amount' => $obj->amount,
+                            'outamount' => $obj->outamount,
                         ]);
                 }else{
-                    DB::table('recondb.deposit202504')
-                        ->where('idno',$obj->idno)
-                        ->update([
-                            'exists'=>0
+                    DB::table('debtor.dbacthdr')
+                        ->insert([
+                            'compcode' => '9B',
+                            'source' => 'PB',
+                            'trantype' => "RD",
+                            'auditno' => $obj->auditno,
+                            'lineno_' => 1,
+                            'amount' => $obj->amount,
+                            'outamount' => $obj->outamount,
+                            'entrydate' => $obj->date,
+                            // 'reference' => $obj->reference,
+                            'debtorcode' => $obj->mrn,
+                            'payercode' => $obj->mrn,
+                            // 'billdebtor' => $obj->billdebtor,
+                            'mrn' => $obj->mrn,
+                            'episno' => $obj->episno,
+                            'payername' => $obj->name,
                         ]);
                 }
             }
