@@ -120,6 +120,8 @@ class TestController extends defaultController
                 return $this->apalloc_osamt_in($request);
             case 'apalloc_osamt_cn':
                 return $this->apalloc_osamt_cn($request);
+            case 'deposit202504':
+                return $this->deposit202504($request);
             // case 'betulkan_stockloc_2025':
             //     return $this->betulkan_stockloc_2025($request);
             // case 'netmvval_from_netmvqty':
@@ -8858,6 +8860,55 @@ class TestController extends defaultController
                     ]);
 
                 dump('added gltran auditno: '.$apacthdr->source.'-'.$apacthdr->trantype.'-'.$apacthdr->auditno);
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e, 500);
+        }
+    }
+
+    public function deposit202504(Request $request){
+        DB::beginTransaction();
+        try {
+
+            $recondb = DB::table('recondb.deposit202504')
+                        ->get();
+
+            foreach ($recondb as $obj) {
+                $dbacthdr = DB::table('debtor.dbacthdr')
+                    ->where('compcode','!=','9B')
+                    ->where('source','PB')
+                    ->where('trantype','RD')
+                    ->where('recptno',$obj->recptno);
+
+                if($dbacthdr->exists()){
+                    $dbacthdr_f = DB::table('debtor.dbacthdr')
+                        ->where('compcode','!=','9B')
+                        ->where('source','PB')
+                        ->where('trantype','RD')
+                        ->where('recptno',$obj->recptno)
+                        ->first();
+
+                    DB::table('recondb.deposit202504')
+                        ->where('idno',$obj->idno)
+                        ->update([
+                            'mrn' => $dbacthdr_f->mrn,
+                            'episno' => $dbacthdr_f->episno,
+                            'source' => $dbacthdr_f->source,
+                            'trantype' => $dbacthdr_f->trantype,
+                            'auditno' => $dbacthdr_f->auditno,
+                            'exists'=>1
+                        ]);
+                }else{
+                    DB::table('recondb.deposit202504')
+                        ->where('idno',$obj->idno)
+                        ->update([
+                            'exists'=>0
+                        ]);
+                }
             }
 
             DB::commit();
