@@ -85,7 +85,7 @@
         <td></td>
         <td></td>
         <td style="font-weight: bold">Total</td>
-        <td style="font-weight: bold">{{$obj->tot_al}}</td>
+        <td style="font-weight: bold">{{$tot_al}}</td>
         <td></td>
         <td></td>
         <td></td>
