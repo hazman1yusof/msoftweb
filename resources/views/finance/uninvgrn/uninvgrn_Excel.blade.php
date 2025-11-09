@@ -57,7 +57,7 @@
     </tr>
     @php($tot_al = 0)
     @foreach ($table as $obj)
-        @php($tot_al = $tot_al + $total_bal)
+        @php($tot_al = $tot_al + $obj->total_bal)
         <tr>
             <td>{{$obj->recno}}</td>
             <td>{{$obj->grnno}}</td>
@@ -75,7 +75,6 @@
             <td>{{$obj->inv_postdate}}</td>
         </tr>
     @endforeach
-    <tr></tr>
     <tr>
         <td></td>
         <td></td>
@@ -92,4 +91,5 @@
         <td></td>
         <td></td>
     </tr>
+    <tr></tr>
 </table>
