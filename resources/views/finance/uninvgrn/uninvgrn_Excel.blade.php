@@ -55,7 +55,9 @@
         <td style="font-weight: bold">Invoice No.</td>
         <td style="font-weight: bold">Invoice Date</td>
     </tr>
+    @php($tot_al = 0)
     @foreach ($table as $obj)
+        @php($tot_al = $tot_al + $total_bal)
         <tr>
             <td>{{$obj->recno}}</td>
             <td>{{$obj->grnno}}</td>
@@ -74,4 +76,20 @@
         </tr>
     @endforeach
     <tr></tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td style="font-weight: bold">Total</td>
+        <td style="font-weight: bold">{{$obj->tot_al}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
 </table>

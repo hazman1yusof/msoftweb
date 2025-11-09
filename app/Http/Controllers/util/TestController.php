@@ -120,8 +120,6 @@ class TestController extends defaultController
                 return $this->apalloc_osamt_in($request);
             case 'apalloc_osamt_cn':
                 return $this->apalloc_osamt_cn($request);
-            case 'deposit202504':
-                return $this->deposit202504($request);
             // case 'betulkan_stockloc_2025':
             //     return $this->betulkan_stockloc_2025($request);
             // case 'netmvval_from_netmvqty':
