@@ -76,9 +76,27 @@ class uninvgrn_Export implements FromView, WithEvents, WithColumnWidths, WithCol
         $todate = $this->todate;
         $compname = $this->comp->name;
 
-        $table = DB::table('finance.uninvgrn')
-                            ->where('job_id',$this->job_id)
+        $table = DB::table('finance.uninvgrn as u')
+                            ->select('u.idno','u.compcode','u.username','u.job_id','u.recno','u.grnno','u.trandate','u.pono','u.delordno','u.deldept','u.grn_amt','u.grt_amt','u.invoice_amt','u.total_bal','u.suppcode','u.suppname','u.invoiceno','u.inv_postdate','ud.idno as uidno','ud.updamount')
+                            ->leftjoin('finance.uninvgrndel as ud', function($join){
+                                $join = $join->on('ud.suppcode', '=', 'u.suppcode');
+                                $join = $join->on('ud.delordno', '=', 'u.delordno');
+                                $join = $join->where('ud.compcode', '=', session('compcode'));
+                            })
+                            ->where('u.job_id',$this->job_id)
                             ->get();
+
+        foreach ($table as $obj) {
+            $obj->del = 'false';
+            if(!empty($obj->uidno) && $obj->updamount == 0.00){
+                $obj->del = 'true';
+            }else if(!empty($obj->uidno) && $obj->updamount != 0.00){
+                $obj->grn_amt = $obj->updamount;
+                $obj->grt_amt = 0.00;
+                $obj->invoice_amt = 0.00;
+                $obj->total_bal = $obj->updamount;
+            }
+        }
 
         return view('finance.uninvgrn.uninvgrn_Excel', compact('table','compname','fromdate','todate'));
     }
