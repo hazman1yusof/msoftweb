@@ -83,6 +83,7 @@ class uninvgrn_Export implements FromView, WithEvents, WithColumnWidths, WithCol
                                 $join = $join->on('ud.delordno', '=', 'u.delordno');
                                 $join = $join->where('ud.compcode', '=', session('compcode'));
                             })
+                            ->where('u.total_bal','>',0)
                             ->where('u.job_id',$this->job_id)
                             ->get();
 

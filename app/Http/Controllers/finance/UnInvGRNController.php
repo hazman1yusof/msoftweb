@@ -250,6 +250,7 @@ class UnInvGRNController extends defaultController
                 $do_grt = DB::table('material.delordhd')
                             ->where('compcode',session('compcode'))
                             ->where('po_recno',$obj->recno)
+                            ->where('trandate','<=',$this->todate)
                             ->where('trantype','GRT')
                             ->where('recstatus','POSTED');
 
@@ -271,6 +272,7 @@ class UnInvGRNController extends defaultController
                             ->where('aph.document',$obj->invoiceno)
                             ->where('aph.compcode',session('compcode'))
                             ->where('aph.recstatus','POSTED')
+                            ->where('aph.postdate','<=',$this->todate)
                             ->where('aph.source','AP')
                             ->where('aph.trantype','IN');
 
