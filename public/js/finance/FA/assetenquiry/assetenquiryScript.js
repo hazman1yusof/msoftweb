@@ -374,7 +374,11 @@ $(document).ready(function () {
 				if(rowData.recstatus == 'ACTIVE'){
 					$('#writeoff_btn').show();
 				}else{
-					$('#writeoff_btn').hide();
+					if(rowData.trantype.toUpperCase() == 'FUL'){
+						$('#writeoff_btn').show();
+					}else{
+						$('#writeoff_btn').hide();
+					}
 				}
 
 				//var rowData = $('#jqGrid2').jqGrid('getRowData', rowid);

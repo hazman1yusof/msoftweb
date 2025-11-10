@@ -260,7 +260,10 @@ class assetenquiryController extends defaultController
             $nbv = $origcost - $accummulated;
 
             if($faregister->recstatus != 'ACTIVE'){
-                throw new \Exception("asset is already deactive");
+                // dd(strtoupper($faregister->recstatus));
+                if(strtoupper($faregister->trantype) != 'FUL'){
+                    throw new \Exception("asset is already deactive");
+                }
             }
 
             $recno = $this->recno('FA','WOF');
