@@ -173,6 +173,10 @@ use PDF;
             $table = $table->where('ap.recstatus','POSTED');
         }
 
+        if(!empty($request->suppcode)){
+            $table = $table->where('ap.suppcode',$request->suppcode);
+        }
+
         $paginate = $table->paginate($request->rows);
 
         $responce = new stdClass();

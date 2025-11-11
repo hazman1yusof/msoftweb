@@ -85,10 +85,7 @@ $(document).ready(function () {
 			$("#manualAllocdtl").jqGrid ('setGridWidth', Math.floor($("#manualAllocdtl_c")[0].offsetWidth-$("#manualAllocdtl_c")[0].offsetLeft));
 			$("#manualAllochdr").jqGrid ('setGridWidth', Math.floor($("#manualAllochdr_c")[0].offsetWidth-$("#manualAllochdr_c")[0].offsetLeft));
 			
-			urlParam_hdr.source=$('#apacthdr_source').val();
-			urlParam_hdr.trantype=$('#apacthdr_trantype').val();
-
-			refreshGrid('#manualAllochdr',urlParam_hdr);
+			$('#apacthdr_source').change();
 		},
 		close: function( event, ui ) {
 			parent_close_disabled(false);
@@ -221,6 +218,7 @@ $(document).ready(function () {
 	$('#apacthdr_source,#apacthdr_trantype').on('change', function() {
 		urlParam_hdr.source=$('#apacthdr_source').val();
 		urlParam_hdr.trantype=$('#apacthdr_trantype').val();
+		urlParam_hdr.suppcode=$('#suppcode_search').val();
 
 		refreshGrid('#manualAllochdr',urlParam_hdr);
 	});
@@ -878,6 +876,45 @@ $(document).ready(function () {
 	);
 	creditor_search.makedialog(true);
 	$('#creditor_search').on('keyup',ifnullsearch);
+
+	var suppcode_search = new ordialog(
+		'suppcode_search', 'material.supplier', '#suppcode_search', 'errorField',
+		{
+			colModel: [
+				{ label: 'Supplier Code', name: 'suppcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','ACTIVE']
+					},
+			ondblClickRow: function () {
+				$('#apacthdr_source').change();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					// $('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title: "Select Creditor",
+			open: function () {
+				suppcode_search.urlParam.filterCol = ['compcode','recstatus'];
+				suppcode_search.urlParam.filterVal = ['session.compcode','ACTIVE'];
+			}
+		},'urlParam','radio','tab'
+	);
+	suppcode_search.makedialog(true);
+	$('#suppcode_search').on('keyup',function(){
+		if($('#suppcode_search').val() == ''){
+			$('#apacthdr_source').change();
+			$('#suppcode_search_hb').html('');
+		}
+	});
 
 	function ifnullsearch(){
 		if($('#creditor_search').val() == ''){
