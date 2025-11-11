@@ -41,6 +41,7 @@
                                         <th class="scope">mrn</th>
                                         <th class="scope">episno</th>
                                         <th class="scope">Date</th>
+                                        <th class="scope">Entered By</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -56,7 +57,7 @@
                             <div class="form-inline col-md-12" style="padding-bottom: 15px;">
 
                                 <label class="control-label" for="practiceDate" style="padding-right: 5px;">Date</label>
-                                <input id="practiceDate" name="practiceDate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>">
+                                <input id="practiceDate" name="practiceDate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter date." value="<?php echo date("Y-m-d"); ?>">
 
                                 <!-- <button class="btn btn-default btn-sm" type="button" id="doctornote_bpgraph" style="float: right; margin-right: 20px;">Chart</button> -->
                             </div>
@@ -175,14 +176,14 @@
                                                 </tr>
                                                 <tr>
                                                     <td style="font-weight: bold;"></td>
-                                                    <td>Name:</td><td></td>
+                                                    <td>Name :</td><td></td>
                                                     <td><input type="text" id="name_M" name="name_M" class="form-control input-sm"></td>
                                                     <td><input type="text" id="name_E" name="name_E" class="form-control input-sm"></td>
                                                     <td><input type="text" id="name_N" name="name_N" class="form-control input-sm"></td>
                                                 </tr>
                                                 <tr>
                                                     <td style="font-weight: bold;"></td>
-                                                    <td>Time:</td><td></td>
+                                                    <td>Time :</td><td></td>
                                                     <td><input type="time" id="datetime_M" name="datetime_M" class="form-control input-sm"></td>
                                                     <td><input type="time" id="datetime_E" name="datetime_E" class="form-control input-sm"></td>
                                                     <td><input type="time" id="datetime_N" name="datetime_N" class="form-control input-sm"></td>
