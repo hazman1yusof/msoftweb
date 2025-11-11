@@ -150,7 +150,7 @@ class assettransfer2Controller extends defaultController
                         //'assetlineno' => $request->assetlineno,
                         //'assetno' => $request->assetno,
                         //'regtype' => $request->regtype,
-                        'trandate' => $request->trandate,
+                        // 'trandate' => $request->trandate,
                         //'recstatus' => $request->recstatus,
                         'upduser'  => session('username'),
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
