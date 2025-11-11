@@ -633,7 +633,8 @@ class NursingNoteController extends defaultController
                 $date['idno'] = $value->idno;
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
-                
+                $date['adduser'] = $value->adduser;
+
                 array_push($data,$date);
             }
             

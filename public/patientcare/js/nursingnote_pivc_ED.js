@@ -7,41 +7,41 @@ $(document).ready(function (){
     var fdl = new faster_detail_load();
         
     /////////////////////////////////////pivc starts/////////////////////////////////////
-    disableForm('#formPivc');
+    disableForm('#formPivc_ED');
     
-    $("#new_pivc").click(function (){
-        button_state_pivc('wait');
-        enableForm('#formPivc');
-        rdonly('#formPivc');
-        emptyFormdata_div("#formPivc",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+    $("#new_pivc_ED").click(function (){
+        button_state_pivc_ED('wait');
+        enableForm('#formPivc_ED');
+        rdonly('#formPivc_ED');
+        emptyFormdata_div("#formPivc_ED",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
         document.getElementById("idno_pivc").value = "";
     });
     
-    $("#edit_pivc").click(function (){
-        button_state_pivc('wait');
-        enableForm('#formPivc');
-        rdonly('#formPivc');
-        $("#practiceDate").attr("readonly", true);
+    $("#edit_pivc_ED").click(function (){
+        button_state_pivc_ED('wait');
+        enableForm('#formPivc_ED');
+        rdonly('#formPivc_ED');
+        $("#formPivc_ED :input[name='practiceDate']").attr("readonly", true);
     });
     
-    $("#save_pivc").click(function (){
-        disableForm('#formPivc');
-        if($('#formPivc').isValid({requiredFields: ''}, conf, true)){
-            saveForm_pivc(function (){
-                $("#cancel_pivc").data('oper','edit');
-                $("#cancel_pivc").click();
-                // $('#datetimepivc_tbl').DataTable().ajax.reload();
+    $("#save_pivc_ED").click(function (){
+        disableForm('#formPivc_ED');
+        if($('#formPivc_ED').isValid({requiredFields: ''}, conf, true)){
+            saveForm_pivc_ED(function (){
+                $("#cancel_pivc_ED").data('oper','edit');
+                $("#cancel_pivc_ED").click();
+                // $('#datetimepivc_ED_tbl').DataTable().ajax.reload();
             });
         }else{
-            enableForm('#formPivc');
-            rdonly('#formPivc');
+            enableForm('#formPivc_ED');
+            rdonly('#formPivc_ED');
         }
     });
     
-    $("#cancel_pivc").click(function (){
-        disableForm('#formPivc');
-        button_state_pivc($(this).data('oper'));
-        $('#datetimepivc_tbl').DataTable().ajax.reload();
+    $("#cancel_pivc_ED").click(function (){
+        disableForm('#formPivc_ED');
+        button_state_pivc_ED($(this).data('oper'));
+        $('#datetimepivc_ED_tbl').DataTable().ajax.reload();
     });
     //////////////////////////////////////pivc ends//////////////////////////////////////
     
@@ -51,8 +51,8 @@ $(document).ready(function (){
     });
     
     ////////////////////////////////////////pivc starts////////////////////////////////////////
-    $('#datetimepivc_tbl tbody').on('click', 'tr', function (){
-        var data = datetimepivc_tbl.row( this ).data();
+    $('#datetimepivc_ED_tbl tbody').on('click', 'tr', function (){
+        var data = datetimepivc_ED_tbl.row( this ).data();
         
         if(data == undefined){
             return;
@@ -62,38 +62,38 @@ $(document).ready(function (){
         if($(this).hasClass('selected')) {
             $(this).removeClass('selected');
         }else {
-            datetimepivc_tbl.$('tr.selected').removeClass('selected');
+            datetimepivc_ED_tbl.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
         }
         
-        emptyFormdata_div("#formPivc",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
-        $('#datetimepivc_tbl tbody tr').removeClass('active');
+        emptyFormdata_div("#formPivc_ED",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+        $('#datetimepivc_ED_tbl tbody tr').removeClass('active');
         $(this).addClass('active');
         
-        $("#idno_pivc").val(data.idno);
+        $("#formPivc_ED :input[name='idno_pivc']").val(data.idno);
         
         var saveParam = {
-            action: 'get_table_pivc',
+            action: 'get_table_pivc_ED',
         }
         
         var postobj = {
-            _token: $('#csrf_token').val(),
+            _token: $('#_token').val(),
             idno: data.idno,
             mrn: data.mrn,
             episno: data.episno
         };
         
-        $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj), function (data){
+        $.post("./ptcare_nursingnote/form?"+$.param(saveParam), $.param(postobj), function (data){
             
         },'json').fail(function (data){
             alert('there is an error');
-        }).success(function (data){
+        }).done(function (data){
             if(!$.isEmptyObject(data)){
-                autoinsert_rowdata("#formPivc",data.pivc);
+                autoinsert_rowdata("#formPivc_ED",data.pivc);
                 
-                button_state_pivc('edit');
+                button_state_pivc_ED('edit');
             }else{
-                button_state_pivc('add');
+                button_state_pivc_ED('add');
             }
         });
     });
@@ -102,7 +102,7 @@ $(document).ready(function (){
 });
 
 /////////////////////pivc starts/////////////////////
-var datetimepivc_tbl = $('#datetimepivc_tbl').DataTable({
+var datetimepivc_ED_tbl = $('#datetimepivc_ED_tbl').DataTable({
     "ajax": "",
     "sDom": "",
     "paging": false,
@@ -112,7 +112,6 @@ var datetimepivc_tbl = $('#datetimepivc_tbl').DataTable({
         { 'data': 'episno' },
         { 'data': 'practiceDate', 'width': '25%' },
         { 'data': 'adduser', 'width': '25%' },
-
     ],
     columnDefs: [
         { targets: [0, 1, 2], visible: false },
@@ -140,61 +139,32 @@ conf = {
     },
 };
 
-button_state_pivc('empty');
-function button_state_pivc(state){
+button_state_pivc_ED('empty');
+function button_state_pivc_ED(state){
     switch(state){
         case 'empty':
             $("#toggle_nursNote").removeAttr('data-toggle');
-            $('#cancel_pivc').data('oper','add');
-            $('#new_pivc,#save_pivc,#cancel_pivc,#edit_pivc').attr('disabled',true);
+            $('#cancel_pivc_ED').data('oper','add');
+            $('#new_pivc_ED,#save_pivc_ED,#cancel_pivc_ED,#edit_pivc_ED').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_nursNote").attr('data-toggle','collapse');
-            $('#cancel_pivc').data('oper','add');
-            $("#new_pivc").attr('disabled',false);
-            $('#save_pivc,#cancel_pivc,#edit_pivc').attr('disabled',true);
+            $('#cancel_pivc_ED').data('oper','add');
+            $("#new_pivc_ED").attr('disabled',false);
+            $('#save_pivc_ED,#cancel_pivc_ED,#edit_pivc_ED').attr('disabled',true);
             break;
         case 'edit':
             $("#toggle_nursNote").attr('data-toggle','collapse');
-            $('#cancel_pivc').data('oper','edit');
-            $("#new_pivc,#edit_pivc").attr('disabled',false);
-            $('#save_pivc,#cancel_pivc').attr('disabled',true);
+            $('#cancel_pivc_ED').data('oper','edit');
+            $("#new_pivc_ED,#edit_pivc_ED").attr('disabled',false);
+            $('#save_pivc_ED,#cancel_pivc_ED').attr('disabled',true);
             break;
         case 'wait':
             $("#toggle_nursNote").attr('data-toggle','collapse');
-            $("#save_pivc,#cancel_pivc").attr('disabled',false);
-            $('#edit_pivc,#new_pivc').attr('disabled',true);
+            $("#save_pivc_ED,#cancel_pivc_ED").attr('disabled',false);
+            $('#edit_pivc_ED,#new_pivc_ED').attr('disabled',true);
             break;
     }
-}
-
-function populate_pivc_getdata(){
-    disableForm('#formPivc');
-    emptyFormdata(errorField,"#formPivc",["#mrn_nursNote","#episno_nursNote","#doctor_nursNote","#ordcomtt_phar"]);
-    
-    var saveParam = {
-        action: 'get_table_pivc',
-    }
-    
-    var postobj = {
-        _token: $('#csrf_token').val(),
-        mrn: $("#mrn_nursNote").val(),
-        episno: $("#episno_nursNote").val()
-    };
-    
-    $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj), function (data){
-        
-    },'json').fail(function (data){
-        alert('there is an error');
-    }).success(function (data){
-        if(!$.isEmptyObject(data)){
-            autoinsert_rowdata("#formPivc",data.pivc);
-           
-            button_state_pivc('edit');
-        }else{
-            button_state_pivc('add');
-        }
-    });
 }
 
 function autoinsert_rowdata(form,rowData){
@@ -214,65 +184,103 @@ function autoinsert_rowdata(form,rowData){
 
 /////////////////////////////////////////////////////pivc starts/////////////////////////////////////////////////////
 
-function saveForm_pivc(callback){
+function saveForm_pivc_ED(callback){
+    let oper = $("#cancel_pivc_ED").data('oper');
+
     var saveParam = {
-        action: 'save_table_pivc',
-        oper: $("#cancel_pivc").data('oper')
+        action: 'save_table_pivc_ED',
+        oper: oper,
     }
     
+    if(oper == 'add'){
+        saveParam.sel_date = $('#sel_date').val();
+    }else if(oper == 'edit'){
+        // var row = docnote_date_tbl.row('.active').data();
+        saveParam.sel_date = $('#sel_date').val();
+        // saveParam.recordtime = row.recordtime;
+    }
+
     var postobj = {
-        _token: $('#csrf_token').val(),
+        _token: $('#_token').val(),
         mrn_nursNote: $('#mrn_nursNote').val(),
         episno_nursNote: $('#episno_nursNote').val(),
     };
     
-    values = $("#formPivc").serializeArray();
+    values = $("#formPivc_ED").serializeArray();
     
     values = values.concat(
-        $('#formPivc input[type=checkbox]:not(:checked)').map(
+        $('#formPivc_ED input[type=checkbox]:not(:checked)').map(
             function (){
                 return {"name": this.name, "value": 0}
             }).get()
     );
     
     values = values.concat(
-        $('#formPivc input[type=checkbox]:checked').map(
+        $('#formPivc_ED input[type=checkbox]:checked').map(
             function (){
                 return {"name": this.name, "value": 1}
             }).get()
     );
     
     values = values.concat(
-        $('#formPivc input[type=radio]:checked').map(
+        $('#formPivc_ED input[type=radio]:checked').map(
             function (){
                 return {"name": this.name, "value": this.value}
             }).get()
     );
     
     values = values.concat(
-        $('#formPivc select').map(
+        $('#formPivc_ED select').map(
             function (){
                 return {"name": this.name, "value": this.value}
             }).get()
     );
     
     // values = values.concat(
-    //     $('#formPivc input[type=radio]:checked').map(
+    //     $('#formPivc_ED input[type=radio]:checked').map(
     //         function (){
     //             return {"name": this.name, "value": this.value}
     //         }).get()
     // );
     
-    $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+    $.post("./ptcare_nursingnote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
-    },'json').fail(function (data){
+    },'json').done(function (data){
+        callback(data);
+    }).fail(function (data){
         if(data.responseText !== ''){
             alert(data.responseText);
         }
+        callback(data);
+    });
+}
+
+function populate_pivc_ED_getdata(){
+    disableForm('#formPivc_ED');
+    emptyFormdata(errorField,"#formPivc_ED",["#mrn_nursNote","#episno_nursNote","#doctor_nursNote","#ordcomtt_phar"]);
+    
+    var saveParam = {
+        action: 'get_table_pivc_ED',
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        mrn: $("#mrn_nursNote").val(),
+        episno: $("#episno_nursNote").val()
+    };
+    
+    $.post("./ptcare_nursingnote/form?"+$.param(saveParam), $.param(postobj), function (data){
         
-        callback();
-    }).success(function (data){
-        callback();
+    },'json').fail(function (data){
+        alert('there is an error');
+    }).done(function (data){
+        if(!$.isEmptyObject(data)){
+            autoinsert_rowdata("#formPivc_ED",data.pivc);
+           
+            button_state_pivc_ED('edit');
+        }else{
+            button_state_pivc_ED('add');
+        }
     });
 }
 /////////////////////////////////////////////////////pivc ends/////////////////////////////////////////////////////
