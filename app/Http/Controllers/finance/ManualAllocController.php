@@ -29,6 +29,8 @@ use PDF;
         switch($request->action){
             case 'maintable':
                 return $this->maintable($request);
+            case 'get_alloc_table_hdr':
+                return $this->get_alloc_table_hdr($request);
             case 'get_alloc_table':
                 return $this->get_alloc_table($request);
             default:
@@ -156,11 +158,34 @@ use PDF;
         $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
-
     }
 
-    public function form(Request $request)
-    {   
+    public function get_alloc_table_hdr(Request $request){
+        $table = DB::table('finance.apacthdr AS ap')
+                    ->where('ap.compcode','=', session('compcode'))
+                    ->where('ap.source','=',$request->source)
+                    ->where('ap.trantype','=',$request->trantype)
+                    ->where('ap.outamount','>',0);
+
+        if($request->trantype=='PD'){
+            $table = $table->where('ap.recstatus','APPROVED');
+        }else if($request->trantype=='CN'){
+            $table = $table->where('ap.recstatus','POSTED');
+        }
+
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql_query = $this->getQueries($table);
+        
+        return json_encode($responce);
+    }
+
+    public function form(Request $request){   
         // DB::enableQueryLog();
         if($request->action == 'manualAllocdtl_save'){
             return $this->manualAllocdtl_save($request);

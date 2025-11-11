@@ -25,8 +25,7 @@ class assettransfer2Controller extends defaultController
         return view('finance.FA.assettransfer2.assettransfer2Script');
     }
 
-    public function form(Request $request)
-    {   
+    public function form(Request $request){   
         DB::enableQueryLog();
         switch($request->action){
             case 'save_table_transferFA':

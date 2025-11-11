@@ -146,6 +146,6 @@ div#fail_msg{
 
 @section('scripts')
 	
-	<script src="js/finance/AP/manualAlloc/manualAlloc.js?v=1.1"></script>
+	<script src="js/finance/AP/manualAlloc/manualAlloc.js?v=1.2"></script>
 	
 @endsection

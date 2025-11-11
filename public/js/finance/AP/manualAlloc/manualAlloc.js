@@ -84,6 +84,11 @@ $(document).ready(function () {
 			parent_close_disabled(true);
 			$("#manualAllocdtl").jqGrid ('setGridWidth', Math.floor($("#manualAllocdtl_c")[0].offsetWidth-$("#manualAllocdtl_c")[0].offsetLeft));
 			$("#manualAllochdr").jqGrid ('setGridWidth', Math.floor($("#manualAllochdr_c")[0].offsetWidth-$("#manualAllochdr_c")[0].offsetLeft));
+			
+			urlParam_hdr.source=$('#apacthdr_source').val();
+			urlParam_hdr.trantype=$('#apacthdr_trantype').val();
+
+			refreshGrid('#manualAllochdr',urlParam_hdr);
 		},
 		close: function( event, ui ) {
 			parent_close_disabled(false);
@@ -213,24 +218,22 @@ $(document).ready(function () {
 
 	////////////////////////////source and trantype change////////////////////////////////
 
-	$('#apacthdr_source').on('change', function() {
-		if($("#apacthdr_trantype option:selected").val('PD')){
-			
-			refreshGrid('#manualAllochdr',urlParam_hdr);
+	$('#apacthdr_source,#apacthdr_trantype').on('change', function() {
+		urlParam_hdr.source=$('#apacthdr_source').val();
+		urlParam_hdr.trantype=$('#apacthdr_trantype').val();
 
-		}else if($("#apacthdr_trantype option:selected").val('CN')){
-			
-			refreshGrid('#manualAllochdr',urlParam2_cn);
-		}
+		refreshGrid('#manualAllochdr',urlParam_hdr);
 	});
 
 	///////////////////////////////////////////trantype//////////////////////
 	var urlParam_hdr={
-		action:'get_table_default',
-		url: 'util/get_table_default',
+		action:'get_alloc_table_hdr',
+		url:'./manualAlloc/table',
 		field:'',
 		table_name:'finance.apacthdr',
 		table_id:'auditno',
+		source:$('#apacthdr_source').val(),
+		trantype:$('#apacthdr_trantype').val(),
 		filterCol:['source','trantype', 'outamount','recstatus'],
 		filterVal:[$('#apacthdr_source').val(),$('#apacthdr_trantype').val(), '>.0','APPROVED']
 	}
@@ -243,6 +246,7 @@ $(document).ready(function () {
 		 colModel: [
 			{label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
 			{label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
+			{label: 'TT', name: 'trantype', width: 25, classes: 'wrap'},
 			{label: 'Audit <br> No', name: 'auditno', width: 25, classes: 'wrap', hidden:false, editable:false},
 			{label: 'Creditor', name: 'suppcode', width: 100, classes: 'wrap', hidden:false, formatter: showdetail, unformat:un_showdetail, editable:false},
 			{label: 'Doc Date', name: 'actdate', width: 100, classes: 'wrap', editable:false,
