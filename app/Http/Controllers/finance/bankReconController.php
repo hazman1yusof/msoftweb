@@ -207,7 +207,7 @@ class bankReconController extends defaultController
 
     public function init_recon(Request $request,$cbhdr){
 
-        $mmyy = Carbon::createFromFormat('Y-m-d',$request->recdate)->endOfMonth()->format('my');
+        $yymm = Carbon::createFromFormat('Y-m-d',$request->recdate)->endOfMonth()->format('ym');
 
         $cbrecdtl_sumamt = DB::table('finance.cbrecdtl')
                             ->where('compcode',session('compcode'))
@@ -216,13 +216,13 @@ class bankReconController extends defaultController
 
         $bankstmt = DB::table('finance.bankstmt')
                                 ->where('compcode',session('compcode'))
-                                ->where('mmyy',$mmyy)
+                                ->where('yymm',$yymm)
                                 ->where('bankcode',$cbhdr->bankcode);
 
         if($bankstmt->exists()){
             DB::table('finance.bankstmt')
                     ->where('compcode',session('compcode'))
-                    ->where('mmyy',$mmyy)
+                    ->where('yymm',$yymm)
                     ->where('bankcode',$cbhdr->bankcode)
                     ->update([
                         'currentbal' => $cbrecdtl_sumamt
@@ -232,7 +232,7 @@ class bankReconController extends defaultController
                 ->insert([
                     'compcode' => session('compcode'),
                     'bankcode' => $cbhdr->bankcode,
-                    'mmyy' => $mmyy,
+                    'yymm' => $yymm,
                     'currentbal' => $cbrecdtl_sumamt,
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -244,7 +244,7 @@ class bankReconController extends defaultController
 
         $currentbal = DB::table('finance.bankstmt')
                             ->where('compcode',session('compcode'))
-                            ->where('mmyy','<=',$mmyy)
+                            ->where('yymm','<=',$yymm)
                             ->where('bankcode',$cbhdr->bankcode)
                             ->sum('currentbal');
         return $currentbal;
