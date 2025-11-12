@@ -93,7 +93,7 @@
 
 					 	<div class="col-md-2">
 						 	<label for="year">Year</label>
-						 	<input type="text" id="year" name="year" class="form-control" value="{{ \Carbon\Carbon::now()->year }}">
+						 	<input type="text" id="year" name="year" class="form-control" value="{{ \Carbon\Carbon::now()->year }}" data-validation="required">
 						</div>
 
 					 	<div class="col-md-2">
