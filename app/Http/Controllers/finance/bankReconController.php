@@ -247,7 +247,14 @@ class bankReconController extends defaultController
                             ->where('yymm','<=',$yymm)
                             ->where('bankcode',$cbhdr->bankcode)
                             ->sum('currentbal');
-        return $currentbal;
+
+        $adjust = DB::table('finance.bankstmt')
+                            ->where('compcode',session('compcode'))
+                            ->where('yymm','<=',$yymm)
+                            ->where('bankcode',$cbhdr->bankcode)
+                            ->sum('adjustamt');
+
+        return round($currentbal + $adjust,2);
     }
 
     public function cbrecdtl_tbl(Request $request){
