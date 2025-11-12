@@ -34,10 +34,10 @@ class updPNLAccount extends defaultController
         DB::beginTransaction();
 
         try {
-            $inputfr = $request->monthfrom;
-            $inputto = $request->monthto;
+            $monthfrom = $request->monthfrom;
+            $monthto = $request->monthto;
 
-            for ($i = $input1; $i <= $input2; $i++) {
+            for ($i = $monthfrom; $i <= $monthto; $i++) {
                 $month = $i;
 
                 $sum = DB::table('finance.glmasdtl as gm')
@@ -68,6 +68,7 @@ class updPNLAccount extends defaultController
                             'compcode' => session('compcode'),
                             'year' => '2025',
                             'glaccount' => '50050102',
+                            'recstatus' => 'ACTIVE',
                             'actamount'.$month => $sum
                         ]);
                 }

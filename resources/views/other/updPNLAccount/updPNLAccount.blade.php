@@ -138,7 +138,8 @@ $(document).ready(function () {
 	  	$.get( './updPNLAccount/table?action=process&monthfrom='+$('#monthfrom').val()+'&monthto='+$('#monthto').val(), function( data ) {
 				
 	  		$('#process').prop('disabled',false);
-			},'json').done(function(data) {
+			}).done(function(data) {
+				alert('process completed!');
 	  		$('#process').prop('disabled',false);
 			});
 	  }
