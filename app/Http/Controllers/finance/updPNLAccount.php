@@ -41,13 +41,14 @@ class updPNLAccount extends defaultController
                 $month = $i;
 
                 $sum = DB::table('finance.glmasdtl as gm')
-                            ->leftJoin('finance.glmasref as gr', function($join){
+                            ->join('finance.glmasref as gr', function($join){
                                 $join = $join->on('gr.glaccno', '=', 'gm.glaccount')
                                             ->where('gr.compcode','=',session('compcode'))
                                             ->whereIn('gr.acttype',['E','R']);
                             })
+                            ->where('gm.year','2025')
                             ->where('gm.compcode',session('compcode'))
-                            ->sum('actamount8');
+                            ->sum('actamount'.$month);
 
                 dd($sum);
 
