@@ -49,6 +49,8 @@ class updPNLAccount extends defaultController
                             ->where('gm.compcode',session('compcode'))
                             ->sum('actamount'.$month);
 
+                dd($sum);
+
                 $glmasdtl = DB::table('finance.glmasdtl')
                                 ->where('compcode',session('compcode'))
                                 ->where('year','2025')
