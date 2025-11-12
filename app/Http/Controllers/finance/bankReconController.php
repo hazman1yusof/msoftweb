@@ -227,8 +227,6 @@ class bankReconController extends defaultController
                     ->update([
                         'currentbal' => $cbrecdtl_sumamt
                     ]);
-
-            return $cbrecdtl_sumamt;
         }else{
             DB::table('finance.bankstmt')
                 ->insert([
@@ -242,9 +240,14 @@ class bankReconController extends defaultController
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     // 'unreconamt' => ,
                 ]);
-
-            return $cbrecdtl_sumamt;
         }
+
+        $currentbal = DB::table('finance.bankstmt')
+                            ->where('compcode',session('compcode'))
+                            ->where('mmyy','<=',$mmyy)
+                            ->where('bankcode',$cbhdr->bankcode)
+                            ->sum('currentbal');
+        return $currentbal;
     }
 
     public function cbrecdtl_tbl(Request $request){
