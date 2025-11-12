@@ -47,7 +47,7 @@ class updPNLAccount extends defaultController
                                             ->whereIn('gr.acttype',['E','R']);
                             })
                             ->where('gm.compcode',session('compcode'))
-                            ->sum('actamount'.$month);
+                            ->sum('actamount8');
 
                 dd($sum);
 
