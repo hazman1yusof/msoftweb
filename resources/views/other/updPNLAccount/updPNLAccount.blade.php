@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Item Movement Report')
+@section('title', 'Update PNL Account')
 
 @section('style')
 	body{
@@ -92,6 +92,11 @@
 						</div>
 
 					 	<div class="col-md-2">
+						 	<label for="year">Year</label>
+						 	<input type="text" id="year" name="year" class="form-control" value="{{ \Carbon\Carbon::now()->year }}">
+						</div>
+
+					 	<div class="col-md-2">
 						 	<label for="monthto">&nbsp;</label>
 							<button id="process" type="button" class="btn btn-primary">
 								Process
@@ -135,7 +140,7 @@ $(document).ready(function () {
   $('#process').click(function(){
 	  if($('#formdata').isValid({requiredFields:''},conf,true)){
 	  	$('#process').prop('disabled',true);
-	  	$.get( './updPNLAccount/table?action=process&monthfrom='+$('#monthfrom').val()+'&monthto='+$('#monthto').val(), function( data ) {
+	  	$.get( './updPNLAccount/table?action=process&monthfrom='+$('#monthfrom').val()+'&monthto='+$('#monthto').val()+'&year='+$('#year').val(), function( data ) {
 				
 	  		$('#process').prop('disabled',false);
 			}).done(function(data) {

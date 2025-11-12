@@ -36,6 +36,7 @@ class updPNLAccount extends defaultController
         try {
             $monthfrom = $request->monthfrom;
             $monthto = $request->monthto;
+            $year = $request->year;
 
             for ($i = $monthfrom; $i <= $monthto; $i++) {
                 $month = $i;
@@ -46,11 +47,9 @@ class updPNLAccount extends defaultController
                                             ->where('gr.compcode','=',session('compcode'))
                                             ->whereIn('gr.acttype',['E','R']);
                             })
-                            ->where('gm.year','2025')
+                            ->where('gm.year',$year)
                             ->where('gm.compcode',session('compcode'))
                             ->sum('actamount'.$month);
-
-                dd($sum);
 
                 $glmasdtl = DB::table('finance.glmasdtl')
                                 ->where('compcode',session('compcode'))
@@ -60,7 +59,7 @@ class updPNLAccount extends defaultController
                 if($glmasdtl->exists()){
                     DB::table('finance.glmasdtl')
                         ->where('compcode',session('compcode'))
-                        ->where('year','2025')
+                        ->where('year',$year)
                         ->where('glaccount','50050102')
                         ->update([
                             'actamount'.$month => $sum
@@ -69,7 +68,7 @@ class updPNLAccount extends defaultController
                     DB::table('finance.glmasdtl')
                         ->insert([
                             'compcode' => session('compcode'),
-                            'year' => '2025',
+                            'year' => $year,
                             'glaccount' => '50050102',
                             'recstatus' => 'ACTIVE',
                             'actamount'.$month => $sum
