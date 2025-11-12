@@ -34,7 +34,44 @@ class updPNLAccount extends defaultController
         DB::beginTransaction();
 
         try {
+            $inputfr = $request->monthfrom;
+            $inputto = $request->monthto;
 
+            for ($i = $input1; $i <= $input2; $i++) {
+                $month = $i;
+
+                $sum = DB::table('finance.glmasdtl as gm')
+                            ->join('finance.glmasref as gr', function($join){
+                                $join = $join->on('gr.glaccno', '=', 'gm.glaccount')
+                                            ->where('gr.compcode','=',session('compcode'))
+                                            ->whereIn('gr.acttype',['E','R']);
+                            })
+                            ->where('gm.compcode',session('compcode'))
+                            ->sum('actamount'.$month);
+
+                $glmasdtl = DB::table('finance.glmasdtl')
+                                ->where('compcode',session('compcode'))
+                                ->where('year','2025')
+                                ->where('glaccount','50050102');
+
+                if($glmasdtl->exists()){
+                    DB::table('finance.glmasdtl')
+                        ->where('compcode',session('compcode'))
+                        ->where('year','2025')
+                        ->where('glaccount','50050102')
+                        ->update([
+                            'actamount'.$month => $sum
+                        ]);
+                }else{
+                    DB::table('finance.glmasdtl')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'year' => '2025',
+                            'glaccount' => '50050102',
+                            'actamount'.$month => $sum
+                        ]);
+                }
+            }
 
             DB::commit();
 

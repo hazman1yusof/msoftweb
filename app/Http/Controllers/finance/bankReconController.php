@@ -770,11 +770,13 @@ class bankReconController extends defaultController
                             'reconstatus' => 0
                         ]);
                 }
-                
+
                 DB::table('finance.cbrecdtl')
                             ->where('compcode',session('compcode'))
                             ->where('idno',$value_db)
-                            ->delete();
+                            ->update([
+                                'compcode' => 'xx'
+                            ]);
             }
 
 

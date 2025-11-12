@@ -52,10 +52,10 @@
 				<div class="panel-heading">Update PNL Account</div>
 				<div class="panel-body" style="padding-left: 35px !important;">
 					<div class='col-md-12 btnform' style="padding:0px">
-					 <fieldset>
-					 	<div class="col-md-5">
+					 <form id="formdata">
+					 	<div class="col-md-3">
 						 	<label for="monthfrom">Month From</label>
-							<select id="monthfrom" name="monthfrom" required aria-label="Month" class="form-control">
+							<select id="monthfrom" name="monthfrom" required aria-label="Month" class="form-control" data-validation="required">
 							  <option value="" disabled selected>Choose month</option>
 							  <option value="1">1</option>
 							  <option value="2">2</option>
@@ -72,9 +72,9 @@
 							</select>
 						</div>
 
-					 	<div class="col-md-5">
+					 	<div class="col-md-3">
 						 	<label for="monthto">Month To</label>
-							<select id="monthto" name="monthto" required aria-label="Month" class="form-control">
+							<select id="monthto" name="monthto" required aria-label="Month" class="form-control" data-validation="required">
 							  <option value="" disabled selected>Choose month</option>
 							  <option value="1">1</option>
 							  <option value="2">2</option>
@@ -91,13 +91,14 @@
 							</select>
 						</div>
 
-					 	<div class="col-md-1">
+					 	<div class="col-md-2">
+						 	<label for="monthto">&nbsp;</label>
 							<button id="process" type="button" class="btn btn-primary">
 								Process
 							</button>
 						</div>
 
-					  </fieldset>
+					  </form>
 					</div>
 				</div>
 			</div> 
@@ -111,83 +112,38 @@
 
 <script>
 $(document).ready(function () {
-
-
-	let intervalId = null;
-
-	function startProcessInterval() {
-	  intervalId = setInterval(myTask, 5000);
-	}
-	function stopProcessInterval() {
-	  if (intervalId !== null) {
-	      clearInterval(intervalId);
-	      intervalId = null;
-	  }
-	}
-	if($('#process_').val() == 'false'){
-		startProcessInterval();
-	}
-
-  function myTask() {
-    $.get( './gltb/table?action=check_gltb_process', function( data ) {
-			
-		},'json').done(function(data) {
-	  	var val = $('#month').val();
-
-	    const [year, month] = val.split('-').map(Number);
-
-	    if (month <= 4 && year == '2025') {
-	    	$("#gltb").prop('disabled',true);
-	    }else{
-	    	$("#gltb").prop('disabled',false);
-	    	if(data.jobdone=='true'){
-	    		stopProcessInterval();
-					$('#gltb').attr('disabled',false);
-					$('#gltb').html('Process');
-				}else{
-					$('#gltb').attr('disabled',true);
-					$('#gltb').html('Processing.. <i class="fa fa-refresh fa-spin fa-fw">');
-				}
-				$('#gltb_status').text(data.status);
-				$('#gltb_datefr').text(data.datefr);
-				$('#gltb_dateto').text(data.dateto);
-				$('#gltb_period').text(data.period);
-				$('#gltb_year').text(data.year);
-	    }
-		});
-  }
-
-  $('#month').change(function(){
-  	const val = $(this).val(); // e.g. "2025-03"
-    if (!val) return;
-
-    const [year, month] = val.split('-').map(Number);
-
-    if (month <= 4 && year == '2025') {
-    	$("#gltb").prop('disabled',true);
-    }else{
-    	$("#gltb").prop('disabled',false);
-    }
+	$.validate({
+      modules : 'sanitize',
+      language : {
+          requiredFields: 'Please Enter Value'
+      },
   });
+  
+  var errorField=[];
+  conf = {
+      onValidate : function($form) {
+          if(errorField.length>0){
+              show_errors(errorField,'#formdata');
+              return [{
+                  element : $('#'+$form.attr('id')+' input[name='+errorField[0]+']'),
+                  message : ''
+              }];
+          }
+      },
+  };
 
-	$("#gltb").click(function() {
-	    stopProcessInterval();
-			$('#gltb').attr('disabled',true);
-			$('#gltb').html('Processing.. <i class="fa fa-refresh fa-spin fa-fw">');
-			let dateStr = $('#month').val();
+  $('#process').click(function(){
+	  if($('#formdata').isValid({requiredFields:''},conf,true)){
+	  	$('#process').prop('disabled',true);
+	  	$.get( './updPNLAccount/table?action=process&monthfrom='+$('#monthfrom').val()+'&monthto='+$('#monthto').val(), function( data ) {
+				
+	  		$('#process').prop('disabled',false);
+			},'json').done(function(data) {
+	  		$('#process').prop('disabled',false);
+			});
+	  }
 
-			let [year, month] = dateStr.split("-").map(Number);
-
-      let href = './gltb/form?action=processLink&month='+month+'&year='+year;
-
-      $.post( href,{_token:$('#_token').val()}, function( data ) {
-
-      }).fail(function(data) {
-
-      }).success(function(data){
-				startProcessInterval();
-      });
-	});
+  });
 });
 		
 </script>
