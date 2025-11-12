@@ -41,38 +41,62 @@
 		font-size: 12px !important;
 		font-weight:bold;
 	}
-	.btnform .btn{
-		width: 30% !important;
-	}
-	.btnform .btn b{
-		letter-spacing: 0.5px !important;
-	}
 @endsection('style')
 
 @section('body')
-<input id="process_" type="hidden" value="{{ $process_ }}">
 <input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 <div class="container mycontainer">
   <div class="row">
 		<div class="col-md-12">
 			<div class="panel panel-default" style="height: 260px;width: 90%;margin: auto;">
-				<div class="panel-heading">Interface Trial Balance</div>
+				<div class="panel-heading">Update PNL Account</div>
 				<div class="panel-body" style="padding-left: 35px !important;">
 					<div class='col-md-12 btnform' style="padding:0px">
 					 <fieldset>
-						<!-- <button name="gltb_run" type="button" class="mybtn btn btn-sm" data-btntype='gltb_run'>
-						 RUN GLTB
-						</button> -->
-						<button id="gltb" type="button" class="mybtn btn btn-primary" @if($process_ == 'true') {{'disabled'}} @endif style="width:50%" >
-						  @if($process_ == 'true') {{'Processing..'}} <i class="fa fa-refresh fa-spin fa-fw">@else {{'Process'}} @endif</i>
-						</button>
-						<input type="month" id="month" value="{{\Carbon\Carbon::now()->subMonth()->format('Y-m')}}" min="2025-05" class="form-control" style="width:50%;display: inline;">
-						<br/><br/>
-						<p>Last Run Status : <span id="gltb_status"></span><p/>
-						<p>Last Run From : <span id="gltb_datefr"></span><p/>
-						<p>Last Run To : <span id="gltb_dateto"></span><p/>
-						<p>Last Run Period : <span id="gltb_period"></span></p>
-						<p>Last Run Year : <span id="gltb_year"></span></p>
+					 	<div class="col-md-5">
+						 	<label for="monthfrom">Month From</label>
+							<select id="monthfrom" name="monthfrom" required aria-label="Month" class="form-control">
+							  <option value="" disabled selected>Choose month</option>
+							  <option value="1">1</option>
+							  <option value="2">2</option>
+							  <option value="3">3</option>
+							  <option value="4">4</option>
+							  <option value="5">5</option>
+							  <option value="6">6</option>
+							  <option value="7">7</option>
+							  <option value="8">8</option>
+							  <option value="9">9</option>
+							  <option value="10">10</option>
+							  <option value="11">11</option>
+							  <option value="12">12</option>
+							</select>
+						</div>
+
+					 	<div class="col-md-5">
+						 	<label for="monthto">Month To</label>
+							<select id="monthto" name="monthto" required aria-label="Month" class="form-control">
+							  <option value="" disabled selected>Choose month</option>
+							  <option value="1">1</option>
+							  <option value="2">2</option>
+							  <option value="3">3</option>
+							  <option value="4">4</option>
+							  <option value="5">5</option>
+							  <option value="6">6</option>
+							  <option value="7">7</option>
+							  <option value="8">8</option>
+							  <option value="9">9</option>
+							  <option value="10">10</option>
+							  <option value="11">11</option>
+							  <option value="12">12</option>
+							</select>
+						</div>
+
+					 	<div class="col-md-1">
+							<button id="process" type="button" class="btn btn-primary">
+								Process
+							</button>
+						</div>
+
 					  </fieldset>
 					</div>
 				</div>

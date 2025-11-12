@@ -254,7 +254,7 @@ class bankReconController extends defaultController
                             ->where('bankcode',$cbhdr->bankcode)
                             ->sum('adjustamt');
 
-        return round($currentbal + $adjust,2);
+        return round($currentbal + $adjust, 2);
     }
 
     public function cbrecdtl_tbl(Request $request){
@@ -769,12 +769,12 @@ class bankReconController extends defaultController
                         ->update([
                             'reconstatus' => 0
                         ]);
-
-                    DB::table('finance.cbrecdtl')
-                                ->where('compcode',session('compcode'))
-                                ->where('idno',$value_db)
-                                ->delete();
                 }
+                
+                DB::table('finance.cbrecdtl')
+                            ->where('compcode',session('compcode'))
+                            ->where('idno',$value_db)
+                            ->delete();
             }
 
 
