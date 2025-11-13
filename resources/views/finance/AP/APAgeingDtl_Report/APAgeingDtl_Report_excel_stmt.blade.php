@@ -64,8 +64,6 @@
             <td style="font-weight: bold;text-align: left">REMARK</td>
             <td style="font-weight: bold;text-align: right">BALANCE AMOUNT</td>
             <td style="font-weight: bold;text-align: right">TOTAL</td>
-            <td style="font-weight: bold;text-align: left">UNIT</td>
-            <td style="font-weight: bold;text-align: left">REFERENCE</td>
         </tr>
         <tr></tr>
         @php($totalAmount = 0)
@@ -80,8 +78,6 @@
                     <td data-format="@">{{$db_obj->remarks}}</td>
                     <td style="text-align: right">{{$db_obj->newamt}}</td>
                     <td style="text-align: right">{{$totalAmount}}</td>
-                    <td>{{$db_obj->unit}}</td>
-                    <td  data-format="0">{{$db_obj->reference}}</td>
                 </tr>
             @endif
         @endforeach
