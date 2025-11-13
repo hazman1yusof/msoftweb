@@ -218,14 +218,9 @@
 
 						<div class="form-group">
 							<div class="col-md-6">
-								<label class="control-label" for="Scol">Date From</label>  
+								<label class="control-label" for="Scol">Date</label>  
 									<input type="date" name="datefrom" id="datefrom" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 							</div>
-
-							<div class="col-md-6">
-								<label class="control-label" for="Scol">Date To</label>  
-									<input type="date" name="dateto" id="dateto" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
-						</div>
 					</div>
 				</form>
 			</div>
@@ -989,6 +984,6 @@
 		});
 	</script>
 
-	<script src="js/finance/AP/apenquiry/apenquiry.js?v=1.3"></script>
+	<script src="js/finance/AP/apenquiry/apenquiry.js?v=1.4"></script>
 	
 @endsection

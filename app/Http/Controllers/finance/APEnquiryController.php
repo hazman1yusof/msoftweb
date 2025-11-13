@@ -8,7 +8,7 @@ use stdClass;
 use DB;
 use DateTime;
 use Carbon\Carbon;
-use App\Exports\APEnquiryExport;
+use App\Exports\APEnquiryExportv2;
 use Maatwebsite\Excel\Facades\Excel;
 
 class APEnquiryController extends defaultController
@@ -40,7 +40,7 @@ class APEnquiryController extends defaultController
     }
 
     public function showExcel(Request $request){
-        return Excel::download(new APEnquiryExport($request->suppcode_from,$request->suppcode_to,$request->datefrom,$request->dateto), 'APStatement.xlsx');
+        return Excel::download(new APEnquiryExportv2($request->datefrom,$request->suppcode_from,$request->suppcode_to), 'APStatement.xlsx');
     }
 
     public function showpdf(Request $request){

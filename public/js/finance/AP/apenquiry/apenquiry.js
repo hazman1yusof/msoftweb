@@ -230,13 +230,10 @@ $(document).ready(function () {
 		buttons:
 		[
 		{
-			text: "Generate PDF",click: function() {
-				window.open('./apenquiry/showpdf?suppcode_from='+$('#suppcode_from').val()+'&suppcode_to='+$("#suppcode_to").val()+'&datefrom='+$("#datefrom").val()+'&dateto='+$("#dateto").val(),  '_blank'); 
-			}
-		},
-		{
 			text: "Generate Excel",click: function() {
-				window.location='./apenquiry/showExcel?suppcode_from='+$('#suppcode_from').val()+'&suppcode_to='+$("#suppcode_to").val()+'&datefrom='+$("#datefrom").val()+'&dateto='+$("#dateto").val();
+				
+				window.open('./apenquiry/showExcel?suppcode_from='+$('#suppcode_from').val()+'&suppcode_to='+$("#suppcode_to").val()+'&datefrom='+$("#datefrom").val()+'&dateto='+$("#dateto").val(), '_blank');
+				// window.location='./apenquiry/showExcel?suppcode_from='+$('#suppcode_from').val()+'&suppcode_to='+$("#suppcode_to").val()+'&datefrom='+$("#datefrom").val()+'&dateto='+$("#dateto").val();
 			}
 		},{
 			text: "Close",click: function() {
@@ -992,6 +989,9 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
+				let data_suppcode = selrowData('#' + suppcode_from.gridname).suppcode;
+
+				$('#suppcode_to').val(data_suppcode);
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
