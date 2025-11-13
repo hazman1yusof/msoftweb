@@ -49,18 +49,24 @@ class ApEnquiryExportv2 implements FromView, ShouldQueue, WithEvents, WithColumn
         $this->groupFour = 120;
 
         $this->grouping = [];
+        $this->grouping_tot = [];
         $this->grouping[0] = 0;
+        $this->grouping_tot[0] = 0;
         if(!empty($this->groupOne)){
             $this->grouping[1] = $this->groupOne;
+            $this->grouping_tot[1] = 0;
         }
         if(!empty($this->groupTwo)){
             $this->grouping[2] = $this->groupTwo;
+            $this->grouping_tot[2] = 0;
         }
         if(!empty($this->groupThree)){
             $this->grouping[3] = $this->groupThree;
+            $this->grouping_tot[3] = 0;
         }
         if(!empty($this->groupFour)){
             $this->grouping[4] = $this->groupFour;
+            $this->grouping_tot[4] = 0;
         }
 
         $this->comp = DB::table('sysdb.company')
@@ -85,19 +91,15 @@ class ApEnquiryExportv2 implements FromView, ShouldQueue, WithEvents, WithColumn
     {
         return [
             'A' => 15,
-            'B' => 40,
-            'C' => 15,
-            'D' => 15,
+            'B' => 15,
+            'C' => 35,
+            'D' => 35,
             'E' => 15,
             'F' => 15,
             'G' => 15,
             'H' => 15,
-            'I' => 15,
+            'I' => 18,
             'J' => 15,
-            'K' => 15,
-            'L' => 15,
-            'M' => 15,
-            'N' => 15,
         ];
     }
     
@@ -105,12 +107,14 @@ class ApEnquiryExportv2 implements FromView, ShouldQueue, WithEvents, WithColumn
     {
 
         $date = $this->date;
+        $date_asof = Carbon::parse($this->date)->format('d-m-Y');
         $suppcode_from = $this->suppcode_from;
         $suppcode_to = $this->suppcode_to;
         $grouping = $this->grouping;
+        $grouping_tot = $this->grouping_tot;
 
         $apacthdr = DB::table('finance.apacthdr as ap')
-                    ->select('ap.suppcode','ap.source','ap.trantype','ap.auditno','ap.amount','ap.postdate','ap.remarks','ap.document','su.name','su.suppgroup','sg.description','ap.unit')
+                    ->select('ap.suppcode','ap.source','ap.trantype','ap.auditno','ap.amount','ap.postdate','ap.remarks','ap.document','su.name','su.suppgroup','sg.description','ap.unit','su.addr1','su.addr2','su.addr3','su.addr4','ap.reference')
                     ->join('material.supplier as su', function($join) {
                         $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
                         $join = $join->where('su.compcode', '=', session('compcode'));
@@ -172,23 +176,28 @@ class ApEnquiryExportv2 implements FromView, ShouldQueue, WithEvents, WithColumn
                 $newamt = $newamt * -1;
             }
 
-            if(floatval($newamt) != 0.00){
+            if(round($newamt,2) != 0.00){
                 $value->newamt = $newamt;
                 array_push($array_report, $value);
             }
+
+            $grouping_tot[$value->group] = $grouping_tot[$value->group] + $newamt;
         }
 
         // dd($grouping);
-
-        $suppgroup = collect($array_report)->unique('suppgroup');
+        $title = "STATEMENT LISTING";
         $suppcode = collect($array_report)->unique('suppcode');
 
-        $comp_name = $this->comp->name;
         $date_at = Carbon::createFromFormat('Y-m-d',$this->date)->format('d-m-Y');
-        $type = 'Statement';
+        $datenow = Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y');
+        
+        $company = DB::table('sysdb.company')
+                    ->where('compcode', '=', session('compcode'))
+                    ->first();
+
         // dd($array_report);
 
-        return view('finance.AP.APAgeingDtl_Report.APAgeingDtl_Report_excel',compact('array_report', 'suppgroup', 'suppcode', 'array_report', 'grouping','comp_name','date_at','type'));
+        return view('finance.AP.APAgeingDtl_Report.APAgeingDtl_Report_excel_stmt',compact('suppcode', 'array_report', 'grouping','grouping_tot','title','company','date_asof','datenow'));
     }
     
     public function registerEvents(): array

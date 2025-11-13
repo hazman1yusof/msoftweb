@@ -26,7 +26,7 @@ use DateTime;
 use Carbon\Carbon;
 use stdClass;
 
-class financialReportExport_bs implements FromView, WithEvents, WithColumnWidths,ShouldAutoSize, WithTitle
+class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWidths,ShouldAutoSize, WithTitle
 {
     
     /**
@@ -59,7 +59,7 @@ class financialReportExport_bs implements FromView, WithEvents, WithColumnWidths
 
     public function title(): string
     {
-        return 'Balance Sheet';
+        return 'Note';
     }
     
     public function columnWidths(): array

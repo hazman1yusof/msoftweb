@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use App\Exports\financialReportExport;
 use App\Exports\financialReportExport_units;
 use App\Exports\financialReportExport_bs;
+use App\Exports\financialReportExport_bs_main;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 
@@ -57,7 +58,7 @@ class FinancialReportController extends defaultController
                 
             }
         }else if($request->reporttype == '2'){
-            return Excel::download(new financialReportExport_bs($request->monthfrom,$request->monthto,$request->yearfrom,$request->yearto,$request->reportname), 'FINANCIAL REPORT Balance Sheet.xlsx');
+            return Excel::download(new financialReportExport_bs_main($request->monthfrom,$request->monthto,$request->yearfrom,$request->yearto,$request->reportname), 'FINANCIAL REPORT Balance Sheet.xlsx');
         }else{
             abort(403, 'Report Type Not Exist');
         }
