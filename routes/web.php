@@ -1411,10 +1411,17 @@ Route::get('/nursingnote/circulation_chart','hisdb\NursingNoteController@circula
 Route::get('/nursingnote/slidingScale_chart','hisdb\NursingNoteController@slidingScale_chart');
 Route::get('/nursingnote/othersChart_chart','hisdb\NursingNoteController@othersChart_chart');
 Route::get('/nursingnote/bladder_chart','hisdb\NursingNoteController@bladder_chart');
+Route::post('/glasgow/form','hisdb\GlasgowController@form');
+Route::get('/glasgow/table','hisdb\GlasgowController@table');
+Route::get('/glasgow/glasgow_chart','hisdb\GlasgowController@glasgow_chart');
+Route::post('/pivc/form','hisdb\PivcController@form');
+Route::get('/pivc/table','hisdb\PivcController@table');
+Route::get('/pivc/pivc_chart','hisdb\PivcController@pivc_chart');
 Route::post('/morsefallscale/form','hisdb\MorseFallScaleController@form');
 Route::get('/morsefallscale/table','hisdb\MorseFallScaleController@table');
 Route::post('/thrombophlebitis/form','hisdb\ThrombophlebitisController@form');
 Route::get('/thrombophlebitis/table','hisdb\ThrombophlebitisController@table');
+Route::get('/thrombophlebitis/thrombophlebitis_chart','hisdb\ThrombophlebitisController@thrombophlebitis_chart');
 
 //// Client Progress Note (Doctor Note) page ///
 Route::get('/clientprogressnote','hisdb\ClientProgressNoteController@show');
