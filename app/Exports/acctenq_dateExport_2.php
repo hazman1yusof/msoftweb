@@ -79,6 +79,8 @@ class acctenq_dateExport_2 implements FromView, WithEvents, WithColumnWidths, Wi
                             ->where('job_id',$this->job_id)
                             ->get();
 
+                            // dd($table);
+
         return view('finance.GL.acctenq_date.acctenq_dateExcel', compact('table','glaccount','compname','fromdate','todate'));
     }
     

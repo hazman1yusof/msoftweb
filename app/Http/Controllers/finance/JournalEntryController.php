@@ -278,48 +278,118 @@ use Carbon\Carbon;
 
                     if($obj->drcrsign == 'DR'){
                         //DR
-                        DB::table('finance.gltran')
-                            ->insert([
-                                'compcode' => session('compcode'),
-                                'adduser' => session('username'),
-                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                                'auditno' => $obj->auditno,
-                                'lineno_' => $obj->lineno_,
-                                'source' => $obj->source,
-                                'trantype' => $obj->trantype,
-                                'reference' => $gljnlhdr->description,
-                                'description' => $obj->description, 
-                                'postdate' => $gljnlhdr->docdate,
-                                'year' => $yearperiod->year,
-                                'period' => $yearperiod->period,
-                                'drcostcode' => $obj->costcode,
-                                'dracc' => $obj->glaccount,
-                                // 'crcostcode' => $crcostcode,
-                                // 'cracc' => $cracc,
-                                'amount' => $obj->amount
-                            ]);
+                        $gltran = DB::table('finance.gltran')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('auditno','=',$obj->auditno)
+                            ->where('source','=',$obj->source)
+                            ->where('trantype','=',$obj->trantype)
+                            ->where('lineno_','=',$obj->lineno_);
+
+                        if($gltran->exists()){
+                            DB::table('finance.gltran')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('auditno','=',$obj->auditno)
+                                ->where('source','=',$obj->source)
+                                ->where('trantype','=',$obj->trantype)
+                                ->where('lineno_','=',$obj->lineno_)
+                                ->update([
+                                    'compcode' => session('compcode'),
+                                    'upduser' => session('username'),
+                                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                    // 'auditno' => $obj->auditno,
+                                    // 'lineno_' => $obj->lineno_,
+                                    // 'source' => $obj->source,
+                                    // 'trantype' => $obj->trantype,
+                                    'reference' => $gljnlhdr->description,
+                                    'description' => $obj->description, 
+                                    'postdate' => $gljnlhdr->docdate,
+                                    'year' => $yearperiod->year,
+                                    'period' => $yearperiod->period,
+                                    'drcostcode' => $obj->costcode,
+                                    'dracc' => $obj->glaccount,
+                                    // 'crcostcode' => $crcostcode,
+                                    // 'cracc' => $cracc,
+                                    'amount' => $obj->amount
+                                ]);
+                        }else{
+                            DB::table('finance.gltran')
+                                ->insert([
+                                    'compcode' => session('compcode'),
+                                    'adduser' => session('username'),
+                                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                    'auditno' => $obj->auditno,
+                                    'lineno_' => $obj->lineno_,
+                                    'source' => $obj->source,
+                                    'trantype' => $obj->trantype,
+                                    'reference' => $gljnlhdr->description,
+                                    'description' => $obj->description, 
+                                    'postdate' => $gljnlhdr->docdate,
+                                    'year' => $yearperiod->year,
+                                    'period' => $yearperiod->period,
+                                    'drcostcode' => $obj->costcode,
+                                    'dracc' => $obj->glaccount,
+                                    // 'crcostcode' => $crcostcode,
+                                    // 'cracc' => $cracc,
+                                    'amount' => $obj->amount
+                                ]);
+                        }
                     }else if($obj->drcrsign == 'CR'){
                         //CR
-                        DB::table('finance.gltran')
-                            ->insert([
-                                'compcode' => session('compcode'),
-                                'adduser' => session('username'),
-                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                                'auditno' => $obj->auditno,
-                                'lineno_' => $obj->lineno_,
-                                'source' => $obj->source,
-                                'trantype' => $obj->trantype,
-                                'reference' => $gljnlhdr->description,
-                                'description' => $obj->description, 
-                                'postdate' => $gljnlhdr->docdate,
-                                'year' => $yearperiod->year,
-                                'period' => $yearperiod->period,
-                                // 'drcostcode' => $obj->costcode,
-                                // 'dracc' => $obj->glaccount,
-                                'crcostcode' => $obj->costcode,
-                                'cracc' => $obj->glaccount,
-                                'amount' => $obj->amount
-                            ]);
+                        $gltran = DB::table('finance.gltran')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('auditno','=',$obj->auditno)
+                            ->where('source','=',$obj->source)
+                            ->where('trantype','=',$obj->trantype)
+                            ->where('lineno_','=',$obj->lineno_);
+
+                        if($gltran->exists()){
+                            DB::table('finance.gltran')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('auditno','=',$obj->auditno)
+                                ->where('source','=',$obj->source)
+                                ->where('trantype','=',$obj->trantype)
+                                ->where('lineno_','=',$obj->lineno_)
+                                ->update([
+                                    'compcode' => session('compcode'),
+                                    'upduser' => session('username'),
+                                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                    // 'auditno' => $obj->auditno,
+                                    // 'lineno_' => $obj->lineno_,
+                                    // 'source' => $obj->source,
+                                    // 'trantype' => $obj->trantype,
+                                    'reference' => $gljnlhdr->description,
+                                    'description' => $obj->description, 
+                                    'postdate' => $gljnlhdr->docdate,
+                                    'year' => $yearperiod->year,
+                                    'period' => $yearperiod->period,
+                                    // 'drcostcode' => $obj->costcode,
+                                    // 'dracc' => $obj->glaccount,
+                                    'crcostcode' => $obj->costcode,
+                                    'cracc' => $obj->glaccount,
+                                    'amount' => $obj->amount
+                                ]);
+                        }else{
+                            DB::table('finance.gltran')
+                                ->insert([
+                                    'compcode' => session('compcode'),
+                                    'adduser' => session('username'),
+                                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                    'auditno' => $obj->auditno,
+                                    'lineno_' => $obj->lineno_,
+                                    'source' => $obj->source,
+                                    'trantype' => $obj->trantype,
+                                    'reference' => $gljnlhdr->description,
+                                    'description' => $obj->description, 
+                                    'postdate' => $gljnlhdr->docdate,
+                                    'year' => $yearperiod->year,
+                                    'period' => $yearperiod->period,
+                                    // 'drcostcode' => $obj->costcode,
+                                    // 'dracc' => $obj->glaccount,
+                                    'crcostcode' => $obj->costcode,
+                                    'cracc' => $obj->glaccount,
+                                    'amount' => $obj->amount
+                                ]);
+                        }
                     }
                 }
             }

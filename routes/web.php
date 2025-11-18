@@ -1583,6 +1583,9 @@ Route::get('/gltb','finance\gltbController@show');
 Route::get('/gltb/table','finance\gltbController@table');
 Route::post('/gltb/form','finance\gltbController@form');
 
+Route::get('/updPNLAccount','finance\updPNLAccount@show');
+Route::get('/updPNLAccount/table','finance\updPNLAccount@table');
+
 // //// facontrol2 ///
 // Route::get('/facontrol2','finance\facontrolController2@show');
 // Route::get('/facontrol2/table','finance\facontrolController2@table');

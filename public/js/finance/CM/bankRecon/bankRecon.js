@@ -332,8 +332,8 @@ $(document).ready(function () {
 				{label:'Closing Bank Statement',name:'openamt',width:400,classes:'pointer'},
 			],
 			urlParam: {
-				filterCol:['compcode','bankcode'],
-				filterVal:['session.compcode','']
+				filterCol:['compcode','bankcode','recdate.>='],
+				filterVal:['session.compcode','','2025-05-01']
 			},
 			ondblClickRow: function () {
 				$('#bankcode_').val($('#bankcode_search option:selected').val());
@@ -363,8 +363,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Bank Code",
 			open: function(){
-				dialog_bankcode2.urlParam.filterCol=['compcode','bankcode'],
-				dialog_bankcode2.urlParam.filterVal=['session.compcode',$('#bankcode_search option:selected').val()]
+				dialog_bankcode2.urlParam.filterCol=['compcode','bankcode','recdate'],
+				dialog_bankcode2.urlParam.filterVal=['session.compcode',$('#bankcode_search option:selected').val(),'>=.2025-05-01']
 			},
 			close:function(){
 				$('#recdate').select().focus();

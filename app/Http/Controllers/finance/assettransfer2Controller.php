@@ -25,8 +25,7 @@ class assettransfer2Controller extends defaultController
         return view('finance.FA.assettransfer2.assettransfer2Script');
     }
 
-    public function form(Request $request)
-    {   
+    public function form(Request $request){   
         DB::enableQueryLog();
         switch($request->action){
             case 'save_table_transferFA':
@@ -150,7 +149,7 @@ class assettransfer2Controller extends defaultController
                         //'assetlineno' => $request->assetlineno,
                         //'assetno' => $request->assetno,
                         //'regtype' => $request->regtype,
-                        'trandate' => $request->trandate,
+                        // 'trandate' => $request->trandate,
                         //'recstatus' => $request->recstatus,
                         'upduser'  => session('username'),
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),

@@ -188,6 +188,19 @@ class AcctEnqDateJob:
             if row:
                 obj["description"] = row.get("remarks")
                 obj["reference"] = row.get("name")
+        elif trantype == "DN":
+            sql = """
+                SELECT ap.suppcode, s.name
+                FROM finance.apacthdr ap
+                LEFT JOIN material.supplier s
+                  ON s.suppcode = ap.suppcode AND s.compcode = %s
+                WHERE ap.compcode = %s AND ap.source = %s AND ap.trantype=%s AND ap.auditno = %s
+                LIMIT 1
+            """
+            self.cursor.execute(sql, (self.compcode, self.compcode, source, trantype, auditno))
+            row = self.cursor.fetchone()
+            if row:
+                obj["reference"] = row.get("name")
         else:
             # return 0 in Laravel; do nothing here
             return

@@ -93,7 +93,22 @@ class bankReconExport implements FromView, WithEvents, WithColumnWidths, WithCol
                     ->sum('amount');
 
         $bs_bal = $cbhdr->openamt;
-        $cb_bal = $db_tot + $cr_tot;
+
+        $yymm = Carbon::createFromFormat('Y-m-d',$cbhdr->recdate)->endOfMonth()->format('ym');
+
+        $currentbal = DB::table('finance.bankstmt')
+                            ->where('compcode',session('compcode'))
+                            ->where('yymm','<=',$yymm)
+                            ->where('bankcode',$cbhdr->bankcode)
+                            ->sum('currentbal');
+
+        $adjust = DB::table('finance.bankstmt')
+                            ->where('compcode',session('compcode'))
+                            ->where('yymm','<=',$yymm)
+                            ->where('bankcode',$cbhdr->bankcode)
+                            ->sum('adjustamt');
+
+        $cb_bal = round($currentbal + $adjust, 2);
         $un_amt = $bs_bal - $cb_bal;
 
         foreach ($cbdtl as $key => $value) {

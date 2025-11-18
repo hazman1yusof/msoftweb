@@ -96,20 +96,28 @@ div#fail_msg{
 				<div class="panel-heading">Manual Allocation</div>
 					<div class="panel-body">
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="apacthdr_source">Source</label> 
 								<div class="col-md-3">
+							<label class="" for="apacthdr_source">Source</label> 
 									<select id="apacthdr_source" name=apacthdr_source class="form-control" data-validation="required">
 										<option value="AP">Account Payable</option>
 										<option value="DF">Doctor Fee</option>
 									</select>
 								</div>
-							<label class="col-md-2 control-label" for="apacthdr_trantype">Trantype</label> 
 								<div class="col-md-3">
+							<label class="" for="apacthdr_trantype">Trantype</label> 
 									<select id="apacthdr_trantype" name=apacthdr_trantype class="form-control" data-validation="required">
 										<option value="PD">Payment Deposit</option>
 										<option value="CN">Credit Note</option>
 									</select>
 								</div>
+							<div class="col-md-3"> 
+							<label class="" for="suppcode_search">Supplier</label>
+								<div class='input-group'>
+									<input id="suppcode_search" name="suppcode_search" type="text" maxlength="12" class="form-control input-sm">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span id="suppcode_search_hb" class="help-block"></span>
+							</div>
 						</div>
 					</div>
 
@@ -146,6 +154,6 @@ div#fail_msg{
 
 @section('scripts')
 	
-	<script src="js/finance/AP/manualAlloc/manualAlloc.js?v=1.1"></script>
+	<script src="js/finance/AP/manualAlloc/manualAlloc.js?v=1.3"></script>
 	
 @endsection
