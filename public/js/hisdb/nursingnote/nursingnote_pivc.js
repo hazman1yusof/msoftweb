@@ -1,4 +1,3 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
@@ -83,7 +82,7 @@ $(document).ready(function (){
             episno: data.episno
         };
         
-        $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj), function (data){
+        $.post("./pivc/form?"+$.param(saveParam), $.param(postobj), function (data){
             
         },'json').fail(function (data){
             alert('there is an error');
@@ -182,7 +181,7 @@ function populate_pivc_getdata(){
         episno: $("#episno_nursNote").val()
     };
     
-    $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj), function (data){
+    $.post("./pivc/form?"+$.param(saveParam), $.param(postobj), function (data){
         
     },'json').fail(function (data){
         alert('there is an error');
@@ -263,7 +262,7 @@ function saveForm_pivc(callback){
     //         }).get()
     // );
     
-    $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+    $.post("./pivc/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').fail(function (data){
         if(data.responseText !== ''){
