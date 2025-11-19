@@ -730,7 +730,7 @@ $(document).ready(function (){
                     episno: $("#episno_nursNote").val()
                 }
                 
-                datetimegcs_tbl.ajax.url("./nursingnote/table?"+$.param(urlparam_datetimegcs_tbl)).load(function (data){
+                datetimegcs_tbl.ajax.url("./glasgow/table?"+$.param(urlparam_datetimegcs_tbl)).load(function (data){
                     emptyFormdata_div("#formGlasgow",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
                     $('#datetimegcs_tbl tbody tr:eq(0)').click(); // to select first row
                 });
@@ -745,7 +745,7 @@ $(document).ready(function (){
                     episno: $("#episno_nursNote").val()
                 }
                 
-                datetimepivc_tbl.ajax.url("./nursingnote/table?"+$.param(urlparam_datetimepivc_tbl)).load(function (data){
+                datetimepivc_tbl.ajax.url("./pivc/table?"+$.param(urlparam_datetimepivc_tbl)).load(function (data){
                     emptyFormdata_div("#formPivc",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
                     $('#datetimepivc_tbl tbody tr:eq(0)').click(); // to select first row
                 });
