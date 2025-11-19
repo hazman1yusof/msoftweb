@@ -956,112 +956,92 @@ class DirectPaymentController extends defaultController
     }
 
     public function cancel(Request $request){
-
         DB::beginTransaction();
 
         try {
-
-            foreach ($request->idno_array as $idno_obj){
+            foreach ($request->idno_array as $idno){
                 $apacthdr = DB::table('finance.apacthdr')
-                    ->where('idno','=', $idno_obj['idno'])
-                    ->first();
+                            ->where('idno','=',$idno);
 
-                if(in_array($apacthdr->recstatus, ['OPEN','PREPARED','SUPPORT','VERIFIED','REJECTED'])){
-                    $apalloc = DB::table('finance.apalloc')
-                                ->where('compcode','=',session('compcode'))
-                                // ->where('unit','=',session('unit'))
-                                ->where('docsource','=',$apacthdr->source)
-                                ->where('doctrantype','=',$apacthdr->trantype)
-                                ->where('docauditno','=',$apacthdr->auditno)
-                                ->get();
+                $apacthdr_get = $apacthdr->first();
 
-                    foreach($apalloc as $value){
-                        $value = (array)$value;
-                        
-                        $refapacthdr = DB::table('finance.apacthdr')
-                                        ->where('compcode','=',session('compcode'))
-                                        // ->where('unit','=',session('unit'))
-                                        ->where('source','=',$value['refsource'])
-                                        ->where('trantype','=',$value['reftrantype'])
-                                        ->where('auditno','=',$value['refauditno']);
-                        $refapacthdr
-                            ->update([
-                                'outamount' => floatval($refapacthdr->first()->outamount) + floatval($value['allocamount'])
-                            ]);
-                            
-                        DB::table('finance.apalloc')
-                            ->where('idno','=',$value['idno'])
-                            ->update([
-                                'allocamount' => 0,
-                                'recstatus' => 'CANCELLED',
-                            ]);
-                    }
-
-                    DB::table('finance.apacthdr')
-                        ->where('idno','=',$idno_obj['idno'])
-                        ->update([
-                            'recstatus' => 'CANCELLED',
-                            'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'amount' => 0,
-                            'outamount' => 0,
-                        ]);
-
-                }else if($apacthdr->recstatus == 'APPROVED'){
-
-                    $this->gltran_cancel($idno_obj['idno']);
-
-                    $apalloc = DB::table('finance.apalloc')
-                                ->where('compcode','=',session('compcode'))
-                                // ->where('unit','=',session('unit'))
-                                ->where('docsource','=',$apacthdr->source)
-                                ->where('doctrantype','=',$apacthdr->trantype)
-                                ->where('docauditno','=',$apacthdr->auditno)
-                                ->get();
-                    foreach($apalloc as $value){ //update reference document
-                        $value = (array)$value;
-                        
-                        $refapacthdr = DB::table('finance.apacthdr')
-                                        ->where('compcode','=',session('compcode'))
-                                        // ->where('unit','=',session('unit'))
-                                        ->where('source','=',$value['refsource'])
-                                        ->where('trantype','=',$value['reftrantype'])
-                                        ->where('auditno','=',$value['refauditno']);
-                        $refapacthdr
-                            ->update([
-                                'outamount' => floatval($refapacthdr->first()->outamount) + floatval($value['allocamount'])
-                            ]);
-                    }
-
-                    DB::table('finance.apacthdr')
-                        ->where('idno','=', $idno_obj['idno'])
-                        ->update([
-                            'recstatus' => 'CANCELLED',
-                            'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'amount' => 0,
-                            'outamount' => 0
-                        ]);
-
-                    DB::table('finance.apalloc')
+                $cbtran = DB::table('finance.cbtran')
                         ->where('compcode','=',session('compcode'))
-                        // ->where('unit','=',session('unit'))
-                        ->where('docsource','=',$apacthdr->source)
-                        ->where('doctrantype','=',$apacthdr->trantype)
-                        ->where('docauditno','=',$apacthdr->auditno)
+                        ->where('source','=',$apacthdr_get->source)
+                        ->where('trantype','=',$apacthdr_get->trantype)
+                        ->where('auditno','=',$apacthdr_get->auditno);
+
+                if($cbtran->exists()){
+                    $cbtran = DB::table('finance.cbtran')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('source','=',$apacthdr_get->source)
+                                ->where('trantype','=',$apacthdr_get->trantype)
+                                ->where('auditno','=',$apacthdr_get->auditno)
+                                ->where('reconstatus','=','1');
+
+                    if($cbtran->exists()){
+                        throw new \Exception('Record has been recon in Bank Reconciliation', 500);
+                    }
+
+                    DB::table('finance.cbtran')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=',$apacthdr_get->source)
+                        ->where('trantype','=',$apacthdr_get->trantype)
+                        ->where('auditno','=',$apacthdr_get->auditno)
                         ->update([
-                            'allocamount' => 0,
-                            'recstatus' => 'CANCELLED',
-                            'lastuser' => session('username'),
-                            'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                            'compcode' => 'xx',
+                            'upduser' => session('username'), 
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                         ]);
                 }
-                   
+
+                //2nd step step add gltran   
+                $queryDP_obj = DB::table('finance.apacthdr')
+                    ->select ('apactdtl.compcode', 'apactdtl.source', 'apactdtl.trantype', 'apactdtl.auditno', 'apactdtl.lineno_', 'apactdtl.document', 'apacthdr.remarks', 'apactdtl.deptcode', 'apactdtl.category', 'apacthdr.bankcode', 'apactdtl.amount', 'apacthdr.actdate', 'apactdtl.AmtB4GST')
+                    ->join('finance.apactdtl', function($join) use ($request){
+                        $join = $join->on('apactdtl.auditno', '=', 'apacthdr.auditno');
+                        $join = $join->on('apactdtl.compcode', '=', 'apacthdr.compcode');
+                        $join = $join->on('apactdtl.source', '=', 'apacthdr.source');
+                        $join = $join->on('apactdtl.trantype', '=', 'apacthdr.trantype');
+                    })
+                    ->where('apactdtl.compcode', '=', session('compcode'))
+                    ->where('apactdtl.source', '=', $apacthdr_get->source)
+                    ->where('apactdtl.trantype', '=', $apacthdr_get->trantype)
+                    ->where('apactdtl.auditno', '=', $apacthdr_get->auditno)
+                    ->get();
+
+                foreach ($queryDP_obj as $key => $apactdtl) {
+
+                    DB::table('finance.gltran')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=',$apactdtl->source)
+                        ->where('trantype','=',$apactdtl->trantype)
+                        ->where('auditno','=',$apactdtl->auditno)
+                        ->where('lineno_','=',$apactdtl->lineno_)
+                            ->update([
+                                'compcode' => 'XX',
+                                'upduser' => session('username'),
+                                'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            ]);
+                }
+
+                //5th step change status to CANCELLED
+                DB::table('finance.apacthdr')
+                    ->where('idno','=',$idno)
+                    ->update(['recstatus' => 'CANCELLED']);
+
+                DB::table('finance.apactdtl')
+                    ->where('compcode', '=', session('compcode'))
+                    ->where('source', '=', $apacthdr_get->source)
+                    ->where('trantype', '=', $apacthdr_get->trantype)
+                    ->where('auditno', '=', $apacthdr_get->auditno)
+                    ->update(['recstatus' => 'CANCELLED']);
             }
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
+
             return response($e->getMessage(), 500);
         }
     }

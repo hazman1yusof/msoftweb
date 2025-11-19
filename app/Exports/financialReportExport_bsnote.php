@@ -26,7 +26,7 @@ use DateTime;
 use Carbon\Carbon;
 use stdClass;
 
-class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWidths,ShouldAutoSize, WithTitle
+class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWidths,ShouldAutoSize, WithColumnFormatting, WithTitle
 {
     
     /**
@@ -40,6 +40,8 @@ class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWi
         $this->monthfrom_name = Carbon::create()->month($monthfrom)->format('F');
         $this->yearfrom = $yearfrom;
         $this->rptname = $reporttype;
+
+        $this->date = Carbon::create($yearfrom, $monthfrom, 1)->format('Y-m-d');
 
         $this->comp = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
@@ -57,6 +59,15 @@ class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWi
         $this->array_month_name = $array_month_name;
     }
 
+
+
+    public function columnFormats(): array
+    {
+        return [
+            'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+        ];
+    }
+
     public function title(): string
     {
         return 'Note';
@@ -67,10 +78,10 @@ class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWi
         $alphabet = range('A', 'Z');
         $array_month = $this->array_month;
         $width_ = [
-            'A' => 45,
-            'B' => 12,
-            'C' => 18,
-            'D' => 18,
+            'A' => 15,
+            'B' => 42,
+            'C' => 15,
+            'D' => 15,
         ];
 
         return $width_;
@@ -81,129 +92,56 @@ class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWi
         $monthfrom = intval($this->monthfrom);
         $yearfrom = $this->yearfrom;
         $rptname = $this->rptname;
+        $yearperiod = $this->getyearperiod($this->date);
 
         $array_month = $this->array_month;
         $array_month_name = $this->array_month_name;
 
-        $CLOSESTK = DB::table('sysdb.sysparam')
-                    ->where('compcode',session('compcode'))
-                    ->where('trantype','CLOSESTK')
-                    ->where('source','GL')
-                    ->first();
-
-        $glrptfmt = DB::table('finance.glrptfmt')
-                    ->where('compcode',session('compcode'))
-                    ->where('rptname',$rptname)
+        $glrptfmt = DB::table('finance.glrptfmt as gr')
+                    ->select('gr.rptname','gr.rowdef','gr.code','gr.description','gr.revsign','gc.lineno_','gc.acctfr','gc.acctto')
+                    ->leftJoin('finance.glcondtl as gc', function($join){
+                        $join = $join->on('gc.code', '=', 'gr.code')
+                                ->where('gc.compcode','=',session('compcode'));
+                    })
+                    ->where('gr.compcode',session('compcode'))
+                    ->where('gr.rptname',$rptname)
+                    ->where('gr.rowdef','D')
                     // ->offset(7)
                     // ->limit(3)
-                    ->orderBy('lineno_')
+                    ->orderBy('gr.lineno_')
                     ->get();
 
-        $alphabet = range('A', 'Z');
+        // dd($glrptfmt);
+
         $excel_data = [];
-        foreach ($glrptfmt as $key_rpt => $obj_rpt) {
-            $arr_rpt = (array)$obj_rpt;
-            if($obj_rpt->rowdef == 'H'){
-                array_push($excel_data,$arr_rpt);
-            }else if($obj_rpt->rowdef == 'S'){
-                array_push($excel_data,$arr_rpt);
-            }else if($obj_rpt->rowdef == 'T' || $obj_rpt->rowdef == 'T0'){
-                $formula = explode(',', $arr_rpt['formula']);
-
-                $tot_arr = [];
-                $tot_arr['curr_month'] = 0.00;
-                $tot_arr['last_month'] = 0.00;
-
-                foreach ($excel_data as $key => $value) {
-                    if($value['rowdef'] == 'D' && intval($value['lineno_'])>=$formula[0] && intval($value['lineno_'])<=$formula[1]){
-                        $tot_arr['curr_month'] = $tot_arr['curr_month'] + $value['curr_month'];
-                        $tot_arr['last_month'] = $tot_arr['last_month'] + $value['last_month'];
-                    }else{
-                        continue;
-                    }
-                }
-                $arr_rpt['tot_arr'] = $tot_arr;
-                
-                array_push($excel_data,$arr_rpt);
-            }else if($obj_rpt->rowdef == 'D'){
-                $glcondtl = DB::table('finance.glcondtl')
-                            ->where('compcode',session('compcode'))
-                            ->where('code',$obj_rpt->code)
-                            ->get();
-
-                $arr_rpt['openbalance'] = 0.00;
-                foreach ($array_month as $value) {
-                    $arr_rpt['tot_actamount'.$value] = 0.00;
-                }
-
-                foreach ($glcondtl as $key_con => $obj_con) {
-                    $arr_con = (array)$obj_con;
-                    $glmasdtl = DB::table('finance.glmasdtl as gldt')
-                            ->select('gldt.glaccount','gldt.openbalance','gldt.actamount1','gldt.actamount2','gldt.actamount3','gldt.actamount4','gldt.actamount5','gldt.actamount6','gldt.actamount7','gldt.actamount8','gldt.actamount9','gldt.actamount10','gldt.actamount11','gldt.actamount12')
-                            ->where('gldt.glaccount','>=',$obj_con->acctfr)
-                            ->where('gldt.glaccount','<=',$obj_con->acctto);
-
-                    if($obj_rpt->costcodefr!=null){
-                        $glmasdtl = $glmasdtl->where('gldt.costcode','>=',$obj_rpt->costcodefr);
-                    }
-
-                    if($obj_rpt->costcodeto!=null){
-                        $glmasdtl = $glmasdtl->where('gldt.costcode','<=',$obj_rpt->costcodeto);
-                    }
-
-                    $glmasdtl = $glmasdtl
-                            ->where('gldt.year','=', $yearfrom)
+        foreach ($glrptfmt as $obj) {
+            $glmasdtl = DB::table('finance.glmasdtl as gldt')
+                            ->select('gldt.glaccount','gldt.year','gldt.openbalance','gldt.actamount1','gldt.actamount2','gldt.actamount3','gldt.actamount4','gldt.actamount5','gldt.actamount6','gldt.actamount7','gldt.actamount8','gldt.actamount9','gldt.actamount10','gldt.actamount11','gldt.actamount12','glms.description')
+                            ->leftJoin('finance.glmasref as glms', function($join){
+                                $join = $join->on('glms.glaccno', '=', 'gldt.glaccount')
+                                        ->where('glms.compcode','=',session('compcode'));
+                            })
+                            ->where('gldt.year',$yearperiod->year)
                             ->where('gldt.compcode',session('compcode'))
+                            ->whereIn('gldt.glaccount',range($obj->acctfr, $obj->acctto))
                             ->get();
 
-                    $arr_con['openbalance'] = 0.00;
-                    foreach ($array_month as $value) {
-                        $arr_con['tot_actamount'.$value] = 0.00;
-                    }
+            foreach ($glmasdtl as $objgl) {
+                $objgl->code = $obj->code;
+                $arrgl = (array)$objgl;
+                $pytd = $arrgl['openbalance'];
 
-                    foreach($glmasdtl as $key_dtl => $obj_dtl){
-                        $arr_dtl = (array) $obj_dtl;
-                        foreach ($array_month as $value) {
-                            $arr_con['tot_actamount'.$value] = $arr_con['tot_actamount'.$value] + $arr_dtl['actamount'.$value];
-                        }
-                        $arr_con['openbalance'] = $arr_con['openbalance'] + $arr_dtl['openbalance'];
-                    }
-
-                    // dd($arr_con);//1glcondtl
-                    foreach ($array_month as $value) {
-                        $arr_rpt['tot_actamount'.$value] = $arr_rpt['tot_actamount'.$value] + $arr_con['tot_actamount'.$value];
-                    }
-                    $arr_rpt['openbalance'] = $arr_rpt['openbalance'] + $arr_con['openbalance'];
-                }
-                // dd($arr_rpt);//1arr_rpt
-
-
-                if($obj_rpt->code == $CLOSESTK->pvalue1){
-
-                    $arr_rpt['curr_month'] = $arr_rpt['tot_actamount'.$monthfrom];
-
-                    if($monthfrom-1 == 0){
-                        $arr_rpt['last_month'] = 0;
-                    }else{
-                        $arr_rpt['last_month'] = $arr_rpt['tot_actamount'.($monthfrom-1)];
-                    }
-                }else{
-
-                    $arr_rpt['curr_month'] = $arr_rpt['openbalance'];
-                    $arr_rpt['last_month'] = $arr_rpt['openbalance'];
-
-                    for ($i=1; $i <= $monthfrom; $i++) { 
-                        $arr_rpt['curr_month'] = $arr_rpt['curr_month'] + $arr_rpt['tot_actamount'.$i];
-                    }
-
-                    for ($i=1; $i < $monthfrom; $i++) { 
-                        $arr_rpt['last_month'] = $arr_rpt['last_month'] + $arr_rpt['tot_actamount'.$i];
-                    }
+                for ($i=1; $i <= $yearperiod->period; $i++) { 
+                    $pytd = $pytd + $arrgl['actamount'.$i];
                 }
 
-                array_push($excel_data,$arr_rpt);
+                $objgl->pytd = $pytd;
+
+                array_push($excel_data,$objgl);
             }
         }
+
+        $glrptfmt = $glrptfmt->unique('code');
         // dump($excel_map);
         // dd($excel_data);
 
@@ -214,7 +152,7 @@ class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWi
         $title3 = 'MONTH '.$this->monthfrom_name.' YEAR '.$this->yearfrom;
         $title4 = 'PRINTED BY: '.session('username').' on '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y H:i');
 
-        return view('finance.GL.financialReport.financialReport_bs_excel',compact('excel_data','array_month','title1','title2','title3','title4'));
+        return view('finance.GL.financialReport.financialReport_bsnote_excel',compact('glrptfmt','excel_data','array_month','title1','title2','title3','title4'));
     }
     
     public function registerEvents(): array{
@@ -294,5 +232,37 @@ class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWi
     public static function getQueries($builder){
         $addSlashes = str_replace('?', "'?'", $builder->toSql());
         return vsprintf(str_replace('?', '%s', $addSlashes), $builder->getBindings());
+    }
+
+    public function getyearperiod($date){
+        $period = DB::table('sysdb.period')
+            ->where('compcode','=',session('compcode'))
+            ->get();
+
+        $seldate = new DateTime($date);
+
+        foreach ($period as $value) {
+            $arrvalue = (array)$value;
+
+            $year= $value->year;
+            $period=0;
+
+            for($x=1;$x<=12;$x++){
+                $period = $x;
+
+                $datefr = new DateTime($arrvalue['datefr'.$x]);
+                $dateto = new DateTime($arrvalue['dateto'.$x]);
+                $status = $arrvalue['periodstatus'.$x];
+                if (($datefr <= $seldate) &&  ($dateto >= $seldate)){
+                    $responce = new stdClass();
+                    $responce->year = $year;
+                    $responce->period = $period;
+                    $responce->status = $status;
+                    $responce->datefr = $arrvalue['datefr'.$x];
+                    $responce->dateto = $arrvalue['dateto'.$x];
+                    return $responce;
+                }
+            }
+        }
     }
 }

@@ -1273,6 +1273,17 @@ class PaymentVoucherController extends defaultController
                             ]);
                     }
 
+                    DB::table('finance.cbtran')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=',$apacthdr->source)
+                        ->where('trantype','=',$apacthdr->trantype)
+                        ->where('auditno','=',$apacthdr->auditno)
+                        ->update([
+                            'compcode' => 'xx',
+                            'upduser' => session('username'), 
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        ]);
+
                     DB::table('finance.apacthdr')
                         ->where('idno','=', $idno_obj)
                         ->update([
@@ -1759,10 +1770,13 @@ class PaymentVoucherController extends defaultController
 
         //1. buat gltran
         DB::table('finance.gltran')
-            ->where('source','=',$apacthdr_obj->source)
-            ->where('trantype','=',$apacthdr_obj->trantype)
-            ->where('auditno','=',$apacthdr_obj->auditno)
-            ->delete();
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=',$apacthdr_obj->source)
+                ->where('trantype','=',$apacthdr_obj->trantype)
+                ->where('auditno','=',$apacthdr_obj->auditno)
+                ->update([
+                    'compcode' => 'XX'
+                ]);
 
         //2. check glmastdtl utk debit, kalu ada update kalu xde create
         $gltranAmount =  defaultController::isGltranExist_($debit_obj->costcode,$debit_obj->glaccno,$yearperiod->year,$yearperiod->period);

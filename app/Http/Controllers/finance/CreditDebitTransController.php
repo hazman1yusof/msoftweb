@@ -34,7 +34,9 @@ class CreditDebitTransController extends defaultController
             case 'del':
                 return $this->del($request);
             case 'posted':
-                return $this->posted($request);    
+                return $this->posted($request);  
+            case 'cancel':
+                return $this->cancel($request);    
             default:
                 return 'error happen..';
         }
@@ -229,7 +231,7 @@ class CreditDebitTransController extends defaultController
         }
     }
 
-     public function posted(Request $request){
+    public function posted(Request $request){
 
         DB::beginTransaction();
 
@@ -273,7 +275,6 @@ class CreditDebitTransController extends defaultController
                         ->update([
                             "actamount".$yearperiod->period => $this->cbtranAmount+$amountused
                         ]);
-
                 }else{
 
                     DB::table('finance.bankdtl')
@@ -290,46 +291,46 @@ class CreditDebitTransController extends defaultController
 
                 //2nd step step add gltran   
                 $queryDP_obj = DB::table('finance.apacthdr')
-                        ->select ('apactdtl.compcode', 'apactdtl.source', 'apactdtl.trantype', 'apactdtl.auditno', 'apactdtl.lineno_', 'apactdtl.document', 'apacthdr.remarks', 'apactdtl.deptcode', 'apactdtl.category', 'apacthdr.bankcode', 'apactdtl.amount', 'apacthdr.actdate', 'apactdtl.AmtB4GST')
-                        ->join('finance.apactdtl', function($join) use ($request){
-                            $join = $join->on('apactdtl.auditno', '=', 'apacthdr.auditno');
-                            $join = $join->on('apactdtl.compcode', '=', 'apacthdr.compcode');
-                            $join = $join->on('apactdtl.source', '=', 'apacthdr.source');
-                            $join = $join->on('apactdtl.trantype', '=', 'apacthdr.trantype');
-                        })
-                        ->where('apactdtl.compcode', '=', session('compcode'))
-                        ->where('apactdtl.source', '=', $apacthdr_get->source)
-                        ->where('apactdtl.trantype', '=', $apacthdr_get->trantype)
-                        ->where('apactdtl.auditno', '=', $apacthdr_get->auditno)
-                        ->get();
+                    ->select ('apactdtl.compcode', 'apactdtl.source', 'apactdtl.trantype', 'apactdtl.auditno', 'apactdtl.lineno_', 'apactdtl.document', 'apacthdr.remarks', 'apactdtl.deptcode', 'apactdtl.category', 'apacthdr.bankcode', 'apactdtl.amount', 'apacthdr.actdate', 'apactdtl.AmtB4GST')
+                    ->join('finance.apactdtl', function($join) use ($request){
+                        $join = $join->on('apactdtl.auditno', '=', 'apacthdr.auditno');
+                        $join = $join->on('apactdtl.compcode', '=', 'apacthdr.compcode');
+                        $join = $join->on('apactdtl.source', '=', 'apacthdr.source');
+                        $join = $join->on('apactdtl.trantype', '=', 'apacthdr.trantype');
+                    })
+                    ->where('apactdtl.compcode', '=', session('compcode'))
+                    ->where('apactdtl.source', '=', $apacthdr_get->source)
+                    ->where('apactdtl.trantype', '=', $apacthdr_get->trantype)
+                    ->where('apactdtl.auditno', '=', $apacthdr_get->auditno)
+                    ->get();
 
-                    if($apacthdr_get->TaxClaimable == "Claimable" ){
-                        $gst = $this->getTax('TX', 'BS');
+                if($apacthdr_get->TaxClaimable == "Claimable" ){
+                    $gst = $this->getTax('TX', 'BS');
+                }else{
+                    $gst = $this->getTax('TX', 'PNL');
+                }
+
+                foreach ($queryDP_obj as $key => $apactdtl) {
+                    $bank = $this->getGLcode($apacthdr_get->bankcode);
+                    $dept = $this->getDept($apactdtl->deptcode);
+                    $cat = $this->getCat($apactdtl->category);
+
+                    $amountgst = floatval($apactdtl->amount) - floatval($apactdtl->AmtB4GST);
+                    $amount2 = ($apactdtl->trantype == "CA" ) ? - floatval($apactdtl->AmtB4GST) : (floatval($apactdtl->AmtB4GST)); 
+
+                    if($apactdtl->trantype == "CA" ){
+                        $drcostcode = $dept->costcode;
+                        $dracc = $cat->expacct;
+
+                        $crcostcode = $bank->glccode;
+                        $cracc = $bank->glaccno;
                     }else{
-                        $gst = $this->getTax('TX', 'PNL');
+                        $drcostcode = $bank->glccode;
+                        $dracc = $bank->glaccno;
+
+                        $crcostcode = $dept->costcode;
+                        $cracc = $cat->expacct;
                     }
-
-                    foreach ($queryDP_obj as $key => $apactdtl) {
-                        $bank = $this->getGLcode($apacthdr_get->bankcode);
-                        $dept = $this->getDept($apactdtl->deptcode);
-                        $cat = $this->getCat($apactdtl->category);
-
-                        $amountgst = floatval($apactdtl->amount) - floatval($apactdtl->AmtB4GST);
-                        $amount2 = ($apactdtl->trantype == "CA" ) ? - floatval($apactdtl->AmtB4GST) : (floatval($apactdtl->AmtB4GST)); 
-
-                        if($apactdtl->trantype == "CA" ){
-                            $drcostcode = $dept->costcode;
-                            $dracc = $cat->expacct;
-
-                            $crcostcode = $bank->glccode;
-                            $cracc = $bank->glaccno;
-                        }else{
-                            $drcostcode = $bank->glccode;
-                            $dracc = $bank->glaccno;
-
-                            $crcostcode = $dept->costcode;
-                            $cracc = $cat->expacct;
-                        }
 
                     DB::table('finance.gltran')
                                 ->insert([
@@ -377,7 +378,7 @@ class CreditDebitTransController extends defaultController
                                 'recstatus' => 'ACTIVE'
                             ]);
                     }
-            
+        
                     /////////////for gst/////////////////////////////////
 
                     if($amountgst > 0.00){
@@ -468,10 +469,99 @@ class CreditDebitTransController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
+    }
 
+    public function cancel(Request $request){
+        DB::beginTransaction();
 
+        try {
+            foreach ($request->idno_array as $idno){
+                $apacthdr = DB::table('finance.apacthdr')
+                            ->where('idno','=',$idno);
+
+                $apacthdr_get = $apacthdr->first();
+
+                $cbtran = DB::table('finance.cbtran')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=',$apacthdr_get->source)
+                        ->where('trantype','=',$apacthdr_get->trantype)
+                        ->where('auditno','=',$apacthdr_get->auditno);
+
+                if($cbtran->exists()){
+                    $cbtran = DB::table('finance.cbtran')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('source','=',$apacthdr_get->source)
+                                ->where('trantype','=',$apacthdr_get->trantype)
+                                ->where('auditno','=',$apacthdr_get->auditno)
+                                ->where('reconstatus','=','1');
+
+                    if($cbtran->exists()){
+                        throw new \Exception('Record has been recon in Bank Reconciliation', 500);
+                    }
+
+                    DB::table('finance.cbtran')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=',$apacthdr_get->source)
+                        ->where('trantype','=',$apacthdr_get->trantype)
+                        ->where('auditno','=',$apacthdr_get->auditno)
+                        ->update([
+                            'compcode' => 'xx',
+                            'upduser' => session('username'), 
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        ]);
+                }
+
+                //2nd step step add gltran   
+                $queryDP_obj = DB::table('finance.apacthdr')
+                    ->select ('apactdtl.compcode', 'apactdtl.source', 'apactdtl.trantype', 'apactdtl.auditno', 'apactdtl.lineno_', 'apactdtl.document', 'apacthdr.remarks', 'apactdtl.deptcode', 'apactdtl.category', 'apacthdr.bankcode', 'apactdtl.amount', 'apacthdr.actdate', 'apactdtl.AmtB4GST')
+                    ->join('finance.apactdtl', function($join) use ($request){
+                        $join = $join->on('apactdtl.auditno', '=', 'apacthdr.auditno');
+                        $join = $join->on('apactdtl.compcode', '=', 'apacthdr.compcode');
+                        $join = $join->on('apactdtl.source', '=', 'apacthdr.source');
+                        $join = $join->on('apactdtl.trantype', '=', 'apacthdr.trantype');
+                    })
+                    ->where('apactdtl.compcode', '=', session('compcode'))
+                    ->where('apactdtl.source', '=', $apacthdr_get->source)
+                    ->where('apactdtl.trantype', '=', $apacthdr_get->trantype)
+                    ->where('apactdtl.auditno', '=', $apacthdr_get->auditno)
+                    ->get();
+
+                foreach ($queryDP_obj as $key => $apactdtl) {
+
+                    DB::table('finance.gltran')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=',$apactdtl->source)
+                        ->where('trantype','=',$apactdtl->trantype)
+                        ->where('auditno','=',$apactdtl->auditno)
+                        ->where('lineno_','=',$apactdtl->lineno_)
+                            ->update([
+                                'compcode' => 'XX',
+                                'upduser' => session('username'),
+                                'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            ]);
+                }
+
+                //5th step change status to CANCELLED
+                DB::table('finance.apacthdr')
+                    ->where('idno','=',$idno)
+                    ->update(['recstatus' => 'CANCELLED']);
+
+                DB::table('finance.apactdtl')
+                    ->where('compcode', '=', session('compcode'))
+                    ->where('source', '=', $apacthdr_get->source)
+                    ->where('trantype', '=', $apacthdr_get->trantype)
+                    ->where('auditno', '=', $apacthdr_get->auditno)
+                    ->update(['recstatus' => 'CANCELLED']);
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
     }
 
     public function isCBtranExist($bankcode,$year,$period){

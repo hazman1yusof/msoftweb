@@ -431,7 +431,8 @@ $(document).ready(function () {
 			$(self_).attr('disabled',false);
 			cbselect.empty_sel_tbl();
 		}).fail(function(data) {
-			$('#error_infront').text(data.responseText);
+			console.log(data.responseText);
+			$('#error_infront').show().text(data.responseText);
 			$(self_).attr('disabled',false);
 		}).success(function(data){
 			$(self_).attr('disabled',false);
@@ -1087,15 +1088,17 @@ $(document).ready(function () {
 		let recstatus = cbselect.recstatus;
 		
 		if($('#recstatus_use').val() == 'VERIFIED'){
-			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' onclick='click_selection(checkbox_selection_"+rowObject['apacthdr_idno']+");'>";
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' >";
 		}else if($('#recstatus_use').val() == 'APPROVED'){
-			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' onclick='click_selection(checkbox_selection_"+rowObject['apacthdr_idno']+");'>";
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' >";
 		}else if($('#recstatus_use').val() == 'REOPEN' && rowObject['apacthdr_recstatus'] == 'CANCELLED'){
-			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' onclick='click_selection(checkbox_selection_"+rowObject['apacthdr_idno']+");'>";
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' >";
+		}else if($('#recstatus_use').val() == 'CANCEL' && rowObject['apacthdr_recstatus'] != 'CANCELLED'){
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' >";
 		}
 
 		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
-			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' onclick='click_selection(checkbox_selection_"+rowObject['apacthdr_idno']+");'>";
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' >";
 		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
 			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject['apacthdr_idno']+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
 		}else{

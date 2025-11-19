@@ -623,6 +623,17 @@ class CancellationController extends defaultController
                     'cancelled_remark' => $request->cancelled_remark
                 ]);
 
+            $cbtran = DB::table('finance.cbtran')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=',$dbacthdr->source)
+                        ->where('trantype','=',$dbacthdr->trantype)
+                        ->where('auditno','=',$dbacthdr->auditno)
+                        ->where('reconstatus','=','1');
+
+            if($cbtran->exists()){
+                throw new \Exception('Record has been recon in Bank Reconciliation', 500);
+            }
+
             DB::table('finance.cbtran')
                 ->where('compcode','=',session('compcode'))
                 ->where('source','=',$dbacthdr->source)

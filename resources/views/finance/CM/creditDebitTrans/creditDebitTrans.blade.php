@@ -89,7 +89,10 @@ i.fa {
 							@elseif (Request::get('scope') == 'POSTED')
 								<option value="POSTED">POSTED</option>
 							@elseif (Request::get('scope') == 'CANCEL')
+								<option value="All" selected>ALL</option>
 								<option value="OPEN">OPEN</option>
+								<option value="POSTED">POSTED</option>
+								<option value="CANCELLED">CANCELLED</option>
 							@endif
 				   	</select>
 	      		</div>
@@ -329,5 +332,5 @@ i.fa {
 			
 		});
 	</script>
-	<script src="js/finance/CM/creditDebitTrans/creditDebitTrans.js"></script>
+	<script src="js/finance/CM/creditDebitTrans/creditDebitTrans.js?V=1.1"></script>
 @endsection

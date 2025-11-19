@@ -136,7 +136,7 @@ i.fa {
 
 			<div id="div_for_but_post" class="col-md-6 col-md-offset-6" style="padding-top: 20px; text-align: end;">
 				
-				<span id="error_infront" style="color: red"></span>
+				<span id="error_infront" style="color: darkred"></span>
 				<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 				<!-- <button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button> -->
 
@@ -370,5 +370,5 @@ i.fa {
 			
 		});
 	</script>
-	<script src="js/finance/CM/directPayment/directPayment.js?v=1.5"></script>
+	<script src="js/finance/CM/directPayment/directPayment.js?v=1.6"></script>
 @endsection

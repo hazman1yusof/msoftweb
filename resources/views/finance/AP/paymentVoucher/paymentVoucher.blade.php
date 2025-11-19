@@ -127,7 +127,7 @@ div#fail_msg{
 								<option value="REJECTED" selected>REJECTED</option>
 								<option value="CANCELLED">CANCELLED</option>
 							@elseif (Request::get('scope') == 'CANCEL')
-								<option value="OPEN" selected>OPEN</option>
+								<option value="CANCELLED" selected>CANCELLED</option>
 								<option value="REJECTED">REJECTED</option>
 					      <option value="PREPARED">PREPARED</option>
 					      <option value="SUPPORT">SUPPORT</option>
@@ -172,7 +172,7 @@ div#fail_msg{
 					}
 				?>
 
-				<div id="div_for_but_post" class="col-md-8 col-md-offset-2" style="padding-top: 20px; text-align: end;">
+				<div id="div_for_but_post" class="col-md-12" style="padding-top: 20px; text-align: end;">
 					<span id="error_infront" style="color: red"></span>
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 
@@ -252,14 +252,14 @@ div#fail_msg{
 			<div id="jqGrid3_panel" class="panel-collapse collapse">
 				<div class="panel-body">
 					@if (strtoupper(Request::get('scope')) == 'CANCEL')
-						<button 
+						<!-- <button 
 								type="button" 
 								class="btn btn-danger btn-sm" 
 								id="but_post2_jq"
 								data-oper="cancel"
 								style="float: right;margin: 0px 20px 10px 20px;">
 								Cancel PV
-						</button>
+						</button> -->
 					@endif
 					<div class='col-md-12' style="padding:0 0 15px 0">
 						<table id="jqGrid3" class="table table-striped"></table>
@@ -564,7 +564,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/finance/AP/paymentVoucher/paymentVoucher.js?V=1.16"></script>
+	<script src="js/finance/AP/paymentVoucher/paymentVoucher.js?V=1.17"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 

@@ -255,11 +255,12 @@ $(document).ready(function () {
 			{ label: 'Creditor', name: 'apacthdr_suppcode', width: 60, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap text-uppercase', hidden: true},
 			{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap text-uppercase', canSearch: true},
-			{ label: 'Cheque No', name: 'apacthdr_cheqno', width: 35, classes: 'wrap text-uppercase'},
+			{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap text-uppercase', hidden:true},
+			{ label: 'Payment Mode', name: 'apacthdr_paymode', width: 35, classes: 'wrap text-uppercase'},
+			{ label: 'Reference No', name: 'apacthdr_cheqno', width: 35, classes: 'wrap text-uppercase'},
 			{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
-			{ label: 'Outamount', name: 'apacthdr_outamount', width: 25 ,hidden:true, classes: 'wrap'},
+			{ label: 'Outamount', name: 'apacthdr_outamount', width: 25 , classes: 'wrap',align: 'right', formatter:'currency'},
 			{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap text-uppercase',},
 			{ label: 'Post Date', name: 'apacthdr_recdate', width: 35,hidden:true},
 			{ label: 'Post Date', name: 'apacthdr_postdate', width: 25, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
@@ -296,7 +297,6 @@ $(document).ready(function () {
 			{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:true, key:true},
 			{ label: 'unit', name: 'apacthdr_unit', width: 40, hidden:true},
 			{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
-			{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'bankcode', name: 'apacthdr_bankcode', width: 50, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'bankaccno', name: 'apacthdr_bankaccno', width: 40, hidden:'true'},
 
@@ -651,7 +651,7 @@ $(document).ready(function () {
 
 	$("#but_post2_jq").click(function(){
 		if (confirm("Are you sure to cancel this document?") == true) {
-
+			$("#but_post2_jq").prop('disabled',true);
 			var idno_array = [];
 			idno_array.push({
 	    		idno:selrowData('#jqGrid').apacthdr_idno
@@ -667,8 +667,10 @@ $(document).ready(function () {
 				cbselect.empty_sel_tbl();
 				refreshGrid('#jqGrid', urlParam);
 			}).fail(function(data) {
+				$("#but_post2_jq").prop('disabled',false);
 				$('#error_infront').text(data.responseText);
 			}).success(function(data){
+				$("#but_post2_jq").prop('disabled',false);
 				
 			});
 
