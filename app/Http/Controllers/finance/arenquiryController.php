@@ -516,13 +516,13 @@ class arenquiryController extends defaultController
                         'dc.idno',
                         'dr.invno',
                     )
-                    ->join('debtor.dbacthdr as da', function ($join) use ($request){
-                        $join = $join
-                                    ->where('da.compcode', session('compcode'))
-                                    ->on('dc.docsource', '=', 'da.source')
-                                    ->on('dc.doctrantype', '=', 'da.trantype')
-                                    ->on('dc.docauditno', '=', 'da.auditno');
-                    })
+                    // ->join('debtor.dbacthdr as da', function ($join) use ($request){
+                    //     $join = $join
+                    //                 ->where('da.compcode', session('compcode'))
+                    //                 ->on('dc.docsource', '=', 'da.source')
+                    //                 ->on('dc.doctrantype', '=', 'da.trantype')
+                    //                 ->on('dc.docauditno', '=', 'da.auditno');
+                    // })
                     ->join('debtor.dbacthdr as dr', function ($join) use ($request){
                         $join = $join
                                     ->where('dr.compcode', session('compcode'))
