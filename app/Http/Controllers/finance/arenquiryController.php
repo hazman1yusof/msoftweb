@@ -600,8 +600,8 @@ class arenquiryController extends defaultController
             $responce->rows = $table;
             // $responce->sql = $table->toSql();
             // $responce->sql_bind = $table->getBindings();
-            $responce->sql_query1 = $this->getQueries($table);
-            $responce->sql_query2 = $this->getQueries($table2);
+            $responce->sql_query1 = $this->getQueries($table_);
+            $responce->sql_query2 = $this->getQueries($table2_);
             
             return json_encode($responce);
             
