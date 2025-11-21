@@ -601,8 +601,8 @@ class HomeController extends Controller
 
         //header
         $menu="<li style='background:lightgray'><a style='padding-left:9px' title='Product' class=''><b>Dashboard</b></a></li>";
-        $menu.="<li><a style='padding-left:21px' title='Analytic By Patient' class='clickable' programid='ptcare_dashboard' targeturl='./ptcare_dashboard'>Analytic By Patient</a></li>";
-        $menu.="<li><a style='padding-left:21px' title='Analytic By Doctor' class='clickable' programid='ptcare_dashboard' targeturl='https://app.powerbi.com/groups/me/reports/88c33950-3dc8-4ae2-877c-a24c2147fb04/72e5ecea675426f7ca2e?experience=power-bi'>Analytic By Doctor</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Analytic By Patient' class='clickable' programid='ptcare_dashboard_pt' targeturl='./ptcare_dashboard'>Analytic By Patient</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Analytic By Doctor' class='clickable' programid='ptcare_dashboard_doc' cntrlIsPressed='true' targeturl='https://app.powerbi.com/groups/me/reports/88c33950-3dc8-4ae2-877c-a24c2147fb04/72e5ecea675426f7ca2e?experience=power-bi'>Analytic By Doctor</a></li>";
 
         return $menu;
     }

@@ -62,6 +62,9 @@ var Menu = function () {
 		}else if(cntrlIsPressed){
 			cntrlIsPressed=false;
 			window.open($(this).attr('targetURL'));
+		}else if($(this).is("[cntrlIsPressed]")){
+			cntrlIsPressed=false;
+			window.open($(this).attr('targetURL'));
 		}else{
 			$( ".lilabel" ).hide();
 			$( "#myNavmenu" ).animate({ width:"8%" }, "fast");
