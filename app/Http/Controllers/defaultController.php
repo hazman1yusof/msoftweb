@@ -230,26 +230,26 @@ abstract class defaultController extends Controller{
                 $searchCol_array = $request->searchCol;
             }
 
-            $wholeword = false;
-            if(!empty($searchCol_array[0])){
-                $clone = clone $table;
-                $clone = $clone->where($searchCol_array[0],$request->wholeword);
-                // dd($this->getQueries($clone));
-                if($clone->exists()){
-                    $table = $table->where($searchCol_array[0],$request->wholeword);
-                    $wholeword = true;
-                }
-            }
+            // $wholeword = false;
+            // if(!empty($searchCol_array[0])){
+            //     $clone = clone $table;
+            //     $clone = $clone->where($searchCol_array[0],$request->wholeword);
+            //     // dd($this->getQueries($clone));
+            //     if($clone->exists()){
+            //         $table = $table->where($searchCol_array[0],$request->wholeword);
+            //         $wholeword = true;
+            //     }
+            // }
 
-            if(!$wholeword && !empty($searchCol_array[1])){
-                $clone = clone $table;
-                $clone = $clone->where($searchCol_array[1],$request->wholeword);
-                // dd($this->getQueries($clone));
-                if($clone->exists()){
-                    $table = $table->where($searchCol_array[1],$request->wholeword);
-                    $wholeword = true;
-                }
-            }
+            // if(!$wholeword && !empty($searchCol_array[1])){
+            //     $clone = clone $table;
+            //     $clone = $clone->where($searchCol_array[1],$request->wholeword);
+            //     // dd($this->getQueries($clone));
+            //     if($clone->exists()){
+            //         $table = $table->where($searchCol_array[1],$request->wholeword);
+            //         $wholeword = true;
+            //     }
+            // }
 
             // $table->Where($searchCol_array[0],'like','%'.$request->wholeword.'%');
 
@@ -267,8 +267,7 @@ abstract class defaultController extends Controller{
                         }
                     }
                 });
-            }
-            
+            }            
         }
 
         // if(!empty($request->searchCol)){
@@ -292,55 +291,55 @@ abstract class defaultController extends Controller{
                 $searchCol_array = $request->searchCol2;
             }
 
-            $wholeword = false;
-            if(!empty($searchCol_array[0])){
-                $clone = clone $table;
-                $clone = $clone->where($searchCol_array[0],$request->wholeword);
-                // dd($this->getQueries($clone));
-                if($clone->exists()){
-                    $table = $table->where($searchCol_array[0],$request->wholeword);
-                    $wholeword = true;
-                }
-            }
-
-            if(!$wholeword && !empty($searchCol_array[1])){
-                $clone = clone $table;
-                $clone = $clone->where($searchCol_array[1],$request->wholeword);
-                // dd($this->getQueries($clone));
-                if($clone->exists()){
-                    $table = $table->where($searchCol_array[1],$request->wholeword);
-                    $wholeword = true;
-                }
-            }
-
-            // $searchCol_array_1 = $searchCol_array_2 = $searchVal_array_1 = $searchVal_array_2 = [];
-
-            // foreach ($searchCol_array as $key => $value) {
-            //     if(($key+1)%2){
-            //         array_push($searchCol_array_1, $searchCol_array[$key]);
-            //         array_push($searchVal_array_1, $request->searchVal2[$key]);
-            //     }else{
-            //         array_push($searchCol_array_2, $searchCol_array[$key]);
-            //         array_push($searchVal_array_2, $request->searchVal2[$key]);
+            // $wholeword = false;
+            // if(!empty($searchCol_array[0])){
+            //     $clone = clone $table;
+            //     $clone = $clone->where($searchCol_array[0],$request->wholeword);
+            //     // dd($this->getQueries($clone));
+            //     if($clone->exists()){
+            //         $table = $table->where($searchCol_array[0],$request->wholeword);
+            //         $wholeword = true;
             //     }
             // }
-            if(!$wholeword){
-                $table = $table->where(function($table) use ($searchCol_array, $request){
-                    foreach ($searchCol_array as $key => $value) {
-                        if($key>1) break;
-                        $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
-                    }
-                });
 
-                if(count($searchCol_array)>2){
-                    $table = $table->where(function($table) use ($searchCol_array, $request){
-                        foreach ($searchCol_array as $key => $value) {
-                            if($key<=1) continue;
-                            $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
-                        }
-                    });
-                }
-            }            
+            // if(!$wholeword && !empty($searchCol_array[1])){
+            //     $clone = clone $table;
+            //     $clone = $clone->where($searchCol_array[1],$request->wholeword);
+            //     // dd($this->getQueries($clone));
+            //     if($clone->exists()){
+            //         $table = $table->where($searchCol_array[1],$request->wholeword);
+            //         $wholeword = true;
+            //     }
+            // }
+
+            // // $searchCol_array_1 = $searchCol_array_2 = $searchVal_array_1 = $searchVal_array_2 = [];
+
+            // // foreach ($searchCol_array as $key => $value) {
+            // //     if(($key+1)%2){
+            // //         array_push($searchCol_array_1, $searchCol_array[$key]);
+            // //         array_push($searchVal_array_1, $request->searchVal2[$key]);
+            // //     }else{
+            // //         array_push($searchCol_array_2, $searchCol_array[$key]);
+            // //         array_push($searchVal_array_2, $request->searchVal2[$key]);
+            // //     }
+            // // }
+            // if(!$wholeword){
+            //     $table = $table->where(function($table) use ($searchCol_array, $request){
+            //         foreach ($searchCol_array as $key => $value) {
+            //             if($key>1) break;
+            //             $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+            //         }
+            //     });
+
+            //     if(count($searchCol_array)>2){
+            //         $table = $table->where(function($table) use ($searchCol_array, $request){
+            //             foreach ($searchCol_array as $key => $value) {
+            //                 if($key<=1) continue;
+            //                 $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+            //             }
+            //         });
+            //     }
+            // }            
         }
 
         // if(!empty($request->searchCol2)){
