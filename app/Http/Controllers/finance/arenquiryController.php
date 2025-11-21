@@ -497,7 +497,7 @@ class arenquiryController extends defaultController
         // if($dbacthdr->trantype == 'RC' || 'RD' || 'RF' || 'CN'){
         if($dbacthdr->trantype == 'RC' || $dbacthdr->trantype =='RD' || $dbacthdr->trantype =='RF' || $dbacthdr->trantype =='CN'){
             
-            $table = DB::table('debtor.dballoc as dc')
+            $table_ = DB::table('debtor.dballoc as dc')
                     ->select(
                         'dc.refsource as source',
                         'dc.reftrantype as trantype',
@@ -534,8 +534,9 @@ class arenquiryController extends defaultController
                     ->where('dc.docsource','=',$dbacthdr->source)
                     ->where('dc.doctrantype','=',$dbacthdr->trantype)
                     ->where('dc.docauditno','=',$dbacthdr->auditno)
-                    ->where('dc.recstatus','=',"POSTED")
-                    ->get();
+                    ->where('dc.recstatus','=',"POSTED");
+
+            $table = $table_->get();
                     // ->whereIn('dc.doctrantype',['RC','RD','RF','CN'])
 
             foreach($table as $key => $value){
@@ -544,7 +545,7 @@ class arenquiryController extends defaultController
                 $value->sysAutoNo = $value->source.'-'.$value->trantype.'-'.$auditno;
             }
 
-            $table2 = DB::table('debtor.dballoc as dc')
+            $table2_ = DB::table('debtor.dballoc as dc')
                     ->select(
                         'dc.docsource as source',
                         'dc.doctrantype as trantype',
@@ -574,8 +575,9 @@ class arenquiryController extends defaultController
                     ->where('dc.reftrantype','=',$dbacthdr->trantype)
                     ->where('dc.refauditno','=',$dbacthdr->auditno)
                     ->where('dc.reflineno','=',$dbacthdr->lineno_)
-                    ->where('dc.recstatus','=',"POSTED")
-                    ->get();
+                    ->where('dc.recstatus','=',"POSTED");
+
+            $table2 = $table2_->get();
 
             foreach($table2 as $key => $value){
                 $auditno = str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
@@ -598,7 +600,8 @@ class arenquiryController extends defaultController
             $responce->rows = $table;
             // $responce->sql = $table->toSql();
             // $responce->sql_bind = $table->getBindings();
-            // $responce->sql_query = $this->getQueries($table);
+            $responce->sql_query1 = $this->getQueries($table);
+            $responce->sql_query2 = $this->getQueries($table2);
             
             return json_encode($responce);
             
