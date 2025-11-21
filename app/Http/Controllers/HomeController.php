@@ -197,6 +197,29 @@ class HomeController extends Controller
         return view('init.container',compact('menu','units','unit_user','title','dept_desc','shortcut','logo1'));
     }
 
+    public function eis_dashboard(){
+        $user = Auth::user();
+        $menu = $this->create_eis_dashboard_menu();
+        $units = DB::table('sysdb.sector')
+                ->where('compcode','=',$user->compcode)
+                ->get();
+        $unit_user = '';
+        if($user->dept != ''){
+            $unit_user_ = DB::table('sysdb.department')
+                ->where('compcode','=',$user->compcode)
+                ->where('deptcode','=',$user->dept)
+                ->first();
+            $unit_user = $unit_user_->sector;
+        }
+        $company = DB::table('sysdb.company')->where('compcode',session('compcode'))->first();
+        $logo1 = $company->logo1;
+        $title="Analytic Dashboard";
+        $dept_desc = $unit_user_->description;
+        $shortcut=true;
+
+        return view('init.container',compact('menu','units','unit_user','title','dept_desc','shortcut','logo1'));
+    }
+
     public function mobile(){
         $user = Auth::user();
         $menu = $this->create_mobile_menu();
@@ -567,6 +590,18 @@ class HomeController extends Controller
         //IV
         //stock freeze
         //stock count
+
+        return $menu;
+    }
+
+    public function create_eis_dashboard_menu(){
+        $user = Auth::user();
+        $groupid = $user->groupid;
+        $company = $user->compcode;
+
+        //header
+        $menu="<li style='background:lightgray'><a style='padding-left:9px' title='Product' class=''><b>Dashboard</b></a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Analytic Dashboard Patient' class='clickable' programid='ptcare_dashboard' targeturl='./ptcare_dashboard'>Analytic Dashboard Patient</a></li>";
 
         return $menu;
     }

@@ -23,6 +23,7 @@ Route::get('/dialysis','HomeController@dialysis');
 Route::get('/implant','HomeController@implant');
 Route::get('/khealth','HomeController@khealth');
 Route::get('/warehouse','HomeController@warehouse');
+Route::get('/eis_dashboard','HomeController@eis_dashboard');
 Route::get('/sessionUnit','SessionController@changeSessionUnit');
 Route::get('/login','SessionController@create')->name('login');
 Route::get('/loginappt','SessionController@create2')->name('login2');
