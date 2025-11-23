@@ -360,6 +360,7 @@
 	    let mql = window.matchMedia("(max-width: 768px)");
 	    document.getElementById("ismobile").value = mql.matches;
 		document.addEventListener("DOMContentLoaded", function() {
+			$(".preloader").fadeOut();
 		});
 
 	</script>
