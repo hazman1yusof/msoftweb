@@ -1,10 +1,8 @@
 var preepisode;
 $(".preloader").fadeOut();
 
-$(document).ready(function() {
-
-    var counter = 0;
-    var grid = $("#grid-command-buttons").bootgrid({
+var bootgrid_last_rowid = 0;
+var grid = $("#grid-command-buttons").bootgrid({
         selection: false,
         rowSelect: true,
         columnSelection: false,
@@ -126,237 +124,244 @@ $(document).ready(function() {
                 return retval;
             }
         }
-    }).on("loaded.rs.jquery.bootgrid", function(){
-        console.log('loaded');
-        counter = 0;
+    });
 
-        if(!$("#Scol").length){ //tambah search col kat atas utk search by field
-            if(mql.matches){
-                $(".actionBar").prepend(`
-                    <select id='Scol' class='search form-group form-control'>
-                        <option value='MRN'>MRN</option>
-                        <option selected='true' value='Name'>Name</option>
-                        <option value='Newic'>Newic</option>
-                        <option value='Staffid'>Staffid</option>
-                        <option value='telhp'>Handphone</option>
-                        <option value='doctor'>Doctor</option>
-                    </select>`);
-            }else{
-                $(".actionBar").prepend(`
-                    <select id='Scol' class='search form-group form-control' style='width: fit-content !important;'>
-                        <option value='MRN'>MRN</option>
-                        <option selected='true' value='Name'>Name</option>
-                        <option value='Newic'>Newic</option>
-                        <option value='Staffid'>Staffid</option>
-                        <option value='telhp'>Handphone</option>
-                        <option value='doctor'>Doctor</option>
-                    </select>`);
-            }
-        }
+grid.on("loaded.rs.jquery.bootgrid", function(){
+    console.log('loaded');
 
-        var detailRows = '';
-
-        /* Executes after data is loaded and rendered */
-        grid.find(".command-edit").on("click", function(e){
-            let rowid = $(this).data("rowId");
-            $('#lastrowid').val(rowid);
-
-            let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
-            var rowdata = getrow_bootgrid(rowid,rows);
-
-            populate_patient(rowdata);
-            $('#mdl_patient_info').modal({backdrop: "static"});
-            $("#btn_register_patient").data("oper","edit");
-            $("#btn_register_patient").data("idno",rowid);
-            
-            desc_show.write_desc();
-        }).end().find(".command-episode").on("click", function(e) {
-            let rowid = $(this).data("rowId");
-            $('#lastrowid').val(rowid);
-
-            let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
-            var rowdata = getrow_bootgrid(rowid,rows);
-
-            populate_episode(rowid,rowdata);
-            $('#editEpisode').modal({backdrop: "static"});
-        }).end().find(".command-add").on("click", function(e) {
-            var html = '';
-
-            html = html + '<table class=\"table table-bordered\">';
-
-            html = html + '<tr>';
-            html = html + '<th width=\"25%\">Contact No</th>';
-            html = html + '<th width=\"25%\">Current Address</th>';
-            html = html + '<th width=\"25%\">Office Address</th>';
-            html = html + '<th width=\"25%\">Home Address</th>';
-            html = html + '</tr>';
-
-            html = html + '<tr>';
-            html = html + '<td valign=\"top\" align=\"left\">';
-            html = html + 'Phone (Mobile): 0' + $(this).data("telhp") + '<BR/>';
-            html = html + 'Phone (House): 0' + $(this).data("telh") + '<BR/>';
-            html = html + '</td>';
-
-            html = html + '<td valign=\"top\" align=\"text-left\">';
-            html = html + $(this).data("address1") + '<BR/>';
-            html = html + $(this).data("address2") + '<BR/>';
-            html = html + $(this).data("address3") + '<BR/>';
-            html = html + $(this).data("postcode");
-            html = html + '</td>';
-
-            html = html + '<td valign=\"top\" align=\"left\">';
-            html = html + $(this).data("offadd1") + '<BR/>';
-            html = html + $(this).data("offadd2") + '<BR/>';
-            html = html + $(this).data("offadd3") + '<BR/>';
-            html = html + $(this).data("offpostcode");
-            html = html + '</td>';
-
-            html = html + '<td valign=\"top\" align=\"left\">';
-            html = html + $(this).data("padd1") + '<BR/>';
-            html = html + $(this).data("padd2") + '<BR/>';
-            html = html + $(this).data("padd3") + '<BR/>';
-            html = html + $(this).data("ppostcode");
-            html = html + '</td>';
-
-            html = html + '</tr>';
-            html = html + '</table>';
-
-            detailRows = html;
-
-            var tr = $(this).closest('tr');
-            var childID = $(this).data("rowId");
-            var childName = "cmd_add" + childID;
-            $('[name='+childName+']').hide();
-
-            var addDetail='';
-            addDetail = '<tr ><td><a href="javascript:void(0);" class="remCF btn btn-xs btn-primary btn-md"> <span class=\"glyphicon glyphicon-minus\" aria-hidden=\"true\"></span> </a></td><td colspan=\"10\">';
-            addDetail = addDetail + detailRows;
-            addDetail = addDetail + '<td></tr>';
-
-            tr.after(addDetail);
-
-            $(".remCF").on('click',function(){
-                $('[name='+childName+']').show();
-                $(this).parent().parent().remove();
-            });
-        }).end().find("tr").on("click", function(e) {
-            $("#grid-command-buttons tr").removeClass( "justbc" );
-            $(e.currentTarget).addClass( "justbc" );
-        });
-
-        if($("#load_from_addupd").data('info') == "true"){
-            if($("#load_from_addupd").data('oper') == "add"){
-                $("table#grid-command-buttons tr:nth-child(1)").click();
-            }else{
-                $("table#grid-command-buttons tr[data-row-id='"+bootgrid_last_rowid+"']").eq(0).click();
-            }
+    if(!$("#Scol").length){ //tambah search col kat atas utk search by field
+        if(mql.matches){
+            $(".actionBar").prepend(`
+                <select id='Scol' class='search form-group form-control'>
+                    <option value='MRN'>MRN</option>
+                    <option selected='true' value='Name'>Name</option>
+                    <option value='Newic'>Newic</option>
+                    <option value='Staffid'>Staffid</option>
+                    <option value='telhp'>Handphone</option>
+                    <option value='doctor'>Doctor</option>
+                </select>`);
         }else{
-            $("table#grid-command-buttons tr:nth-child(1)").click();
+            $(".actionBar").prepend(`
+                <select id='Scol' class='search form-group form-control' style='width: fit-content !important;'>
+                    <option value='MRN'>MRN</option>
+                    <option selected='true' value='Name'>Name</option>
+                    <option value='Newic'>Newic</option>
+                    <option value='Staffid'>Staffid</option>
+                    <option value='telhp'>Handphone</option>
+                    <option value='doctor'>Doctor</option>
+                </select>`);
         }
-        $("#load_from_addupd").data('info','false');
+    }
 
-        if(mql.matches){ // utk mobile
-            $("#grid-command-buttons-header div.search").css("width","58%").addClass('search2');
-            $("#grid-command-buttons-header select.search").css("width","35%").addClass('search2');
-            $("#grid-command-buttons-header div.actions.btn-group").css("margin-top","2%").addClass('search2');
+    var detailRows = '';
 
-        }
-    }).on("click.rs.jquery.bootgrid", function (e,c,r){
-        bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
+    /* Executes after data is loaded and rendered */
+    grid.find(".command-edit").on("click", function(e){
+        let rowid = $(this).data("rowId");
+        $('#lastrowid').val(rowid);
+
         let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
-        var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
-        hide_all_panel();
-        if($('#curpat').val() == 'true'){
-            if($('#epistycode').val() == 'OP'){
-                if($('#user_doctor').val() == '1'){
-                    populate_triage_currpt(lastrowdata);
-                    populate_antenatal(lastrowdata);
-                    populate_paediatric(lastrowdata);
-                    populate_nursingnote(lastrowdata);
-                    populate_clientProgNote_currpt(lastrowdata);
-                    populate_clientProgNoteRef_currpt(lastrowdata);
-                    populate_doctorNote_currpt(lastrowdata);
-                    populate_requestFor_currpt(lastrowdata);
-                    populate_admHandover_currpt(lastrowdata);
-                    populate_dieteticCareNotes_currpt(lastrowdata);
-                    // populate_dietOrder_currpt(lastrowdata);
-                }else if($('#user_nurse').val() == '1'){
-                    populate_triage_currpt(lastrowdata);
-                    populate_nursingnote(lastrowdata);
-                    populate_clientProgNote_currpt(lastrowdata);
-                    populate_clientProgNoteRef_currpt(lastrowdata);
-                    populate_doctorNote_currpt(lastrowdata);
-                    populate_requestFor_currpt(lastrowdata);
-                    populate_admHandover_currpt(lastrowdata);
-                    populate_dieteticCareNotes_currpt(lastrowdata);
-                    // populate_dietOrder_currpt(lastrowdata);
-                }
-                
-                if($('#user_billing').val() == '1'){
-                    populate_ordcom_currpt(lastrowdata);
-                }
-                
-                if(lastrowdata.PatStatus == 1 ){
-                    populate_endConsult_currpt(lastrowdata);
-                }
-            }else if($('#epistycode').val() == 'IP'){
-                if($('#user_doctor').val() == '1'){
-                    populate_triageED_currpt(lastrowdata);
-                    populate_triage_currpt(lastrowdata);
-                    // populate_nursAssessment_currpt(lastrowdata);
-                    populate_nursingActionPlan(lastrowdata);
-                    // populate_header_getdata(lastrowdata);
-                    populate_nursingnote(lastrowdata);
-                    // populate_invHeader_getdata(lastrowdata);
-                    populate_antenatal(lastrowdata);
-                    populate_clientProgNote_currpt(lastrowdata);
-                    populate_clientProgNoteRef_currpt(lastrowdata);
-                    populate_doctorNote_currpt(lastrowdata);
-                    populate_requestFor_currpt(lastrowdata);
-                    populate_dieteticCareNotes_currpt(lastrowdata);
-                    populate_dietOrder_currpt(lastrowdata);
-                }else if($('#user_nurse').val() == '1'){
-                    populate_triageED_currpt(lastrowdata);
-                    populate_triage_currpt(lastrowdata);
-                    // populate_nursAssessment_currpt(lastrowdata);
-                    populate_nursingActionPlan(lastrowdata);
-                    // populate_header_getdata(lastrowdata);
-                    populate_nursingnote(lastrowdata);
-                    // populate_invHeader_getdata(lastrowdata);
-                    populate_clientProgNote_currpt(lastrowdata);
-                    populate_clientProgNoteRef_currpt(lastrowdata);
-                    populate_doctorNote_currpt(lastrowdata);
-                    populate_requestFor_currpt(lastrowdata);
-                    populate_dieteticCareNotes_currpt(lastrowdata);
-                    populate_dietOrder_currpt(lastrowdata);
-                }
-                
-                if($('#user_billing').val() == '1'){
-                    populate_ordcom_currpt(lastrowdata);
-                }
-                
-                populate_discharge_currpt(lastrowdata);
-                // if(lastrowdata.PatStatus == 1 ){
-                // }
+        var rowdata = getrow_bootgrid(rowid,rows);
+
+        populate_patient(rowdata);
+        $('#mdl_patient_info').modal({backdrop: "static"});
+        $("#btn_register_patient").data("oper","edit");
+        $("#btn_register_patient").data("idno",rowid);
+        
+        desc_show.write_desc();
+    }).end().find(".command-episode").on("click", function(e) {
+        let rowid = $(this).data("rowId");
+        $('#lastrowid').val(rowid);
+
+        let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
+        var rowdata = getrow_bootgrid(rowid,rows);
+
+        populate_episode(rowid,rowdata);
+        $('#editEpisode').modal({backdrop: "static"});
+    }).end().find(".command-add").on("click", function(e) {
+        var html = '';
+
+        html = html + '<table class=\"table table-bordered\">';
+
+        html = html + '<tr>';
+        html = html + '<th width=\"25%\">Contact No</th>';
+        html = html + '<th width=\"25%\">Current Address</th>';
+        html = html + '<th width=\"25%\">Office Address</th>';
+        html = html + '<th width=\"25%\">Home Address</th>';
+        html = html + '</tr>';
+
+        html = html + '<tr>';
+        html = html + '<td valign=\"top\" align=\"left\">';
+        html = html + 'Phone (Mobile): 0' + $(this).data("telhp") + '<BR/>';
+        html = html + 'Phone (House): 0' + $(this).data("telh") + '<BR/>';
+        html = html + '</td>';
+
+        html = html + '<td valign=\"top\" align=\"text-left\">';
+        html = html + $(this).data("address1") + '<BR/>';
+        html = html + $(this).data("address2") + '<BR/>';
+        html = html + $(this).data("address3") + '<BR/>';
+        html = html + $(this).data("postcode");
+        html = html + '</td>';
+
+        html = html + '<td valign=\"top\" align=\"left\">';
+        html = html + $(this).data("offadd1") + '<BR/>';
+        html = html + $(this).data("offadd2") + '<BR/>';
+        html = html + $(this).data("offadd3") + '<BR/>';
+        html = html + $(this).data("offpostcode");
+        html = html + '</td>';
+
+        html = html + '<td valign=\"top\" align=\"left\">';
+        html = html + $(this).data("padd1") + '<BR/>';
+        html = html + $(this).data("padd2") + '<BR/>';
+        html = html + $(this).data("padd3") + '<BR/>';
+        html = html + $(this).data("ppostcode");
+        html = html + '</td>';
+
+        html = html + '</tr>';
+        html = html + '</table>';
+
+        detailRows = html;
+
+        var tr = $(this).closest('tr');
+        var childID = $(this).data("rowId");
+        var childName = "cmd_add" + childID;
+        $('[name='+childName+']').hide();
+
+        var addDetail='';
+        addDetail = '<tr ><td><a href="javascript:void(0);" class="remCF btn btn-xs btn-primary btn-md"> <span class=\"glyphicon glyphicon-minus\" aria-hidden=\"true\"></span> </a></td><td colspan=\"10\">';
+        addDetail = addDetail + detailRows;
+        addDetail = addDetail + '<td></tr>';
+
+        tr.after(addDetail);
+
+        $(".remCF").on('click',function(){
+            $('[name='+childName+']').show();
+            $(this).parent().parent().remove();
+        });
+    }).end().find("tr").on("click", function(e) {
+        $("#grid-command-buttons tr").removeClass( "justbc" );
+        $(e.currentTarget).addClass( "justbc" );
+    });
+
+    if($("#load_from_addupd").data('info') == "true"){
+        if($("#load_from_addupd").data('oper') == "add"){
+            $("table#grid-command-buttons tr:nth-child(1)").click();
+        }else{
+            $("table#grid-command-buttons tr[data-row-id='"+bootgrid_last_rowid+"']").eq(0).click();
+        }
+    }else{
+        $("table#grid-command-buttons tr:nth-child(1)").click();
+    }
+    $("#load_from_addupd").data('info','false');
+
+    if(mql.matches){ // utk mobile
+        $("#grid-command-buttons-header div.search").css("width","58%").addClass('search2');
+        $("#grid-command-buttons-header select.search").css("width","35%").addClass('search2');
+        $("#grid-command-buttons-header div.actions.btn-group").css("margin-top","2%").addClass('search2');
+
+    }
+});
+
+grid.on("click.rs.jquery.bootgrid", function (e,c,r){
+    bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
+    let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
+    var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
+    hide_all_panel();
+    if($('#curpat').val() == 'true'){
+        if($('#epistycode').val() == 'OP'){
+            if($('#user_doctor').val() == '1'){
+                populate_triage_currpt(lastrowdata);
+                populate_antenatal(lastrowdata);
+                populate_paediatric(lastrowdata);
+                populate_nursingnote(lastrowdata);
+                populate_clientProgNote_currpt(lastrowdata);
+                populate_clientProgNoteRef_currpt(lastrowdata);
+                populate_doctorNote_currpt(lastrowdata);
+                populate_requestFor_currpt(lastrowdata);
+                populate_admHandover_currpt(lastrowdata);
+                populate_dieteticCareNotes_currpt(lastrowdata);
+                // populate_dietOrder_currpt(lastrowdata);
+            }else if($('#user_nurse').val() == '1'){
+                populate_triage_currpt(lastrowdata);
+                populate_nursingnote(lastrowdata);
+                populate_clientProgNote_currpt(lastrowdata);
+                populate_clientProgNoteRef_currpt(lastrowdata);
+                populate_doctorNote_currpt(lastrowdata);
+                populate_requestFor_currpt(lastrowdata);
+                populate_admHandover_currpt(lastrowdata);
+                populate_dieteticCareNotes_currpt(lastrowdata);
+                // populate_dietOrder_currpt(lastrowdata);
             }
             
-            if(lastrowdata.pregnant == 1){
-                $('#antenatal_row,#jqGridAntenatal_c').show();
-                $('#nursing_row,#jqGridTriageInfo_c').hide();
-            }else{
-                $('#nursing_row,#jqGridTriageInfo_c').show();
-                $('#antenatal_row,#jqGridAntenatal_c').hide();
+            if($('#user_billing').val() == '1'){
+                populate_ordcom_currpt(lastrowdata);
             }
             
-            // if((lastrowdata.ward == null || lastrowdata.ward == "") && (lastrowdata.bednum == null || lastrowdata.bednum == "")){
-            //     $('#progressnote_row,#jqGridProgress_c').hide();
-            // }else{
-            //     $('#progressnote_row,#jqGridProgress_c').show();
+            if(lastrowdata.PatStatus == 1 ){
+                populate_endConsult_currpt(lastrowdata);
+            }
+        }else if($('#epistycode').val() == 'IP'){
+            if($('#user_doctor').val() == '1'){
+                populate_triageED_currpt(lastrowdata);
+                populate_triage_currpt(lastrowdata);
+                // populate_nursAssessment_currpt(lastrowdata);
+                populate_nursingActionPlan(lastrowdata);
+                // populate_header_getdata(lastrowdata);
+                populate_nursingnote(lastrowdata);
+                // populate_invHeader_getdata(lastrowdata);
+                populate_antenatal(lastrowdata);
+                populate_clientProgNote_currpt(lastrowdata);
+                populate_clientProgNoteRef_currpt(lastrowdata);
+                populate_doctorNote_currpt(lastrowdata);
+                populate_requestFor_currpt(lastrowdata);
+                populate_dieteticCareNotes_currpt(lastrowdata);
+                populate_dietOrder_currpt(lastrowdata);
+            }else if($('#user_nurse').val() == '1'){
+                populate_triageED_currpt(lastrowdata);
+                populate_triage_currpt(lastrowdata);
+                // populate_nursAssessment_currpt(lastrowdata);
+                populate_nursingActionPlan(lastrowdata);
+                // populate_header_getdata(lastrowdata);
+                populate_nursingnote(lastrowdata);
+                // populate_invHeader_getdata(lastrowdata);
+                populate_clientProgNote_currpt(lastrowdata);
+                populate_clientProgNoteRef_currpt(lastrowdata);
+                populate_doctorNote_currpt(lastrowdata);
+                populate_requestFor_currpt(lastrowdata);
+                populate_dieteticCareNotes_currpt(lastrowdata);
+                populate_dietOrder_currpt(lastrowdata);
+            }
+            
+            if($('#user_billing').val() == '1'){
+                populate_ordcom_currpt(lastrowdata);
+            }
+            
+            populate_discharge_currpt(lastrowdata);
+            // if(lastrowdata.PatStatus == 1 ){
             // }
         }
-    });
-    var bootgrid_last_rowid = 0;
+        
+        if(lastrowdata.pregnant == 1){
+            $('#antenatal_row,#jqGridAntenatal_c').show();
+            $('#nursing_row,#jqGridTriageInfo_c').hide();
+        }else{
+            $('#nursing_row,#jqGridTriageInfo_c').show();
+            $('#antenatal_row,#jqGridAntenatal_c').hide();
+        }
+        
+        // if((lastrowdata.ward == null || lastrowdata.ward == "") && (lastrowdata.bednum == null || lastrowdata.bednum == "")){
+        //     $('#progressnote_row,#jqGridProgress_c').hide();
+        // }else{
+        //     $('#progressnote_row,#jqGridProgress_c').show();
+        // }
+    }
+});
+
+grid.bootgrid("reload");
+
+$(document).ready(function() {
     stop_scroll_on();
+
     $('#tab_patient_info a:last').hide();    // hide Medical Info tab
     jQuery.validator.setDefaults({
       debug: true,
@@ -728,8 +733,10 @@ $(document).ready(function() {
         var lastrowdata = getrow_bootgrid();
         window.open('./iograph?mrn='+lastrowdata.MRN+'&episno='+lastrowdata.Episno, '_blank');
     });
-
 });
+
+function initGrid(){
+}
 
 function mykadclosemodal(){
     var param={
