@@ -155,8 +155,13 @@ class ReminderController extends defaultController
                                          ->where('pm.compcode', '=', session('compcode'));
                         })
                         ->where('dm.compcode', '=', session('compcode'))
-                        ->where('dm.debtorcode', $debtorcode)
-                        ->get();
+                        ->where('dm.debtorcode', $debtorcode);
+
+        if(!$debtormast->exists()){
+            abort(403, 'Debtor doesnt have any activity');
+        }
+
+        $debtormast = $debtormast->get();
 
         $array_report = [];
 
