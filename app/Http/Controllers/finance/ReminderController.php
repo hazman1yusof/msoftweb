@@ -235,27 +235,27 @@ class ReminderController extends defaultController
                     $value->doc_no = $value->trantype.'/'.str_pad($value->invno, 7, "0", STR_PAD_LEFT);
                     $value->amount_dr = $newamt;
                     $value->newamt = $newamt;
-                    if(floatval($newamt) != 0.00){
-                        array_push($array_report, $value);
-                    }
+                    // if(floatval($newamt) != 0.00){
+                    //     array_push($array_report, $value);
+                    // }
                     break;
                 case 'DN':
                     $value->reference = $value->reference;
                     $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
                     $value->amount_dr = $newamt;
                     $value->newamt = $newamt;
-                    if(floatval($newamt) != 0.00){
-                        array_push($array_report, $value);
-                    }
+                    // if(floatval($newamt) != 0.00){
+                    //     array_push($array_report, $value);
+                    // }
                     break;
                 case 'BC':
                     // $value->remark
                     $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
                     $value->amount_dr = $newamt;
                     $value->newamt = $newamt;
-                    if(floatval($newamt) != 0.00){
-                        array_push($array_report, $value);
-                    }
+                    // if(floatval($newamt) != 0.00){
+                    //     array_push($array_report, $value);
+                    // }
                     break;
                 case 'RF':
                     if($value->mrn == '0' || $value->mrn == ''){
@@ -267,18 +267,18 @@ class ReminderController extends defaultController
                     $value->doc_no = $value->recptno;
                     $value->amount_dr = $newamt;
                     $value->newamt = $newamt;
-                    if(floatval($newamt) != 0.00){
-                        array_push($array_report, $value);
-                    }
+                    // if(floatval($newamt) != 0.00){
+                    //     array_push($array_report, $value);
+                    // }
                     break;
                 case 'CN':
                     $value->remark = $value->remark;
                     $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
                     $value->amount_cr = $newamt;
                     $value->newamt = $newamt;
-                    if(floatval($newamt) != 0.00){
-                        array_push($array_report, $value);
-                    }
+                    // if(floatval($newamt) != 0.00){
+                    //     array_push($array_report, $value);
+                    // }
                     break;
                 case 'RC':
                     $value->remark = $value->remark;
@@ -286,9 +286,9 @@ class ReminderController extends defaultController
                     $value->reference = $value->recptno;
                     $value->amount_cr = $newamt;
                     $value->newamt = $newamt;
-                    if(floatval($newamt) != 0.00){
-                        array_push($array_report, $value);
-                    }
+                    // if(floatval($newamt) != 0.00){
+                    //     array_push($array_report, $value);
+                    // }
                     break;
                 case 'RD':
                     $value->remark = $value->remark;
@@ -296,28 +296,31 @@ class ReminderController extends defaultController
                     $value->reference = $value->recptno;
                     $value->amount_cr = $newamt;
                     $value->newamt = $newamt;
-                    if(floatval($newamt) != 0.00){
-                        array_push($array_report, $value);
-                    }
+                    // if(floatval($newamt) != 0.00){
+                    //     array_push($array_report, $value);
+                    // }
                     break;
                 case 'RT':
                     // $value->remark
                     $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
                     $value->amount_cr = $newamt;
                     $value->newamt = $newamt;
-                    if(floatval($newamt) != 0.00){
-                        array_push($array_report, $value);
-                    }
+                    // if(floatval($newamt) != 0.00){
+                    //     array_push($array_report, $value);
+                    // }
                     break;
                 default:
                     // code...
                     break;
             }
 
-            $grouping_tot[$value->group] = $grouping_tot[$value->group] + $newamt;
 
             if($days > $days_greater){
+                $grouping_tot[$value->group] = $grouping_tot[$value->group] + $newamt;
                 $days_greater_tot = $days_greater_tot + $newamt;
+                if(floatval($newamt) != 0.00){
+                    array_push($array_report, $value);
+                }
             }
         }
 
