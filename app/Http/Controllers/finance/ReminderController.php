@@ -147,7 +147,7 @@ class ReminderController extends defaultController
                         ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.reference as real_reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate','dm.debtortype','dm.debtorcode','dm.name','dm.address1','dm.address2','dm.address3','dm.address4','dm.creditterm','dm.creditlimit','dm.contact','dh.datesend', 'pm.Name as pm_name')
                         ->join('debtor.dbacthdr as dh', function($join) use ($date){
                             $join = $join->on('dh.debtorcode', '=', 'dm.debtorcode')
-                                         ->whereDate('dh.posteddate', '>=', $date)
+                                         ->whereDate('dh.posteddate', '<=', $date)
                                          ->where('dh.compcode', '=', session('compcode'))
                                          ->where('dh.recstatus', '=', 'POSTED');
                         })->leftJoin('hisdb.pat_mast as pm', function($join){
