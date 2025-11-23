@@ -278,6 +278,7 @@ function set_ordcom_totamount(totamount){
 }
 
 function calc_discamt_main(chggroup,chgcode,unitprce,quantity){
+	return 0.00;
 	var percent=(get_billtype_main.length>0)?get_billtype_main[0].bm_percent:100;
 	var amount=(get_billtype_main.length>0)?get_billtype_main[0].bm_amount:0;
 	get_billtype_main.forEach(function(e,i){

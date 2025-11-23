@@ -849,8 +849,13 @@ class OrdcomController extends defaultController
     public function calc_taxamount(Request $request,$new_amount,$new_discamt){
         $taxmast = DB::table('hisdb.taxmast')
                         ->where('compcode',session('compcode'))
-                        ->where('taxcode',$request->taxcode)
-                        ->first();
+                        ->where('taxcode',$request->taxcode);
+
+        if(!$taxmast->exists()){
+            return 00;
+        }
+        
+        $taxmast = $taxmast->first();              
 
         $rate = floatval($taxmast->rate);
 
@@ -5193,17 +5198,17 @@ class OrdcomController extends defaultController
                                     $join = $join->on('ep.mrn', '=', 'pm.mrn');
                                     $join = $join->where('ep.episno', '=', $request->episno);
                                 })
-                                ->join('hisdb.epispayer as epayr', function($join) use ($request){
+                                ->leftjoin('hisdb.epispayer as epayr', function($join) use ($request){
                                     $join = $join->where('epayr.compcode', '=', session('compcode'));
                                     $join = $join->on('epayr.mrn', '=', 'ep.mrn');
                                     $join = $join->on('epayr.episno', '=', 'ep.episno');
                                     $join = $join->where('epayr.LineNo','=','1');
                                 })
-                                ->join('hisdb.doctor as doc', function($join) use ($request){
+                                ->leftjoin('hisdb.doctor as doc', function($join) use ($request){
                                     $join = $join->where('doc.compcode', '=', session('compcode'));
                                     $join = $join->on('doc.doctorcode', '=', 'ep.admdoctor');
                                 })
-                                ->join('debtor.debtormast as dm', function($join) use ($request){
+                                ->leftjoin('debtor.debtormast as dm', function($join) use ($request){
                                     $join = $join->where('dm.compcode', '=', session('compcode'));
                                     $join = $join->on('dm.debtorcode', '=', 'ep.payer');
                                 });
@@ -5288,17 +5293,17 @@ class OrdcomController extends defaultController
                                     $join = $join->on('ep.mrn', '=', 'pm.mrn');
                                     $join = $join->where('ep.episno', '=', $request->episno);
                                 })
-                                ->join('hisdb.epispayer as epayr', function($join) use ($request){
+                                ->leftjoin('hisdb.epispayer as epayr', function($join) use ($request){
                                     $join = $join->where('epayr.compcode', '=', session('compcode'));
                                     $join = $join->on('epayr.mrn', '=', 'ep.mrn');
                                     $join = $join->on('epayr.episno', '=', 'ep.episno');
                                     $join = $join->where('epayr.LineNo','=','1');
                                 })
-                                ->join('hisdb.doctor as doc', function($join) use ($request){
+                                ->leftjoin('hisdb.doctor as doc', function($join) use ($request){
                                     $join = $join->where('doc.compcode', '=', session('compcode'));
                                     $join = $join->on('doc.doctorcode', '=', 'ep.admdoctor');
                                 })
-                                ->join('debtor.debtormast as dm', function($join) use ($request){
+                                ->leftjoin('debtor.debtormast as dm', function($join) use ($request){
                                     $join = $join->where('dm.compcode', '=', session('compcode'));
                                     $join = $join->on('dm.debtorcode', '=', 'ep.payer');
                                 });
@@ -5391,17 +5396,17 @@ class OrdcomController extends defaultController
                                     $join = $join->on('ep.mrn', '=', 'pm.mrn');
                                     $join = $join->where('ep.episno', '=', $request->episno);
                                 })
-                                ->join('hisdb.epispayer as epayr', function($join) use ($request){
+                                ->leftjoin('hisdb.epispayer as epayr', function($join) use ($request){
                                     $join = $join->where('epayr.compcode', '=', session('compcode'));
                                     $join = $join->on('epayr.mrn', '=', 'ep.mrn');
                                     $join = $join->on('epayr.episno', '=', 'ep.episno');
                                     $join = $join->where('epayr.LineNo','=','1');
                                 })
-                                ->join('hisdb.doctor as doc', function($join) use ($request){
+                                ->leftjoin('hisdb.doctor as doc', function($join) use ($request){
                                     $join = $join->where('doc.compcode', '=', session('compcode'));
                                     $join = $join->on('doc.doctorcode', '=', 'ep.admdoctor');
                                 })
-                                ->join('debtor.debtormast as dm', function($join) use ($request){
+                                ->leftjoin('debtor.debtormast as dm', function($join) use ($request){
                                     $join = $join->where('dm.compcode', '=', session('compcode'));
                                     $join = $join->on('dm.debtorcode', '=', 'ep.payer');
                                 });
