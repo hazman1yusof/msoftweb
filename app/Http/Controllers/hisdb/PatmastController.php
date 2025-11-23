@@ -111,6 +111,7 @@ class PatmastController extends defaultController
             $data_send['raddept_dflt'] = $ordcomtt_rad->pvalue2;
             $data_send['physdept_dflt'] = $ordcomtt_phys->pvalue2;
             $data_send['rehabdept_dflt'] = $ordcomtt_rehab->pvalue2;
+            $data_send['dfeedept_dflt'] = $ordcomtt_dfee->pvalue2;
             $data_send['dietdept_dflt'] = $ordcomtt_diet->pvalue2;
             $data_send['pkgdept_dflt'] = $dept->deptcode;
             $data_send['othdept_dflt'] = session('deptcode');
