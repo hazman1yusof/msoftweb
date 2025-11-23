@@ -200,7 +200,7 @@ class PatmastController extends defaultController
                                 $join = $join->on('episode.mrn', '=', 'queue.MRN')
                                                 ->on('episode.episno','=','queue.Episno')
                                                 ->where('episode.compcode','=',session('compcode'));
-                            });
+                            })
                             // ->leftJoin('hisdb.bed', function($join) use ($request){
                             //     $join = $join->where('bed.compcode','=',session('compcode'))
                             //                     ->on('bed.bednum','=','episode.bed');
