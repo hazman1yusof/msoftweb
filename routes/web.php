@@ -932,6 +932,11 @@ Route::get('/DebtorMaster_Report/table','finance\DebtorMaster_ReportController@t
 Route::post('/DebtorMaster_Report/form','finance\DebtorMaster_ReportController@form');
 Route::get('/DebtorMaster_Report/showExcel','finance\DebtorMaster_ReportController@showExcel');
 
+//// reminder ////
+Route::get('/reminder','finance\ReminderController@show');
+Route::get('/reminder/table','finance\ReminderController@table');
+Route::post('/reminder/form','finance\ReminderController@form');
+
 //// Deposit Type setup ///
 Route::get('/depositType','finance\DepositTypeController@show');
 Route::get('/depositType/table','finance\DepositTypeController@table');
