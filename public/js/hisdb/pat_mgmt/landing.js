@@ -11,7 +11,7 @@ $(document).ready(function() {
         ajax: true,
         ajaxSettings: {
             method: "GET",
-            cache: true
+            cache: false
         },
         multiSelect: false,
         searchSettings: {
