@@ -99,7 +99,7 @@
                     {
                         style: 'tableExample',
                         table: {
-                            widths: [50,50,70,70,50,50,50], //515
+                            widths: [50,50,70,130,60,60,60], //515
                             body: [
                                 [
                                     {text:'DOC DATE', style:'totalbold',border: [false, true, false, true]},
@@ -126,7 +126,7 @@
                                         {text:``,border: [false, false, false, false]},
                                     @else
 
-                                        @php($totalAmount += $obj->amount_dr)
+                                        @php($totalAmount += $obj->amount_cr)
                                         {text:``,border: [false, false, false, false]},
                                         {text:`{{number_format($obj->amount_cr, 2, '.', ',')}}`, alignment: 'right',border: [false, false, false, false]},
                                     @endif
@@ -140,7 +140,7 @@
                     {
                         style: 'tableExample',
                         table: {
-                            widths: [66,66,66,66,66,66], //515
+                            widths: [81,81,81,81,81,81], //515
                             body: [
                                 [
                                     {text:'1-30 DAYS', style:'totalbold',border: [false, true, false, true]},
