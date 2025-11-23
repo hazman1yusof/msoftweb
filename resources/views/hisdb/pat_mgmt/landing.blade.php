@@ -360,7 +360,6 @@
 	    let mql = window.matchMedia("(max-width: 768px)");
 	    document.getElementById("ismobile").value = mql.matches;
 		document.addEventListener("DOMContentLoaded", function() {
-		    $(".preloader").fadeOut();
 		});
 
 	</script>
@@ -597,7 +596,7 @@
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_emr.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/textfield_modal.js"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js?v=1.5"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js?v=1.6"></script>
 	
 	</div>
 
