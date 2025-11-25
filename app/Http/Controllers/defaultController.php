@@ -631,7 +631,9 @@ abstract class defaultController extends Controller{
         $till = DB::table('debtor.till')
             ->select($field)
             ->where('compcode', '=', session('compcode'))
-            ->where('tillcode', '=', $tillcode)->first();
+            ->where('tillcode', '=', $tillcode);
+
+        $till = $till->lockForUpdate()->first();
 
         $till_ = (array)$till;
         
@@ -705,7 +707,7 @@ abstract class defaultController extends Controller{
             throw new \Exception("Sequence Number for dept $dept is not available (trantype: <b>$trantype</b> , dept: <b>$dept</b>)", 500);
         }
 
-        $seqno = $seqno->first();
+        $seqno = $seqno->lockForUpdate()->first();
 
         DB::table('material.sequence')
             ->where('trantype','=',$trantype)
