@@ -78,8 +78,9 @@ class UnInvGRNController extends defaultController
 
     public function processLink(Request $request){
         $client = new \GuzzleHttp\Client();
+        $PYTHON_SERVER = \config('get_config.PYTHON_SERVER');
 
-        $url='http://192.168.0.13:8443/msoftweb/public/uninvgrn/table?action=process&dateFrom='.$request->dateFrom.'&dateTo='.$request->dateTo.'&username='.session('username').'&compcode='.session('compcode');
+        $url=$PYTHON_SERVER.'/msoftweb/public/uninvgrn/table?action=process&dateFrom='.$request->dateFrom.'&dateTo='.$request->dateTo.'&username='.session('username').'&compcode='.session('compcode');
 
         $response = $client->request('GET', $url, [
           'headers' => [

@@ -81,8 +81,9 @@ class  gltbController extends defaultController
 
     public function processLink(Request $request){
         $client = new \GuzzleHttp\Client();
+        $PYTHON_SERVER = \config('get_config.PYTHON_SERVER');
 
-        $url='http://192.168.0.13:8443/msoftweb/public/gltb/table?action=process&month='.$request->month.'&year='.$request->year.'&username='.session('username').'&compcode='.session('compcode');
+        $url = $PYTHON_SERVER.'/msoftweb/public/gltb/table?action=process&month='.$request->month.'&year='.$request->year.'&username='.session('username').'&compcode='.session('compcode');
 
         $response = $client->request('GET', $url, [
           'headers' => [
