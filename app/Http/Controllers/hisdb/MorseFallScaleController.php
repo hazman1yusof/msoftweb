@@ -128,7 +128,8 @@ class MorseFallScaleController extends defaultController
                     'gait' => $request->gait,
                     'mentalStatus' => $request->mentalStatus,
                     'totalScore' => $request->totalScore,
-                    'staffname'  => $request->staffname,
+                    // 'staffname'  => $request->staffname,
+                    'staffname'  => session('username'),
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'lastuser'  => session('username'),
@@ -136,37 +137,37 @@ class MorseFallScaleController extends defaultController
                     'computerid' => session('computerid'),
                 ]);
             
-            $pat_otbook = DB::table('hisdb.pat_otbook')
-                        ->where('mrn','=',$request->mrn_nursNote)
-                        ->where('episno','=',$request->episno_nursNote)
-                        ->where('compcode','=',session('compcode'));
+            // $pat_otbook = DB::table('hisdb.pat_otbook')
+            //             ->where('mrn','=',$request->mrn_nursNote)
+            //             ->where('episno','=',$request->episno_nursNote)
+            //             ->where('compcode','=',session('compcode'));
             
-            if($pat_otbook->exists()){
-                $pat_otbook
-                    ->update([
-                        'diagnosis' => $request->diag,
-                        // 'diagnosedby' => session('username'),
-                        'upduser'  => session('username'),
-                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser' => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'computerid' => session('computerid'),
-                    ]);
-            }else{
-                DB::table('hisdb.pat_otbook')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_nursNote,
-                        'episno' => $request->episno_nursNote,
-                        'diagnosis' => $request->diag,
-                        // 'diagnosedby' => session('username'),
-                        'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser' => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'computerid' => session('computerid'),
-                    ]);
-            }
+            // if($pat_otbook->exists()){
+            //     $pat_otbook
+            //         ->update([
+            //             'diagnosis' => $request->diag,
+            //             // 'diagnosedby' => session('username'),
+            //             'upduser'  => session('username'),
+            //             'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //             'lastuser' => session('username'),
+            //             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //             'computerid' => session('computerid'),
+            //         ]);
+            // }else{
+            //     DB::table('hisdb.pat_otbook')
+            //         ->insert([
+            //             'compcode' => session('compcode'),
+            //             'mrn' => $request->mrn_nursNote,
+            //             'episno' => $request->episno_nursNote,
+            //             'diagnosis' => $request->diag,
+            //             // 'diagnosedby' => session('username'),
+            //             'adduser'  => session('username'),
+            //             'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //             'lastuser' => session('username'),
+            //             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //             'computerid' => session('computerid'),
+            //         ]);
+            // }
             
             DB::commit();
             
@@ -200,7 +201,8 @@ class MorseFallScaleController extends defaultController
                         'gait' => $request->gait,
                         'mentalStatus' => $request->mentalStatus,
                         'totalScore' => $request->totalScore,
-                        'staffname'  => $request->staffname,
+                        // 'staffname'  => $request->staffname,
+                        'staffname'  => session('username'),
                         'upduser'  => session('username'),
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
@@ -222,7 +224,8 @@ class MorseFallScaleController extends defaultController
                         'gait' => $request->gait,
                         'mentalStatus' => $request->mentalStatus,
                         'totalScore' => $request->totalScore,
-                        'staffname'  => $request->staffname,
+                        // 'staffname'  => $request->staffname,
+                        'staffname'  => session('username'),
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
@@ -231,37 +234,37 @@ class MorseFallScaleController extends defaultController
                     ]);
             }
             
-            $pat_otbook = DB::table('hisdb.pat_otbook')
-                        ->where('mrn','=',$request->mrn_nursNote)
-                        ->where('episno','=',$request->episno_nursNote)
-                        ->where('compcode','=',session('compcode'));
+            // $pat_otbook = DB::table('hisdb.pat_otbook')
+            //             ->where('mrn','=',$request->mrn_nursNote)
+            //             ->where('episno','=',$request->episno_nursNote)
+            //             ->where('compcode','=',session('compcode'));
             
-            if($pat_otbook->exists()){
-                $pat_otbook
-                    ->update([
-                        'diagnosis' => $request->diag,
-                        // 'diagnosedby' => session('username'),
-                        'upduser'  => session('username'),
-                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser' => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'computerid' => session('computerid'),
-                    ]);
-            }else{
-                DB::table('hisdb.pat_otbook')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_nursNote,
-                        'episno' => $request->episno_nursNote,
-                        'diagnosis' => $request->diag,
-                        // 'diagnosedby' => session('username'),
-                        'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser' => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'computerid' => session('computerid'),
-                    ]);
-            }
+            // if($pat_otbook->exists()){
+            //     $pat_otbook
+            //         ->update([
+            //             'diagnosis' => $request->diag,
+            //             // 'diagnosedby' => session('username'),
+            //             'upduser'  => session('username'),
+            //             'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //             'lastuser' => session('username'),
+            //             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //             'computerid' => session('computerid'),
+            //         ]);
+            // }else{
+            //     DB::table('hisdb.pat_otbook')
+            //         ->insert([
+            //             'compcode' => session('compcode'),
+            //             'mrn' => $request->mrn_nursNote,
+            //             'episno' => $request->episno_nursNote,
+            //             'diagnosis' => $request->diag,
+            //             // 'diagnosedby' => session('username'),
+            //             'adduser'  => session('username'),
+            //             'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //             'lastuser' => session('username'),
+            //             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //             'computerid' => session('computerid'),
+            //         ]);
+            // }
             
             $queries = DB::getQueryLog();
             // dump($queries);
@@ -336,6 +339,80 @@ class MorseFallScaleController extends defaultController
         }
         
         return json_encode($responce);
+        
+    }
+    
+    public function morsefallscale_chart(Request $request){
+        
+        $datefr = Carbon::parse($request->datefr)->format('Y-m-d');
+        $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        $age = $request->age;
+        if(!$mrn || !$episno){
+            abort(404);
+        }
+        
+        $pat_mast = DB::table('nursing.morsefallscale as m')
+                    ->select('m.idno','m.compcode','m.mrn','m.episno','m.datetaken','m.timetaken','m.fallHistory','m.secondaryDiag','m.ambulatoryAids','m.IVtherapy','m.gait','m.mentalStatus','m.totalScore','m.staffname','m.adduser','m.adddate','m.upduser','m.upddate','m.lastuser','m.lastupdate','m.computerid','pm.Name','pm.Address1','pm.Address2','pm.Address3','pm.Postcode','pm.Newic','pm.Sex','pm.RaceCode','e.bed as bednum','b.ward')
+                    ->leftjoin('hisdb.pat_mast as pm', function ($join){
+                        $join = $join->on('pm.MRN','=','m.mrn');
+                        // $join = $join->on('pm.Episno','=','m.episno');
+                        $join = $join->where('pm.CompCode','=',session('compcode'));
+                    })
+                    ->leftJoin('hisdb.episode as e', function ($join){
+                        $join = $join->on('e.mrn','=','pm.MRN');
+                        $join = $join->on('e.episno','=','pm.Episno');
+                        $join = $join->where('e.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('hisdb.bed as b', function ($join){
+                        $join = $join->on('b.bednum','=','e.bed');
+                        $join = $join->where('b.compcode','=',session('compcode'));
+                    })
+                    ->where('m.compcode','=',session('compcode'))
+                    ->where('m.mrn','=',$mrn)
+                    ->where('m.episno','=',$episno)
+                    ->first();
+        
+        $episode = DB::table('hisdb.episode')
+                    ->select('reg_date')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$mrn)
+                    ->where('episno','=',$episno)
+                    ->first();
+        
+        $pat_otbook = DB::table('hisdb.pat_otbook')
+                    ->select('diagnosis')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$mrn)
+                    ->where('episno','=',$episno)
+                    ->first();
+        
+        $datetime = DB::table('nursing.morsefallscale')
+                    // ->select(DB::raw('DATE_FORMAT(datetaken, "%d/%m/%Y") as date'),DB::raw('TIME(timetaken) as time'))
+                    ->select('datetaken','timetaken',DB::raw('DATE_FORMAT(datetaken, "%d/%m/%Y") as date'),DB::raw('TIME(timetaken) as time'))
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$mrn)
+                    ->where('episno','=',$episno)
+                    ->whereBetween('datetaken',[$datefr,$dateto])
+                    ->groupBy('datetaken','timetaken')
+                    ->orderBy('datetaken','asc')
+                    ->orderBy('timetaken','asc')
+                    ->get();
+        
+        $morsefallscale = DB::table('nursing.morsefallscale as m')
+                        ->select('m.idno','m.compcode','m.mrn','m.episno','m.datetaken','m.timetaken',DB::raw('DATE_FORMAT(m.datetaken, "%d/%m/%Y") as date'),DB::raw('TIME(m.timetaken) as time'),'m.fallHistory','m.secondaryDiag','m.ambulatoryAids','m.IVtherapy','m.gait','m.mentalStatus','m.totalScore','m.staffname','m.adduser','m.adddate','m.upduser','m.upddate','m.lastuser','m.lastupdate','m.computerid')
+                        ->where('m.compcode','=',session('compcode'))
+                        ->where('m.mrn','=',$mrn)
+                        ->where('m.episno','=',$episno)
+                        ->whereBetween('m.datetaken',[$datefr,$dateto])
+                        // ->groupBy('m.datetaken','m.timetaken')
+                        ->orderBy('m.datetaken','asc')
+                        ->orderBy('m.timetaken','asc')
+                        ->get();
+        // dd($morsefallscale);
+        
+        return view('hisdb.nursingnote.morsefallscale_pdfmake', compact('age','pat_mast','episode','pat_otbook','datetime','morsefallscale'));
         
     }
     

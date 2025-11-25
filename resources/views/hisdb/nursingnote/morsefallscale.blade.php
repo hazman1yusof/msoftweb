@@ -20,9 +20,9 @@
                 <button type="button" class="btn btn-default" id="cancel_morsefallscale">
                     <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                 </button>
-                <!-- <button type="button" class="btn btn-default" id="morsefallscale_chart">
+                <button type="button" class="btn btn-default" id="morsefallscale_chart">
                     <span class="fa fa-print fa-lg"></span> Chart 
-                </button> -->
+                </button>
             </div>
         </div>
         
@@ -62,6 +62,7 @@
                     <div class="panel panel-info">
                         <div class="panel-body">
                             <input id="idno_morsefallscale" name="idno_morsefallscale" type="hidden">
+                            <input id="morsefallscale_tabtitle" name="morsefallscale_tabtitle" value="morsefallscale" type="hidden">
                             
                             <div class="col-md-4" style="padding: 0 0 0 0;">
                                 <div class="panel panel-info">
@@ -112,31 +113,31 @@
                                                 <tr>
                                                     <td>Secondary Diagnosis</td>
                                                     <td>
-                                                        <div class="form-check">
+                                                        <label class="radio-inline">
                                                             <input class="form-check-input calc_morsefallscale" type="radio" name="secondaryDiag" value="0" style="margin-right: 5px;">
                                                             If only 1 active medical diagnosis (0)
-                                                        </div>
-                                                        <div class="form-check">
+                                                        </label><br>
+                                                        <label class="radio-inline">
                                                             <input class="form-check-input calc_morsefallscale" type="radio" name="secondaryDiag" value="15" style="margin-right: 5px;">
                                                             Secondary diagnosis ≥ 2 medical diagnosis in chart (15)
-                                                        </div>
+                                                        </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Ambulatory Aids</td>
                                                     <td>
-                                                        <div class="form-check">
+                                                        <label class="radio-inline">
                                                             <input class="form-check-input calc_morsefallscale" type="radio" name="ambulatoryAids" value="0" style="margin-right: 5px;">
                                                             None / Bed rest / Nurse Assist (0)
-                                                        </div>
-                                                        <div class="form-check">
+                                                        </label><br>
+                                                        <label class="radio-inline">
                                                             <input class="form-check-input calc_morsefallscale" type="radio" name="ambulatoryAids" value="15" style="margin-right: 5px;">
                                                             Crutches / Cane / Walker (15)
-                                                        </div>
-                                                        <div class="form-check">
+                                                        </label><br>
+                                                        <label class="radio-inline">
                                                             <input class="form-check-input calc_morsefallscale" type="radio" name="ambulatoryAids" value="30" style="margin-right: 5px;">
                                                             Furniture (Patient clutched onto furniture for support) (30)
-                                                        </div>
+                                                        </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -155,31 +156,31 @@
                                                 <tr>
                                                     <td>Gait</td>
                                                     <td>
-                                                        <div class="form-check">
+                                                        <label class="radio-inline">
                                                             <input class="form-check-input calc_morsefallscale" type="radio" name="gait" value="0" style="margin-right: 5px;">
                                                             Normal / bed rest / immobile (0)
-                                                        </div>
-                                                        <div class="form-check">
+                                                        </label><br>
+                                                        <label class="radio-inline">
                                                             <input class="form-check-input calc_morsefallscale" type="radio" name="gait" value="10" style="margin-right: 5px;">
                                                             Weak (10)
-                                                        </div>
-                                                        <div class="form-check">
+                                                        </label><br>
+                                                        <label class="radio-inline">
                                                             <input class="form-check-input calc_morsefallscale" type="radio" name="gait" value="20" style="margin-right: 5px;">
                                                             Impaired (20)
-                                                        </div>
+                                                        </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Mental Status</td>
                                                     <td>
-                                                        <div class="form-check">
+                                                        <label class="radio-inline">
                                                             <input class="form-check-input calc_morsefallscale" type="radio" name="mentalStatus" value="0" style="margin-right: 5px;">
                                                             Oriented to own ability (0)
-                                                        </div>
-                                                        <div class="form-check">
+                                                        </label><br>
+                                                        <label class="radio-inline">
                                                             <input class="form-check-input calc_morsefallscale" type="radio" name="mentalStatus" value="15" style="margin-right: 5px;">
                                                             Over estimates or forgets limitations (15)
-                                                        </div>
+                                                        </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -191,7 +192,8 @@
                                                 <tr>
                                                     <td>Name of Staff : </td>
                                                     <td>
-                                                        <input id="morsefallscale_staffname" name="staffname" type="text" class="form-control input-sm">
+                                                        <!-- <input id="morsefallscale_staffname" name="staffname" type="text" class="form-control input-sm"> -->
+                                                        <input id="morsefallscale_adduser" name="adduser" type="text" class="form-control input-sm" rdonly>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -268,6 +270,28 @@
             <div class="col-md-5" style="padding-top: 20px; text-align: left; color: red;">
                 <p id="p_error2"></p>
             </div>
+        </div>
+    </div>
+</div>
+
+<div id="MorseFallScaleDialog" title="Daily Morse Fall Scale Assessment">
+    <div class="panel panel-default">
+        <!-- <div class="panel-heading">Daily Morse Fall Scale Assessment</div> -->
+        <div class="panel-body">
+            <form class='form-horizontal' style='width: 99%;' id='formMorseFallScaleDialog'>
+                <input type="hidden" name="action">
+                
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label class="control-label" for="Scol">From</label>
+                        <input id="morsefallscale_datefr" name="datefr" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label" for="Scol">To</label>
+                        <input id="morsefallscale_dateto" name="dateto" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>

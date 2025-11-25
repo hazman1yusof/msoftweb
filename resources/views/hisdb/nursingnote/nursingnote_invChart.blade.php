@@ -69,8 +69,9 @@
                 <div class='col-md-12'>
                     <div class="panel panel-info">
                         <div class="panel-body">
+                            <input id="invChart_tabtitle" name="invChart_tabtitle" value="invChart" type="hidden">
+                            
                             <form class='form-horizontal' style='width: 99%;' id='formInvChart'>
-                                
                                 <ul class="nav nav-tabs" id="jqGridNursNote_inv_tabs">
                                     <li class="active"><a data-toggle="tab" id="navtab_FBC" href="#tab-FBC" aria-expanded="true" data-type='FBC'>FBC</a></li>
                                     <li><a data-toggle="tab" id="navtab_Coag" href="#tab-Coag" data-type='Coag'>Coag</a></li>

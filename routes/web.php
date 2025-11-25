@@ -1417,6 +1417,7 @@ Route::get('/nursingnote/circulation_chart','hisdb\NursingNoteController@circula
 Route::get('/nursingnote/slidingScale_chart','hisdb\NursingNoteController@slidingScale_chart');
 Route::get('/nursingnote/othersChart_chart','hisdb\NursingNoteController@othersChart_chart');
 Route::get('/nursingnote/bladder_chart','hisdb\NursingNoteController@bladder_chart');
+Route::get('/nursingnote/morsefallscale_chart','hisdb\MorseFallScaleController@morsefallscale_chart');
 Route::post('/glasgow/form','hisdb\GlasgowController@form');
 Route::get('/glasgow/table','hisdb\GlasgowController@table');
 Route::get('/glasgow/glasgow_chart','hisdb\GlasgowController@glasgow_chart');

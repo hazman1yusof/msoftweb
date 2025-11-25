@@ -363,7 +363,6 @@ $(document).ready(function (){
     });
     /////////////////////////////////////othersChart2 ends/////////////////////////////////////
     
-    ///////////////////////////////////InvChartDialog starts///////////////////////////////////
     ////////////////////////////////////upload file starts////////////////////////////////////
     $("#invChart_click").on("click", function (){
         $("#invChrt_file").click();
@@ -387,6 +386,7 @@ $(document).ready(function (){
     });
     /////////////////////////////////////upload file ends/////////////////////////////////////
     
+    ///////////////////////////////////InvChartDialog starts///////////////////////////////////
     $("#InvChartDialog").dialog({
         autoOpen: false,
         width: 5/10 * $(window).width(),
@@ -413,6 +413,34 @@ $(document).ready(function (){
         }],
     });
     ////////////////////////////////////InvChartDialog ends////////////////////////////////////
+    
+    ////////////////////////////////MorseFallScaleDialog starts////////////////////////////////
+    $("#MorseFallScaleDialog").dialog({
+        autoOpen: false,
+        width: 5/10 * $(window).width(),
+        modal: true,
+        open: function (){
+            // dialog_debtorFrom.on();
+            // dialog_debtorTo.on();
+            parent_close_disabled(true);
+        },
+        close: function (event, ui){
+            // dialog_debtorFrom.off();
+            // dialog_debtorTo.off();
+            parent_close_disabled(false);
+        },
+        buttons: [{
+            text: "Print Chart", click: function (){
+                window.open('./nursingnote/morsefallscale_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&datefr='+$("#morsefallscale_datefr").val()+'&dateto='+$("#morsefallscale_dateto").val()+'&age='+$("#age_nursNote").val(), '_blank');
+                // window.location='./nursingnote/morsefallscale_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val();
+            }
+        },{
+            text: "Cancel", click: function (){
+                $(this).dialog('close');
+            }
+        }],
+    });
+    /////////////////////////////////MorseFallScaleDialog ends/////////////////////////////////
     
     ////////////////////////////////////print button starts////////////////////////////////////
     $("#invChart_chart").click(function (){
@@ -441,6 +469,10 @@ $(document).ready(function (){
     
     $("#bladder_chart").click(function (){
         window.open('./nursingnote/bladder_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+    });
+    
+    $("#morsefallscale_chart").click(function (){
+        $("#MorseFallScaleDialog").dialog("open");
     });
     /////////////////////////////////////print button ends/////////////////////////////////////
     
