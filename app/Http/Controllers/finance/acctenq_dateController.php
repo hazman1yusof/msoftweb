@@ -669,6 +669,6 @@ class acctenq_dateController extends defaultController
                         ->orderBy('idno', 'desc')
                         ->first();
 
-        return Excel::download(new acctenq_dateExport_2($job_queue->idno,$job_queue->type,$job_queue->date,$job_queue->date_to), 'acctenq_dateExport.xlsx');
+        return Excel::download(new acctenq_dateExport_2($job_queue->idno,$job_queue->type,$job_queue->date,$job_queue->date_to), 'acctenq_dateExport_'.$job_queue->type.'.xlsx');
     }
 }
