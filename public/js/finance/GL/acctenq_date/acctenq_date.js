@@ -153,9 +153,11 @@ $(document).ready(function () {
 	    		stopProcessInterval();
 				$('#print_process').attr('disabled',false);
 				$('#print_process').html('Process');
+				$('span#acctname').html(' ( '+data.type+' )');
 			}else{
 				$('#print_process').attr('disabled',true);
 				$('#print_process').html('Processing.. <i class="fa fa-refresh fa-spin fa-fw">');
+				$('span#acctname').html('( - )');
 			}
 		});
 	}

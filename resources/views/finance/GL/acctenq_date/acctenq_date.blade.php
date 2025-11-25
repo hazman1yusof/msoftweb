@@ -105,7 +105,7 @@
 				    right: 40px;
 				    bottom: -33px;
 				    z-index: 1000;" id="pdfgen1" target="_blank">
-			    <span class="fa fa-print"></span> Download last Excel 
+			    <span class="fa fa-print"></span> Download last Excel <span id="acctname"></span>
 				</a>
 
             </form>
@@ -156,7 +156,7 @@
 
 @section('scripts')
 
-	<script src="js/finance/GL/acctenq_date/acctenq_date.js?v=1.5"></script>
+	<script src="js/finance/GL/acctenq_date/acctenq_date.js?v=1.6"></script>
 	<script src="plugins/datatables/js/jquery.datatables.min.js"></script>
 	
 @endsection

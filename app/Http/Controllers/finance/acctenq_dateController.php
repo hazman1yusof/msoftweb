@@ -105,6 +105,7 @@ class acctenq_dateController extends defaultController
         $responce->status = $last_job->status;
         $responce->datefr = $last_job->adddate;
         $responce->dateto = $last_job->finishdate;
+        $responce->type = $last_job->type;
 
         if($last_job->status != 'DONE'){
             $responce->jobdone = 'false';
