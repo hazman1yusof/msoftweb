@@ -75,13 +75,49 @@ class acctenq_dateExport_2 implements FromView, WithEvents, WithColumnWidths, Wi
         $todate = $this->todate;
         $compname = $this->comp->name;
 
+        $yearperiod = $this->getyearperiod($fromdate);
+        $month = $yearperiod->period - 1;
+        $year = $yearperiod->year;
+
+        $glmasdtl = DB::table('finance.glmasdtl')
+                        ->where('compcode',session('compcode'))
+                        ->where('year',$year)
+                        ->where('glaccount',$glaccount)
+                        ->get();
+
+        if($month < 1){
+            $month_ = [];
+        }else{
+            $month_ = range(1,$month);
+        }
+
+        // $openbal = 0;
+        $total_openbal = 0;
+        // dump($month);
+        // dd($glmasdtl);
+        foreach ($glmasdtl as $obj) {
+            $obj_gl = (array)$obj;
+            // $openbal = $obj_gl['openbalance'];
+            $total_openbal = $obj_gl['openbalance'];
+            foreach ($month_ as $key_m => $value_m) {
+                $key_m_r = $key_m + 1;
+                // $month_[$key_m] = $value_m + $obj_gl['actamount'.$key_m_r];
+                $total_openbal = $total_openbal + $obj_gl['actamount'.$key_m_r];
+            }
+        }
+        // dump($month_);
+        // dump($openbal);
+        // dd($total_openbal);
+
+        $firstDay = Carbon::create($year, $month, 1)->startOfDay()->format('Y-m-d');
+
         $table = DB::table('finance.acctenq_date')
                             ->where('job_id',$this->job_id)
                             ->get();
 
                             // dd($table);
 
-        return view('finance.GL.acctenq_date.acctenq_dateExcel', compact('table','glaccount','compname','fromdate','todate'));
+        return view('finance.GL.acctenq_date.acctenq_dateExcel', compact('table','glaccount','compname','fromdate','todate','total_openbal','firstDay'));
     }
     
     public function registerEvents(): array
@@ -105,6 +141,38 @@ class acctenq_dateExport_2 implements FromView, WithEvents, WithColumnWidths, Wi
                 $event->sheet->getPageSetup()->setFitToHeight(0);
             },
         ];
+    }
+
+    public function getyearperiod($date){
+        $period = DB::table('sysdb.period')
+            ->where('compcode','=',session('compcode'))
+            ->get();
+
+        $seldate = new DateTime($date);
+
+        foreach ($period as $value) {
+            $arrvalue = (array)$value;
+
+            $year= $value->year;
+            $period=0;
+
+            for($x=1;$x<=12;$x++){
+                $period = $x;
+
+                $datefr = new DateTime($arrvalue['datefr'.$x]);
+                $dateto = new DateTime($arrvalue['dateto'.$x]);
+                $status = $arrvalue['periodstatus'.$x];
+                if (($datefr <= $seldate) &&  ($dateto >= $seldate)){
+                    $responce = new stdClass();
+                    $responce->year = $year;
+                    $responce->period = $period;
+                    $responce->status = $status;
+                    $responce->datefr = $arrvalue['datefr'.$x];
+                    $responce->dateto = $arrvalue['dateto'.$x];
+                    return $responce;
+                }
+            }
+        }
     }
     
 }

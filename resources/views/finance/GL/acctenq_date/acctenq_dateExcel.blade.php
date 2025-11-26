@@ -66,7 +66,23 @@
         <td style="font-weight: bold">Balance</td>
         <td style="font-weight: bold">Document No</td>
     </tr>
-    @php($total = 0)
+    <tr></tr>
+    <tr>
+        <td style="font-weight: bold">{{$firstDay}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td style="font-weight: bold">Opening</td>
+        <td></td>
+        <td></td>
+        <td style="font-weight: bold">{{$total_openbal}}</td>
+        <td></td>
+    </tr>
+
+    @php($total = $total_openbal)
     @foreach ($table as $obj)
         @if(!empty(floatval($obj->dramount)))
             @php($total = $total + $obj->dramount)
