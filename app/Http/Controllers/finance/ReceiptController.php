@@ -96,7 +96,7 @@ class ReceiptController extends defaultController
             $paymode_ = $this->paymode_chg($request->dbacthdr_paytype,$request->dbacthdr_paymode);
 
             $dbacthdr_amount = $request->dbacthdr_amount;
-            if(strtolower($paymode_) == 'cash' && $request->dbacthdr_trantype == "RC"){
+            if(strtolower($paymode_) == 'cash'){
                 if(empty($request->dbacthdr_outamount)){
                     $dbacthdr_amount = $dbacthdr_amount;
                 }else if(empty($request->dbacthdr_RCFinalbalance) && floatval($request->dbacthdr_amount) > floatval($request->dbacthdr_outamount)){

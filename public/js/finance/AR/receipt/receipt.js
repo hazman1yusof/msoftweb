@@ -86,9 +86,9 @@ $(document).ready(function () {
 	}
 
 	function amountchgOn(fromtab){
-		$("input[name='dbacthdr_outamount']").prop( "disabled", false );
-		$("input[name='dbacthdr_RCCASHbalance']").prop( "disabled", false );
-		$("input[name='dbacthdr_RCFinalbalance']").prop( "disabled", false );
+		$("input[name='dbacthdr_outamount']").prop( "readonly", false );
+		$("input[name='dbacthdr_RCCASHbalance']").prop( "readonly", false );
+		$("input[name='dbacthdr_RCFinalbalance']").prop( "readonly", false );
 		$("input[name='dbacthdr_amount']").off('blur',amountFunction);
 		// $("input[name='dbacthdr_outamount']").off('blur',amountFunction);
 		$(tabform+" input[name='dbacthdr_amount']").on('blur',amountFunction);
@@ -99,9 +99,9 @@ $(document).ready(function () {
 		mycurrency.formatOnBlur();
 		$("input[name='dbacthdr_amount']").off('blur',amountFunction);
 		// $("input[name='dbacthdr_outamount']").off('blur',amountFunction);
-		$("input[name='dbacthdr_outamount']").prop( "disabled", true );
-		$("input[name='dbacthdr_RCCASHbalance']").prop( "disabled", true );
-		$("input[name='dbacthdr_RCFinalbalance']").prop( "disabled", true );
+		$("input[name='dbacthdr_outamount']").prop( "readonly", true );
+		$("input[name='dbacthdr_RCCASHbalance']").prop( "readonly", true );
+		$("input[name='dbacthdr_RCFinalbalance']").prop( "readonly", true );
 		$(tabform+" input[name='dbacthdr_amount']").on('blur',amountFunction);
 	}
 
@@ -830,8 +830,7 @@ $(document).ready(function () {
 		var formname = $("a[aria-expanded='true']").attr('form')
 		
 		var paymentform =  $( formname ).serializeArray();
-		
-		$('.ui-dialog-buttonset button[role=button]').prop('disabled',true);
+		$("#main_save_btn").button("option", "disabled", true );
 		saveParam.oper=oper;
 		
 		let serializedForm = trimmall(form,uppercase);
@@ -839,14 +838,14 @@ $(document).ready(function () {
 			
 		}).fail(function(data) {
 			errorText(dialog.substr(1),data.responseText);
-			$('.ui-dialog-buttonset button[role=button]').prop('disabled',false);
+			$("#main_save_btn").button("option", "disabled", false );
 		}).success(function(data){
 			if(grid!=null){
 				if($("#dbacthdr_trantype").val() == 'RC'){
 					$("#jqGrid").data('need_allocate','1');
 				}
 				refreshGrid(grid,urlParam,oper);
-				$('.ui-dialog-buttonset button[role=button]').prop('disabled',false);
+				$("#main_save_btn").button("option", "disabled", false );
 				$(dialog).dialog('close');
 				if (callback !== undefined) {
 					callback();
@@ -856,7 +855,7 @@ $(document).ready(function () {
 	}
 	
 	var butt1=[{
-		text: "Save",click: function() {
+		text: "Save",id: "main_save_btn",click: function() {
 			mycurrency.formatOff();
 			mycurrency.check0value(errorField);
 			if( $('#formdata').isValid({requiredFields: ''}, conf, true) && $(tabform).isValid({requiredFields: ''}, conf, true) ) {
@@ -1444,12 +1443,13 @@ $(document).ready(function () {
 		},
 		buttons:
 			[{
-				text: "Save",click: function() {
+				text: "Save",id: "allocate_save_btn",click: function() {
 					if( parseFloat($("#AlloBalance").val())<0){
 						alert("Balance cannot in negative values");
 					}else if(myallocation.allo_error.length>0){
 						alert("Amount paid exceed O/S amount");
 					}else{
+						$( "#allocate_save_btn" ).button( "option", "disabled", true );
 						var obj={
 							allo: myallocation.arrayAllo
 						}
@@ -1468,8 +1468,10 @@ $(document).ready(function () {
 						$.post( saveParam.url+'?'+$.param(saveParam), obj , function( data ) {
 							
 						}).fail(function(data) {
+							$( "#allocate_save_btn" ).button( "option", "disabled", false );
 						}).success(function(data){
 							refreshGrid('#jqGrid', urlParam);
+							$( "#allocate_save_btn" ).button( "option", "disabled", false );
 							$('#allocateDialog').dialog('close');
 						});
 					}
