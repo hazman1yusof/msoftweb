@@ -133,7 +133,7 @@ $(document).ready(function () {
 
   	let intervalId = null;
   	function startProcessInterval() {
-	    intervalId = setInterval(check_running_process, 5000);
+	    intervalId = setInterval(check_running_process, 8000);
 	}
 	function stopProcessInterval() {
 	    if (intervalId !== null) {

@@ -86,8 +86,10 @@ class acctenq_dateExport_2 implements FromView, WithEvents, WithColumnWidths, Wi
                         ->get();
 
         if($month < 1){
+            $firstDay = Carbon::create($year, 1, 1)->startOfDay()->format('Y-m-d');
             $month_ = [];
         }else{
+            $firstDay = Carbon::create($year, $month, 1)->startOfDay()->format('Y-m-d');
             $month_ = range(1,$month);
         }
 
@@ -108,8 +110,6 @@ class acctenq_dateExport_2 implements FromView, WithEvents, WithColumnWidths, Wi
         // dump($month_);
         // dump($openbal);
         // dd($total_openbal);
-
-        $firstDay = Carbon::create($year, $month, 1)->startOfDay()->format('Y-m-d');
 
         $table = DB::table('finance.acctenq_date')
                             ->where('job_id',$this->job_id)
