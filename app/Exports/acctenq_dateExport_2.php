@@ -100,7 +100,7 @@ class acctenq_dateExport_2 implements FromView, WithEvents, WithColumnWidths, Wi
         foreach ($glmasdtl as $obj) {
             $obj_gl = (array)$obj;
             // $openbal = $obj_gl['openbalance'];
-            $total_openbal = $obj_gl['openbalance'];
+            $total_openbal = $total_openbal + $obj_gl['openbalance'];
             foreach ($month_ as $key_m => $value_m) {
                 $key_m_r = $key_m + 1;
                 // $month_[$key_m] = $value_m + $obj_gl['actamount'.$key_m_r];
