@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use App\Http\Controllers\util\do_util;
 use PDF;
 use App\Exports\do_posted_report_Export;
+use App\Exports\do_posted_report_with_gl;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DeliveryOrderController extends defaultController
@@ -65,6 +66,8 @@ class DeliveryOrderController extends defaultController
         switch($request->action){
             case 'do_posted_report':
                 return $this->do_posted_report($request);
+            case 'do_posted_report_with_gl':
+                return $this->do_posted_report_with_gl($request);
             default:
                 return 'error happen..';
         }
@@ -1445,6 +1448,10 @@ class DeliveryOrderController extends defaultController
 
     public function do_posted_report(Request $request){
         return Excel::download(new do_posted_report_Export($request->datefr,$request->dateto,$request->dept_from,$request->dept_to,$request->recstatus), 'Posted_DO.xlsx');
+    }
+
+    public function do_posted_report_with_gl(Request $request){
+        return Excel::download(new do_posted_report_with_gl($request->datefr,$request->dateto,$request->dept), 'Posted_DO_with_GL.xlsx');
     }
 }
 
