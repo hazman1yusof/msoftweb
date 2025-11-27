@@ -93,18 +93,18 @@ class do_posted_report_with_gl implements FromView, WithEvents, WithColumnWidths
 
         foreach ($delordhd as $obj_hd) {
 
-            if(strtoupper($obj_hd->groupcode) == "STOCK"){
-                $source_ = "IV";
-            }else if(strtoupper($obj_hd->groupcode) == "CONSIGNMENT"){
-                $source_ = "DO";
-            }else{
-                $source_ = "DO";
-            }
+            // if(strtoupper($obj_hd->groupcode) == "STOCK"){
+            //     $source_ = "IV";
+            // }else if(strtoupper($obj_hd->groupcode) == "CONSIGNMENT"){
+            //     $source_ = "DO";
+            // }else{
+            //     $source_ = "DO";
+            // }
 
             $glamount = DB::table('finance.gltran')
                             ->where('compcode',session('compcode'))
                             ->where('auditno',$obj_hd->recno)
-                            ->where('source',$source_)
+                            ->whereIn('source',['DO','IV'])
                             ->where('trantype',$obj_hd->trantype)
                             ->sum('amount');
 
