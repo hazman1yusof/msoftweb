@@ -1406,12 +1406,12 @@ class OrdcomController extends defaultController
 
                     }
 
-                    DB::table("hisdb.chargetrx")
-                        ->where('compcode','=',session('compcode'))
-                        ->where('mrn','=',$mrn)
-                        ->where('episno','=',$episno)
-                        ->where('pkgcode','=',$pkgcode)
-                        ->delete();
+                    // DB::table("hisdb.chargetrx")
+                    //     ->where('compcode','=',session('compcode'))
+                    //     ->where('mrn','=',$mrn)
+                    //     ->where('episno','=',$episno)
+                    //     ->where('pkgcode','=',$pkgcode)
+                    //     ->delete();
 
                     // $this->sysdb_log('delete',$chargetrx_obj,'sysdb.chargetrxlog');
 
@@ -1439,12 +1439,12 @@ class OrdcomController extends defaultController
                 }
             }
 
-            DB::table("hisdb.pkgpat")
-                ->where('compcode',session('compcode'))
-                ->where('mrn',$mrn)
-                ->where('episno',$episno)
-                ->where('pkgcode',$pkgcode)
-                ->delete();
+            // DB::table("hisdb.pkgpat")
+            //     ->where('compcode',session('compcode'))
+            //     ->where('mrn',$mrn)
+            //     ->where('episno',$episno)
+            //     ->where('pkgcode',$pkgcode)
+            //     ->delete();
             
             DB::commit();
 
@@ -4287,19 +4287,25 @@ class OrdcomController extends defaultController
                     ->where('taxflag',1)
                     ->orWhere('discflag',1)
                     ->orWhere('chgcode','round')
-                    ->delete();
+                    ->update([
+                        'compcode' => 'XX'
+                    ]);
 
             DB::table('hisdb.billdet')
                     ->where('compcode',session('compcode'))
                     ->where('mrn',$mrn)
                     ->where('episno',$episno)
-                    ->delete();
+                    ->update([
+                        'compcode' => 'XX'
+                    ]);
 
             DB::table('debtor.billsum')
                     ->where('compcode',session('compcode'))
                     ->where('mrn',$mrn)
                     ->where('episno',$episno)
-                    ->delete();
+                    ->update([
+                        'compcode' => 'XX'
+                    ]);
 
             $epispayer = DB::table('hisdb.epispayer')
                             ->where('compcode',session('compcode'))

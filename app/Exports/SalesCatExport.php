@@ -102,7 +102,7 @@ class SalesCatExport implements FromView, WithEvents, WithColumnWidths, WithColu
                         $join = $join->on('dm.debtorcode', '=', 'd.debtorcode')
                                     ->where('dm.compcode', '=', session('compcode'));
                     })
-                    ->join('hisdb.billdet as b', function($join){
+                    ->join('hisdb.chargetrx as b', function($join){
                         $join = $join->on('b.invno', '=', 'd.invno')
                                     ->where('b.compcode', '=', session('compcode'));
                     })

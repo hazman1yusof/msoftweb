@@ -100,7 +100,7 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
                         $join = $join->on('dm.debtorcode', '=', 'd.debtorcode')
                                     ->where('dm.compcode', '=', session('compcode'));
                     })
-                    ->join('hisdb.billdet as b', function($join){
+                    ->join('hisdb.chargetrx as b', function($join){
                         $join = $join->on('b.invno', '=', 'd.invno')
                                     ->where('b.compcode', '=', session('compcode'));
                     })
@@ -131,6 +131,8 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
                     ->orderBy('d.invno','DESC')
                     ->whereBetween('b.trxdate', [$datefr, $dateto])
                     ->get();
+                    
+        // dd($this->getQueries($dbacthdr));
 
         $invno_array = [];
         foreach ($dbacthdr as $obj) {

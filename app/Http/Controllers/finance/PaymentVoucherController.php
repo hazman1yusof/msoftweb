@@ -1368,7 +1368,6 @@ class PaymentVoucherController extends defaultController
                 }
 
                 $apacthdr_update = [
-                    'recstatus' => 'CANCELLED',
                     'amount' => 0,
                     'outamount' => 0,
                     'recstatus' => 'REJECTED',

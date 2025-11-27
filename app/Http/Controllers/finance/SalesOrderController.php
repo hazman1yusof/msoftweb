@@ -1143,9 +1143,7 @@ class SalesOrderController extends defaultController
                             $sysparam->pvalue2,//cracc
                             $yearperiod,
                             $dbacthdr->amount
-                        );
-                
-                
+                        );                
             }
             
             DB::commit();
