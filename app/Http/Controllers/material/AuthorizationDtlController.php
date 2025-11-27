@@ -50,6 +50,10 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
     }
 
     public function get_authdtl_alert (Request $request){
+
+        $todaydate = Carbon::now();                // current date/time
+        $twoWeeksBefore = $todaydate->copy()->subWeeks(2);
+
         $queuepr = DB::table('material.queuepr as qpr')
                     ->select('qpr.trantype','adtl.authorid','prhd.recno','prhd.reqdept','prhd.purreqno','prhd.purreqdt','prhd.recstatus','prhd.totamount','prhd.adduser')
                     ->join('material.authdtl as adtl', function($join) use ($request){
@@ -85,8 +89,9 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
 
         $queuepr_reject = DB::table('material.queuepr as qpr')
                     ->select('qpr.trantype','prhd.recno','prhd.reqdept','prhd.cancelby','prhd.canceldate','prhd.recstatus','prhd.totamount','prhd.adduser')
-                    ->join('material.purreqhd as prhd', function($join) use ($request){
+                    ->join('material.purreqhd as prhd', function($join) use ($request, $twoWeeksBefore, $todaydate){
                         $join = $join
+                            ->whereBetween('canceldate', [$twoWeeksBefore, $todaydate])
                             ->where('prhd.compcode',session('compcode'))
                             ->on('prhd.recno','qpr.recno')
                             ->on('prhd.recstatus','qpr.recstatus');
@@ -131,8 +136,9 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
 
         $queuepo_reject = DB::table('material.queuepo as qpo')
                     ->select('qpo.trantype','pohd.recno','pohd.prdept','pohd.cancelby','pohd.canceldate','pohd.recstatus','pohd.totamount','pohd.adduser')
-                    ->join('material.purordhd as pohd', function($join) use ($request){
+                    ->join('material.purordhd as pohd', function($join) use ($request, $twoWeeksBefore, $todaydate){
                         $join = $join
+                            ->whereBetween('canceldate', [$twoWeeksBefore, $todaydate])
                             ->where('pohd.compcode',session('compcode'))
                             ->on('pohd.recno','qpo.recno')
                             ->on('pohd.recstatus','qpo.recstatus');
@@ -180,8 +186,9 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
 
         $queuepv_reject = DB::table('finance.queuepv as qpv')
                     ->select('qpv.trantype','apact.adduser','apact.auditno','apact.suppcode','supp.Name','apact.actdate','apact.recstatus','apact.amount','apact.adduser','apact.cancelby','apact.canceldate')
-                    ->join('finance.apacthdr as apact', function($join) use ($request){
+                    ->join('finance.apacthdr as apact', function($join) use ($request, $twoWeeksBefore, $todaydate){
                         $join = $join
+                            ->whereBetween('canceldate', [$twoWeeksBefore, $todaydate])
                             ->where('apact.compcode',session('compcode'))
                             ->where('apact.source','AP')
                             ->where('apact.trantype','PV')
@@ -234,11 +241,12 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
 
         $queuepd_reject = DB::table('finance.queuepd as qpd')
                     ->select('qpd.trantype','apact.adduser','apact.auditno','apact.suppcode','supp.Name','apact.actdate','apact.recstatus','apact.amount','apact.adduser','apact.cancelby','apact.canceldate')
-                    ->join('finance.apacthdr as apact', function($join) use ($request){
+                    ->join('finance.apacthdr as apact', function($join) use ($request, $twoWeeksBefore, $todaydate){
                         $join = $join
                             ->where('apact.compcode',session('compcode'))
                             ->where('apact.source','AP')
                             ->where('apact.trantype','PD')
+                            ->whereBetween('canceldate', [$twoWeeksBefore, $todaydate])
                             ->on('apact.auditno','qpd.recno')
                             ->on('apact.recstatus','qpd.recstatus');
                     })
@@ -288,11 +296,12 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
 
         $queuedp_reject = DB::table('finance.queuepd as qdp')
                     ->select('qdp.trantype','apact.adduser','apact.auditno','apact.suppcode','supp.Name','apact.actdate','apact.recstatus','apact.amount','apact.adduser','apact.cancelby','apact.canceldate')
-                    ->join('finance.apacthdr as apact', function($join) use ($request){
+                    ->join('finance.apacthdr as apact', function($join) use ($request, $twoWeeksBefore, $todaydate){
                         $join = $join
                             ->where('apact.compcode',session('compcode'))
                             ->where('apact.source','AP')
                             ->where('apact.trantype','DP')
+                            ->whereBetween('canceldate', [$twoWeeksBefore, $todaydate])
                             ->on('apact.auditno','qdp.recno')
                             ->on('apact.recstatus','qdp.recstatus');
                     })
@@ -403,11 +412,12 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
 
         $queueiv_reject = DB::table('material.queueiv as qiv')
                     ->select('qiv.trantype','ivhd.adduser','ivhd.recno','ivhd.txndept as deptcode','dept.description as deptcode_desc','ivhd.adddate','ivhd.recstatus','ivhd.amount','ivhd.adduser','ivhd.cancelby','ivhd.canceldate')
-                    ->join('material.ivtmphd as ivhd', function($join) use ($request){
+                    ->join('material.ivtmphd as ivhd', function($join) use ($request, $twoWeeksBefore, $todaydate){
                         $join = $join
                             ->where('ivhd.compcode',session('compcode'))
                             ->on('ivhd.recno','qiv.recno')
-                            ->on('ivhd.recstatus','qiv.recstatus');
+                            ->on('ivhd.recstatus','qiv.recstatus')
+                            ->whereBetween('canceldate', [$twoWeeksBefore, $todaydate]);
                     })
                     ->join('sysdb.department as dept', function($join) use ($request){
                         $join = $join
