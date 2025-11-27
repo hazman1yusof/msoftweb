@@ -100,6 +100,9 @@ class do_posted_report_with_gl implements FromView, WithEvents, WithColumnWidths
             // }else{
             //     $source_ = "DO";
             // }
+            if($obj_hd->trantype == 'GRT' && $obj_hd->totamount > 0 ){
+                $obj_hd->totamount = $obj_hd->totamount * -1;
+            }
 
             $glamount = DB::table('finance.gltran')
                             ->where('compcode',session('compcode'))

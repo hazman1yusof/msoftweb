@@ -1337,7 +1337,40 @@ class PaymentVoucherController extends defaultController
                     continue;
                 }
 
+                $apalloc = DB::table('finance.apalloc')
+                            ->where('compcode','=',session('compcode'))
+                            // ->where('unit','=',session('unit'))
+                            ->where('docsource','=',$apacthdr->source)
+                            ->where('doctrantype','=',$apacthdr->trantype)
+                            ->where('docauditno','=',$apacthdr->auditno)
+                            ->get();
+
+                foreach($apalloc as $value){
+                    $value = (array)$value;
+                    
+                    $refapacthdr = DB::table('finance.apacthdr')
+                                    ->where('compcode','=',session('compcode'))
+                                    // ->where('unit','=',session('unit'))
+                                    ->where('source','=',$value['refsource'])
+                                    ->where('trantype','=',$value['reftrantype'])
+                                    ->where('auditno','=',$value['refauditno']);
+                    $refapacthdr
+                        ->update([
+                            'outamount' => floatval($refapacthdr->first()->outamount) + floatval($value['allocamount'])
+                        ]);
+                        
+                    DB::table('finance.apalloc')
+                        ->where('idno','=',$value['idno'])
+                        ->update([
+                            'allocamount' => 0,
+                            'recstatus' => 'CANCELLED',
+                        ]);
+                }
+
                 $apacthdr_update = [
+                    'recstatus' => 'CANCELLED',
+                    'amount' => 0,
+                    'outamount' => 0,
                     'recstatus' => 'REJECTED',
                     'cancelby' => session('username'),
                     'canceldate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -1350,25 +1383,6 @@ class PaymentVoucherController extends defaultController
                 DB::table('finance.apacthdr')
                     ->where('idno','=',$value)
                     ->update($apacthdr_update);
-
-                if($apacthdr->trantype == 'PV'){
-                    DB::table('finance.apalloc')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('unit','=',session('unit'))
-                        ->where('docsource','=','AP')
-                        ->where('doctrantype','=','PV')
-                        ->where('docauditno','=',$apacthdr->auditno)
-                        ->where('recstatus','!=','DELETE')
-                        ->where('recstatus','!=','CANCELLED')
-                        ->update([
-                            'recstatus' => 'REJECTED'
-                        ]);
-
-                }
-
-                // DB::table($queue)
-                //     ->where('recno','=',$apacthdr->auditno)
-                //     ->delete();
 
                 DB::table($queue)
                     ->where('compcode','=',session('compcode'))
