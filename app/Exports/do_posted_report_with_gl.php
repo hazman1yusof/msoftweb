@@ -44,8 +44,8 @@ class do_posted_report_with_gl implements FromView, WithEvents, WithColumnWidths
     public function columnFormats(): array
     {
         return [
+            'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
         ];
     }
     
@@ -108,7 +108,7 @@ class do_posted_report_with_gl implements FromView, WithEvents, WithColumnWidths
                             ->where('trantype',$obj_hd->trantype)
                             ->sum('amount');
 
-            $obj_hd->source = $source_;
+            // $obj_hd->source = $source_;
             $obj_hd->glamount = $glamount;
         }
 
