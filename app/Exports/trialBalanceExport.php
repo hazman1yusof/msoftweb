@@ -72,7 +72,7 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
     
     public function columnWidths(): array
     {
-        $alphabet = range('A', 'Z');
+        $alphabet = $this->excelColumns(52);
         $array_month = $this->array_month;
         $width_ = [
             'A' => 12,
@@ -224,7 +224,7 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
         //     }
         //     array_push($glmasref,(array)$obj_glrf);
         // }
-        $alphabet = range('A', 'Z');
+        $alphabet =  $this->excelColumns(52);
 
         $title1 = strtoupper($this->comp->name);
         $title2 = 'TRIAL BALANCE';
@@ -248,7 +248,7 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
                 .'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')
                 ."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
                 
-                $alphabet = range('A', 'Z');
+                $alphabet = $this->excelColumns(52);
 
                 $event->sheet->getPageMargins()->setTop(1);
 
@@ -364,4 +364,22 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
         $arr_glrf['tot_ytd'] = $ytd;
         return json_decode(json_encode($arr_glrf));
     }
+
+    public function excelColumns($count) {
+        $cols = [];
+        for ($i = 0; $i < $count; $i++) {
+            $col = '';
+            $n = $i;
+
+            while ($n >= 0) {
+                $col = chr($n % 26 + 65) . $col;
+                $n = intval($n / 26) - 1;
+            }
+
+            $cols[] = $col;
+        }
+        return $cols;
+    }
+
+
 }
