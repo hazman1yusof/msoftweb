@@ -70,7 +70,11 @@
                                 ],
                                 [
                                     { text: 'DIAGNOSIS' },
-                                    { text: `\u200B\t{!!$nursassessment->diagnosis!!}` },
+                                    @if(!empty($nursassessment->diagnosis))
+                                        { text: `\u200B\t{!!$nursassessment->diagnosis!!}` },
+                                    @else
+                                        { text: '' },
+                                    @endif
                                     { text: 'AGE' },
                                     { text: '\u200B\t{{$age}}' },
                                     { text: 'ADMISSION DATE' },
