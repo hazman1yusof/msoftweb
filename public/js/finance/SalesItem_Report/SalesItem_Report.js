@@ -3,6 +3,10 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
 
+	if($("#scope").val() == 'CAT'){
+		$('#type').show();
+	}
+
 	$("#genreport input[name='datefr']").change(function(){
 		$("#genreportpdf input[name='datefr']").val($(this).val());
 	});
@@ -15,7 +19,7 @@ $(document).ready(function () {
 	});
 	
 	$("#excelgen1").click(function() {
-		window.open('./SalesItem_Report/showExcel?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&deptcode='+$("#deptcode").val()+'&scope='+$("#scope").val(), '_blank');
+		window.open('./SalesItem_Report/showExcel?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&deptcode='+$("#deptcode").val()+'&scope='+$("#scope").val()+'&type='+$("#type").val(), '_blank');
 	});
 
 	var dialog_deptcode = new ordialog(

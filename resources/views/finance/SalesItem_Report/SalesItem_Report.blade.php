@@ -87,6 +87,10 @@
 					<div class="col-md-4" style="margin-left: 100px;">
 						<div class="panel panel-default" style="height: 107px;">
 							<div class="panel-body">
+	                            <select name="type" id="type" class="form-control input-sm" style="display:none">
+	                              <option value="summary" selected>Summary</option>
+	                              <option value="detail">Detail</option>
+	                            </select>
 								<div class='col-md-12 btnform' style="padding: 20px 0px">
 									<fieldset>
 										<!-- <legend>Stock Sheet :</legend> -->
@@ -108,5 +112,5 @@
 @endsection
 
 @section('scripts')
-	<script src="js/finance/SalesItem_Report/SalesItem_Report.js?v=1.4"></script>
+	<script src="js/finance/SalesItem_Report/SalesItem_Report.js?v=1.5"></script>
 @endsection

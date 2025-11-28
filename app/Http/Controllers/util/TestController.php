@@ -122,8 +122,8 @@ class TestController extends defaultController
                 return $this->apalloc_osamt_cn($request);
             case 'betulkan_imp_category':
                 return $this->betulkan_imp_category($request);
-            // case 'betulkan_stockloc_2025':
-            //     return $this->betulkan_stockloc_2025($request);
+            case 'jtr_imp':
+                return $this->jtr_imp($request);
             // case 'netmvval_from_netmvqty':
             //     return $this->netmvval_from_netmvqty($request);
             // case 'cr8_acctmaster':
@@ -8983,7 +8983,89 @@ class TestController extends defaultController
     }
 
     public function betulkan_imp_category(Request $request){
-        
+        DB::beginTransaction();
+        try {
+
+            $chgmast = DB::table('hisdb.chgmast as cm')
+                        ->where('cm.compcode',session('compcode'))
+                        ->where('cm.unit','imp')
+                        ->whereNotNull('cm.chgcode')
+                        ->whereNotNull('cm.chgtype')
+                        ->get();
+
+            $array_chgtype_xde = [];
+            $array_chgtype_ade = [];
+
+            foreach ($chgmast as $obj){
+                $chgmast_4infront = substr($obj->chgcode, 0, 4);
+
+                if(strtoupper($chgmast_4infront) != strtoupper($obj->chgtype)){
+                    $chgtype = DB::table('hisdb.chgtype')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('chgtype',$chgmast_4infront);
+
+                    if($chgtype->exists()){
+                        if (!in_array($chgmast_4infront, $array_chgtype_ade)) {
+                            array_push($array_chgtype_ade,strtoupper($chgmast_4infront));
+                        }
+                    }else{
+                        if (!in_array($chgmast_4infront, $array_chgtype_xde)) {
+                            array_push($array_chgtype_xde,strtoupper($chgmast_4infront));
+                        }
+                    }
+                }
+            }
+
+            dump($array_chgtype_ade);
+            dump($array_chgtype_xde);
+
+            // DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e, 500);
+        }
+    }
+
+    public function jtr_imp(Request $request){
+
+        $jtr = DB::table('material.ivtxndt as iv')
+                            ->select('p.itemcode','p.avgcost','iv.netprice')
+                            ->join('material.product as p', function($join){
+                                    $join = $join->on('p.itemcode', '=', 'iv.itemcode');
+                                    $join = $join->on('p.uomcode', '=', 'iv.uomcode');
+                                    $join = $join->where('p.compcode', '=', session('compcode'));
+                                    $join = $join->where('p.groupcode', '=', 'STOCK');
+                                    $join = $join->where('p.recstatus', '=', 'ACTIVE');
+                                    $join = $join->where('p.unit', '=', 'imp');
+                                })
+                            ->where('iv.compcode',session('compcode'))
+                            ->where('iv.netprice','!=',0)
+                            ->where('iv.TranType','JTR')
+                            ->where('iv.deptcode','IMP')
+                            ->where('iv.itemcode','like','7150%')
+                            ->get();
+        // dd($this->getQueries($jtr));
+
+        // dd($jtr);
+
+        $array_push = [];
+
+        foreach ($jtr as $obj){
+            $ivtxndt = DB::table('material.ivtxndt as iv')
+                        ->where('iv.compcode',session('compcode'))
+                        // ->where('iv.TranType','!=','JTR')
+                        ->whereDate('iv.trandate','>','2025-07-01')
+                        // ->where('iv.deptcode','IMP')
+                        ->where('iv.itemcode',$obj->itemcode);
+
+            if($ivtxndt->exists()){
+                array_push($array_push,$obj->itemcode);
+            }
+
+        }
+
+        dd($array_push);
     }
 
 }

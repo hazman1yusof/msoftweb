@@ -51,7 +51,7 @@ class SalesItem_ReportController extends defaultController
     
     public function showExcel(Request $request){
         if($request->scope=='CAT'){
-            return Excel::download(new SalesCatExport($request->datefr,$request->dateto,$request->deptcode), 'SalesByCategoryExport.xlsx');
+            return Excel::download(new SalesCatExport($request->datefr,$request->dateto,$request->deptcode,$request->type), 'SalesByCategoryExport.xlsx');
         }else if($request->scope=='RCN'){
             return Excel::download(new SalesRCNExport($request->datefr,$request->dateto,$request->deptcode), 'RCN_Item_Export.xlsx');
         }else{

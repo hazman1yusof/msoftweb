@@ -131,6 +131,15 @@ class JTRController extends defaultController
 
             $x=0;
             foreach ($stockloc as $obj) {
+
+                if($dept == 'IMP'){
+                    $chgmast_4infront = substr($obj->itemcode, 0, 4);
+
+                    if(strtoupper($chgmast_4infront) == '7150'){
+                        continue;
+                    }
+                }
+
                 $array_obj = (array)$obj;
 
                 $get_bal = $this->get_bal($array_obj,$month);

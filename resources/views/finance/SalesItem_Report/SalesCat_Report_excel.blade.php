@@ -1,4 +1,38 @@
 <table>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td style="font-weight:bold;text-align: center" colspan="3">Sales By Category Detail</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td style="font-weight:bold;text-align: center" colspan="3">Department : {{$deptcode}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td style="font-weight:bold;text-align: center" colspan="3">Date From {{Carbon\Carbon::parse($datefr)->format('d-m-Y')}} to {{Carbon\Carbon::parse($dateto)->format('d-m-Y')}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr></tr>
     <tr>    
         <td style="font-weight:bold">DATE</td>
         <td style="font-weight:bold">CHARGE TYPE</td>
@@ -40,7 +74,7 @@
             @endif
         @endforeach
             <tr></tr>
-            <table> 
+            <tr> 
                 <td></td>
                 <td></td>
                 <td></td>
@@ -51,20 +85,20 @@
                 <td style="text-align: right; font-weight:bold">{{$tax}}</td>
                 <td style="text-align: right;">{{$tot}}</td>
                 <td style="text-align: right; font-weight:bold">{{$tot}}</td>
-            </table>
+            </tr>
         @php($totalAmount += $tot)
     @endforeach
     <tr></tr>
-    <table> 
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td style="font-weight:bold">GRAND TOTAL</td>
-            <td data-format="0.00" style="text-align: right; font-weight:bold">{{$totalAmount}}</td>
-        </table>
+    <tr> 
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td style="font-weight:bold">GRAND TOTAL</td>
+        <td data-format="0.00" style="text-align: right; font-weight:bold">{{$totalAmount}}</td>
+    </tr>
 </table>
 

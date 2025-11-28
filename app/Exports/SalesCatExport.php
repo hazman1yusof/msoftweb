@@ -29,11 +29,12 @@ class SalesCatExport implements FromView, WithEvents, WithColumnWidths, WithColu
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($datefr,$dateto,$deptcode)
+    public function __construct($datefr,$dateto,$deptcode,$type)
     {
         $this->datefr = $datefr;
         $this->dateto = $dateto;
         $this->deptcode = $deptcode;
+        $this->type = $type;
         $this->dbacthdr_len=0;
         
         $this->comp = DB::table('sysdb.company')
@@ -42,31 +43,57 @@ class SalesCatExport implements FromView, WithEvents, WithColumnWidths, WithColu
     }
 
     public function columnFormats(): array
-    {
-        return [
-            'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-        ];
+    {   
+        if($this->type=='summary'){
+            return [
+                'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            ];
+        }else{
+            return [
+                'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            ];
+        }
     }
     
     public function columnWidths(): array
     {
-        return [
-            'A' => 15,
-            'B' => 13,
-            'C' => 13,
-            'D' => 40,
-            'E' => 10,
-            'F' => 13,
-            'G' => 13,
-            'H' => 13,
-            'I' => 13,
-            'J' => 13,
-        ];
+        if($this->type=='summary'){
+            return [
+                'A' => 20,
+                'B' => 40,
+                'C' => 20,
+                'D' => 20,
+                'E' => 20,
+                'F' => 20,
+                'G' => 20,
+                'H' => 20,
+                'I' => 20,
+                'J' => 20,
+            ];
+        }else{
+            return [
+                'A' => 15,
+                'B' => 13,
+                'C' => 13,
+                'D' => 40,
+                'E' => 10,
+                'F' => 13,
+                'G' => 13,
+                'H' => 13,
+                'I' => 13,
+                'J' => 13,
+            ];
+        }
     }
     
     public function view(): View
@@ -74,28 +101,8 @@ class SalesCatExport implements FromView, WithEvents, WithColumnWidths, WithColu
         $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
         $deptcode = $this->deptcode;
-        
-        // $billdet = DB::table('hisdb.billdet as b', 'hisdb.chgmast as c', 'debtor.dbacthdr as d')
-        //             ->select('b.idno', 'b.compcode', 'b.trxdate', 'b.chgcode', 'b.quantity', 'b.amount', 'b.invno', 'b.taxamount', 'c.description AS cm_desc', 'd.trantype','d.source','d.debtorcode AS debtorcode' )
-        //             ->leftJoin('hisdb.chgmast as c', function($join){
-        //                 $join = $join->on('c.chgcode', '=', 'b.chgcode')
-        //                             ->where('c.compcode', '=', session('compcode'));
-        //             })
-        //             ->join('debtor.dbacthdr as d', function($join){
-        //                 $join = $join->on('d.invno', '=', 'b.invno')
-        //                             ->where('d.compcode', '=', session('compcode'))
-        //                             ->where('d.source', '=', 'PB')
-        //                             ->where('d.trantype', '=', 'IN');
-        //             })
-        //             ->where('b.compcode','=',session('compcode'))
-        //             ->where('b.recstatus','=','POSTED')
-        //             ->where('b.amount','!=','0')
-        //             ->whereBetween('b.trxdate', [$datefr, $dateto])
-        //             ->orderBy('b.trxdate','ASC')
-        //             ->get();
+        $type = $this->type;
 
-        // dd($billdet);
-        
         $dbacthdr = DB::table('debtor.dbacthdr as d')
                     ->select('d.debtorcode', 'dm.name AS dm_desc', 'd.invno','d.mrn','b.idno', 'b.compcode', 'b.trxdate', 'b.chgcode','c.chgtype','ct.description as ct_desc', 'b.quantity', 'b.amount', 'b.invno', 'b.taxamount', 'c.description AS cm_desc', 'd.trantype','d.source','d.debtorcode AS debtorcode','pm.Name as pm_name','p.avgcost as costprice')
                     ->leftJoin('debtor.debtormast as dm', function($join){
@@ -137,35 +144,40 @@ class SalesCatExport implements FromView, WithEvents, WithColumnWidths, WithColu
                     ->whereBetween('b.trxdate', [$datefr, $dateto])
                     ->get();
 
-        // $invno_array = [];
-        // foreach ($dbacthdr as $obj) {
-        //     if(!in_array($obj->invno, $invno_array)){
-        //         array_push($invno_array, $obj->invno);
-        //     }
-        // }
-
         foreach ($dbacthdr as $obj) {
             if($obj->costprice == ''){
                 $obj->costprice = 0.00;
             }
 
             $obj->costprice = $obj->costprice * $obj->quantity;
-            // $chgprice_obj = DB::table('hisdb.chgprice as cp')
-            //     ->where('cp.compcode', '=', session('compcode'))
-            //     ->where('cp.chgcode', '=', $obj->chgcode)
-            //     // ->where('cp.uom', '=', $value->uom)
-            //     ->whereDate('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur"))
-            //     ->orderBy('cp.effdate','desc');
 
-            // if($chgprice_obj->exists()){
-            //     $chgprice_obj = $chgprice_obj->first();
-            //     $obj->costprice = $chgprice_obj->costprice * $obj->quantity;
-            // }else{
-            //     $obj->costprice = 0.00;
-            // }
         }
 
         $chgtype = $dbacthdr->unique('chgtype');
+
+        if($type == 'summary'){
+            foreach ($chgtype as $obj_c) {
+                $qty = 0;
+                $amt = 0;
+                $tax = 0;
+                $cpr = 0;
+                $tot = 0;
+                foreach ($dbacthdr as $obj) {
+                    if($obj->chgtype == $obj_c->chgtype){
+                        $qty = $qty + $obj->quantity;
+                        $amt = $amt + $obj->amount;
+                        $tax = $tax + $obj->taxamount;
+                        $cpr = $cpr + $obj->costprice;
+                        $tot = $tot + ($obj->amount + $obj->taxamount);
+                    }
+                }
+                $obj_c->qty = $qty;
+                $obj_c->amt = $amt;
+                $obj_c->tax = $tax;
+                $obj_c->cpr = $cpr;
+                $obj_c->tot = $tot;
+            }
+        }
         
         // $dbacthdr = $dbacthdr->get(['dh.debtorcode']);
         
@@ -180,8 +192,11 @@ class SalesCatExport implements FromView, WithEvents, WithColumnWidths, WithColu
         //     $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
-        
-        return view('finance.SalesItem_Report.SalesCat_Report_excel',compact('dbacthdr','chgtype'));
+        if($type == 'summary'){
+            return view('finance.SalesItem_Report.SalesCat_Report_excel_summ',compact('dbacthdr','chgtype','deptcode','datefr','dateto'));
+        }else{
+            return view('finance.SalesItem_Report.SalesCat_Report_excel',compact('dbacthdr','chgtype','deptcode','datefr','dateto'));
+        }
     }
     
     public function registerEvents(): array
@@ -192,9 +207,9 @@ class SalesCatExport implements FromView, WithEvents, WithColumnWidths, WithColu
                 
                 $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nSALES BY ITEM"."\n".sprintf('FROM DATE %s TO DATE %s',Carbon::parse($this->datefr)->format('d-m-Y'), Carbon::parse($this->dateto)->format('d-m-Y')).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
                 
-                $event->sheet->getPageMargins()->setTop(1);
+                // $event->sheet->getPageMargins()->setTop(1);
                 
-                $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
+                // $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
                 $event->sheet->getStyle('A:G')->getAlignment()->setWrapText(true);
                 $event->sheet->getPageSetup()->setFitToWidth(1);
                 $event->sheet->getPageSetup()->setFitToHeight(0);
