@@ -70,7 +70,7 @@
                                 ],
                                 [
                                     { text: 'DIAGNOSIS' },
-                                    { text: `\u200B\t{!!$pat_otbook->diagnosis!!}` },
+                                    { text: `\u200B\t{!!$nursassessment->diagnosis!!}` },
                                     { text: 'AGE' },
                                     { text: '\u200B\t{{$age}}' },
                                     { text: 'ADMISSION DATE' },
