@@ -258,7 +258,7 @@ class ChargeMasterController extends defaultController
                         if($found !== false && trim($request->searchVal[$key]) != '%%'){//trim whitespace
                             $search_ = $this->begins_search_if(['itemcode','chgcode'],$searchCol_array[$key],$request->searchVal[$key]);
                             //begins search only
-                            $table->orwhere('cm.'.$searchCol_array[$key],'like',$search_);
+                            $table->where('cm.'.$searchCol_array[$key],'like',$search_);
                         }
                     }
                 });
@@ -270,7 +270,7 @@ class ChargeMasterController extends defaultController
             $table = $table->where(function($table) use ($searchCol_array, $request){
                 foreach ($searchCol_array as $key => $value) {
                     if($key>1) break;
-                    $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                    $table->where($searchCol_array[$key],'like', $request->searchVal2[$key]);
                 }
             });
 
@@ -278,7 +278,7 @@ class ChargeMasterController extends defaultController
                 $table = $table->where(function($table) use ($searchCol_array, $request){
                     foreach ($searchCol_array as $key => $value) {
                         if($key<=1) continue;
-                        $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                        $table->where($searchCol_array[$key],'like', $request->searchVal2[$key]);
                     }
                 });
             }

@@ -2185,14 +2185,19 @@ class SalesOrderController extends defaultController
         }
 
         $billsum = DB::table('debtor.billsum AS b')
-            ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
+            ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'pr.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
             'u.description as uom_desc', 'b.auditno',
-            'd.debtorcode as debt_debtcode','d.name as debt_name', 
-            'm.description as chgmast_desc','iv.expdate','iv.batchno')
-            ->leftJoin('hisdb.chgmast as m', function($join) use ($request){
-                $join = $join->on('b.chggroup', '=', 'm.chgcode');
-                $join = $join->on('b.uom', '=', 'm.uom');
-                $join = $join->where('m.compcode', '=', session('compcode'));
+            'd.debtorcode as debt_debtcode','d.name as debt_name','iv.expdate','iv.batchno')
+            // ->leftJoin('hisdb.chgmast as m', function($join) use ($request){
+            //     $join = $join->on('b.chggroup', '=', 'm.chgcode');
+            //     $join = $join->on('b.uom', '=', 'm.uom');
+            //     $join = $join->where('m.compcode', '=', session('compcode'));
+            //     // $join = $join->where('m.unit', '=', session('unit'));
+            // })
+            ->leftJoin('material.product as pr', function($join) use ($request){
+                $join = $join->on('pr.itemcode', '=', 'b.chggroup');
+                $join = $join->on('pr.uomcode', '=', 'b.uom');
+                $join = $join->where('pr.compcode', '=', session('compcode'));
                 // $join = $join->where('m.unit', '=', session('unit'));
             })
             ->leftJoin('material.uom as u', function($join) use ($request){
@@ -2243,7 +2248,7 @@ class SalesOrderController extends defaultController
             $obj->batchno = $obj->batchno;
             $obj->expdate = $obj->expdate;
             // $obj->unit = $obj->;
-            $obj->kkmappno = '-';
+            $obj->kkmappno = '';
             $obj->uom_desc = $obj->uom_desc;
         }
 

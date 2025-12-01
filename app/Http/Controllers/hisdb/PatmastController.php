@@ -126,7 +126,6 @@ class PatmastController extends defaultController
                     ->get();
 
         return view('hisdb.pat_mgmt.landing',$data_send,compact('invest_type'));
-
     }
 
     public function save_patient(Request $request){
