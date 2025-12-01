@@ -57,6 +57,8 @@ class ItemEnquiryController extends defaultController
                 return $this->open_detail($request);
             case 'print_excel':
                 return $this->print_excel($request);
+            case 'checkqtyonhand':
+                return $this->checkqtyonhand($request);
             default:
                 return 'error happen..';
         }
@@ -267,5 +269,9 @@ class ItemEnquiryController extends defaultController
             default:
                 return view('finance.inventoryTransaction.inventoryTransaction_dtl',compact('trantype','recno'));
         }
+    }
+
+    public function checkqtyonhand(Request $request){
+        
     }
 }

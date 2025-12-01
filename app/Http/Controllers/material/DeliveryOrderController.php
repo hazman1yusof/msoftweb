@@ -373,7 +373,6 @@ class DeliveryOrderController extends defaultController
                         ->exists();
 
                     if($Stock_flag) break;
-
                 }
 
                     //2. pastu letak dkt ivtxnhd
@@ -437,8 +436,6 @@ class DeliveryOrderController extends defaultController
                                 'unit' =>session('unit')
                             ]);
                     }
-
-                    
                 }
                 
 
@@ -586,7 +583,6 @@ class DeliveryOrderController extends defaultController
                     }
 
                 } // habis looping untuk delorddt
-
             }
 
             //--- 8. change recstatus to posted -dd--//

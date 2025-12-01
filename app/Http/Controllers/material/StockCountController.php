@@ -48,6 +48,8 @@ class StockCountController extends defaultController
                 return $this->get_rackno($request);
             case 'import_excel':
                 return $this->import_excel($request);
+            case 'posted_manual':
+                return $this->posted_manual($request);
             default:
                 return 'error happen..';
         }
@@ -694,6 +696,306 @@ class StockCountController extends defaultController
                                 'upduser'  => session('username'),
                             ]);
                 }
+            }
+            // $queries = DB::getQueryLog();
+            // dump($queries);
+
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            
+            return response($e, 500);
+        }
+    }
+
+    public function posted_manual(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            $idno = $request->idno;
+            if(empty($idno)){
+                dd('no idno');
+            }
+            $needheader = false;
+            $full_amount = 0;
+
+            //-- 1. transfer from ivtmphd to ivtxnhd --//
+            $phycnthd_obj = DB::table('material.phycnthd')
+                            ->where('idno','=',$idno)
+                            ->first();
+
+            $phycntdate = $phycnthd_obj->phycntdate;
+            $phycnttime = $phycnthd_obj->phycnttime;
+
+            // if($phycnthd_obj->recstatus != 'COUNTED'){
+            //     throw new \Exception("Stock Count Already POSTED!");
+            // }
+
+            $frzdate = $phycnthd_obj->frzdate;
+            $frztime = $phycnthd_obj->frztime;
+
+            $unit_ = DB::table('sysdb.department')
+                            ->where('compcode',session('compcode'))
+                            ->where('deptcode',$phycnthd_obj->srcdept)
+                            ->first();
+
+            $unit_ = $unit_->sector;
+
+            // $this->check_sequence_backdated($ivtmphd);
+
+            //-- 2. transfer from ivtmpdt to ivtxndt --//
+            $phycntdt_obj = DB::table('material.phycntdt')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$phycnthd_obj->recno);
+
+            if($phycntdt_obj->exists()){
+                $needheader = true;
+            }
+            $phycntdt_obj = $phycntdt_obj->get();
+            // $this->need_upd_ivreqdt($idno);
+
+            foreach ($phycntdt_obj as $value) {
+                $vrqty =  floatval($value->phyqty) - floatval($value->thyqty);
+                if(floatval($vrqty) == 0){
+
+                    DB::table('material.stockloc')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('unit','=',$unit_)
+                            ->where('itemcode','=',$value->itemcode)
+                            // ->where('uomcode','=',$value->uomcode)
+                            ->where('deptcode','=',$value->srcdept)
+                            ->where('year', '=', Carbon::now("Asia/Kuala_Lumpur")->format('Y'))
+                            ->update([
+                                'frozen' => '0',
+                            ]);
+
+                    continue;
+                }
+
+                $ivdspdt = DB::table('material.ivdspdt')
+                            ->where('compcode',session('compcode'))
+                            ->where('itemcode',$value->itemcode)
+                            ->where('issdept',$value->srcdept)
+                            ->where('trandate','>=',$frzdate)
+                            ->where('updtime','>=',$frztime);
+
+                if($ivdspdt->exists()){
+                    $dspqty = DB::table('material.ivdspdt')
+                                ->where('compcode',session('compcode'))
+                                ->where('itemcode',$value->itemcode)
+                                ->where('issdept',$value->srcdept)
+                                ->where('trandate','>=',$frzdate)
+                                ->where('updtime','>=',$frztime)
+                                ->sum('txnqty');
+                }else{
+                    $dspqty = 0;
+                }
+                $vrqty = floatval($value->phyqty) - floatval($value->thyqty) + Floatval($value->dspqty);
+
+                $obj_acc = $this->get_acc($value,$phycnthd_obj);
+
+                $craccno = $obj_acc->craccno;
+                $crccode = $obj_acc->crccode;
+                $draccno = $obj_acc->draccno;
+                $drccode = $obj_acc->drccode;
+                $amount = floatval($vrqty) * floatval($value->unitcost);
+                $full_amount = floatval($full_amount) + floatval($amount);
+
+                DB::table('material.ivtxndt')
+                    ->insert([
+                        'compcode' => session('compcode'), 
+                        'unit' => session('unit'), 
+                        'recno' => $value->recno, 
+                        'lineno_' => $value->lineno_, 
+                        'itemcode' => $value->itemcode, 
+                        'uomcode' => $value->uomcode,
+                        'uomcoderecv' => $value->uomcode,  
+                        'txnqty' => $vrqty, 
+                        'netprice' => $value->unitcost, 
+                        'adduser' => session('username'), 
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'upduser' => session('username'), 
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'TranType' => 'PHYCNT',
+                        'deptcode'  => $value->srcdept,
+                        // 'productcat' => $productcat, 
+                        'draccno' => $draccno, 
+                        'drccode' => $drccode, 
+                        'craccno' => $craccno, 
+                        'crccode' => $crccode, 
+                        'expdate' => $value->expdate, 
+                        'qtyonhand' => $value->phyqty,
+                        // 'qtyonhandrecv' => $value->phyqty,  
+                        'batchno' => $value->batchno, 
+                        'amount' => $amount, 
+                        'gstamount' => 0.00, 
+                        'totamount' => $amount, 
+                        'trandate' => $phycntdate,
+                        // 'sndrcv' => $value->srcdept,
+                    ]);
+
+
+                //-- 4. posting stockloc OUT --//
+
+                //1. amik stockloc
+                $stockloc_obj = DB::table('material.StockLoc')
+                    ->where('StockLoc.unit','=',$unit_)
+                    ->where('StockLoc.CompCode','=',session('compcode'))
+                    ->where('StockLoc.DeptCode','=',$value->srcdept)
+                    ->where('StockLoc.ItemCode','=',$value->itemcode)
+                    ->where('StockLoc.Year','=', defaultController::toYear($phycntdate))
+                    ->where('StockLoc.UomCode','=',$value->uomcode);
+
+                $stockloc_first = $stockloc_obj->first();
+
+                //2.kalu ada stockloc, update 
+                if($stockloc_obj->exists()){
+
+                //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
+                    $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
+                    $month = defaultController::toMonth($phycntdate);
+                    $QtyOnHand = $stockloc_first->qtyonhand + $vrqty; 
+                    $NetMvQty = $stockloc_arr['netmvqty'.$month] + floatval($vrqty);
+                    $NetMvVal = $stockloc_arr['netmvval'.$month] + round($amount, 2);
+
+                    DB::table('material.StockLoc')
+                        ->where('StockLoc.unit','=',$unit_)
+                        ->where('StockLoc.CompCode','=',session('compcode'))
+                        ->where('StockLoc.DeptCode','=',$value->srcdept)
+                        ->where('StockLoc.ItemCode','=',$value->itemcode)
+                        ->where('StockLoc.Year','=', defaultController::toYear($phycntdate))
+                        ->where('StockLoc.UomCode','=',$value->uomcode)
+                        ->update([
+                            'QtyOnHand' => $QtyOnHand,
+                            'NetMvQty'.$month => $NetMvQty, 
+                            'NetMvVal'.$month => $NetMvVal
+                        ]);
+
+                //4. tambah expdate, kalu ada batchno
+                    $this->betulkan_stockexp($value->itemcode,$QtyOnHand,$value->srcdept);
+
+                }else{
+                    //ni utk kalu xde stockloc
+                    throw new \Exception("Stockloc not exist for item: ".$value->itemcode." | deptcode: ".$value->srcdept." | year: ".defaultController::toYear($phycntdate)." | uomcode: ".$value->uomcode);
+                }
+
+                //-- 6. posting product -> update qtyonhand, avgcost, currprice --//
+
+                $product_obj = DB::table('material.product')
+                    ->where('product.unit','=',$unit_)
+                    ->where('product.compcode','=',session('compcode'))
+                    ->where('product.itemcode','=',$value->itemcode)
+                    ->where('product.uomcode','=',$value->uomcode);
+
+                if($product_obj->exists()){ // kalu jumpa
+                    $product_obj = $product_obj->first();
+
+                    $month = defaultController::toMonth($phycntdate);
+                    $txnqty = $vrqty;
+
+                    $OldQtyOnHand = $product_obj->qtyonhand;
+                    $Oldavgcost = $product_obj->avgcost;
+                    $OldAmount = $OldQtyOnHand * $Oldavgcost;
+                    $NewAmount = $Oldavgcost * $txnqty;
+
+                    $newqtyonhand = $OldQtyOnHand + $txnqty;
+                    // $newAvgCost = ($OldAmount + $NewAmount) / ($OldQtyOnHand + $txnqty);
+
+
+                    // update qtyonhand, avgcost, currprice
+                    $product_obj = DB::table('material.product')
+                        ->where('product.unit','=',$unit_)
+                        ->where('product.compcode','=',session('compcode'))
+                        ->where('product.itemcode','=',$value->itemcode)
+                        ->where('product.uomcode','=',$value->uomcode)
+                        ->update([
+                            'qtyonhand' => $newqtyonhand,
+                            // 'avgcost' => $newAvgCost,
+                        ]);
+
+                }else{
+                    //ni utk kalu xde product
+                    throw new \Exception("Product not exist for item: ".$value->itemcode." | deptcode: ".$value->srcdept." |uomcode: ".$value->uomcode);
+                }
+
+                //--- 7. posting GL ---//
+
+                //amik yearperiod
+                $yearperiod = $this->getyearperiod($phycntdate);
+
+                DB::table('material.stockloc')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('unit','=',$unit_)
+                        ->where('itemcode','=',$value->itemcode)
+                        ->where('uomcode','=',$value->uomcode)
+                        ->where('deptcode','=',$value->srcdept)
+                        ->where('year', '=', $yearperiod->year)
+                        ->update([
+                            'frozen' => '0',
+                        ]);
+
+                DB::table('material.phycntdt')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('idno','=',$value->idno)
+                        ->update([
+                            'dspqty' => $dspqty,
+                        ]);
+            }
+
+            //--- 8. change recstatus to posted ---//
+            if($needheader){
+                DB::table("material.IvTxnHd")
+                    ->insert([
+                        'AddDate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'AddUser'  => session('username'),
+                        'Amount'   => $full_amount,
+                        'CompCode' => session('compcode'),
+                        'unit'     => session('unit'),
+                        // 'DateActRet'   => $ivtmphd->dateactret,
+                        // 'DateSupRet'   => $ivtmphd->datesupret,
+                        // 'DocNo'    => $ivtmphd->docno,
+                        // 'IvReqNo'  => $ivtmphd->ivreqno,
+                        'RecNo'    => $phycnthd_obj->recno,
+                        'RecStatus'    => 'POSTED',
+                        // 'Reference'    => $ivtmphd->reference,
+                        'Remarks'  => $phycnthd_obj->remarks,
+                        'ResPersonId'  => $phycnthd_obj->respersonid,
+                        // 'SndRcv'   => $phycnthd_obj->srcdept,
+                        // 'SndRcvType'   => $ivtmphd->sndrcvtype,
+                        'Source'   => 'IV',
+                        // 'SrcDocNo' => $ivtmphd->srcdocno,
+                        'TranDate' => $phycntdate,
+                        'TranTime' => $phycnttime,
+                        'TranType' => 'PHYCNT',
+                        'TxnDept'  => $phycnthd_obj->srcdept,
+                        'UpdDate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'UpdTime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'UpdUser'  => session('username')
+                    ]);
+
+                DB::table('material.phycnthd')
+                        ->where('idno','=',$idno)
+                        ->update([
+                            'recstatus' => 'POSTED',
+                            // 'phycntdate' => $phycntdate,
+                            // 'phycnttime' => $phycnttime,
+                            'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                            'upduser'  => session('username'),
+                        ]);
+
+                DB::table('material.phycntdt')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recno','=',$phycnthd_obj->recno)
+                        ->update([
+                            // 'phycntdate' => $phycntdate,
+                            // 'phycnttime' => $phycnttime,
+                            'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                            'upduser'  => session('username'),
+                        ]);
             }
             // $queries = DB::getQueryLog();
             // dump($queries);
