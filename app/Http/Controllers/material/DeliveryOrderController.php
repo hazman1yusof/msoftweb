@@ -12,6 +12,7 @@ use App\Http\Controllers\util\do_util;
 use PDF;
 use App\Exports\do_posted_report_Export;
 use App\Exports\do_posted_report_with_gl;
+use App\Exports\check_do_stockconsign_main;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DeliveryOrderController extends defaultController
@@ -68,6 +69,8 @@ class DeliveryOrderController extends defaultController
                 return $this->do_posted_report($request);
             case 'do_posted_report_with_gl':
                 return $this->do_posted_report_with_gl($request);
+            case 'check_do_stockconsign':
+                return $this->check_do_stockconsign($request);
             default:
                 return 'error happen..';
         }
@@ -1448,6 +1451,20 @@ class DeliveryOrderController extends defaultController
 
     public function do_posted_report_with_gl(Request $request){
         return Excel::download(new do_posted_report_with_gl($request->datefr,$request->dateto,$request->dept), 'Posted_DO_with_GL.xlsx');
+    }
+
+    public function check_do_stockconsign(Request $request){
+        $period = $request->period;
+        $year = $request->year;
+        if(empty($year)){
+            dd('no year');
+        }
+        if(empty($period)){
+            dd('no PERIOD');
+        }
+
+        return Excel::download(new check_do_stockconsign_main($period,$year), 'check_do_stockconsign.xlsx'); 
+        // return Excel::download(new do_posted_report_with_gl($period,$year), 'Posted_DO_with_GL.xlsx'); 
     }
 }
 

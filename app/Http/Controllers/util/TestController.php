@@ -6240,8 +6240,13 @@ class TestController extends defaultController
         $obj = DB::table('sysdb.department')
                 ->select('costcode')
                 ->where('compcode','=',session('compcode'))
-                ->where('deptcode','=',$deptcode)
-                ->first();
+                ->where('deptcode','=',$deptcode);
+
+        if(!$obj->exists()){
+            dd($deptcode.' doesnt exists');
+        }
+
+        $obj = $obj->first();
 
         return $obj;
     }
