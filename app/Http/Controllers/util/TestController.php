@@ -6310,7 +6310,9 @@ class TestController extends defaultController
                             ->where('lineno_','=',1);
 
                 if($gltran->exists()){
-                    throw new \Exception("gltran already exists",500);
+                    dump('gltran exists');
+                    dump($dbacthdr_obj->trantype);
+                    dd($dbacthdr_obj->auditno);
                 }
 
                 //1. buat gltran
