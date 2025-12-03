@@ -33,39 +33,65 @@ class check_do_stockconsign implements FromView, WithEvents, WithColumnWidths, W
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($deldept,$delorddt,$type)
+    public function __construct($deldept,$delorddt,$type,$_20010042,$_20010044)
     {
         $this->type = $type;
         $this->deldept = $deldept;
         $this->delorddt = $delorddt;
+        $this->_20010042 = $_20010042;
+        $this->_20010044 = $_20010044;
     }
 
     public function title(): string
     {
-        return $this->deldept;
+        if($this->type == 'main'){
+            return 'MAIN';
+        }else{
+            return $this->deldept;
+        }
     }
 
     public function columnFormats(): array
     {
-        return [
-            'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-        ];
+        if($this->type == 'main'){
+            return [
+                'B' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            ];
+        }else{
+            return [
+                'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            ];
+        }
     }
     
     public function columnWidths(): array
     {
-        return [
-            'A' => 20,
-            'B' => 20,
-            'C' => 20,
-            'D' => 20,
-            'E' => 15,
-            'F' => 20,
-            'G' => 20,
-            'H' => 20,
-            'I' => 20,
-        ];
+        if($this->type == 'main'){
+            return [
+                'A' => 15,
+                'B' => 40,
+                'C' => 40,
+                'D' => 15,
+                'E' => 15,
+                'F' => 15,
+                'G' => 15,
+                'H' => 15,
+                'I' => 15,
+            ];
+        }else{
+            return [
+                'A' => 15,
+                'B' => 15,
+                'C' => 15,
+                'D' => 15,
+                'E' => 15,
+                'F' => 15,
+                'G' => 15,
+                'H' => 15,
+                'I' => 15,
+            ];
+        }
     }
     
     public function view(): View{
@@ -73,9 +99,11 @@ class check_do_stockconsign implements FromView, WithEvents, WithColumnWidths, W
         $type = $this->type;
         $deldept = $this->deldept;
         $delorddt = $this->delorddt;
+        $_20010042 = $this->_20010042;
+        $_20010044 = $this->_20010044;
 
         if($type == 'main'){
-            
+            return view('material.deliveryOrder.check_do_stockconsign_1',compact('delorddt','_20010042','_20010044'));
         }
 
         $excel_data = [];
@@ -85,7 +113,7 @@ class check_do_stockconsign implements FromView, WithEvents, WithColumnWidths, W
             }
         }
 
-        return view('material.deliveryOrder.check_do_stockconsign',compact('excel_data'));
+        return view('material.deliveryOrder.check_do_stockconsign',compact('excel_data','_20010042','_20010044'));
     }
     
     public function registerEvents(): array
@@ -94,7 +122,7 @@ class check_do_stockconsign implements FromView, WithEvents, WithColumnWidths, W
             AfterSheet::class => function(AfterSheet $event) {        
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
-                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\ncheck_do_stockconsign"
+                $event->sheet->getHeaderFooter()->setOddHeader("&C\ncheck_do_stockconsign"
                 .'&L'
                 .'PRINTED BY : '.session('username')
                 ."\nPAGE : &P/&N"

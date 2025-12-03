@@ -461,7 +461,26 @@ class bankReconController extends defaultController
         // $to_ = Carbon::createFromFormat('Y-m-d',$request->recdate)->endOfMonth()->format('Y-m-d');
 
         $table = DB::table('finance.cbtran AS cb')
-                    ->select('cb.idno','cb.compcode','cb.bankcode','cb.source','cb.trantype','cb.auditno','cb.postdate','cb.year','cb.period','cb.cheqno','cb.amount','cb.remarks','cb.upduser','cb.upddate','cb.bitype','cb.reference','cb.recstatus','cb.refsrc','cb.reftrantype','cb.refauditno','cb.reconstatus')
+                    ->select('cb.idno','cb.compcode','cb.bankcode','cb.source','cb.trantype','cb.auditno','cb.postdate','cb.year','cb.period','cb.cheqno','cb.amount','cb.remarks','cb.upduser','cb.upddate','cb.bitype','cb.reference','cb.recstatus','cb.refsrc','cb.reftrantype','cb.refauditno','cb.reconstatus','ap.idno as ap_idno','ap.pvno','ap.bankcode','su.Name as suppname','dm.Name as debtorname','db.idno as db_idno')
+                    ->join('finance.apacthdr as ap', function($join){
+                        $join = $join->where('ap.compcode',session('compcode'))
+                                        ->on('ap.source','cb.source')
+                                        ->on('ap.trantype','cb.trantype')
+                                        ->on('ap.auditno','cb.auditno');
+                    })
+                    ->leftJoin('debtor.dbacthdr as db', function($join){
+                        $join = $join->where('db.compcode',session('compcode'))
+                                        ->on('db.source','cb.source')
+                                        ->on('db.trantype','cb.trantype')
+                                        ->on('db.auditno','cb.auditno');
+                    })
+                    ->leftJoin('material.supplier as su', function($join){
+                        $join = $join->on('su.suppcode', '=', 'ap.suppcode')
+                                    ->where('su.compcode','=',session('compcode'));
+                    })->leftJoin('debtor.debtormast as dm', function($join){
+                        $join = $join->on('dm.debtorcode', '=', 'db.payercode')
+                                    ->where('dm.compcode','=',session('compcode'));
+                    })
                     ->where('cb.compcode','=', session('compcode'))
                     ->where('cb.reconstatus','!=', 1)
                     ->where('cb.postdate','<=', $request->recdate)
@@ -487,11 +506,23 @@ class bankReconController extends defaultController
                     });
             }else if($request->searchCol[0] == 'auditno'){
                 $table = $table->Where(function ($table) use ($request) {
-                        $table->Where('cb.auditno','like',$request->searchVal[0]);
+                        $table->Where('cb.auditno',$request->wholeword);
+                    });
+            }else if($request->searchCol[0] == 'pvno'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('ap.pvno',$request->wholeword);
                     });
             }else if($request->searchCol[0] == 'postdate'){
                 $table = $table->Where(function ($table) use ($request) {
                         $table->WhereDate('cb.postdate',$request->wholeword);
+                    });
+            }else if($request->searchCol[0] == 'source'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('cb.source',$request->wholeword);
+                    });
+            }else if($request->searchCol[0] == 'trantype'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('cb.trantype',$request->wholeword);
                     });
             }else{
                 $table = $table->Where(function ($table) use ($request) {
@@ -525,19 +556,20 @@ class bankReconController extends defaultController
             switch($value->source){
                 case 'AP':
                     if($value->trantype == 'PV' || $value->trantype == 'PV'){
-                        $apacthdr = DB::table('finance.apacthdr as ap')
-                                        ->select('su.Name as suppname')
-                                        ->leftJoin('material.supplier as su', function($join) use ($request){
-                                            $join = $join->on('su.suppcode', '=', 'ap.suppcode')
-                                                        ->where('su.compcode','=',session('compcode'));
-                                        })
-                                        ->where('ap.compcode',session('compcode'))
-                                        ->where('ap.source',$value->source)
-                                        ->where('ap.trantype',$value->trantype)
-                                        ->where('ap.auditno',$value->auditno);
+                        // $apacthdr = DB::table('finance.apacthdr as ap')
+                        //                 ->select('su.Name as suppname','ap.pvno','ap.bankcode')
+                        //                 ->leftJoin('material.supplier as su', function($join) use ($request){
+                        //                     $join = $join->on('su.suppcode', '=', 'ap.suppcode')
+                        //                                 ->where('su.compcode','=',session('compcode'));
+                        //                 })
+                        //                 ->where('ap.compcode',session('compcode'))
+                        //                 ->where('ap.source',$value->source)
+                        //                 ->where('ap.trantype',$value->trantype)
+                        //                 ->where('ap.auditno',$value->auditno);
 
-                        if($apacthdr->exists()){
-                            $value->reference = $apacthdr->first()->suppname;
+                        if(!empty($value->ap_idno)){
+                            $value->reference = $value->bankcode.' '.$value->pvno;
+                            // $value->auditno = $value->pvno;
                         }else{
                             $value->reference = $value->remarks;
                         }
@@ -548,7 +580,7 @@ class bankReconController extends defaultController
                 case 'PB':
                     if($value->trantype == 'RC' || $value->trantype == 'RD' || $value->trantype == 'RF'){
                         $dbacthdr = DB::table('debtor.dbacthdr as db')
-                                        ->select('dm.Name as name')
+                                        ->select('dm.Name as debtorname')
                                         ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
                                             $join = $join->on('dm.debtorcode', '=', 'db.payercode')
                                                         ->where('dm.compcode','=',session('compcode'));
@@ -559,7 +591,7 @@ class bankReconController extends defaultController
                                         ->where('db.auditno',$value->auditno);
 
                         if($dbacthdr->exists()){
-                            $value->reference = $dbacthdr->first()->name;
+                            $value->reference = $dbacthdr->first()->debtorname;
                         }else{
                             $value->reference = $value->remarks;
                         }
@@ -568,19 +600,19 @@ class bankReconController extends defaultController
                     }
                 case 'CM':
                     if($value->trantype == 'DP'){
-                        $apacthdr = DB::table('finance.apacthdr as ap')
-                                        ->select('su.Name as suppname')
-                                        ->leftJoin('material.supplier as su', function($join) use ($request){
-                                            $join = $join->on('su.suppcode', '=', 'ap.suppcode')
-                                                        ->where('su.compcode','=',session('compcode'));
-                                        })
-                                        ->where('ap.compcode',session('compcode'))
-                                        ->where('ap.source',$value->source)
-                                        ->where('ap.trantype',$value->trantype)
-                                        ->where('ap.auditno',$value->auditno);
+                        // $apacthdr = DB::table('finance.apacthdr as ap')
+                        //                 ->select('su.Name as suppname')
+                        //                 ->leftJoin('material.supplier as su', function($join) use ($request){
+                        //                     $join = $join->on('su.suppcode', '=', 'ap.suppcode')
+                        //                                 ->where('su.compcode','=',session('compcode'));
+                        //                 })
+                        //                 ->where('ap.compcode',session('compcode'))
+                        //                 ->where('ap.source',$value->source)
+                        //                 ->where('ap.trantype',$value->trantype)
+                        //                 ->where('ap.auditno',$value->auditno);
 
-                        if($apacthdr->exists()){
-                            $value->reference = $apacthdr->first()->suppname;
+                        if(!empty($value->ap_idno)){
+                            $value->reference = $value->suppname;
                         }else{
                             $value->reference = $value->remarks;
                         }

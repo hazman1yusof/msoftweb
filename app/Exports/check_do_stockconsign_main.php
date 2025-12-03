@@ -65,6 +65,12 @@ class check_do_stockconsign_main implements WithMultipleSheets
                         })
                         ->get();
 
+        $deldept = collect($delorddt)->unique('deldept');
+        foreach ($deldept as $obj_d) {
+            $obj_d->_20010042 = 0;
+            $obj_d->_20010044 = 0;
+        }
+
         foreach ($delorddt as $obj) {
             $product_obj = DB::table('material.product')
                     ->where('compcode','=', '9b')
@@ -135,8 +141,18 @@ class check_do_stockconsign_main implements WithMultipleSheets
 
             if($dracc == '20010042'){
                 $_20010042 = $_20010042 + round($amount, 2);
+                foreach ($deldept as $key_d => $obj_d) {
+                    if($obj->deldept == $obj_d->deldept){
+                        $obj_d->_20010042 = $obj_d->_20010042 + round($amount, 2);
+                    }
+                }
             }else if($dracc == '20010044'){
                 $_20010044 = $_20010044 + round($amount, 2);
+                foreach ($deldept as $key_d => $obj_d) {
+                    if($obj->deldept == $obj_d->deldept){
+                        $obj_d->_20010044 = $obj_d->_20010044 + round($amount, 2);
+                    }
+                }
             }
 
             $obj->newamt = round($amount, 2);
@@ -148,10 +164,10 @@ class check_do_stockconsign_main implements WithMultipleSheets
         }
 
         $deldept = collect($delorddt)->unique('deldept');
-        $sheets[0] = new check_do_stockconsign('-',$delorddt,'main',$_20010042,$_20010044);
+        $sheets[0] = new check_do_stockconsign('-',$deldept,'main',$_20010042,$_20010044);
 
-        foreach ($deldept as $key => $obj) {
-            $sheets[$key+1] = new check_do_stockconsign($obj->deldept,$delorddt,'sheet',$_20010042,$_20010044);
+        foreach ($deldept as $key => $obj_d) {
+            $sheets[$key+1] = new check_do_stockconsign($obj_d->deldept,$delorddt,'sheet',$obj_d->_20010042,$obj_d->_20010044);
         }
 
         // DB::table('finance.gltran')
