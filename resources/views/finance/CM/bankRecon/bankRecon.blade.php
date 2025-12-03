@@ -255,5 +255,5 @@ i.fa {
 			
 		});
 	</script>
-	<script src="js/finance/CM/bankRecon/bankRecon.js?v=1.7"></script>
+	<script src="js/finance/CM/bankRecon/bankRecon.js?v=1.8"></script>
 @endsection
