@@ -526,7 +526,7 @@ class bankReconController extends defaultController
                 case 'AP':
                     if($value->trantype == 'PV' || $value->trantype == 'PV'){
                         $apacthdr = DB::table('finance.apacthdr as ap')
-                                        ->select('su.Name as suppname')
+                                        ->select('su.Name as suppname','ap.pvno','ap.bankcode')
                                         ->leftJoin('material.supplier as su', function($join) use ($request){
                                             $join = $join->on('su.suppcode', '=', 'ap.suppcode')
                                                         ->where('su.compcode','=',session('compcode'));
@@ -537,7 +537,7 @@ class bankReconController extends defaultController
                                         ->where('ap.auditno',$value->auditno);
 
                         if($apacthdr->exists()){
-                            $value->reference = $apacthdr->first()->suppname;
+                            $value->reference = $apacthdr->first()->bankcode.' '.$apacthdr->first()->pvno;
                         }else{
                             $value->reference = $value->remarks;
                         }
