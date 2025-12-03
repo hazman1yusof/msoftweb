@@ -568,7 +568,7 @@ class GoodReturnCreditController extends defaultController
 
                     //utk debit accountcode
                     $row_cat = DB::table('material.category')
-                        ->select('stockacct')
+                        ->select('stockacct','adjacct')
                         ->where('compcode','=',session('compcode'))
                         ->where('catcode','=',$productcat)
                         ->first();
@@ -595,19 +595,19 @@ class GoodReturnCreditController extends defaultController
                             'postdate' => $ivtxnhd_obj->trandate,
                             'year' => $yearperiod->year,
                             'period' => $yearperiod->period,
-                            'drcostcode' => $row_sysparam->pvalue1,
-                            'dracc' => $row_sysparam->pvalue2,
+                            'drcostcode' => $deldeptobj->costcode,
+                            'dracc' => $row_cat->stockacct,
                             'crcostcode' => $deldeptobj->costcode,
-                            'cracc' => $row_cat->stockacct,
+                            'cracc' => $row_cat->adjacct,
                             'amount' => $value->amount,
                             'idno' => $value->itemcode
                         ]);
 
                     $this->init_glmastdtl(
-                            $row_sysparam->pvalue1,//drcostcode
-                            $row_sysparam->pvalue2,//dracc
+                            $deldeptobj->costcode,//drcostcode
+                            $row_cat->stockacct,//dracc
                             $deldeptobj->costcode,//crcostcode
-                            $row_cat->stockacct,//cracc
+                            $row_cat->adjacct,//cracc
                             $yearperiod,
                             $value->amount
                         );

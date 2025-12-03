@@ -7,6 +7,9 @@
         <td style="font-weight:bold;text-align: left">Debtor Name</td>
         <td style="font-weight:bold;text-align: left">Patient Name</td>
         <td style="font-weight:bold;text-align: right">Amount</td>
+        @if($scope=='POLI')
+        <td style="font-weight:bold;text-align: right">Reference</td>
+        @endif
     </tr>
     @php($x = 2)
     @foreach ($dbacthdr as $obj)
@@ -19,6 +22,9 @@
             <td>{{$obj->pm_name}}</td>
             <!-- <td data-format="0.00" style="text-align: right">{{number_format($obj->amount, 2, '.', ',')}}</td> -->
             <td style="text-align: right">{{$obj->amount}}</td>
+            @if($scope=='POLI')
+            <td style="text-align: right">{{$obj->reference}}</td>
+            @endif
         </tr>
         @php($x++)
     @endforeach

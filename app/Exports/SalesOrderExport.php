@@ -57,7 +57,8 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths, WithC
             'D' => 15,   
             'E' => 40,  
             'F' => 40,
-            'G' => 15,   
+            'G' => 15,  
+            'H' => 20,    
                  
         ];
     }
@@ -70,7 +71,7 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths, WithC
         $scope = $this->scope;
         
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
-                        ->select('dh.invno', 'dh.posteddate','dh.mrn', 'dh.deptcode', 'dh.amount','dh.debtorcode')
+                        ->select('dh.invno', 'dh.posteddate','dh.mrn', 'dh.deptcode', 'dh.amount','dh.debtorcode','dh.reference')
                         // ->leftJoin('debtor.debtormast as dm', function($join){
                          // 'dm.debtorcode as dm_debtorcode', 'dm.name as debtorname'
                         //     $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
@@ -143,7 +144,7 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths, WithC
             }
         }
         
-        return view('finance.SalesOrder_Report.SalesOrder_Report_excel',compact('dbacthdr', 'totalAmount', 'company', 'title'));
+        return view('finance.SalesOrder_Report.SalesOrder_Report_excel',compact('dbacthdr', 'totalAmount', 'company', 'title','scope'));
     }
 
     public function registerEvents(): array
