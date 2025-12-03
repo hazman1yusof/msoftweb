@@ -569,7 +569,7 @@ class bankReconController extends defaultController
 
                         if(!empty($value->ap_idno)){
                             $value->reference = $value->bankcode.' '.$value->pvno;
-                            $value->auditno = $value->pvno;
+                            // $value->auditno = $value->pvno;
                         }else{
                             $value->reference = $value->remarks;
                         }
