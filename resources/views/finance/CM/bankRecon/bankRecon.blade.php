@@ -88,7 +88,6 @@ i.fa {
   				<label for="bankname">&nbsp;</label> 
 					<input id="bankname" name="bankname" type="text" class="form-control input-sm text-uppercase" readonly>
 				</div>
-
   		</div>
   		<div class='col-md-2' style="padding:0 0 15px 0">
   			<form id="formdata">
@@ -175,7 +174,7 @@ i.fa {
 				    right: 10px;
 				    display: none;">
 			</div>
-			<div class='col-md-5' id="jqGrid2_c" style="padding:0 0 15px 0">
+			<div class='col-md-6' id="jqGrid2_c" style="padding:0 0 15px 0">
 				<button id="btn_cbrecdtl_del"  type="button" class="btn btn-default" style="
 					position: absolute;
 			    right: 10px;
@@ -197,7 +196,7 @@ i.fa {
   				</span>
 				</div>
 			</div>
-			<div class='col-md-7' id="jqGrid3_c" style="padding:0 0 15px 0">
+			<div class='col-md-6' id="jqGrid3_c" style="padding:0 0 15px 0">
 				<button id="btn_cbrecdtl_add" type="button" class="btn btn-default" style="
 					position: absolute;
 			    left: 10px;
