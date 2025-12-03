@@ -339,41 +339,41 @@ class PivcController extends defaultController
         
     }
 
-     public function pivc_chart(Request $request){
+    public function pivc_chart(Request $request){
         
         $mrn = $request->mrn;
         $episno = $request->episno;
+        $practiceDate = $request->practiceDate;
+        
         if(!$mrn || !$episno){
             abort(404);
         }
         
-        $pat_mast = DB::table('hisdb.pat_mast as pm')
-                    ->select('pm.MRN','pm.Name','b.ward','b.bednum')
-                    ->leftJoin('hisdb.bedalloc as b', function ($join){
-                        $join = $join->on('b.mrn','=','pm.MRN')
-                                    ->on('b.episno','=','pm.Episno')
-                                    ->where('b.compcode','=',session('compcode'));
-                    })
-                    ->leftJoin('nursing.nursassessment as n', function ($join){
-                        $join = $join->on('n.mrn','=','pm.MRN')
-                                    ->on('n.episno','=','pm.Episno')
-                                    ->where('n.compcode','=',session('compcode'));
-                    })
-                    ->where('pm.CompCode','=',session('compcode'))
-                    ->where('pm.MRN','=',$mrn)
-                    ->where('pm.Episno','=',$episno)
-                    ->first();
-        
-        $bladder = DB::table('nursing.nurs_bladder')
-                    ->select('mrn','episno','shift','entereddate','enteredtime','input','output','positive','negative','remarks','adduser','adddate','computerid')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('mrn','=',$mrn)
-                    ->where('episno','=',$episno)
-                    ->get();
-        
-        return view('hisdb.nursingnote.bladder_chart_pdfmake', compact('pat_mast','bladder'));
+        $pivc = DB::table('nursing.pivc as p')
+                ->select('p.idno','p.mrn','p.episno','p.practiceDate','p.hygiene_M','p.hygiene_E','p.hygiene_N','p.dressing_M','p.dressing_E','p.dressing_N','p.alcoholSwab_M','p.alcoholSwab_E','p.alcoholSwab_N','p.siteLabelled_M','p.siteLabelled_E','p.siteLabelled_N','p.correct_M','p.correct_E','p.correct_N','p.multiDoseVial_M','p.multiDoseVial_E','p.multiDoseVial_N','p.cleanVial_M','p.cleanVial_E','p.cleanVial_N','p.splitSeptum_M','p.splitSeptum_E','p.splitSeptum_N','p.cleanSite_M','p.cleanSite_E','p.cleanSite_N','p.chgSplitSeptum_M','p.chgSplitSeptum_E','p.chgSplitSeptum_N','p.flushingACL_M','p.flushingACL_E','p.flushingACL_N','p.clamping_M','p.clamping_E','p.clamping_N','p.set_M','p.set_E','p.set_N','p.removalPIVC_M','p.removalPIVC_E','p.removalPIVC_N','p.name_M','p.name_E','p.name_N','p.datetime_M','p.datetime_E','p.datetime_N','pm.Name','pm.Newic')
+                ->leftjoin('hisdb.pat_mast as pm', function ($join){
+                    $join = $join->on('pm.MRN','=','p.mrn');
+                    // $join = $join->on('pm.Episno','=','p.episno');
+                    $join = $join->where('pm.compcode','=',session('compcode'));
+                })
+                ->where('p.compcode','=',session('compcode'))
+                ->where('p.mrn','=',$mrn)
+                ->where('p.episno','=',$episno)
+                ->where('p.practiceDate','=',$practiceDate)
+                ->first();    
+        // dd($pivc);
+
+        $pivc_date = DB::table('nursing.pivc as d')
+                // ->select('d.idno','d.mrn','d.episno','d.practiceDate','d.hygiene_M','d.hygiene_E','d.hygiene_N','d.dressing_M','d.dressing_E','d.dressing_N','d.alcoholSwab_M','d.alcoholSwab_E','d.alcoholSwab_N','d.siteLabelled_M','d.siteLabelled_E','d.siteLabelled_N','d.correct_M','d.correct_E','d.correct_N','d.multiDoseVial_M','d.multiDoseVial_E','d.multiDoseVial_N','d.cleanVial_M','d.cleanVial_E','d.cleanVial_N','d.splitSeptum_M','d.splitSeptum_E','d.splitSeptum_N','d.cleanSite_M','d.cleanSite_E','d.cleanSite_N','d.chgSplitSeptum_M','d.chgSplitSeptum_E','d.chgSplitSeptum_N','d.flushingACL_M','d.flushingACL_E','d.flushingACL_N','d.clamping_M','d.clamping_E','d.clamping_N','d.set_M','d.set_E','d.set_N','d.removalPIVC_M','d.removalPIVC_E','d.removalPIVC_N','d.name_M','d.name_E','d.name_N','d.datetime_M','d.datetime_E','d.datetime_N')
+                ->where('d.compcode','=',session('compcode'))
+                ->where('d.mrn','=',$mrn)
+                ->where('d.episno','=',$episno)
+                ->where('d.practiceDate','=',$practiceDate)
+                ->get();
+        // dd($pivc_date);
+
+        return view('hisdb.nursingnote.pivc_chart_pdfmake', compact('pivc','pivc_date'));
         
     }
-    
     
 }

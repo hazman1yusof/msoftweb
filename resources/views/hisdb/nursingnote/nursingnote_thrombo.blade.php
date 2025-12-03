@@ -19,9 +19,9 @@
                 <button type="button" class="btn btn-default" id="cancel_thrombo">
                     <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                 </button>
-                <!-- <button type="button" class="btn btn-default" id="thrombo_chart">
+                <button type="button" class="btn btn-default" id="thrombophlebitis_chart">
                     <span class="fa fa-print fa-lg"></span> Chart 
-                </button> -->
+                </button>
             </div>
         </div>
         
@@ -111,10 +111,10 @@
                                                     <td width="10%"><label for="sitesMetacarpal"><i>Metacarpal:</i></label></td>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="sitesMetacarpal" value="R">Right
+                                                            <input type="radio" name="sitesMetacarpal" value="Rt">Right
                                                         </label>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="sitesMetacarpal" value="L">Left
+                                                            <input type="radio" name="sitesMetacarpal" value="Lt">Left
                                                         </label>
                                                     </td>
                                                 </tr>
@@ -122,10 +122,10 @@
                                                     <td width="10%"><label for="sitesBasilic"><i>Basilic:</i></label></td>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="sitesBasilic" value="R">Right
+                                                            <input type="radio" name="sitesBasilic" value="Rt">Right
                                                         </label>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="sitesBasilic" value="L">Left
+                                                            <input type="radio" name="sitesBasilic" value="Lt">Left
                                                         </label>
                                                     </td>
                                                 </tr>
@@ -133,10 +133,10 @@
                                                     <td width="10%"><label for="sitesCephalic"><i>Cephalic:</i></label></td>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="sitesCephalic" value="R">Right
+                                                            <input type="radio" name="sitesCephalic" value="Rt">Right
                                                         </label>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="sitesCephalic" value="L">Left
+                                                            <input type="radio" name="sitesCephalic" value="Lt">Left
                                                         </label>
                                                     </td>
                                                 </tr>
@@ -144,10 +144,10 @@
                                                     <td width="10%"><label for="sitesMCubital"><i>M. Cubital:</i></label></td>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="sitesMCubital" value="R">Right
+                                                            <input type="radio" name="sitesMCubital" value="Rt">Right
                                                         </label>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="sitesMCubital" value="L">Left
+                                                            <input type="radio" name="sitesMCubital" value="Lt">Left
                                                         </label>
                                                     </td>
                                                 </tr>

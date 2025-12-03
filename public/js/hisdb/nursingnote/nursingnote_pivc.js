@@ -49,6 +49,13 @@ $(document).ready(function (){
         $(this).val(parseFloat($(this).val()).toFixed(2));
     });
     
+    ////////////////////////////////////print button starts////////////////////////////////////
+    
+    $("#pivc_chart").click(function (){
+        window.open('./pivc/pivc_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&practiceDate='+$("#practiceDate").val(), '_blank');
+    });
+    /////////////////////////////////////print button ends/////////////////////////////////////
+
     ////////////////////////////////////////pivc starts////////////////////////////////////////
     $('#datetimepivc_tbl tbody').on('click', 'tr', function (){
         var data = datetimepivc_tbl.row( this ).data();

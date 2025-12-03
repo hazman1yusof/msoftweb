@@ -19,9 +19,9 @@
                 <button type="button" class="btn btn-default" id="cancel_pivc">
                     <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                 </button>
-                <!-- <button type="button" class="btn btn-default" id="pivc_chart">
+                <button type="button" class="btn btn-default" id="pivc_chart">
                     <span class="fa fa-print fa-lg"></span> Chart 
-                </button> -->
+                </button>
             </div>
         </div>
         
