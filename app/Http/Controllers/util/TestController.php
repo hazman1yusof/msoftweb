@@ -7288,7 +7288,7 @@ class TestController extends defaultController
 
                 $ivtxndt = DB::table('material.ivtxndt')
                             ->where('compcode',session('compcode'))
-                            ->where('trantype','!=','PHYCNT')
+                            ->where('recno','!=','5206691')
                             ->where('itemcode',$obj->itemcode)
                             ->where('deptcode',$deptcode)
                             ->where('trandate','>=',$day_start)
