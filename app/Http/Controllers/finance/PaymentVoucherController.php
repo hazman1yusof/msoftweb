@@ -483,7 +483,7 @@ class PaymentVoucherController extends defaultController
                 //calculate total amount from detail
                 $totalAmount = DB::table('finance.apalloc')
                     ->where('compcode','=',session('compcode'))
-                    ->where('unit','=',session('unit'))
+                    // ->where('unit','=',session('unit'))
                     ->where('docsource','=','AP')
                     ->where('doctrantype','=','PV')
                     ->where('docauditno','=',$auditno)
@@ -600,7 +600,7 @@ class PaymentVoucherController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage(), 500);
+            return response($e, 500);
         }
     }
 
@@ -608,189 +608,155 @@ class PaymentVoucherController extends defaultController
 
         if(!empty($request->fixPost)){
             $field = $this->fixPost2($request->field);
-            $idno = substr(strstr($request->table_id,'_'),1);
+            // $idno = substr(strstr($request->table_id,'_'),1);
         }else{
             $field = $request->field;
-            $idno = $request->table_id;
+            // $idno = $request->table_id;
         }
 
-        // $apacthdr_trantype = DB::table('finance.apacthdr')
-        //     ->select('trantype')
-        //     ->where('compcode','=',session('compcode'))
-        //     ->where('auditno','=',$request->apacthdr_auditno)->first();
-          
-        // if ($apacthdr_trantype->trantype == 'PV'){
-            
-        //     DB::beginTransaction();
-        //     // $this->checkduplicate_docno('edit', $request);
+        DB::beginTransaction();
 
-        //     $table = DB::table("finance.apacthdr");
+        // $this->checkduplicate_docno('edit', $request);
+        $table = DB::table("finance.apacthdr");
 
-        //     $array_update = [
-        //         // 'unit' => session('unit'),
-        //         // 'compcode' => session('compcode'),
-        //         'upduser' => session('username'),
-        //         'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-        //         // 'pvno' => $request->apacthdr_pvno,
-        //         // 'doctype' => $request->apacthdr_doctype,
-        //         // 'actdate' => $request->apacthdr_actdate,
-        //         // 'recdate' => $request->apacthdr_postdate,
-        //         // 'postdate' => $request->apacthdr_postdate,
-        //         // 'cheqdate' => $request->apacthdr_cheqdate,
-        //         // 'suppcode' => strtoupper($request->apacthdr_suppcode),
-        //         // 'document' => strtoupper($request->apacthdr_document),
-        //         // 'paymode' => strtoupper($request->apacthdr_paymode),
-        //         // 'bankcode' => strtoupper($request->apacthdr_bankcode),
-        //         // 'cheqno' => strtoupper($request->apacthdr_cheqno),
-        //         'remarks' => strtoupper($request->apacthdr_remarks),
-        //         // 'bankaccno' => $request->apacthdr_bankaccno,
-        //     ];
+        $array_update = [
+            'upduser' => session('username'),
+            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'remarks' => strtoupper($request->apacthdr_remarks),
+        ];
 
-        //     try {
+        try {
+            //////////where//////////
+            $table = $table->where('idno','=',$request->idno);
+            $table->update($array_update);
 
-        //         $idno = $request->idno;
-        //         $table->where('idno','=',$idno)->update($array_update);
-        //         // $apacthdr_ = DB::table('finance.apacthdr')
-        //         //                 ->where('idno','=',$idno)
-        //         //                 ->first();
 
-        //         // foreach ($request->data_detail as $key => $value) {
-        //         //     $ALauditno = $this->defaultSysparam('AP','AL');
+            $apacthdr_obj = DB::table("finance.apacthdr")
+                                ->where('idno','=',$request->idno)
+                                ->first();
 
-        //         //     $apacthdr_IV = DB::table('finance.apacthdr')
-        //         //                 ->where('idno','=',$value['idno'])
-        //         //                 ->first();
+            if ($apacthdr_obj->trantype == 'PV'){
 
-        //         //     $outamount = floatval($value['outamount']);
-        //         //     $allocamount = floatval($value['outamount']) - floatval($value['balance']);
-        //         //     $newoutamount_IV = floatval($outamount - $allocamount);
+                foreach ($request->data_detail as $key => $value){
 
-        //         //     if($allocamount == 0 || $value['can_alloc'] == 'false'){
-        //         //         continue;
-        //         //     }
+                    $apacthdr_IV = DB::table('finance.apacthdr')
+                                ->where('idno','=',$value['idno'])
+                                ->first();
 
-        //         //     $lineno_ = DB::table('finance.apalloc') 
-        //         //         ->where('compcode','=',session('compcode'))
-        //         //         ->where('docauditno','=',$apacthdr_->auditno)
-        //         //         ->where('docsource','=','AP')
-        //         //         ->where('doctrantype','=','PV')->max('lineno_');
+                    $ALauditno = $this->defaultSysparam('AP','AL');
 
-        //         //     if($lineno_ == null){
-        //         //         $lineno_ = 1;
-        //         //     }else{
-        //         //         $lineno_ = $lineno_+1;
-        //         //     }
+                    $apalloc = DB::table('finance.apalloc')
+                                ->where('docsource','=',$apacthdr_obj->source)
+                                ->where('doctrantype','=',$apacthdr_obj->trantype)
+                                ->where('docauditno','=',$apacthdr_obj->auditno)
+                                ->where('refsource','=',$apacthdr_IV->source)
+                                ->where('reftrantype','=',$apacthdr_IV->trantype)
+                                ->where('refauditno','=',$apacthdr_IV->auditno)
+                                ->where('recstatus','!=','DELETE')
+                                ->where('recstatus','!=','CANCELLED');
 
-        //         //     DB::table('finance.apalloc')
-        //         //         ->insert([
-        //         //             'compcode' => session('compcode'),
-        //         //             'unit' => session('unit'),
-        //         //             'source' => 'AP',
-        //         //             'trantype' => 'AL',
-        //         //             'auditno' => $ALauditno,
-        //         //             'lineno_' => $lineno_,
-        //         //             'docsource' => $apacthdr_->source,
-        //         //             'doctrantype' => $apacthdr_->trantype,
-        //         //             'docauditno' => $apacthdr_->auditno,
-        //         //             'refsource' => $apacthdr_IV->source,
-        //         //             'reftrantype' => $apacthdr_IV->trantype,
-        //         //             'refauditno' => $apacthdr_IV->auditno,
-        //         //             'refamount' => $apacthdr_IV->amount,
-        //         //             // 'allocdate' => $request->apacthdr_actdate,//blank
-        //         //             'reference' => $value['reference'],
-        //         //             'remarks' => strtoupper($value['remarks']),
-        //         //             'allocamount' => $allocamount,
-        //         //             'outamount' => $outamount,
-        //         //             'balance' => $value['balance'],
-        //         //             'paymode' => $request->apacthdr_paymode,
-        //         //             'cheqdate' => $request->apacthdr_cheqdate,
-        //         //             // 'recdate' => $request->apacthdr_recdate,
-        //         //             'bankcode' => $request->apacthdr_bankcode,
-        //         //             'suppcode' => $request->apacthdr_suppcode,
-        //         //             'lastuser' => session('username'),
-        //         //             'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-        //         //             'recstatus' => 'OPEN'
-        //         //         ]);
+                    if($apalloc->exists()){
+                        throw new \Exception('Allocation already exists', 500);
+                    }
 
-        //         //     $apacthdr_IV = DB::table('finance.apacthdr')
-        //         //                 ->where('idno','=',$value['idno'])
-        //         //                 ->update([
-        //         //                     'outamount' => $newoutamount_IV
-        //         //                 ]);
-        //         // }
+                    $outamount = floatval($value['outamount']);
+                    $balance = floatval($value['balance']);
+                    $allocamount = floatval($value['outamount']) - floatval($value['balance']);
+                    $newoutamount_IV = floatval($outamount - $allocamount);
 
-        //         // //calculate total amount from detail
-        //         // $totalAmount = DB::table('finance.apalloc')
-        //         //     ->where('compcode','=',session('compcode'))
-        //         //     ->where('unit','=',session('unit'))
-        //         //     ->where('docsource','=','AP')
-        //         //     ->where('doctrantype','=','PV')
-        //         //     ->where('docauditno','=',$apacthdr_->auditno)
-        //         //     ->where('recstatus','!=','CANCELLED')
-        //         //     ->where('recstatus','!=','DELETE')
-        //         //     ->sum('allocamount');
+                    if($allocamount == 0 || $value['can_alloc'] == 'false'){
+                        continue;
+                    }
+
+                    $lineno_ = DB::table('finance.apalloc') 
+                        ->where('compcode','=',session('compcode'))
+                        ->where('docauditno','=',$apacthdr_obj->auditno)
+                        ->where('docsource','=','AP')
+                        ->where('doctrantype','=','PV')->max('lineno_');
+
+                    if($lineno_ == null){
+                        $lineno_ = 1;
+                    }else{
+                        $lineno_ = $lineno_+1;
+                    }
+
+                    DB::table('finance.apalloc')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'unit' => session('unit'),
+                            'source' => 'AP',
+                            'trantype' => 'AL',
+                            'auditno' => $ALauditno,
+                            'lineno_' => $lineno_,
+                            'docsource' => $apacthdr_obj->source,
+                            'doctrantype' => $apacthdr_obj->trantype,
+                            'docauditno' => $apacthdr_obj->auditno,
+                            'refsource' => $apacthdr_IV->source,
+                            'reftrantype' => $apacthdr_IV->trantype,
+                            'refauditno' => $apacthdr_IV->auditno,
+                            'refamount' => $apacthdr_IV->amount,
+                            'allocdate' => $apacthdr_obj->actdate,//blank
+                            'reference' => $value['reference'],
+                            'remarks' => strtoupper($value['remarks']),
+                            'allocamount' => $allocamount,
+                            'outamount' => $outamount,
+                            'balance' => $balance,
+                            'paymode' => $apacthdr_obj->paymode,
+                            'cheqdate' => $apacthdr_obj->cheqdate,
+                            // 'recdate' => $request->apacthdr_recdate,
+                            'bankcode' => $apacthdr_obj->bankcode,
+                            'suppcode' => $apacthdr_obj->suppcode,
+                            'lastuser' => session('username'),
+                            'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'recstatus' => 'OPEN'
+                        ]);
+
+                    $apacthdr_IV = DB::table('finance.apacthdr')
+                                ->where('idno','=',$value['idno'])
+                                ->update([
+                                    'outamount' => $newoutamount_IV
+                                ]);
+                }
+
+                //calculate total amount from detail
+                $totalAmount = DB::table('finance.apalloc')
+                    ->where('compcode','=',session('compcode'))
+                    // ->where('unit','=',session('unit'))
+                    ->where('docsource','=','AP')
+                    ->where('doctrantype','=','PV')
+                    ->where('docauditno','=',$apacthdr_obj->auditno)
+                    ->where('recstatus','!=','DELETE')
+                    ->where('recstatus','!=','CANCELLED')
+                    ->sum('allocamount');
                 
-        //         // DB::table('finance.apacthdr')
-        //         //     ->where('idno','=',$idno)
-        //         //     ->update([
-        //         //         'amount' => $totalAmount,
-        //         //         'recstatus' => 'OPEN'
-        //         //     ]);
+                DB::table('finance.apacthdr')
+                    ->where('idno','=',$apacthdr_obj->idno)
+                    ->update([
+                        'amount' => $totalAmount,
+                        'outamount' => $totalAmount,
+                        'recstatus' => 'OPEN'
+                    ]);
 
-        //         DB::commit();
-
-        //         $responce = new stdClass();
-        //         $responce->result = 'success';
-
-        //         return json_encode($responce);
-        //     } catch (\Exception $e) {
-        //         DB::rollback();
-
-        //         return response('Error'.$e, 500);
-        //     }
-
-        // } else {
-
-            DB::beginTransaction();
-
-            // $this->checkduplicate_docno('edit', $request);
-            $table = DB::table("finance.apacthdr");
-
-            $array_update = [
-                'upduser' => session('username'),
-                'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                // 'pvno' => $request->apacthdr_pvno,
-                // // 'doctype' => $request->apacthdr_doctype,
-                // 'actdate' => $request->apacthdr_actdate,
-                // 'recdate' => $request->apacthdr_postdate,
-                // 'postdate' => $request->apacthdr_postdate,
-                // 'cheqdate' => $request->apacthdr_cheqdate,
-                // 'amount' => $request->apacthdr_amount,
-                // 'suppcode' => strtoupper($request->apacthdr_suppcode),
-                // 'payto' => strtoupper($request->apacthdr_payto),
-                // 'document' => strtoupper($request->apacthdr_document),
-                // 'paymode' => strtoupper($request->apacthdr_paymode),
-                // 'bankcode' => strtoupper($request->apacthdr_bankcode),
-                // 'cheqno' => strtoupper($request->apacthdr_cheqno),
-                'remarks' => strtoupper($request->apacthdr_remarks),
-            ];
-
-            try {
-                //////////where//////////
-                $table = $table->where('idno','=',$request->idno);
-                $table->update($array_update);
-
-
-                DB::commit();
+                if($allocamount > $outamount){
+                    throw new \Exception('Amount paid exceed outamount', 500);
+                }
 
                 $responce = new stdClass();
-                echo json_encode($responce);
-            } catch (\Exception $e) {
-                DB::rollback();
-
-                return response($e->getMessage(), 500);
+                $responce->auditno = $apacthdr_obj->auditno;
+                $responce->idno = $apacthdr_obj->idno;
+                $responce->totalAmount = $totalAmount;
+            
             }
-        // }
+
+            DB::commit();
+
+            $responce = new stdClass();
+            echo json_encode($responce);
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
     }
 
     public function posted_lama(Request $request){
@@ -826,7 +792,7 @@ class PaymentVoucherController extends defaultController
 
                 $apalloc = DB::table('finance.apalloc')
                     ->where('compcode','=',session('compcode'))
-                    ->where('unit','=',session('unit'))
+                    // ->where('unit','=',session('unit'))
                     ->where('docsource','=', $apacthdr->source)
                     ->where('doctrantype','=', $apacthdr->trantype)
                     ->where('docauditno','=', $apacthdr->auditno)
@@ -899,7 +865,7 @@ class PaymentVoucherController extends defaultController
                 if($apacthdr->trantype == 'PV'){
                     DB::table('finance.apalloc')
                         ->where('compcode','=',session('compcode'))
-                        ->where('unit','=',session('unit'))
+                        // ->where('unit','=',session('unit'))
                         ->where('docsource','=','AP')
                         ->where('doctrantype','=','PV')
                         ->where('docauditno','=',$apacthdr->auditno)
@@ -975,7 +941,7 @@ class PaymentVoucherController extends defaultController
                 if($apacthdr->trantype == 'PV'){
                     DB::table('finance.apalloc')
                         ->where('compcode','=',session('compcode'))
-                        ->where('unit','=',session('unit'))
+                        // ->where('unit','=',session('unit'))
                         ->where('docsource','=','AP')
                         ->where('doctrantype','=','PV')
                         ->where('docauditno','=',$apacthdr->auditno)
@@ -1071,7 +1037,7 @@ class PaymentVoucherController extends defaultController
                 if($apacthdr->trantype == 'PV'){
                     DB::table('finance.apalloc')
                         ->where('compcode','=',session('compcode'))
-                        ->where('unit','=',session('unit'))
+                        // ->where('unit','=',session('unit'))
                         ->where('docsource','=','AP')
                         ->where('doctrantype','=','PV')
                         ->where('docauditno','=',$apacthdr->auditno)
@@ -1160,7 +1126,7 @@ class PaymentVoucherController extends defaultController
                 if($apacthdr->trantype == 'PV'){
                     DB::table('finance.apalloc')
                         ->where('compcode','=',session('compcode'))
-                        ->where('unit','=',session('unit'))
+                        // ->where('unit','=',session('unit'))
                         ->where('docsource','=','AP')
                         ->where('doctrantype','=','PV')
                         ->where('docauditno','=',$apacthdr->auditno)
@@ -1530,7 +1496,7 @@ class PaymentVoucherController extends defaultController
 
             $apacthdr = DB::table('finance.apacthdr')
                         ->where('compcode','=',session('compcode'))
-                        ->where('unit','=',session('unit'))
+                        // ->where('unit','=',session('unit'))
                         ->where('source','=',$apalloc->docsource)
                         ->where('trantype','=',$apalloc->doctrantype)
                         ->where('auditno','=',$apalloc->docauditno)
@@ -1542,7 +1508,7 @@ class PaymentVoucherController extends defaultController
 
             $refapacthdr = DB::table('finance.apacthdr')
                                     ->where('compcode','=',session('compcode'))
-                                    ->where('unit','=',session('unit'))
+                                    // ->where('unit','=',session('unit'))
                                     ->where('source','=',$apalloc->refsource)
                                     ->where('trantype','=',$apalloc->reftrantype)
                                     ->where('auditno','=',$apalloc->refauditno);
@@ -1562,7 +1528,7 @@ class PaymentVoucherController extends defaultController
             //calculate total amount from detail
             $totalAmount = DB::table('finance.apalloc')
                 ->where('compcode','=',session('compcode'))
-                ->where('unit','=',session('unit'))
+                // ->where('unit','=',session('unit'))
                 ->where('docsource','=',$apalloc->docsource)
                 ->where('doctrantype','=',$apalloc->doctrantype)
                 ->where('docauditno','=',$apalloc->docauditno)
@@ -1572,7 +1538,7 @@ class PaymentVoucherController extends defaultController
             
             DB::table('finance.apacthdr')
                 ->where('compcode','=',session('compcode'))
-                ->where('unit','=',session('unit'))
+                // ->where('unit','=',session('unit'))
                 ->where('source','=',$apalloc->docsource)
                 ->where('trantype','=',$apalloc->doctrantype)
                 ->where('auditno','=',$apalloc->docauditno)
