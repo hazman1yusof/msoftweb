@@ -568,7 +568,7 @@ class bankReconController extends defaultController
                         //                 ->where('ap.auditno',$value->auditno);
 
                         if(!empty($value->ap_idno)){
-                            $value->reference = $value->ap_idno.' '.$value->pvno;
+                            $value->reference = $value->bankcode.' '.$value->pvno;
                             $value->auditno = $value->pvno;
                         }else{
                             $value->reference = $value->remarks;

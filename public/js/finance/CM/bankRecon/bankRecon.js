@@ -331,6 +331,8 @@ $(document).ready(function () {
 				{label:'Document Date',name:'recdate',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Closing Bank Statement',name:'openamt',width:400,classes:'pointer'},
 			],
+			sortname:'recdate',
+			sortorder:'desc',
 			urlParam: {
 				filterCol:['compcode','bankcode','recdate.>='],
 				filterVal:['session.compcode','','2025-05-01']
