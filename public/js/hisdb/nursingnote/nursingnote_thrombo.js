@@ -64,6 +64,13 @@ $(document).ready(function (){
     $(".floatNumberField").change(function (){
         $(this).val(parseFloat($(this).val()).toFixed(2));
     });
+
+    ////////////////////////////////////print button starts////////////////////////////////////
+    
+    $("#thrombophlebitis_chart").click(function (){
+        window.open('./thrombophlebitis/thrombophlebitis_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&dateInsert='+$("#dateInsert").val(), '_blank');
+    });
+    /////////////////////////////////////print button ends/////////////////////////////////////
     
     ////////////////////////////////////////thrombo starts////////////////////////////////////////
     $('#datetimethrombo_tbl tbody').on('click', 'tr', function (){
@@ -132,7 +139,7 @@ $(document).ready(function (){
 		colModel: [
             { label: 'Flushing<br>Done', name: 'flushingDone', width: 100, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
 				editoptions: {
-					value: "1:YES;0:NO"
+					value: "Yes:YES;No:NO"
 				}
 			},
 			{ label: 'Date', name: 'dateAssessment', width: 100, classes: 'wrap', editable: true, 
@@ -155,12 +162,12 @@ $(document).ready(function (){
 			},
 			{ label: 'Shift', name: 'shift', width: 130, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
 				editoptions: {
-					value: "M:MORNING;E:EVENING;N:NIGHT"
+					value: "Morning:MORNING;Evening:EVENING;Night:NIGHT"
 				}
 			},
             { label: 'Dressing<br>Changed', name: 'dressingChanged', width: 130, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
 				editoptions: {
-					value: "1:YES;0:NO"
+					value: "Yes:YES;No:NO"
 				}
 			},
 			{ label: 'Sign/Name', name: 'staffId', width: 180, editable: true },

@@ -364,5 +364,49 @@ class ThrombophlebitisController extends defaultController
         return json_encode($responce);
         
     }
+
+    public function thrombophlebitis_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        $dateInsert = $request->dateInsert;
+        
+        if(!$mrn || !$episno){
+            abort(404);
+        }
+        
+        $thrombo = DB::table('nursing.thrombophlebitis as p')
+                ->select('p.idno','p.mrn','p.episno','p.dateInsert','p.timeInsert','p.gauge','p.attempts','p.sitesMetacarpal','p.sitesBasilic','p.sitesCephalic','p.sitesMCubital','p.dateRemoval','p.timeRemoval','p.totIndwelling','p.remarksThrombo','pm.Name','pm.Newic')
+                ->leftjoin('hisdb.pat_mast as pm', function ($join){
+                    $join = $join->on('pm.MRN','=','p.mrn');
+                    // $join = $join->on('pm.Episno','=','p.episno');
+                    $join = $join->where('pm.compcode','=',session('compcode'));
+                })
+                ->where('p.compcode','=',session('compcode'))
+                ->where('p.mrn','=',$mrn)
+                ->where('p.episno','=',$episno)
+                ->where('p.dateInsert','=',$dateInsert)
+                ->first();    
+        // dd($thrombo);
+
+        $thromboGrid = DB::table('nursing.thrombophlebitisadd as r')
+                ->select('r.idno','r.mrn','r.episno','r.cannulationNo','r.flushingDone','r.dateAssessment','r.shift','r.dressingChanged','r.staffId','r.phlebitisGrade','r.infiltration','r.hematoma','r.extravasation','r.occlusion','r.asPerProtocol','r.ptDischarged','r.ivTerminate','r.fibrinClot','r.kinkedHub','r.kinkedShaft','r.tipDamage','h.idno')
+                ->leftjoin('nursing.thrombophlebitis as h', function ($join){
+                    $join = $join->on('h.mrn','=','r.mrn');
+                    $join = $join->on('h.episno','=','r.episno');
+                    $join = $join->where('h.compcode','=',session('compcode'));
+                })
+                ->where('r.compcode','=',session('compcode'))
+                ->where('r.mrn','=',$mrn)
+                ->where('r.episno','=',$episno)
+                ->where('h.dateInsert','=',$dateInsert)
+                ->where('r.cannulationNo','=',$thrombo->idno)
+                ->get();
+
+        // dd($thromboGrid);
+
+        return view('hisdb.nursingnote.thrombo_chart_pdfmake', compact('thrombo','thromboGrid'));
+        
+    }
     
 }
