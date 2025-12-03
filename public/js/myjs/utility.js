@@ -1099,6 +1099,8 @@ function setactdate(target,cantmorethantoday = false){
 					$.each(element, function( index, value ) {
 						if(index.match('periodstatus') && value == 'O'){
 							let seldate = moment(element["datefr"+index.match(/\d+/)[0]]);
+							let seldate_to = moment(element["dateto"+index.match(/\d+/)[0]]);
+
 							if(self.lowest_opendate == null){
 								self.lowest_opendate=seldate;
 							}else{
@@ -1107,10 +1109,10 @@ function setactdate(target,cantmorethantoday = false){
 								}
 							}
 							if(self.highest_opendate == null){
-								self.highest_opendate=seldate;
+								self.highest_opendate=seldate_to;
 							}else{
-								if(seldate.isAfter(self.highest_opendate)){
-									self.highest_opendate = seldate;
+								if(seldate_to.isAfter(self.highest_opendate)){
+									self.highest_opendate = seldate_to;
 								}
 							}
 						}
