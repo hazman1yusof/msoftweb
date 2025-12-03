@@ -312,26 +312,27 @@ class bankReconController extends defaultController
                         ->first();
 
         $table = DB::table('finance.cbrecdtl AS cbdt')
-                    ->select('cbdt.idno','cbdt.compcode','cbdt.auditno','cbdt.docdate','cbdt.year','cbdt.period','cbdt.amount','cbdt.remarks','cbdt.lastuser','cbdt.lastupdate','cbdt.bitype','cbdt.reference','cbdt.stat','cbdt.refsrc','cbdt.reftrantype','cbdt.refauditno','cbdt.recstatus','cbdt.bankcode','cbdt.cheqno','ap.idno as ap_idno','ap.pvno','ap.bankcode as ap_bankcode','su.Name as suppname','dm.Name as debtorname','db.idno as db_idno')
+                    ->select('cbdt.idno','cbdt.compcode','cbdt.auditno','cbdt.docdate','cbdt.year','cbdt.period','cbdt.amount','cbdt.remarks','cbdt.lastuser','cbdt.lastupdate','cbdt.bitype','cbdt.reference','cbdt.stat','cbdt.refsrc','cbdt.reftrantype','cbdt.refauditno','cbdt.recstatus','cbdt.bankcode','cbdt.cheqno','ap.idno as ap_idno','ap.pvno','ap.bankcode as ap_bankcode','su.Name as suppname')
                     ->leftJoin('finance.apacthdr as ap', function($join){
                         $join = $join->where('ap.compcode',session('compcode'))
                                         ->on('ap.source','cbdt.refsrc')
                                         ->on('ap.trantype','cbdt.reftrantype')
                                         ->on('ap.auditno','cbdt.refauditno');
                     })
-                    ->leftJoin('debtor.dbacthdr as db', function($join){
-                        $join = $join->where('db.compcode',session('compcode'))
-                                        ->on('db.source','cbdt.refsrc')
-                                        ->on('db.trantype','cbdt.reftrantype')
-                                        ->on('db.auditno','cbdt.refauditno');
-                    })
+                    // ->leftJoin('debtor.dbacthdr as db', function($join){ ,'dm.Name as debtorname','db.idno as db_idno'
+                    //     $join = $join->where('db.compcode',session('compcode'))
+                    //                     ->on('db.source','cbdt.refsrc')
+                    //                     ->on('db.trantype','cbdt.reftrantype')
+                    //                     ->on('db.auditno','cbdt.refauditno');
+                    // })
                     ->leftJoin('material.supplier as su', function($join){
                         $join = $join->on('su.suppcode', '=', 'ap.suppcode')
                                     ->where('su.compcode','=',session('compcode'));
-                    })->leftJoin('debtor.debtormast as dm', function($join){
-                        $join = $join->on('dm.debtorcode', '=', 'db.payercode')
-                                    ->where('dm.compcode','=',session('compcode'));
                     })
+                    // ->leftJoin('debtor.debtormast as dm', function($join){
+                    //     $join = $join->on('dm.debtorcode', '=', 'db.payercode')
+                    //                 ->where('dm.compcode','=',session('compcode'));
+                    // })
                     ->where('cbdt.compcode','=', session('compcode'))
                     ->where('cbdt.auditno','=', $cbhdr->auditno);
 
@@ -425,19 +426,19 @@ class bankReconController extends defaultController
                     break;
                 case 'PB':
                     if($value->reftrantype == 'RC' || $value->reftrantype == 'RD' || $value->reftrantype == 'RF'){
-                        // $dbacthdr = DB::table('debtor.dbacthdr as db')
-                        //                 ->select('dm.Name as name')
-                        //                 ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
-                        //                     $join = $join->on('dm.debtorcode', '=', 'db.payercode')
-                        //                                 ->where('dm.compcode','=',session('compcode'));
-                        //                 })
-                        //                 ->where('db.compcode',session('compcode'))
-                        //                 ->where('db.source',$value->refsrc)
-                        //                 ->where('db.trantype',$value->reftrantype)
-                        //                 ->where('db.auditno',$value->refauditno);
+                        $dbacthdr = DB::table('debtor.dbacthdr as db')
+                                        ->select('dm.Name as name')
+                                        ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
+                                            $join = $join->on('dm.debtorcode', '=', 'db.payercode')
+                                                        ->where('dm.compcode','=',session('compcode'));
+                                        })
+                                        ->where('db.compcode',session('compcode'))
+                                        ->where('db.source',$value->refsrc)
+                                        ->where('db.trantype',$value->reftrantype)
+                                        ->where('db.auditno',$value->refauditno);
 
-                        if(!empty($value->db_idno)){
-                            $value->reference = $value->debtorname;
+                        if($dbacthdr->exists()){
+                            $value->reference = $dbacthdr->first()->name;
                         }else{
                             $value->reference = $value->remarks;
                         }
