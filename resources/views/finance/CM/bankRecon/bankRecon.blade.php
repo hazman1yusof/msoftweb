@@ -163,6 +163,7 @@ i.fa {
 						<option value="trantype" >Trantype</option>
 						<option value="auditno" >Auditno</option>
 						<option value="pvno" >PV No</option>
+						<option value="recptno" >Receipt No</option>
 					</select>
 					<input id="alloText" placeholder="Search Here.." type="text" class="form-control input-sm" style="width: 200px;
 				    position: absolute;
@@ -255,5 +256,5 @@ i.fa {
 			
 		});
 	</script>
-	<script src="js/finance/CM/bankRecon/bankRecon.js?v=1.8"></script>
+	<script src="js/finance/CM/bankRecon/bankRecon.js?v=1.9"></script>
 @endsection
