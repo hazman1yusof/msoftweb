@@ -224,6 +224,7 @@ class ReceiptController extends defaultController
                         'postdate' => (!empty($request->dbacthdr_entrydate))? $request->dbacthdr_entrydate : Carbon::now("Asia/Kuala_Lumpur"), 
                         'year' => $yearperiod->year, 
                         'period' => $yearperiod->period, 
+                        'recptno' => $recptno,
                         // 'cheqno' => $request->cheqno, 
                         'amount' => $dbacthdr_amount, 
                         'remarks' => $request->dbacthdr_payername, 

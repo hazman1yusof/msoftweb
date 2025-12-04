@@ -1212,6 +1212,17 @@ class PaymentVoucherController extends defaultController
                             'outamount' => 0,
                         ]);
 
+                    DB::table('finance.cbtran')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=',$apacthdr->source)
+                        ->where('trantype','=',$apacthdr->trantype)
+                        ->where('auditno','=',$apacthdr->auditno)
+                        ->update([
+                            'compcode' => 'xx',
+                            'upduser' => session('username'), 
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        ]);
+
                 }else if($apacthdr->recstatus == 'APPROVED'){
 
                     $this->gltran_cancel($idno_obj);

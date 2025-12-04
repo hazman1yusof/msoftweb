@@ -7247,10 +7247,17 @@ class TestController extends defaultController
         DB::beginTransaction();
 
         try {
-            $deptcode='FKWSTR';
-            $period=11;
+            $recno = '5206691';
+
+            $phycnthd = DB::table('material.phycnthd')
+                            ->where('compcode',session('compcode'))
+                            ->where('recno',$recno)
+                            ->first();
+
+            $deptcode=$phycnthd->srcdept;
             $day_start = '2025-11-01';
             $day_end = '2025-11-21';
+            $period=Carbon\Carbon::parse($day_start)->month;
             $day_now = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d');
 
             $phycntdt = DB::table('material.phycntdt')
