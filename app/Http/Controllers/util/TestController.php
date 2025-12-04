@@ -7133,7 +7133,7 @@ class TestController extends defaultController
             $stockloc = DB::table('material.stockloc as s')
                         ->select('s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit')
                         ->where('s.compcode',session('compcode'))
-                        // ->where('itemcode',$itemcode)
+                        // ->where('s.itemcode','KW000571')
                         ->join('material.product as p', function($join) use ($request){
                             $join = $join->on('p.itemcode', '=', 's.itemcode')
                                             ->on('p.uomcode','=','s.uomcode')
@@ -7158,6 +7158,7 @@ class TestController extends defaultController
                 $ivdspdt = DB::table('material.ivdspdt')
                             ->where('compcode',session('compcode'))
                             ->where('itemcode',$value->itemcode)
+                            ->where('uomcode',$value->uomcode)
                             ->where('issdept',$value->deptcode)
                             ->where('trandate','>=',$day_start)
                             ->where('trandate','<=',$day_end)
@@ -7167,6 +7168,7 @@ class TestController extends defaultController
                 $ivtxndt = DB::table('material.ivtxndt')
                             ->where('compcode',session('compcode'))
                             ->where('itemcode',$value->itemcode)
+                            ->where('uomcode',$value->uomcode)
                             ->where('deptcode',$value->deptcode)
                             ->where('trandate','>=',$day_start)
                             ->where('trandate','<=',$day_end)
@@ -7182,7 +7184,7 @@ class TestController extends defaultController
 
                     $crdbfl = $ivtxntype->crdbfl;
 
-                    if($crdbfl == 'In'){
+                    if(strtoupper($crdbfl) == 'IN'){
                         $add = $add + $value->txnqty;
                         $add2 = $add2 + $value->amount;
                     }else{
@@ -7196,6 +7198,7 @@ class TestController extends defaultController
                 $ivdspdt2 = DB::table('material.ivdspdt')
                             ->where('compcode',session('compcode'))
                             ->where('itemcode',$value->itemcode)
+                            ->where('uomcode',$value->uomcode)
                             ->where('trandate','>=',$day_start)
                             ->where('trandate','<=',$day_end)
                             ->sum('amount');
@@ -7225,6 +7228,7 @@ class TestController extends defaultController
                     DB::table('material.stockloc')
                             ->where('compcode',session('compcode'))
                             ->where('itemcode',$value->itemcode)
+                            ->where('uomcode',$value->uomcode)
                             ->where('deptcode',$value->deptcode)
                             ->where('year','2025')
                             ->update($updarr);
@@ -7247,7 +7251,7 @@ class TestController extends defaultController
         DB::beginTransaction();
 
         try {
-            $recno = '5206691';
+            $recno = '5206990';
 
             $phycnthd = DB::table('material.phycnthd')
                             ->where('compcode',session('compcode'))
@@ -7255,14 +7259,15 @@ class TestController extends defaultController
                             ->first();
 
             $deptcode=$phycnthd->srcdept;
-            $day_start = '2025-11-01';
-            $day_end = '2025-11-21';
-            $period=Carbon\Carbon::parse($day_start)->month;
+            $day_start = Carbon::parse($phycnthd->phycntdate)->startOfMonth()->format('Y-m-d');
+            $day_end = $phycnthd->phycntdate;
+            $period = Carbon::parse($day_end)->month;
+            $year = Carbon::parse($day_end)->year;
             $day_now = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d');
 
             $phycntdt = DB::table('material.phycntdt')
                             ->where('compcode',session('compcode'))
-                            ->where('recno','5206691')
+                            ->where('recno',$recno)
                             ->get();
 
             foreach ($phycntdt as $obj) {
@@ -7272,7 +7277,7 @@ class TestController extends defaultController
                         ->where('itemcode',$obj->itemcode)
                         ->where('uomcode',$obj->uomcode)
                         ->where('deptcode',$deptcode)
-                        ->where('year','2025')
+                        ->where('year',$year)
                         ->first();
 
                 $openbalqty = $stockloc->openbalqty;
@@ -7295,7 +7300,7 @@ class TestController extends defaultController
 
                 $ivtxndt = DB::table('material.ivtxndt')
                             ->where('compcode',session('compcode'))
-                            ->where('recno','!=','5206691')
+                            ->where('recno','!=',$recno)
                             ->where('itemcode',$obj->itemcode)
                             ->where('deptcode',$deptcode)
                             ->where('trandate','>=',$day_start)
