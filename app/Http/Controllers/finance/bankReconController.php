@@ -757,6 +757,7 @@ class bankReconController extends defaultController
                             'recstatus' => $cbtran->recstatus,
                             'bankcode' => $cbtran->bankcode,
                             'cheqno' => $cbtran->cheqno,
+                            'recptno' => $cbtran->recptno,
                         ]);
 
                         DB::table('finance.cbtran')
