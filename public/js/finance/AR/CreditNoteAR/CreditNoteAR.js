@@ -1008,7 +1008,7 @@ $(document).ready(function () {
 			if(errorField.length>0)return false;
 			mycurrency2.formatOff();
 			
-			if(parseInt($('#jqGrid2 input[name="amount"]').val()) == 0){
+			if(parseFloat($('#jqGrid2 input[name="amount"]').val()) == 0){
 				myerrorIt_only('#jqGrid2 input[name="amount"]');
 				alert('Amount cant be 0');
 				return false;
@@ -1152,7 +1152,7 @@ $(document).ready(function () {
 					return false;
 				}
 				
-				if(parseInt($("#jqGrid2 input#"+ids[i]+"_amount").val()) == 0){
+				if(parseFloat($("#jqGrid2 input#"+ids[i]+"_amount").val()) == 0){
 					alert('Amount cant be 0');
 					mycurrency2.formatOn();
 					return false;
