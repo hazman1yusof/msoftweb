@@ -19,7 +19,13 @@ use Carbon\Carbon;
 
     public function show(Request $request)
     {   
-        return view('finance.AP.invoiceAP.invoiceAP');
+        $purdept = DB::table('sysdb.department')
+                        ->select('deptcode')
+                        ->where('compcode',session('compcode'))
+                        ->where('purdept',1)
+                        ->get();
+
+        return view('finance.AP.invoiceAP.invoiceAP',compact('purdept'));
     }
 
     public function table(Request $request)
@@ -71,8 +77,12 @@ use Carbon\Carbon;
                     ->where('ap.source','=',$request->source)
                     ->where('ap.trantype','=',$request->trantype);
 
-        if(strtoupper(session('unit')) != 'MRS'){
-                 $table = $table->where('ap.unit','=',session('unit'));
+        // if(strtoupper(session('unit')) != 'MRS'){
+        //          $table = $table->where('ap.unit','=',session('unit'));
+        // }
+
+        if($request->deptcode!='ALL'){
+            $table = $table->where('ap.deptcode','=',$request->deptcode);
         }
 
         if(!empty($request->filterCol)){

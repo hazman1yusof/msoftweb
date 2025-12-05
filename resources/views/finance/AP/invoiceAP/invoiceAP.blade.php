@@ -127,6 +127,20 @@ i.fa {
 			    </select>
 	      </div>
 
+				<div class="col-md-2">
+			  	<label class="control-label" for="Status">Deptcode</label>  
+			  	<select id="deptcode_" name="deptcode_" class="form-control input-sm">
+		      	<option value="ALL">ALL</option>
+			  		@foreach ($purdept as $dept_)
+			      	@if($dept_->deptcode == Session::get('deptcode'))
+		      		<option value="{{$dept_->deptcode}}" selected>{{$dept_->deptcode}}</option>
+	      			@else
+	      			<option value="{{$dept_->deptcode}}">{{$dept_->deptcode}}</option>
+	      			@endif
+			  		@endforeach
+			    </select>
+	      </div>
+
 				<?php 
 
 					$data_oper = 'none';
@@ -487,7 +501,7 @@ i.fa {
 		});
 	</script>
 
-	<script src="js/finance/AP/invoiceAP/invoiceAP.js?v=1.7"></script>
+	<script src="js/finance/AP/invoiceAP/invoiceAP.js?v=1.8"></script>
 	<script src="js/finance/AP/invoiceAP/pdfgen.js"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

@@ -175,6 +175,7 @@ $(document).ready(function () {
 		url:'./invoiceAP/table',
 		source:$('#apacthdr_source').val(),
 		trantype:$('#apacthdr_trantype').val(),
+		deptcode:$('#deptcode_').val(),
 	}
 
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
@@ -607,7 +608,7 @@ $(document).ready(function () {
 
 	////////////////////////////searching////////////////////////////
 	$('#Scol').on('change', whenchangetodate);
-	$('#Status').on('change', searchChange);
+	$('#Status,#deptcode_').on('change', searchChange);
 	$('#actdate_search').on('click', searchDate);
 
 	function whenchangetodate() {
@@ -689,6 +690,7 @@ $(document).ready(function () {
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
+		urlParam.deptcode = $('#deptcode_').val();
 		refreshGrid('#jqGrid',urlParam);
 	}
 
