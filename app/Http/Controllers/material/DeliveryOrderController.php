@@ -745,7 +745,7 @@ class DeliveryOrderController extends defaultController
                 if($cancel_month->exists()){
                     $cancel_month = $cancel_month->first();
 
-                    if(Carbon::createFromFormat('Y-m-d H:i:s',$delordhd_obj->postdate)->lt(Carbon::createFromFormat('Y-m-d',$cancel_month->pvalue2.'-'.$cancel_month->pvalue1.'-01'))){
+                    if(Carbon::createFromFormat('Y-m-d',$delordhd_obj->postdate)->lt(Carbon::createFromFormat('Y-m-d',$cancel_month->pvalue2.'-'.$cancel_month->pvalue1.'-01'))){
                         throw new \Exception("Cancel disable for date lower than - ".$cancel_month->pvalue2."-".$cancel_month->pvalue1."-01");
                         continue;
                     }
