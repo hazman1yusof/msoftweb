@@ -896,7 +896,7 @@ abstract class defaultController extends Controller{
                     $responce->dateto = $arrvalue['dateto'.$x];
                     return $responce;
                 }else{
-                    throw new \Exception("Period doesnt Exists or cloed on ".$date);
+                    // throw new \Exception("Period doesnt Exists or closed on ".$date);
                 }
             }
         }
