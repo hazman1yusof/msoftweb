@@ -794,7 +794,7 @@ class PaymentVoucherController extends defaultController
                                 ->first();
 
             if($apacthdr_obj->recstatus == 'APPROVED'){
-                retun 0;
+                return 0;
                 // throw new \Exception('Cant edit Approved PV', 500);
             }
 
