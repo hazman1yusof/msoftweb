@@ -635,6 +635,10 @@ class PaymentVoucherController extends defaultController
                                 ->where('idno','=',$request->idno)
                                 ->first();
 
+            if($apacthdr_obj->recstatus == 'APPROVED'){
+                throw new \Exception('Cant edit Approved PV', 500);
+            }
+
             if ($apacthdr_obj->trantype == 'PV'){
 
                 foreach ($request->data_detail as $key => $value){
@@ -734,7 +738,7 @@ class PaymentVoucherController extends defaultController
                     ->update([
                         'amount' => $totalAmount,
                         'outamount' => $totalAmount,
-                        'recstatus' => 'OPEN'
+                        // 'recstatus' => 'OPEN'
                     ]);
 
                 // if($allocamount > $totalAmount){
@@ -744,8 +748,85 @@ class PaymentVoucherController extends defaultController
                 $responce = new stdClass();
                 $responce->auditno = $apacthdr_obj->auditno;
                 $responce->idno = $apacthdr_obj->idno;
-                $responce->totalAmount = $totalAmount;
-            
+                $responce->totalAmount = $totalAmount;            
+            }
+
+            DB::commit();
+
+            $responce = new stdClass();
+            echo json_encode($responce);
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function onClose(Request $request){
+
+        if(!empty($request->fixPost)){
+            $field = $this->fixPost2($request->field);
+            // $idno = substr(strstr($request->table_id,'_'),1);
+        }else{
+            $field = $request->field;
+            // $idno = $request->table_id;
+        }
+
+        DB::beginTransaction();
+
+        // $this->checkduplicate_docno('edit', $request);
+        $table = DB::table("finance.apacthdr");
+
+        $array_update = [
+            'upduser' => session('username'),
+            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'remarks' => strtoupper($request->apacthdr_remarks),
+        ];
+
+        try {
+            //////////where//////////
+            $table = $table->where('idno','=',$request->idno);
+            $table->update($array_update);
+
+
+            $apacthdr_obj = DB::table("finance.apacthdr")
+                                ->where('idno','=',$request->idno)
+                                ->first();
+
+            if($apacthdr_obj->recstatus == 'APPROVED'){
+                retun 0;
+                // throw new \Exception('Cant edit Approved PV', 500);
+            }
+
+            if ($apacthdr_obj->trantype == 'PV'){
+
+                //calculate total amount from detail
+                $totalAmount = DB::table('finance.apalloc')
+                    ->where('compcode','=',session('compcode'))
+                    // ->where('unit','=',session('unit'))
+                    ->where('docsource','=','AP')
+                    ->where('doctrantype','=','PV')
+                    ->where('docauditno','=',$apacthdr_obj->auditno)
+                    ->where('recstatus','!=','DELETE')
+                    ->where('recstatus','!=','CANCELLED')
+                    ->sum('allocamount');
+                
+                DB::table('finance.apacthdr')
+                    ->where('idno','=',$apacthdr_obj->idno)
+                    ->update([
+                        'amount' => $totalAmount,
+                        'outamount' => $totalAmount,
+                        // 'recstatus' => 'OPEN'
+                    ]);
+
+                // if($allocamount > $totalAmount){
+                //     throw new \Exception('Amount paid exceed outamount', 500);
+                // }
+
+                $responce = new stdClass();
+                $responce->auditno = $apacthdr_obj->auditno;
+                $responce->idno = $apacthdr_obj->idno;
+                $responce->totalAmount = $totalAmount;            
             }
 
             DB::commit();
