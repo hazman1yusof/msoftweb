@@ -495,7 +495,7 @@ class PaymentVoucherController extends defaultController
                     ->where('idno','=',$idno_apacthdr)
                     ->update([
                         'amount' => $totalAmount,
-                        // 'outamount' => '0',
+                        'outamount' => $totalAmount,
                         'recstatus' => 'OPEN'
                     ]);
 
@@ -655,8 +655,8 @@ class PaymentVoucherController extends defaultController
                                 ->where('recstatus','!=','DELETE')
                                 ->where('recstatus','!=','CANCELLED');
 
-                    if($apalloc->exists()){
-                        throw new \Exception('Allocation already exists', 500);
+                    if(!$apalloc->exists()){
+                        continue;
                     }
 
                     $outamount = floatval($value['outamount']);

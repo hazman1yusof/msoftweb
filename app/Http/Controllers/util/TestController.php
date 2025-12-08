@@ -78,6 +78,8 @@ class TestController extends defaultController
 
     public function table(Request $request){  
         switch($request->action){
+            case 'test_yearperiod':
+                return $this->test_yearperiod($request);
             case 'test_email':
                 return $this->test_email($request);
             case 'check_netmvqty_netmvval_allitem':
@@ -9088,6 +9090,11 @@ class TestController extends defaultController
         }
 
         dd($array_push);
+    }
+
+    public function test_yearperiod(Request $request){
+        $yearperiod = $this->getyearperiod('2025-10-01');
+        dd($yearperiod);
     }
 
 }
