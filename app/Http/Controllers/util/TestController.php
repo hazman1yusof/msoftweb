@@ -9094,7 +9094,6 @@ class TestController extends defaultController
 
     public function test_yearperiod(Request $request){
         $yearperiod = $this->getyearperiod('2025-10-01');
-        dd($yearperiod);
     }
 
 }

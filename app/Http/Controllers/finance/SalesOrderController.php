@@ -1849,7 +1849,7 @@ class SalesOrderController extends defaultController
     }
 
     public function get_einvoiceQR($invno){
-        $invno = '5214968';
+        // $invno = '5214968';
         $url = 'http://175.143.1.33:8080/einvoice/einvoice_get_qrcode?invno='.$invno.'&compcode=medicare';
 
         $client = new \GuzzleHttp\Client();
