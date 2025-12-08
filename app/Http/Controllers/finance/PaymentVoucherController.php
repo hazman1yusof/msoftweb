@@ -737,9 +737,9 @@ class PaymentVoucherController extends defaultController
                         'recstatus' => 'OPEN'
                     ]);
 
-                if($allocamount > $outamount){
-                    throw new \Exception('Amount paid exceed outamount', 500);
-                }
+                // if($allocamount > $totalAmount){
+                //     throw new \Exception('Amount paid exceed outamount', 500);
+                // }
 
                 $responce = new stdClass();
                 $responce->auditno = $apacthdr_obj->auditno;
