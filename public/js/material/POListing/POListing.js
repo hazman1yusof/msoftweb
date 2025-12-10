@@ -39,6 +39,7 @@ $(document).ready(function () {
 	});
 
 	$('#excelgen').click(function(){
-		window.location='./POListing/showExcel?&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&Status='+$("#Status").val()+'&deptcode='+$("#deptcode").val();
+		window.open('./POListing/showpdf?&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&Status='+$("#Status").val()+'&deptcode='+$("#deptcode").val(),  '_blank'); 
+		// window.location='./POListing/showExcel?&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&Status='+$("#Status").val()+'&deptcode='+$("#deptcode").val();
 	});
 });
