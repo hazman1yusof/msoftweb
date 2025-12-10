@@ -352,7 +352,7 @@ class assetenquiryController extends defaultController
                     'dracc' => $facode->glprovdep,
                     'crcostcode' => $facode->glrevccode,
                     'cracc' => $facode->glrevaluation,
-                    'amount' => $nbv
+                    'amount' => $accummulated
                 ]);
 
             $this->init_glmastdtl(
@@ -361,7 +361,7 @@ class assetenquiryController extends defaultController
                         $facode->glrevccode,//crcostcode
                         $facode->glrevaluation,//cracc
                         $yearperiod,
-                        $nbv
+                        $accummulated
                     );
 
             DB::commit();
