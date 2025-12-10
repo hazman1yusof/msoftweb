@@ -514,6 +514,7 @@ class HomeController extends Controller
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Enquiry' class=''><b>Report</b></a></li>";
         $menu.="<li><a style='padding-left:21px' title='Sales' class='clickable' programid='SalesOrder_Report' targeturl='./SalesOrder_Report'>Sales</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Sales by Item' class='clickable' programid='SalesItem_Report' targeturl='./SalesItem_Report'>Sales by Item</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Download batch Invoices' class='clickable' programid='SalesItem_Report_invoices' targeturl='./SalesOrder_Report?type=invoice'>Download batch Invoices</a></li>";
         //GRI
         //IV
         //stock freeze
