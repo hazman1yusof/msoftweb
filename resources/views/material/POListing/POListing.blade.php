@@ -112,5 +112,5 @@
 @endsection
 
 @section('scripts')
-	<script src="js/material/POListing/POListing.js?v=1.2"></script>
+	<script src="js/material/POListing/POListing.js?v=1.3"></script>
 @endsection
