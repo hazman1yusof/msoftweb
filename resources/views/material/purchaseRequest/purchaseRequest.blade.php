@@ -142,6 +142,11 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 								<option value="CANCELLED">CANCELLED</option>
 							@elseif (Request::get('scope') == 'CANCEL')
 								<option value="OPEN">OPEN</option>
+					      <option value="PREPARED">PREPARED</option>
+					      <option value="SUPPORT">SUPPORT</option>
+					      <option value="VERIFIED">VERIFIED</option>
+					      <option value="RECOMMENDED1">RECOMMENDED 1</option>
+					      <option value="RECOMMENDED2">RECOMMENDED 2</option>
 							@endif
 				    </select>
         </div>
@@ -627,7 +632,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 			
 		});
 	</script>
-	<script src="js/material/purchaseRequest/purchaseRequest.js?v=1.15"></script>
+	<script src="js/material/purchaseRequest/purchaseRequest.js?v=1.16"></script>
 	<!-- <script src="js/material/purchaseRequest/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

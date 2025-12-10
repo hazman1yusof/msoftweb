@@ -408,10 +408,10 @@ $(document).ready(function () {
 			if($('#scope').val() != 'ALL'){
 				$("#jqGridPager td[title='Edit Selected Row'],#jqGridPager td[title='Add New Row']").hide();
 			}
-			if($('#scope').val() == 'CANCEL'){
-				$('#trandeptSearch').hide();
+			// if($('#scope').val() == 'CANCEL'){
+			// 	$('#trandeptSearch').hide();
 
-			}
+			// }
 		},
 	});
 
@@ -1250,9 +1250,7 @@ $(document).ready(function () {
 				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 			}
 		}else if($('#recstatus_use').val() == 'CANCEL'){
-			if(rowObject.purreqhd_recstatus == "OPEN"){
-				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-			}
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 		}else if($('#recstatus_use').val() == 'REOPEN'){
 			if(rowObject.purreqhd_recstatus == "CANCELLED"){
 				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
