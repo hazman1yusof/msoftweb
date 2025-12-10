@@ -612,7 +612,7 @@ class PurchaseRequestController extends defaultController
                     ->where('idno','=',$value);
 
                 $purreqhd_get = $purreqhd->first();
-                if($purreqhd_get->recstatus != 'OPEN'){
+                if(!in_array($purreqhd_get->recstatus, ['OPEN','PREPARED','SUPPORT','VERIFIED','RECOMMENDED1','RECOMMENDED2'])){
                     continue;
                 }
 
@@ -629,6 +629,7 @@ class PurchaseRequestController extends defaultController
                 $purreqhd->update($purreqhd_update);
 
                 DB::table("material.purreqdt")
+                    ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$purreqhd_get->recno)
                     ->update([
                         'recstatus' => 'CANCELLED'

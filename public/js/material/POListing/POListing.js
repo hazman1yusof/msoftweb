@@ -39,6 +39,6 @@ $(document).ready(function () {
 	});
 
 	$('#excelgen').click(function(){
-		window.location='./POListing/showExcel?&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&Status='+$("#Status").val();
+		window.location='./POListing/showExcel?&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&Status='+$("#Status").val()+'&deptcode='+$("#deptcode").val();
 	});
 });

@@ -45,7 +45,7 @@
 
 @section('body')
     <div class="container mycontainer">
-        <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 400px;">
+        <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 450px;">
             <form method="get" id="genreport" action="./POListing/showExcel">
                 <h4>PO LISTING</h4>
                 <h7 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h7>
@@ -77,6 +77,16 @@
 									<option value="CANCELLED">CANCELLED</option>
 								</select>
 						</div>
+						
+						<div class="col-md-12" style="padding-top: 30px;">
+							<label class="control-label" for="deptcode">Purchase Dept</label>  
+								<select id="deptcode" name="deptcode" class="form-control input-sm">
+									<option value="ALL" selected>ALL</option>
+									@foreach($deptcode as $obj)
+									<option value="{{$obj->deptcode}}">{{$obj->deptcode}}</option>
+									@endforeach
+								</select>
+						</div>
 					</div>
 					
 					<div class="col-md-4" style="margin-left: 100px;padding-top: 50px;">
@@ -102,5 +112,5 @@
 @endsection
 
 @section('scripts')
-	<script src="js/material/POListing/POListing.js"></script>
+	<script src="js/material/POListing/POListing.js?v=1.1"></script>
 @endsection

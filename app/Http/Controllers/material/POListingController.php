@@ -23,12 +23,17 @@ class POListingController extends defaultController
 
     public function show(Request $request)
     {   
-        $comp = DB::table('sysdb.company')->where('compcode','=',session('compcode'))->first();
-        return view('material.POListing.POListing',['company_name' => $comp->name]);
+        // $comp = DB::table('sysdb.company')->where('compcode','=',session('compcode'))->first();
+        $deptcode = DB::table('sysdb.department')
+                ->where('compcode','=',session('compcode'))
+                ->where('purdept','=','1')
+                ->where('recstatus','=','ACTIVE')
+                ->get();
+        return view('material.POListing.POListing',compact('deptcode'));
     }
 
     public function showExcel(Request $request){
-        return Excel::download(new POListingExport($request->datefr,$request->dateto,$request->Status), 'POListingExport.xlsx');
+        return Excel::download(new POListingExport($request->datefr,$request->dateto,$request->Status,$request->deptcode), 'POListingExport.xlsx');
     }
 
     public function showpdf(Request $request){

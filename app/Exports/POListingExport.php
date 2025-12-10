@@ -30,11 +30,12 @@ class POListingExport implements FromView, WithEvents, WithColumnWidths, WithCol
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($datefr,$dateto,$Status)
+    public function __construct($datefr,$dateto,$Status,$deptcode)
     {
         $this->datefr = $datefr;
         $this->dateto = $dateto;
         $this->Status = $Status;
+        $this->deptcode = $deptcode;
 
         $this->comp = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
@@ -86,66 +87,42 @@ class POListingExport implements FromView, WithEvents, WithColumnWidths, WithCol
         $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
         $Status = $this->Status;
-      
-        if ($Status == 'ALL'){
-            $POListing = DB::table('material.purordhd as h')
-                ->select('h.idno', 'h.compcode', 'h.recno', 'h.prdept', 'h.deldept', 'h.purordno', 'h.purdate', 'h.suppcode', 'h.recstatus', 's.name as supp_name', 'd.recno', 'd.suppcode', 'd.pricecode', 'd.itemcode', 'p.description','d.uomcode','d.pouom','d.qtyorder','d.qtyoutstand','d.qtyrequest','d.qtydelivered', 'd.perslstax', 'd.unitprice', 'd.taxcode', 'd.perdisc', 'd.amtdisc','d.amtslstax as tot_gst','d.netunitprice','d.totamount','d.amount', 'd.unit')                
-                ->join('material.purorddt as d', function($join){
-                    $join = $join->on('d.recno', '=', 'h.recno')
-                                ->where('d.compcode', '=', session('compcode'))
-                                ->where('d.unit', '=', session('unit'))
-                                ->where('d.recstatus', '!=', 'DELETE');
-                })
-                ->join('material.product as p', function($join){
-                    $join = $join->on('p.itemcode', '=', 'd.itemcode')
-                                ->on('p.uomcode', '=', 'd.uomcode')
-                                ->where('p.compcode', '=', session('compcode'))
-                                ->where('p.unit', '=', session('unit'))
-                                ->where('p.recstatus', '=', 'ACTIVE');
-                })
-                ->join('material.supplier as s', function($join){
-                    $join = $join->on('s.SuppCode', '=', 'd.suppcode')
-                                ->where('s.compcode', '=', session('compcode'))
-                                ->where('s.recstatus', '=', 'ACTIVE');
-                })
-                ->where('h.compcode',session('compcode'))
-                ->where('h.unit',session('unit'))
-                ->where('h.recstatus', '!=', 'DELETE')
-                ->whereBetween('h.purdate', [$datefr, $dateto])
-                ->orderBy('h.purdate', 'ASC')
-                ->get();
-        //dd($POListing);
-        } else {
-            $POListing = DB::table('material.purordhd as h')
-                ->select('h.idno', 'h.compcode', 'h.recno', 'h.prdept', 'h.deldept', 'h.purordno', 'h.purdate', 'h.suppcode', 'h.recstatus', 's.name as supp_name', 'd.recno', 'd.suppcode', 'd.pricecode', 'd.itemcode', 'p.description','d.uomcode','d.pouom','d.qtyorder','d.qtyoutstand','d.qtyrequest','d.qtydelivered', 'd.perslstax', 'd.unitprice', 'd.taxcode', 'd.perdisc', 'd.amtdisc','d.amtslstax as tot_gst','d.netunitprice','d.totamount','d.amount', 'd.unit')                
-                ->join('material.purorddt as d', function($join){
-                    $join = $join->on('d.recno', '=', 'h.recno')
-                                ->where('d.compcode', '=', session('compcode'))
-                                ->where('d.unit', '=', session('unit'))
-                                ->where('d.recstatus', '!=', 'DELETE');
-                })
-                ->join('material.product as p', function($join){
-                    $join = $join->on('p.itemcode', '=', 'd.itemcode')
-                                ->on('p.uomcode', '=', 'd.uomcode')
-                                ->where('p.compcode', '=', session('compcode'))
-                                ->where('p.unit', '=', session('unit'))
-                                ->where('p.recstatus', '=', 'ACTIVE');
-                })
-                ->join('material.supplier as s', function($join){
-                    $join = $join->on('s.SuppCode', '=', 'd.suppcode')
-                                ->where('s.compcode', '=', session('compcode'))
-                                ->where('s.recstatus', '=', 'ACTIVE');
-                })
-                ->where('h.compcode',session('compcode'))
-                ->where('h.unit',session('unit'))
-                ->where('h.recstatus', '=', $Status)
-                ->whereBetween('h.purdate', [$datefr, $dateto])
-                ->orderBy('h.purdate', 'ASC')
-                ->get();
-        //dd($POListing);
+        $deptcode = $this->deptcode;
+
+        $POListing = DB::table('material.purordhd as h')
+            ->select('h.idno', 'h.compcode', 'h.recno', 'h.prdept', 'h.deldept', 'h.purordno', 'h.purdate', 'h.suppcode', 'h.recstatus', 's.name as supp_name', 'd.recno', 'd.suppcode', 'd.pricecode', 'd.itemcode', 'p.description','d.uomcode','d.pouom','d.qtyorder','d.qtyoutstand','d.qtyrequest','d.qtydelivered', 'd.perslstax', 'd.unitprice', 'd.taxcode', 'd.perdisc', 'd.amtdisc','d.amtslstax as tot_gst','d.netunitprice','d.totamount','d.amount', 'd.unit')                
+            ->join('material.purorddt as d', function($join){
+                $join = $join->on('d.recno', '=', 'h.recno')
+                            ->where('d.compcode', '=', session('compcode'))
+                            ->where('d.recstatus', '!=', 'DELETE');
+            })
+            ->join('material.product as p', function($join){
+                $join = $join->on('p.itemcode', '=', 'd.itemcode')
+                            ->on('p.uomcode', '=', 'd.uomcode')
+                            ->where('p.compcode', '=', session('compcode'))
+                            ->where('p.recstatus', '=', 'ACTIVE');
+            })
+            ->join('material.supplier as s', function($join){
+                $join = $join->on('s.SuppCode', '=', 'd.suppcode')
+                            ->where('s.compcode', '=', session('compcode'))
+                            ->where('s.recstatus', '=', 'ACTIVE');
+            })
+            ->where('h.compcode',session('compcode'))
+            ->where('h.recstatus', '!=', 'DELETE')
+            ->whereBetween('h.purdate', [$datefr, $dateto])
+            ->orderBy('h.purdate', 'ASC');
+
+        if($Status != 'ALL'){
+            $POListing  = $POListing->where('h.recstatus', '=', $Status);
         }
+
+        if($deptcode != 'ALL'){
+            $POListing  = $POListing->where('h.prdept', '=', $deptcode);
+        }
+
+        $POListing  = $POListing->get();
         
-        return view('material.POListing.POListing_excel',compact('POListing'));
+        return view('material.POListing.POListing_excel',compact('POListing','datefr','dateto','Status','deptcode'));
     }
     
     public function registerEvents(): array

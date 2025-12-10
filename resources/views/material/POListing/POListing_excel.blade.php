@@ -1,5 +1,75 @@
 <table>
     <tr>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left" colspan="5">PURCHASE ORDER LISTINGS</td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+    </tr>
+    <tr>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left" colspan="5">Date From {{$datefr}} To {{$dateto}}</td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+    </tr>
+    <tr>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left" colspan="5">Status: {{$Status}}, Department: {{$deptcode}}</td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: right"></td>
+        <td style="font-weight:bold;text-align: left"></td>
+    </tr>
+    <tr></tr>
+    <tr>
         <td style="font-weight:bold;text-align: left">PURCHASE<br style="mso-data-placement:same-cell;" />DEPT</td>
         <td style="font-weight:bold;text-align: left">DELIVERY<br style="mso-data-placement:same-cell;" />DEPT</td>
         <td style="font-weight:bold;text-align: left">PO NO</td>
@@ -36,14 +106,14 @@
         <td>{!!$obj->uomcode!!}</td>
         <td>{!!$obj->pouom!!}</td>
         <td>{{$obj->taxcode}}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->qtyrequest, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->qtyorder, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->qtyoutstand, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->unitprice, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->perdisc, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->amtdisc, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->tot_gst, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->totamount, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="text-align: right">{{$obj->qtyrequest}}</td>
+        <td data-format="0.00" style="text-align: right">{{$obj->qtyorder}}</td>
+        <td data-format="0.00" style="text-align: right">{{$obj->qtyoutstand}}</td>
+        <td data-format="0.00" style="text-align: right">{{$obj->unitprice}}</td>
+        <td data-format="0.00" style="text-align: right">{{$obj->perdisc}}</td>
+        <td data-format="0.00" style="text-align: right">{{$obj->amtdisc}}</td>
+        <td data-format="0.00" style="text-align: right">{{$obj->tot_gst}}</td>
+        <td data-format="0.00" style="text-align: right">{{$obj->totamount}}</td>
         <td>{{$obj->recstatus}}</td>
     </tr>
     @endforeach
