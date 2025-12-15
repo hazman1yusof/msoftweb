@@ -229,6 +229,35 @@ class stockBalanceController extends defaultController
         return Excel::download(new stockBalance_basic_xlsExport($unit_from,$unit_to,$dept_from,$dept_to,$item_from,$item_to,$year,$period,$zero_delete), 'Item List.xlsx');
     }
 
+    public function stockSheet_xls(Request $request){
+        $validator = Validator::make($request->all(), [
+            'dept_to' => 'required',
+            'item_to' => 'required',
+            'year' => 'required',
+            'period' => 'required',
+        ]);
+
+        if($validator->fails()){
+            abort(404);
+        }
+
+        $unit_from = $request->unit_from;
+        $unit_to = $request->unit_to;
+        $dept_from = $request->dept_from;
+        $dept_to = $request->dept_to;
+        $item_from = $request->item_from;
+        $item_to = $request->item_to;
+        $year = $request->year;
+        $period = $request->period;
+        if(empty($request->zero_delete)){
+            $zero_delete = 1;
+        }else{
+            $zero_delete = 0;
+        }
+        
+        return Excel::download(new stockSheet_xlsExport($unit_from,$unit_to,$dept_from,$dept_to,$item_from,$item_to,$year,$period,$zero_delete), 'stockSheet.xlsx');
+    }
+
     public function stockSheet_pdf(Request $request){
         $validator = Validator::make($request->all(), [
             'dept_to' => 'required',
@@ -387,28 +416,6 @@ class stockBalanceController extends defaultController
         $header->period = $period;
 
         return view('material.stockBalance.stockSheet_pdf_pdfmake',compact('stockloc','company','header','deptcode'));
-    }
-
-    public function stockSheet_xls(Request $request){
-        $validator = Validator::make($request->all(), [
-            'dept_to' => 'required',
-            'item_to' => 'required',
-            'year' => 'required',
-            'period' => 'required',
-        ]);
-
-        if($validator->fails()){
-            abort(404);
-        }
-
-        $dept_from = $request->dept_from;
-        $dept_to = $request->dept_to;
-        $item_from = $request->item_from;
-        $item_to = $request->item_to;
-        $year = $request->year;
-        $period = $request->period;
-        
-        return Excel::download(new stockSheet_xlsExport($dept_from,$dept_to,$item_from,$item_to,$year,$period), 'stockSheet.xlsx');
     }
     
     public function get_bal($array_obj,$period){

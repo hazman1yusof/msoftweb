@@ -3,7 +3,7 @@
     </tr>
     @foreach($deptcode as $index => $dept)
     <tr>
-        <td colspan="3" style="font-weight:bold">{{$dept->deptcode}} - {{$dept->description}}</td>
+        <td colspan="3" style="font-weight:bold">{{$dept->deptcode}} - {{$dept->dept_desc}}</td>
     </tr>
     <tr></tr>
     <tr>
@@ -20,7 +20,7 @@
                 <td>{{$obj->itemcode}}</td>
                 <td>{{$obj->description}}</td>
                 <td>{{$obj->uomcode}}</td>
-                <td>{{number_format($obj->close_balqty, 2, '.', ',')}}</td>
+                <td>{{$obj->close_balqty}}</td>
                 <td></td>
                 <td></td>
             </tr>
