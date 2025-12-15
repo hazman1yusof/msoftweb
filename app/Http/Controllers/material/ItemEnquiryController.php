@@ -59,6 +59,12 @@ class ItemEnquiryController extends defaultController
                 return $this->print_excel($request);
             case 'scheduler':
                 return $this->scheduler($request);
+            case 'scheduler1':
+                return $this->scheduler1($request);
+            case 'scheduler2':
+                return $this->scheduler2($request);
+            case 'scheduler3':
+                return $this->scheduler3($request);
             default:
                 return 'error happen..';
         }
@@ -272,6 +278,10 @@ class ItemEnquiryController extends defaultController
     }
 
     public function scheduler(Request $request){
+        return view('material.itemInquiry.scheduler');
+    }
+
+    public function scheduler1(Request $request){
         DB::beginTransaction();
 
         try {
@@ -416,6 +426,49 @@ class ItemEnquiryController extends defaultController
                         ->orderBy('s.idno', 'DESC')
                         ->get();
 
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }  
+    }
+
+    public function scheduler2(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $deptcode=$request->deptcode;
+            if(empty($deptcode)){
+                dd('no deptcode');
+            }
+            $year=intval($request->year);
+            if(empty($year)){
+                dd('no year');
+            }
+
+            $stockloc = DB::table('material.stockloc as s')
+                        ->select('s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit','e.idno as e_idno')
+                        ->where('s.compcode',session('compcode'))
+                        // ->where('itemcode',$itemcode)
+                        ->join('material.product as p', function($join){
+                            $join = $join->on('p.itemcode', '=', 's.itemcode')
+                                            ->on('p.uomcode','=','s.uomcode')
+                                            ->where('p.recstatus','=','ACTIVE')
+                                            ->where('p.compcode',session('compcode'));
+                        })
+                        ->leftJoin('material.stockexp as e', function($join){
+                            $join = $join->on('e.itemcode', '=', 's.itemcode')
+                                            ->on('e.uomcode','=','s.uomcode');
+                        })
+                        // ->where('s.itemcode','KW-NIMENRIX')
+                        ->where('s.deptcode',$deptcode)
+                        ->where('s.year',$year)
+                        ->orderBy('s.idno', 'DESC')
+                        ->get();
+
             //betulkan qtyonhand
             $x=1;
             foreach ($stockloc as $obj) {
@@ -446,6 +499,49 @@ class ItemEnquiryController extends defaultController
                     }
                 }
             }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }  
+    }
+
+    public function scheduler3(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $deptcode=$request->deptcode;
+            if(empty($deptcode)){
+                dd('no deptcode');
+            }
+            $year=intval($request->year);
+            if(empty($year)){
+                dd('no year');
+            }
+
+            $stockloc = DB::table('material.stockloc as s')
+                        ->select('s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit','e.idno as e_idno')
+                        ->where('s.compcode',session('compcode'))
+                        // ->where('itemcode',$itemcode)
+                        ->join('material.product as p', function($join){
+                            $join = $join->on('p.itemcode', '=', 's.itemcode')
+                                            ->on('p.uomcode','=','s.uomcode')
+                                            ->where('p.recstatus','=','ACTIVE')
+                                            ->where('p.compcode',session('compcode'));
+                        })
+                        ->leftJoin('material.stockexp as e', function($join){
+                            $join = $join->on('e.itemcode', '=', 's.itemcode')
+                                            ->on('e.uomcode','=','s.uomcode');
+                        })
+                        // ->where('s.itemcode','KW-NIMENRIX')
+                        ->where('s.deptcode',$deptcode)
+                        ->where('s.year',$year)
+                        ->orderBy('s.idno', 'DESC')
+                        ->get();
 
             //betulkan stockexp
             $x = 1;

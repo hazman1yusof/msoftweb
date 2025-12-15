@@ -129,7 +129,12 @@ $(document).ready(function () {
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
 			$('#formdata :input[rdonly]').prop("readonly",true);
-			$("#save").hide();$("#cancel").hide();
+
+			if($('#cancel').is(':visible')){
+				$("#add").show();$("#edit").show();
+				$("#delete").show();$("#view").show();
+				$("#save").hide();$("#cancel").hide();
+			}
 
 			if(rowid != null) {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
@@ -206,7 +211,7 @@ $(document).ready(function () {
 			$("#add").show();$("#edit").show();
 			$("#delete").show();$("#view").show();
 			$("#save").hide();$("#cancel").hide();
-			refreshGrid("#jqGrid2",urlParam2, 'add');
+			refreshGrid("#jqGrid",urlParam, 'edit');
 		},	
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
 		id: "save",
