@@ -60,7 +60,7 @@
 						<div class="col-md-6">
 						  	<label class="control-label" for="unit_from">Unit From</label> 
 							<div class='input-group'> 
-								<input id="unit_from" name="unit_from" type="text" class="form-control input-sm" autocomplete="off">
+								<input id="unit_from" name="unit_from" type="text" class="form-control input-sm" autocomplete="off" value="{{Session::get('unit')}}">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -68,7 +68,7 @@
 						<div class="col-md-6">
 						  	<label class="control-label" for="unit_to">Unit To</label>  
 							<div class='input-group'>
-								<input id="unit_to" name="unit_to" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="ZZZ">
+								<input id="unit_to" name="unit_to" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Session::get('unit')}}">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -79,7 +79,7 @@
 						<div class="col-md-6">
 						  	<label class="control-label" for="Scol">Dept From</label> 
 							<div class='input-group'> 
-								<input id="dept_from" name="dept_from" type="text" class="form-control input-sm" autocomplete="off">
+								<input id="dept_from" name="dept_from" type="text" class="form-control input-sm" autocomplete="off" value="{{Session::get('deptcode')}}">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -87,7 +87,7 @@
 						<div class="col-md-6">
 						  	<label class="control-label" for="Scol">Dept To</label>  
 							<div class='input-group'>
-								<input id="dept_to" name="dept_to" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="ZZZ">
+								<input id="dept_to" name="dept_to" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Session::get('deptcode')}}">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -121,18 +121,18 @@
 						<div class="col-md-6">
 					  	<label class="control-label" for="Scol">Period</label>  
 				  		<select id='period' name='period' class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" >
-				  			<option>1</option>
-				  			<option>2</option>
-				  			<option>3</option>
-				  			<option>4</option>
-				  			<option>5</option>
-				  			<option>6</option>
-				  			<option>7</option>
-				  			<option>8</option>
-				  			<option>9</option>
-				  			<option>10</option>
-				  			<option>11</option>
-				  			<option>12</option>
+				  			<option @if(\Carbon\Carbon::now()->month == 1) {{'selected'}} @endif>1</option>
+				  			<option @if(\Carbon\Carbon::now()->month == 2) {{'selected'}} @endif>2</option>
+				  			<option @if(\Carbon\Carbon::now()->month == 3) {{'selected'}} @endif>3</option>
+				  			<option @if(\Carbon\Carbon::now()->month == 4) {{'selected'}} @endif>4</option>
+				  			<option @if(\Carbon\Carbon::now()->month == 5) {{'selected'}} @endif>5</option>
+				  			<option @if(\Carbon\Carbon::now()->month == 6) {{'selected'}} @endif>6</option>
+				  			<option @if(\Carbon\Carbon::now()->month == 7) {{'selected'}} @endif>7</option>
+				  			<option @if(\Carbon\Carbon::now()->month == 8) {{'selected'}} @endif>8</option>
+				  			<option @if(\Carbon\Carbon::now()->month == 9) {{'selected'}} @endif>9</option>
+				  			<option @if(\Carbon\Carbon::now()->month == 10) {{'selected'}} @endif>10</option>
+				  			<option @if(\Carbon\Carbon::now()->month == 11) {{'selected'}} @endif>11</option>
+				  			<option @if(\Carbon\Carbon::now()->month == 12) {{'selected'}} @endif>12</option>
 				  		</select>
           	</div>
 	        </div>

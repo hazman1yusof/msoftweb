@@ -203,7 +203,6 @@ class stockBalance_basic_xlsExport implements FromView, WithEvents, WithColumnWi
             }else{
                 array_push($array_report, $obj);
             }
-
         }
         array_push($isi_array, $isi);
         $loop = $loop + 4;
