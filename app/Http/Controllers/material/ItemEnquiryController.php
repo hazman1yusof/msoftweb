@@ -361,7 +361,7 @@ class ItemEnquiryController extends defaultController
 
                         $crdbfl = $ivtxntype->crdbfl;
 
-                        if($crdbfl == 'In'){
+                        if(strtoupper($crdbfl) == 'IN'){
                             $add = $add + $value->txnqty;
                             $add2 = $add2 + $value->amount;
                         }else{
