@@ -6,9 +6,14 @@
         <td style="font-weight:bold; text-align: left">Supplier Dept : {{$hd_obj->txndept_desc}}</td>
         <td style="font-weight:bold; text-align: left">Record No : {{$hd_obj->recno}}</td>
         <td style="font-weight:bold; text-align: left">Transaction Type : {{$hd_obj->trantype}}</td>
+        @if($hd_obj->trantype == 'TUI')
+        <td style="font-weight:bold; text-align: left">Sender Dept : {{$hd_obj->sndrcv_desc}}</td>
+        @else
         <td style="font-weight:bold; text-align: left">Receiver Dept : {{$hd_obj->sndrcv_desc}}</td>
+        @endif
         <td style="font-weight:bold; text-align: left">Total Amount</td>
         <td style="font-weight:bold; text-align: right" data-format="0.00">{{$hd_obj->header_amt}}</td>
+        <td style="font-weight:bold; text-align: right" >{{$hd_obj->adduser}}</td>
     </tr>
         <tr>
             <td style="font-weight:bold; text-align: left">Date</td>

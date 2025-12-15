@@ -66,7 +66,7 @@ class tui_tuo_report_Export implements FromView, WithEvents, WithColumnWidths, W
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
 
         $ivtmphd = DB::table('material.ivtmphd as iv_hd')
-                    ->select('iv_hd.recno','iv_hd.source','iv_hd.reference','iv_hd.txndept','iv_hd.trantype','iv_hd.docno','iv_hd.srcdocno','iv_hd.sndrcvtype','iv_hd.sndrcv','iv_hd.trandate','iv_hd.ivreqno','iv_hd.amount as header_amt','iv_hd.respersonid','iv_hd.remarks','iv_hd.recstatus','iv_hd.postedby','iv_hd.postdate','iv_hd.unit','iv_dt.recno','iv_dt.lineno_','iv_dt.ivreqno','iv_dt.reqlineno','iv_dt.reqdept','iv_dt.itemcode','iv_dt.uomcode','iv_dt.uomcoderecv','iv_dt.txnqty','iv_dt.qtyonhandrecv','iv_dt.netprice','iv_dt.productcat','iv_dt.remarks','iv_dt.qtyonhand','iv_dt.batchno','iv_dt.amount','iv_dt.recstatus','iv_dt.unit','iv_dt.qtyrequest','sp_fr.description as txndept_desc','sp_to.description as sndrcv_desc','pr.description as itemcode_desc')
+                    ->select('iv_hd.recno','iv_hd.source','iv_hd.reference','iv_hd.txndept','iv_hd.trantype','iv_hd.docno','iv_hd.srcdocno','iv_hd.sndrcvtype','iv_hd.sndrcv','iv_hd.trandate','iv_hd.ivreqno','iv_hd.amount as header_amt','iv_hd.respersonid','iv_hd.remarks','iv_hd.recstatus','iv_hd.postedby','iv_hd.postdate','iv_hd.unit','iv_hd.adduser','iv_dt.recno','iv_dt.lineno_','iv_dt.ivreqno','iv_dt.reqlineno','iv_dt.reqdept','iv_dt.itemcode','iv_dt.uomcode','iv_dt.uomcoderecv','iv_dt.txnqty','iv_dt.qtyonhandrecv','iv_dt.netprice','iv_dt.productcat','iv_dt.remarks','iv_dt.qtyonhand','iv_dt.batchno','iv_dt.amount','iv_dt.recstatus','iv_dt.unit','iv_dt.qtyrequest','iv_dt.adduser as adduser_dt','sp_fr.description as txndept_desc','sp_to.description as sndrcv_desc','pr.description as itemcode_desc')
                     ->whereBetween('iv_hd.trandate', [$datefr, $dateto])
                     ->leftjoin('material.ivtmpdt as iv_dt', function($join) {
                         $join = $join->on('iv_dt.recno', '=', 'iv_hd.recno');
@@ -95,8 +95,7 @@ class tui_tuo_report_Export implements FromView, WithEvents, WithColumnWidths, W
                             ->where('iv_hd.trantype', '=', 'TUI')
                             ->where('iv_hd.trantype', '=', 'TUO');
                     })
-                    ->orderBy('iv_hd.idno', 'DESC')
-                    ->orderBy('iv_dt.idno', 'DESC')
+                    ->orderBy('iv_hd.recno', 'ASC')
                     ->get();
 
         // dd($this->getQueries($ivtmphd));
