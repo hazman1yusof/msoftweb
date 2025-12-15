@@ -69,5 +69,5 @@
 @endsection
 
 @section('scripts')
-	<script src="js/finance/GL/consolidationAcc/consolidationAcc.js?v=1.1"></script>
+	<script src="js/finance/GL/consolidationAcc/consolidationAcc.js?v=1.2"></script>
 @endsection

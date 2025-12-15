@@ -128,6 +128,7 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
+			$("#jqGrid").data('lastselrow',rowid);
 			$('#formdata :input[rdonly]').prop("readonly",true);
 
 			if($('#cancel').is(':visible')){
@@ -159,7 +160,14 @@ $(document).ready(function () {
 		},
 		gridComplete: function(){
 			if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
-				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+				if ($("#jqGrid").data('lastselrow') == '-1' || $("#jqGrid").data('lastselrow') == undefined) { 
+					$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+				}else{
+					$("#jqGrid").setSelection($("#jqGrid").data('lastselrow'));
+					delay(function(){
+						$('#jqGrid tr#'+$("#jqGrid").data('lastselrow')).focus();
+					}, 300 );
+				}
 			}else{
 				$("#save").hide();
 				$("#jqGridPager2_left").hide();
