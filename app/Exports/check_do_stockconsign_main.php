@@ -60,6 +60,7 @@ class check_do_stockconsign_main implements WithMultipleSheets
                         ->join('material.delordhd as dh', function($join) use ($day_start,$day_end){
                             $join = $join->on('dh.recno', '=', 'dt.recno')
                                           ->where('dh.recstatus','POSTED')
+                                          ->whereIn('dh.trantype',['GRN','GRT'])
                                           ->whereDate('dh.postdate','>=',$day_start)
                                           ->whereDate('dh.postdate','<=',$day_end)
                                           // ->whereIn('dh.deldept',['IMP','KHEALTH','FKWSTR'])
