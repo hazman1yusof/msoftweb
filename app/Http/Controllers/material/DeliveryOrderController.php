@@ -71,6 +71,8 @@ class DeliveryOrderController extends defaultController
                 return $this->do_posted_report_with_gl($request);
             case 'check_do_stockconsign':
                 return $this->check_do_stockconsign($request);
+            case 'check_report':
+                return $this->check_report($request);
             default:
                 return 'error happen..';
         }
@@ -1451,6 +1453,16 @@ class DeliveryOrderController extends defaultController
 
     public function do_posted_report_with_gl(Request $request){
         return Excel::download(new do_posted_report_with_gl($request->datefr,$request->dateto,$request->dept), 'Posted_DO_with_GL.xlsx');
+    }
+
+    public function check_report(Request $request){
+        $purdept = DB::table('sysdb.department')
+                        ->select('deptcode')
+                        ->where('compcode',session('compcode'))
+                        ->where('purdept',1)
+                        ->get();
+
+        return view('material.deliveryOrder.check_report',compact('purdept'));
     }
 
     public function check_do_stockconsign(Request $request){
