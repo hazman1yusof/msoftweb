@@ -540,7 +540,7 @@ class ItemEnquiryController extends defaultController
                     $qtyonhand = $obj->qtyonhand;
 
                     if($balqty != $qtyonhand){
-                        dump($x.'. '.$value->itemcode.' -> stockexp sum: '.$balqty.' ----- stockloc: '.$qtyonhand);
+                        dump($x.'. '.$obj->itemcode.' -> stockexp sum: '.$balqty.' ----- stockloc: '.$qtyonhand);
                         $x++;
 
                         //1.
@@ -563,7 +563,7 @@ class ItemEnquiryController extends defaultController
                                         ]);
 
                             $chg = $stockexp_chg->balqty + $var;
-                            dump('change stockexp '.$value->itemcode.' to '.$chg);
+                            dump('change stockexp '.$obj->itemcode.' to '.$chg);
 
                         }else if($qtyonhand<$balqty){
                             $stockexp_chg = DB::table('material.stockexp')
