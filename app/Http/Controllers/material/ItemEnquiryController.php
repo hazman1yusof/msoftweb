@@ -464,25 +464,23 @@ class ItemEnquiryController extends defaultController
                     dump($x.'. '.$obj->itemcode.' => '.$qtyonhand.' vs Real '.$real_qtyonhand);
                     $x++;
 
-                    if($request->commit == 1){
-                        DB::table('material.stockloc')
-                                ->where('compcode',session('compcode'))
-                                ->where('itemcode',$obj->itemcode)
-                                ->where('uomcode',$obj->uomcode)
-                                ->where('deptcode',$deptcode)
-                                ->where('year',$year)
-                                ->update([
-                                    'qtyonhand' => $real_qtyonhand
-                                ]);
+                    DB::table('material.stockloc')
+                            ->where('compcode',session('compcode'))
+                            ->where('itemcode',$obj->itemcode)
+                            ->where('uomcode',$obj->uomcode)
+                            ->where('deptcode',$deptcode)
+                            ->where('year',$year)
+                            ->update([
+                                'qtyonhand' => $real_qtyonhand
+                            ]);
 
-                        DB::table('material.product')
-                                ->where('compcode',session('compcode'))
-                                ->where('itemcode',$obj->itemcode)
-                                ->where('uomcode',$obj->uomcode)
-                                ->update([
-                                    'qtyonhand' => $real_qtyonhand
-                                ]);
-                    }
+                    DB::table('material.product')
+                            ->where('compcode',session('compcode'))
+                            ->where('itemcode',$obj->itemcode)
+                            ->where('uomcode',$obj->uomcode)
+                            ->update([
+                                'qtyonhand' => $real_qtyonhand
+                            ]);
                 }
             }
 
