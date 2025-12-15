@@ -278,7 +278,13 @@ class ItemEnquiryController extends defaultController
     }
 
     public function scheduler(Request $request){
-        return view('material.itemInquiry.scheduler');
+        $purdept = DB::table('sysdb.department')
+                        ->select('deptcode')
+                        ->where('compcode',session('compcode'))
+                        ->where('purdept',1)
+                        ->get();
+
+        return view('material.itemInquiry.scheduler',compact('purdept'));
     }
 
     public function scheduler1(Request $request){
