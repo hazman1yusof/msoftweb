@@ -335,6 +335,7 @@ class ItemEnquiryController extends defaultController
                     $ivdspdt = DB::table('material.ivdspdt')
                                 ->where('compcode',session('compcode'))
                                 ->where('itemcode',$value->itemcode)
+                                ->where('uomcode',$value->uomcode)
                                 ->where('issdept',$value->deptcode)
                                 ->where('trandate','>=',$day_start)
                                 ->where('trandate','<=',$day_end)
@@ -344,6 +345,7 @@ class ItemEnquiryController extends defaultController
                     $ivtxndt = DB::table('material.ivtxndt')
                                 ->where('compcode',session('compcode'))
                                 ->where('itemcode',$value->itemcode)
+                                ->where('uomcode',$value->uomcode)
                                 ->where('deptcode',$value->deptcode)
                                 ->where('trandate','>=',$day_start)
                                 ->where('trandate','<=',$day_end)
@@ -373,6 +375,7 @@ class ItemEnquiryController extends defaultController
                     $ivdspdt2 = DB::table('material.ivdspdt')
                                 ->where('compcode',session('compcode'))
                                 ->where('itemcode',$value->itemcode)
+                                ->where('uomcode',$value->uomcode)
                                 ->where('trandate','>=',$day_start)
                                 ->where('trandate','<=',$day_end)
                                 ->sum('amount');
