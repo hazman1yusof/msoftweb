@@ -166,10 +166,10 @@ class check_do_stockconsign_main implements WithMultipleSheets
         }
 
         $deldept = collect($delorddt)->unique('deldept');
-        $sheets[0] = new check_do_stockconsign('-',$deldept,'main',$_20010042,$_20010044);
+        $sheets[0] = new check_do_stockconsign('-',$deldept,'main',$_20010042,$_20010044,$year,$period);
 
         foreach ($deldept as $key => $obj_d) {
-            $sheets[$key+1] = new check_do_stockconsign($obj_d->deldept,$delorddt,'sheet',$obj_d->_20010042,$obj_d->_20010044);
+            $sheets[$key+1] = new check_do_stockconsign($obj_d->deldept,$delorddt,'sheet',$obj_d->_20010042,$obj_d->_20010044,$year,$period);
         }
 
         // DB::table('finance.gltran')

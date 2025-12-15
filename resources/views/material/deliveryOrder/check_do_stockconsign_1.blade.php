@@ -1,5 +1,7 @@
 <table>
-    <tr></tr>
+    <tr>
+        <td style="font-weight:bold; text-align: left" colspan="3">Year: {{$year}} and Period: {{$period}}</td>
+    </tr>
     <tr>
         <td style="font-weight:bold; text-align: left">Department</td>
         <td style="font-weight:bold; text-align: left">Control A/c - PURCHASE STOCK (20010042) </td>
