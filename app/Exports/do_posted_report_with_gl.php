@@ -113,6 +113,7 @@ class do_posted_report_with_gl implements FromView, WithEvents, WithColumnWidths
 
             // $obj_hd->source = $source_;
             $obj_hd->glamount = $glamount;
+            $obj_hd->dracc = $dracc;
         }
 
         $do_hd = $delordhd->unique('recno');

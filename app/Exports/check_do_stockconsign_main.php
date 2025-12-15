@@ -54,14 +54,16 @@ class check_do_stockconsign_main implements WithMultipleSheets
 
         $delorddt = DB::table('material.delorddt as dt')
                         ->select('dt.recno','dt.lineno_','dt.pricecode','dt.itemcode','dt.uomcode','dt.pouom','dt.suppcode','dt.trandate','dh.deldept','dt.deliverydate','dt.qtytag','dt.unitprice','dt.amtdisc','dt.perdisc','dt.prortdisc','dt.amtslstax','dt.perslstax','dt.netunitprice','dt.remarks','dt.qtyorder','dt.qtydelivered','dt.qtyoutstand','dt.productcat','dt.draccno','dt.drccode','dt.craccno','dt.crccode','dt.source','dt.updtime','dt.polineno','dt.itemmargin','dt.amount','dt.deluser','dt.deldate','dt.recstatus','dt.taxcode','dt.totamount','dt.qtyreturned','dh.postdate','dh.trantype','dh.docno')
-                        ->where('dt.compcode','9b')
+                        ->where('dt.compcode',session('compcode'))
+                        ->where('dt.recstatus','!=','CANCELLED')
+                        ->where('dt.recstatus','!=','DELETE')
                         ->join('material.delordhd as dh', function($join) use ($day_start,$day_end){
                             $join = $join->on('dh.recno', '=', 'dt.recno')
                                           ->where('dh.recstatus','POSTED')
                                           ->whereDate('dh.postdate','>=',$day_start)
                                           ->whereDate('dh.postdate','<=',$day_end)
                                           // ->whereIn('dh.deldept',['IMP','KHEALTH','FKWSTR'])
-                                          ->where('dh.compcode','9b');
+                                          ->where('dh.compcode',session('compcode'));
                         })
                         ->get();
 
