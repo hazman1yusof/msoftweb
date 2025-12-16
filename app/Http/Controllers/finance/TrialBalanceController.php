@@ -78,9 +78,9 @@ class TrialBalanceController extends defaultController
                     }
                 }
             }
-            $gl_unq->$pdramt = $pdramt;
-            $gl_unq->$pcramt = $pcramt;
-            $gl_unq->$amtdif = $pdramt - $pcramt;
+            $gl_unq->pdramt = $pdramt;
+            $gl_unq->pcramt = $pcramt;
+            $gl_unq->amtdif = $pdramt - $pcramt;
         }
 
         dd($gltran_auditno);
