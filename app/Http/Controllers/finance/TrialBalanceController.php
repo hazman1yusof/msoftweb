@@ -83,8 +83,6 @@ class TrialBalanceController extends defaultController
             $gl_unq->amtdif = $pdramt - $pcramt;
         }
 
-        dd($gltran_auditno);
-
-        return view('material.deliveryOrder.check_report',compact('purdept'));
+        return view('finance.GL.trialBalance.check_jnl_amt',compact('gltran_auditno'));
     }
 }
