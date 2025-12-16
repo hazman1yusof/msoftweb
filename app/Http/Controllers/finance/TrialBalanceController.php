@@ -35,6 +35,8 @@ class TrialBalanceController extends defaultController
                 return $this->excelTBnett($request);
             case 'pdfTBnett':
                 return $this->pdfTBnett($request);
+            case 'check_jnl_amt':
+                return $this->check_jnl_amt($request);
             default:
                 return 'error happen..';
         }
@@ -50,5 +52,39 @@ class TrialBalanceController extends defaultController
 
     public function pdfTBnett(Request $request){
         
+    }
+
+    public function check_jnl_amt(Request $request){
+        
+        $gltran = DB::table('finance.gltran')
+                        ->where('compcode','06')
+                        ->where('year','2025')
+                        ->where('period','6')
+                        ->where('source','gl')
+                        ->where('trantype','jnl')
+                        ->get();
+
+        $gltran_auditno = $gltran->unique('auditno');
+
+        foreach ($gltran_auditno as $gl_unq) {
+            $pdramt = 0;
+            $pcramt = 0;
+            foreach ($gltran as $gl) {
+                if($gl->auditno == $gl_unq->auditno){
+                    if($gl->drcostcode == ''){
+                        $pcramt = $pcramt + $gl->amount;
+                    }else if($gl->crcostcode == ''){
+                        $pdramt = $pdramt + $gl->amount;
+                    }
+                }
+            }
+            $gl_unq->$pdramt = $pdramt;
+            $gl_unq->$pcramt = $pcramt;
+            $gl_unq->$amtdif = $pdramt - $pcramt;
+        }
+
+        dd($gltran_auditno);
+
+        return view('material.deliveryOrder.check_report',compact('purdept'));
     }
 }
