@@ -255,6 +255,10 @@ use Carbon\Carbon;
                     ->where('idno','=',$idno)
                     ->first();
 
+                if($gljnlhdr->different != 0){
+                    throw new \Exception("Journal auditno ".$gljnlhdr->auditno." does not balance");
+                }
+
                 DB::table('finance.gljnlhdr')
                     ->where('compcode','=',session('compcode'))
                     ->where('idno','=',$idno)
