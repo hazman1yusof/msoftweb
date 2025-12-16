@@ -33,7 +33,7 @@ class check_do_stockconsign implements FromView, WithEvents, WithColumnWidths, W
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($deldept,$delorddt,$type,$_20010042,$_20010044,$year,$period)
+    public function __construct($deldept,$delorddt,$type,$_20010042,$_20010044,$year,$period,$deptcode)
     {
         $this->type = $type;
         $this->deldept = $deldept;
@@ -42,6 +42,7 @@ class check_do_stockconsign implements FromView, WithEvents, WithColumnWidths, W
         $this->_20010044 = $_20010044;
         $this->year = $year;
         $this->period = $period;
+        $this->deptcode = $deptcode;
     }
 
     public function title(): string
@@ -103,11 +104,12 @@ class check_do_stockconsign implements FromView, WithEvents, WithColumnWidths, W
         $delorddt = $this->delorddt;
         $_20010042 = $this->_20010042;
         $_20010044 = $this->_20010044;
+        $deptcode = $this->deptcode;
         $year = $this->year;
         $period = $this->period;
 
         if($type == 'main'){
-            return view('material.deliveryOrder.check_do_stockconsign_1',compact('delorddt','_20010042','_20010044','year','period'));
+            return view('material.deliveryOrder.check_do_stockconsign_1',compact('delorddt','_20010042','_20010044','year','period','deptcode'));
         }
 
         $excel_data = [];

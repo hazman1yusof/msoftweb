@@ -1,6 +1,9 @@
 <table>
     <tr>
-        <td style="font-weight:bold; text-align: left" colspan="3">Year: {{$year}} and Period: {{$period}}</td>
+        <td style="font-weight:bold; text-align: left" colspan="5">Compare DO listings to Trial balance</td>
+    </tr>
+    <tr>
+        <td style="font-weight:bold; text-align: left" colspan="5">Year: {{$year}} and Period: {{$period}} and Department: {{$deptcode}}</td>
     </tr>
     <tr>
         <td style="font-weight:bold; text-align: left">Department</td>

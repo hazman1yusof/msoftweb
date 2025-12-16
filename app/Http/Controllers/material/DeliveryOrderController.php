@@ -1468,6 +1468,7 @@ class DeliveryOrderController extends defaultController
     public function check_do_stockconsign(Request $request){
         $period = $request->period;
         $year = $request->year;
+        $deptcode = $request->deptcode;
         if(empty($year)){
             dd('no year');
         }
@@ -1475,7 +1476,7 @@ class DeliveryOrderController extends defaultController
             dd('no PERIOD');
         }
 
-        return Excel::download(new check_do_stockconsign_main($period,$year), 'check_do_stockconsign.xlsx'); 
+        return Excel::download(new check_do_stockconsign_main($period,$year,$deptcode), 'check_do_stockconsign.xlsx'); 
         // return Excel::download(new do_posted_report_with_gl($period,$year), 'Posted_DO_with_GL.xlsx'); 
     }
 }

@@ -35,16 +35,18 @@ class check_do_stockconsign_main implements WithMultipleSheets
     */
     use Exportable;
 
-    public function __construct($period,$year)
+    public function __construct($period,$year,$deptcode)
     {
         $this->period = $period;
         $this->year = $year;
+        $this->deptcode = $deptcode;
     }
 
     public function sheets(): array
     {
         $period = $this->period;
         $year = $this->year;
+        $deptcode = $this->deptcode;
         $_20010042 = 0;
         $_20010044 = 0;
         $sheets = [];
@@ -57,7 +59,7 @@ class check_do_stockconsign_main implements WithMultipleSheets
                         ->where('dt.compcode',session('compcode'))
                         ->where('dt.recstatus','!=','CANCELLED')
                         ->where('dt.recstatus','!=','DELETE')
-                        ->join('material.delordhd as dh', function($join) use ($day_start,$day_end){
+                        ->join('material.delordhd as dh', function($join) use ($day_start,$day_end,$deptcode){
                             $join = $join->on('dh.recno', '=', 'dt.recno')
                                           ->where('dh.recstatus','POSTED')
                                           ->whereIn('dh.trantype',['GRN','GRT'])
@@ -65,6 +67,10 @@ class check_do_stockconsign_main implements WithMultipleSheets
                                           ->whereDate('dh.postdate','<=',$day_end)
                                           // ->whereIn('dh.deldept',['IMP','KHEALTH','FKWSTR'])
                                           ->where('dh.compcode',session('compcode'));
+
+                            if($deptcode != 'ALL'){
+                                $join = $join->where('dh.deldept', $deptcode);
+                            }
                         })
                         ->get();
 
@@ -167,10 +173,10 @@ class check_do_stockconsign_main implements WithMultipleSheets
         }
 
         $deldept = collect($delorddt)->unique('deldept');
-        $sheets[0] = new check_do_stockconsign('-',$deldept,'main',$_20010042,$_20010044,$year,$period);
+        $sheets[0] = new check_do_stockconsign('-',$deldept,'main',$_20010042,$_20010044,$year,$period,$deptcode);
 
         foreach ($deldept as $key => $obj_d) {
-            $sheets[$key+1] = new check_do_stockconsign($obj_d->deldept,$delorddt,'sheet',$obj_d->_20010042,$obj_d->_20010044,$year,$period);
+            $sheets[$key+1] = new check_do_stockconsign($obj_d->deldept,$delorddt,'sheet',$obj_d->_20010042,$obj_d->_20010044,$year,$period,$deptcode);
         }
 
         // DB::table('finance.gltran')

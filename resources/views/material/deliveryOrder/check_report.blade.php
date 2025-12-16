@@ -17,9 +17,10 @@
 					 <fieldset>
 					  	<label class="control-label" for="deptcode">Department</label>  
 				  		<select id='deptcode' name='deptcode' class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" >
+					  		<option selected>ALL</option>
 				  			@foreach($purdept as $dept)
 					  			@if($dept->deptcode == Session::get('deptcode'))
-					  			<option selected>{{$dept->deptcode}}</option>
+					  			<option >{{$dept->deptcode}}</option>
 					  			@else
 					  			<option >{{$dept->deptcode}}</option>
 					  			@endif
