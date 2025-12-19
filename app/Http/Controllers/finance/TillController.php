@@ -178,7 +178,6 @@ class TillController extends defaultController
             }
         } 
         return view('finance.AR.till.till_close',compact('till','tilldetl','sum_cash','sum_chq','sum_card','sum_bank','sum_cash_ref','sum_chq_ref','sum_card_ref','sum_bank_ref'));
-
     }
 
     public function form(Request $request)
@@ -279,10 +278,20 @@ class TillController extends defaultController
         DB::beginTransaction();
         try {
 
+            $till = DB::table('debtor.till')
+                        ->where('compcode',session('compcode'))
+                        ->where('tillcode','=',$request->tillcode)
+                        ->where('tillstatus','O');
+
+            if($till->exists()){
+                throw new \Exception("Till already open by someone else");
+            }
+
             $tillno = $this->defaultSysparam('AR','TN');
 
             DB::table('debtor.till')
                 ->where('tillcode','=',$request->tillcode)
+                ->where('compcode',session('compcode'))
                 ->update([
                     'compcode' => session('compcode'), 
                     'tillstatus' => 'O', 
@@ -345,6 +354,7 @@ class TillController extends defaultController
         try {
 
             $tillcode = DB::table('debtor.till')
+                            ->where('compcode','=',session('compcode'))
                             ->where('tillcode','=',$request->tillcode);
 
             if($tillcode->exists()){
