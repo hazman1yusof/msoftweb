@@ -101,6 +101,13 @@ div#fail_msg{
 			  		<label class="control-label" for="trandept">Dept</label> 
 						<select id='trandept' class="form-control input-sm">
 				      		<option value="All" selected>ALL</option>
+				      		@foreach($trandept as $dept_)
+				      			@if($dept_->deptcode == Session::get('deptcode'))
+				      			<option value="{{$dept_->deptcode}}" selected>{{$dept_->deptcode}}</option>
+				      			@else
+				      			<option value="{{$dept_->deptcode}}">{{$dept_->deptcode}}</option>
+				      			@endif
+				      		@endforeach
 						</select>
 				</div>
 
@@ -412,7 +419,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/material/stockCount/stockCount.js?v=1.10"></script>
+	<script src="js/material/stockCount/stockCount.js?v=1.11"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	

@@ -1001,7 +1001,7 @@ class InventoryTransactionController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage(), 500);
+            return response($e, 500);
         }
     }
 

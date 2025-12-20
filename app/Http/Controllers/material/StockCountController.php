@@ -35,7 +35,14 @@ class StockCountController extends defaultController
         }else{
             $scope = 'COUNTER';
         }
-        return view('material.stockCount.stockCount',compact('scope'));
+
+        $trandept = DB::table('sysdb.department')
+            ->where('compcode',session('compcode'))
+            ->where('storedept', '1')
+            ->where('recstatus', 'ACTIVE')
+            ->get();
+
+        return view('material.stockCount.stockCount',compact('scope','trandept'));
     }
 
     public function table(Request $request)
@@ -50,9 +57,146 @@ class StockCountController extends defaultController
                 return $this->import_excel($request);
             case 'posted_manual':
                 return $this->posted_manual($request);
+            case 'maintable':
+                return $this->maintable($request);
             default:
                 return 'error happen..';
         }
+    }
+
+    public function maintable(Request $request){
+        
+        $table = DB::table('material.phycnthd')
+                    ->where('compcode',session('compcode'));
+
+        if($request->deptcode != 'All'){
+            $table = $table->where('srcdept',$request->deptcode);
+        }
+
+        if($request->status != 'All'){
+            $table = $table->where('recstatus',$request->status);
+        }
+        
+        // if(!empty($request->filterCol)){
+        //     // $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
+        //     foreach ($request->filterCol as $key => $value) {
+        //         $pieces = explode(".", $request->filterVal[$key], 2);
+        //         if($pieces[0] == 'session'){
+        //             $table = $table->where($request->filterCol[$key],'=',session($pieces[1]));
+        //         }else if($pieces[0] == '<>'){
+        //             $table = $table->where($request->filterCol[$key],'<>',$pieces[1]);
+        //         }else if($pieces[0] == '>'){
+        //             $table = $table->where($request->filterCol[$key],'>',$pieces[1]);
+        //         }else if($pieces[0] == '>='){
+        //             $table = $table->where($request->filterCol[$key],'>=',$pieces[1]);
+        //         }else if($pieces[0] == '<'){
+        //             $table = $table->where($request->filterCol[$key],'<',$pieces[1]);
+        //         }else if($pieces[0] == '<='){
+        //             $table = $table->where($request->filterCol[$key],'<=',$pieces[1]);
+        //         }else if($pieces[0] == 'on'){
+        //             $table = $table->whereColumn($request->filterCol[$key],$pieces[1]);
+        //         }else if($pieces[0] == 'null'){
+        //             $table = $table->whereNull($request->filterCol[$key]);
+        //         }else if($pieces[0] == 'notnull'){
+        //             $table = $table->whereNotNull($request->filterCol[$key]);
+        //         }else if($pieces[0] == 'raw'){
+        //             $table = $table->where($request->filterCol[$key],'=',DB::raw($pieces[1]));
+        //         }else{
+        //             $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
+        //         }
+        //     }
+        // }
+        
+        // if(!empty($request->filterdate)){
+        //     $table = $table->where('db.entrydate','>',$request->filterdate[0]);
+        //     $table = $table->where('db.entrydate','<',$request->filterdate[1]);
+        // }
+        
+        if(!empty($request->searchCol)){
+            if($request->searchCol[0] == 'db_invno'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('db.invno','like',$request->searchVal[0]);
+                });
+            }else if($request->searchCol[0] == 'dm_name'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('dm.name','like',$request->searchVal[0]);
+                });
+            }else if($request->searchCol[0] == 'db_payercode'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('db.payercode','like',$request->searchVal[0]);
+                });
+            }else if($request->searchCol[0] == 'db_mrn'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('db.mrn','like',$request->searchVal[0]);
+                });
+            }else if($request->searchCol[0] == 'db_auditno'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('db.auditno',$request->wholeword);
+                });
+            }else{
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
+                });
+            }
+        }
+        
+        if(!empty($request->sidx)){
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                foreach ($pieces as $key => $value) {
+                    $value_ = substr_replace($value,0,strpos($value,"_")+1);
+                    $pieces_inside = explode(" ", $value_);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }else{
+            $table = $table->orderBy('idno','DESC');
+        }
+        
+        $paginate = $table->paginate($request->rows);
+        
+        // foreach ($paginate->items() as $key => $value) {
+        //     $apactdtl = DB::table('finance.apactdtl')
+        //                 ->where('source','=',$value->apacthdr_source)
+        //                 ->where('trantype','=',$value->apacthdr_trantype)
+        //                 ->where('auditno','=',$value->apacthdr_auditno);
+        
+        //     // if($apactdtl->exists()){
+        //     //     $value->apactdtl_outamt = $apactdtl->sum('amount');
+        //     // }else{
+        //     //     $value->apactdtl_outamt = $value->apacthdr_outamount;
+        //     // }
+        
+        //     // $apalloc = DB::table('finance.apalloc')
+        //     //             ->select('allocdate')
+        //     //             ->where('refsource','=',$value->apacthdr_source)
+        //     //             ->where('reftrantype','=',$value->apacthdr_trantype)
+        //     //             ->where('refauditno','=',$value->apacthdr_auditno)
+        //     //             ->where('recstatus','!=','CANCELLED')
+        //     //             ->orderBy('idno', 'desc');
+        
+        //     // if($apalloc->exists()){
+        //     //     $value->apalloc_allocdate = $apalloc->first()->allocdate;
+        //     // }else{
+        //     //     $value->apalloc_allocdate = '';
+        //     // }
+        // }
+        
+        //////////paginate/////////
+        
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+        
+        return json_encode($responce);       
     }
 
     public function form(Request $request)

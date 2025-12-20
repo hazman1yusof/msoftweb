@@ -182,12 +182,12 @@ $(document).ready(function () {
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","idno","recstatus");
 
 	var urlParam={
-		action:'get_table_default',
-		url:'util/get_table_default',
+		action:'maintable',
+		url:'stockCount/table',
 		field: [],
 		table_name:['material.phycnthd'],
-		filterCol:['compcode'],
-		filterVal:['session.compcode']
+		deptcode:$('#trandept').val(),
+		status:$('#Status').val()
 		
 	}
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
@@ -514,19 +514,8 @@ $(document).ready(function () {
 	}
 	
 	function searchChange(){
-		var arrtemp = ['session.compcode',  $('#Status option:selected').val(), $('#trandept option:selected').val()];
-		var filter = arrtemp.reduce(function(a,b,c){
-			if(b=='All'){
-				return a;
-			}else{
-				a.fc = a.fc.concat(a.fct[c]);
-				a.fv = a.fv.concat(b);
-				return a;
-			}
-		},{fct:['ivt.compcode','ivt.recstatus','ivt.txndept'],fv:[],fc:[]});//tukar kat sini utk searching purreqhd.compcode','purreqhd.recstatus','purreqhd.prdept'
-
-		urlParam.filterCol = filter.fc;
-		urlParam.filterVal = filter.fv;
+		urlParam.deptcode = $('#trandept').val();
+		urlParam.status = $('#Status').val();
 		refreshGrid('#jqGrid',urlParam);
 	}
 
