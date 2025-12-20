@@ -475,13 +475,13 @@ class invtran_util extends defaultController{
             $txnqty = $value->txnqty;
 
             $OldQtyOnHand = $product_obj->qtyonhand;
-            $currprice = $netprice;
-            $Oldavgcost = $product_obj->avgcost;
-            $OldAmount = $OldQtyOnHand * $Oldavgcost;
-            $NewAmount = $netprice * $txnqty;
+            // $currprice = $netprice;
+            // $Oldavgcost = $product_obj->avgcost;
+            // $OldAmount = $OldQtyOnHand * $Oldavgcost;
+            // $NewAmount = $netprice * $txnqty;
 
             $newqtyonhand = $OldQtyOnHand + $txnqty;
-            $newAvgCost = ($OldAmount + $NewAmount) / ($OldQtyOnHand + $txnqty);
+            // $newAvgCost = ($OldAmount + $NewAmount) / ($OldQtyOnHand + $txnqty);
             // if(strtoupper($isstype) == "ADJUSTMENT"){
             //     $newAvgCost = ($OldAmount + $NewAmount) / ($OldQtyOnHand + $txnqty);
             // }else{
