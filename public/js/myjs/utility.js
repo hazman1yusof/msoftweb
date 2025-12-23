@@ -1953,18 +1953,18 @@ function checkradiobutton(radiobuttons){
 		$.each(this.radiobuttons, function( index, value ) {
 			var checked = $("input[name="+value+"]:checked").val();
 		    if(!checked){
-		     	$("label[for="+value+"]").css('color', '#a94442');
-		     	$(":radio[name='"+value+"']").parent('label').css('color', '#a94442');
+		     	$("label[for="+value+"]").css('color', '#fb0400ff');
+		     	$(":radio[name='"+value+"']").parent('label').css('color', '#fb0400ff');
 			}else{
-				$("label[for="+value+"]").css('color', '#444444');
-				$(":radio[name='"+value+"']").parent('label').css('color', '#444444');
+				$("label[for="+value+"]").css('color', '#000000ff');
+				$(":radio[name='"+value+"']").parent('label').css('color', '#000000ff');
 			}
 		});
 	}
 	this.reset = function(){
 		$.each(this.radiobuttons, function( index, value ) {
-			$("label[for="+value+"]").css('color', '#444444');
-			$(":radio[name="+value+"]").parent('label').css('color', '#444444');
+			$("label[for="+value+"]").css('color', '#000000ff');
+			$(":radio[name="+value+"]").parent('label').css('color', '#000000ff');
 		});
 	}
 }

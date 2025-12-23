@@ -80,39 +80,39 @@
                                 <table class="table table-sm table-hover">
                                     <tbody>
                                         <tr>
-                                            <td><input type="checkbox" id="allergydrugs" name="allergydrugs" value="1"></td>
+                                            <td><input type="checkbox" id="allergydrugs" name="allergydrugs" value="1" data-validation="required" data-validation-error-msg-required="Please enter information."></td>
                                             <td><label for="allergydrugs">Drugs</label></td>
-                                            <td><textarea id="drugs_remarks" name="drugs_remarks" type="text" rows="3"></textarea></td>
+                                            <td><textarea id="drugs_remarks" name="drugs_remarks" type="text" rows="3" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea></td>
                                         </tr>
                                         <tr>
-                                            <td><input type="checkbox" id="allergyplaster" name="allergyplaster" value="1"></td>
+                                            <td><input type="checkbox" id="allergyplaster" name="allergyplaster" value="1" data-validation="required" data-validation-error-msg-required="Please enter information."></td>
                                             <td><label for="allergyplaster">Plaster</label></td>
-                                            <td><textarea id="plaster_remarks" name="plaster_remarks" type="text" rows="3"></textarea></td>
+                                            <td><textarea id="plaster_remarks" name="plaster_remarks" type="text" rows="3" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea></td>
                                         </tr>
                                         <tr>
-                                            <td><input type="checkbox" id="allergyfood" name="allergyfood" value="1"></td>
+                                            <td><input type="checkbox" id="allergyfood" name="allergyfood" value="1" data-validation="required" data-validation-error-msg-required="Please enter information."></td>
                                             <td><label for="allergyfood">Food</label></td>
-                                            <td><textarea id="food_remarks" name="food_remarks" type="text" rows="3"></textarea></td>
+                                            <td><textarea id="food_remarks" name="food_remarks" type="text" rows="3" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea></td>
                                         </tr>
                                         <tr>
-                                            <td><input type="checkbox" id="allergyenvironment" name="allergyenvironment" value="1"></td>
+                                            <td><input type="checkbox" id="allergyenvironment" name="allergyenvironment" value="1" data-validation="required" data-validation-error-msg-required="Please enter information."></td>
                                             <td><label for="allergyenvironment">Environment</label></td>
-                                            <td><textarea id="environment_remarks" name="environment_remarks" type="text" rows="3"></textarea></td>
+                                            <td><textarea id="environment_remarks" name="environment_remarks" type="text" rows="3" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea></td>
                                         </tr>
                                         <tr>
-                                            <td><input type="checkbox" id="allergyothers" name="allergyothers" value="1"></td>
+                                            <td><input type="checkbox" id="allergyothers" name="allergyothers" value="1" data-validation="required" data-validation-error-msg-required="Please enter information."></td>
                                             <td><label for="allergyothers">Others</label></td>
-                                            <td><textarea id="others_remarks" name="others_remarks" type="text" rows="3"></textarea></td>
+                                            <td><textarea id="others_remarks" name="others_remarks" type="text" rows="3" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea></td>
                                         </tr>
                                         <tr>
-                                            <td><input type="checkbox" id="allergyunknown" name="allergyunknown" value="1"></td>
+                                            <td><input type="checkbox" id="allergyunknown" name="allergyunknown" value="1" data-validation="required" data-validation-error-msg-required="Please enter information."></td>
                                             <td><label for="allergyunknown">Unknown</label></td>
-                                            <td><textarea id="unknown_remarks" name="unknown_remarks" type="text" rows="3"></textarea></td>
+                                            <td><textarea id="unknown_remarks" name="unknown_remarks" type="text" rows="3" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea></td>
                                         </tr>
                                         <tr>
-                                            <td><input type="checkbox" id="allergynone" name="allergynone" value="1"></td>
+                                            <td><input type="checkbox" id="allergynone" name="allergynone" value="1" data-validation="required" data-validation-error-msg-required="Please enter information."></td>
                                             <td><label for="allergynone">None</label></td>
-                                            <td><textarea id="none_remarks" name="none_remarks" type="text" rows="3"></textarea></td>
+                                            <td><textarea id="none_remarks" name="none_remarks" type="text" rows="3" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -236,51 +236,25 @@
 
                             <div class="eight wide column ">
                                 <div class="ui segments">
-                                    <div class="ui secondary segment">LEVEL OF CONSCIOUSNESS</div>
-                                    <!-- <div class="ui segment">
+                                    <div class="ui secondary segment" for="lvl_conscious">LEVEL OF CONSCIOUSNESS</div>
+                                    <div class="ui segment">
                                         <div class="field">
                                             <label>
-                                                <input type="radio" id="loc_conscious" name="loc_conscious" value="1">
+                                                <input type="radio" id="loc_conscious" name="lvl_conscious" value="Conscious" data-validation="required">
                                                 Conscious 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
-                                                <input type="radio" id="loc_semiconscious" name="loc_semiconscious" value="1">
+                                                <input type="radio" id="loc_semiconscious" name="lvl_conscious" value="SemiConscious" data-validation="">
                                                 SemiConscious 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
-                                                <input type="radio" id="loc_unconscious" name="loc_unconscious" value="1">
+                                                <input type="radio" id="loc_unconscious" name="lvl_conscious" value="UnConscious" data-validation="">
                                                 UnConscious 
                                             </label>
-                                        </div>
-                                    </div> -->
-                                    <div class="grouped fields">
-                                        <div class="field">
-                                        <div class="ui radio checkbox">
-                                            <input type="radio" id="loc_conscious" name="loc_conscious" value="1">
-                                            <label>Conscious</label>
-                                        </div>
-                                        </div>
-                                        <div class="field">
-                                        <div class="ui radio checkbox">
-                                            <input type="radio" name="example2">
-                                            <label>2-3 times a week</label>
-                                        </div>
-                                        </div>
-                                        <div class="field">
-                                        <div class="ui radio checkbox">
-                                            <input type="radio" name="example2">
-                                            <label>Once a day</label>
-                                        </div>
-                                        </div>
-                                        <div class="field">
-                                        <div class="ui radio checkbox">
-                                            <input type="radio" name="example2">
-                                            <label>Twice a day</label>
-                                        </div>
                                         </div>
                                     </div>
                                 </div>
@@ -288,29 +262,29 @@
 
                             <div class="eight wide column ">
                                 <div class="ui segments">
-                                    <div class="ui secondary segment">MENTAL STATUS</div>
+                                    <div class="ui secondary segment" for="mental_stat">MENTAL STATUS</div>
                                     <div class="ui segment">
                                         <div class="field">
                                             <label>
-                                                <input type="radio" id="ms_orientated" name="ms_orientated" value="1">
+                                                <input type="radio" id="ms_orientated" name="mental_stat" value="Orientated" data-validation="required">
                                                 Orientated 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
-                                                <input type="radio" id="ms_confused" name="ms_confused" value="1">
+                                                <input type="radio" id="ms_confused" name="mental_stat" value="Confused" data-validation="">
                                                 Confused 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
-                                                <input type="radio" id="ms_restless" name="ms_restless" value="1">
+                                                <input type="radio" id="ms_restless" name="mental_stat" value="Restless" data-validation="">
                                                 Restless 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
-                                                <input type="radio" id="ms_aggressive" name="ms_aggressive" value="1">
+                                                <input type="radio" id="ms_aggressive" name="mental_stat" value="Aggressive" data-validation="">
                                                 Aggressive 
                                             </label>
                                         </div>
@@ -320,35 +294,35 @@
 
                             <div class="eight wide column ">
                                 <div class="ui segments">
-                                    <div class="ui secondary segment">EMOTIONAL STATUS</div>
+                                    <div class="ui secondary segment" for="emotional_stat">EMOTIONAL STATUS</div>
                                     <div class="ui segment">
                                         <div class="field">
                                             <label>
-                                                <input type="radio" id="es_calm" name="es_calm" value="1">
+                                                <input type="radio" id="es_calm" name="emotional_stat" value="Calm" data-validation="required">
                                                 Calm 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
-                                                <input type="radio" id="es_anxious" name="es_anxious" value="1">
+                                                <input type="radio" id="es_anxious" name="emotional_stat" value="Anxious" data-validation="">
                                                 Anxious 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
-                                                <input type="radio" id="es_distress" name="es_distress" value="1">
+                                                <input type="radio" id="es_distress" name="emotional_stat" value="Distress" data-validation="">
                                                 Distress 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
-                                                <input type="radio" id="es_depressed" name="es_depressed" value="1">
+                                                <input type="radio" id="es_depressed" name="emotional_stat" value="Depressed" data-validation="">
                                                 Depressed 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
-                                                <input type="checkbox" id="es_irritable" name="es_irritable" value="1">
+                                                <input type="radio" id="es_irritable" name="emotional_stat" value="Irritable" data-validation="">
                                                 Irritable 
                                             </label>
                                         </div>
