@@ -94,7 +94,7 @@ class SalesRCNExport implements FromView, WithEvents, WithColumnWidths, WithColu
         // dd($billdet);
         
         $dbacthdr = DB::table('debtor.dbacthdr as d')
-                    ->select('d.debtorcode', 'dm.name AS dm_desc', 'd.invno','do.mrn','b.idno', 'b.compcode', 'b.adddate', 'b.itemcode as chgcode', 'b.qtyreturned as quantity', 'b.amount', 'b.amtslstax as taxamount', 'b.adddate as trxdate', 'c.description AS cm_desc', 'd.trantype','d.source','d.debtorcode AS debtorcode','pm.Name as pm_name','pm.newmrn','p.avgcost as costprice','do.recno')
+                    ->select('d.debtorcode', 'dm.name AS dm_desc', 'd.invno','do.mrn','b.idno', 'b.compcode', 'b.adddate', 'b.itemcode as chgcode', 'b.qtyreturned as quantity', 'b.amount', 'b.amtslstax as taxamount', 'b.adddate as trxdate', 'c.description AS cm_desc', 'd.trantype','d.source','d.debtorcode AS debtorcode','pm.Name as pm_name','pm.newmrn','p.avgcost as costprice','do.recno','do.cnno')
                     ->join('material.delordhd as do', function($join){
                         $join = $join->on('do.cnno', '=', 'd.recptno')
                                     ->on('do.deldept', '=', 'd.deptcode')

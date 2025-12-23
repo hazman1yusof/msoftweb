@@ -38,7 +38,7 @@
     @php($totalAmount = 0)
     @foreach($do_recno as $do)
         <tr>
-            <td style="font-weight:bold" colspan="7">{{$do->newmrn}} {{$do->pm_name}} ({{str_pad($do->invno, 7, "0", STR_PAD_LEFT)}}) </td>
+            <td style="font-weight:bold" colspan="7">{{$do->newmrn}} {{$do->pm_name}} (CN-{{str_pad($do->cnno, 7, "0", STR_PAD_LEFT)}}) </td>
         </tr>
         @php($amt = 0)
         @php($tax = 0)
