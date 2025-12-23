@@ -27,49 +27,49 @@
                             <div class="inline fields">
                                 <div class="field">
                                     <label>Time</label>
-                                    <input id="admwardtime" name="admwardtime" type="time">
+                                    <input id="admwardtime" name="admwardtime" type="time" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                 </div>
                                 <div class="field">
                                     <label>Date</label>
                                     <input id="reg_date" name="reg_date" type="date" rdonly>
                                 </div>
-                                <div class="field">
+                                <!-- <div class="field">
                                     <label>Triage Color Zone</label>
                                     <div class="ui action input">
                                         <input id="triagecolor" name="triagecolor" type="text">
                                         <a class="ui icon blue button"><i class="fa fa-ellipsis-h"></i></a>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
 
                             <div class="field">
                                 <label>Chief Complain</label>
-                                <textarea id="admreason" name="admreason" type="text" rows="4"  data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
+                                <textarea id="admreason" name="admreason" type="text" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
                             </div>
 
                             <div class="field">
                                 <label>Medical History</label>
-                                <textarea id="medicalhistory" name="medicalhistory" type="text" rows="4"></textarea>
+                                <textarea id="medicalhistory" name="medicalhistory" type="text" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
                             </div>
 
                             <div class="field">
                                 <label>Surgical History</label>
-                                <textarea id="surgicalhistory" name="surgicalhistory" type="text" rows="4" ></textarea>
+                                <textarea id="surgicalhistory" name="surgicalhistory" type="text" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
                             </div>
 
                             <div class="field">
                                 <label>Family Medical History</label>
-                                <textarea id="familymedicalhist" name="familymedicalhist" type="text" rows="4" ></textarea>
+                                <textarea id="familymedicalhist" name="familymedicalhist" type="text" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
                             </div>
 
                             <div class="field">
                                 <label>Current Medication</label>
-                                <textarea id="currentmedication" name="currentmedication" type="text" rows="4" ></textarea>
+                                <textarea id="currentmedication" name="currentmedication" type="text" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
                             </div>
 
                             <div class="field">
                                 <label>Diagnosis</label>
-                                <textarea id="diagnosis" name="diagnosis" type="text" rows="4" ></textarea>
+                                <textarea id="diagnosis" name="diagnosis" type="text" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
                             </div>
                         </div>
 
@@ -135,28 +135,28 @@
                                             <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                 <label>Temperature</label>
                                                 <div class="ui right labeled input">
-                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_temperature" name="vs_temperature">
+                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_temperature" name="vs_temperature" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                                   <div class="ui basic label">°C</div>
                                                 </div>
                                             </div>
 
                                             <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                 <label>Pulse Rate</label>
-                                                <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_pulse" name="vs_pulse">
+                                                <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_pulse" name="vs_pulse" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                             </div>
                                         </div>
 
                                         <div class="ui grid">
                                             <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                 <label>Respiration</label>
-                                                <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_respiration" name="vs_respiration">
+                                                <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_respiration" name="vs_respiration" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                             </div>
 
                                             <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                 <label>Blood Pressure</label>
                                                 <div class="ui right labeled input">
-                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_bp_sys1" name="vs_bp_sys1" style="width:25%">
-                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_bp_dias2" name="vs_bp_dias2" style="width:25%">
+                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_bp_sys1" name="vs_bp_sys1" style="width:25%" data-validation="required" data-validation-error-msg-required="Please enter information.">
+                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_bp_dias2" name="vs_bp_dias2" style="width:25%" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                                   <div class="ui basic label">mmHg</div>
                                                 </div>
                                             </div>
@@ -209,25 +209,25 @@
                                         <div class="field">
                                             <label>
                                                 <input type="checkbox" id="moa_walkin" name="moa_walkin" value="1">
-                                                 Walk In 
+                                                Walk In 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
                                                 <input type="checkbox" id="moa_wheelchair" name="moa_wheelchair" value="1">
-                                                 Wheel Chair 
+                                                Wheel Chair 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
                                                 <input type="checkbox" id="moa_trolley" name="moa_trolley" value="1">
-                                                 Trolley 
+                                                Trolley 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
                                                 <input type="checkbox" id="moa_others" name="moa_others" value="1">
-                                                 Others 
+                                                Others 
                                             </label>
                                         </div>
                                     </div>
@@ -237,24 +237,50 @@
                             <div class="eight wide column ">
                                 <div class="ui segments">
                                     <div class="ui secondary segment">LEVEL OF CONSCIOUSNESS</div>
-                                    <div class="ui segment">
+                                    <!-- <div class="ui segment">
                                         <div class="field">
                                             <label>
-                                                <input type="checkbox" id="loc_conscious" name="loc_conscious" value="1">
-                                                 Conscious 
+                                                <input type="radio" id="loc_conscious" name="loc_conscious" value="1">
+                                                Conscious 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
-                                                <input type="checkbox" id="loc_semiconscious" name="loc_semiconscious" value="1">
-                                                 SemiConscious 
+                                                <input type="radio" id="loc_semiconscious" name="loc_semiconscious" value="1">
+                                                SemiConscious 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
-                                                <input type="checkbox" id="loc_unconscious" name="loc_unconscious" value="1">
-                                                 UnConscious 
+                                                <input type="radio" id="loc_unconscious" name="loc_unconscious" value="1">
+                                                UnConscious 
                                             </label>
+                                        </div>
+                                    </div> -->
+                                    <div class="grouped fields">
+                                        <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input type="radio" id="loc_conscious" name="loc_conscious" value="1">
+                                            <label>Conscious</label>
+                                        </div>
+                                        </div>
+                                        <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input type="radio" name="example2">
+                                            <label>2-3 times a week</label>
+                                        </div>
+                                        </div>
+                                        <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input type="radio" name="example2">
+                                            <label>Once a day</label>
+                                        </div>
+                                        </div>
+                                        <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input type="radio" name="example2">
+                                            <label>Twice a day</label>
+                                        </div>
                                         </div>
                                     </div>
                                 </div>
@@ -266,26 +292,26 @@
                                     <div class="ui segment">
                                         <div class="field">
                                             <label>
-                                                <input type="checkbox" id="ms_orientated" name="ms_orientated" value="1">
-                                                 Orientated 
+                                                <input type="radio" id="ms_orientated" name="ms_orientated" value="1">
+                                                Orientated 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
-                                                <input type="checkbox" id="ms_confused" name="ms_confused" value="1">
-                                                 Confused 
+                                                <input type="radio" id="ms_confused" name="ms_confused" value="1">
+                                                Confused 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
-                                                <input type="checkbox" id="ms_restless" name="ms_restless" value="1">
-                                                 Restless 
+                                                <input type="radio" id="ms_restless" name="ms_restless" value="1">
+                                                Restless 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
-                                                <input type="checkbox" id="ms_aggressive" name="ms_aggressive" value="1">
-                                                 Aggressive 
+                                                <input type="radio" id="ms_aggressive" name="ms_aggressive" value="1">
+                                                Aggressive 
                                             </label>
                                         </div>
                                     </div>
@@ -298,39 +324,39 @@
                                     <div class="ui segment">
                                         <div class="field">
                                             <label>
-                                                <input type="checkbox" id="es_calm" name="es_calm" value="1">
-                                                 Calm 
+                                                <input type="radio" id="es_calm" name="es_calm" value="1">
+                                                Calm 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
-                                                <input type="checkbox" id="es_anxious" name="es_anxious" value="1">
-                                                 Anxious 
+                                                <input type="radio" id="es_anxious" name="es_anxious" value="1">
+                                                Anxious 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
-                                                <input type="checkbox" id="es_distress" name="es_distress" value="1">
-                                                 Distress 
+                                                <input type="radio" id="es_distress" name="es_distress" value="1">
+                                                Distress 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
-                                                <input type="checkbox" id="es_depressed" name="es_depressed" value="1">
-                                                 Depressed 
+                                                <input type="radio" id="es_depressed" name="es_depressed" value="1">
+                                                Depressed 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
                                                 <input type="checkbox" id="es_irritable" name="es_irritable" value="1">
-                                                 Irritable 
+                                                Irritable 
                                             </label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="sixteen wide column ">
+                            <!-- <div class="sixteen wide column ">
                                 <div class="ui segments">
                                     <div class="ui secondary segment">FALL RISK ASSESSMENT</div>
                                     <div class="ui segment">
@@ -422,13 +448,13 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="sixteen wide column">
+                <!-- <div class="sixteen wide column">
                     <div class="ui segments">
                         <div class="ui secondary segment">ACTIVITIES OF DAILY LIVING</div>
                         <div class="ui segment">
@@ -523,7 +549,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="sixteen wide column">
                     <div class="ui segments">
