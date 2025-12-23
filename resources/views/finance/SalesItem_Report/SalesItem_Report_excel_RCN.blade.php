@@ -45,7 +45,7 @@
         @php($cpr = 0)
         @php($tot = 0)
         @foreach ($dbacthdr as $obj)
-            @if($do->recno == $obj->invno)
+            @if($do->recno == $obj->recno)
                 <tr>
                     <td>{{\Carbon\Carbon::parse($obj->trxdate)->format('d/m/Y')}}</td>
                     <td>{{$obj->chgcode}}</td>
