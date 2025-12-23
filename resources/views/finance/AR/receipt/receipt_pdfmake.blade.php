@@ -56,6 +56,18 @@
                                     @endif
                                 ],
                                 [
+                                    { text: '' },
+                                    { text: '' },
+                                    { text: '' },
+                                    { text: 'TIME' },
+                                    { text: ':' },
+                                    @if(!empty($dbacthdr->entrytime))
+                                        { text: '{{\Carbon\Carbon::parse($dbacthdr->entrytime)->format('H:i:s')}}' },
+                                    @else
+                                        { text: '' },
+                                    @endif
+                                ],
+                                [
                                     { text: 'RECEIPT NO' },
                                     { text: ':' },
                                     { text: '{{$dbacthdr->recptno}}' },

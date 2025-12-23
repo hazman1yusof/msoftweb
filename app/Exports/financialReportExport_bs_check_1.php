@@ -46,6 +46,7 @@ class financialReportExport_bs_check_1 implements FromView, WithEvents, WithColu
         return [
             'B' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
         ];
     }
     
@@ -80,10 +81,11 @@ class financialReportExport_bs_check_1 implements FromView, WithEvents, WithColu
         foreach ($glmasref as $obj) {
             $arrvalue = (array)$obj;
             $pbalance=0;
+
             for($x=1;$x<=$month;$x++){
                 $pbalance = $pbalance + $arrvalue['actamount'.$x];
             }
-            $obj->pbalance = $pbalance;
+            $obj->pbalance = $pbalance + $arrvalue['openbalance'];
         }
 
         $glrptfmt = DB::table('finance.glrptfmt as gr')
@@ -101,7 +103,7 @@ class financialReportExport_bs_check_1 implements FromView, WithEvents, WithColu
         $excel_data = [];
         foreach ($glrptfmt as $obj) {
             $glmasdtl2 = DB::table('finance.glmasdtl as gldt')
-                            ->select('gldt.glaccount','gldt.year','gldt.openbalance','gldt.actamount1','gldt.actamount2','gldt.actamount3','gldt.actamount4','gldt.actamount5','gldt.actamount6','gldt.actamount7','gldt.actamount8','gldt.actamount9','gldt.actamount10','gldt.actamount11','gldt.actamount12')
+                            ->select('gldt.compcode','gldt.costcode','gldt.glaccount','gldt.year','gldt.openbalance','gldt.actamount1','gldt.actamount2','gldt.actamount3','gldt.actamount4','gldt.actamount5','gldt.actamount6','gldt.actamount7','gldt.actamount8','gldt.actamount9','gldt.actamount10','gldt.actamount11','gldt.actamount12')
                             ->where('gldt.year',$year)
                             ->where('gldt.compcode',session('compcode'))
                             ->whereIn('gldt.glaccount',range($obj->acctfr, $obj->acctto))
@@ -122,7 +124,7 @@ class financialReportExport_bs_check_1 implements FromView, WithEvents, WithColu
             }
         }
         $excel_data = collect($excel_data);
-        $excel_data = $excel_data->unique('glaccount');
+        // $excel_data = $excel_data->unique('glaccount');
 
         return view('finance.GL.financialReport.financialReportExport_bs_check_1',compact('month','year','glmasref','excel_data'));
     }
