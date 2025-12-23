@@ -193,6 +193,15 @@ $(document).ready(function () {
 		window.open('./financialReport/table?action=genexcel&monthfrom='+$("#monthfrom").val()+'&monthto='+$("#monthto").val()+'&yearfrom='+$("#yearfrom").val()+'&yearto='+$("#yearto").val()+'&reportname='+$("#reportname").val()+'&reporttype='+$("#reporttype").val()+'&Class='+$('input:radio[name=Class]:checked').val(), '_blank');
 	});
 
+	$("#checkbs").click(function() {
+		let action = 'checkBS';
+		let year = $('#yearfrom').val();
+		let month = $('#monthfrom').val();
+		let url = './financialReport/table?action='+action+'&year='+year+'&month='+month;
+
+		window.open(url, '_blank');
+	});
+
 });
 
 function set_yearperiod(){

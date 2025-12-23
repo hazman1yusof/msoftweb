@@ -173,6 +173,10 @@
                             </div>
                         </div>
                     </div>
+
+                    <button name="checkbs" type="button" class="mybtn btn btn-sm btn-primary" id="checkbs" style="margin-top: 220px;">
+                        Check Balance sheet
+                    </button>
                 </div>
             </div>
         </form>
@@ -181,5 +185,5 @@
 @endsection
 
 @section('scripts')
-	<script src="js/finance/GL/financialReport/financialReport.js?v=1.1"></script>
+	<script src="js/finance/GL/financialReport/financialReport.js?v=1.2"></script>
 @endsection
