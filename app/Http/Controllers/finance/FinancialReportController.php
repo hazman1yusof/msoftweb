@@ -71,7 +71,90 @@ class FinancialReportController extends defaultController
 
     public function check(Request $request){
 
-        return view('finance.GL.financialReport.check');
+        $month = intval($request->month);
+        $year = $request->year;
+
+        $glmasref = DB::table('finance.glmasref as gmr')
+                        ->select('gmd.compcode','gmd.costcode','gmd.glaccount','gmd.year','gmd.openbalance','gmd.actamount1','gmd.actamount2','gmd.actamount3','gmd.actamount4','gmd.actamount5','gmd.actamount6','gmd.actamount7','gmd.actamount8','gmd.actamount9','gmd.actamount10','gmd.actamount11','gmd.actamount12','gmd.bdgamount1','gmd.bdgamount2','gmd.bdgamount3','gmd.bdgamount4','gmd.bdgamount5','gmd.bdgamount6','gmd.bdgamount7','gmd.bdgamount8','gmd.bdgamount9','gmd.bdgamount10','gmd.bdgamount11','gmd.bdgamount12','gmd.foramount1','gmd.foramount2','gmd.foramount3','gmd.foramount4','gmd.foramount5','gmd.foramount6','gmd.foramount7','gmd.foramount8','gmd.foramount9','gmd.foramount10','gmd.foramount11','gmd.foramount12','gmd.adduser','gmd.adddate','gmd.upduser','gmd.upddate','gmd.deluser','gmd.deldate','gmd.recstatus','gmd.idno')
+                        ->leftJoin('finance.glmasdtl as gmd', function($join) use ($year){
+                            $join = $join->on('gmd.glaccount','gmr.glaccno')
+                                         ->where('gmd.year',$year)
+                                         ->where('gmd.compcode','=',session('compcode'));
+                        })
+                        ->where('gmr.compcode',session('compcode'))
+                        ->whereIn('gmr.acttype',['A','L'])
+                        ->get();
+
+        foreach ($glmasref as $obj) {
+            $arrvalue = (array)$obj;
+            $pbalance=0;
+
+            for($x=1;$x<=$month;$x++){
+                $pbalance = $pbalance + $arrvalue['actamount'.$x];
+            }
+            $obj->pbalance = $pbalance + $arrvalue['openbalance'];
+        }
+
+        $glrptfmt = DB::table('finance.glrptfmt as gr')
+                    ->select('gr.rptname','gr.rowdef','gr.code','gr.description','gr.revsign','gc.lineno_','gc.acctfr','gc.acctto')
+                    ->leftJoin('finance.glcondtl as gc', function($join){
+                        $join = $join->on('gc.code', '=', 'gr.code')
+                                ->where('gc.compcode','=',session('compcode'));
+                    })
+                    ->where('gr.compcode',session('compcode'))
+                    ->where('gr.rptname','BSHEET')
+                    ->where('gr.rowdef','D')
+                    ->orderBy('gr.lineno_')
+                    ->get();
+
+        $excel_data = [];
+        foreach ($glrptfmt as $obj) {
+            $glmasdtl2 = DB::table('finance.glmasdtl as gldt')
+                            ->select('gldt.compcode','gldt.costcode','gldt.glaccount','gldt.year','gldt.openbalance','gldt.actamount1','gldt.actamount2','gldt.actamount3','gldt.actamount4','gldt.actamount5','gldt.actamount6','gldt.actamount7','gldt.actamount8','gldt.actamount9','gldt.actamount10','gldt.actamount11','gldt.actamount12')
+                            ->where('gldt.year',$year)
+                            ->where('gldt.compcode',session('compcode'))
+                            ->whereIn('gldt.glaccount',range($obj->acctfr, $obj->acctto))
+                            ->get();
+
+            foreach ($glmasdtl2 as $objgl) {
+                $objgl->code = $obj->code;
+                $arrgl = (array)$objgl;
+                $pytd = $arrgl['openbalance'];
+
+                for ($i=1; $i <= $month; $i++) { 
+                    $pytd = $pytd + $arrgl['actamount'.$i];
+                }
+
+                $objgl->pytd = $pytd;
+
+                array_push($excel_data,$objgl);
+            }
+        }
+        $excel_data = collect($excel_data);
+        // $excel_data = $excel_data->unique('glaccount');
+
+        $table_data = [];
+        foreach ($glmasref as $obj1) {
+            $diff = 0;
+            $obj1->pytd = 0;
+            foreach ($excel_data as $obj2) {
+                if($obj1->glaccount == $obj2->glaccount && $obj1->costcode == $obj2->costcode){
+                    $obj1->pytd = $obj2->pytd;
+                    break;
+                }
+            }
+
+            $diff = round($obj1->pbalance,2) - round($obj1->pytd,2);
+            $obj1->diff = $diff;
+
+            if($diff != 0){
+                array_push($table_data,$obj1);
+            }
+        }
+
+        // dd($table_data);
+
+        return view('finance.GL.financialReport.check',compact('table_data'));
     }
 
     public function checkBS(Request $request){

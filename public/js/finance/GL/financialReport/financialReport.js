@@ -196,10 +196,10 @@ $(document).ready(function () {
 	});
 
 	$("#checkbs").click(function() {
-		let action = 'checkBS';
+		let action = 'check';
 		let year = $('#yearfrom').val();
 		let month = $('#monthfrom').val();
-		let url = './financialReport/table?action='+action+'&year='+year+'&month='+month;
+		let url = './financialReport/table?action='+action+'&year='+year+'&month='+month+'&datatables=exclude';
 
 		window.open(url, '_blank');
 	});

@@ -30,9 +30,11 @@
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
 	<link rel="stylesheet" href="https://cdn.datatables.net/rowgroup/1.1.2/css/rowGroup.dataTables.min.css"> -->
 
+	@if(Request::get('datatables') != 'exclude')
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.13.1/sl-1.5.0/datatables.min.css"/>
  
 	<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.13.1/sl-1.5.0/datatables.min.js"></script>
+	@endif
 
 	<link rel="stylesheet" href="{{ asset('plugins/bootstrap-3.3.5-dist/css/bootstrap.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('plugins/bootstrap-3.3.5-dist/css/bootstrap-theme.css') }}">
@@ -51,9 +53,9 @@
   	body{
 			height: 100%;
   		background: #f9f1f1;
-		background: -webkit-linear-gradient(#f9f1f1, #0c7567);
-		background: -o-linear-gradient(#f9f1f1, #0c7567);
-		background: -moz-linear-gradient(#f9f1f1, #0c7567);
+			background: -webkit-linear-gradient(#f9f1f1, #0c7567);
+			background: -o-linear-gradient(#f9f1f1, #0c7567);
+			background: -moz-linear-gradient(#f9f1f1, #0c7567);
   		background: linear-gradient(#f9f1f1, #0c7567) !important;
   		background-repeat: no-repeat !important;
   		background-attachment: fixed !important;

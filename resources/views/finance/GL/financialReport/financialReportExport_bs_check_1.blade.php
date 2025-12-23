@@ -10,6 +10,7 @@
         <td style="font-weight:bold; text-align: left">rpt_balance</td>
     </tr>
     @foreach ($glmasref as $obj)
+        @if(!$obj->skip)
         <tr>
             <td>{{$obj->glaccount}}</td>
             <td>{{$obj->pbalance}}</td>
@@ -30,8 +31,8 @@
             @else
                 <td>{{$diff}}</td>
             @endif
-
         </tr>
+        @endif
     @endforeach
 </table>
 

@@ -126,6 +126,27 @@ class financialReportExport_bs_check_1 implements FromView, WithEvents, WithColu
         $excel_data = collect($excel_data);
         // $excel_data = $excel_data->unique('glaccount');
 
+        foreach ($glmasref as $obj1) {
+            $diff = 0;
+            $pytd = 0;
+            foreach ($excel_data as $obj2) {
+                if($obj1->glaccount == $obj2->glaccount && $obj1->costcode == $obj2->costcode){
+                    $pytd = $obj2->pytd;
+                    break;
+                }
+            }
+
+            $diff = round($obj1->pbalance,2) - round($pytd,2);
+            
+            if($diff != 0){
+                $obj1->skip = false;
+            }else{
+                $obj1->skip = true;
+            }
+        }
+
+        // dd($glmasref);
+
         return view('finance.GL.financialReport.financialReportExport_bs_check_1',compact('month','year','glmasref','excel_data'));
     }
     

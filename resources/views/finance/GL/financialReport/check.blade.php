@@ -6,22 +6,40 @@
 @endsection('style')
 
 @section('body')
+
 <input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 <div class="container mycontainer">
   <div class="row">
 		<div class="col-md-12">
 			<div class="panel panel-default" style="width: 90%;margin: auto;margin-top: 10px;">
-				<div class="panel-heading">Interface Check Balance Sheet</div>
+				<div class="panel-heading">Interface Check Balance Sheet Year : <b>{{Request::get('year')}}</b> Month: <b>{{Request::get('month')}}</b></div>
 				<div class="panel-body" style="padding-left: 35px !important;">
 					<div class='col-md-12' style="padding:0px">
-				  	<label class="control-label" for="month">Year and Month</label>  
-						<input type="month" id="month" value="{{\Carbon\Carbon::now()->format('Y-m')}}" min="2025-05" class="form-control input-sm" >
-							<br/>
-							<br/>
-							<button data-action="checkBS" type="button" class="mybtn btn btn-primary">Check</button>
+						<table id="myTable" class="display">
+						    <thead>
+						        <tr>
+						            <th>BS GL Account</th>
+						            <th>BS balance</th>
+						            <th>Report GL Account</th>
+						            <th>Report Balance</th>
+						            <th>Different</th>
+						        </tr>
+						    </thead>
+						    <tbody>
+						    	@foreach($table_data as  $table)
+						        <tr>
+						            <td>{{$table->glaccount}}</td>
+						            <td>{{$table->pbalance}}</td>
+						            <td>{{$table->glaccount}}</td>
+						            <td>{{$table->pytd}}</td>
+						            <td>{{$table->diff}}</td>
+						        </tr>
+						    	@endforeach
+						    </tbody>
+						</table>
 					</div>
 				</div>
-			</div> 
+			</div>
 		</div>
   </div> 
 </div>
@@ -29,18 +47,13 @@
 @endsection
 
 @section('scripts')
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.5/css/dataTables.dataTables.css" />
+<script src="https://cdn.datatables.net/2.3.5/js/dataTables.js"></script>
 
 <script>
+
 $(document).ready(function () {
-
-	$("button.mybtn").click(function() {
-		let action = $(this).data('action');
-		let year = $('#month').val().slice(0, 4);
-		let month = parseInt($('#month').val().split("-")[1], 10);
-		let url = './table?action='+action+'&year='+year+'&month='+month;
-
-		window.open(url, '_blank');
-	});
+	$('#myTable').DataTable();
 });
 		
 </script>
