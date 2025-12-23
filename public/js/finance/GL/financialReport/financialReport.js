@@ -149,7 +149,9 @@ $(document).ready(function () {
 			ondblClickRow: function () {
 				let data=selrowData('#'+reporttype.gridname);
 
-				
+				$("#checkbs").show();
+				$("#checkbs_span").text(data['rpttype']);
+
 				if(data['rpttype'] == 'PROFIT & LOSS (DETAIL)'){
 					$("#reporttype").val(1);
 					$('div.divto,div.topradio').show();

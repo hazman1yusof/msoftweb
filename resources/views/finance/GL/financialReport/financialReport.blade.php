@@ -174,8 +174,8 @@
                         </div>
                     </div>
 
-                    <button name="checkbs" type="button" class="mybtn btn btn-sm btn-primary" id="checkbs" style="margin-top: 220px;">
-                        Check Balance sheet
+                    <button name="checkbs" type="button" class="mybtn btn btn-sm btn-primary" id="checkbs" style="margin-top: 220px;display: none;">
+                        CHECK <span id="checkbs_span"></span>
                     </button>
                 </div>
             </div>
