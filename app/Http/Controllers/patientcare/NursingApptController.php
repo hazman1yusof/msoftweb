@@ -57,6 +57,9 @@ class NursingApptController extends defaultController
             case 'nursing_edit':
                 return $this->edit_exam($request);
 
+            case 'nursing_del':
+                return $this->del_exam($request);
+
             case 'more_examTriage_save':
                 return $this->add_more_exam($request);
 
@@ -130,6 +133,9 @@ class NursingApptController extends defaultController
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lvl_conscious' => $request->lvl_conscious,
+                        'mental_stat' => $request->mental_stat,
+                        'emotional_stat' => $request->emotional_stat,
                     ]);
 
             DB::table('nursing.nurshistory')
@@ -314,6 +320,9 @@ class NursingApptController extends defaultController
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lvl_conscious' => $request->lvl_conscious,
+                        'mental_stat' => $request->mental_stat,
+                        'emotional_stat' => $request->emotional_stat,
                     ]);
             }else{
                 $nursassessment_triage
@@ -363,6 +372,9 @@ class NursingApptController extends defaultController
                         'psra_atrisk' => $request->psra_atrisk,
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lvl_conscious' => $request->lvl_conscious,
+                        'mental_stat' => $request->mental_stat,
+                        'emotional_stat' => $request->emotional_stat,
                     ]);
             }
 
@@ -1236,6 +1248,29 @@ class NursingApptController extends defaultController
 
             return response($e->getMessage(), 500);
         }
+    }
+
+    public function del_exam(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nurassesexam')
+                ->where('idno','=',$request->idno)
+                ->where('compcode','=',session('compcode'))
+                ->delete();
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+    
     }
 
     public function add_more_exam(Request $request){

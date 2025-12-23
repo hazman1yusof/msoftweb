@@ -28,6 +28,8 @@ var urlParam_AddNotesTriage = {
 $(document).ready(function () {
 
 	var fdl = new faster_detail_load();
+	var radbuts = new checkradiobutton(['lvl_conscious','mental_stat','emotional_stat']);
+
 
 	// disableForm('#formTriageInfo, #formActDaily, #formTriPhysical');
 
@@ -39,9 +41,10 @@ $(document).ready(function () {
 		SmoothScrollTo('#tab_triage', 300);
 		$("#jqGridExamTriage").jqGrid ('setGridWidth', Math.floor($("#jqGridExamTriage_c")[0].offsetWidth-$("#jqGridExamTriage_c")[0].offsetLeft-14));
 		$("#jqGridAddNotesTriage").jqGrid ('setGridWidth', Math.floor($("#jqGridAddNotesTriage_c")[0].offsetWidth-$("#jqGridAddNotesTriage_c")[0].offsetLeft-14));
+		radbuts.reset();
 
 		var saveParam={
-      action:'get_table_triage',
+      	action:'get_table_triage',
     }
 
     var postobj={
@@ -80,6 +83,7 @@ $(document).ready(function () {
 		button_state_ti('wait');
 		enableForm('#formTriageInfo');
 		rdonly('#formTriageInfo');
+
 		// dialog_mrn_edit.on();
 		
 	});
@@ -88,6 +92,7 @@ $(document).ready(function () {
 		button_state_ti('wait');
 		enableForm('#formTriageInfo');
 		rdonly('#formTriageInfo');
+
 		// dialog_mrn_edit.on();
 		
 	});
@@ -101,6 +106,7 @@ $(document).ready(function () {
 	});
 
 	$("#save_ti").click(function(){
+		radbuts.check();
 		if( $('#formTriageInfo').isValid({requiredFields: ''}, conf, true) ) {
 			readonlyForm('#formTriageInfo');
 			saveForm_ti(function(){
@@ -117,6 +123,7 @@ $(document).ready(function () {
 	$("#cancel_ti").click(function(){
 		disableForm('#formTriageInfo');
 		button_state_ti($(this).data('oper'));
+		radbuts.reset();
 		// dialog_mrn_edit.off();
 
 	});
@@ -196,13 +203,14 @@ $(document).ready(function () {
 			{ label: 'mrn', name: 'mrn', hidden: true },
 			{ label: 'episno', name: 'episno', hidden: true },
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
-			{ label: 'Exam', name: 'exam', width: 80,classes: 'wrap', editable:true,
-				editrules:{custom:true, custom_func:cust_rules},formatter: showdetail,
-					edittype:'custom',	editoptions:
-						{  custom_element:examTriageCustomEdit,
-						   custom_value:galGridCustomValue 	
-						},
-			},
+			// { label: 'Exam', name: 'exam', width: 80,classes: 'wrap', editable:true,
+			// 	editrules:{custom:true, custom_func:cust_rules},formatter: showdetail,
+			// 		edittype:'custom',	editoptions:
+			// 			{  custom_element:examTriageCustomEdit,
+			// 			   custom_value:galGridCustomValue 	
+			// 			},
+			// },
+			{ label: 'Exam', name: 'exam', classes: 'wrap', width: 120, editable: true, edittype: "textarea", editoptions: {style: "width: -webkit-fill-available;" ,rows: 5}},
 			{ label: 'Note', name: 'examnote', classes: 'wrap', width: 120, editable: true, edittype: "textarea", editoptions: {style: "width: -webkit-fill-available;" ,rows: 5}},
 			{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
@@ -247,7 +255,7 @@ $(document).ready(function () {
 
 			dialog_examTriage.on();
 
-			$("input[name='examnote']").keydown(function(e) {//when click tab at last column in header, auto save
+			$("textarea[name='examnote']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGridExamTriage_ilsave').click();
 				/*addmore_jqgrid.state = true;
@@ -302,7 +310,7 @@ $(document).ready(function () {
 			dialog_examTriage.on();
 			
 			// $("input[name='grpcode']").attr('disabled','disabled');
-			$("input[name='examnote']").keydown(function(e) {//when click tab at last column in header, auto save
+			$("textarea[name='examnote']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGridExamTriage_ilsave').click();
 				/*addmore_jqgrid.state = true;
@@ -370,10 +378,10 @@ $(document).ready(function () {
 				if (result == true) {
 					param = {
 						_token: $("#_token").val(),
-						action: 'nursing_save',
+						action: 'nursing_del',
 						idno: selrowData('#jqGridExamTriage').idno,
 					}
-					$.post( "./ptcare_nursingAppt/form?"+$.param(param),{oper:'del'}, function( data ){
+					$.post( "./ptcare_nursingAppt/form?"+$.param(param),{oper:'del_exam'}, function( data ){
 					}).fail(function (data) {
 						//////////////////errorText(dialog,data.responseText);
 					}).done(function (data) {
@@ -793,6 +801,7 @@ function populate_triage_currpt(obj){
 	$('#occupation_show_triage').text(if_none(obj.OccupCode).toUpperCase());
 	$('#citizenship_show_triage').text(if_none(obj.Citizencode).toUpperCase());
 	$('#area_show_triage').text(if_none(obj.AreaCode).toUpperCase());
+	$('#payer_show_triage').text(obj.payer);
 
 	$("#mrn_ti").val(obj.MRN);
 	$("#episno_ti").val(obj.Episno);
@@ -839,7 +848,7 @@ function empty_formNursing(){
 	$('#occupation_show_triage').text('');
 	$('#citizenship_show_triage').text('');
 	$('#area_show_triage').text('');
-
+	$('#payer_show_triage').text('');
 
 	$('#mrn_ti').val('');
 	$("#episno_ti").val('');
