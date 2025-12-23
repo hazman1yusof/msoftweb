@@ -160,7 +160,8 @@
             RELIGION: <span id="religion_show_triage"></span><br>
             OCCUPATION: <span id="occupation_show_triage"></span>
             CITIZENSHIP: <span id="citizenship_show_triage"></span>
-            AREA: <span id="area_show_triage"></span> 
+            AREA: <span id="area_show_triage"></span>
+            PAYER: <span id="payer_show_triage"></span> 
 
             <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_triage"></i>
             <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_triage" ></i >
@@ -189,51 +190,6 @@
         <div id="tab_triage" class="panel-collapse collapse">
             <div class="panel-body paneldiv">
                 @include('patientcare.nursingAppt')
-            </div>
-        </div>
-    </div>
-
-    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="nursNote_panel">
-        <div class="panel-heading clearfix collapsed" id="toggle_nursNote">
-
-            <b>NAME: <span id="name_show_nursNote"></span></b><br>
-            MRN: <span id="mrn_show_nursNote"></span>
-            SEX: <span id="sex_show_nursNote"></span>
-            DOB: <span id="dob_show_nursNote"></span>
-            AGE: <span id="age_show_nursNote"></span>
-            RACE: <span id="race_show_nursNote"></span>
-            RELIGION: <span id="religion_show_nursNote"></span><br>
-            OCCUPATION: <span id="occupation_show_nursNote"></span>
-            CITIZENSHIP: <span id="citizenship_show_nursNote"></span>
-            AREA: <span id="area_show_nursNote"></span> 
-
-            <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_nursNote"></i>
-            <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_nursNote" ></i >
-        
-            <div style="position: absolute;
-                            padding: 0 0 0 0;
-                            right: 0px;
-                            top: 0px;
-                            z-index: 1000;">
-                <button class="ui icon tertiary button refreshbtn_nursNote">
-                    <i class="sync alternate icon"></i>
-                </button>
-            </div> 
-
-            <div id='nursing_title' style="position: absolute;
-                            padding: 0 0 0 0;
-                            right: 50px;
-                            top: 48px;">
-                <h5><strong>Nursing Note</strong>&nbsp;&nbsp;
-                    <span class="metal"></span></h5>
-            </div> 
-
-            
-        </div>
-
-        <div id="tab_nursNote" class="panel-collapse collapse">
-            <div class="panel-body paneldiv">
-                @include('patientcare.nursingnote')
             </div>
         </div>
     </div>
@@ -518,7 +474,6 @@
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_diet.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_oth.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_pkg.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/nursingnote.js?v=1.2') }}"></script>
 @endsection
 
 

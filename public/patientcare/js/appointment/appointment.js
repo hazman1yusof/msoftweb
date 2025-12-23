@@ -155,7 +155,6 @@ $(document).ready(function () {
 				// refreshGrid("#jqGrid_trans_diet", urlParam_trans_diet);
 				// refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
 				populate_currDoctorNote(selrowData('#jqGrid'));
-				populate_nursingnote_ptcare(selrowData('#jqGrid'));
 				populate_requestFor_ptcare(selrowData('#jqGrid'));
 				populate_admhandover_currpt(selrowData('#jqGrid'));
 				populate_triage_currpt(selrowData('#jqGrid'));
@@ -216,7 +215,8 @@ $(document).ready(function () {
 				{ label: 'Epis. No', name: 'Episno', align: 'right', hidden: true },
 				{ label: 'Time', name: 'reg_time', width: 85, formatter: timeFormatter, unformat: timeUNFormatter },
 				{ label: 'Name', name: 'Name', width: 170, classes: 'wrap' },
-				{ label: 'Payer', name: 'payer', width: 150, classes: 'wrap', formatter: formatterpayer },
+				{ label: 'Doctor Name', name: 'doctorname', width: 150},
+				{ label: 'Payer', name: 'payer', width: 150, classes: 'wrap', formatter: formatterpayer, hidden:true },
 				{ label: 'Dept', name: 'regdept', width: 60 },
 				{ label: 'I/C', name: 'Newic', width: 90 },
 				{ label: 'Reg Source', name: 'admsrccode', width: 90},
@@ -242,7 +242,6 @@ $(document).ready(function () {
 				{ label: 'stats_rehab', name: 'stats_rehab', hidden: true },
 				{ label: 'stats_physio', name: 'stats_physio', hidden: true },
 				{ label: 'stats_diet', name: 'stats_diet', hidden: true },
-				{ label: 'doctorname', name: 'doctorname', hidden: true },
 
 			],
 			autowidth: false,
@@ -272,7 +271,6 @@ $(document).ready(function () {
 				// refreshGrid("#jqGrid_trans_diet", urlParam_trans_diet);
 				// refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
 				populate_currDoctorNote(selrowData('#jqGrid'));
-				populate_nursingnote_ptcare(selrowData('#jqGrid'));
 				populate_requestFor_ptcare(selrowData('#jqGrid'));
 				populate_admhandover_currpt(selrowData('#jqGrid'));
 				populate_triage_currpt(selrowData('#jqGrid'));
