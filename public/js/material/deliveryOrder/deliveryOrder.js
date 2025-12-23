@@ -2121,8 +2121,8 @@ $(document).ready(function () {
 				{label:'Department',name:'dept',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true}
 			],
 			urlParam: {
-						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','ACTIVE']
+						filterCol:['compcode','recstatus','dept'],
+						filterVal:['session.compcode','ACTIVE',$('#deptcode').val()]
 			},
 			ondblClickRow: function () {
 				$('#delordhd_remarks').focus();
@@ -2140,8 +2140,8 @@ $(document).ready(function () {
 		},{
 			title:"Authorize Person",
 			open: function(){
-				dialog_authorise.urlParam.filterCol=['compcode','recstatus'];
-				dialog_authorise.urlParam.filterVal=['session.compcode','ACTIVE'];
+				dialog_authorise.urlParam.filterCol=['compcode','recstatus','dept'];
+				dialog_authorise.urlParam.filterVal=['session.compcode','ACTIVE',$('#deptcode').val()];
 			}
 		},'urlParam','radio','tab'
 	);
