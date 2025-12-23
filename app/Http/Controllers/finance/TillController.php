@@ -430,7 +430,7 @@ class TillController extends defaultController
     public function checkifuserlogin(Request $request){
 
         $tilldetl = DB::table('debtor.till as t')
-                            ->leftJoin('debtor.tilldetl as td', function($join) use ($request){
+                            ->join('debtor.tilldetl as td', function($join) use ($request){
                                 $join = $join->where('td.compcode', session('compcode'));
                                 $join = $join->on('td.tillcode', 't.tillcode');
                                 $join = $join->on('td.cashier', 't.lastuser');

@@ -94,7 +94,7 @@ class SalesRCNExport implements FromView, WithEvents, WithColumnWidths, WithColu
         // dd($billdet);
         
         $dbacthdr = DB::table('debtor.dbacthdr as d')
-                    ->select('d.debtorcode', 'dm.name AS dm_desc', 'd.invno','d.mrn','b.idno', 'b.compcode', 'b.adddate', 'b.itemcode as chgcode', 'b.qtyreturned as quantity', 'b.amount', 'b.amtslstax as taxamount', 'b.adddate as trxdate', 'c.description AS cm_desc', 'd.trantype','d.source','d.debtorcode AS debtorcode','pm.Name as pm_name','p.avgcost as costprice')
+                    ->select('d.debtorcode', 'dm.name AS dm_desc', 'd.invno','do.mrn','b.idno', 'b.compcode', 'b.adddate', 'b.itemcode as chgcode', 'b.qtyreturned as quantity', 'b.amount', 'b.amtslstax as taxamount', 'b.adddate as trxdate', 'c.description AS cm_desc', 'd.trantype','d.source','d.debtorcode AS debtorcode','pm.Name as pm_name','pm.newmrn','p.avgcost as costprice','do.recno')
                     ->join('material.delordhd as do', function($join){
                         $join = $join->on('do.cnno', '=', 'd.recptno')
                                     ->on('do.deldept', '=', 'd.deptcode')
@@ -121,7 +121,7 @@ class SalesRCNExport implements FromView, WithEvents, WithColumnWidths, WithColu
                                     ->where('c.compcode', '=', session('compcode'));
                     })
                     ->leftJoin('hisdb.pat_mast as pm', function($join){
-                        $join = $join->on("pm.newmrn", '=', 'd.mrn');    
+                        $join = $join->on("pm.mrn", '=', 'do.mrn');    
                         $join = $join->where("pm.compcode", '=', session('compcode'));
                     })
                     ->where('d.compcode','=',session('compcode'))
@@ -141,12 +141,14 @@ class SalesRCNExport implements FromView, WithEvents, WithColumnWidths, WithColu
 
                     // dd($this->getQueries($dbacthdr));
 
-        $invno_array = [];
-        foreach ($dbacthdr as $obj) {
-            if(!in_array($obj->invno, $invno_array)){
-                array_push($invno_array, $obj->invno);
-            }
-        }
+        $do_recno = $dbacthdr->unique('recno');
+
+        // $invno_array = [];
+        // foreach ($dbacthdr as $obj) {
+        //     if(!in_array($obj->invno, $invno_array)){
+        //         array_push($invno_array, $obj->invno);
+        //     }
+        // }
 
         foreach ($dbacthdr as $obj) {
             if($obj->costprice == ''){
@@ -182,11 +184,13 @@ class SalesRCNExport implements FromView, WithEvents, WithColumnWidths, WithColu
         //     $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
+
+        // dd($do_recno);
         
         $title1 = 'RCN Report for dept: '.$deptcode;
         $title2 = 'Date From '.$datefr.' To '.$dateto;
 
-        return view('finance.SalesItem_Report.SalesItem_Report_excel',compact('dbacthdr','invno_array','title1','title2'));
+        return view('finance.SalesItem_Report.SalesItem_Report_excel_RCN',compact('dbacthdr','do_recno','title1','title2'));
     }
     
     public function registerEvents(): array
