@@ -142,6 +142,7 @@ class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWi
                             ->get();
 
             foreach ($glmasdtl as $objgl) {
+                $objgl->revsign = $obj->revsign;
                 $objgl->code = $obj->code;
                 $arrgl = (array)$objgl;
                 $pytd = $arrgl['openbalance'];
@@ -169,6 +170,12 @@ class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWi
                     $objgl->plastmonth = 0;
                     $objgl->pcurrmonth = $arrgl['actamount'.$currmonth];
                     $objgl->pytd = $objgl->pcurrmonth;
+                }
+
+                if(strtoupper($obj->revsign) == 'Y'){
+                    $objgl->pytd = $objgl->pytd * -1;
+                    $objgl->plastmonth = $objgl->plastmonth * -1;
+                    $objgl->pcurrmonth = $objgl->pcurrmonth * -1;
                 }
 
                 array_push($excel_data,$objgl);
