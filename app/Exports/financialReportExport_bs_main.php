@@ -49,7 +49,7 @@ class financialReportExport_bs_main implements WithMultipleSheets
         $sheets = [];
 
         $sheets[0] = new financialReportExport_bs($this->monthfrom,$this->monthto,$this->yearfrom,$this->yearto,$this->reporttype);
-        // $sheets[1] = new financialReportExport_bsnote($this->monthfrom,$this->monthto,$this->yearfrom,$this->yearto,$this->reporttype);
+        $sheets[1] = new financialReportExport_bsnote($this->monthfrom,$this->monthto,$this->yearfrom,$this->yearto,$this->reporttype);
 
         return $sheets;
     }

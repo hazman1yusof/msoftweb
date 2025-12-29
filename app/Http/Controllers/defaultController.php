@@ -353,7 +353,7 @@ abstract class defaultController extends Controller{
                 }
 
                 foreach ($searchCol_array as $key => $value) {
-                    $query = $query->Where($searchCol_array[$key],'like',$request->searchVal2[$key]);
+                    $query = $query->orWhere($searchCol_array[$key],'like',$request->searchVal2[$key]);
                 }
             });
         }

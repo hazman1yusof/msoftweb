@@ -65,12 +65,14 @@ class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWi
     {
         return [
             'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
         ];
     }
 
     public function title(): string
     {
-        return 'Note';
+        return 'Note to the Accounts';
     }
     
     public function columnWidths(): array
@@ -78,10 +80,12 @@ class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWi
         $alphabet = range('A', 'Z');
         $array_month = $this->array_month;
         $width_ = [
-            'A' => 15,
-            'B' => 42,
-            'C' => 15,
-            'D' => 15,
+            'A' => 4,
+            'B' => 15,
+            'C' => 42,
+            'D' => 20,
+            'E' => 20,
+            'F' => 20,
         ];
 
         return $width_;
@@ -94,11 +98,14 @@ class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWi
         $rptname = $this->rptname;
         $yearperiod = $this->getyearperiod($this->date);
 
+        $currmonth = intval($yearperiod->period);
+        $lastmonth = $currmonth - 1;
+
         $array_month = $this->array_month;
         $array_month_name = $this->array_month_name;
 
         $glrptfmt = DB::table('finance.glrptfmt as gr')
-                    ->select('gr.rptname','gr.rowdef','gr.code','gr.description','gr.revsign','gc.lineno_','gc.acctfr','gc.acctto')
+                    ->select('gr.rptname','gr.rowdef','gr.code','gr.description','gr.revsign','gc.lineno_','gc.acctfr','gc.acctto','gr.note')
                     ->leftJoin('finance.glcondtl as gc', function($join){
                         $join = $join->on('gc.code', '=', 'gr.code')
                                 ->where('gc.compcode','=',session('compcode'));
@@ -106,9 +113,10 @@ class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWi
                     ->where('gr.compcode',session('compcode'))
                     ->where('gr.rptname',$rptname)
                     ->where('gr.rowdef','D')
+                    ->where('gr.note','>',0)
                     // ->offset(7)
                     // ->limit(3)
-                    ->orderBy('gr.lineno_')
+                    ->orderBy('gr.note')
                     ->get();
 
         // dd($glrptfmt);
@@ -116,7 +124,7 @@ class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWi
         $excel_data = [];
         foreach ($glrptfmt as $obj) {
             $glmasdtl = DB::table('finance.glmasdtl as gldt')
-                            ->select('gldt.glaccount','gldt.year','gldt.openbalance','gldt.actamount1','gldt.actamount2','gldt.actamount3','gldt.actamount4','gldt.actamount5','gldt.actamount6','gldt.actamount7','gldt.actamount8','gldt.actamount9','gldt.actamount10','gldt.actamount11','gldt.actamount12','glms.description')
+                            ->select('gldt.glaccount','gldt.costcode','gldt.year','gldt.openbalance','gldt.actamount1','gldt.actamount2','gldt.actamount3','gldt.actamount4','gldt.actamount5','gldt.actamount6','gldt.actamount7','gldt.actamount8','gldt.actamount9','gldt.actamount10','gldt.actamount11','gldt.actamount12','glms.description')
                             ->leftJoin('finance.glmasref as glms', function($join){
                                 $join = $join->on('glms.glaccno', '=', 'gldt.glaccount')
                                         ->where('glms.compcode','=',session('compcode'));
@@ -131,15 +139,43 @@ class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWi
                 $arrgl = (array)$objgl;
                 $pytd = $arrgl['openbalance'];
 
-                for ($i=1; $i <= $yearperiod->period; $i++) { 
+                if($lastmonth == 0){
+                    $plastmonth = $arrgl['openbalance'];
+                }else{
+                    $plastmonth = $arrgl['openbalance'];
+                    for ($i=1; $i <= $lastmonth; $i++) { 
+                        $plastmonth = $plastmonth + $arrgl['actamount'.$i];
+                    }
+                }
+
+                for ($i=1; $i <= $currmonth; $i++) { 
                     $pytd = $pytd + $arrgl['actamount'.$i];
                 }
 
+                $objgl->note = $obj->note;
                 $objgl->pytd = $pytd;
+                $objgl->plastmonth = $plastmonth;
+                $objgl->pcurrmonth = $arrgl['actamount'.$currmonth];
 
                 array_push($excel_data,$objgl);
             }
         }
+
+        $excel_data = collect($excel_data);
+
+        $excel_data = $excel_data
+                        ->groupBy('glaccount','costcode')
+                        ->map(function ($items) {
+                            return (object) [
+                                'glaccount' => $items->first()->glaccount,
+                                'description'   => $items->first()->description,
+                                'note' => $items->first()->note,
+                                'plastmonth' => $items->sum('plastmonth'),
+                                'pcurrmonth' => $items->sum('pcurrmonth'),
+                                'pytd' => $items->sum('pytd'),
+                            ];
+                        })
+                        ->values();
 
         $glrptfmt = $glrptfmt->unique('code');
         // dump($excel_map);
@@ -148,7 +184,7 @@ class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWi
         $alphabet = range('A', 'Z');
 
         $title1 = strtoupper($this->comp->name);
-        $title2 = 'FINANCIAL REPORT Balance Sheet';
+        $title2 = 'NOTE TO THE ACCOUNTS';
         $title3 = 'MONTH '.$this->monthfrom_name.' YEAR '.$this->yearfrom;
         $title4 = 'PRINTED BY: '.session('username').' on '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y H:i');
 
@@ -174,14 +210,17 @@ class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWi
 
                 $array_month = $this->array_month;
 
-                $event->sheet->getStyle('C')
-                    ->getNumberFormat()
-                    ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
                 $event->sheet->getStyle('D')
                     ->getNumberFormat()
                     ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+                $event->sheet->getStyle('E')
+                    ->getNumberFormat()
+                    ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+                $event->sheet->getStyle('F')
+                    ->getNumberFormat()
+                    ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
                 // $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
-                // $event->sheet->getStyle('A:H')->getAlignment()->setWrapText(true);
+                $event->sheet->getStyle('D:F')->getAlignment()->setWrapText(true);
                 // $event->sheet->getPageSetup()->setFitToWidth(1);
                 // $event->sheet->getPageSetup()->setFitToHeight(0);
             },
