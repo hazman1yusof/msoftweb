@@ -57,6 +57,12 @@ class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWi
 
         $this->array_month = $array_month;
         $this->array_month_name = $array_month_name;
+
+        $this->skipytd = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','GL')
+                        ->where('trantype','CLOSE_STOCK')
+                        ->first();
     }
 
 
@@ -103,6 +109,7 @@ class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWi
 
         $array_month = $this->array_month;
         $array_month_name = $this->array_month_name;
+        $skipytd = $this->skipytd->pvalue1;
 
         $glrptfmt = DB::table('finance.glrptfmt as gr')
                     ->select('gr.rptname','gr.rowdef','gr.code','gr.description','gr.revsign','gc.lineno_','gc.acctfr','gc.acctto','gr.note')
@@ -156,6 +163,13 @@ class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWi
                 $objgl->pytd = $pytd;
                 $objgl->plastmonth = $plastmonth;
                 $objgl->pcurrmonth = $arrgl['actamount'.$currmonth];
+
+                //untuk close stock sahaja
+                if($objgl->code == $skipytd){
+                    $objgl->plastmonth = 0;
+                    $objgl->pcurrmonth = $arrgl['actamount'.$currmonth];
+                    $objgl->pytd = $objgl->pcurrmonth;
+                }
 
                 array_push($excel_data,$objgl);
             }
