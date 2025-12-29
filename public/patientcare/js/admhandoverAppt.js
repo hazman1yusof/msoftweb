@@ -108,6 +108,12 @@ $(document).ready(function () {
         $("#allergynone").prop("checked", this.value !== "");
 	});
 
+	/////////////////////////////////print button starts////////////////////////////////////////////
+
+	$("#admhandoverAppt_report").click(function() {
+		window.open('./admhandover/showpdf?mrn_admHandover='+$('#mrn_admHandover').val()+'&episno_admHandover='+$('#episno_admHandover').val(), '_blank');
+	});
+
 });
 
 var errorField = [];

@@ -288,7 +288,7 @@
     </div>
 
     <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="admHandover_panel">
-        <div class="panel-heading clearfix collapsed" id="toggle_admHandover">
+        <div class="panel-heading clearfix collapsed" id="toggle_admHandoverAppt">
 
             <b>NAME: <span id="name_show_admHandover"></span></b><br>
             MRN: <span id="mrn_show_admHandover"></span>
@@ -299,10 +299,11 @@
             RELIGION: <span id="religion_show_admHandover"></span><br>
             OCCUPATION: <span id="occupation_show_admHandover"></span>
             CITIZENSHIP: <span id="citizenship_show_admHandover"></span>
-            AREA: <span id="area_show_admHandover"></span> 
+            AREA: <span id="area_show_admHandover"></span>
+            PAYER: <span id="payer_show_admHandoverAppt"></span> 
 
-            <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_admHandover"></i>
-            <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_admHandover"></i >
+            <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_admHandoverAppt"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_admHandoverAppt"></i >
         
             <div style="position: absolute;
                             padding: 0 0 0 0;
@@ -324,9 +325,9 @@
             
         </div>
 
-        <div id="tab_admHandover" class="panel-collapse collapse">
-            <div class="panel-body paneldiv" id="tab_admHandover_sticky">
-                @include('patientcare.admhandover')
+        <div id="tab_admHandoverAppt" class="panel-collapse collapse">
+            <div class="panel-body paneldiv" id="tab_admHandoverAppt_sticky">
+                @include('patientcare.admhandoverAppt')
             </div>
         </div>
     </div>
@@ -461,7 +462,7 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy_ncase.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/requestfor.js?v=1.5') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/admhandover.js?v=1.1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/admhandoverAppt.js?v=1.1') }}"></script>
 
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_main.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_phar.js') }}"></script>
