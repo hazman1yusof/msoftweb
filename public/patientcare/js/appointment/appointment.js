@@ -156,7 +156,7 @@ $(document).ready(function () {
 				// refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
 				populate_currDoctorNote(selrowData('#jqGrid'));
 				populate_requestFor_ptcare(selrowData('#jqGrid'));
-				populate_admhandover_currpt(selrowData('#jqGrid'));
+				populate_admhandoverAppt_currpt(selrowData('#jqGrid'));
 				populate_triage_currpt(selrowData('#jqGrid'));
 				populate_dieteticCareNotes_currpt(selrowData('#jqGrid'));
 				populate_userfile(selrowData('#jqGrid'));
@@ -188,6 +188,7 @@ $(document).ready(function () {
 				$('#no_of_pat').text($("#jqGrid").getGridParam("reccount"));
 				empty_currDoctorNote();
 				empty_nursingnote_ptcare();
+				empty_admhandoverAppt_ptcare();
 				empty_requestFor_ptcare();
 				empty_transaction();
 				empty_transaction_diet();
@@ -272,7 +273,7 @@ $(document).ready(function () {
 				// refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
 				populate_currDoctorNote(selrowData('#jqGrid'));
 				populate_requestFor_ptcare(selrowData('#jqGrid'));
-				populate_admhandover_currpt(selrowData('#jqGrid'));
+				populate_admhandoverAppt_currpt(selrowData('#jqGrid'));
 				populate_triage_currpt(selrowData('#jqGrid'));
 				populate_dieteticCareNotes_currpt(selrowData('#jqGrid'));
 				populate_userfile(selrowData('#jqGrid'));
@@ -299,7 +300,7 @@ $(document).ready(function () {
 				$('#no_of_pat').text($("#jqGrid").getGridParam("reccount"));
 				empty_currDoctorNote();
 				empty_requestFor_ptcare();
-				empty_admhandover_ptcare();
+				empty_admhandoverAppt_ptcare();
 				empty_transaction();
 				empty_transaction_diet();
 				empty_transaction_phys();
