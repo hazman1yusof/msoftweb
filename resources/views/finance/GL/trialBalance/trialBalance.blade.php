@@ -102,12 +102,28 @@
                             <div class="form-group">
                                 <label class="col-md-2 control-label" for="yearfrom">Year</label>  
                                 <div class="col-md-4">
-                                    <select id='yearfrom' name='yearfrom' class="form-control input-sm"></select>
+                                    <select id='yearfrom' name='yearfrom' class="form-control input-sm">
+                                        @foreach($period as $p)
+                                            @if($p->year == $currentyear)
+                                                <option selected>{{$p->year}}</option>
+                                            @else
+                                                <option>{{$p->year}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
                                 </div>  
                                 <div class="divto">
                                     <label class="col-md-2 control-label" for="yearto">Year To</label>  
                                     <div class="col-md-4">
-                                        <select id='yearto' name='yearto' class="form-control input-sm"></select>
+                                        <select id='yearto' name='yearto' class="form-control input-sm">
+                                            @foreach($period as $p)
+                                                @if($p->year == $currentyear)
+                                                    <option selected>{{$p->year}}</option>
+                                                @else
+                                                    <option>{{$p->year}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
                                     </div> 
                                 </div>
                             </div>
@@ -154,5 +170,5 @@
 @endsection
 
 @section('scripts')
-	<script src="js/finance/GL/trialBalance/trialBalance.js"></script>
+	<script src="js/finance/GL/trialBalance/trialBalance.js?v=1.1"></script>
 @endsection

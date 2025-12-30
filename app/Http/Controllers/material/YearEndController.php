@@ -60,7 +60,7 @@ class YearEndController extends defaultController
         try {
 
             $curryear = Carbon::now("Asia/Kuala_Lumpur")->format('Y');
-            $curryear = 2024;
+            $curryear = 2025;
 
             $stockloc = DB::table('material.stockloc')
                             ->where('year',$curryear)

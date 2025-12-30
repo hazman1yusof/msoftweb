@@ -207,23 +207,23 @@ $(document).ready(function () {
 });
 
 function set_yearperiod(){
-	param={
-		action:'get_value_default',
-		field: ['year'],
-		table_name:'sysdb.period',
-		table_id:'idno',
-		sortby:['year desc']
-	}
-	$.get( "util/get_value_default?"+$.param(this.param), function( data ) {
+	// param={
+	// 	action:'get_value_default',
+	// 	field: ['year'],
+	// 	table_name:'sysdb.period',
+	// 	table_id:'idno',
+	// 	sortby:['year desc']
+	// }
+	// $.get( "util/get_value_default?"+$.param(this.param), function( data ) {
 			
-	},'json').done(function(data) {
-		if(!$.isEmptyObject(data.rows)){
-			data.rows.forEach(function(element){	
-				$('#yearfrom').append("<option>"+element.year+"</option>")
-				$('#yearto').append("<option>"+element.year+"</option>")
-			});
-		}
-	});
+	// },'json').done(function(data) {
+	// 	if(!$.isEmptyObject(data.rows)){
+	// 		data.rows.forEach(function(element){	
+	// 			$('#yearfrom').append("<option>"+element.year+"</option>")
+	// 			$('#yearto').append("<option>"+element.year+"</option>")
+	// 		});
+	// 	}
+	// });
 
 	$('select#monthfrom').val(moment().format('M'));
 	$('select#monthto').val(moment().format('M'));

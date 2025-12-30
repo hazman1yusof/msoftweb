@@ -25,7 +25,19 @@ class TrialBalanceController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('finance.GL.trialBalance.trialBalance');
+        $currentyear = DB::table('sysdb.sysparam')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','GL')
+                            ->where('trantype','CURRENT_YEAR')
+                            ->first()
+                            ->pvalue1;
+
+        $period = DB::table('sysdb.period')
+                            ->where('compcode',session('compcode'))
+                            ->orderBy('year','desc')
+                            ->get();
+                            
+        return view('finance.GL.trialBalance.trialBalance',compact('currentyear','period'));
     }
 
     public function table(Request $request)

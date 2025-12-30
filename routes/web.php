@@ -915,6 +915,11 @@ Route::get('/reportFormat/showExcel','finance\ReportFormatController@showExcel')
 Route::get('/reportFormat/showpdf','finance\ReportFormatController@showpdf');
 
 //// period setup ///
+Route::get('/finance_yearend','finance\finance_yearendController@show');
+Route::get('/finance_yearend/table','finance\finance_yearendController@table');
+Route::post('/finance_yearend/form','finance\finance_yearendController@form');
+
+//// period setup ///
 Route::get('/period','finance\PeriodController@show');
 Route::get('/period/table','finance\PeriodController@table');
 Route::post('/period/form','finance\PeriodController@form');

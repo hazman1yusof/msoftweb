@@ -29,7 +29,19 @@ class FinancialReportController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('finance.GL.financialReport.financialReport');
+        $currentyear = DB::table('sysdb.sysparam')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','GL')
+                            ->where('trantype','CURRENT_YEAR')
+                            ->first()
+                            ->pvalue1;
+
+        $period = DB::table('sysdb.period')
+                            ->where('compcode',session('compcode'))
+                            ->orderBy('year','desc')
+                            ->get();
+
+        return view('finance.GL.financialReport.financialReport',compact('currentyear','period'));
     }
 
     public function table(Request $request)
