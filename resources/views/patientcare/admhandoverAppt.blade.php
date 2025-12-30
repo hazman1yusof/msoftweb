@@ -53,7 +53,7 @@
                             <div class="field eight wide column">
                                 <label>Weight</label>
                                 <div class="ui right labeled input">
-                                    <input type="text" onKeyPress="if(this.value.length==6) return false;" id="weightsAppt" name="vs_weight">
+                                    <input type="text" onKeyPress="if(this.value.length==6) return false;" id="weightsAppt" name="weights">
                                     <div class="ui basic label">kg</div>
                                 </div>
                             </div>
