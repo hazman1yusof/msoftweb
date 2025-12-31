@@ -370,8 +370,6 @@ class RefundController extends defaultController
                 }
             }
 
-            $this->gltran($auditno,'RF');
-
             foreach ($request->allo as $key => $value) {
                 if(empty(floatval($value['obj']['amtpaid']))){
                     continue;
@@ -402,38 +400,45 @@ class RefundController extends defaultController
 
                 $auditno = $this->defaultSysparam('AR','AL');
 
-                DB::table('debtor.dballoc')
-                        ->insert([
-                            'compcode' => session('compcode'),
-                            'source' => 'AR',
-                            'trantype' => 'AL',
-                            'auditno' => $auditno,
-                            'lineno_' => intval($key)+1,
-                            'docsource' => $refund_first->source,
-                            'doctrantype' => $refund_first->trantype,
-                            'docauditno' => $refund_first->auditno,
-                            'refsource' => $receipt_first->source,
-                            'reftrantype' => $receipt_first->trantype,
-                            'refauditno' => $receipt_first->auditno,
-                            'refamount' => $receipt_first->amount,
-                            'reflineno' => $receipt_first->lineno_,
-                            'recptno' => $receipt_first->recptno,
-                            'mrn' => $receipt_first->mrn,
-                            'episno' => $receipt_first->episno,
-                            'allocsts' => 'ACTIVE',
-                            'amount' => floatval($value['obj']['amtpaid']),
-                            'tillcode' => $refund_first->tillcode,
-                            'debtortype' => $this->get_debtortype($refund_first->payercode),
-                            'debtorcode' => $refund_first->payercode,
-                            'payercode' => $refund_first->payercode,
-                            'paymode' => $refund_first->paymode,
-                            'allocdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            // 'remark' => 'Allocation '.$refund_first->source,
-                            'balance' => $value['obj']['amtbal'],
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'adduser' => session('username'),
-                            'recstatus' => 'POSTED'
-                        ]);
+                $dballocidno = DB::table('debtor.dballoc')
+                                    ->insertGetId([
+                                        'compcode' => session('compcode'),
+                                        'source' => 'AR',
+                                        'trantype' => 'AL',
+                                        'auditno' => $auditno,
+                                        'lineno_' => intval($key)+1,
+                                        'docsource' => $refund_first->source,
+                                        'doctrantype' => $refund_first->trantype,
+                                        'docauditno' => $refund_first->auditno,
+                                        'refsource' => $receipt_first->source,
+                                        'reftrantype' => $receipt_first->trantype,
+                                        'refauditno' => $receipt_first->auditno,
+                                        'refamount' => $receipt_first->amount,
+                                        'reflineno' => $receipt_first->lineno_,
+                                        'recptno' => $receipt_first->recptno,
+                                        'mrn' => $receipt_first->mrn,
+                                        'episno' => $receipt_first->episno,
+                                        'allocsts' => 'ACTIVE',
+                                        'amount' => floatval($value['obj']['amtpaid']),
+                                        'tillcode' => $refund_first->tillcode,
+                                        'debtortype' => $this->get_debtortype($refund_first->payercode),
+                                        'debtorcode' => $refund_first->payercode,
+                                        'payercode' => $refund_first->payercode,
+                                        'paymode' => $refund_first->paymode,
+                                        'allocdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                        // 'remark' => 'Allocation '.$refund_first->source,
+                                        'balance' => $value['obj']['amtbal'],
+                                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                        'adduser' => session('username'),
+                                        'recstatus' => 'POSTED'
+                                    ]);
+
+                $dballoc_first = DB::table('debtor.dballoc')
+                                ->where('idno',$dballocidno)
+                                ->first();
+
+                $this->gltran_dballoc($auditno,$dballoc_first,$refund_first);
+
             }
 
             DB::commit();
@@ -579,7 +584,7 @@ class RefundController extends defaultController
                 ->insert([
                     'compcode' => $dbacthdr_obj->compcode,
                     'auditno' => $dbacthdr_obj->auditno,
-                    'lineno_' => 1,
+                    'lineno_' => 1, //db
                     'source' => 'PB',
                     'trantype' => $trantype,
                     'reference' => $dbacthdr_obj->remark,
@@ -656,6 +661,106 @@ class RefundController extends defaultController
             }
         }else{
             throw new \Exception("Dbacthdr doesnt exists",500);
+        }
+    }
+
+    public function gltran_dballoc($auditno,$dballoc_first,$refund_first){//RF
+
+        $yearperiod = defaultController::getyearperiod_($dballoc_first->allocdate);
+        $paymode_obj = $this->gltran_frompaymode($dballoc_first->paymode);
+        $dept_obj = $this->gltran_fromdept($refund_first->deptcode);
+        $debtormast_obj = $this->gltran_fromdebtormast($refund_first->payercode);
+
+        if(strtoupper($dballoc_first->reftrantype) == 'RC'){
+            $drcostcode = $debtormast_obj->actdebccode;
+            $dracc = $debtormast_obj->actdebglacc;
+        }else if(strtoupper($dballoc_first->reftrantype) == 'RD'){
+            $drcostcode = $debtormast_obj->depccode;
+            $dracc = $debtormast_obj->depglacc;
+        }
+
+        $crcostcode = $dept_obj->costcode;
+        $cracc = $paymode_obj->glaccno;
+
+        //1. buat gltran
+        DB::table('finance.gltran')
+            ->insert([
+                'compcode' => session('compcode'),
+                'auditno' => $dballoc_first->docauditno,
+                'lineno_' => $dballoc_first->lineno_,
+                'source' => $dballoc_first->docsource,
+                'trantype' => $dballoc_first->doctrantype,
+                'reference' => $dballoc_first->recptno,
+                'description' => $refund_first->remark,
+                'year' => $yearperiod->year,
+                'period' => $yearperiod->period,
+                'drcostcode' => $drcostcode,
+                'dracc' => $dracc,
+                'crcostcode' => $crcostcode,
+                'cracc' => $cracc,
+                'amount' => $dballoc_first->amount,
+                'postdate' => $dballoc_first->allocdate,
+                'adduser' => $refund_first->adduser,
+                'adddate' => $refund_first->adddate,
+                'idno' => null
+            ]);
+
+        //2. check glmastdtl utk debit, kalu ada update kalu xde create
+        $gltranAmount =  defaultController::isGltranExist_($drcostcode,$dracc,$yearperiod->year,$yearperiod->period);
+
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$drcostcode)
+                ->where('glaccount','=',$dracc)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => $dballoc_first->amount + $gltranAmount,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $drcostcode,
+                    'glaccount' => $dracc,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => $dballoc_first->amount,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+
+        //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+        $gltranAmount = defaultController::isGltranExist_($crcostcode,$cracc,$yearperiod->year,$yearperiod->period);
+
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$crcostcode)
+                ->where('glaccount','=',$cracc)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => $gltranAmount - $dballoc_first->amount,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $crcostcode,
+                    'glaccount' => $cracc,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => - $dballoc_first->amount,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
         }
     }
 

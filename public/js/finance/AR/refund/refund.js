@@ -308,6 +308,8 @@ $(document).ready(function () {
 		}).fail(function(data) {
 			errorText(dialog.substr(1),data.responseText);
 			$('.ui-dialog-buttonset button[role=burefund_allo_tabletton]').prop('disabled',false);
+
+			$('button[classes=allocateDialog_save_btn]').show();
 		}).success(function(data){
 			if(grid!=null){
 				refreshGrid(grid,urlParam,oper);
@@ -317,11 +319,13 @@ $(document).ready(function () {
 					callback();
 				}
 			}
+			$('button[classes=allocateDialog_save_btn]').show();
 		});
 	}
 
 	var butt1=[{
 		text: "Save",click: function() {
+			$('button[classes=allocateDialog_save_btn]').hide();
 			mycurrency.formatOff();
 			mycurrency.check0value(errorField);
 			if( $('#formdata').isValid({requiredFields: ''}, conf, true) && $(tabform).isValid({requiredFields: ''}, conf, true) ) {
@@ -329,7 +333,7 @@ $(document).ready(function () {
 			}else{
 				mycurrency.formatOn();
 			}
-		}
+		},classes: "allocateDialog_save_btn"
 	},{
 		text: "Cancel",click: function() {
 			$(this).dialog('close');
