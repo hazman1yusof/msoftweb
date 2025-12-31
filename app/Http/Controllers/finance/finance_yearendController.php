@@ -98,6 +98,8 @@ class finance_yearendController extends defaultController
                     for ($i = 1; $i <= 12; $i++) { 
                         $popenbalance = $popenbalance + $obj_arr['actamount'.$i];
                     }
+                }else{
+                    $popenbalance = 0;
                 }
 
                 $check_exists = DB::table('finance.glmasdtl')

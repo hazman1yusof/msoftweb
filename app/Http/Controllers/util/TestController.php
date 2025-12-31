@@ -126,6 +126,8 @@ class TestController extends defaultController
                 return $this->betulkan_imp_category($request);
             case 'jtr_imp':
                 return $this->jtr_imp($request);
+            case 'pnlbalance_check':
+                return $this->pnlbalance_check($request);
             // case 'netmvval_from_netmvqty':
             //     return $this->netmvval_from_netmvqty($request);
             // case 'cr8_acctmaster':
@@ -9094,6 +9096,32 @@ class TestController extends defaultController
 
     public function test_yearperiod(Request $request){
         $yearperiod = $this->getyearperiod('2025-10-01');
+    }
+
+    public function pnlbalance_check(Request $request){
+        $curryear=2025;
+        $glmasdtl = DB::table('finance.glmasdtl as gmd')
+                            ->select('gmd.compcode','gmd.costcode','gmd.glaccount','gmd.year','gmd.openbalance','gmd.actamount1','gmd.actamount2','gmd.actamount3','gmd.actamount4','gmd.actamount5','gmd.actamount6','gmd.actamount7','gmd.actamount8','gmd.actamount9','gmd.actamount10','gmd.actamount11','gmd.actamount12','gmd.bdgamount1','gmd.bdgamount2','gmd.bdgamount3','gmd.bdgamount4','gmd.bdgamount5','gmd.bdgamount6','gmd.bdgamount7','gmd.bdgamount8','gmd.bdgamount9','gmd.bdgamount10','gmd.bdgamount11','gmd.bdgamount12','gmd.foramount1','gmd.foramount2','gmd.foramount3','gmd.foramount4','gmd.foramount5','gmd.foramount6','gmd.foramount7','gmd.foramount8','gmd.foramount9','gmd.foramount10','gmd.foramount11','gmd.foramount12','gmd.adduser','gmd.adddate','gmd.upduser','gmd.upddate','gmd.deluser','gmd.deldate','gmd.recstatus','gmd.idno','gmr.acttype')
+                            ->join('finance.glmasref as gmr', function($join){
+                                $join = $join->on('gmr.glaccno', 'gmd.glaccount')
+                                        ->where('gmr.compcode',session('compcode'));
+                            })
+                            ->where('gmd.compcode',session('compcode'))
+                            ->where('gmd.year',$curryear)
+                            ->get();
+
+        $pnlbalance = 0;
+        foreach ($glmasdtl as $obj) {
+            $obj_arr = (array)$obj;
+
+            if(in_array(strtoupper($obj->acttype), ['E','R'])){
+                for ($i = 1; $i <= 12; $i++) { 
+                    $pnlbalance = $pnlbalance + $obj_arr['actamount'.$i];
+                }
+            }
+        }
+
+        dd($pnlbalance);
     }
 
 }
