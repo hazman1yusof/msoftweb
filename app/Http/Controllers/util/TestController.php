@@ -9131,8 +9131,8 @@ class TestController extends defaultController
                         ->select('da.compcode','da.source','da.trantype','da.auditno','da.lineno_','da.docsource','da.doctrantype','da.docauditno','da.refsource','da.reftrantype','da.refauditno','da.refamount','da.reflineno','da.recptno','da.mrn','da.episno','da.allocsts','da.amount','da.outamount','da.tillcode','da.debtortype','da.debtorcode','da.paymode','da.allocdate','da.upddate','da.upduser','da.balance','da.adddate','da.adduser','da.recstatus','dh.deptcode','dh.payercode','dh.remark')
                         ->join('debtor.dballoc as da', function($join){
                             $join = $join->on('da.docsource','dh.source')
-                                        ->on('da.doctrantype','dh.source')
-                                        ->on('da.docauditno','dh.source')
+                                        ->on('da.doctrantype','dh.trantype')
+                                        ->on('da.docauditno','dh.auditno')
                                         ->where('da.recstatus','POSTED')
                                         ->where('da.compcode',session('compcode'));
                         })
@@ -9142,6 +9142,8 @@ class TestController extends defaultController
                         ->where('dh.posteddate','>=','2025-11-01')
                         ->where('dh.recstatus','POSTED')
                         ->get();
+
+        // dd($dbacthdr);
 
         foreach ($dbacthdr as $dballoc_first) {
             $yearperiod = defaultController::getyearperiod_($dballoc_first->allocdate);
