@@ -1618,7 +1618,7 @@ class InventoryTransactionController extends defaultController
         $ivtmphd = DB::table('material.ivtmphd as ivhd')
             ->select('ivhd.idno','ivhd.compcode','ivhd.recno','ivhd.source','ivhd.reference','ivhd.txndept','ivhd.trantype','ivhd.docno','ivhd.srcdocno','ivhd.sndrcvtype','ivhd.sndrcv','ivhd.trandate','ivhd.datesupret','ivhd.dateactret','ivhd.trantime','ivhd.ivreqno','ivhd.amount','ivhd.respersonid','ivhd.remarks','ivhd.recstatus','ivhd.adduser','ivhd.adddate','ivhd.upduser','ivhd.upddate','ivhd.updtime','ivhd.postedby','ivhd.postdate','ivhd.unit','ivhd.requestby','ivhd.requestdate','ivhd.supportby','ivhd.supportdate','ivhd.support_remark','ivhd.verifiedby','ivhd.verifieddate','ivhd.verified_remark','ivhd.approvedby','ivhd.approveddate','ivhd.approved_remark','ivhd.cancelby','ivhd.canceldate','ivhd.cancelled_remark','rby.name','rby.designation')
             ->leftJoin('sysdb.users as rby', function($join) use ($request){
-                            $join = $join->on('rby.username', '=', 'ivhd.postedby')
+                            $join = $join->on('rby.username', '=', 'ivhd.adduser')
                                     ->where('rby.compcode','=',session('compcode'));
                         })
             ->where('ivhd.compcode','=',session('compcode'))
