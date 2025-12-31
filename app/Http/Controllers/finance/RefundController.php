@@ -668,7 +668,7 @@ class RefundController extends defaultController
 
         $yearperiod = defaultController::getyearperiod_($dballoc_first->allocdate);
         $paymode_obj = $this->gltran_frompaymode($dballoc_first->paymode);
-        $dept_obj = $this->gltran_fromdept($refund_first->deptcode);
+        // $dept_obj = $this->gltran_fromdept($refund_first->deptcode);
         $debtormast_obj = $this->gltran_fromdebtormast($refund_first->payercode);
 
         if(strtoupper($dballoc_first->reftrantype) == 'RC'){
@@ -679,7 +679,7 @@ class RefundController extends defaultController
             $dracc = $debtormast_obj->depglacc;
         }
 
-        $crcostcode = $dept_obj->costcode;
+        $crcostcode = $paymode_obj->ccode;
         $cracc = $paymode_obj->glaccno;
 
         //1. buat gltran
@@ -797,7 +797,7 @@ class RefundController extends defaultController
 
     public function gltran_frompaymode($paymode){
         $obj = DB::table('debtor.paymode')
-                ->select('glaccno')
+                ->select('glaccno','ccode')
                 ->where('compcode','=',session('compcode'))
                 ->where('source','=','AR')
                 ->where('paymode','=',$paymode)
