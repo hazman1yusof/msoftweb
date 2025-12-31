@@ -128,6 +128,8 @@ class TestController extends defaultController
                 return $this->jtr_imp($request);
             case 'pnlbalance_check':
                 return $this->pnlbalance_check($request);
+            case 'checkrefund':
+                return $this->checkrefund($request);
             // case 'netmvval_from_netmvqty':
             //     return $this->netmvval_from_netmvqty($request);
             // case 'cr8_acctmaster':
@@ -9122,6 +9124,65 @@ class TestController extends defaultController
         }
 
         dd($pnlbalance);
+    }
+
+    public function checkrefund(Request $request){
+        $dbacthdr = DB::table('debtor.dbacthdr as dh')
+                        ->select('da.compcode','da.source','da.trantype','da.auditno','da.lineno_','da.docsource','da.doctrantype','da.docauditno','da.refsource','da.reftrantype','da.refauditno','da.refamount','da.reflineno','da.recptno','da.mrn','da.episno','da.allocsts','da.amount','da.outamount','da.tillcode','da.debtortype','da.debtorcode','da.paymode','da.allocdate','da.upddate','da.upduser','da.balance','da.adddate','da.adduser','da.recstatus','dh.deptcode','dh.payercode','dh.remark')
+                        ->join('debtor.dballoc as da', function($join){
+                            $join = $join->on('da.docsource','dh.source')
+                                        ->on('da.doctrantype','dh.source')
+                                        ->on('da.docauditno','dh.source')
+                                        ->where('da.recstatus','POSTED')
+                                        ->where('da.compcode',session('compcode'));
+                        })
+                        ->where('dh.compcode',session('compcode'))
+                        ->where('dh.source','pb')
+                        ->where('dh.trantype','rf')
+                        ->where('dh.posteddate','>=','2025-11-01')
+                        ->where('dh.recstatus','POSTED')
+                        ->get();
+
+        foreach ($dbacthdr as $dballoc_first) {
+            $yearperiod = defaultController::getyearperiod_($dballoc_first->allocdate);
+            $paymode_obj = $this->gltran_frompaymode($dballoc_first->paymode);
+            $dept_obj = $this->gltran_fromdept($dballoc_first->deptcode);
+            $debtormast_obj = $this->gltran_fromdebtormast($dballoc_first->payercode);
+
+            if(strtoupper($dballoc_first->reftrantype) == 'RC'){
+                $drcostcode = $debtormast_obj->actdebccode;
+                $dracc = $debtormast_obj->actdebglacc;
+            }else if(strtoupper($dballoc_first->reftrantype) == 'RD'){
+                $drcostcode = $debtormast_obj->depccode;
+                $dracc = $debtormast_obj->depglacc;
+            }
+
+            $crcostcode = $dept_obj->costcode;
+            $cracc = $paymode_obj->glaccno;
+
+            //1. buat gltran
+            DB::table('finance.gltran')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'auditno' => $dballoc_first->docauditno,
+                    'lineno_' => $dballoc_first->lineno_,
+                    'source' => $dballoc_first->docsource,
+                    'trantype' => $dballoc_first->doctrantype,
+                    'reference' => $dballoc_first->recptno,
+                    'description' => $dballoc_first->remark,
+                    'year' => $yearperiod->year,
+                    'period' => $yearperiod->period,
+                    'drcostcode' => $drcostcode,
+                    'dracc' => $dracc,
+                    'crcostcode' => $crcostcode,
+                    'cracc' => $cracc,
+                    'amount' => $dballoc_first->amount,
+                    'postdate' => $dballoc_first->allocdate,
+                    'adduser' => $dballoc_first->adduser,
+                    'adddate' => $dballoc_first->adddate,
+                    'idno' => null
+                ]);
+        }
     }
 
 }
