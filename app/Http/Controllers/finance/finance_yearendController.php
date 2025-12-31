@@ -69,6 +69,12 @@ class finance_yearendController extends defaultController
         try {
             $this->check_newyear($curryear);
 
+            $retain_earning = DB::table('sysdb.sysparam')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('source','GL')
+                                    ->where('trantype','RETAIN_EARNING')
+                                    ->first();
+
             $glmasdtl = DB::table('finance.glmasdtl as gmd')
                             ->select('gmd.compcode','gmd.costcode','gmd.glaccount','gmd.year','gmd.openbalance','gmd.actamount1','gmd.actamount2','gmd.actamount3','gmd.actamount4','gmd.actamount5','gmd.actamount6','gmd.actamount7','gmd.actamount8','gmd.actamount9','gmd.actamount10','gmd.actamount11','gmd.actamount12','gmd.bdgamount1','gmd.bdgamount2','gmd.bdgamount3','gmd.bdgamount4','gmd.bdgamount5','gmd.bdgamount6','gmd.bdgamount7','gmd.bdgamount8','gmd.bdgamount9','gmd.bdgamount10','gmd.bdgamount11','gmd.bdgamount12','gmd.foramount1','gmd.foramount2','gmd.foramount3','gmd.foramount4','gmd.foramount5','gmd.foramount6','gmd.foramount7','gmd.foramount8','gmd.foramount9','gmd.foramount10','gmd.foramount11','gmd.foramount12','gmd.adduser','gmd.adddate','gmd.upduser','gmd.upddate','gmd.deluser','gmd.deldate','gmd.recstatus','gmd.idno','gmr.acttype')
                             ->join('finance.glmasref as gmr', function($join){
@@ -98,6 +104,11 @@ class finance_yearendController extends defaultController
                     for ($i = 1; $i <= 12; $i++) { 
                         $popenbalance = $popenbalance + $obj_arr['actamount'.$i];
                     }
+
+                    if($obj->glaccount == $retain_earning->pvalue2 && $obj->costcode == $retain_earning->pvalue1){
+                        $retain_earning_sum = $popenbalance;
+                    }
+
                 }else{
                     $popenbalance = 0;
                 }
@@ -137,12 +148,6 @@ class finance_yearendController extends defaultController
                 }
             }
 
-            $retain_earning = DB::table('sysdb.sysparam')
-                                    ->where('compcode',session('compcode'))
-                                    ->where('source','GL')
-                                    ->where('trantype','RETAIN_EARNING')
-                                    ->first();
-
             $check_exists = DB::table('finance.glmasdtl')
                                     ->where('compcode',session('compcode'))
                                     ->where('year',$newyear)
@@ -157,7 +162,7 @@ class finance_yearendController extends defaultController
                                     ->where('glaccount',$retain_earning->pvalue2)
                                     ->where('costcode',$retain_earning->pvalue1)
                                     ->update([
-                                        'openbalance' => $pnlbalance,
+                                        'openbalance' => $pnlbalance + $retain_earning_sum,
                                         'upduser' => session('username'),
                                         'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                                     ]);
@@ -168,7 +173,7 @@ class finance_yearendController extends defaultController
                                         'costcode' => $retain_earning->pvalue1,
                                         'glaccount' => $retain_earning->pvalue2,
                                         'year' => $newyear,
-                                        'openbalance' => $popenbalance,
+                                        'openbalance' => $pnlbalance + $retain_earning_sum,
                                         'adduser' => session('username'),
                                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                                         'recstatus' => 'ACTIVE',
