@@ -9115,7 +9115,7 @@ class TestController extends defaultController
             $obj_arr = (array)$obj;
 
             if(in_array(strtoupper($obj->acttype), ['E','R'])){
-                for ($i = 1; $i <= 12; $i++) { 
+                for ($i = 1; $i <= 11; $i++) { 
                     $pnlbalance = $pnlbalance + $obj_arr['actamount'.$i];
                 }
             }
