@@ -984,6 +984,6 @@
 		});
 	</script>
 
-	<script src="js/finance/AP/apenquiry/apenquiry.js?v=1.4"></script>
+	<script src="js/finance/AP/apenquiry/apenquiry.js?v=1.5"></script>
 	
 @endsection

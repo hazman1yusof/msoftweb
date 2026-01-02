@@ -112,7 +112,7 @@
 					</div>
 					<div class="alert alert-success" role="alert" id="ops_success" style="display: none;margin-top: 20px;">
 						<strong>Operation Success : </strong> 
-						<span id="span_counter"></span> new Stock Location are being generated at year <span id="span_year"></span>
+						<span id="span_counter"></span> new Stock Location are being generated from year <span id="span_year"></span>
 					</div>
 				</div>
 			</div>
