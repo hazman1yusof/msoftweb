@@ -509,6 +509,7 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/nursingnote.js?v=1.3') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/nursingnote_pivc_ED.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/nursingnote_progressnote_ED.js?v=1.1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/nursingnote_thrombo_ED.js?v=1.1') }}"></script>
 
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_main.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_phar.js') }}"></script>

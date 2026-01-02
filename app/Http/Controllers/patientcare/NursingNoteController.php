@@ -39,6 +39,9 @@ class NursingNoteController extends defaultController
             case 'get_table_datetimepivc_ED': // PIVC
                 return $this->get_table_datetimepivc_ED($request);
 
+            case 'get_table_datetimethrombo_ED': // Thrombo
+                return $this->get_table_datetimethrombo_ED($request);
+
             default:
                 return 'error happen..';
         }
@@ -72,6 +75,16 @@ class NursingNoteController extends defaultController
                         return 'error happen..';
                 }
 
+            case 'save_table_thrombo_ED':
+                switch($request->oper){
+                    case 'add':
+                        return $this->add_thrombo_ED($request);
+                    case 'edit':
+                        return $this->edit_thrombo_ED($request);
+                    default:
+                        return 'error happen..';
+                }
+
             case 'get_table_progress_ED':
                 return $this->get_table_progress_ED($request);
 
@@ -80,7 +93,19 @@ class NursingNoteController extends defaultController
 
             case 'get_table_pivc_ED':
                 return $this->get_table_pivc_ED($request);
+
+            case 'get_table_thrombo_ED':
+                return $this->get_table_thrombo_ED($request);
+
+            case 'thrombo_ED_save':
+                return $this->add_thrombojqgrid_ED($request);
             
+            case 'thrombo_ED_edit':
+                return $this->edit_thrombojqgrid_ED($request);
+            
+            case 'thrombo_ED_del':
+                return $this->del_thrombojqgrid_ED($request);
+
             default:
                 return 'error happen..';
         }
@@ -219,6 +244,48 @@ class NursingNoteController extends defaultController
                 $date['idno'] = $value->idno;
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
+                $date['adduser'] = $value->adduser;
+
+                array_push($data,$date);
+            }
+            
+            $responce->data = $data;
+        }else{
+            $responce->data = [];
+        }
+        
+        return json_encode($responce);
+        
+    }
+
+    public function get_table_datetimethrombo_ED(Request $request){
+        
+        $responce = new stdClass();
+        
+        $thrombo_ED_obj = DB::table('nursing.thrombophlebitis')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno);
+     
+        if($thrombo_ED_obj->exists()){
+            $thrombo_ED_obj = $thrombo_ED_obj->get();
+            
+            $data = [];
+            
+            foreach($thrombo_ED_obj as $key => $value){
+                if(!empty($value->dateInsert)){
+                    $date['dateInsert'] =  Carbon::createFromFormat('Y-m-d', $value->dateInsert)->format('d-m-Y');
+                }else{
+                    $date['dateInsert'] =  '-';
+                }
+                $date['idno'] = $value->idno;
+                $date['mrn'] = $value->mrn;
+                $date['episno'] = $value->episno;
+                if(!empty($value->timeInsert)){
+                    $date['timeInsert'] =  Carbon::createFromFormat('H:i:s', $value->timeInsert)->format('h:i A');
+                }else{
+                    $date['timeInsert'] =  '-';
+                }
                 $date['adduser'] = $value->adduser;
 
                 array_push($data,$date);
@@ -670,6 +737,238 @@ class NursingNoteController extends defaultController
         
     }
 
+    public function add_thrombo_ED (Request $request){
+        
+        DB::beginTransaction();
+
+        try {
+            
+            DB::table('nursing.thrombophlebitis')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn_nursNote,
+                    'episno' => $request->episno_nursNote,
+                    'dateInsert' => $request->dateInsert,
+                    'timeInsert' => $request->timeInsert,
+                    'gauge' => $request->gauge,
+                    'attempts' => $request->attempts,
+                    'sitesMetacarpal' => $request->sitesMetacarpal,
+                    'sitesBasilic' => $request->sitesBasilic,
+                    'sitesCephalic' => $request->sitesCephalic,
+                    'sitesMCubital' => $request->sitesMCubital,
+                    'dateRemoval' => $request->dateRemoval,
+                    'timeRemoval' => $request->timeRemoval,
+                    'totIndwelling' => $request->totIndwelling,
+                    'remarksThrombo' => $request->remarksThrombo,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function edit_thrombo_ED(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+
+            $thrombo = DB::table('nursing.thrombophlebitis')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn_nursNote)
+                            ->where('episno','=',$request->episno_nursNote)
+                            ->where('dateInsert','=',$request->dateInsert);
+            
+            if(!empty($request->idno_thrombo)){
+                DB::table('nursing.thrombophlebitis')
+                    ->where('idno','=',$request->idno_thrombo)
+                    ->update([
+                        'gauge' => $request->gauge,
+                        'attempts' => $request->attempts,
+                        'sitesMetacarpal' => $request->sitesMetacarpal,
+                        'sitesBasilic' => $request->sitesBasilic,
+                        'sitesCephalic' => $request->sitesCephalic,
+                        'sitesMCubital' => $request->sitesMCubital,
+                        'dateRemoval' => $request->dateRemoval,
+                        'timeRemoval' => $request->timeRemoval,
+                        'totIndwelling' => $request->totIndwelling,
+                        'remarksThrombo' => $request->remarksThrombo,
+                        'upduser'  => session('username'),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastcomputerid' => session('computerid'),
+
+                    ]);
+            }else{
+
+                if($thrombo->exists()){
+                    return response('Date already exist.');
+                }
+                
+                DB::table('nursing.thrombophlebitis')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_nursNote,
+                        'episno' => $request->episno_nursNote,
+                        'dateInsert' => $request->dateInsert,
+                        'timeInsert' => $request->timeInsert,
+                        'gauge' => $request->gauge,
+                        'attempts' => $request->attempts,
+                        'sitesMetacarpal' => $request->sitesMetacarpal,
+                        'sitesBasilic' => $request->sitesBasilic,
+                        'sitesCephalic' => $request->sitesCephalic,
+                        'sitesMCubital' => $request->sitesMCubital,
+                        'dateRemoval' => $request->dateRemoval,
+                        'timeRemoval' => $request->timeRemoval,
+                        'totIndwelling' => $request->totIndwelling,
+                        'remarksThrombo' => $request->remarksThrombo,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+            }
+            
+            $queries = DB::getQueryLog();
+            // dump($queries);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+
+    public function add_thrombojqgrid_ED(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.thrombophlebitisadd')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'cannulationNo' => $request->cannulationNo,
+                        'flushingDone' => $request->flushingDone,
+                        'dateAssessment' => $request->dateAssessment,
+                        'shift' => $request->shift,
+                        'dressingChanged' => $request->dressingChanged,
+                        'staffId' => session('username'),
+                        'phlebitisGrade' => $request->phlebitisGrade,
+                        'infiltration' => $request->infiltration,
+                        'hematoma' => $request->hematoma,
+                        'extravasation' => $request->extravasation,
+                        'occlusion' => $request->occlusion,
+                        'asPerProtocol' => $request->asPerProtocol,
+                        'ptDischarged' => $request->ptDischarged,
+                        'ivTerminate' => $request->ivTerminate,
+                        'fibrinClot' => $request->fibrinClot,
+                        'kinkedHub' => $request->kinkedHub,
+                        'kinkedShaft' => $request->kinkedShaft,
+                        'tipDamage' => $request->tipDamage,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+    
+    }
+    
+    public function edit_thrombojqgrid_ED(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.thrombophlebitisadd')
+                ->where('idno','=',$request->idno)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'flushingDone' => $request->flushingDone,
+                    'dateAssessment' => $request->dateAssessment,
+                    'shift' => $request->shift,
+                    'dressingChanged' => $request->dressingChanged,
+                    'staffId' => session('username'),
+                    'phlebitisGrade' => $request->phlebitisGrade,
+                    'infiltration' => $request->infiltration,
+                    'hematoma' => $request->hematoma,
+                    'extravasation' => $request->extravasation,
+                    'occlusion' => $request->occlusion,
+                    'asPerProtocol' => $request->asPerProtocol,
+                    'ptDischarged' => $request->ptDischarged,
+                    'ivTerminate' => $request->ivTerminate,
+                    'fibrinClot' => $request->fibrinClot,
+                    'kinkedHub' => $request->kinkedHub,
+                    'kinkedShaft' => $request->kinkedShaft,
+                    'tipDamage' => $request->tipDamage,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+    
+    }
+    
+    public function del_thrombojqgrid_ED(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.thrombophlebitisadd')
+                ->where('idno','=',$request->idno)
+                ->where('compcode','=',session('compcode'))
+                ->delete();
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+    
+    }
+
     public function get_table_progress_ED(Request $request){
         $nurshandover_obj = DB::table('nursing.nurshandover')
                             ->where('compcode','=',session('compcode'))
@@ -733,6 +1032,26 @@ class NursingNoteController extends defaultController
             $date = Carbon::createFromFormat('Y-m-d', $pivc_ED_obj->practiceDate)->format('Y-m-d');
 
             $responce->pivc = $pivc_ED_obj;
+            $responce->date = $date;
+        }
+        
+        return json_encode($responce);
+        
+    }
+
+    public function get_table_thrombo_ED (Request $request){
+        
+        $thrombo_ED_obj = DB::table('nursing.thrombophlebitis')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('idno','=',$request->idno);
+        
+        $responce = new stdClass();
+        
+        if($thrombo_ED_obj->exists()){
+            $thrombo_ED_obj = $thrombo_ED_obj->first();
+            $date = Carbon::createFromFormat('Y-m-d', $thrombo_ED_obj->dateInsert)->format('Y-m-d');
+            
+            $responce->thrombo = $thrombo_ED_obj;
             $responce->date = $date;
         }
         

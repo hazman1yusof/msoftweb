@@ -95,7 +95,7 @@ $(document).ready(function (){
         $("#idno_thrombo").val(data.idno);
         $("#cannulationNo").val(data.idno);
 
-        //  // jqGridThrombo
+        //// jqGridThrombo
         urlParam_Thrombo.filterVal[0] = data.mrn;
         urlParam_Thrombo.filterVal[1] = data.episno;
         urlParam_Thrombo.filterVal[2] = data.idno;
@@ -170,7 +170,7 @@ $(document).ready(function (){
 					value: "Yes:YES;No:NO"
 				}
 			},
-			{ label: 'Sign/Name', name: 'staffId', width: 180, editable: true },
+			{ label: 'Sign/Name', name: 'staffId', width: 180, editable: false },
 			{ label: 'Phlebitis Grade', name: 'phlebitisGrade', width: 100, editable: true },
             { label: 'Infiltration', name: 'infiltration', width: 100, editable: true },
 			{ label: 'Hematoma', name: 'hematoma', width: 100, editable: true },
@@ -242,7 +242,6 @@ $(document).ready(function (){
             { startColumnName: 'dateAssessment', numberOfColumns: 4, titleText: 'Daily Assessment Record' },
             { startColumnName: 'phlebitisGrade', numberOfColumns: 8, titleText: 'Reason for Removal' },
             { startColumnName: 'fibrinClot', numberOfColumns: 4, titleText: 'Catheter Removal Status' },
-
         ]
     });
 
@@ -408,6 +407,7 @@ var datetimethrombo_tbl = $('#datetimethrombo_tbl').DataTable({
         { 'data': 'episno' },
         { 'data': 'dateInsert', 'width': '25%' },
         { 'data': 'timeInsert', 'width': '25%' },
+        { 'data': 'adduser', 'width': '25%' },
     ],
     columnDefs: [
         { targets: [0, 1, 2], visible: false },

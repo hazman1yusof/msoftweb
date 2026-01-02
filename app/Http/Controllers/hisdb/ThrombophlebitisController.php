@@ -98,6 +98,7 @@ class ThrombophlebitisController extends defaultController
                 }else{
                     $date['timeInsert'] =  '-';
                 }
+                $date['adduser'] = $value->adduser;
                 
                 array_push($data,$date);
             }
@@ -242,7 +243,7 @@ class ThrombophlebitisController extends defaultController
                         'dateAssessment' => $request->dateAssessment,
                         'shift' => $request->shift,
                         'dressingChanged' => $request->dressingChanged,
-                        'staffId' => $request->staffId,
+                        'staffId' => session('username'),
                         'phlebitisGrade' => $request->phlebitisGrade,
                         'infiltration' => $request->infiltration,
                         'hematoma' => $request->hematoma,
@@ -288,7 +289,7 @@ class ThrombophlebitisController extends defaultController
                     'dateAssessment' => $request->dateAssessment,
                     'shift' => $request->shift,
                     'dressingChanged' => $request->dressingChanged,
-                    'staffId' => $request->staffId,
+                    'staffId' => session('username'),
                     'phlebitisGrade' => $request->phlebitisGrade,
                     'infiltration' => $request->infiltration,
                     'hematoma' => $request->hematoma,
@@ -371,6 +372,8 @@ class ThrombophlebitisController extends defaultController
         $episno = $request->episno;
         $dateInsert = $request->dateInsert;
         
+        // dd($dateInsert);
+
         if(!$mrn || !$episno){
             abort(404);
         }

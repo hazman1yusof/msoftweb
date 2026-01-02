@@ -18,6 +18,7 @@
                 <a class="item active" data-tab="progress" id="navtab_progress">Progress Note</a>
                 <a class="item" data-tab="drug" id="navtab_drug">Drug Administration</a>
                 <a class="item" data-tab="pivc" id="navtab_pivc">PIVC</a>
+                <a class="item" data-tab="thrombo" id="navtab_thrombo">Thrombophlebitis</a>
             </div>
 
             <div class="ui bottom attached tab raised segment" data-tab="progress">
@@ -166,6 +167,10 @@
 
             <div class="ui bottom attached tab raised segment active" data-tab="pivc">
                 @include('patientcare.nursingnote_pivc_ED')
+            </div>
+
+            <div class="ui bottom attached tab raised segment" data-tab="thrombo">
+                @include('patientcare.nursingnote_thrombo_ED')
             </div>
         </div>
     </div>
