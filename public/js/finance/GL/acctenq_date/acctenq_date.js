@@ -209,7 +209,7 @@ $(document).ready(function () {
 	    	{ data: 'print' ,"width": "2%","sClass": "printdetail", orderable: false},
 			{ data: 'source',"width": "2%"},
 			{ data: 'trantype',"width": "2%"},
-			{ data: 'auditno',"width": "4%", orderable: false},
+			{ data: 'auditno',"width": "4%"},
 			{ data: 'postdate'},
 			{ data: 'description',"width": "35%", orderable: false},
 			{ data: 'reference', orderable: false},

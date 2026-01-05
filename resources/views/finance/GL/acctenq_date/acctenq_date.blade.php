@@ -156,7 +156,7 @@
 
 @section('scripts')
 
-	<script src="js/finance/GL/acctenq_date/acctenq_date.js?v=1.7"></script>
+	<script src="js/finance/GL/acctenq_date/acctenq_date.js?v=1.8"></script>
 	<script src="plugins/datatables/js/jquery.datatables.min.js"></script>
 	
 @endsection

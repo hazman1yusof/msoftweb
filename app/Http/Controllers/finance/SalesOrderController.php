@@ -4146,5 +4146,254 @@ class SalesOrderController extends defaultController
         return json_encode($responce);
     }
 
+    public function update_gltran_delivered($idno){    
+        DB::beginTransaction();
+        
+        try{
+            
+            foreach ($request->idno_array as $value){
+                
+                $dbacthdr = DB::table("debtor.dbacthdr")
+                            ->where('compcode',session('compcode'))
+                            ->where('idno','=',$value)
+                            ->first();
+
+                if($dbacthdr->recstatus != 'POSTED'){
+                    throw new \Exception("posted only");
+                }
+                
+                $billsum = DB::table("debtor.billsum")
+                            ->where('compcode',session('compcode'))
+                            ->where('source','=',$dbacthdr->source)
+                            ->where('trantype','=',$dbacthdr->trantype)
+                            ->where('billno','=',$dbacthdr->auditno)
+                            ->get();
+                
+                foreach ($billsum as $billsum_obj){
+                    //gltran
+                    $yearperiod = $this->getyearperiod(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+                    $chgmast = DB::table('hisdb.chgmast')
+                                ->where('compcode',session('compcode'))
+                                ->where('chgcode',$billsum_obj->chggroup)
+                                ->first();
+
+                    $chgtype = DB::table('hisdb.chgtype')
+                                ->where('compcode',session('compcode'))
+                                ->where('chgtype',$chgmast->chgtype)
+                                ->first();
+
+                    $dept = DB::table('sysdb.department')
+                                ->where('compcode',session('compcode'))
+                                ->where('deptcode',$dbacthdr->deptcode)
+                                ->first();
+
+                    $sysparam = DB::table('sysdb.sysparam')
+                                ->where('compcode',session('compcode'))
+                                ->where('source','AR')
+                                ->where('trantype','AD')
+                                ->first();
+
+                    // 1. buat gltran
+                    DB::table('finance.gltran')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'auditno' => $billsum_obj->auditno,
+                            'lineno_' => 1,
+                            'source' => 'OE', //kalau stock 'IV', lain dari stock 'DO'
+                            'trantype' => 'IN',
+                            'reference' => $invno,
+                            'description' => $billsum_obj->chggroup, 
+                            'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'year' => $yearperiod->year,
+                            'period' => $yearperiod->period,
+                            'drcostcode' => $sysparam->pvalue1,
+                            'dracc' => $sysparam->pvalue2,
+                            'crcostcode' => $dept->costcode,
+                            'cracc' => $chgtype->opacccode,
+                            'amount' => $billsum_obj->amount 
+                        ]);
+
+                    $this->init_glmastdtl(
+                            $sysparam->pvalue1,//drcostcode
+                            $sysparam->pvalue2,//dracc
+                            $dept->costcode,//crcostcode
+                            $chgtype->opacccode,//cracc
+                            $yearperiod,
+                            $billsum_obj->amount
+                    );
+
+
+                    if(!empty(floatval($billsum_obj->taxamt))){
+
+                        $sysparam_tx = DB::table('sysdb.sysparam')
+                                        ->where('compcode',session('compcode'))
+                                        ->where('source','TX')
+                                        ->where('trantype','BS')
+                                        ->first();
+
+                        DB::table('finance.gltran')
+                            ->insert([
+                                'compcode' => session('compcode'),
+                                'adduser' => session('username'),
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'auditno' => $billsum_obj->auditno,
+                                'lineno_' => 1,
+                                'source' => 'OE', //kalau stock 'IV', lain dari stock 'DO'
+                                'trantype' => 'TX',
+                                'reference' => $invno,
+                                'description' => $billsum_obj->chggroup, 
+                                'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'year' => $yearperiod->year,
+                                'period' => $yearperiod->period,
+                                'drcostcode' => $sysparam->pvalue1,
+                                'dracc' => $sysparam->pvalue2,
+                                'crcostcode' => $sysparam_tx->pvalue1,
+                                'cracc' => $sysparam_tx->pvalue2,
+                                'amount' => $billsum_obj->taxamt
+                            ]);
+
+                        $this->init_glmastdtl(
+                            $sysparam->pvalue1,//drcostcode
+                            $sysparam->pvalue2,//dracc
+                            $sysparam_tx->pvalue1,//crcostcode
+                            $sysparam_tx->pvalue2,//cracc
+                            $yearperiod,
+                            $billsum_obj->taxamt
+                        );
+                    }
+                    
+                    if(!empty(floatval($billsum_obj->discamt))){
+                        $sysparam_dis = DB::table('sysdb.sysparam')
+                                        ->where('compcode',session('compcode'))
+                                        ->where('source','OE')
+                                        ->where('trantype','DIS')
+                                        ->first();
+
+                        DB::table('finance.gltran')
+                            ->insert([
+                                'compcode' => session('compcode'),
+                                'adduser' => session('username'),
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'auditno' => $billsum_obj->auditno,
+                                'lineno_' => 1,
+                                'source' => 'OE', //kalau stock 'IV', lain dari stock 'DO'
+                                'trantype' => 'DIS',
+                                'reference' => $invno,
+                                'description' => $billsum_obj->chggroup, 
+                                'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'year' => $yearperiod->year,
+                                'period' => $yearperiod->period,
+                                'drcostcode' => $sysparam->pvalue1,
+                                'dracc' => $sysparam->pvalue2,
+                                'crcostcode' => $dept->costcode,
+                                'cracc' => $sysparam_dis->pvalue1,
+                                'amount' => -$billsum_obj->discamt
+                            ]);
+
+                        $this->init_glmastdtl(
+                            $sysparam->pvalue1,//drcostcode
+                            $sysparam->pvalue2,//dracc
+                            $dept->costcode,//crcostcode
+                            $sysparam_dis->pvalue1,//cracc
+                            $yearperiod,
+                            -$billsum_obj->discamt
+                        );
+                    }
+                }
+
+                if(!empty($dbacthdr->quoteno)){
+                    $qo_hd = DB::table('finance.salehdr')
+                                ->where('compcode',session('compcode'))
+                                ->where('source','SL')
+                                ->where('trantype','RECNO')
+                                ->where('quoteno',$dbacthdr->quoteno)
+                                ->update([
+                                    'recstatus' => $qo_dt_recstatus
+                                ]);
+                }    
+
+                DB::table('finance.queueso')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$dbacthdr->auditno)
+                    ->update([
+                        'AuthorisedID' => session('username'),
+                        'deptcode' => 'ALL',
+                        'recstatus' => 'POSTED',
+                        'trantype' => 'DONE',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+                
+                DB::table("debtor.billsum")
+                    ->where('compcode',session('compcode'))
+                    ->where('source','=',$dbacthdr->source)
+                    ->where('trantype','=',$dbacthdr->trantype)
+                    ->where('billno','=',$dbacthdr->auditno)
+                    ->update([
+                        'invno' => $invno,
+                        'recstatus' => 'POSTED',
+                    ]);
+                
+                DB::table("debtor.dbacthdr")
+                    ->where('compcode',session('compcode'))
+                    ->where('idno','=',$value)
+                    ->update([
+                        'invno' => $invno,
+                        'recstatus' => 'POSTED',
+                        'posteddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'approvedby' => session('username'),
+                        'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        // 'amount' => accumalated amount (billsum.amt-billsum.discamt+billsum.taxamt)
+                        // 'outamount' => accumalated amount (billsum.amt-billsum.discamt+billsum.taxamt)
+                    ]);
+
+                $debtormast = DB::table("debtor.debtormast")
+                                ->where('compcode',session('compcode'))
+                                ->where('debtorcode',$dbacthdr->payercode)
+                                ->first();
+
+                DB::table('finance.gltran')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'auditno' => $invno,
+                        'lineno_' => 1,
+                        'source' => 'PB', //kalau stock 'IV', lain dari stock 'DO'
+                        'trantype' => 'IN',
+                        'reference' => $invno,
+                        'description' => $dbacthdr->remark, 
+                        'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'year' => $yearperiod->year,
+                        'period' => $yearperiod->period,
+                        'drcostcode' => $debtormast->actdebccode,
+                        'dracc' => $debtormast->actdebglacc,
+                        'crcostcode' => $sysparam->pvalue1,
+                        'cracc' => $sysparam->pvalue2,
+                        'amount' => $dbacthdr->amount
+                    ]);
+
+                $this->init_glmastdtl(
+                            $debtormast->actdebccode,//drcostcode
+                            $debtormast->actdebglacc,//dracc
+                            $sysparam->pvalue1,//crcostcode
+                            $sysparam->pvalue2,//cracc
+                            $yearperiod,
+                            $dbacthdr->amount
+                        );                
+            }
+            
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+        }
+    }
+
     
 }
