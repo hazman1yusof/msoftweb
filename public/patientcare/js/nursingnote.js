@@ -10,10 +10,10 @@ $(document).ready(function (){
     disableForm('#formProgress_ED');
     disableForm('#formDrug');
     disableForm('#formPivc_ED');
-    
+    disableForm('#formThrombo_ED');
+
    $('#nursNote .top.menu .item').tab({'onVisible': function (){
         let tab = $(this).data('tab');
-
         switch(tab){
             case 'progress':
                 var urlparam_datetime_ED_tbl = {
@@ -58,6 +58,22 @@ $(document).ready(function (){
                 });
                 
                 populate_pivc_ED_getdata();
+                break;
+
+            case 'thrombo':
+                var urlparam_datetimethrombo_ED_tbl = {
+                    action: 'get_table_datetimethrombo_ED',
+                    mrn: $("#mrn_nursNote").val(),
+                    episno: $("#episno_nursNote").val()
+                }
+                
+                datetimethrombo_ED_tbl.ajax.url("./ptcare_nursingnote/table?"+$.param(urlparam_datetimethrombo_ED_tbl)).load(function (data){
+                    emptyFormdata_div("#formThrombo_ED",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+                    $('#datetimethrombo_ED_tbl tbody tr:eq(0)').click(); // to select first row
+                });
+
+                $("#jqGridThrombo_ED").jqGrid('setGridWidth', Math.floor($("#jqGridThrombo_ED_c")[0].offsetWidth-$("#jqGridThrombo_ED_c")[0].offsetLeft));
+                populate_thrombo_ED_getdata();
                 break;
         }
     }});
@@ -402,6 +418,7 @@ function empty_nursingnote_ptcare(obj){
     emptyFormdata_div(errorField,"#formProgress_ED");
     emptyFormdata_div(errorField,"#formDrug");
     emptyFormdata_div(errorField,"#formPivc_ED");
+    emptyFormdata_div(errorField,"#formThrombo_ED");
     
     // panel header
     $('#name_show_nursNote').text('');
@@ -432,7 +449,8 @@ function populate_nursingnote_ptcare(obj){
     emptyFormdata_div("#formProgress_ED",['#mrn_nursNote','#episno_nursNote']);
     emptyFormdata_div("#formDrug",['#mrn_nursNote','#episno_nursNote']);
     emptyFormdata_div("#formPivc_ED",['#mrn_nursNote','#episno_nursNote']);
-    
+    emptyFormdata_div("#formThrombo_ED",['#mrn_nursNote','#episno_nursNote']);
+
     // panel header
     $('#name_show_nursNote').text(obj.Name);
     $('#mrn_show_nursNote').text(("0000000" + obj.MRN).slice(-7));
@@ -607,11 +625,12 @@ $('#tab_nursNote').on('shown.bs.collapse', function (){
     populate_pivc_ED_getdata();
 
     $("#jqGridPatMedic").jqGrid('setGridWidth', Math.floor($("#jqGridPatMedic_c")[0].offsetWidth-$("#jqGridPatMedic_c")[0].offsetLeft-30));
-
+    $("#jqGridThrombo_ED").jqGrid('setGridWidth', Math.floor($("#jqGridThrombo_ED_c")[0].offsetWidth-$("#jqGridThrombo_ED_c")[0].offsetLeft));
     if($('#mrn_nursNote').val() != ''){
         populate_progressnote_ED_getdata();
         populate_drugadmin_getdata();
         populate_pivc_ED_getdata();
+        populate_thrombo_ED_getdata();
     }
     
 });
@@ -622,9 +641,11 @@ $("#tab_nursNote").on("hide.bs.collapse", function (){
     disableForm('#formProgress_ED');
     disableForm('#formDrug');
     disableForm('#formPivc_ED');
+    disableForm('#formThrombo_ED');
 
     button_state_progress_ED('empty');
     button_state_pivc_ED('empty');
+    button_state_thrombo_ED('empty');
 });
 
 
