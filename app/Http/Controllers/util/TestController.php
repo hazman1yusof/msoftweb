@@ -8966,10 +8966,19 @@ class TestController extends defaultController
     }
 
     public function gltran_jnl_calc(Request $request){
+        $period = $request->period;
+        if(empty($period)){
+            dd('no period');
+        }
+        $year = $request->year;
+        if(empty($year)){
+            dd('no year');
+        }
+
         $jnl = DB::table('finance.gltran')
                         ->where('compcode','9B')
-                        ->where('year','2025')
-                        ->where('period','10')
+                        ->where('year',$year)
+                        ->where('period',$period)
                         ->where('trantype','jnl')
                         ->get();
 
@@ -8980,8 +8989,8 @@ class TestController extends defaultController
 
             $drtotal = DB::table('finance.gltran')
                         ->where('compcode','9B')
-                        ->where('year','2025')
-                        ->where('period','10')
+                        ->where('year',$year)
+                        ->where('period',$period)
                         ->where('trantype','jnl')
                         ->where('auditno',$obj->auditno)
                         ->whereNotNull('drcostcode')
@@ -8989,8 +8998,8 @@ class TestController extends defaultController
 
             $crtotal = DB::table('finance.gltran')
                         ->where('compcode','9B')
-                        ->where('year','2025')
-                        ->where('period','10')
+                        ->where('year',$year)
+                        ->where('period',$period)
                         ->where('trantype','jnl')
                         ->where('auditno',$obj->auditno)
                         ->whereNotNull('crcostcode')
