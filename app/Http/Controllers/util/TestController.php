@@ -9171,28 +9171,65 @@ class TestController extends defaultController
             $crcostcode = $paymode_obj->ccode;
             $cracc = $paymode_obj->glaccno;
 
-            //1. buat gltran
-            DB::table('finance.gltran')
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'auditno' => $dballoc_first->docauditno,
-                    'lineno_' => $dballoc_first->lineno_,
-                    'source' => $dballoc_first->docsource,
-                    'trantype' => $dballoc_first->doctrantype,
-                    'reference' => $dballoc_first->recptno,
-                    'description' => $dballoc_first->remark,
-                    'year' => $yearperiod->year,
-                    'period' => $yearperiod->period,
-                    'drcostcode' => $drcostcode,
-                    'dracc' => $dracc,
-                    'crcostcode' => $crcostcode,
-                    'cracc' => $cracc,
-                    'amount' => $dballoc_first->amount,
-                    'postdate' => $dballoc_first->allocdate,
-                    'adduser' => $dballoc_first->adduser,
-                    'adddate' => $dballoc_first->adddate,
-                    'idno' => null
-                ]);
+            $gltran = DB::table('finance.gltran')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$dballoc_first->docsource)
+                            ->where('trantype',$dballoc_first->doctrantype)
+                            ->where('auditno',$dballoc_first->docauditno)
+                            ->where('lineno_',$dballoc_first->lineno_);
+
+            if($gltran->exists()){
+                //1. buat gltran
+                DB::table('finance.gltran')
+                    ->where('compcode',session('compcode'))
+                    ->where('source',$dballoc_first->docsource)
+                    ->where('trantype',$dballoc_first->doctrantype)
+                    ->where('auditno',$dballoc_first->docauditno)
+                    ->where('lineno_',$dballoc_first->lineno_)
+                    ->update([
+                        // 'compcode' => session('compcode'),
+                        // 'auditno' => $dballoc_first->docauditno,
+                        // 'lineno_' => $dballoc_first->lineno_,
+                        // 'source' => $dballoc_first->docsource,
+                        // 'trantype' => $dballoc_first->doctrantype,
+                        'reference' => $dballoc_first->recptno,
+                        'description' => $dballoc_first->remark,
+                        'year' => $yearperiod->year,
+                        'period' => $yearperiod->period,
+                        'drcostcode' => $drcostcode,
+                        'dracc' => $dracc,
+                        'crcostcode' => $crcostcode,
+                        'cracc' => $cracc,
+                        'amount' => $dballoc_first->amount,
+                        'postdate' => $dballoc_first->allocdate,
+                        'adduser' => $dballoc_first->adduser,
+                        'adddate' => $dballoc_first->adddate,
+                        'idno' => null
+                    ]);
+            }else{
+                //1. buat gltran
+                DB::table('finance.gltran')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'auditno' => $dballoc_first->docauditno,
+                        'lineno_' => $dballoc_first->lineno_,
+                        'source' => $dballoc_first->docsource,
+                        'trantype' => $dballoc_first->doctrantype,
+                        'reference' => $dballoc_first->recptno,
+                        'description' => $dballoc_first->remark,
+                        'year' => $yearperiod->year,
+                        'period' => $yearperiod->period,
+                        'drcostcode' => $drcostcode,
+                        'dracc' => $dracc,
+                        'crcostcode' => $crcostcode,
+                        'cracc' => $cracc,
+                        'amount' => $dballoc_first->amount,
+                        'postdate' => $dballoc_first->allocdate,
+                        'adduser' => $dballoc_first->adduser,
+                        'adddate' => $dballoc_first->adddate,
+                        'idno' => null
+                    ]);
+            }
         }
     }
 
