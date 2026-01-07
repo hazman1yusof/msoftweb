@@ -98,7 +98,7 @@ class fadepricateController extends defaultController
                                         ->where('compcode','=',session('compcode'))
                                         ->where('assetcode','=',$faregister->assetcode)
                                         ->where('assetno','=',$faregister->assetno)
-                                        ->where('trantype','=','DIS')
+                                        ->whereIn('trantype',['DIS','WOF'])
                                         ->get();
 
 

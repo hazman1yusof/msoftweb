@@ -44,6 +44,7 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
     {
         return [
             'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,

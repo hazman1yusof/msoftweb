@@ -22,6 +22,25 @@
     </tr>
     <tr>
     </tr>
+    <tr>
+        <td style="font-weight:bold">Item Code</td>
+        <td style="font-weight:bold">Description</td>
+        <td style="font-weight:bold">Purchase Date</td>
+        <td style="font-weight:bold">Original Cost</td>
+        <td style="font-weight:bold">Reg Date</td>
+        <td style="font-weight:bold">Dept</td>
+        <td style="font-weight:bold">Opening Cost</td>
+        <td style="font-weight:bold">Addition Cost</td>
+        <td style="font-weight:bold">Disposal Cost</td>
+        <td style="font-weight:bold">Closing Cost</td>
+        <td style="font-weight:bold">Opening Depr</td>
+        <td style="font-weight:bold">Addition Depr</td>
+        <td style="font-weight:bold">Disposal Depr</td>
+        <td style="font-weight:bold">Closing Depr</td>
+        <td style="font-weight:bold">NBV</td>
+    </tr>
+    <tr>
+    </tr>
 
     @php($gtot_opencost = 0.00)
     @php($gtot_addicost = 0.00)
@@ -34,23 +53,6 @@
     @php($gtot_nbvamt = 0.00)
 
     @foreach($assetcode as $assetcode_obj)
-        <tr>
-            <td style="font-weight:bold">Item Code</td>
-            <td style="font-weight:bold">Description</td>
-            <td style="font-weight:bold">Purchase Date</td>
-            <td style="font-weight:bold">Original Cost</td>
-            <td style="font-weight:bold">Reg Date</td>
-            <td style="font-weight:bold">Dept</td>
-            <td style="font-weight:bold">Opening Cost</td>
-            <td style="font-weight:bold">Addition Cost</td>
-            <td style="font-weight:bold">Disposal Cost</td>
-            <td style="font-weight:bold">Closing Cost</td>
-            <td style="font-weight:bold">Opening Depr</td>
-            <td style="font-weight:bold">Addition Depr</td>
-            <td style="font-weight:bold">Disposal Depr</td>
-            <td style="font-weight:bold">Closing Depr</td>
-            <td style="font-weight:bold">NBV</td>
-        </tr>
 
         <tr></tr>
         <tr>
