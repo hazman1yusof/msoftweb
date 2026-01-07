@@ -84,19 +84,19 @@
 
         @foreach($ap_pv_main as $pv_main)
             @if($pv_main->ap1_suppcode == $supp->suppcode)
-                @php($totalAmount += $pv_main->ap1_amount)
+                @php($totalAmount -= $pv_main->ap1_amount)
                 <tr>
                     <td>{{\Carbon\Carbon::parse($pv_main->ap1_postdate)->format('d/m/Y')}}</td>
                     <td data-format="@">{{str_pad($pv_main->ap1_auditno, 7, "0", STR_PAD_LEFT)}}</td>
 
                     <td data-format="@">{{$pv_main->ap1_trantype}}-{{$pv_main->ap1_pvno}}</td>
                     <td data-format="@">{{$pv_main->ap1_remarks}}</td>
-                    <td style="text-align: right">{{$pv_main->ap1_amount}}</td>
+                    <td style="text-align: right">-{{$pv_main->ap1_amount}}</td>
                     <td style="text-align: right">{{$totalAmount}}</td>
                 </tr>
                 @foreach($ap_pv as $pv_obj)
                     @if($pv_obj->ap1_auditno == $pv_main->ap1_auditno)
-                        @php($totalAmount -= $pv_obj->ap2_amount)
+                        @php($totalAmount += $pv_obj->ap2_amount)
                         <tr>
                             <td>{{\Carbon\Carbon::parse($pv_obj->ap2_postdate)->format('d/m/Y')}}</td>
                             <td data-format="@">{{str_pad($pv_obj->ap2_auditno, 7, "0", STR_PAD_LEFT)}}</td>

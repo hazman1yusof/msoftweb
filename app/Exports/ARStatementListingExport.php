@@ -81,7 +81,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
     {
         return [
             'B' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            // 'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
@@ -109,6 +109,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
     {
         // $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
         $date = Carbon::parse($this->dateto)->format('Y-m-d');
+        $firstDay = Carbon::parse($this->dateto)->startOfMonth()->format('Y-m-d');
         $date_asof = Carbon::parse($this->dateto)->format('d-m-Y');
         $debtorcode_from = $this->debtorcode_from;
         if(empty($this->debtorcode_from)){
@@ -148,6 +149,38 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                                         ->get();
 
         // dd($this->getQueries($debtormast));
+
+        $db_rc = DB::table('debtor.dbacthdr as db1')
+                    ->select('db1.source as db1_source','db1.trantype as db1_trantype','db1.auditno as db1_auditno','db1.lineno_ as db1_lineno_','db1.amount as db1_amount','db1.outamount as db1_outamount','db1.recstatus as db1_recstatus','db1.reference as db1_reference','db1.recptno as db1_recptno','db1.paymode as db1_paymode','db1.tillcode as db1_tillcode','db1.tillno as db1_tillno','db1.debtortype as db1_debtortype','db1.debtorcode as db1_debtorcode','db1.payercode as db1_payercode','db1.billdebtor as db1_billdebtor','db1.remark as db1_remark','db1.mrn as db1_mrn','db1.episno as db1_episno','db1.epistype as db1_epistype','db1.cbflag as db1_cbflag','db1.conversion as db1_conversion','db1.payername as db1_payername','db1.currency as db1_currency','db1.rate as db1_rate','db1.unit as db1_unit','db1.invno as db1_invno','db1.orderno as db1_orderno','db1.ponum as db1_ponum','db1.podate as db1_podate','db1.termdays as db1_termdays','db1.termmode as db1_termmode','db1.deptcode as db1_deptcode','db1.posteddate as db1_posteddate','db2.source as db2_source','db2.trantype as db2_trantype','db2.auditno as db2_auditno','db2.lineno_ as db2_lineno_','db2.amount as db2_amount','db2.outamount as db2_outamount','db2.recstatus as db2_recstatus','db2.reference as db2_reference','db2.recptno as db2_recptno','db2.paymode as db2_paymode','db2.tillcode as db2_tillcode','db2.tillno as db2_tillno','db2.debtortype as db2_debtortype','db2.debtorcode as db2_debtorcode','db2.payercode as db2_payercode','db2.billdebtor as db2_billdebtor','db2.remark as db2_remark','db2.mrn as db2_mrn','db2.episno as db2_episno','db2.epistype as db2_epistype','db2.cbflag as db2_cbflag','db2.conversion as db2_conversion','db2.payername as db2_payername','db2.currency as db2_currency','db2.rate as db2_rate','db2.unit as db2_unit','db2.invno as db2_invno','db2.orderno as db2_orderno','db2.ponum as db2_ponum','db2.podate as db2_podate','db2.termdays as db2_termdays','db2.termmode as db2_termmode','db2.deptcode as db2_deptcode','db2.posteddate as db2_posteddate','da.docsource as da_docsource','da.doctrantype as da_doctrantype','da.docauditno as da_docauditno','da.refsource as da_refsource','da.reftrantype as da_reftrantype','da.refauditno as da_refauditno','da.amount as da_allocamount','pm.Name as pm_name')
+                    ->leftjoin('debtor.dballoc as da', function($join) {
+                        $join = $join->on('da.docsource', '=', 'db1.source')
+                                     ->on('da.doctrantype', '=', 'db1.trantype')
+                                     ->on('da.docauditno', '=', 'db1.auditno')
+                                     ->where('da.compcode', '=', session('compcode'));
+                    })
+                    ->leftjoin('debtor.dbacthdr as db2', function($join) {
+                        $join = $join->on('db2.source', '=', 'da.refsource')
+                                     ->on('db2.trantype', '=', 'da.reftrantype')
+                                     ->on('db2.auditno', '=', 'da.refauditno')
+                                     ->where('db2.compcode', '=', session('compcode'));
+                    })
+                    ->leftJoin('hisdb.pat_mast as pm', function($join){
+                        $join = $join->on('pm.NewMrn', '=', 'db2.mrn')
+                                     // ->where('pm.NewMrn', '<>', '')
+                                     ->where('pm.compcode', '=', session('compcode'));
+                    })
+                    ->where('db1.compcode','=',session('compcode'))
+                    ->where('db1.source','PB')
+                    ->where('db1.trantype','RC')
+                    ->whereBetween('db1.debtorcode', [$debtorcode_from,$debtorcode_to.'%'])
+                    ->where('db1.recstatus','POSTED')
+                    ->whereDate('db1.posteddate', '<=', $date)
+                    ->whereDate('db1.posteddate', '>=', $firstDay)
+                    ->get();
+
+        $db_rc_main = $db_rc->unique('db1_auditno');
+
+        // dd($db_rc_main);
         
         $array_report = [];
 
@@ -323,7 +356,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         // }
 
         
-        return view('finance.AR.arenquiry.ARStatementListingExport_excel', compact('debtormast','array_report','grouping','grouping_tot','title','company','date_asof','datenow'));
+        return view('finance.AR.arenquiry.ARStatementListingExport_excel', compact('debtormast','db_rc_main','db_rc','array_report','grouping','grouping_tot','title','company','date_asof','datenow'));
     }
     
     public function registerEvents(): array

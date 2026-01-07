@@ -118,6 +118,46 @@
             </tr>
             @endif
         @endforeach
+
+        <tr></tr>
+        @foreach($db_rc_main as $rc_main)
+            @if($rc_main->db1_debtorcode == $debtor->debtorcode)
+                @php($totalAmount -= $rc_main->db1_amount)
+                <tr>
+                    <td>{{\Carbon\Carbon::parse($rc_main->db1_posteddate)->format('d/m/Y')}}</td>
+                    <td></td>
+                    <td data-format="@">{{$rc_main->db1_auditno}}</td>
+                    <td data-format="@">{{$rc_main->db1_recptno}}</td>
+                    <td data-format="0">{{$rc_main->db1_recptno}}</td>
+                    <td style="text-align: right">-{{$rc_main->db1_amount}}</td>
+                    <td style="text-align: right">{{$totalAmount}}</td>
+                    <td>{{$rc_main->db1_unit}}</td>
+                    <td data-format="0">{{$rc_main->db1_reference}}</td>
+                </tr>
+                @foreach($db_rc as $rc_obj)
+                    @if($rc_obj->db1_auditno == $rc_main->db1_auditno)
+                        @php($totalAmount += $rc_obj->da_allocamount)
+                        <tr>
+                            <td>{{\Carbon\Carbon::parse($rc_obj->db2_posteddate)->format('d/m/Y')}}</td>
+                            <td></td>
+                            <td data-format="@">{{$rc_obj->db2_auditno}}</td>
+                            <td data-format="@">{{$rc_obj->db2_trantype}}/{{$rc_obj->db2_invno}}</td>
+                            <td data-format="0">{{$rc_obj->pm_name}}</td>
+                            <td style="text-align: right">{{$rc_obj->da_allocamount}}</td>
+                            <td style="text-align: right">{{$totalAmount}}</td>
+                            @if(strtoupper($rc_obj->db2_unit) == 'POLIS15')
+                            <td>POLIKLINIK</td>
+                            @else
+                            <td>{{$rc_obj->db2_unit}}</td>
+                            @endif
+                            <td data-format="0">{{$rc_obj->db2_reference}}</td>
+                            <td>{{$rc_obj->db2_tillcode}}</td>
+                        </tr>
+                    @endif
+                @endforeach
+            @endif
+        @endforeach
+
         <tr></tr>
         <tr>
             <td></td>
