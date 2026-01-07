@@ -158,6 +158,36 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
                             }
                         }
                     }
+                }else($obj->recstatus == 'ACTIVE'){
+                    if($obj->trantype == 'WOF' || $obj->trantype == 'DIS'){
+
+                        if(Carbon::parse($fatran->trandate)->lt(Carbon::parse($fdoydate))){
+                            $totaldis = DB::table('finance.fatran')
+                                                ->where('compcode',session('compcode'))
+                                                ->where('trantype','DIS')
+                                                ->where('assetno',$obj->assetno)
+                                                ->whereDate('trandate','<',$datefrom)
+                                                ->sum('amount');
+
+                            $obj->origcost = $obj->origcost - $totaldis;
+                            $obj->dispcost = $totaldis;
+
+                        }else{
+                            if(Carbon::parse($fatran->trandate)->lte(Carbon::parse($datefrom))){
+                                $obj->dispdepr = $opendepr + $adddepr;
+
+                                $totaldis = DB::table('finance.fatran')
+                                                ->where('compcode',session('compcode'))
+                                                ->where('trantype','DIS')
+                                                ->where('assetno',$obj->assetno)
+                                                ->whereDate('trandate','>=',$fdoydate)
+                                                ->whereDate('trandate','<=',$datefrom)
+                                                ->sum('amount');
+
+                                $obj->dispcost = $totaldis;
+                            }
+                        }
+                    }
                 }
             }
 
