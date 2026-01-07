@@ -76,7 +76,7 @@
 						<div class="col-md-6">
 						  <label class="control-label" for="catto">Category To</label> 
 							<div class='input-group'> 
-								<input id="catto" name="catto" type="text" class="form-control input-sm" autocomplete="off" value="">
+								<input id="catto" name="catto" type="text" class="form-control input-sm" autocomplete="off" value="ZZZ">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
