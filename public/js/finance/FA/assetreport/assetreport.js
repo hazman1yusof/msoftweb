@@ -24,7 +24,7 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
 	var catfr_dialog = new ordialog(
-		'catfr','finance.facode','#catfr',errorField,
+		'catfr','finance.facode','#catfr','errorField',
 		{	
 			colModel:[
 				{label:'Code',name:'assetcode',width:200,classes:'pointer',canSearch:true,or_search:true},

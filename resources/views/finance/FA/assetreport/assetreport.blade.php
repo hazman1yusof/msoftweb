@@ -111,6 +111,6 @@
 
 @section('scripts')
 
-	<script src="js/finance/FA/assetreport/assetreport.js"></script>
+	<script src="js/finance/FA/assetreport/assetreport.js?v=1.1"></script>
 
 @endsection

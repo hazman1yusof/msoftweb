@@ -158,7 +158,7 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
                             }
                         }
                     }
-                }else($obj->recstatus == 'ACTIVE'){
+                }else if($obj->recstatus == 'ACTIVE'){
                     if($obj->trantype == 'WOF' || $obj->trantype == 'DIS'){
 
                         if(Carbon::parse($fatran->trandate)->lt(Carbon::parse($fdoydate))){
