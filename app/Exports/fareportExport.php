@@ -83,6 +83,9 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
         $fdoydate = Carbon::parse($datefrom)->startOfYear()->format('Y-m-d');
         $company = $this->comp;
         $catfr = $this->catfr;
+        if(empty($this->catfr)){
+            $catfr = '%';
+        }
         $catto = $this->catto;
         if(empty($this->catto)){
             $catto = '%';
@@ -108,6 +111,7 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
                                     ->get();
 
         // dd($faregister);
+        // dd($this->getQueries($faregister));
 
         foreach ($faregister as $obj) {
             $obj->purdate = Carbon::parse($obj->purdate)->format('d-m-Y');
