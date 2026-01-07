@@ -59,7 +59,7 @@
 					<div class="form-group">
 						<div class="col-md-6">
 						  <label class="control-label" for="Scol">As at Date</label>  
-							<input type="date" name="datefrom" id="datefrom" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-01')}}">
+							<input type="date" name="datefrom" id="datefrom" class="form-control input-sm" autocomplete="off" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-01')}}">
 			      </div>
 			    </div>
 
@@ -67,7 +67,7 @@
 						<div class="col-md-6">
 						  <label class="control-label" for="catfr">Category From</label> 
 							<div class='input-group'> 
-								<input id="catfr" name="catfr" type="text" class="form-control input-sm" autocomplete="off" value="" data-validation="required" data-validation-error-msg="Please Enter Value">
+								<input id="catfr" name="catfr" type="text" class="form-control input-sm" autocomplete="off" value="" data-validation-error-msg="Please Enter Value">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -111,6 +111,6 @@
 
 @section('scripts')
 
-	<script src="js/finance/FA/assetreport/assetreport.js?v=1.1"></script>
+	<script src="js/finance/FA/assetreport/assetreport.js?v=1.2"></script>
 
 @endsection
