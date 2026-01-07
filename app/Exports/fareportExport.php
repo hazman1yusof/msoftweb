@@ -168,7 +168,7 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
                         if(Carbon::parse($fatran->trandate)->lt(Carbon::parse($fdoydate))){
                             $totaldis = DB::table('finance.fatran')
                                                 ->where('compcode',session('compcode'))
-                                                ->where('trantype','DIS')
+                                                ->whereIn('trantype',['DIS','WOF'])
                                                 ->where('assetno',$obj->assetno)
                                                 ->whereDate('trandate','<',$datefrom)
                                                 ->sum('amount');
@@ -182,7 +182,7 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
 
                                 $totaldis = DB::table('finance.fatran')
                                                 ->where('compcode',session('compcode'))
-                                                ->where('trantype','DIS')
+                                                ->whereIn('trantype',['DIS','WOF'])
                                                 ->where('assetno',$obj->assetno)
                                                 ->whereDate('trandate','>=',$fdoydate)
                                                 ->whereDate('trandate','<=',$datefrom)
