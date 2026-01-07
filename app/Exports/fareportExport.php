@@ -98,7 +98,7 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
                                      ->on('fc.assetcode', '=', 'fa.assetcode');
                     })
                     ->where('fa.trandate', '<=', $datefrom)
-                    // ->where('fa.assetno', 'cm00115')
+                    // ->where('fa.assetno', 'rn00180')
                     ->where('fa.compcode', '=', session('compcode'));
 
         if($catfr == $catto){
@@ -141,7 +141,7 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
             $fatran = DB::table('finance.fatran')
                             ->where('compcode',session('compcode'))
                             ->where('assetno',$obj->assetno)
-                            ->where('trantype',$obj->trantype)
+                            // ->where('trantype',$obj->trantype)
                             ->orderBy('idno','desc');
 
             $obj->skip=0;
@@ -163,40 +163,75 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
                         }
                     }
                 }else if($obj->recstatus == 'ACTIVE'){
-                    if($obj->trantype == 'WOF' || $obj->trantype == 'DIS'){
+                    if(Carbon::parse($fatran->trandate)->lt(Carbon::parse($fdoydate))){
+                        $totaldis = DB::table('finance.fatran')
+                                            ->where('compcode',session('compcode'))
+                                            ->whereIn('trantype',['DIS','WOF'])
+                                            ->where('assetno',$obj->assetno)
+                                            ->whereDate('trandate','<',$datefrom)
+                                            ->sum('amount');
 
-                        if(Carbon::parse($fatran->trandate)->lt(Carbon::parse($fdoydate))){
+                        $obj->origcost = $obj->origcost - $totaldis;
+
+                        $totaldis = DB::table('finance.fatran')
+                                        ->where('compcode',session('compcode'))
+                                        ->whereIn('trantype',['DIS','WOF'])
+                                        ->where('assetno',$obj->assetno)
+                                        ->whereDate('trandate','>=',$fdoydate)
+                                        ->whereDate('trandate','<=',$datefrom)
+                                        ->sum('amount');
+
+                        $obj->dispcost = $totaldis;
+
+                        $totaldis = DB::table('finance.fatran')
+                                            ->where('compcode',session('compcode'))
+                                            ->whereIn('trantype',['DIS','WOF'])
+                                            ->where('assetno',$obj->assetno)
+                                            ->whereDate('trandate','<',$datefrom)
+                                            ->sum('amount1');
+
+                        $obj->opendepr = $obj->opendepr - $totaldis;
+
+                        $dispdepr = DB::table('finance.fatran')
+                                        ->where('compcode',session('compcode'))
+                                        ->whereIn('trantype',['DIS','WOF'])
+                                        ->where('assetno',$obj->assetno)
+                                        ->whereDate('trandate','>=',$fdoydate)
+                                        ->whereDate('trandate','<=',$datefrom)
+                                        ->sum('amount1');
+
+                         $obj->dispdepr = $dispdepr;
+
+                    }else{
+                        if(Carbon::parse($fatran->trandate)->lte(Carbon::parse($datefrom))){
+                            $obj->dispdepr = $opendepr + $adddepr;
+
                             $totaldis = DB::table('finance.fatran')
-                                                ->where('compcode',session('compcode'))
-                                                ->whereIn('trantype',['DIS','WOF'])
-                                                ->where('assetno',$obj->assetno)
-                                                ->whereDate('trandate','<',$datefrom)
-                                                ->sum('amount');
+                                            ->where('compcode',session('compcode'))
+                                            ->whereIn('trantype',['DIS','WOF'])
+                                            ->where('assetno',$obj->assetno)
+                                            ->whereDate('trandate','>=',$fdoydate)
+                                            ->whereDate('trandate','<=',$datefrom)
+                                            ->sum('amount');
 
-                            $obj->origcost = $obj->origcost - $totaldis;
                             $obj->dispcost = $totaldis;
 
-                        }else{
-                            if(Carbon::parse($fatran->trandate)->lte(Carbon::parse($datefrom))){
-                                $obj->dispdepr = $opendepr + $adddepr;
+                            $dispdepr = DB::table('finance.fatran')
+                                            ->where('compcode',session('compcode'))
+                                            ->whereIn('trantype',['DIS','WOF'])
+                                            ->where('assetno',$obj->assetno)
+                                            ->whereDate('trandate','>=',$fdoydate)
+                                            ->whereDate('trandate','<=',$datefrom)
+                                            ->sum('amount1');
 
-                                $totaldis = DB::table('finance.fatran')
-                                                ->where('compcode',session('compcode'))
-                                                ->whereIn('trantype',['DIS','WOF'])
-                                                ->where('assetno',$obj->assetno)
-                                                ->whereDate('trandate','>=',$fdoydate)
-                                                ->whereDate('trandate','<=',$datefrom)
-                                                ->sum('amount');
-
-                                $obj->dispcost = $totaldis;
-                            }
+                             $obj->dispdepr = $dispdepr;
                         }
                     }
                 }
             }
 
             $obj->closecost = $obj->origcost - $obj->dispcost;
-            $obj->closedepr = $opendepr + $adddepr - $obj->dispdepr;
+            $obj->closedepr = $obj->opendepr + $adddepr - $obj->dispdepr;
             $obj->nbvamt = $obj->closecost - $obj->closedepr;
         }
         
