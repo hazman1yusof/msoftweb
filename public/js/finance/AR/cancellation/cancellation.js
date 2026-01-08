@@ -27,7 +27,7 @@ $(document).ready(function () {
 		},
 	};
 	
-	$('.nav-tabs a').on('shown.bs.tab', function(e){
+	$('#jqGrid_cancel_c .nav-tabs a').on('shown.bs.tab', function(e){
 		let trantype = $(this).data('trantype');
 		switch(trantype){
 			case 'RC':
@@ -1644,7 +1644,57 @@ $(document).ready(function () {
 				}
 			}
 		});
-		searchClick2('#jqGrid_rc', '#searchForm', urlParam_rcpt,false);
+		searchClick2_('#jqGrid_rc', '#searchForm', urlParam_rcpt,false);
+	}
+
+	function searchClick2_(grid,form,urlParam,withscol=true){
+
+		$(form+' [name=Stext]').off("keyup");
+		$(form+' [name=Stext]').on( "keyup", function(e) {
+			let activeTab = $('#jqGrid_cancel_c .nav-tabs .active a').data('trantype');
+
+			if(activeTab == 'RF'){
+				grid = '#jqGrid_rf';
+				urlParam = urlParam_rf;
+			}else if(activeTab == 'RD'){
+				grid = '#jqGrid_rd';
+				urlParam = urlParam_rd;
+			}else{
+				grid = '#jqGrid_rc';
+				urlParam = urlParam_rcpt;
+			}
+
+			var code = e.keyCode || e.which;
+			if(code != '9'){
+				delay(function(){
+					search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+					$('#recnodepan').text("");//tukar kat depan tu
+					$('#reqdeptdepan').text("");
+					refreshGrid("#jqGrid3",null,"kosongkan");
+				}, 1100 );
+			}
+		});
+		if(withscol){
+			$(form+' [name=Stext]').off("change");
+			$(form+' [name=Scol]').on( "change", function() {
+				let activeTab = $('#jqGrid_cancel_c .nav-tabs .active a').data('trantype');
+
+				if(activeTab == 'RF'){
+					grid = '#jqGrid_rf';
+					urlParam = urlParam_rf;
+				}else if(activeTab == 'RD'){
+					grid = '#jqGrid_rd';
+					urlParam = urlParam_rd;
+				}else{
+					grid = '#jqGrid_rc';
+					urlParam = urlParam_rcpt;
+				}
+				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+				$('#recnodepan').text("");//tukar kat depan tu
+				$('#reqdeptdepan').text("");
+				refreshGrid("#jqGrid3",null,"kosongkan");
+			});
+		}
 	}
 	
 	///////////////////////////////////////////////////Dialog///////////////////////////////////////////////////
