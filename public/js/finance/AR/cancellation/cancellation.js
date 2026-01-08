@@ -1635,15 +1635,15 @@ $(document).ready(function () {
 	////////////////////////////////////populate data for dropdown search By////////////////////////////////////
 	searchBy();
 	function searchBy() {
-		$.each($("#jqGrid_rc").jqGrid('getGridParam', 'colModel'), function (index, value) {
-			if (value['canSearch']) {
-				if (value['selected']) {
-					$("#searchForm [id=Scol]").append(" <option selected value='" + value['name'] + "'>" + value['label'] + "</option>");
-				} else {
-					$("#searchForm [id=Scol]").append(" <option value='" + value['name'] + "'>" + value['label'] + "</option>");
-				}
-			}
-		});
+		// $.each($("#jqGrid_rc").jqGrid('getGridParam', 'colModel'), function (index, value) {
+		// 	if (value['canSearch']) {
+		// 		if (value['selected']) {
+		// 			$("#searchForm [id=Scol]").append(" <option selected value='" + value['name'] + "'>" + value['label'] + "</option>");
+		// 		} else {
+		// 			$("#searchForm [id=Scol]").append(" <option value='" + value['name'] + "'>" + value['label'] + "</option>");
+		// 		}
+		// 	}
+		// });
 		searchClick2_('#jqGrid_rc', '#searchForm', urlParam_rcpt,false);
 	}
 

@@ -76,7 +76,14 @@
                     <div class="form-group">
                         <div class="col-md-2">
                             <label class="control-label" for="Scol">Search By : </label>
-                            <select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
+                            <select id="Scol" name="Scol" class="form-control input-sm" tabindex="1"> 
+                                <option value="db_debtorcode">Debtor Code</option> 
+                                <option value="db_auditno" selected>Audit No</option> 
+                                <option value="db_recptno">Document No</option> 
+                                <option value="db_entrydate">Date</option> 
+                                <option value="db_mrn">MRN</option> 
+                                <option value="db_deptcode">Department</option> 
+                            </select>
                         </div>
                         
                         <div class="col-md-5" style="margin-top: 4px;">
@@ -892,5 +899,5 @@
             }
         });
     </script>
-    <script src="js/finance/AR/cancellation/cancellation.js?v=1.4"></script>
+    <script src="js/finance/AR/cancellation/cancellation.js?v=1.5"></script>
 @endsection
