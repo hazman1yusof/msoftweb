@@ -130,6 +130,8 @@ class TestController extends defaultController
                 return $this->pnlbalance_check($request);
             case 'checkrefund':
                 return $this->checkrefund($request);
+            case 'checkCNDNgltran':
+                return $this->checkCNDNgltran($request);
             // case 'netmvval_from_netmvqty':
             //     return $this->netmvval_from_netmvqty($request);
             // case 'cr8_acctmaster':
@@ -9231,6 +9233,75 @@ class TestController extends defaultController
                     ]);
             }
         }
+    }
+
+    public function checkCNDNgltran(Request $request){
+
+
+        // $dbacthdr_obj = DB::table('debtor.dbacthdr as dh')
+        //                     ->select('dh.source','dh.trantype','dh.auditno','dh.amount as dh_amount','gl.amount as gl_amount','dd.AmtB4GST')
+        //                     ->join('debtor.dbactdtl as dd', function($join){
+        //                         $join = $join
+        //                                     ->on('dd.compcode','dh.compcode')
+        //                                     ->on('dd.source','dh.source')
+        //                                     ->on('dd.trantype','dh.trantype')
+        //                                     ->on('dd.auditno','dh.auditno');
+        //                     })
+        //                     ->leftJoin('finance.gltran as gl', function($join){
+        //                         $join = $join
+        //                                     ->on('gl.compcode','dh.compcode')
+        //                                     ->on('gl.source','dh.source')
+        //                                     ->on('gl.trantype','dh.trantype')
+        //                                     ->on('gl.auditno','dh.auditno');
+        //                     })
+        //                     ->where('dh.compcode',session('compcode'))
+        //                     ->where('dh.source','PB')
+        //                     ->where('dh.trantype','CN')
+        //                     ->whereDate('dh.posteddate','>=','2025-11-01')
+        //                     ->whereDate('dh.posteddate','<=','2025-12-31')
+        //                     ->where('dh.recstatus','POSTED')
+        //                     ->get();
+
+        // dump($dbacthdr_obj->sum('gl_amount'));
+        // dump($dbacthdr_obj->sum('AmtB4GST'));
+
+        // $dbacthdr_obj2 = $dbacthdr_obj->unique('auditno');
+
+        $dbacthdr_obj2 = DB::table('debtor.dbacthdr as dh')
+                            ->where('dh.compcode',session('compcode'))
+                            ->where('dh.source','PB')
+                            ->where('dh.trantype','CN')
+                            ->whereDate('dh.posteddate','>=','2025-11-01')
+                            ->whereDate('dh.posteddate','<=','2025-12-31')
+                            ->where('dh.recstatus','POSTED')
+                            ->get();
+
+        foreach ($dbacthdr_obj2 as $obj) {
+            $h_amt = $obj->amount;
+            $cbdtl = DB::table('debtor.dbactdtl as dd')
+                        ->where('dd.compcode',session('compcode'))
+                        ->where('dd.source',$obj->source)
+                        ->where('dd.trantype',$obj->trantype)
+                        ->where('dd.auditno',$obj->auditno)
+                        ->sum('AmtB4GST');
+
+            if($h_amt != $cbdtl){
+                dump($obj->auditno.' - '.$h_amt.' = '.$cbdtl);
+            }
+
+            $gltran = DB::table('finance.gltran as gl')
+                        ->where('gl.compcode',session('compcode'))
+                        ->where('gl.source',$obj->source)
+                        ->where('gl.trantype',$obj->trantype)
+                        ->where('gl.auditno',$obj->auditno)
+                        ->sum('amount');
+
+            if($h_amt != $gltran){
+                dump($obj->auditno.' - '.$h_amt.' = '.$gltran);
+            }
+
+        }
+
     }
 
 }

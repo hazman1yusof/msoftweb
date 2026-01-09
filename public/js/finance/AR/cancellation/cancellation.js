@@ -1435,7 +1435,8 @@ $(document).ready(function () {
 			}else if(trantype == 'RD'){
 				$("#jqGrid_rd").jqGrid('setSelection', idno);
 			}
-			
+				
+			$('#trantype').val(trantype);
 			$("#dialog_allocation").dialog("open");
 		});
 	}

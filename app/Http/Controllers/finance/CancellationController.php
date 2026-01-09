@@ -571,6 +571,16 @@ class CancellationController extends defaultController
                 ->update([
                     'recstatus' => 'CANCELLED'
                 ]);
+
+            DB::table('finance.gltran')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=',$dballoc->source)
+                    ->where('trantype','=',$dballoc->trantype)
+                    ->where('auditno','=',$dballoc->auditno)
+                    ->where('lineno_','=',$dballoc->lineno_)
+                    ->update([
+                        'compcode' => 'XX'
+                    ]);
             
             DB::table('debtor.dbacthdr')
                 ->where('compcode','=',session('compcode'))
