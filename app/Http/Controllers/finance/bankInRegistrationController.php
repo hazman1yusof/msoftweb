@@ -40,6 +40,8 @@ class bankInRegistrationController extends defaultController
                 return $this->del($request);
             case 'posted':
                 return $this->posted($request);
+            case 'cancel':
+                return $this->cancel($request);
             default:
                 return 'error happen..';
         }
@@ -604,6 +606,102 @@ class bankInRegistrationController extends defaultController
                             ]);
                 }
 
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function cancel(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            foreach ($request->idno_array as $idno){
+                $apacthdr = DB::table('finance.apacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('idno','=',$idno);
+
+                $apacthdr_get = $apacthdr->first();
+
+                if($apacthdr_get->recstatus == 'OPEN'){
+                    DB::table('finance.apacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('idno','=',$idno)
+                            ->update([
+                                'recstatus' => 'CANCELLED'
+                            ]);
+
+                    DB::table('finance.cbdtl')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$apacthdr_get->source)
+                            ->where('trantype',$apacthdr_get->trantype)
+                            ->where('auditno',$apacthdr_get->auditno)
+                            ->update([
+                                'compcode' => 'xx',
+                                'recstatus' => 'CANCELLED'
+                            ]);
+                }else if($apacthdr_get->recstatus == 'POSTED'){
+                    DB::table('finance.apacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('idno','=',$idno)
+                            ->update([
+                                'recstatus' => 'CANCELLED'
+                            ]);
+
+                    $cbdtl_get = DB::table('finance.cbdtl')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$apacthdr_get->source)
+                            ->where('trantype',$apacthdr_get->trantype)
+                            ->where('auditno',$apacthdr_get->auditno)
+                            ->get();
+
+                    foreach ($cbdtl_get as $key => $value) {
+                        DB::table('debtor.dbacthdr')
+                                ->where('compcode',session('compcode'))
+                                ->where('source',$value->refsrc)
+                                ->where('trantype',$value->reftrantype)
+                                ->where('auditno',$value->refauditno)
+                                ->update([
+                                    'cbflag' => 0
+                                ]);
+                    }
+
+                    DB::table('finance.cbdtl')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$apacthdr_get->source)
+                            ->where('trantype',$apacthdr_get->trantype)
+                            ->where('auditno',$apacthdr_get->auditno)
+                            ->update([
+                                'compcode' => 'xx',
+                                'recstatus' => 'CANCELLED'
+                            ]);
+
+                    DB::table('finance.cbtran')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$apacthdr_get->source)
+                            ->where('trantype',$apacthdr_get->trantype)
+                            ->where('auditno',$apacthdr_get->auditno)
+                            ->update([
+                                'compcode' => 'xx',
+                                'recstatus' => 'CANCELLED'
+                            ]);
+
+                    DB::table('finance.gltran')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$apacthdr_get->source)
+                            ->where('trantype',$apacthdr_get->trantype)
+                            ->where('auditno',$apacthdr_get->auditno)
+                            ->update([
+                                'compcode' => 'xx',
+                            ]);
+
+                }
             }
 
             DB::commit();

@@ -103,7 +103,10 @@ i.fa {
 							@elseif (Request::get('scope') == 'POSTED')
 								<option value="POSTED">POSTED</option>
 							@elseif (Request::get('scope') == 'CANCEL')
+								<option value="All" selected>ALL</option>
 								<option value="OPEN">OPEN</option>
+								<option value="POSTED" >POSTED</option>
+								<option value="CANCELLED">CANCELLED</option>
 							@endif
 				   	</select>
 	      		</div>
@@ -113,12 +116,18 @@ i.fa {
 
 					if(Request::get('scope') == 'ALL'){
 						$scope_use = 'posted';
+						$btn_name = 'POSTED';
 					}else if(Request::get('scope') == 'DELIVERED'){
 						$scope_use = 'delivered';
 					}else if(Request::get('scope') == 'REOPEN'){
 						$scope_use = 'reopen';
+						$btn_name = 'REOPEN';
 					}else if(Request::get('scope') == 'CANCEL'){
 						$scope_use = 'cancel';
+						$btn_name = 'CANCEL';
+					}else{
+						$scope_use = 'posted';
+						$btn_name = 'POSTED';
 					}
 				?>
 
@@ -133,7 +142,7 @@ i.fa {
 					id="but_post_jq" 
 					data-oper="{{$scope_use}}" 
 					style="display: none;">
-					POSTED
+					{{$btn_name}}
 				</button>
 
 			</div>
@@ -383,5 +392,5 @@ i.fa {
 			
 		});
 	</script>
-	<script src="js/finance/CM/bankInRegistration/bankInRegistration.js?v=1.3"></script>
+	<script src="js/finance/CM/bankInRegistration/bankInRegistration.js?v=1.4"></script>
 @endsection

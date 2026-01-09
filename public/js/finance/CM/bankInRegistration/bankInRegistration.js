@@ -237,7 +237,7 @@ $(document).ready(function () {
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").recstatus;
-			if(stat=='POSTED'){
+			if(stat=='POSTED' || stat=='CANCELLED'){
 				$("#jqGridPager td[title='View Selected Row']").click();
 				$('#save').hide();
 			}else{
@@ -323,7 +323,7 @@ $(document).ready(function () {
 			$("#jqGrid2").data('initAllo','true');
 			refreshGrid("#jqGrid2",urlParam2);
 
-			if(selrowData("#jqGrid").recstatus == 'POSTED'){
+			if(selrowData("#jqGrid").recstatus == 'POSTED' || selrowData("#jqGrid").recstatus == 'CANCELLED'){
 				disableForm('#formdata');
 				$("#pg_jqGridPager2 table").hide();
 			}
@@ -1026,13 +1026,26 @@ $(document).ready(function () {
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
 		
-		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
-			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+		if(options.gid != "jqGrid"){
 			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
-		}else{
-			return ' ';
 		}
+		if($('#recstatus_use').val() == 'ALL'){
+			if(rowObject.recstatus == "OPEN"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'CANCEL'){
+			if(rowObject.recstatus == "OPEN"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}else if(rowObject.recstatus == "POSTED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'REOPEN'){
+			if(rowObject.recstatus == "CANCELLED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}
+
+		return ' ';
 	}
 
 	function formattertext(cellvalue, options, rowObject){

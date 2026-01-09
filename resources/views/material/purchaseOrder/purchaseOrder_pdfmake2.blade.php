@@ -258,7 +258,7 @@
                         	],
                         	[
 								{text: 'NETT TOTAL : ',bold: true,alignment: 'left', border: [false, true, false, true]}, 
-								{text: numeral({{$purordhd->totamount}}).format('0,0.00'),alignment: 'right', border: [false, true, false, true]},
+								{text: numeral({{$purordhd->subamount - $purordhd->amtdisc}}).format('0,0.00'),alignment: 'right', border: [false, true, false, true]},
                         	]
                         ]
                     }
