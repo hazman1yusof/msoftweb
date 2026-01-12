@@ -181,14 +181,14 @@ class ARAgeingDtlExport_statement implements FromView, WithEvents, WithColumnWid
                     ->get();
 
         $db_rc_main = $db_rc->unique('db1_auditno');
-        
+
         $title = "STATEMENT LISTING";
         
         $company = DB::table('sysdb.company')
                     ->where('compcode', '=', session('compcode'))
                     ->first();
 
-        return view('finance.AR.arenquiry.ARStatementListingExport_excel_state', compact('debtormast','db_rc_main','db_rc','array_report','grouping','grouping_tot','title','company','date_asof','datenow'));
+        return view('finance.AR.arenquiry.ARStatementListingExport_excel_statement', compact('debtormast','db_rc_main','db_rc','array_report','grouping','grouping_tot','title','company','date_asof','datenow'));
 
     }
     
