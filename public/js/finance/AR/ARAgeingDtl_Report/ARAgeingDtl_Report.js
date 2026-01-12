@@ -50,7 +50,11 @@ $(document).ready(function () {
             {targets: 10,
                 createdCell: function (td, cellData, rowData, row, col) {
                     if(rowData.status == 'DONE'){
-                        $(td).append(`<a class='btn btn-sm btn-default' target="_blank" href='./ARAgeingDtl_Report/table?action=download&idno=`+rowData.idno+`'><i class='fa fa-download'></i></span>`);
+                        if($('#scope').val() == '1'){
+                            $(td).append(`<a class='btn btn-sm btn-default' target="_blank" href='./ARAgeingDtl_Report/table?action=download_statement&idno=`+rowData.idno+`'><i class='fa fa-download'></i></span>`);
+                        }else{
+                            $(td).append(`<a class='btn btn-sm btn-default' target="_blank" href='./ARAgeingDtl_Report/table?action=download&idno=`+rowData.idno+`'><i class='fa fa-download'></i></span>`);
+                        }
                     }
                 }
             },

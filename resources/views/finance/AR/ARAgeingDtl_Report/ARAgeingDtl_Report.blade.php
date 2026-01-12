@@ -58,6 +58,7 @@
 @endsection
 
 @section('body')
+    <input id="scope" name="scope" type="hidden" value="{{$scope}}">
     <input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
     <h4 style="text-align: center;">AR AGEING</h4>
     <div class="col-md-6">
@@ -223,6 +224,6 @@
 @endsection
 
 @section('scripts')
-    <script src="js/finance/AR/ARAgeingDtl_Report/ARAgeingDtl_Report.js?v=1.7"></script>
+    <script src="js/finance/AR/ARAgeingDtl_Report/ARAgeingDtl_Report.js?v=1.8"></script>
     <script src="plugins/datatables/js/jquery.datatables.min.js"></script>
 @endsection

@@ -10,6 +10,7 @@ use DateTime;
 use Carbon\Carbon;
 use App\Exports\ARAgeingDtlExport;
 use App\Exports\ARAgeingDtlExport_2;
+use App\Exports\ARAgeingDtlExport_statement;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 use GuzzleHttp\Client;
@@ -32,8 +33,13 @@ class ARAgeingDtl_ReportController extends defaultController
     public function show(Request $request)
     {
         $comp = DB::table('sysdb.company')->where('compcode','=',session('compcode'))->first();
+        $scope = '0';
+        if($request->scope == 'statement'){
+            $scope = '1';
+        }
         return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report',[
-            'company_name' => $comp->name
+            'company_name' => $comp->name,
+            'scope' => $scope
         ]);
     }
 
@@ -43,6 +49,8 @@ class ARAgeingDtl_ReportController extends defaultController
                 return $this->job_queue($request);
             case 'download':
                 return $this->download2($request);
+            case 'download_statement':
+                return $this->download_statement($request);
             case 'process_excel':
                 return $this->process_excel($request);
             default:
@@ -106,6 +114,14 @@ class ARAgeingDtl_ReportController extends defaultController
                         ->first();
 
         return Excel::download(new ARAgeingDtlExport_2($request->idno), $job_queue->filename);
+    }
+
+    public function download_statement(Request $request){
+        $job_queue = DB::table('sysdb.job_queue')
+                        ->where('idno',$request->idno)
+                        ->first();
+
+        return Excel::download(new ARAgeingDtlExport_statement($request->idno), $job_queue->filename);
     }
     
     public function showExcel(Request $request){

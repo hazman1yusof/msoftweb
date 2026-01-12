@@ -442,42 +442,4 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         return $group;
     }
     
-    public function calc_openbal($obj){
-        $balance = 0;
-        
-        foreach($obj->get() as $key => $value){
-            switch($value->trantype){
-                case 'IN':
-                    $balance = $balance + floatval($value->amount);
-                    break;
-                case 'DN':
-                    $balance = $balance + floatval($value->amount);
-                    break;
-                case 'BC':
-                    $balance = $balance + floatval($value->amount);
-                    break;
-                case 'RF':
-                    $balance = $balance + floatval($value->amount);
-                    break;
-                case 'CN':
-                    $balance = $balance - floatval($value->amount);
-                    break;
-                case 'RC':
-                    $balance = $balance - floatval($value->amount);
-                    break;
-                case 'RD':
-                    $balance = $balance - floatval($value->amount);
-                    break;
-                case 'RT':
-                    $balance = $balance - floatval($value->amount);
-                    break;
-                default:
-                    // code...
-                    break;
-            }
-        }
-        
-        return $balance;
-    }
-    
 }
