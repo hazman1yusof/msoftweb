@@ -199,7 +199,8 @@ $(document).ready(function () {
 		let action = 'check';
 		let year = $('#yearfrom').val();
 		let month = $('#monthfrom').val();
-		let url = './financialReport/table?action='+action+'&year='+year+'&month='+month+'&datatables=exclude';
+		let rptname = $("#reportname").val();
+		let url = './financialReport/table?action='+action+'&year='+year+'&month='+month+'&rptname='+rptname+'&datatables=exclude';
 
 		window.open(url, '_blank');
 	});

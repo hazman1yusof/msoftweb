@@ -85,6 +85,13 @@ class FinancialReportController extends defaultController
 
         $month = intval($request->month);
         $year = $request->year;
+        $rptname = $request->rptname;
+
+        if(strtoupper($rptname) == 'BSHEET'){
+            $acttype = ['A','L'];
+        }else{
+            $acttype = ['E','R'];
+        }
 
         $glmasref = DB::table('finance.glmasref as gmr')
                         ->select('gmd.compcode','gmd.costcode','gmd.glaccount','gmd.year','gmd.openbalance','gmd.actamount1','gmd.actamount2','gmd.actamount3','gmd.actamount4','gmd.actamount5','gmd.actamount6','gmd.actamount7','gmd.actamount8','gmd.actamount9','gmd.actamount10','gmd.actamount11','gmd.actamount12','gmd.bdgamount1','gmd.bdgamount2','gmd.bdgamount3','gmd.bdgamount4','gmd.bdgamount5','gmd.bdgamount6','gmd.bdgamount7','gmd.bdgamount8','gmd.bdgamount9','gmd.bdgamount10','gmd.bdgamount11','gmd.bdgamount12','gmd.foramount1','gmd.foramount2','gmd.foramount3','gmd.foramount4','gmd.foramount5','gmd.foramount6','gmd.foramount7','gmd.foramount8','gmd.foramount9','gmd.foramount10','gmd.foramount11','gmd.foramount12','gmd.adduser','gmd.adddate','gmd.upduser','gmd.upddate','gmd.deluser','gmd.deldate','gmd.recstatus','gmd.idno')
@@ -94,7 +101,7 @@ class FinancialReportController extends defaultController
                                          ->where('gmd.compcode','=',session('compcode'));
                         })
                         ->where('gmr.compcode',session('compcode'))
-                        ->whereIn('gmr.acttype',['A','L'])
+                        ->whereIn('gmr.acttype',$acttype)
                         ->get();
 
         foreach ($glmasref as $obj) {
@@ -114,7 +121,7 @@ class FinancialReportController extends defaultController
                                 ->where('gc.compcode','=',session('compcode'));
                     })
                     ->where('gr.compcode',session('compcode'))
-                    ->where('gr.rptname','BSHEET')
+                    ->where('gr.rptname',$rptname)
                     ->where('gr.rowdef','D')
                     ->orderBy('gr.lineno_')
                     ->get();
@@ -166,7 +173,7 @@ class FinancialReportController extends defaultController
 
         // dd($table_data);
 
-        return view('finance.GL.financialReport.check',compact('table_data'));
+        return view('finance.GL.financialReport.check',compact('table_data','rptname'));
     }
 
     public function checkBS(Request $request){
