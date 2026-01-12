@@ -12,7 +12,7 @@
   <div class="row">
 		<div class="col-md-12">
 			<div class="panel panel-default" style="width: 90%;margin: auto;margin-top: 10px;">
-				<div class="panel-heading">Interface Check <b>{{$rptname}}</b> Year : <b>{{Request::get('year')}}</b> Month: <b>{{Request::get('month')}}</b></div>
+				<div class="panel-heading">Interface Check <b>{{$rptname}}</b> Year : <b>{{Request::get('year')}}</b> Month: <b>{{$monthto}}</b></div>
 				<div class="panel-body" style="padding-left: 35px !important;">
 					<div class='col-md-12' style="padding:0px">
 						<table id="myTable" class="display">

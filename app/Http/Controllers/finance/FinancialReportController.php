@@ -84,6 +84,7 @@ class FinancialReportController extends defaultController
     public function check(Request $request){
 
         $month = intval($request->month);
+        $monthto = intval($request->monthto);
         $year = $request->year;
         $rptname = $request->rptname;
 
@@ -112,6 +113,10 @@ class FinancialReportController extends defaultController
                 $pbalance = $pbalance + $arrvalue['actamount'.$x];
             }
             $obj->pbalance = $pbalance + $arrvalue['openbalance'];
+
+            if(strtoupper($rptname) != 'BSHEET'){
+                $obj->pbalance = $arrvalue['actamount'.$monthto];
+            }
         }
 
         $glrptfmt = DB::table('finance.glrptfmt as gr')
@@ -146,6 +151,12 @@ class FinancialReportController extends defaultController
 
                 $objgl->pytd = $pytd;
 
+                if(strtoupper($rptname) == 'BSHEET'){
+                    $objgl->pytd = $pytd;
+                }else{
+                    $objgl->pytd = $arrgl['actamount'.$monthto];
+                }
+
                 array_push($excel_data,$objgl);
             }
         }
@@ -166,14 +177,14 @@ class FinancialReportController extends defaultController
             $diff = round($obj1->pbalance,2) - round($obj1->pytd,2);
             $obj1->diff = $diff;
 
-            if($diff != 0){
+            // if($diff != 0){
                 array_push($table_data,$obj1);
-            }
+            // }
         }
 
         // dd($table_data);
 
-        return view('finance.GL.financialReport.check',compact('table_data','rptname'));
+        return view('finance.GL.financialReport.check',compact('table_data','rptname','monthto'));
     }
 
     public function checkBS(Request $request){
