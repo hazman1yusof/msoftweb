@@ -135,6 +135,7 @@ class ARAgeingDtlExport_statement implements FromView, WithEvents, WithColumnWid
         $date = $this->date;
         $firstDay = Carbon::parse($this->date)->startOfMonth()->format('Y-m-d');
         $date_asof = Carbon::parse($this->date)->format('d-m-Y');
+        $datenow = Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y');
         $debtortype = $this->debtortype;
         $debtorcode_from = strtoupper($this->debtorcode_from);
         $debtorcode_to = strtoupper($this->debtorcode_to);
@@ -180,6 +181,12 @@ class ARAgeingDtlExport_statement implements FromView, WithEvents, WithColumnWid
                     ->get();
 
         $db_rc_main = $db_rc->unique('db1_auditno');
+        
+        $title = "STATEMENT LISTING";
+        
+        $company = DB::table('sysdb.company')
+                    ->where('compcode', '=', session('compcode'))
+                    ->first();
 
         return view('finance.AR.arenquiry.ARStatementListingExport_excel_state', compact('debtormast','db_rc_main','db_rc','array_report','grouping','grouping_tot','title','company','date_asof','datenow'));
 
