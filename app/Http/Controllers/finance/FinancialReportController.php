@@ -177,9 +177,9 @@ class FinancialReportController extends defaultController
             $diff = round($obj1->pbalance,2) - round($obj1->pytd,2);
             $obj1->diff = $diff;
 
-            // if($diff != 0){
+            if($diff != 0){
                 array_push($table_data,$obj1);
-            // }
+            }
         }
 
         // dd($table_data);
