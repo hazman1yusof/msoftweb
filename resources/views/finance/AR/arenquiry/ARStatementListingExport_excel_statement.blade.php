@@ -40,12 +40,12 @@
         <tr>
             <td colspan="2">{{$debtor->name}}</td>
             <td></td><td></td>
-            <td colspan="3">CREDIT TERM: {{$debtor->creditterm}} </td>
+            <td colspan="3">CREDIT TERM: - </td>
         </tr>
         <tr>
             <td colspan="2">{{$debtor->address1}}</td>
             <td></td><td></td>
-            <td colspan="3">CREDIT LIMIT: {{$debtor->creditlimit}} </td>
+            <td colspan="3">CREDIT LIMIT: - </td>
         </tr>
         <tr>
             <td colspan="2">{{$debtor->address2}}</td>
