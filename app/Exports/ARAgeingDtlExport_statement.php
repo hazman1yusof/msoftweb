@@ -139,7 +139,7 @@ class ARAgeingDtlExport_statement implements FromView, WithEvents, WithColumnWid
         $debtorcode_from = strtoupper($this->debtorcode_from);
         $debtorcode_to = strtoupper($this->debtorcode_to);
         $grouping = $this->grouping;
-        $groupby = $this->groupby;
+        $grouping_tot = $this->grouping_tot;
 
         $array_report = DB::table('debtor.ARAgeing')
                             ->where('job_id',$this->job_id)
@@ -181,7 +181,7 @@ class ARAgeingDtlExport_statement implements FromView, WithEvents, WithColumnWid
 
         $db_rc_main = $db_rc->unique('db1_auditno');
 
-        return view('finance.AR.arenquiry.ARStatementListingExport_excel_statement', compact('debtormast','db_rc_main','db_rc','array_report','grouping','grouping_tot','title','company','date_asof','datenow'));
+        return view('finance.AR.arenquiry.ARStatementListingExport_excel_state', compact('debtormast','db_rc_main','db_rc','array_report','grouping','grouping_tot','title','company','date_asof','datenow'));
 
     }
     
