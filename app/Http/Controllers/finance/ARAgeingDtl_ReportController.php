@@ -251,16 +251,16 @@ class ARAgeingDtl_ReportController extends defaultController
                 'compcode' => ($request->compcode)?$request->compcode:'9B',
                 'type' => $request->type,
                 'date' => $request->date,
-                'debtortype' => $request->debtortype,
+                'debtortype' => 'ALL',
                 'debtorcode_from' => $request->debtorcode_from,
                 'debtorcode_to' => $request->debtorcode_to,
                 'groupOne' => 30,
                 'groupTwo' => 60,
                 'groupThree' => 90,
                 'groupFour' => 120,
-                'groupFive' => $request->groupFive,
-                'groupSix' => $request->groupSix,
-                'groupby' => $request->groupby,
+                'groupFive' => ,
+                'groupSix' => ,
+                'groupby' => ,
             ]
         ];
 
