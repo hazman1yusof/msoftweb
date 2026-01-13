@@ -107,10 +107,10 @@
                 <td>{{$db_obj->unit}}</td>
                 @endif
 
-                @if(is_numeric($db_obj->real_reference))
-                <td  data-format="0">{{$db_obj->real_reference}}</td>
+                @if(is_numeric($db_obj->reference))
+                <td  data-format="0">{{$db_obj->reference}}</td>
                 @else
-                <td  data-format="@">{{$db_obj->real_reference}}</td>
+                <td  data-format="@">{{$db_obj->reference}}</td>
                 @endif
                 
                 @if($db_obj->trantype == 'IN')
