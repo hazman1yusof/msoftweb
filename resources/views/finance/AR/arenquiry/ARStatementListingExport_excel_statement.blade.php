@@ -93,12 +93,12 @@
                 <td  data-format="@">{{$db_obj->reference}}</td>
                 @endif
 
-                @if(!empty($db_obj->amount_dr))
-                    @php($totalAmount += $db_obj->amount_dr)
-                    <td style="text-align: right">{{$db_obj->amount_dr}}</td>
+                @if(in_array($value->trantype, ['IN','DN','BC','RF']))
+                    @php($totalAmount += $db_obj->newamt)
+                    <td style="text-align: right">{{$db_obj->newamt}}</td>
                 @else
-                    @php($totalAmount += $db_obj->amount_cr)
-                    <td style="text-align: right">{{$db_obj->amount_cr}}</td>
+                    @php($totalAmount += $db_obj->newamt)
+                    <td style="text-align: right">{{$db_obj->newamt}}</td>
                 @endif
                 <td style="text-align: right">{{$totalAmount}}</td>
                 @if(strtoupper($db_obj->unit) == 'POLIS15')
