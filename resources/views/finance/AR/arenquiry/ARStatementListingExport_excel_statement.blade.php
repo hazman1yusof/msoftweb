@@ -93,7 +93,7 @@
                 <td  data-format="@">{{$db_obj->reference}}</td>
                 @endif
 
-                @if(in_array($value->trantype, ['IN','DN','BC','RF']))
+                @if(in_array($db_obj->trantype, ['IN','DN','BC','RF']))
                     @php($totalAmount += $db_obj->newamt)
                     <td style="text-align: right">{{$db_obj->newamt}}</td>
                 @else
