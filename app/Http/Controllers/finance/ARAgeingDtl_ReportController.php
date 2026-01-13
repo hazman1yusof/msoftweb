@@ -53,6 +53,8 @@ class ARAgeingDtl_ReportController extends defaultController
                 return $this->download_statement($request);
             case 'process_excel':
                 return $this->process_excel($request);
+            case 'process_excel_statement':
+                return $this->process_excel_statement($request);
             default:
                 return 'error happen..';
         }
@@ -64,14 +66,14 @@ class ARAgeingDtl_ReportController extends defaultController
             case 'showExcel':
                 $PYTHON_PATH = \config('get_config.PYTHON_PATH');
                 if($PYTHON_PATH != null){
-                    return $this->process_excel($request);;
+                    return $this->process_excel($request);
                 }else{
                     return $this->process_excel_link($request);
                 }
             case 'showExcel_statement':
                 $PYTHON_PATH = \config('get_config.PYTHON_PATH');
                 if($PYTHON_PATH != null){
-                    return $this->process_excel_statement($request);;
+                    return $this->process_excel_statement($request);
                 }else{
                     return $this->process_excel_statement_link($request);
                 }
