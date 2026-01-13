@@ -68,6 +68,13 @@ class ARAgeingDtl_ReportController extends defaultController
                 }else{
                     return $this->process_excel_link($request);
                 }
+            case 'showExcel_statement':
+                $PYTHON_PATH = \config('get_config.PYTHON_PATH');
+                if($PYTHON_PATH != null){
+                    return $this->process_excel_statement($request);;
+                }else{
+                    return $this->process_excel_statement_link($request);
+                }
             default:
                 return 'error happen..';
         }
@@ -76,9 +83,15 @@ class ARAgeingDtl_ReportController extends defaultController
     public function job_queue(Request $request){
         $responce = new stdClass();
 
+        if($request->scope == '1'){
+            $page = 'ARStatement';
+        }else{
+            $page = 'ARAgeing';
+        }
+
         $table_ = DB::table('sysdb.job_queue')
                         ->where('compcode', session('compcode'))
-                        ->where('page', 'ARAgeing')
+                        ->where('page', $page)
                         ->orderBy('idno','desc');
 
         $count = $table_->count();
@@ -197,6 +210,78 @@ class ARAgeingDtl_ReportController extends defaultController
         }else{
             // Path to your Python script
             $scriptPath = \config('get_config.EXEC_PATH').'\\arageing.py'; // double backslashes for Windows paths
+            $pythonPath = \config('get_config.PYTHON_PATH');
+
+            // Create a process (use 'python' on Windows)
+            $process = new Process([$pythonPath, $scriptPath]);
+
+            // Don’t wait for it
+            $process->setTimeout(null);
+
+            // Force detached mode on Windows
+            $process->setOptions(['create_new_console' => true]);
+
+            $process->start();
+
+            return response()->json([
+                'status' => 'Python script started in background (Windows)'
+            ]);
+        }
+    }
+
+    public function process_excel_statement_link(Request $request){
+        $client = new \GuzzleHttp\Client();
+        $PYTHON_SERVER = \config('get_config.PYTHON_SERVER');
+
+        $url = $PYTHON_SERVER.'/msoftweb/public/ARAgeingDtl_Report/table?action=process_excel_statement&type='.$request->type.'&debtortype='.$request->debtortype.'&debtorcode_from='.$request->debtorcode_from.'&debtorcode_to='.$request->debtorcode_to.'&date='.$request->date.'&groupOne='.$request->groupOne.'&groupTwo='.$request->groupTwo.'&groupThree='.$request->groupThree.'&groupFour='.$request->groupFour.'&groupFive='.$request->groupFive.'&groupSix='.$request->groupSix.'&groupby='.$request->groupby.'&username='.session('username').'&compcode='.session('compcode');
+
+        $response = $client->request('GET', $url, [
+          'headers' => [
+            'accept' => 'application/json',
+          ],
+        ]);
+    }
+
+    public function process_excel_statement(Request $request){
+        $data = [
+            'DATA1' => [
+                'username' => ($request->username)?$request->username:'-',
+                'compcode' => ($request->compcode)?$request->compcode:'9B',
+                'type' => $request->type,
+                'date' => $request->date,
+                'debtortype' => $request->debtortype,
+                'debtorcode_from' => $request->debtorcode_from,
+                'debtorcode_to' => $request->debtorcode_to,
+                'groupOne' => $request->groupOne,
+                'groupTwo' => $request->groupTwo,
+                'groupThree' => $request->groupThree,
+                'groupFour' => $request->groupFour,
+                'groupFive' => $request->groupFive,
+                'groupSix' => $request->groupSix,
+                'groupby' => $request->groupby,
+            ]
+        ];
+
+        $iniString = '';
+        foreach ($data as $section => $settings) {
+            $iniString .= "[$section]\n";
+            foreach ($settings as $key => $value) {
+                $iniString .= "$key=$value\n";
+            }
+            $iniString .= "\n";
+        }
+
+        $path = \config('get_config.EXEC_PATH').'\\statement.ini';
+        file_put_contents($path, $iniString);
+
+        $compcode=($request->compcode)?$request->compcode:'9B';
+        if($this->block_if_job_pending($compcode)){
+            return response()->json([
+                'status' => 'Other job still pending'
+            ]);
+        }else{
+            // Path to your Python script
+            $scriptPath = \config('get_config.EXEC_PATH').'\\statement.py'; // double backslashes for Windows paths
             $pythonPath = \config('get_config.PYTHON_PATH');
 
             // Create a process (use 'python' on Windows)

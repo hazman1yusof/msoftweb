@@ -103,6 +103,7 @@
                         </div>
                     </div>
                     
+                    @if($scope != '1')
                     <div class="form-group">
                         <div class="col-md-12" style="padding-top: 10px;">
                             <label class="control-label" for="Scol">Debtor Type</label>
@@ -113,6 +114,7 @@
                             <span class="help-block"></span>
                         </div>
                     </div>
+                    @endif
                     
                     <div class="form-group">
                         <div class="col-md-12" style="padding-top: 10px;">
@@ -140,10 +142,12 @@
                 <div class="col-md-6" style="padding-top: 30px;">
                     <div class="panel panel-default" style="height: 137px;">
                         <div class="panel-body">
+                            @if($scope != '1')
                             <select name="type" id="type" class="form-control input-sm" >
                               <option value="detail">Detail</option>
                               <option value="summary">Summary</option>
                             </select>
+                            @endif
                             <fieldset>
                             <div class='col-md-12 btnform' style="padding: 20px 0px 5px 0px">
                                 <fieldset>
@@ -152,14 +156,17 @@
                                     </button>
                                 </fieldset>
                             </div>
+                            @if($scope != '1')
                             <input type="radio" id="sortbydt" name="groupby" value="debtortype" checked>
                             <label for="sortbydt">By Debtor Type</label>
                             <input type="radio" id="sortbyu" name="groupby" value="unit">
                             <label for="sortbyu">By Units</label>
+                            @endif
                         </div>
                     </div>
                 </div>
                 
+                @if($scope != '1')
                 <div class='col-md-6' style="padding: 30px 0;margin-left: 140px;">
                     <div class="panel panel-info">
                         <div class="panel-heading text-center">PRINTING OPTION</div>
@@ -218,12 +225,13 @@
                         </div>
                     </div>
                 </div>
+                @endif
             </div>
         </form>
     </div>
 @endsection
 
 @section('scripts')
-    <script src="js/finance/AR/ARAgeingDtl_Report/ARAgeingDtl_Report.js?v=1.8"></script>
+    <script src="js/finance/AR/ARAgeingDtl_Report/ARAgeingDtl_Report.js?v=1.9"></script>
     <script src="plugins/datatables/js/jquery.datatables.min.js"></script>
 @endsection

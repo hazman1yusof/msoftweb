@@ -25,7 +25,7 @@ $(document).ready(function () {
     };
 
     var DataTable = $('#job_queue').DataTable({
-        ajax: './ARAgeingDtl_Report/table?action=job_queue',
+        ajax: './ARAgeingDtl_Report/table?action=job_queue&scope='+$('#scope').val(),
         pageLength: 10,
         orderMulti: false,
         responsive: true,
@@ -115,8 +115,12 @@ $(document).ready(function () {
         $('#excelgen1').attr('disabled',true);
 
         var groupby = $("input[type=radio][name=groupby]:checked").val();
+        var action = 'showExcel';
+        if($('#scope').val() == '1'){
+            action = 'showExcel_statement'
+        }
 
-        let href = './ARAgeingDtl_Report/form?action=showExcel&type='+$('#type').val()+'&debtortype='+$('#debtortype').val()+'&debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&date='+$("#date").val()+'&groupOne='+$("#groupOne").val()+'&groupTwo='+$("#groupTwo").val()+'&groupThree='+$("#groupThree").val()+'&groupFour='+$("#groupFour").val()+'&groupFive='+$("#groupFive").val()+'&groupSix='+$("#groupSix").val()+'&groupby='+groupby
+        let href = './ARAgeingDtl_Report/form?action='+action+'&type='+$('#type').val()+'&debtortype='+$('#debtortype').val()+'&debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&date='+$("#date").val()+'&groupOne='+$("#groupOne").val()+'&groupTwo='+$("#groupTwo").val()+'&groupThree='+$("#groupThree").val()+'&groupFour='+$("#groupFour").val()+'&groupFive='+$("#groupFive").val()+'&groupSix='+$("#groupSix").val()+'&groupby='+groupby
 
         $.post( href,{_token:$('#_token').val()}, function( data ) {
         }).fail(function(data) {
