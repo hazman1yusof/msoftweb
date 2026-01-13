@@ -258,9 +258,9 @@ class ARAgeingDtl_ReportController extends defaultController
                 'groupTwo' => 60,
                 'groupThree' => 90,
                 'groupFour' => 120,
-                'groupFive' => ,
-                'groupSix' => ,
-                'groupby' => ,
+                'groupFive' => '',
+                'groupSix' => '',
+                'groupby' => '',
             ]
         ];
 
