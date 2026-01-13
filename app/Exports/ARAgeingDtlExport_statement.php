@@ -81,50 +81,29 @@ class ARAgeingDtlExport_statement implements FromView, WithEvents, WithColumnWid
 
     public function columnFormats(): array
     {
-        if($this->type == 'detail'){
-            return [
-                'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-                'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-                'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-                'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-                'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-                'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-                'K' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-                'L' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            ];
-        }else if($this->type == 'summary'){
-            return [
-                'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-                'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-                'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-                'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-                'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-                'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-                'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-                'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-                'K' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-                'L' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            ];
-        }
+        return [
+            'B' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            // 'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+        ];
     }
     
     public function columnWidths(): array
     {
         return [
-            'A' => 22,
-            'B' => 65,
+            'A' => 15,
+            'B' => 15,
             'C' => 15,
             'D' => 15,
-            'E' => 15,
+            'E' => 35,
             'F' => 15,
             'G' => 15,
             'H' => 15,
-            'I' => 15,
+            'I' => 18,
             'J' => 15,
-            'K' => 15,
-            'L' => 15,
-            'M' => 15,
-            'N' => 15,
         ];
     }
     

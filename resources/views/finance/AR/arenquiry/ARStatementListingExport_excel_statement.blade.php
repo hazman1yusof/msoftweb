@@ -87,11 +87,7 @@
                 <td data-format="@">{{str_pad($db_obj->auditno, 7, "0", STR_PAD_LEFT)}}</td>
                 <td data-format="@">{{$db_obj->doc_no}}</td>
 
-                @if(is_numeric($db_obj->reference))
-                <td  data-format="0">{{$db_obj->reference}}</td>
-                @else
-                <td  data-format="@">{{$db_obj->reference}}</td>
-                @endif
+                <td  data-format="@">{{$db_obj->remark}}</td>
 
                 @if(in_array($db_obj->trantype, ['IN','DN','BC','RF']))
                     @php($totalAmount += $db_obj->newamt)
