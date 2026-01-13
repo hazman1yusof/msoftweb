@@ -149,6 +149,20 @@ class ARAgeingDtlExport_statement implements FromView, WithEvents, WithColumnWid
 
         $debtormast = collect($array_report)->unique('debtorcode');
 
+        foreach ($debtormast as $obj) {
+            $dbm = DB::table('debtor.debtormast')
+                        ->where('compcode',session('compcode'))
+                        ->where('debtorcode',$obj->debtorcode)
+                        ->first();
+
+            $obj->creditterm = $dbm->creditterm;
+            $obj->creditlimit = $dbm->creditlimit;
+            $obj->address1 = $dbm->address1;
+            $obj->address2 = $dbm->address2;
+            $obj->address3 = $dbm->address3;
+            $obj->address4 = $dbm->address4;
+        }
+
         $comp_name = $this->comp->name;
         $date_at = Carbon::createFromFormat('Y-m-d',$this->date)->format('d-m-Y');
 
