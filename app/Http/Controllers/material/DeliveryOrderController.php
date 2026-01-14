@@ -12,6 +12,7 @@ use App\Http\Controllers\util\do_util;
 use PDF;
 use App\Exports\do_posted_report_Export;
 use App\Exports\do_posted_report_with_gl;
+use App\Exports\do_posted_report_no_invoice;
 use App\Exports\check_do_stockconsign_main;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -69,6 +70,8 @@ class DeliveryOrderController extends defaultController
                 return $this->do_posted_report($request);
             case 'do_posted_report_with_gl':
                 return $this->do_posted_report_with_gl($request);
+            case 'do_posted_report_no_invoice':
+                return $this->do_posted_report_no_invoice($request);
             case 'check_do_stockconsign':
                 return $this->check_do_stockconsign($request);
             case 'check_report':

@@ -58,10 +58,15 @@
 @endsection
 
 @section('body')
+    <input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
     <div class="container mycontainer">
         <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 450px;">
             <form method="get" id="genreport">
+                @if(Request::get('scope') == 'noinvoice')
+                <h4>DO Posted Report - No Invoice</h4>
+                @else
                 <h4>DO Posted Report</h4>
+                @endif
                 <h7 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h7>
                 
                 <div style="width: 900px;margin: 0 auto;">
@@ -244,7 +249,13 @@
             dept_to.makedialog(true);
         });
         $("#excelgen1").click(function() {
-            window.open('./deliveryOrder/table?action=do_posted_report'+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&dept_from='+$("#dept_from").val()+'&dept_to='+$("#dept_to").val()+'&recstatus='+$("#recstatus").val(), "_blank");
+            let action = 'do_posted_report';
+
+            if($('#scope').val() == 'noinvoice'){
+                action = 'do_posted_report_no_invoice';
+            }
+
+            window.open('./deliveryOrder/table?action='+action+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&dept_from='+$("#dept_from").val()+'&dept_to='+$("#dept_to").val()+'&recstatus='+$("#recstatus").val(), "_blank");
         });
     </script>
 @endsection
