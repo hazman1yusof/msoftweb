@@ -13,18 +13,17 @@
     @foreach ($do_hd as $hd_obj)
         @php($fulltot = $fulltot + $hd_obj->totamount)
         <tr>
-            <td style="font-weight:bold; text-align: left" colspan="2">Delivery Dept : {{$hd_obj->deldept_desc}}</td>
-            <td style="font-weight:bold; text-align: left" >DO No : {{$hd_obj->delordno}}</td>
+            <td style="text-align: left" colspan="2">Delivery Dept : {{$hd_obj->deldept_desc}}</td>
+            <td style="text-align: left" >DO No : {{$hd_obj->delordno}}</td>
             @if($hd_obj->trantype == 'GRT')
-                <td style="font-weight:bold; text-align: left" colspan="2">GRT No : {{$hd_obj->docno}}</td>
+                <td style="text-align: left" colspan="2">GRT No : {{$hd_obj->docno}}</td>
             @else
-                <td style="font-weight:bold; text-align: left" colspan="2">GRN No : {{$hd_obj->docno}}</td>
+                <td style="text-align: left" colspan="2">GRN No : {{$hd_obj->docno}}</td>
             @endif
-            <td style="font-weight:bold; text-align: left" colspan="2">Supplier : {{$hd_obj->suppcode_desc}}</td>
-            <td style="font-weight:bold; text-align: left" colspan="2">Invoice No. : {{$hd_obj->invoiceno}}</td>
-            <td style="font-weight:bold; text-align: right">{{$hd_obj->totamount}}</td>
+            <td style="text-align: left" colspan="2">Supplier : {{$hd_obj->suppcode_desc}}</td>
+            <td style="text-align: left" colspan="2">Invoice No. : {{$hd_obj->invoiceno}}</td>
+            <td style="text-align: right">{{$hd_obj->totamount}}</td>
         </tr>
-        <tr></tr>
     @endforeach
         <tr></tr>
     <tr>
