@@ -77,6 +77,26 @@
             </tr>
         @endif
     @endforeach
+    @foreach ($uninvgrnadd as $obj)
+        @php($tot_al = $tot_al + $obj->total_bal)
+        <tr>
+            <td>{{$obj->recno}}</td>
+            <td>{{$obj->grnno}}</td>
+            <td>{{$obj->trandate}}</td>
+            <td>{{$obj->pono}}</td>
+            <td>{{$obj->delordno}}</td>
+            <td>{{$obj->deldept}}</td>
+            <td>{{$obj->grn_amt}}</td>
+            <td>{{$obj->grt_amt}}</td>
+            <td>{{$obj->invoice_amt}}</td>
+            <td>{{$obj->grn_amt}}</td>
+            <td>{{$obj->suppcode}}</td>
+            <td>{{$obj->suppname}}</td>
+            <td>{{$obj->invoiceno}}</td>
+            <td>{{$obj->inv_postdate}}</td>
+            <td>*</td>
+        </tr>
+    @endforeach
     <tr>
         <td></td>
         <td></td>
