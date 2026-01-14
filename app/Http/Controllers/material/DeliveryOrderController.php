@@ -1455,6 +1455,10 @@ class DeliveryOrderController extends defaultController
         return Excel::download(new do_posted_report_with_gl($request->datefr,$request->dateto,$request->dept), 'Posted_DO_with_GL.xlsx');
     }
 
+    public function do_posted_report_no_invoice(Request $request){
+        return Excel::download(new do_posted_report_no_invoice($request->datefr,$request->dateto,$request->dept_from,$request->dept_to,$request->recstatus), 'Posted_DO_no_invoice.xlsx');
+    }
+
     public function check_report(Request $request){
         $purdept = DB::table('sysdb.department')
                         ->select('deptcode')

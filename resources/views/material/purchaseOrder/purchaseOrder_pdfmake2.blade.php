@@ -412,11 +412,11 @@
 								[
 									{text: 'NAME', alignment: 'right'},
 									{text: ':'},
-									{text: '{{$SO_obj->dbacthdr->debt_name}}'},
+									{text: '{!!str_replace('`', '',$SO_obj->dbacthdr->debt_name)!!}'},
 									{text: 'PATIENT', alignment: 'right'},
 									{text: ':'},
 									@if(!empty($SO_obj->dbacthdr->mrn))
-										{text: `({{$SO_obj->dbacthdr->mrn}}) {!!$SO_obj->dbacthdr->pm_name!!}`},
+										{text: `({{$SO_obj->dbacthdr->mrn}}) {!!str_replace('`', '',$SO_obj->dbacthdr->pm_name)!!}`},
 									@else
 										{text: ''},
 									@endif
