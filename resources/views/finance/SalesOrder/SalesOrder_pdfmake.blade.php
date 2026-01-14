@@ -100,11 +100,11 @@
 							[
 								{text: 'NAME', alignment: 'right'},
 								{text: ':'},
-								{text: `{{$dbacthdr->debt_name}}`},
+								{text: `{!!str_replace('`', '',$dbacthdr->debt_name)!!}`},
 								{text: 'PATIENT', alignment: 'right'},
 								{text: ':'},
 								@if(!empty($dbacthdr->mrn))
-									{text: `({{$dbacthdr->mrn}}) {!!$dbacthdr->pm_name!!}`},
+									{text: `({{$dbacthdr->mrn}}) {!!str_replace('`', '',$dbacthdr->pm_name)!!}`},
 								@else
 									{text: ''},
 								@endif
