@@ -99,7 +99,10 @@ class uninvgrn_Export implements FromView, WithEvents, WithColumnWidths, WithCol
             }
         }
 
-        return view('finance.uninvgrn.uninvgrn_Excel', compact('table','compname','fromdate','todate'));
+        $uninvgrnadd = DB::table('finance.uninvgrnadd as add')
+                            ->get();
+
+        return view('finance.uninvgrn.uninvgrn_Excel', compact('table','compname','fromdate','todate','uninvgrnadd'));
     }
     
     public function registerEvents(): array
