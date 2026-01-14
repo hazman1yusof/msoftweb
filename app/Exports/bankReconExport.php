@@ -198,9 +198,11 @@ class bankReconExport implements FromView, WithEvents, WithColumnWidths, WithCol
                         if($objbd->amount_swap > 0){
                             $objcb->amount = $objbd->amount_swap;
                             array_push($cb_tran, $objcb);
+                            continue;
                         }
                     }else{
                         array_push($cb_tran, $objcb);
+                        continue;
                     }
                 }
             }
