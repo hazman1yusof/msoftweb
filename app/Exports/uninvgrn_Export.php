@@ -100,6 +100,7 @@ class uninvgrn_Export implements FromView, WithEvents, WithColumnWidths, WithCol
         }
 
         $uninvgrnadd = DB::table('finance.uninvgrnadd as add')
+                            ->where('compcode',session('compcode'))
                             ->get();
 
         return view('finance.uninvgrn.uninvgrn_Excel', compact('table','compname','fromdate','todate','uninvgrnadd'));
