@@ -27,9 +27,9 @@
             <td style="text-align: left" ></td>
             <td style="text-align: left" ></td>
             <td style="text-align: left" >{{$hd_obj->recno}}</td>
-            <td style="text-align: left" >{{$hd_obj->grnno}}</td>
+            <td style="text-align: left" >{{$hd_obj->deldept}}-{{str_pad($hd_obj->docno, 7, "0", STR_PAD_LEFT)}}</td>
             <td style="text-align: left" >{{$hd_obj->trandate}}</td>
-            <td style="text-align: left" >{{$hd_obj->pono}}</td>
+            <td style="text-align: left" >{{$hd_obj->prdept}}-{{str_pad($hd_obj->srcdocno, 7, "0", STR_PAD_LEFT)}}</td>
             <td style="text-align: left" >{{$hd_obj->delordno}}</td>
             <td style="text-align: left" >{{$hd_obj->deldept}}</td>
             <td style="text-align: left" >{{$hd_obj->totamount}}</td>
