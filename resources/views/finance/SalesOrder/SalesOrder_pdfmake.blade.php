@@ -100,7 +100,7 @@
 							[
 								{text: 'NAME', alignment: 'right'},
 								{text: ':'},
-								{text: '{{$dbacthdr->debt_name}}'},
+								{text: `{{$dbacthdr->debt_name}}`},
 								{text: 'PATIENT', alignment: 'right'},
 								{text: ':'},
 								@if(!empty($dbacthdr->mrn))
