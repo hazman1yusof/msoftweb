@@ -183,31 +183,29 @@ class bankReconExport implements FromView, WithEvents, WithColumnWidths, WithCol
                             ->where('cb.postdate','<=', $cbhdr->recdate)
                             ->get();
 
-        // $cb_tran = $cb_tran1->merge($cb_tran2);
-        $cb_tran_ = $cb_tran1->merge($cb_tran2);
+        $cb_tran = $cb_tran1->merge($cb_tran2);
+        // $cb_tran_ = $cb_tran1->merge($cb_tran2);
 
 
         $bankrecondel = DB::table('finance.bankrecondel as bd')
+                            ->where('bd.compcode',session('compcode'))
                             ->get();
 
         if(count($bankrecondel) > 0){
-            $cb_tran = [];
-            foreach ($cb_tran_ as $objcb) {
+            foreach ($cb_tran as $objcb) {
+                $objcb->hide = 'false';
                 foreach ($bankrecondel as $objbd) {
                     if($objcb->source == $objbd->source && $objcb->trantype == $objbd->trantype && $objcb->auditno == $objbd->auditno){
                         if($objbd->amount_swap > 0){
                             $objcb->amount = $objbd->amount_swap;
-                            array_push($cb_tran, $objcb);
+                            break;
+                        }else{
+                            $objcb->hide = 'true';
                             break;
                         }
-                    }else{
-                        array_push($cb_tran, $objcb);
-                        break;
                     }
                 }
             }
-        }else{
-            $cb_tran = $cb_tran_;
         }
         
         return view('finance.CM.bankRecon.bankReconExcel', compact('recdate','compname','bankname','cbdtl','db_tot','cr_tot','bs_bal','cb_bal','un_amt','cb_tran'));
