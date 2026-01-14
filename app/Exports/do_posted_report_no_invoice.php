@@ -115,7 +115,7 @@ class do_posted_report_no_invoice implements FromView, WithEvents, WithColumnWid
         $delordhd = $delordhd
                     ->where('do_hd.compcode','=',session('compcode'))
                     // ->where('ap.unit',session('unit'))
-                    ->whereIn('do_hd.trantype',['GRN','GRT']);
+                    ->whereIn('do_hd.trantype',['GRN']);
 
         if($recstatus == 'ALL'){
             $delordhd = $delordhd
@@ -134,19 +134,7 @@ class do_posted_report_no_invoice implements FromView, WithEvents, WithColumnWid
         // dd($delordhd);
         // dd($this->getQueries($delordhd));
 
-        foreach ($delordhd as $obj) {
-            if($obj->trantype == 'GRT' && $obj->amount != 0){
-                $obj->amount = $obj->amount * -1;
-            }
-        }
-
         $do_hd = $delordhd->unique('recno');
-
-        foreach ($do_hd as $obj) {
-            if($obj->trantype == 'GRT' && $obj->totamount != 0){
-                $obj->totamount = $obj->totamount * -1;
-            }
-        }
 
         return view('material.deliveryOrder.do_posted_report_excel',compact('do_hd', 'delordhd'));
     }

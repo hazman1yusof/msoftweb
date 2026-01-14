@@ -22,30 +22,9 @@
             @endif
             <td style="font-weight:bold; text-align: left" colspan="2">Supplier : {{$hd_obj->suppcode_desc}}</td>
             <td style="font-weight:bold; text-align: left" colspan="2">Invoice No. : {{$hd_obj->invoiceno}}</td>
-            <td style="font-weight:bold; text-align: left"></td>
-        </tr>
-            @foreach ($delordhd as $dt_obj)
-                @if($dt_obj->recno == $hd_obj->recno)
-                    <tr>
-                        <td>{{$hd_obj->trandate}}</td>
-                        <td>{{$dt_obj->itemcode}}</td>
-                        <td>{{$dt_obj->itemcode_desc}}</td>
-                        <td>{{$dt_obj->uomcode}}</td>
-                        <td>{{$dt_obj->qtydelivered}}</td>
-                        <td>{{$dt_obj->amount}}</td>
-                    </tr>
-                @endif
-            @endforeach
-        <tr>
-            <td style="font-weight:bold; text-align: left"></td>
-            <td style="font-weight:bold; text-align: left"></td>
-            <td style="font-weight:bold; text-align: left"></td>
-            <td style="font-weight:bold; text-align: left"></td>
-            <td style="font-weight:bold; text-align: left"></td>
-            <td style="font-weight:bold; text-align: left">Total Amount</td>
             <td style="font-weight:bold; text-align: right">{{$hd_obj->totamount}}</td>
         </tr>
-            <tr></tr>
+        <tr></tr>
     @endforeach
         <tr></tr>
     <tr>
