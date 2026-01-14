@@ -78,7 +78,7 @@
         @endif
     @endforeach
     @foreach ($uninvgrnadd as $obj)
-        @php($tot_al = $tot_al + $obj->total_bal)
+        @php($tot_al = $tot_al + $obj->grn_amt)
         <tr>
             <td>{{$obj->recno}}</td>
             <td>{{$obj->grnno}}</td>
