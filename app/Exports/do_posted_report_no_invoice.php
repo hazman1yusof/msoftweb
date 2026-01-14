@@ -46,19 +46,19 @@ class do_posted_report_no_invoice implements FromView, WithEvents, WithColumnWid
     public function columnFormats(): array
     {
         return [
-            'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
         ];
     }
     
     public function columnWidths(): array
     {
         return [
-            'A' => 15,
+            'A' => 20,
             'B' => 20,
-            'C' => 40,
-            'D' => 20,
-            'E' => 15,
+            'C' => 20,
+            'D' => 40,
+            'E' => 20,
             'F' => 20,
             'G' => 20,
             'H' => 20,
@@ -160,7 +160,7 @@ class do_posted_report_no_invoice implements FromView, WithEvents, WithColumnWid
                 $event->sheet->getPageMargins()->setTop(1);
                 
                 $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
-                $event->sheet->getStyle('A:H')->getAlignment()->setWrapText(true);
+                // $event->sheet->getStyle('A:H')->getAlignment()->setWrapText(true);
                 $event->sheet->getPageSetup()->setFitToWidth(1);
                 $event->sheet->getPageSetup()->setFitToHeight(0);
             },
