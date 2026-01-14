@@ -126,8 +126,8 @@ class do_posted_report_no_invoice implements FromView, WithEvents, WithColumnWid
         }else{
             $delordhd = $delordhd
                     ->where('do_hd.recstatus', '=', $recstatus)
-                    ->orderBy('do_hd.idno', 'DESC')
-                    ->orderBy('do_dt.idno', 'DESC')
+                    ->orderBy('do_hd.idno', 'ASC')
+                    ->orderBy('do_dt.idno', 'ASC')
                     ->get();
         }
 
