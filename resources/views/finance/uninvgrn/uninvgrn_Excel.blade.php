@@ -92,8 +92,8 @@
             <td>{{$obj->grn_amt}}</td>
             <td>{{$obj->suppcode}}</td>
             <td>{{$obj->suppname}}</td>
-            <td>{{$obj->invoiceno}}</td>
-            <td>{{$obj->inv_postdate}}</td>
+            <td></td>
+            <td></td>
             <td>*</td>
         </tr>
     @endforeach
