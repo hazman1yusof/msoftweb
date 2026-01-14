@@ -92,7 +92,9 @@ class do_posted_report_no_invoice implements FromView, WithEvents, WithColumnWid
                     ->leftjoin('sysdb.department as dp', function($join) {
                         $join = $join->where('dp.compcode', '=', session('compcode'));
                         $join = $join->on('dp.deptcode', '=', 'do_hd.deldept');
-                    })->whereNull('invoiceno');
+                    })
+                    ->whereNull('invoiceno')
+                    ->where('totamount','>',0);
 
         if(strtoupper($this->dept_from) == 'ZZZ' && strtoupper($this->dept_to) == 'ZZZ'){
 
