@@ -116,6 +116,7 @@
 				<h5><strong>
 					@if (request()->get('curpat') == 'true' && request()->get('epistycode') == 'IP'){{'CURRENT IN-PATIENT'}}
 					@elseif (request()->get('curpat') == 'true' && request()->get('epistycode') == 'OP'){{'CURRENT OUT-PATIENT'}}
+					@elseif (request()->get('curpat') == 'true' && request()->get('epistycode') == 'DP'){{'CURRENT DAY-PATIENT'}}
 					@else {{'PATIENT LIST'}}
 					@endif
 				</strong></h5>
@@ -256,7 +257,7 @@
 				</div>
 			@endif
 			
-			@if (request()->get('epistycode') == 'IP')
+			@if (request()->get('epistycode') == 'IP' || request()->get('epistycode') == 'DP')
 				@if (Auth::user()->doctor == 1)
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="nursingED_row">
 						@include('hisdb.nursingED.nursingED')
@@ -496,7 +497,7 @@
 			<script type="text/javascript" src="js/hisdb/endConsult/endConsult.js"></script>
 		@endif
 		
-		@if (request()->get('epistycode') == 'IP')
+		@if (request()->get('epistycode') == 'IP' || request()->get('epistycode') == 'DP')
 			<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script>
 			
 			@if (Auth::user()->doctor == 1)
@@ -597,7 +598,7 @@
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_emr.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/textfield_modal.js"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js?v=1.8"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js?v=1.9"></script>
 	
 	</div>
 

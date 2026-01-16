@@ -300,7 +300,7 @@ grid.on("click.rs.jquery.bootgrid", function (e,c,r){
             if(lastrowdata.PatStatus == 1 ){
                 populate_endConsult_currpt(lastrowdata);
             }
-        }else if($('#epistycode').val() == 'IP'){
+        }else if($('#epistycode').val() == 'IP' || $('#epistycode').val() == 'DP'){
             if($('#user_doctor').val() == '1'){
                 populate_triageED_currpt(lastrowdata);
                 populate_triage_currpt(lastrowdata);
@@ -857,7 +857,7 @@ if($('#epistycode').val() == 'OP'){
         {code:'#hid_newgl_occupcode',desc:'#txt_newgl_occupcode',id:'newgl_occupcode'},
         {code:'#hid_newgl_relatecode',desc:'#txt_newgl_relatecode',id:'newgl_relatecode'}
     ]);
-}else if($('#epistycode').val() == 'IP'){
+}else if($('#epistycode').val() == 'IP' || $('#epistycode').val() == 'DP'){
     var epis_desc_show = new loading_desc_epis([
         {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
         {code:'#hid_epis_source',desc:'#txt_epis_source',id:'regsource'},

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
 use DB;
 use stdClass;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\acctenq_dateExport;
 use App\Exports\acctenq_dateExport_2;
@@ -63,12 +64,13 @@ class acctenq_dateController extends defaultController
     public function form(Request $request){   
         switch($request->action){
             case 'processLink':
-                $PYTHON_PATH = \config('get_config.PYTHON_PATH');
-                if($PYTHON_PATH != null){ // pastikan msserver sahaja xde python_path
-                    return $this->process($request);
-                }else{
-                    return $this->processLink($request);
-                }
+                return $this->process_pyserver($request);
+                // $PYTHON_PATH = \config('get_config.PYTHON_PATH');
+                // if($PYTHON_PATH != null){ // pastikan msserver sahaja xde python_path
+                //     return $this->process($request);
+                // }else{
+                //     return $this->processLink($request);
+                // }
             default:
                 return 'error happen..';
         }
@@ -112,6 +114,33 @@ class acctenq_dateController extends defaultController
         }else{
             $responce->jobdone = 'true';
         }
+        return json_encode($responce);
+    }
+
+    public function process_pyserver(Request $request){
+
+        $username = ($request->username)?$request->username:'-';
+        $compcode = ($request->compcode)?$request->compcode:'9B';
+        $glaccount = $request->glaccount;
+        $fromdate = $request->fromdate;
+        $todate = $request->todate;
+        $pyserver = \config('get_config.DB_HOST');
+
+        $job_id = $this->start_job_queue($glaccount,$fromdate,$todate);
+
+
+        $client = new \GuzzleHttp\Client();
+
+        $url = 'http://localhost:5000/api/acctenqdate?glaccount='.$request->glaccount.'&fromdate='.$request->fromdate.'&todate='.$request->todate.'&username='.session('username').'&compcode='.session('compcode').'&job_id='.$job_id.'&host='.$pyserver;
+
+        $response = $client->request('GET', $url, [
+          'headers' => [
+            'accept' => 'application/json',
+          ],
+        ]);
+
+        $responce = new stdClass();
+        $responce->job_id = $job_id;
         return json_encode($responce);
     }
 
@@ -670,5 +699,23 @@ class acctenq_dateController extends defaultController
                         ->first();
 
         return Excel::download(new acctenq_dateExport_2($job_queue->idno,$job_queue->type,$job_queue->date,$job_queue->date_to), 'GLAccount_'.$job_queue->type.'.xlsx');
+    }
+
+    public function start_job_queue($glaccount,$fromdate,$todate){
+        $idno = DB::table('sysdb.job_queue')
+                ->insertGetId([
+                    'compcode' => session('compcode'),
+                    'page' => 'acctenq_date',
+                    'filename' => 'Account Enq '.$glaccount,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'status' => 'PENDING',
+                    'remarks' => 'acctenq_date for account '.$glaccount.' from '.$fromdate.' to '.$todate,
+                    'type' => $glaccount,
+                    'date' => $fromdate,
+                    'date_to' => $todate,
+                ]);
+
+        return $idno;
     }
 }
