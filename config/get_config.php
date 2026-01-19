@@ -6,5 +6,6 @@ return [
   'EXEC_PATH' => env('EXEC_PATH'),
   'PYTHON_PATH' => env('PYTHON_PATH'),
   'ISDEMO' => env('ISDEMO'),
-  'PYTHON_SERVER' => env('PYTHON_SERVER')
+  'PYTHON_SERVER' => env('PYTHON_SERVER'),
+  'DB_HOST_PYSERVER' => env('DB_HOST_PYSERVER')
 ];
