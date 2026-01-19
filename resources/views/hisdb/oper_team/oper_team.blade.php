@@ -213,8 +213,8 @@
                                                 <label for="operteam_briefSurgeon">Anticipated critical events</label><br>
                                                 <div class="error-msg" id="error-briefSurgeon"></div>
                                                 <b>Surgeon reviews: </b>Any special steps, estimated duration, possible excessive blood loss?<br>
-                                                <textarea class="form-control input-sm" id="operteam_surgeonReview_remark" name="surgeonReview_remark" data-validation="required" data-validation-error-msg-required="Please enter information." data-validation-error-msg-container="#error-surgeonReview_remark"></textarea>
-                                                <div class="error-msg" id="error-surgeonReview_remark"></div>
+                                                <!-- <textarea class="form-control input-sm" id="operteam_surgeonReview_remark" name="surgeonReview_remark" data-validation="required" data-validation-error-msg-required="Please enter information." data-validation-error-msg-container="#error-surgeonReview_remark"></textarea>
+                                                <div class="error-msg" id="error-surgeonReview_remark"></div> -->
                                             </td>
                                         </tr>
                                         <tr>
@@ -241,11 +241,11 @@
                         <!-- <h5>DURING PROCEDURE <input type="text" class="form-control" id="operteam_procedure_hdr" name="procedure_hdr"></h5> -->
                         <div class="inline field">
                             <label>DURING PROCEDURE</label>
-                            <input id="operteam_procedure_hdr" name="procedure_hdr" type="text" style="width: 380px; text-transform: uppercase;" data-validation="required" data-validation-error-msg-required="Please enter information." data-validation-error-msg-container="#error-procedure_hdr">
-                            <div class="error-msg" id="error-procedure_hdr"></div>
+                            <!-- <input id="operteam_procedure_hdr" name="procedure_hdr" type="text" style="width: 380px; text-transform: uppercase;" data-validation="required" data-validation-error-msg-required="Please enter information." data-validation-error-msg-container="#error-procedure_hdr">
+                            <div class="error-msg" id="error-procedure_hdr"></div> -->
                         </div>
                         <div class="ui secondary segment">INTRA-OPERATIVE COMMUNICATION</div>
-                        <div class="ui segment" style="height: 582px;">
+                        <div class="ui segment" style="height: 600px;">
                             <div class="ui grid">
                                 <table class="ui very basic table" style="padding-top: 15px; padding-bottom: 15px;">
                                     <tbody>
@@ -310,32 +310,72 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>
-                                                <input type="checkbox" name="specimenlabel" id="operteam_specimenlabel" value="1" style="margin-right: 10px;" data-validation="required" data-validation-error-msg-required="Please check this box.">
+                                            <td style="display: none;">
+                                                <input type="checkbox" name="specimenlabel_lama" id="operteam_specimenlabel" value="1" style="margin-right: 10px;" data-validation="required" data-validation-error-msg-required="Please check this box.">
                                                 <label for="operteam_specimenlabel">How specimens are labeled</label><br>(Including patient's name)
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox" name="issuesAddressed" id="operteam_issuesAddressed" value="1" style="margin-right: 10px;" data-validation="required" data-validation-error-msg-required="Please check this box.">
-                                                <label for="operteam_issuesAddressed">Whether there are any equipment problems to be addressed</label><br>(Note in swab count form - incidents / equipment failure section)
+                                            <td style="padding-left: 25px;">
+                                                <b>How specimens are labeled</b><br>(Including patient's name)<br>
+                                                <label class="radio-inline" style="padding-left: 30px;">
+                                                    <input type="radio" name="specimenlabel" value="1" data-validation="required" data-validation-error-msg-required="Please check this box." data-validation-error-msg-container="#error-specimenlabel">Yes
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="specimenlabel" value="0">No
+                                                </label>
+                                                <div class="error-msg" id="error-specimenlabel"></div>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>
+                                            <td style="display: none;">
+                                                <input type="checkbox" name="issuesAddressed_lama" id="operteam_issuesAddressed" value="1" style="margin-right: 10px;" data-validation="required" data-validation-error-msg-required="Please check this box.">
+                                                <label for="operteam_issuesAddressed">Whether there are any equipment problems to be addressed</label><br>(Note in swab count form - incidents / equipment failure section)
+                                            </td>
+                                            <td style="padding-left: 25px;">
+                                                <b>Whether there are any equipment problems to be addressed</b><br>(Note in swab count form - incidents / equipment failure section)<br>
+                                                <label class="radio-inline" style="padding-left: 30px;">
+                                                    <input type="radio" name="issuesAddressed" value="1" data-validation="required" data-validation-error-msg-required="Please check this box." data-validation-error-msg-container="#error-issuesAddressed">Yes
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="issuesAddressed" value="0">No
+                                                </label>
+                                                <div class="error-msg" id="error-issuesAddressed"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="display: none;">
                                                 <!-- <input type="checkbox" name="specialinstruction" id="operteam_specialinstruction" value="1" style="margin-right: 10px;" data-validation="required" data-validation-error-msg-required="Please check this box.">
                                                 <label for="operteam_specialinstruction">Any special instruction from surgeon or anaesthesia professional during recovery and management of patient</label> -->
                                                 
                                                 <label class="checkbox-inline">
-                                                    <input type="checkbox" name="specialinstruction" id="operteam_specialinstruction" value="1" style="margin-right: 10px;" data-validation="required" data-validation-error-msg-required="Please check this box.">
+                                                    <input type="checkbox" name="specialinstruction_lama" id="operteam_specialinstruction" value="1" style="margin-right: 10px;" data-validation="required" data-validation-error-msg-required="Please check this box.">
                                                     <b>Any special instruction from surgeon or anaesthesia professional during recovery and management of patient</b>
                                                 </label>
                                             </td>
+                                            <td style="padding-left: 25px;">
+                                                <b>Any special instruction from surgeon or anaesthesia professional during recovery and management of patient</b><br>
+                                                <label class="radio-inline" style="padding-left: 30px;">
+                                                    <input type="radio" name="specialinstruction" value="1" data-validation="required" data-validation-error-msg-required="Please check this box." data-validation-error-msg-container="#error-specialinstruction">Yes
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="specialinstruction" value="0">No
+                                                </label>
+                                                <div class="error-msg" id="error-specialinstruction"></div>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td>
-                                                <input type="checkbox" name="informRelative" id="operteam_informRelative" value="1" style="margin-right: 10px;" data-validation="required" data-validation-error-msg-required="Please check this box.">
+                                            <td style="display: none;">
+                                                <input type="checkbox" name="informRelative_lama" id="operteam_informRelative" value="1" style="margin-right: 10px;" data-validation="required" data-validation-error-msg-required="Please check this box.">
                                                 <label for="operteam_informRelative">Inform the relatives</label>
+                                            </td>
+                                            <td style="padding-left: 25px;">
+                                                <b>Inform the relatives</b><br>
+                                                <label class="radio-inline" style="padding-left: 30px;">
+                                                    <input type="radio" name="informRelative" value="1" data-validation="required" data-validation-error-msg-required="Please check this box." data-validation-error-msg-container="#error-informRelative">Yes
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="informRelative" value="0">No
+                                                </label>
+                                                <div class="error-msg" id="error-informRelative"></div>
                                             </td>
                                         </tr>
                                     </tbody>

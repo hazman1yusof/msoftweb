@@ -5,7 +5,7 @@ var editedRow = 0;
 
 $(document).ready(function (){
     
-    textare_init_oper_team();
+    // textarea_init_oper_team();
     
     var fdl = new faster_detail_load();
     
@@ -404,7 +404,7 @@ function saveForm_oper_team(callback){
     });
 }
 
-function textare_init_oper_team(){
+function textarea_init_oper_team(){
     $('textarea#operteam_allergy_remark,textarea#operteam_surgeonReview_remark,textarea#operteam_relative_remark').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
@@ -458,7 +458,7 @@ function getdata_oper_team(){
         }
         
         if(!emptyobj_(data.iPesakit))$("#operteam_iPesakit").val(data.iPesakit);
-        textare_init_oper_team();
+        // textarea_init_oper_team();
     });
 }
 
