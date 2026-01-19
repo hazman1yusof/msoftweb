@@ -148,7 +148,7 @@ $(document).ready(function () {
 	function check_running_process() {
 		let job_id = $('#job_id').val();
 		if(job_id == ''){
-			alert('error no job_id');
+			return 0;
 		}
 
 		$.get( './acctenq_date/table?action=check_running_process&job_id='+job_id, function( data ) {

@@ -127,7 +127,7 @@ class acctenq_dateController extends defaultController
         $glaccount = $request->glaccount;
         $fromdate = $request->fromdate;
         $todate = $request->todate;
-        $pyserver = \config('get_config.DB_HOST');
+        $pyserver = \config('get_config.DB_HOST_PYSERVER');
 
         $job_id = $this->start_job_queue($glaccount,$fromdate,$todate);
 
