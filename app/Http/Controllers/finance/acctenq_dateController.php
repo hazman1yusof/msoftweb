@@ -92,14 +92,17 @@ class acctenq_dateController extends defaultController
     public function check_running_process(Request $request){
 
         $responce = new stdClass();
+        $job_id = $request->job_id;
 
         $last_job = DB::table('sysdb.job_queue')
+                        ->where('idno', $job_id)
                         ->where('compcode', session('compcode'))
                         ->where('page', 'acctenq_date')
                         ->orderBy('idno', 'desc');
 
         if(!$last_job->exists()){
-            $responce->jobdone = 'true';
+            $responce->jobdone = 'false';
+            $responce->status = 'notfound';
             return json_encode($responce);
         }
 
@@ -692,6 +695,7 @@ class acctenq_dateController extends defaultController
 
     public function download(Request $request){
         $job_queue = DB::table('sysdb.job_queue')
+                        ->where('idno', $request->job_id)
                         ->where('compcode', session('compcode'))
                         ->where('page', 'acctenq_date')
                         ->where('status', 'DONE')

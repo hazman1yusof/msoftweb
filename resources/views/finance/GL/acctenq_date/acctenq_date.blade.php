@@ -101,6 +101,7 @@
 			  	@endif
               </div>
 
+              	<input type="hidden" id="job_id" >
 	            <a class="pull-right pointer text-primary" style="position: absolute;
 				    right: 40px;
 				    bottom: -33px;

@@ -141,12 +141,17 @@ $(document).ready(function () {
 	        intervalId = null;
 	    }
 	}
-	if($('#jobdone').val() == 'false'){
-		startProcessInterval();
-	}
+	// if($('#jobdone').val() == 'false'){
+	// 	startProcessInterval();
+	// }
 
 	function check_running_process() {
-		$.get( './acctenq_date/table?action=check_running_process', function( data ) {
+		let job_id = $('#job_id').val();
+		if(job_id == ''){
+			alert('error no job_id');
+		}
+
+		$.get( './acctenq_date/table?action=check_running_process&job_id='+job_id, function( data ) {
 			
 		},'json').done(function(data) {
 	    	if(data.jobdone=='true'){
@@ -178,10 +183,10 @@ $(document).ready(function () {
 
 			$.post( href,obj, function( data ) {
 
-			}).fail(function(data) {
+			},'json').fail(function(data) {
 
 			}).success(function(data){
-
+				$('#job_id').val(data.job_id);
 			});
 			
 			startProcessInterval();
@@ -189,7 +194,8 @@ $(document).ready(function () {
 	});
 
 	$('#pdfgen1').click(function(){
-		let href = './acctenq_date/table?action=download';
+		let job_id = $('#job_id').val();
+		let href = './acctenq_date/table?action=download&job_id='+job_id;
 
 		window.open(href);
 	});
