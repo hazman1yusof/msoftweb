@@ -217,12 +217,12 @@ class bankReconExport implements FromView, WithEvents, WithColumnWidths, WithCol
             AfterSheet::class => function (AfterSheet $event){
                 $event->sheet->getPageSetup()->setPaperSize(9); // A4
                 
-                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\Bank Recon"."\n"
-                .'&L'
-                .'PRINTED BY : '.session('username')
-                ."\nPAGE : &P/&N"
-                .'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')
-                ."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
+                // $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\Bank Recon"."\n"
+                // .'&L'
+                // .'PRINTED BY : '.session('username')
+                // ."\nPAGE : &P/&N"
+                // .'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')
+                // ."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
                 
                 $event->sheet->getPageMargins()->setTop(1);
                 

@@ -96,18 +96,18 @@
     @foreach ($cb_tran as $obj)
         @if($obj->hide == 'false')
             @if($obj->amount < 0)
-            @php
-                $cbtot1 = $cbtot1 + $obj->amount;
-            @endphp
-            <tr>
-                <td style="text-align: left">{{$obj->postdate}}</td>
-                <td>{{$obj->cheqno}}</td>
-                <td>@if(!empty($obj->reference)){{$obj->reference}}@else{{$obj->remarks}}@endif</td>
-                <td>{{abs($obj->amount)}}</td>
-                <td>{{$obj->source}}</td>
-                <td>{{$obj->trantype}}</td>
-                <td>{{$obj->auditno}}</td>
-            </tr>
+                @php
+                    $cbtot1 = $cbtot1 + $obj->amount;
+                @endphp
+                <tr>
+                    <td style="text-align: left">{{$obj->postdate}}</td>
+                    <td>{{$obj->cheqno}}</td>
+                    <td>@if(!empty($obj->reference)){{$obj->reference}}@else{{$obj->remarks}}@endif</td>
+                    <td>{{abs($obj->amount)}}</td>
+                    <td>{{$obj->source}}</td>
+                    <td>{{$obj->trantype}}</td>
+                    <td>{{$obj->auditno}}</td>
+                </tr>
             @endif
         @endif
     @endforeach
@@ -130,18 +130,18 @@
     @foreach ($cb_tran as $obj)
         @if($obj->hide == 'false')
             @if($obj->amount > 0)
-            @php
-                $cbtot2 = $cbtot2 + $obj->amount;
-            @endphp
-            <tr>
-                <td style="text-align: left">{{$obj->postdate}}</td>
-                <td>{{$obj->cheqno}}</td>
-                <td>@if(!empty($obj->reference)){{$obj->reference}}@else{{$obj->remarks}}@endif</td>
-                <td>{{$obj->amount}}</td>
-                <td>{{$obj->source}}</td>
-                <td>{{$obj->trantype}}</td>
-                <td>{{$obj->auditno}}</td>
-            </tr>
+                @php
+                    $cbtot2 = $cbtot2 + $obj->amount;
+                @endphp
+                <tr>
+                    <td style="text-align: left">{{$obj->postdate}}</td>
+                    <td>{{$obj->cheqno}}</td>
+                    <td>@if(!empty($obj->reference)){{$obj->reference}}@else{{$obj->remarks}}@endif</td>
+                    <td>{{$obj->amount}}</td>
+                    <td>{{$obj->source}}</td>
+                    <td>{{$obj->trantype}}</td>
+                    <td>{{$obj->auditno}}</td>
+                </tr>
             @endif
         @endif
     @endforeach
