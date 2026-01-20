@@ -119,7 +119,7 @@ class CreditNoteDetailController extends defaultController
                   'lineno_' => $li,
                   'source' => 'AP',
                   'trantype' => 'CN',
-                  'amount' => floatval($gstcode_obj->amount),
+                  'amount' => floatval($gstcode_obj->AmtB4GST),
                   'taxamt' => floatval($gstcode_obj->tot_gst),
                   'GSTCode' => strtoupper($request->GSTCode),
                   'AmtB4GST' => floatval($gstcode_obj->AmtB4GST),

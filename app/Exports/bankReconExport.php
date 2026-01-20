@@ -196,7 +196,7 @@ class bankReconExport implements FromView, WithEvents, WithColumnWidths, WithCol
                 $objcb->hide = 'false';
                 foreach ($bankrecondel as $objbd) {
                     if($objcb->source == $objbd->source && $objcb->trantype == $objbd->trantype && $objcb->auditno == $objbd->auditno){
-                        if($objbd->amount_swap > 0){
+                        if(!empty($objbd->amount_swap)){
                             $objcb->amount = $objbd->amount_swap;
                             break;
                         }else{
