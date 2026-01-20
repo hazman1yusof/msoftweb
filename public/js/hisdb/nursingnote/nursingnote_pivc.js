@@ -50,10 +50,40 @@ $(document).ready(function (){
     });
     
     ////////////////////////////////////print button starts////////////////////////////////////
-    
-    $("#pivc_chart").click(function (){
-        window.open('./pivc/pivc_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&practiceDate='+$("#practiceDate").val(), '_blank');
+
+    $("#PIVCDialog").dialog({
+        autoOpen: false,
+        width: 5/10 * $(window).width(),
+        modal: true,
+        open: function (){
+            parent_close_disabled(true);
+        },
+        close: function (event, ui){
+            parent_close_disabled(false);
+            emptyFormdata(errorField,'#formdata_PIVC');
+        },
+        buttons: [{
+            text: "Print", click: function (){
+                window.open('./pivc/pivc_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&datefr='+$("#datefr_pivc").val()+'&dateto='+$("#dateto_pivc").val(), '_blank');
+            }
+        },{
+            text: "Cancel", click: function (){
+                $(this).dialog('close');
+                emptyFormdata(errorField,'#formdata_PIVC');
+            }
+        }],
     });
+
+    $('#pivc_chart').click(function(){
+		$( "#PIVCDialog" ).dialog( "open" );
+	});
+    /////////////////////////////////////print button ends/////////////////////////////////////
+
+    ////////////////////////////////////print button starts////////////////////////////////////
+    
+    // $("#pivc_chart").click(function (){
+    //     window.open('./pivc/pivc_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&practiceDate='+$("#practiceDate").val(), '_blank');
+    // });
     /////////////////////////////////////print button ends/////////////////////////////////////
 
     ////////////////////////////////////////pivc starts////////////////////////////////////////
@@ -116,8 +146,8 @@ var datetimepivc_tbl = $('#datetimepivc_tbl').DataTable({
         { 'data': 'idno' },
         { 'data': 'mrn' },
         { 'data': 'episno' },
-        { 'data': 'practiceDate', 'width': '25%' },
-        { 'data': 'adduser', 'width': '25%' },
+        { 'data': 'practiceDate', 'width': '20%' },
+        { 'data': 'adduser', 'width': '20%' },
 
     ],
     columnDefs: [

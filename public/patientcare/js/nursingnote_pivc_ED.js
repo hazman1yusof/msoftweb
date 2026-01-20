@@ -49,6 +49,36 @@ $(document).ready(function (){
     $(".floatNumberField").change(function (){
         $(this).val(parseFloat($(this).val()).toFixed(2));
     });
+
+     ////////////////////////////////////print button starts////////////////////////////////////
+
+    $("#PIVCDialog_ED").dialog({
+        autoOpen: false,
+        width: 5/10 * $(window).width(),
+        modal: true,
+        open: function (){
+            parent_close_disabled(true);
+        },
+        close: function (event, ui){
+            parent_close_disabled(false);
+            emptyFormdata(errorField,'#formdata_PIVC_ED');
+        },
+        buttons: [{
+            text: "Print", click: function (){
+                window.open('./pivc/pivc_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&datefr='+$("#datefr_pivc").val()+'&dateto='+$("#dateto_pivc").val(), '_blank');
+            }
+        },{
+            text: "Cancel", click: function (){
+                $(this).dialog('close');
+                emptyFormdata(errorField,'#formdata_PIVC_ED');
+            }
+        }],
+    });
+
+    $('#pivc_ED_chart').click(function(){
+		$( "#PIVCDialog_ED" ).dialog( "open" );
+	});
+    /////////////////////////////////////print button ends/////////////////////////////////////
     
     ////////////////////////////////////////pivc starts////////////////////////////////////////
     $('#datetimepivc_ED_tbl tbody').on('click', 'tr', function (){

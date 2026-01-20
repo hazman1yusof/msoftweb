@@ -31,7 +31,7 @@
             <form class='form-horizontal' style='width: 99%;' id='formPivc'>
             <input id="idno_pivc" name="idno_pivc" type="hidden">
                 
-                <div class="col-md-2" style="padding: 0 0 0 0;">
+                <div class="col-md-4" style="padding: 0 0 0 0;">
                     <div class="panel panel-info">
                         <div class="panel-body">
                             <table id="datetimepivc_tbl" class="ui celled table" style="width: 100%;">
@@ -49,17 +49,19 @@
                     </div>
                 </div>
 
-                <div class='col-md-10' style="padding-right: 0px;">
+                <div class='col-md-8' style="padding-right: 0px;">
                     <div class="panel panel-info">
                         <div class="panel-heading text-center">PERIPHERAL LINE MAINTENANCE BUNDLE CHECKLIST</div>
                         <div class="panel-body" style="padding: 15px 0px;">
     
                             <div class="form-inline col-md-12" style="padding-bottom: 15px;">
 
-                                <label class="control-label" for="practiceDate" style="padding-right: 5px;">Date</label>
+                                <label class="control-label" for="practiceDate" style="padding-right: 5px;">Date: </label>
                                 <input id="practiceDate" name="practiceDate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter date." value="<?php echo date("Y-m-d"); ?>">
 
-                                <!-- <button class="btn btn-default btn-sm" type="button" id="doctornote_bpgraph" style="float: right; margin-right: 20px;">Chart</button> -->
+                                <label class="control-label" for="consultant" style="padding-right: 5px;padding-left: 25px">Consultant: </label>
+                                <input type="text" id="consultant" name="consultant" class="form-control input-sm" size="50">
+
                             </div>
                             
                             <div class='col-md-12'>
@@ -208,6 +210,27 @@
                             </div>
                         
                         </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="PIVCDialog" title="PIVC">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form class='form-horizontal' style='width: 99%;' id='formdata_PIVC'>
+                <input type="hidden" name="action">
+                
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label class="control-label" for="Scol">Date From</label>
+                        <input id="datefr_pivc" name="datefr" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label" for="Scol">Date To</label>
+                        <input id="dateto_pivc" name="dateto" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
                     </div>
                 </div>
             </form>

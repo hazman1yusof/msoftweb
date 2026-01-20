@@ -524,6 +524,7 @@ class NursingNoteController extends defaultController
                     'mrn' => $request->mrn_nursNote,
                     'episno' => $request->episno_nursNote,
                     'practiceDate' => $request->practiceDate,
+                    'consultant' => $request->consultant,
                     'hygiene_M' => $request->hygiene_M,
                     'hygiene_E' => $request->hygiene_E,
                     'hygiene_N' => $request->hygiene_N,
@@ -605,6 +606,7 @@ class NursingNoteController extends defaultController
                 DB::table('nursing.pivc')
                     ->where('idno','=',$request->idno_pivc)
                     ->update([
+                        'consultant' => $request->consultant,
                         'hygiene_M' => $request->hygiene_M,
                         'hygiene_E' => $request->hygiene_E,
                         'hygiene_N' => $request->hygiene_N,
@@ -668,6 +670,7 @@ class NursingNoteController extends defaultController
                         'mrn' => $request->mrn_nursNote,
                         'episno' => $request->episno_nursNote,
                         'practiceDate' => $request->practiceDate,
+                        'consultant' => $request->consultant,
                         'hygiene_M' => $request->hygiene_M,
                         'hygiene_E' => $request->hygiene_E,
                         'hygiene_N' => $request->hygiene_N,
