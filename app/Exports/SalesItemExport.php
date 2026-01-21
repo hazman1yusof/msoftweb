@@ -58,8 +58,8 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
     {
         return [
             'A' => 15,
-            'B' => 13,
-            'C' => 13,
+            'B' => 18,
+            'C' => 12,
             'D' => 40,
             'E' => 10,
             'F' => 13,
