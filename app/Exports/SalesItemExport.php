@@ -44,12 +44,12 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
     public function columnFormats(): array
     {
         return [
-            'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
         ];
     }
     
@@ -58,12 +58,13 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
         return [
             'A' => 15,
             'B' => 13,
-            'C' => 40,
-            'D' => 10,
-            'E' => 13,
+            'C' => 13,
+            'D' => 40,
+            'E' => 10,
             'F' => 13,
             'G' => 13,
             'H' => 13,
+            'I' => 13,
         ];
     }
     
@@ -111,7 +112,7 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
                     ->leftJoin('hisdb.chgmast as c', function($join){
                         $join = $join->on('c.chgcode', '=', 'b.chgcode')
                                     ->on('c.uom', '=', 'b.uom')
-                                    ->where('c.unit', '=', session('unit'))
+                                    // ->where('c.unit', '=', session('unit'))
                                     ->where('c.compcode', '=', session('compcode'));
                     })
                     ->leftJoin('hisdb.pat_mast as pm', function($join){
