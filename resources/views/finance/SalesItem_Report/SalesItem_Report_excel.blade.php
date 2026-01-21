@@ -27,6 +27,7 @@
     <tr>    
         <td style="font-weight:bold">DATE</td>
         <td style="font-weight:bold">CHARGE CODE</td>
+        <td style="font-weight:bold">CHARGE TYPE</td>
         <td style="font-weight:bold">DESCRIPTION</td>
         <td style="font-weight:bold; text-align: right">QUANTITY</td>
         <td style="font-weight:bold; text-align: right">TOT AMOUNT</td>
@@ -51,6 +52,7 @@
                 <tr>
                     <td>{{\Carbon\Carbon::parse($obj->trxdate)->format('d/m/Y')}}</td>
                     <td>{{$obj->chgcode}}</td>
+                    <td>{{$obj->chgtype}}</td>
                     <td>{{$obj->cm_desc}}</td>
                     <td>{{$obj->quantity}}</td>
                     <td style="text-align: right">{{$obj->amount}}</td>
@@ -69,6 +71,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
                 <td style="font-weight:bold">TOTAL</td>
                 <td style="text-align: right; font-weight:bold">{{$amt}}</td>
                 <td style="text-align: right; font-weight:bold">{{$cpr}}</td>
@@ -80,6 +83,7 @@
     @endforeach
     <tr></tr>
     <table> 
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
