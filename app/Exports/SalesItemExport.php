@@ -44,6 +44,7 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithCol
     public function columnFormats(): array
     {
         return [
+            'B' => NumberFormat::FORMAT_NUMBER,
             'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
