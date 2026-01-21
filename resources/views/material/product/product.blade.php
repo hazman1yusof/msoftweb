@@ -636,6 +636,12 @@
 
 @section('scripts')
 	<script type="text/javascript">
+		var pricelabel = [
+			@foreach($pricelabel as $p)
+				'{{$p}}',
+			@endforeach
+		];
+		
 		$(document).ready(function () {
 			if(!$("table#jqGrid").is("[tabindex]")){
 				$("#jqGrid").bind("jqGridGridComplete", function () {
@@ -669,6 +675,6 @@
 			
 		});
 	</script>
-	<script src="js/material/product/product.js?v=1.7"></script>
+	<script src="js/material/product/product.js?v=1.8"></script>
 
 @endsection

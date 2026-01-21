@@ -574,7 +574,7 @@ class bankReconController extends defaultController
                     });
             }else{
                 $table = $table->Where(function ($table) use ($request) {
-                        $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
+                        $table->Where('cb.'.$request->searchCol[0],'like',$request->searchVal[0]);
                     });
             }
             

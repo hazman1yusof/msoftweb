@@ -28,7 +28,20 @@ class ProductController extends defaultController
             $unit_used = 'all';
         }
 
-        return view('material.product.product',compact('unit_used'));
+        $pricelabel_ = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','IV')
+                        ->where('authotype',session('deptcode'))
+                        ->where('trantype','pricelabel');
+
+        if($pricelabel_->exists()){
+            $pricelabel_ = $pricelabel_->first();
+            $pricelabel = explode(',',$pricelabel_->pvalue1);
+        }else{
+            $pricelabel = ['Price 1','Price 2','Price 3'];
+        }
+
+        return view('material.product.product',compact('unit_used','pricelabel'));
     }
 
     public function form(Request $request)

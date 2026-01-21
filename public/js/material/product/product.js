@@ -2137,19 +2137,19 @@ $(document).ready(function () {
 							custom_value:galGridCustomValue 	
 						},
 			},
-			{ label: 'Price 1', name: 'amt1', width: 100, align: 'right', classes: 'wrap', editable:true,
+			{ label: pricelabel[0], name: 'amt1', width: 100, align: 'right', classes: 'wrap', editable:true,
 				edittype:"text",
 				editoptions:{
 					maxlength: 100,
 				},
 			},
-			{ label: 'Price 2', name: 'amt2', width: 100, align: 'right', classes: 'wrap', editable:true,
+			{ label: pricelabel[1], name: 'amt2', width: 100, align: 'right', classes: 'wrap', editable:true,
 				edittype:"text",
 				editoptions:{
 					maxlength: 100,
 				},
 			},
-			{ label: 'Price 3', name: 'amt3', width: 100, align: 'right', classes: 'wrap', editable:true,
+			{ label: pricelabel[2], name: 'amt3', width: 100, align: 'right', classes: 'wrap', editable:true,
 				edittype:"text",
 				editoptions:{
 					maxlength: 100,
