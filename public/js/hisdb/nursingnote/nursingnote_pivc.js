@@ -64,7 +64,7 @@ $(document).ready(function (){
         },
         buttons: [{
             text: "Print", click: function (){
-                window.open('./pivc/pivc_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&datefr='+$("#datefr_pivc").val()+'&dateto='+$("#dateto_pivc").val(), '_blank');
+                window.open('./pivc/pivc_chart?mrn='+$('#mrn_nursNote').val()+'&episno='+$("#episno_nursNote").val()+'&datefr='+$("#datefr_pivc").val()+'&dateto='+$("#dateto_pivc").val(), '_blank');
             }
         },{
             text: "Cancel", click: function (){
