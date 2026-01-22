@@ -8,9 +8,11 @@ use stdClass;
 use DB;
 use DateTime;
 use Carbon\Carbon;
+use App\Exports\invoiceDNListingsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
     class InvoiceAPController extends defaultController
-{   
+    {   
 
     public function __construct()
     {
@@ -19,6 +21,12 @@ use Carbon\Carbon;
 
     public function show(Request $request)
     {   
+
+        if($request->source == 'invoiceDNListings'){
+
+            return view('finance.AP.invoiceAP.invoiceDNListings');
+        }
+
         $purdept = DB::table('sysdb.department')
                         ->select('deptcode')
                         ->where('compcode',session('compcode'))
@@ -38,6 +46,8 @@ use Carbon\Carbon;
                 return $this->maintable($request);
             case 'get_pv_detail':
                 return $this->get_pv_detail($request);
+            case 'invoiceDNListings':
+                return $this->invoiceDNListings($request);
             default:
                 return 'error happen..';
         }
@@ -1041,6 +1051,10 @@ use Carbon\Carbon;
                 ->first();
 
         return $obj;
+    }
+
+    public function invoiceDNListings(Request $request){
+        return Excel::download(new invoiceDNListingsExport($request->supp_from,$request->supp_to,$request->datefr,$request->dateto), 'Invoice Listings.xlsx');
     }
 
 }
