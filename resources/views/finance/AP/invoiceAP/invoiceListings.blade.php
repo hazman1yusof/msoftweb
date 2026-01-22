@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'invoiceDNListings')
+@section('title', 'invoiceListings')
 
 @section('style')
 	body{
@@ -97,7 +97,7 @@
 			<div class="panel-body">
 				<div class='col-md-12 btnform' style="padding:0px">
 				 <fieldset>
-					<button name="invoiceDNListings" type="button" class="mybtn btn btn-sm mybtnxls">
+					<button name="invoiceListings" type="button" class="mybtn btn btn-sm mybtnxls">
 						<span class="fa fa-file-excel-o fa-lg"></span> Download XLS
 					</button>
 				  </fieldset>
@@ -113,6 +113,6 @@
 
 @section('scripts')
 
-	<script src="js/finance/ap/invoiceAP/invoiceDNListings.js?v=1.1"></script>
+	<script src="js/finance/ap/invoiceAP/invoiceListings.js?v=1.1"></script>
 
 @endsection

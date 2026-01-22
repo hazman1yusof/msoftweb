@@ -8,7 +8,7 @@ use stdClass;
 use DB;
 use DateTime;
 use Carbon\Carbon;
-use App\Exports\invoiceDNListingsExport;
+use App\Exports\invoiceListingsExport;
 use Maatwebsite\Excel\Facades\Excel;
 
     class InvoiceAPController extends defaultController
@@ -22,9 +22,9 @@ use Maatwebsite\Excel\Facades\Excel;
     public function show(Request $request)
     {   
 
-        if($request->source == 'invoiceDNListings'){
+        if($request->source == 'invoiceListings'){
 
-            return view('finance.AP.invoiceAP.invoiceDNListings');
+            return view('finance.AP.invoiceAP.invoiceListings');
         }
 
         $purdept = DB::table('sysdb.department')
@@ -46,8 +46,8 @@ use Maatwebsite\Excel\Facades\Excel;
                 return $this->maintable($request);
             case 'get_pv_detail':
                 return $this->get_pv_detail($request);
-            case 'invoiceDNListings':
-                return $this->invoiceDNListings($request);
+            case 'invoiceListings':
+                return $this->invoiceListings($request);
             default:
                 return 'error happen..';
         }
@@ -1053,8 +1053,8 @@ use Maatwebsite\Excel\Facades\Excel;
         return $obj;
     }
 
-    public function invoiceDNListings(Request $request){
-        return Excel::download(new invoiceDNListingsExport($request->supp_from,$request->supp_to,$request->datefr,$request->dateto), 'Invoice Listings.xlsx');
+    public function invoiceListings(Request $request){
+        return Excel::download(new invoiceListingsExport($request->supp_from,$request->supp_to,$request->datefr,$request->dateto), 'Invoice Listings.xlsx');
     }
 
 }

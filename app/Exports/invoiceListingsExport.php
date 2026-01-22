@@ -23,7 +23,7 @@ use DateTime;
 use Carbon\Carbon;
 use stdClass;
 
-class invoiceDNListingsExport implements FromView, WithEvents, WithColumnWidths, WithColumnFormatting
+class invoiceListingsExport implements FromView, WithEvents, WithColumnWidths, WithColumnFormatting
 {
     
     /**
@@ -130,7 +130,7 @@ class invoiceDNListingsExport implements FromView, WithEvents, WithColumnWidths,
         
         //$this->break_loop = $break_loop;
 
-        return view('finance.AP.invoiceAP.invoiceDNListingsExport',compact('apacthdr','supplier','title1','title2','title3'));
+        return view('finance.AP.invoiceAP.invoiceListingsExport',compact('apacthdr','supplier','title1','title2','title3'));
     }
     
     public function registerEvents(): array
