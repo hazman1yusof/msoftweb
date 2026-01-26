@@ -59,11 +59,11 @@
 					<div class="form-group">
 						<div class="col-md-6">
 					  	<label class="control-label">Date From</label> 
-					  	<input type="date" name="datefr" class="form-control input-sm" autocomplete="off" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->startOfMonth()->toDateString()}}">
+					  	<input type="date" name="fromdate" class="form-control input-sm" autocomplete="off" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->startOfMonth()->toDateString()}}">
 			      </div>
 						<div class="col-md-6">
 					  	<label class="control-label">Date To</label>  
-					  	<input type="date" name="dateto" class="form-control input-sm" autocomplete="off" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}">
+					  	<input type="date" name="todate" class="form-control input-sm" autocomplete="off" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}">
 			      </div>
 			    </div>
 

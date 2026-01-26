@@ -47,7 +47,8 @@ use Maatwebsite\Excel\Facades\Excel;
             case 'get_pv_detail':
                 return $this->get_pv_detail($request);
             case 'invoiceListings':
-                return $this->invoiceListings($request);
+                return $this->process_pyserver($request);
+                // return $this->invoiceListings($request);
             default:
                 return 'error happen..';
         }
@@ -1053,8 +1054,53 @@ use Maatwebsite\Excel\Facades\Excel;
         return $obj;
     }
 
+    public function process_pyserver(Request $request){
+
+        $username = session('username');
+        $compcode = session('compcode');
+        $suppcode_from = $request->supp_from;
+        $suppcode_to = $request->supp_to;
+        $fromdate = $request->fromdate;
+        $todate = $request->todate;
+        $pyserver = env('DB_HOST');
+
+        $job_id = $this->start_job_queue($suppcode_from,$fromdate,$todate);
+
+        $client = new \GuzzleHttp\Client();
+
+        $url = 'http://localhost:5000/api/invoiceListings?suppcode_from='.$request->suppcode_from.'&suppcode_to='.$request->suppcode_to.'&fromdate='.$request->fromdate.'&todate='.$request->todate.'&username='.session('username').'&compcode='.session('compcode').'&job_id='.$job_id.'&host='.$pyserver;
+
+        $response = $client->request('GET', $url, [
+          'headers' => [
+            'accept' => 'application/json',
+          ],
+        ]);
+
+        $responce = new stdClass();
+        $responce->job_id = $job_id;
+        return json_encode($responce);
+    }
+
     public function invoiceListings(Request $request){
         return Excel::download(new invoiceListingsExport($request->supp_from,$request->supp_to,$request->datefr,$request->dateto), 'Invoice Listings.xlsx');
+    }
+
+    public function start_job_queue($page,$fromdate,$todate){
+        $idno = DB::table('sysdb.job_queue')
+                ->insertGetId([
+                    'compcode' => session('compcode'),
+                    'page' => 'invoiceListings',
+                    'filename' => 'invoice Listings '.$page,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'status' => 'PENDING',
+                    'remarks' => 'invoice Listings for Supplier '.$page.' from '.$fromdate.' to '.$todate,
+                    'type' => $page,
+                    'date' => $fromdate,
+                    'date_to' => $todate,
+                ]);
+
+        return $idno;
     }
 
 }

@@ -54,7 +54,7 @@
 									{text: '{{$dbacthdr->debt_debtcode}}'},
 									{text: 'DOCTOR', alignment: 'right'},
 									{text: ':'},
-									{text: `{!!$dbacthdr->doctorname!!}`},
+									{text: `{!!str_replace('`', '', $dbacthdr->doctorname)!!}`},
 								],
 								[
 									{text: 'NAME', alignment: 'right'},
@@ -63,7 +63,7 @@
 									{text: 'PATIENT', alignment: 'right'},
 									{text: ':'},
 									@if(!empty($dbacthdr->mrn))
-										{text: `({{$dbacthdr->mrn}}) {!!$dbacthdr->pm_name!!}`},
+										{text: `({{$dbacthdr->mrn}}) {!!str_replace('`', '', $dbacthdr->pm_name)!!}`},
 									@else
 										{text: ''},
 									@endif
@@ -97,7 +97,7 @@
 								[
 									{text: 'REMARK', alignment: 'right'},
 									{text: ':'},
-									{text: `{{$dbacthdr->remark}}`, colSpan:4},{},{},{}
+									{text: `{!!str_replace('`', '', $dbacthdr->remark)!!}`, colSpan:4},{},{},{}
 								],
 								@endif
 
