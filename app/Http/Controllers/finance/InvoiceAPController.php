@@ -1091,7 +1091,7 @@ use Maatwebsite\Excel\Facades\Excel;
         $fromdate = $request->fromdate;
         $todate = $request->todate;
         $ttype = $request->ttype;
-        $pyserver = env('DB_HOST');
+        $pyserver = \config('get_config.DB_HOST_PYSERVER');
 
         $job_id = $this->start_job_queue($suppcode_from,$suppcode_to,$fromdate,$todate,$ttype);
 
