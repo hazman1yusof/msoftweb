@@ -30,12 +30,14 @@ class invoiceListingsExport implements FromView, WithEvents, WithColumnWidths, W
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($suppcode_from,$suppcode_to,$datefr,$dateto)
+    public function __construct($job_id,$suppcode_from,$suppcode_to,$datefr,$dateto,$ttype)
     {
         $this->suppcode_from = $suppcode_from;
         $this->suppcode_to = $suppcode_to;
         $this->datefr = $datefr;
         $this->dateto = $dateto;
+        $this->ttype = $ttype;
+        $this->job_id = $job_id;
 
         $this->comp = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
@@ -71,59 +73,34 @@ class invoiceListingsExport implements FromView, WithEvents, WithColumnWidths, W
     
     public function view(): View
     {
-        $suppcode_from = $this->suppcode_from;
-        if(empty($this->suppcode_from)){
-            $suppcode_from = '%';
-        }
-        $suppcode_to = $this->suppcode_to;
-        $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
-        $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
-
-        $years = range(Carbon::parse($this->datefr)->format('Y'), Carbon::parse($this->dateto)->format('Y'));
-
-        $apacthdr = DB::table('finance.apacthdr as ap')
-                    ->select('ap.source','ap.trantype','ap.auditno','ap.document','ap.suppcode','ap.payto','ap.suppgroup','ap.bankcode','ap.paymode','ap.cheqno','ap.cheqdate','ap.actdate','ap.recdate','ap.category','ap.amount','ap.outamount','ap.remarks','ap.postflag','ap.conversion','ap.srcfrom','ap.srcto','ap.deptcode','ap.reconflg','ap.effectdatefr','ap.effectdateto','ap.frequency','ap.refsource','ap.reftrantype','ap.refauditno','ap.pvno','ap.entrydate','ap.recstatus','ap.adduser','ap.adddate','ap.reference','ap.TaxClaimable','ap.unit','ap.allocdate','ap.postuser','ap.postdate','apd.document as apd_document','apd.reference as apd_reference','apd.grnno','apd.dorecno','apd.deptcode as po_deptcode','po.purdate','su.Name')
-                    ->join('material.supplier as su', function($join) {
-                        $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
-                        $join = $join->where('su.compcode', '=', session('compcode'));
-                    })
-                    ->leftJoin('finance.apactdtl as apd', function($join) {
-                        $join = $join->where('apd.compcode', session('compcode'))
-                                    ->on('apd.source','ap.source')
-                                    ->on('apd.trantype','ap.trantype')
-                                    ->on('apd.auditno','ap.auditno')
-                                    ->where('apd.recstatus','!=','DELETE');
-                    })
-                    ->leftJoin('material.purordhd as po', function($join) {
-                        $join = $join->where('po.compcode', session('compcode'))
-                                    ->on('po.prdept','apd.deptcode')
-                                    ->on('po.purordno','apd.reference');
-                    })
-                    ->where('ap.compcode','=',session('compcode'))
-                    ->where('ap.source','AP')
-                    ->where('ap.trantype','IN')
-                    ->where('ap.recstatus', '=', 'POSTED')
-                    ->where('ap.postdate', '>=', $datefr)
-                    ->where('ap.postdate', '<=', $dateto);
-
-        if($this->suppcode_from == $this->suppcode_to){
-            $apacthdr = $apacthdr->where('ap.suppcode', $suppcode_from);
-        }else if($this->suppcode_from == '' && $this->suppcode_to == 'ZZZ'){
-
-        }else{
-            $apacthdr = $apacthdr->whereBetween('ap.suppcode', [$suppcode_from, $suppcode_to.'%']);
-        }
-
-        $apacthdr = $apacthdr->orderBy('ap.postdate', 'ASC')
-                    ->get();
+        $apacthdr = DB::table('jobs.invoicelistings')
+                        ->where('job_id',$this->job_id)
+                        ->get();
 
         $supplier = $apacthdr->unique('suppcode');
 
         $datefr2 = Carbon::parse($this->datefr)->format('d-m-Y');
         $dateto2 = Carbon::parse($this->dateto)->format('d-m-Y');
 
+        switch ($this->ttype) {
+            case 'IN':
+                $title2 = 'Invoice Listing';
+                break;
+            case 'DN':
+                $title2 = 'Debit Note Listing';
+                break;
+            case 'CN':
+                $title2 = 'Credit Note Listing';
+                break;
+            case 'PV':
+                $title2 = 'Payment Listing';
+                break;
+            default:
+                $title2 = 'Invoice Listing';
+                break;
+        }
+
         $title1 = $this->comp->name;
-        $title2 = 'Invoice & Debit Note Listing';
         $title3 = 'From '.$datefr2.' to '.$dateto2;
 
         // dd($supplier);
@@ -189,5 +166,69 @@ class invoiceListingsExport implements FromView, WithEvents, WithColumnWidths, W
         }
 
         return $balance;
+    }
+
+    public function lama()
+    {
+        $suppcode_from = $this->suppcode_from;
+        if(empty($this->suppcode_from)){
+            $suppcode_from = '%';
+        }
+        $suppcode_to = $this->suppcode_to;
+        $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
+        $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
+
+        $years = range(Carbon::parse($this->datefr)->format('Y'), Carbon::parse($this->dateto)->format('Y'));
+
+        $apacthdr = DB::table('finance.apacthdr as ap')
+                    ->select('ap.source','ap.trantype','ap.auditno','ap.document','ap.suppcode','ap.payto','ap.suppgroup','ap.bankcode','ap.paymode','ap.cheqno','ap.cheqdate','ap.actdate','ap.recdate','ap.category','ap.amount','ap.outamount','ap.remarks','ap.postflag','ap.conversion','ap.srcfrom','ap.srcto','ap.deptcode','ap.reconflg','ap.effectdatefr','ap.effectdateto','ap.frequency','ap.refsource','ap.reftrantype','ap.refauditno','ap.pvno','ap.entrydate','ap.recstatus','ap.adduser','ap.adddate','ap.reference','ap.TaxClaimable','ap.unit','ap.allocdate','ap.postuser','ap.postdate','apd.document as apd_document','apd.reference as apd_reference','apd.grnno','apd.dorecno','apd.deptcode as po_deptcode','po.purdate','su.Name')
+                    ->join('material.supplier as su', function($join) {
+                        $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
+                        $join = $join->where('su.compcode', '=', session('compcode'));
+                    })
+                    ->leftJoin('finance.apactdtl as apd', function($join) {
+                        $join = $join->where('apd.compcode', session('compcode'))
+                                    ->on('apd.source','ap.source')
+                                    ->on('apd.trantype','ap.trantype')
+                                    ->on('apd.auditno','ap.auditno')
+                                    ->where('apd.recstatus','!=','DELETE');
+                    })
+                    ->leftJoin('material.purordhd as po', function($join) {
+                        $join = $join->where('po.compcode', session('compcode'))
+                                    ->on('po.prdept','apd.deptcode')
+                                    ->on('po.purordno','apd.reference');
+                    })
+                    ->where('ap.compcode','=',session('compcode'))
+                    ->where('ap.source','AP')
+                    ->where('ap.trantype','IN')
+                    ->where('ap.recstatus', '=', 'POSTED')
+                    ->where('ap.postdate', '>=', $datefr)
+                    ->where('ap.postdate', '<=', $dateto);
+
+        if($this->suppcode_from == $this->suppcode_to){
+            $apacthdr = $apacthdr->where('ap.suppcode', $suppcode_from);
+        }else if($this->suppcode_from == '' && $this->suppcode_to == 'ZZZ'){
+
+        }else{
+            $apacthdr = $apacthdr->whereBetween('ap.suppcode', [$suppcode_from, $suppcode_to.'%']);
+        }
+
+        $apacthdr = $apacthdr->orderBy('ap.postdate', 'ASC')
+                    ->get();
+
+        $supplier = $apacthdr->unique('suppcode');
+
+        $datefr2 = Carbon::parse($this->datefr)->format('d-m-Y');
+        $dateto2 = Carbon::parse($this->dateto)->format('d-m-Y');
+
+        $title1 = $this->comp->name;
+        $title2 = 'Invoice & Debit Note Listing';
+        $title3 = 'From '.$datefr2.' to '.$dateto2;
+
+        // dd($supplier);
+        
+        //$this->break_loop = $break_loop;
+
+        return view('finance.AP.invoiceAP.invoiceListingsExport',compact('apacthdr','supplier','title1','title2','title3'));
     }
 }

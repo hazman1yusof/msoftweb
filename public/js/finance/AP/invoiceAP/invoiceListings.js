@@ -122,24 +122,69 @@ $(document).ready(function () {
 	);
 	supp_to.makedialog(true);
 
-	$('button.mybtn').click(function(){
+	$('#invoiceListings').click(function(){
+		$("#span_dlexcel").hide();
+		$('#job_id').val('');
 		$('input[name=action]').val($(this).attr('name'));
 
 		if($('#formdata').isValid({requiredFields:''},conf,true)){
-			var serializedForm =  $('#formdata').serializeArray()
+			$(this).prop('disabled',true);
+			$(this).html('Processing.. <i class="fa fa-refresh fa-spin fa-fw">');
 
-			// var param={
-			// 	supp_from:'get_value_default',
-			// 	supp_to: './util/get_value_default',
-			// 	item_from:['backday'],
-			// 	item_to:'material.sequence',
-			// 	year:['compcode','dept','trantype'],
-			// 	period:['session.compcode',this.deptcode,this.trxtype]
-			// }
+			let serializedForm =  $('#formdata').serializeArray();
+			let href = './invoiceAP/table?'+$.param(serializedForm);
 
-			window.open('./invoiceAP/table?'+$.param(serializedForm), '_blank');
+			$.get( href, function( data ) {
+
+			},'json').fail(function(data) {
+
+			}).done(function(data){
+				$('#job_id').val(data.job_id);
+			});
+			
+			startProcessInterval();
+		}
+	});
+
+	let intervalId = null;
+  	function startProcessInterval() {
+	    intervalId = setInterval(check_running_process, 8000);
+	}
+	function stopProcessInterval() {
+	    if (intervalId !== null) {
+	        clearInterval(intervalId);
+	        intervalId = null;
+	    }
+	}
+
+	function check_running_process() {
+		let job_id = $('#job_id').val();
+		if(job_id == ''){
+			console.log('no job id');
+			return 0;
 		}
 
-		
+		$.get( './invoiceAP/table?action=check_running_process&job_id='+job_id, function( data ) {
+			
+		},'json').done(function(data) {
+	    	if(data.jobdone=='true'){
+	    		stopProcessInterval();
+				$('#invoiceListings').attr('disabled',false);
+				$('#invoiceListings').html(`<span class="fa fa-file-excel-o fa-lg"></span> Process XLS`);
+				$("#span_dlexcel").show();
+			}else{
+				$('#invoiceListings').attr('disabled',true);
+				$('#invoiceListings').html('Processing.. <i class="fa fa-refresh fa-spin fa-fw">');
+				$("#span_dlexcel").hide();
+			}
+		});
+	}
+
+	$("#download_excel").click(function() {
+		if($('#job_id').val() == ''){
+			
+		}else{
+			window.open('./invoiceAP/table?action=download_excel&job_id='+$('#job_id').val(), '_blank');
+		}
 	});
 });

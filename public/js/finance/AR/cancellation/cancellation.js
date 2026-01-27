@@ -394,7 +394,8 @@ $(document).ready(function () {
 										$.post( "./cancellation/form?"+$.param(urlparam), $.param(postobj), function( data ) {
 											
 										},'json').fail(function(data) {
-											alert('there is an error');
+											console.log(data);
+											alert(data.responseText);
 										}).success(function(data){
 											$("#dialogForm_RC").dialog('close');
 											
@@ -595,7 +596,9 @@ $(document).ready(function () {
 									$.post( "./cancellation/form?"+$.param(urlparam), $.param(postobj), function( data ) {
 										
 									},'json').fail(function(data) {
-										alert('there is an error');
+										// alert('there is an error');
+										console.log(data);
+										alert(data.responseText);
 									}).success(function(data){
 										$("#dialogForm_RF").dialog('close');
 										refreshGrid("#jqGrid_rf",urlParam_rf);
@@ -1496,7 +1499,9 @@ $(document).ready(function () {
 						$.post( "./cancellation/form?"+$.param(urlparam), $.param(postobj), function( data ) {
 							
 						},'json').fail(function(data) {
-							alert('there is an error');
+							// alert('there is an error');
+							console.log(data);
+							alert(data.responseText);
 						}).success(function(data){
 							if($('#trantype').val() == "RC"){
 								urlParamAlloc.idno=selrowData("#jqGrid_rc").db_idno;

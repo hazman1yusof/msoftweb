@@ -899,5 +899,5 @@
             }
         });
     </script>
-    <script src="js/finance/AR/cancellation/cancellation.js?v=1.6"></script>
+    <script src="js/finance/AR/cancellation/cancellation.js?v=1.7"></script>
 @endsection

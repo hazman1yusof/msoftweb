@@ -51,10 +51,11 @@
   <div class="row">
 	<div class="col-md-9">
 		<div class="panel panel-default">
-			<div class="panel-heading">Invoice Listings</div>
+			<div class="panel-heading">{{$desc}} Listings</div>
 			<div class="panel-body">
 				<form class='form-horizontal' style='width:99%' id='formdata'>
 					<input type="hidden" name="action" >
+					<input type="hidden" id="ttype" name="ttype" value={{$ttype}}>
 
 					<div class="form-group">
 						<div class="col-md-6">
@@ -97,9 +98,13 @@
 			<div class="panel-body">
 				<div class='col-md-12 btnform' style="padding:0px">
 				 <fieldset>
-					<button name="invoiceListings" type="button" class="mybtn btn btn-sm mybtnxls">
-						<span class="fa fa-file-excel-o fa-lg"></span> Download XLS
+					<button name="invoiceListings" id="invoiceListings" type="button" class="mybtn btn btn-sm mybtnxls" style="margin-bottom:3px">
+						<span class="fa fa-file-excel-o fa-lg"></span> Process XLS
 					</button>
+					<input type="hidden" id="job_id">
+					<span id="span_dlexcel" style="display:none">
+						<a id="download_excel" style="display: block;text-align: center;cursor: pointer;">Download Excel</a>
+					</span>
 				  </fieldset>
 				</div>
 			</div>

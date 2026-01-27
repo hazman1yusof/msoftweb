@@ -23,21 +23,22 @@ class acctenq_dateController extends defaultController
     public function show(Request $request)
     {   
 
-        $last_job = DB::table('sysdb.job_queue')
-                        ->where('compcode', session('compcode'))
-                        ->where('page', 'acctenq_date')
-                        ->orderBy('idno', 'desc');
+        // $last_job = DB::table('sysdb.job_queue')
+        //                 ->where('compcode', session('compcode'))
+        //                 ->where('page', 'acctenq_date')
+        //                 ->orderBy('idno', 'desc');
 
-        if(!$last_job->exists()){
-            $jobdone = 'true';
-        }else{
-            $last_job = $last_job->first();
-            if($last_job->status != 'DONE'){
-                $jobdone = 'false';
-            }else{
-                $jobdone = 'true';
-            }
-        }
+        // if(!$last_job->exists()){
+        //     $jobdone = 'true';
+        // }else{
+        //     $last_job = $last_job->first();
+        //     if($last_job->status != 'DONE'){
+        //         $jobdone = 'false';
+        //     }else{
+        //         $jobdone = 'true';
+        //     }
+        // }
+        $jobdone = 'true';
 
         return view('finance.GL.acctenq_date.acctenq_date',compact('jobdone'));
     }
@@ -127,7 +128,7 @@ class acctenq_dateController extends defaultController
         $glaccount = $request->glaccount;
         $fromdate = $request->fromdate;
         $todate = $request->todate;
-        $pyserver = '192.168.0.11';
+        $pyserver = env('DB_HOST');;
 
         $job_id = $this->start_job_queue($glaccount,$fromdate,$todate);
 

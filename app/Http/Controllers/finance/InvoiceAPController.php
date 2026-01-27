@@ -24,7 +24,31 @@ use Maatwebsite\Excel\Facades\Excel;
 
         if($request->source == 'invoiceListings'){
 
-            return view('finance.AP.invoiceAP.invoiceListings');
+            switch ($request->type) {
+                case 'IN':
+                    $ttype = 'IN';
+                    $desc = 'Invoice';
+                    break;
+                case 'DN':
+                    $ttype = 'DN';
+                    $desc = 'Debit Note';
+                    break;
+                case 'CN':
+                    $ttype = 'CN';
+                    $desc = 'Credit Note';
+                    break;
+                case 'PV':
+                    $ttype = 'PV';
+                    $desc = 'Payment';
+                    break;
+                
+                default:
+                    $type = 'IN';
+                    $desc = 'Invoice';
+                    break;
+            }
+
+            return view('finance.AP.invoiceAP.invoiceListings',compact('ttype','desc'));
         }
 
         $purdept = DB::table('sysdb.department')
@@ -49,6 +73,10 @@ use Maatwebsite\Excel\Facades\Excel;
             case 'invoiceListings':
                 return $this->process_pyserver($request);
                 // return $this->invoiceListings($request);
+            case 'check_running_process':
+                return $this->check_running_process($request);
+            case 'download_excel':
+                return $this->download_excel($request);
             default:
                 return 'error happen..';
         }
@@ -1062,13 +1090,14 @@ use Maatwebsite\Excel\Facades\Excel;
         $suppcode_to = $request->supp_to;
         $fromdate = $request->fromdate;
         $todate = $request->todate;
+        $ttype = $request->ttype;
         $pyserver = env('DB_HOST');
 
-        $job_id = $this->start_job_queue($suppcode_from,$fromdate,$todate);
+        $job_id = $this->start_job_queue($suppcode_from,$suppcode_to,$fromdate,$todate,$ttype);
 
         $client = new \GuzzleHttp\Client();
 
-        $url = 'http://localhost:5000/api/invoiceListings?suppcode_from='.$request->suppcode_from.'&suppcode_to='.$request->suppcode_to.'&fromdate='.$request->fromdate.'&todate='.$request->todate.'&username='.session('username').'&compcode='.session('compcode').'&job_id='.$job_id.'&host='.$pyserver;
+        $url = 'http://localhost:5000/api/invoiceListings?suppcode_from='.$suppcode_from.'&suppcode_to='.$suppcode_to.'&fromdate='.$fromdate.'&todate='.$todate.'&ttype='.$ttype.'&username='.$username.'&compcode='.$compcode.'&job_id='.$job_id.'&host='.$pyserver;
 
         $response = $client->request('GET', $url, [
           'headers' => [
@@ -1085,22 +1114,76 @@ use Maatwebsite\Excel\Facades\Excel;
         return Excel::download(new invoiceListingsExport($request->supp_from,$request->supp_to,$request->datefr,$request->dateto), 'Invoice Listings.xlsx');
     }
 
-    public function start_job_queue($page,$fromdate,$todate){
+    public function start_job_queue($suppcode_from,$suppcode_to,$fromdate,$todate,$ttype){
         $idno = DB::table('sysdb.job_queue')
                 ->insertGetId([
                     'compcode' => session('compcode'),
                     'page' => 'invoiceListings',
-                    'filename' => 'invoice Listings '.$page,
+                    'filename' => 'invoice Listings '.$suppcode_from.'.xlsx',
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'status' => 'PENDING',
-                    'remarks' => 'invoice Listings for Supplier '.$page.' from '.$fromdate.' to '.$todate,
-                    'type' => $page,
+                    'remarks' => 'invoice Listings for Supplier from '.$suppcode_from.' to '.$suppcode_to.' from '.$fromdate.' to '.$todate,
+                    'type' => $suppcode_from,
                     'date' => $fromdate,
                     'date_to' => $todate,
+                    'debtorcode_from' => $suppcode_from,
+                    'debtorcode_to' => $suppcode_to,
+                    'debtortype' => $ttype
                 ]);
 
         return $idno;
+    }
+
+    public function check_running_process(Request $request){
+
+        $responce = new stdClass();
+        $job_id = $request->job_id;
+
+        $last_job = DB::table('sysdb.job_queue')
+                        ->where('idno', $job_id)
+                        ->where('compcode', session('compcode'))
+                        ->where('page', 'invoiceListings')
+                        ->orderBy('idno', 'desc');
+
+        if(!$last_job->exists()){
+            $responce->jobdone = 'false';
+            $responce->status = 'notfound';
+            return json_encode($responce);
+        }
+
+        $last_job = $last_job->first();
+        $responce->status = $last_job->status;
+        $responce->datefr = $last_job->adddate;
+        $responce->dateto = $last_job->finishdate;
+        $responce->type = $last_job->type;
+
+        if($last_job->status != 'DONE'){
+            $responce->jobdone = 'false';
+        }else{
+            $responce->jobdone = 'true';
+        }
+        return json_encode($responce);
+    }
+
+    public function download_excel(Request $request){
+        $job_queue = DB::table('sysdb.job_queue')
+                        ->where('idno', $request->job_id)
+                        ->where('compcode', session('compcode'))
+                        ->where('page', 'invoiceListings')
+                        ->where('status', 'DONE')
+                        ->orderBy('idno', 'desc')
+                        ->first();
+                        // dd($job_queue);
+
+        return Excel::download(new invoiceListingsExport(
+            $job_queue->idno,
+            $job_queue->debtorcode_from,
+            $job_queue->debtorcode_to,
+            $job_queue->date,
+            $job_queue->date_to,
+            $job_queue->debtortype
+        ), $job_queue->filename);  
     }
 
 }
