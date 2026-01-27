@@ -83,7 +83,11 @@
 							[
 								{text: 'BILL DATE', alignment: 'right'},
 								{text: ':'},
+								@if(empty($dbacthdr->postdate))
 								{text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$dbacthdr->entrydate)->format('d-m-Y')}}'},
+								@else
+								{text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$dbacthdr->postdate)->format('d-m-Y')}}'},
+								@endif
 								{text: 'BILL NO', alignment: 'right'},
 								{text: ':'},
 								{text: 'INV-{{str_pad($dbacthdr->invno, 6, "0", STR_PAD_LEFT)}}, DO-{{str_pad($dbacthdr->invno, 6, "0", STR_PAD_LEFT)}}'},
