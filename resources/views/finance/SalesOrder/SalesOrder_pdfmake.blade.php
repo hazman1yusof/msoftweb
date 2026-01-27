@@ -83,10 +83,10 @@
 							[
 								{text: 'BILL DATE', alignment: 'right'},
 								{text: ':'},
-								@if(empty($dbacthdr->postdate))
+								@if(empty($dbacthdr->posteddate))
 								{text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$dbacthdr->entrydate)->format('d-m-Y')}}'},
 								@else
-								{text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$dbacthdr->postdate)->format('d-m-Y')}}'},
+								{text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$dbacthdr->posteddate)->format('d-m-Y')}}'},
 								@endif
 								{text: 'BILL NO', alignment: 'right'},
 								{text: ':'},
