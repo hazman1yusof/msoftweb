@@ -648,7 +648,7 @@ class CancellationController extends defaultController
                         ->where('reconstatus','=','1');
 
             if($cbtran->exists()){
-                throw new \Exception('Record has been recon in Bank Reconciliation', 500);
+                throw new \Exception('recon', 500);
             }
 
             DB::table('finance.cbtran')

@@ -394,8 +394,25 @@ $(document).ready(function () {
 										$.post( "./cancellation/form?"+$.param(urlparam), $.param(postobj), function( data ) {
 											
 										},'json').fail(function(data) {
+											if(data.responseText = 'recon'){
+												bootbox.alert({
+												    size: 'small',
+												    title: 'Cannot cancel Receipt',
+												    message: `
+												    	<ul>
+														  <li>Receipt has been done in Bank Recon</li>
+														  <li>Please do unrecon</li>
+														</ul>
+												    	`,
+												    callback: function () { 
+												        /* your callback code */ 
+												    }
+												});
+											}else{
+												alert(data.responseText);
+											}
+
 											console.log(data);
-											alert(data.responseText);
 										}).success(function(data){
 											$("#dialogForm_RC").dialog('close');
 											
