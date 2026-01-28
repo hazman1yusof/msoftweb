@@ -393,12 +393,12 @@ class ItemEnquiryController extends defaultController
                         if(intval($period) > 5 && $year == 2025){
                             $updarr = [
                                     'netmvqty'.$period => $all,
-                                    'netmvval'.$period => $all2
+                                    // 'netmvval'.$period => $all2
                                 ];
                         }else{
                             $updarr = [
                                     'netmvqty'.$period => $all,
-                                    // 'netmvval'.$period => $all2
+                                    'netmvval'.$period => $all2
                                 ];
                         }
 
