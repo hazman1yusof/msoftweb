@@ -151,7 +151,7 @@ class ApEnquiryExportv2 implements FromView, ShouldQueue, WithEvents, WithColumn
                     ->where('ap1.compcode','=',session('compcode'))
                     ->where('ap1.source','AP')
                     ->where('ap1.trantype','PV')
-                    ->whereBetween('ap1.payto', [$suppcode_from, $suppcode_to.'%'])
+                    ->whereBetween('ap1.suppcode', [$suppcode_from, $suppcode_to.'%'])
                     ->where('ap1.recstatus','APPROVED')
                     ->whereDate('ap1.postdate', '<=', $date)
                     ->whereDate('ap1.postdate', '>=', $firstDay)
