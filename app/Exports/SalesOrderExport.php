@@ -97,7 +97,7 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths, WithC
                                             ->where('dh.deptcode', '=', $deptcode);
                             }else{
                                 $dbacthdr = $dbacthdr
-                                            ->whereNotNull('dh.deptcode';
+                                            ->whereNotNull('dh.deptcode');
                             }
                         }
                     }
