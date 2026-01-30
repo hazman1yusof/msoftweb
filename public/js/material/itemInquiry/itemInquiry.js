@@ -64,6 +64,13 @@ $(document).ready(function () {
 		filterVal:['session.compcode','session.unit', $('#Class2').val()]
 	}
 
+	var urlParamXXX={
+		action:'maintable1',
+		url:'./itemEnquiry/table',
+		year:$('#getYear').val(),
+		Class:$('#Class2').val(),
+	}
+
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	
 	
@@ -79,8 +86,6 @@ $(document).ready(function () {
 			{ label: 'Quantity on Hand', name: 'p_qtyonhand', formatter: 'currency', width: 30,classes: 'wrap',align: 'right'},
 			{ label: 'Average Cost', name: 'p_avgcost', width: 30,classes: 'wrap',align: 'right'},
 			{ label: 'Current Price', name: 'p_currprice', width: 30, classes: 'wrap',align: 'right'},
-
-			
 		],
 		autowidth:true,
         multiSort: true,

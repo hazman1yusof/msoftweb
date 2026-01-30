@@ -1837,3 +1837,6 @@ Route::get('/dialysis_enquiry/table','dialysis\enquiryController@table');
 
 Route::get('/dialysis_enquiry_order','dialysis\enquiryController@show_order');
 Route::get('/dialysis_enquiry_order/table','dialysis\enquiryController@table');
+
+//UKMSC
+Route::post('/ukmsc_analytic','ukmsc\ukmsc_analyticController@table');

@@ -65,9 +65,24 @@ class ItemEnquiryController extends defaultController
                 return $this->scheduler2($request);
             case 'scheduler3':
                 return $this->scheduler3($request);
+            case 'maintable1':
+                return $this->maintable1($request);
             default:
                 return 'error happen..';
         }
+    }
+
+    public function maintable1(Request $request){
+
+        $table = DB::table('material.product as p')
+                    ->select('p.idno as p_idno','p.unit as p_unit','p.itemcode as p_itemcode','p.description as p_description','p.uomcode as p_uomcode','u.description as u_description','p.qtyonhand as p_qtyonhand','p.avgcost as p_avgcost','p.currprice as p_currprice',)
+                    ->join('material.uom as u', function($join) use ($request){
+                            $join = $join->where('u.compcode', session('compcode'));
+                                         ->on('u.uomcode','p.uomcode');
+                    });
+                    ->where('p.compcode',session('compcode'))
+                    ->where('p.unit',session('unit'))
+                    ->where('p.Class',$request->Class)
     }
 
     public function detailMovement(Request $request){
