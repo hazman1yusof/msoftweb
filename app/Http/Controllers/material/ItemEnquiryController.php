@@ -77,7 +77,7 @@ class ItemEnquiryController extends defaultController
         $table = DB::table('material.product as p')
                     ->select('p.idno as p_idno','p.unit as p_unit','p.itemcode as p_itemcode','p.description as p_description','p.uomcode as p_uomcode','u.description as u_description','p.qtyonhand as p_qtyonhand','p.avgcost as p_avgcost','p.currprice as p_currprice',)
                     ->join('material.uom as u', function($join) use ($request){
-                            $join = $join->where('u.compcode', session('compcode'));
+                            $join = $join->where('u.compcode', session('compcode'))
                                          ->on('u.uomcode','p.uomcode');
                     });
                     ->where('p.compcode',session('compcode'))

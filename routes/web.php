@@ -1244,6 +1244,11 @@ Route::post('/ARAgeingDtl_Report/form','finance\ARAgeingDtl_ReportController@for
 Route::get('/ARAgeingDtl_Report/showExcel','finance\ARAgeingDtl_ReportController@showExcel');
 Route::get('/ARAgeingDtl_Report/showpdf','finance\ARAgeingDtl_ReportController@showpdf');
 
+//// SOA -- Report
+Route::get('/statement','finance\StatementController@show');
+Route::get('/statement/table','finance\StatementController@table');
+Route::post('/statement/form','finance\StatementController@form');
+
 //// AR Ageing Details -- Report
 Route::get('/ARAgeingColl_Report','finance\ARAgeingColl_ReportController@show');
 Route::get('/ARAgeingColl_Report/table','finance\ARAgeingColl_ReportController@table');
