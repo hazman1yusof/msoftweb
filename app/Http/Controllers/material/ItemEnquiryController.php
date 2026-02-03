@@ -79,7 +79,7 @@ class ItemEnquiryController extends defaultController
                     ->join('material.uom as u', function($join) use ($request){
                             $join = $join->where('u.compcode', session('compcode'))
                                          ->on('u.uomcode','p.uomcode');
-                    });
+                    })
                     ->where('p.compcode',session('compcode'))
                     ->where('p.unit',session('unit'))
                     ->where('p.Class',$request->Class)
