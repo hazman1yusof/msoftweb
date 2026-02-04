@@ -5500,11 +5500,14 @@ class TestController extends defaultController
         if(empty($request->period)){
             dd('no request period');
         }
+        if(empty($request->year)){
+            dd('no request year');
+        }
         $period = $request->period;
         $glmasdtl = DB::table('finance.glmasdtl')
                         ->where('compcode',session('compcode'))
                         // ->where('actamount'.$period,'<>',0)
-                        ->where('year','2025')
+                        ->where('year',$request->year)
                         ->get();
 
         $glmasdtl = collect($glmasdtl)->unique('glaccount');
