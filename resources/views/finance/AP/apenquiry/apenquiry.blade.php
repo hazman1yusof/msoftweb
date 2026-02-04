@@ -238,7 +238,6 @@
 		<input id="statement" type="hidden" class="form-control input-sm" readonly>
 			<div class="panel-body">
 				<form class='form-horizontal' style='width:99%' id='formdata_statementPeriodic'>
-					<input type="hidden" name="action" value="process_pyserver">
 						<div class="form-group">
 							<div class="col-md-6">
 								<label class="control-label" for="Scol">Supplier From</label> 

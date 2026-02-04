@@ -270,7 +270,7 @@ $(document).ready(function () {
 			$(this).html('Processing.. <i class="fa fa-refresh fa-spin fa-fw">');
 
 			let serializedForm =  $('#formdata_statementPeriodic').serializeArray();
-			let href = './statement/table?'+$.param(serializedForm);
+			let href = './statement/table?action=process_pyserver&'+$.param(serializedForm);
 
 			$.get( href, function( data ) {
 
