@@ -405,7 +405,7 @@ class ItemEnquiryController extends defaultController
                         dump($x.'. '.$value->itemcode.' -> REAL netmvqty'.$period.' => '.$all.' -> REAL netmvval => '.$all2);
                         $x++;
 
-                        if(intval($period) > 5 && $year == 2025){
+                        if($year == 2025){
                             $updarr = [
                                     'netmvqty'.$period => $all,
                                     // 'netmvval'.$period => $all2
