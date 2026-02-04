@@ -6321,33 +6321,62 @@ class TestController extends defaultController
                             ->where('lineno_','=',1);
 
                 if($gltran->exists()){
-                    dump('gltran exists');
-                    dump($dbacthdr_obj->trantype);
-                    dd($dbacthdr_obj->auditno);
-                }
+                    // dump('gltran exists');
+                    // dump($dbacthdr_obj->trantype);
+                    // dd($dbacthdr_obj->auditno);
 
-                //1. buat gltran
-                DB::table('finance.gltran')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'auditno' => $dbacthdr_obj->auditno,
-                        'lineno_' => 1,
-                        'source' => 'PB',
-                        'trantype' => $dbacthdr_obj->trantype,
-                        'reference' => $dbacthdr_obj->reference,
-                        'description' => $dbacthdr_obj->oldmrn,
-                        'year' => $yearperiod->year,
-                        'period' => $yearperiod->period,
-                        'drcostcode' => $drcostcode,
-                        'dracc' => $dracc,
-                        'crcostcode' => $crcostcode,
-                        'cracc' => $cracc,
-                        'amount' => $dbacthdr_obj->amount,
-                        'postdate' => $posteddate,
-                        'adduser' => 'SYSTEM',
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'idno' => null
-                    ]);
+                    //1. buat gltran
+                    DB::table('finance.gltran')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','PB')
+                        ->where('trantype','=',$dbacthdr_obj->trantype)
+                        ->where('auditno','=',$dbacthdr_obj->auditno)
+                        ->where('lineno_','=',1)
+                        ->update([
+                            'compcode' => session('compcode'),
+                            // 'auditno' => $dbacthdr_obj->auditno,
+                            // 'lineno_' => 1,
+                            // 'source' => 'PB',
+                            // 'trantype' => $dbacthdr_obj->trantype,
+                            'reference' => $dbacthdr_obj->reference,
+                            'description' => $dbacthdr_obj->oldmrn,
+                            'year' => $yearperiod->year,
+                            'period' => $yearperiod->period,
+                            'drcostcode' => $drcostcode,
+                            'dracc' => $dracc,
+                            'crcostcode' => $crcostcode,
+                            'cracc' => $cracc,
+                            'amount' => $dbacthdr_obj->amount,
+                            'postdate' => $posteddate,
+                            'adduser' => 'SYSTEM',
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'idno' => null
+                        ]);
+                }else{
+
+                    //1. buat gltran
+                    DB::table('finance.gltran')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'auditno' => $dbacthdr_obj->auditno,
+                            'lineno_' => 1,
+                            'source' => 'PB',
+                            'trantype' => $dbacthdr_obj->trantype,
+                            'reference' => $dbacthdr_obj->reference,
+                            'description' => $dbacthdr_obj->oldmrn,
+                            'year' => $yearperiod->year,
+                            'period' => $yearperiod->period,
+                            'drcostcode' => $drcostcode,
+                            'dracc' => $dracc,
+                            'crcostcode' => $crcostcode,
+                            'cracc' => $cracc,
+                            'amount' => $dbacthdr_obj->amount,
+                            'postdate' => $posteddate,
+                            'adduser' => 'SYSTEM',
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'idno' => null
+                        ]);
+                }
             }
 
             DB::commit();

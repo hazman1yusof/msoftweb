@@ -101,8 +101,7 @@
                 @php($totalAmount += $pv_obj->ap2_amount)
                 <tr>
                     <td>{{\Carbon\Carbon::parse($pv_obj->ap2_postdate)->format('d/m/Y')}}</td>
-                    <td data-format="@">{{$pv_obj->source}}-{{$pv_obj->trantype}}-{{str_pad($pv_obj->ap2_auditno, 7, "0", STR_PAD_LEFT)}}</td>
-
+                    <td data-format="@">{{$pv_obj->ap2_source}}-{{$pv_obj->ap2_trantype}}-{{str_pad($pv_obj->ap2_auditno, 7, "0", STR_PAD_LEFT)}}</td>
                     <td data-format="@">{{$pv_obj->ap2_document}}</td>
                     <td data-format="@">{{$pv_obj->ap2_remarks}}</td>
                     <td style="text-align: right">{{$pv_obj->ap2_amount}}</td>
