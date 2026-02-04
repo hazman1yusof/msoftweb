@@ -243,9 +243,95 @@ $(document).ready(function () {
 		}],
 	});
 
-	$('#pdfgen_excel').click(function(){
+	$('#pdfgen_balance').click(function(){
 		$( "#statementDialog" ).dialog( "open" );
 	});
+
+
+	$( "#statementPeriodicDialog" ).dialog({
+		autoOpen: false,
+		width: 5/10 * $(window).width(),
+		modal: true,
+		open: function(){
+		
+		},
+		close: function( event, ui ){
+			parent_close_disabled(false);
+			emptyFormdata(errorField,'#formdata_statementPeriodic');
+		},
+	});
+
+	$('#periodicStatement').click(function(){
+		$("#ps_span_dlexcel").hide();
+		$('#ps_job_id').val('');
+
+		if($('#formdata_statementPeriodic').isValid({requiredFields:''},conf,true)){
+			$(this).prop('disabled',true);
+			$(this).html('Processing.. <i class="fa fa-refresh fa-spin fa-fw">');
+
+			let serializedForm =  $('#formdata_statementPeriodic').serializeArray();
+			let href = './statement/table?'+$.param(serializedForm);
+
+			$.get( href, function( data ) {
+
+			},'json').fail(function(data) {
+
+			}).done(function(data){
+				$('#ps_job_id').val(data.job_id);
+			});
+			
+			startProcessInterval();
+		}
+	});
+
+	$('#pdfgen_periodic').click(function(){
+		$( "#statementPeriodicDialog" ).dialog( "open" );
+	});
+
+
+	let intervalId = null;
+  	function startProcessInterval() {
+	    intervalId = setInterval(check_running_process, 8000);
+	}
+
+	function stopProcessInterval() {
+	    if (intervalId !== null) {
+	        clearInterval(intervalId);
+	        intervalId = null;
+	    }
+	}
+
+	function check_running_process() {
+		let job_id = $('#ps_job_id').val();
+		if(job_id == ''){
+			console.log('no job id');
+			return 0;
+		}
+
+		$.get( './statement/table?action=check_running_process&job_id='+job_id, function( data ) {
+			
+		},'json').done(function(data) {
+	    	if(data.jobdone=='true'){
+	    		stopProcessInterval();
+				$('#periodicStatement').attr('disabled',false);
+				$('#periodicStatement').html(`<span class="fa fa-file-excel-o fa-lg"></span> Process XLS`);
+				$("#ps_span_dlexcel").show();
+			}else{
+				$('#periodicStatement').attr('disabled',true);
+				$('#periodicStatement').html('Processing.. <i class="fa fa-refresh fa-spin fa-fw">');
+				$("#ps_span_dlexcel").hide();
+			}
+		});
+	}
+
+	$("#ps_download_excel").click(function() {
+		if($('#ps_job_id').val() == ''){
+			
+		}else{
+			window.open('./statement/table?action=download_excel&job_id='+$('#ps_job_id').val(), '_blank');
+		}
+	});
+
 	////////////////////////////////////////end dialog///////////////////////////////////////////
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
@@ -1079,6 +1165,109 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	suppcode_to.makedialog(true);
+
+	var ps_suppcode_from = new ordialog(
+		'ps_suppcode_from','material.supplier','#ps_suppcode_from','errorField',
+		{	
+			colModel:[
+				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer', canSearch: true, or_search: true },
+				{label:'Supplier Name',name:'name',width:400,classes:'pointer', canSearch: true, checked: true, or_search: true },
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function () {
+				let data_suppcode = selrowData('#' + ps_suppcode_from.gridname).suppcode;
+
+				$('#ps_suppcode_to').val(data_suppcode);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+			}
+		},{
+			title:"Select Creditor",
+			open: function(){
+				ps_suppcode_from.urlParam.filterCol=['compcode','recstatus'];
+				ps_suppcode_from.urlParam.filterVal=['session.compcode','ACTIVE'];
+			},
+			close: function(obj_){
+			},
+			after_check: function(data,self,id,fail,errorField){
+				let value = $(id).val();
+				if(value.toUpperCase() == 'ZZZ'){
+					ordialog_buang_error_shj(id,errorField);
+					if($.inArray('suppcode_to',errorField)!==-1){
+						errorField.splice($.inArray('suppcode_to',errorField), 1);
+					}
+				}
+			},
+			justb4refresh: function(obj_){
+				obj_.urlParam.searchCol2=[];
+				obj_.urlParam.searchVal2=[];
+			},
+			justaftrefresh: function(obj_){
+				$("#Dtext_"+obj_.unique).val('');
+			}
+		},'urlParam','radio','tab'
+	);
+	ps_suppcode_from.makedialog(true);
+
+	var ps_suppcode_to = new ordialog(
+		'ps_suppcode_to','material.supplier','#ps_suppcode_to',errorField,
+		{	
+			colModel:[
+				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer', canSearch: true, or_search: true },
+				{label:'Supplier Name',name:'name',width:400,classes:'pointer', canSearch: true, checked: true, or_search: true },
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function () {
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+			}
+		},{
+			title:"Select Creditor",
+			open: function(){
+				ps_suppcode_to.urlParam.filterCol=['compcode','recstatus'];
+				ps_suppcode_to.urlParam.filterVal=['session.compcode','ACTIVE'];
+			},
+			close: function(obj_){
+			},
+			after_check: function(data,self,id,fail,errorField){
+				let value = $(id).val();
+				if(value.toUpperCase() == 'ZZZ'){
+					ordialog_buang_error_shj(id,errorField);
+					if($.inArray('suppcode_to',errorField)!==-1){
+						errorField.splice($.inArray('suppcode_to',errorField), 1);
+					}
+				}
+			},
+			justb4refresh: function(obj_){
+				obj_.urlParam.searchCol2=[];
+				obj_.urlParam.searchVal2=[];
+			},
+			justaftrefresh: function(obj_){
+				$("#Dtext_"+obj_.unique).val('');
+			}
+		},'urlParam','radio','tab'
+	);
+	ps_suppcode_to.makedialog(true);
 
 	///////dialog handler PV///////
 	

@@ -73,7 +73,7 @@
                 @php($totalAmount += $db_obj->newamt)
                 <tr>
                     <td>{{\Carbon\Carbon::parse($db_obj->postdate)->format('d/m/Y')}}</td>
-                    <td data-format="@">{{str_pad($db_obj->auditno, 7, "0", STR_PAD_LEFT)}}</td>
+                    <td data-format="@">{{$db_obj->source}}-{{$db_obj->trantype}}-{{str_pad($db_obj->auditno, 7, "0", STR_PAD_LEFT)}}</td>
 
                     <td data-format="@">{{$db_obj->document}}</td>
                     <td data-format="@">{{$db_obj->remarks}}</td>
@@ -89,11 +89,11 @@
         @php($totalAmount -= $pv_main->ap1_amount)
         <tr>
             <td>{{\Carbon\Carbon::parse($pv_main->ap1_postdate)->format('d/m/Y')}}</td>
-            <td data-format="@">{{str_pad($pv_main->ap1_auditno, 7, "0", STR_PAD_LEFT)}}</td>
+            <td data-format="@">{{$pv_main->ap1_source}}-{{$pv_main->ap1_trantype}}-{{str_pad($pv_main->ap1_auditno, 7, "0", STR_PAD_LEFT)}}</td>
 
             <td data-format="@">{{$pv_main->ap1_trantype}}-{{$pv_main->ap1_pvno}}</td>
             <td data-format="@">{{$pv_main->ap1_remarks}}</td>
-            <td style="text-align: right">-{{$pv_main->ap1_amount}}</td>
+            <td style="text-align: right">-{{$pv_main->ap1_amount * -1}}</td>
             <td style="text-align: right">{{$totalAmount}}</td>
         </tr>
         @foreach($ap_pv as $pv_obj)
@@ -101,11 +101,11 @@
                 @php($totalAmount += $pv_obj->ap2_amount)
                 <tr>
                     <td>{{\Carbon\Carbon::parse($pv_obj->ap2_postdate)->format('d/m/Y')}}</td>
-                    <td data-format="@">{{str_pad($pv_obj->ap2_auditno, 7, "0", STR_PAD_LEFT)}}</td>
+                    <td data-format="@">{{$pv_obj->source}}-{{$pv_obj->trantype}}-{{str_pad($pv_obj->ap2_auditno, 7, "0", STR_PAD_LEFT)}}</td>
 
                     <td data-format="@">{{$pv_obj->ap2_document}}</td>
                     <td data-format="@">{{$pv_obj->ap2_remarks}}</td>
-                    <td style="text-align: right">{{$pv_obj->ap2_amount * -1}}</td>
+                    <td style="text-align: right">{{$pv_obj->ap2_amount}}</td>
                     <td style="text-align: right">{{$totalAmount}}</td>
                 </tr>
             @endif

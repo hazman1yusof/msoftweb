@@ -91,9 +91,17 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">AP Enquiry Header
-					<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #518351;" id='pdfgen_excel'>
-						<span class='fa fa-print'></span> Statement 
-					</a>
+                	<span class='pull-right'>
+                		<b>Statement: </b>
+						<a class='pointer' style="padding-left: 30px;" id='pdfgen_periodic'>
+							Periodic 
+						</a>
+						<a class='pointer' style="padding-left: 30px;" id='pdfgen_balance'>
+							Balance 
+						</a>
+                	</span>
+
+					
 				</div>
                     <div class="panel-body">
                         <div class='col-md-12' style="padding:0 0 15px 0">
@@ -191,7 +199,7 @@
 	<!-------------------------------- End Search + table --------------------->
 
 	<!------------------------- AP Statement dialog search -------------------->
-	<div id="statementDialog" title="Statement">
+	<div id="statementDialog" title="Balance Statement">
 		<input id="statement" type="hidden" class="form-control input-sm" readonly>
 			<div class="panel-body">
 				<form class='form-horizontal' style='width:99%' id='formdata_statement'>
@@ -222,6 +230,58 @@
 									<input type="date" name="datefrom" id="datefrom" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 							</div>
 					</div>
+				</form>
+			</div>
+	</div>
+
+	<div id="statementPeriodicDialog" title="Periodic Statement">
+		<input id="statement" type="hidden" class="form-control input-sm" readonly>
+			<div class="panel-body">
+				<form class='form-horizontal' style='width:99%' id='formdata_statementPeriodic'>
+					<input type="hidden" name="action" value="process_pyserver">
+						<div class="form-group">
+							<div class="col-md-6">
+								<label class="control-label" for="Scol">Supplier From</label> 
+									<div class='input-group'> 
+										<input id="ps_suppcode_from" name="ps_suppcode_from" type="text" class="form-control input-sm" autocomplete="off" value="">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class="help-block"></span>
+							</div>
+
+							<div class="col-md-6">
+							<label class="control-label" for="Scol">Supplier To</label>  
+								<div class='input-group'>
+									<input id="ps_suppcode_to" name="ps_suppcode_to" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="ZZZ">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span class="help-block"></span>
+							</div>
+						</div>
+
+	                    <div class="form-group">
+	                            <div class="col-md-6">
+	                            <label class="control-label">Month From</label> 
+	                            <input type="month" name="ps_fromdate" class="form-control input-sm" autocomplete="off" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->subMonth()->format('Y-m')}}">
+	                      </div>
+	                            <div class="col-md-6">
+	                            <label class="control-label">Month To</label>  
+	                            <input type="month" name="ps_todate" class="form-control input-sm" autocomplete="off" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->format('Y-m')}}">
+	                      </div>
+	                    </div>
+
+	                    <div class='form-group' style="text-align: center;">
+		                    <button name="periodicStatement" id="periodicStatement" type="button" class="btn btn-sm" style="
+		                    margin-bottom:3px;border: solid green 1px;
+						    background: darkseagreen;
+						    margin-bottom: 3px;">
+		                        <span class="fa fa-file-excel-o fa-lg"></span> Process XLS
+		                    </button>
+		                    <input type="hidden" id="ps_job_id">
+		                    <span id="ps_span_dlexcel" style="display:none;">
+		                        <a id="ps_download_excel" style="display: block;text-align: center;cursor: pointer;">Download Excel</a>
+		                    </span>
+		                </div>
 				</form>
 			</div>
 	</div>
@@ -984,6 +1044,6 @@
 		});
 	</script>
 
-	<script src="js/finance/AP/apenquiry/apenquiry.js?v=1.7"></script>
+	<script src="js/finance/AP/apenquiry/apenquiry.js?v=1.8"></script>
 	
 @endsection

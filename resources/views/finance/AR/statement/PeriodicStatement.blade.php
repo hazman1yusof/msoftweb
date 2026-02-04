@@ -44,37 +44,38 @@
         <td style="font-weight: bold;text-align: right">BALANCE AMOUNT</td>
         <td style="font-weight: bold;text-align: right">TOTAL</td>
     </tr>
-    <tr></tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td style="text-align: right; font-weight: bold;">OPEN BALANCE</td>
+        <td style="text-align: right; font-weight: bold">{{$openbalance}}</td>
+        <td style="text-align: right; font-weight: bold">{{$openbalance}}</td>
+    </tr>
 
-    @php($totalAmount = 0)
+    @php($totalAmount = $openbalance)
     @foreach($suppcode as $index => $supp)
+        <tr></tr>
         <tr>
-            <td colspan="2">{{$supp->name}}</td>
-            <td></td><td></td>
+            <td colspan="4">{{$supp->Name}} - ({{$supp->suppcode}})</td>
         </tr>
         <tr>
-            <td colspan="2">{{$supp->addr1}}</td>
-            <td></td><td></td>
+            <td colspan="4">{{$supp->addr1}}</td>
         </tr>
         <tr>
-            <td colspan="2">{{$supp->addr2}}</td>
-            <td></td><td></td>
+            <td colspan="4">{{$supp->addr2}}</td>
         </tr>
         <tr>
-            <td colspan="2">{{$supp->addr3}}</td>
-            <td></td><td></td>
+            <td colspan="4">{{$supp->addr3}}</td>
             <td colspan="3">DATE PRINTED: {{$datenow}} </td>
         </tr>
-        <tr>
-            <td colspan="2">{{$supp->addr4}}</td>
-        </tr>
+        <tr></tr>
         @foreach($array_report as $db_obj)
             @if($db_obj->suppcode == $supp->suppcode)
                 @php($totalAmount += $db_obj->newamt)
                 <tr>
                     <td>{{\Carbon\Carbon::parse($db_obj->postdate)->format('d/m/Y')}}</td>
-                    <td data-format="@">{{str_pad($db_obj->auditno, 7, "0", STR_PAD_LEFT)}}</td>
-
+                    <td data-format="@">{{$db_obj->source}}-{{$db_obj->trantype}}-{{str_pad($db_obj->auditno, 7, "0", STR_PAD_LEFT)}}</td>
                     <td data-format="@">{{$db_obj->document}}</td>
                     <td data-format="@">{{$db_obj->remarks}}</td>
                     <td style="text-align: right">{{$db_obj->newamt}}</td>
@@ -85,6 +86,16 @@
 
     @endforeach
     
+    
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td style="text-align: right; font-weight: bold;">TOTAL AMOUNT</td>
+        <td></td>
+        <td style="text-align: right; font-weight: bold;">{{$totalAmount}}</td>
+    </tr>
+
     <tr></tr>
     <div style="page-break-after: always" />
 

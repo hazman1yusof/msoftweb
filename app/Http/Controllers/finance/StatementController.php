@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Validator;
 use GuzzleHttp\Client;
 use Response;
 use Symfony\Component\Process\Process;
+use App\Exports\PeriodicStatementExport;
 // use App\Jobs\ARAgeingDtlProcess;
 
 class StatementController extends defaultController
@@ -34,6 +35,8 @@ class StatementController extends defaultController
                 return $this->process_pyserver($request);
             case 'check_running_process':
                 return $this->check_running_process($request);
+            case 'download_excel':
+                return $this->download_excel($request);
             default:
                 return 'error happen..';
         }
@@ -51,10 +54,10 @@ class StatementController extends defaultController
 
         $username = session('username');
         $compcode = session('compcode');
-        $suppcode_from = $request->supp_from;
-        $suppcode_to = $request->supp_to;
-        $fromdate = $request->fromdate;
-        $todate = $request->todate;
+        $suppcode_from = $request->ps_suppcode_from;
+        $suppcode_to = $request->ps_suppcode_to;
+        $fromdate = $request->ps_fromdate;
+        $todate = $request->ps_todate;
 
         $firstDay = Carbon::createFromFormat('Y-m', $fromdate)->startOfMonth()->format('Y-m-d');
         $lastDay  = Carbon::createFromFormat('Y-m', $todate)->endOfMonth()->format('Y-m-d');
@@ -137,15 +140,9 @@ class StatementController extends defaultController
                         ->where('status', 'DONE')
                         ->orderBy('idno', 'desc')
                         ->first();
-                        dd($job_queue);
 
-        // return Excel::download(new invoiceListingsExport(
-        //     $job_queue->idno,
-        //     $job_queue->debtorcode_from,
-        //     $job_queue->debtorcode_to,
-        //     $job_queue->date,
-        //     $job_queue->date_to,
-        //     $job_queue->debtortype
-        // ), $job_queue->filename);  
+        return Excel::download(new PeriodicStatementExport(
+            $job_queue->idno
+        ), $job_queue->filename);  
     }
 }

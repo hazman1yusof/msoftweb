@@ -53,6 +53,7 @@ class PeriodicStatementExport implements FromView, WithEvents, WithColumnWidths,
     public function columnFormats(): array
     {
         return [
+            'B' => NumberFormat::FORMAT_NUMBER,
             'C' => NumberFormat::FORMAT_TEXT,
             'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
@@ -69,7 +70,7 @@ class PeriodicStatementExport implements FromView, WithEvents, WithColumnWidths,
             'A' => 15,
             'B' => 15,
             'C' => 35,
-            'D' => 35,
+            'D' => 55,
             'E' => 15,
             'F' => 15,
             'G' => 15,
@@ -82,16 +83,27 @@ class PeriodicStatementExport implements FromView, WithEvents, WithColumnWidths,
     public function view(): View
     {
 
-        $monthFrom = Carbon::parse($this->fromdate)->format('m-Y');
-        $monthTo = Carbon::parse($this->todate)->format('m-Y');
+        $monthFrom = Carbon::parse($this->fromdate)->format('F Y');
+        $monthTo = Carbon::parse($this->todate)->format('F Y');
         $datenow = Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y');
 
         $array_report = DB::table('jobs.periodicStatement')
-                            ->where('job_id',$this->job_id)
-                            ->orderBy('posteddate', 'asc')
-                            ->get();
+                            ->where('job_id',$this->job_id);
 
-        $title = "PERIODIC STATEMENT";
+        if($array_report->exists()){
+            $array_report = $array_report->get();
+            $array_first = $array_report->first();
+
+            $positive = $array_first->amount_positive;
+            $negative = $array_first->amount_negative;
+            $openbalance = $positive - $negative;
+
+        }else{
+            $array_report = $array_report->get();
+            $openbalance = 0;
+
+        }
+
         $suppcode = collect($array_report)->unique('suppcode');
         
         $company = DB::table('sysdb.company')
@@ -100,7 +112,7 @@ class PeriodicStatementExport implements FromView, WithEvents, WithColumnWidths,
 
         // dd($array_report);
 
-        return view('finance.AR.statement.PeriodicStatement',compact('suppcode', 'array_report','title','company','datenow','monthFrom','monthTo'));
+        return view('finance.AR.statement.PeriodicStatement',compact('suppcode', 'array_report','openbalance','company','datenow','monthFrom','monthTo'));
 
     }
     
@@ -114,14 +126,14 @@ class PeriodicStatementExport implements FromView, WithEvents, WithColumnWidths,
                 
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
-                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nAR AGEING DETAILS"."\n"
-                .sprintf('DATE %s',Carbon::parse($this->date)->format('d-m-Y'))
-                .sprintf('FROM %s TO %s',$this->debtorcode_from, $this->debtorcode_to)
-                .'&L'
-                .'PRINTED BY : '.session('username')
-                ."\nPAGE : &P/&N"
-                .'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')
-                ."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
+                // $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nAR AGEING DETAILS"."\n"
+                // .sprintf('DATE %s',Carbon::parse($this->date)->format('d-m-Y'))
+                // .sprintf('FROM %s TO %s',$this->debtorcode_from, $this->debtorcode_to)
+                // .'&L'
+                // .'PRINTED BY : '.session('username')
+                // ."\nPAGE : &P/&N"
+                // .'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')
+                // ."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
                 
                 $event->sheet->getPageMargins()->setTop(1);
                 
