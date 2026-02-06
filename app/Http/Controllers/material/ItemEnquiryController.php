@@ -65,25 +65,70 @@ class ItemEnquiryController extends defaultController
                 return $this->scheduler2($request);
             case 'scheduler3':
                 return $this->scheduler3($request);
-            // case 'maintable1':
-            //     return $this->maintable1($request);
+            case 'maintable1':
+                return $this->maintable1($request);
             default:
                 return 'error happen..';
         }
     }
 
-    // public function maintable1(Request $request){
+    public function maintable1(Request $request){
 
-    //     $table = DB::table('material.product as p')
-    //                 ->select('p.idno as p_idno','p.unit as p_unit','p.itemcode as p_itemcode','p.description as p_description','p.uomcode as p_uomcode','u.description as u_description','p.qtyonhand as p_qtyonhand','p.avgcost as p_avgcost','p.currprice as p_currprice',)
-    //                 ->join('material.uom as u', function($join) use ($request){
-    //                         $join = $join->where('u.compcode', session('compcode'))
-    //                                      ->on('u.uomcode','p.uomcode');
-    //                 })
-    //                 ->where('p.compcode',session('compcode'))
-    //                 ->where('p.unit',session('unit'))
-    //                 ->where('p.Class',$request->Class)
-    // }
+        $table = DB::table('material.product as p')
+                    ->select('p.idno as p_idno','p.unit as p_unit','p.itemcode as p_itemcode','p.description as p_description','p.uomcode as p_uomcode','u.description as u_description','p.qtyonhand as p_qtyonhand','p.avgcost as p_avgcost','p.currprice as p_currprice',)
+                    ->join('material.uom as u', function($join) use ($request){
+                            $join = $join->where('u.compcode', session('compcode'))
+                                         ->on('u.uomcode','p.uomcode');
+                    })
+                    ->where('p.compcode',session('compcode'))
+                    ->where('p.unit',session('unit'))
+                    ->where('p.Class',$request->Class);
+
+        if(!empty($request->searchCol)){
+            if($request->searchCol[0] == 'p_description'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('p.description','like',$request->searchVal[0]);
+                });
+            }else if($request->searchCol[0] == 'p_itemcode'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('p.itemcode','like',$request->searchVal[0]);
+                });
+            }else{
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
+                });
+            }
+        }
+
+        if(!empty($request->sidx)){
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                foreach ($pieces as $key => $value) {
+                    $value_ = substr_replace($value,"p.",0,strpos($value,"_")+1);
+                    $pieces_inside = explode(" ", $value_);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }else{
+            $table = $table->orderBy('p.idno','DESC');
+        }
+        
+        $paginate = $table->paginate($request->rows);
+        
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+        
+        return json_encode($responce);    
+    }
 
     public function detailMovement(Request $request){
         //yg ni yg keluar kot

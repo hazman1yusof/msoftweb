@@ -6293,7 +6293,12 @@ class TestController extends defaultController
 
         try {
 
-            $poliklinik = DB::table('recondb.poliklinik')
+            $poliklinik = DB::table('recondb.poliklinik as pk')
+                                ->select('pk.name','pk.date','pk.amount','pk.outamount','pk.source','pk.trantype','pk.auditno','pk.newmrn','pk.oldmrn','pk.remark','pk.reference','pk.recptno','pk.payercode','pk.unit','pk.tillcode','dm.name as dm_name')
+                                ->leftjoin('debtor.debtormast as dm', function($join) use ($request){
+                                        $join = $join->on('dm.debtorcode', 'pk.payercode')
+                                                      ->where('dm.compcode',session('compcode'));
+                                    })
                                 // ->where('compcode',session('compcode'))
                                 ->where('source','PB')
                                 ->where('trantype','IN')
@@ -6339,7 +6344,8 @@ class TestController extends defaultController
                             // 'source' => 'PB',
                             // 'trantype' => $dbacthdr_obj->trantype,
                             'reference' => $dbacthdr_obj->reference,
-                            'description' => $dbacthdr_obj->oldmrn,
+                            // 'description' => $dbacthdr_obj->oldmrn,
+                            'description' => $dbacthdr_obj->dm_name,
                             'year' => $yearperiod->year,
                             'period' => $yearperiod->period,
                             'drcostcode' => $drcostcode,
@@ -6363,7 +6369,7 @@ class TestController extends defaultController
                             'source' => 'PB',
                             'trantype' => $dbacthdr_obj->trantype,
                             'reference' => $dbacthdr_obj->reference,
-                            'description' => $dbacthdr_obj->oldmrn,
+                            'description' => $dbacthdr_obj->dm_name,
                             'year' => $yearperiod->year,
                             'period' => $yearperiod->period,
                             'drcostcode' => $drcostcode,

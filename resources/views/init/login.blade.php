@@ -59,8 +59,8 @@
     	<label for="comp" class="sr-only">Company</label>
       <select id="cmb_companies" name="cmb_companies" class="form-control">
           <option value="">- Select a Company -</option>
-          @foreach($company as $company)
-            @if ($company->compcode === '9A')
+          @foreach($company as $index => $company)
+            @if ($index == 0)
               <option value="{{$company->compcode}}" selected>{{$company->name}}</option>
             @else
               <option value="{{$company->compcode}}">{{$company->name}}</option>

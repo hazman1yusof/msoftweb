@@ -65,6 +65,16 @@
 					  		<select id='Syear' name='Syear' class="form-control input-sm" tabindex="1"></select>
 		              	</div>
 
+						<div class="col-md-2">
+					  		<select id='Class2_' name='Class2_' class="form-control input-sm" tabindex="1">
+					  			<option @if(strtolower(Request::get('Class')) == 'pharmacy')selected @endif >Pharmacy</option>
+					  			<option @if(strtolower(Request::get('Class')) == 'non-pharmacy')selected @endif >Non-Pharmacy</option>
+					  			<option @if(strtolower(Request::get('Class')) == 'asset')selected @endif >Asset</option>
+					  			<option @if(strtolower(Request::get('Class')) == 'consignment')selected @endif >Consignment</option>
+					  			<option @if(strtolower(Request::get('Class')) == 'others')selected @endif >Others</option>
+					  		</select>
+		              	</div>
+
 	              	  </div>
 					</div>
 
@@ -295,7 +305,7 @@
 			
 		});
 	</script>
-	<script src="js/material/itemInquiry/itemInquiry.js?v=1.6"></script>
+	<script src="js/material/itemInquiry/itemInquiry.js?v=1.7"></script>
 	<script src="plugins/datatables/js/jquery.datatables.min.js"></script>
 
 @endsection

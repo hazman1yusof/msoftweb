@@ -51,25 +51,31 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	
-	var urlParam={
-		action:'get_table_default',
-		url:'util/get_table_default',
-		field:'',fixPost : "true",
-		table_name:['material.product as p','material.uom as u'],
-		table_id:'none_',
-		join_type : ['LEFT JOIN'],
-		join_onCol : ['p.uomcode'],
-		join_onVal : ['u.uomcode'],
-		filterCol:['p.compcode','p.unit','p.Class'],
-		filterVal:['session.compcode','session.unit', $('#Class2').val()]
-	}
+	// var urlParam={
+	// 	action:'get_table_default',
+	// 	url:'util/get_table_default',
+	// 	field:'',fixPost : "true",
+	// 	table_name:['material.product as p','material.uom as u'],
+	// 	table_id:'none_',
+	// 	join_type : ['LEFT JOIN'],
+	// 	join_onCol : ['p.uomcode'],
+	// 	join_onVal : ['u.uomcode'],
+	// 	filterCol:['p.compcode','p.unit','p.Class'],
+	// 	filterVal:['session.compcode','session.unit', $('#Class2').val()]
+	// }
 
-	var urlParamXXX={
+	var urlParam={
 		action:'maintable1',
 		url:'./itemEnquiry/table',
 		year:$('#getYear').val(),
 		Class:$('#Class2').val(),
 	}
+	
+	$('#Class2_').change(function(){
+		$('#Class2').val($(this).val());
+		urlParam.Class = $(this).val()
+		refreshGrid("#jqGrid",urlParam);
+	});
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	

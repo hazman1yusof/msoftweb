@@ -1292,7 +1292,7 @@ class PointOfSalesController extends defaultController
             );
     }
 
-    public function recomputed(Request $request){
+    public function recomputed(Request $request){ //IS CANCELLED IN pos
         
         DB::beginTransaction();
         
@@ -1336,12 +1336,18 @@ class PointOfSalesController extends defaultController
                 DB::table("hisdb.chargetrx")
                         ->where('compcode',session('compcode'))
                         ->where('invno',$invno)
-                        ->delete();
+                        ->update([
+                            'compcode' => 'XX',
+                            'recstatus' => 'DELETE'
+                        ]);
 
                 DB::table("hisdb.billdet")
                         ->where('compcode',session('compcode'))
                         ->where('invno',$invno)
-                        ->delete();
+                        ->update([
+                            'compcode' => 'XX',
+                            'recstatus' => 'DELETE'
+                        ]);
                 
                 $billsum = DB::table("debtor.billsum")
                             ->where('compcode',session('compcode'))
@@ -1430,7 +1436,10 @@ class PointOfSalesController extends defaultController
                             ->where('source','OE')
                             ->where('trantype','IN')
                             ->where('auditno',$billsum_obj->auditno)
-                            ->delete();
+                            ->update([
+                                'compcode' => 'XX',
+                                'recstatus' => 'DELETE'
+                            ]);
                 }
                 
                 DB::table("debtor.billsum")
@@ -1440,7 +1449,7 @@ class PointOfSalesController extends defaultController
                     ->where('billno','=',$dbacthdr->auditno)
                     ->update([
                         // 'invno' => null,
-                        'recstatus' => 'OPEN',
+                        'recstatus' => 'CANCELLED',
                     ]);
                 
                 DB::table("debtor.dbacthdr")
@@ -1448,7 +1457,7 @@ class PointOfSalesController extends defaultController
                     ->where('idno','=',$value)
                     ->update([
                         // 'invno' => null,
-                        'recstatus' => 'RECOMPUTED',
+                        'recstatus' => 'CANCELLED',
                         'posteddate' => null,
                         'approvedby' => null,
                         'approveddate' => null,
@@ -1475,7 +1484,10 @@ class PointOfSalesController extends defaultController
                     ->where('source','PB')
                     ->where('trantype','IN')
                     ->where('auditno',$invno)
-                    ->delete();
+                    ->update([
+                        'compcode' => 'XX',
+                        'recstatus' => 'DELETE'
+                    ]);
             }
             
             DB::commit();
@@ -3748,7 +3760,10 @@ class PointOfSalesController extends defaultController
         DB::table('material.ivdspdt')
             ->where('compcode','=',session('compcode'))
             ->where('recno','=',$billsum_obj->auditno)
-            ->delete();
+            ->update([
+                'compcode' => 'XX',
+                'recstatus' => 'DELETE'
+            ]);
     }
 
     public function crtgltran($ivdspdt_idno,$dbacthdr){
