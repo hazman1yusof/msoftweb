@@ -304,65 +304,68 @@ class assetenquiryController extends defaultController
 
             $yearperiod = $this->getyearperiod($date_wo);
 
-            DB::table('finance.gltran')
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'adduser' => session('username'),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'auditno' => $recno,
-                    'lineno_' => 1,
-                    'source' => 'FA', //kalau stock 'IV', lain dari stock 'DO'
-                    'trantype' => 'WOF',
-                    'reference' => $remarks_wo,
-                    'description' => "POSTING FROM WRITE-OFF(FA) Tagging No: ".$faregister->assetno, 
-                    'postdate' => $date_wo,
-                    'year' => $yearperiod->year,
-                    'period' => $yearperiod->period,
-                    'drcostcode' => $facode->glrevccode,
-                    'dracc' => $facode->glrevaluation,
-                    'crcostcode' => $facode->glassetccode,
-                    'cracc' => $facode->glasset,
-                    'amount' => $faregister->origcost
-                ]);
+            if($faregister->assettype != 'IN'){
+                
+                DB::table('finance.gltran')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'auditno' => $recno,
+                        'lineno_' => 1,
+                        'source' => 'FA', 
+                        'trantype' => 'WOF',
+                        'reference' => $remarks_wo,
+                        'description' => "POSTING FROM WRITE-OFF(FA) Tagging No: ".$faregister->assetno, 
+                        'postdate' => $date_wo,
+                        'year' => $yearperiod->year,
+                        'period' => $yearperiod->period,
+                        'drcostcode' => $facode->glrevccode,
+                        'dracc' => $facode->glrevaluation,
+                        'crcostcode' => $facode->glassetccode,
+                        'cracc' => $facode->glasset,
+                        'amount' => $faregister->origcost
+                    ]);
 
-            $this->init_glmastdtl(
-                        $facode->glrevccode,//drcostcode
-                        $facode->glrevaluation,//dracc
-                        $facode->glassetccode,//crcostcode
-                        $facode->glasset,//cracc
-                        $yearperiod,
-                        $faregister->origcost
-                    );
+                $this->init_glmastdtl(
+                            $facode->glrevccode,//drcostcode
+                            $facode->glrevaluation,//dracc
+                            $facode->glassetccode,//crcostcode
+                            $facode->glasset,//cracc
+                            $yearperiod,
+                            $faregister->origcost
+                        );
 
-            DB::table('finance.gltran')
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'adduser' => session('username'),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'auditno' => $recno,
-                    'lineno_' => 2,
-                    'source' => 'FA', //kalau stock 'IV', lain dari stock 'DO'
-                    'trantype' => 'WOF',
-                    'reference' => $remarks_wo,
-                    'description' => "POSTING FROM WRITE-OFF(FA) Tagging No: ".$faregister->assetno, 
-                    'postdate' => $date_wo,
-                    'year' => $yearperiod->year,
-                    'period' => $yearperiod->period,
-                    'drcostcode' => $facode->glprovccode,
-                    'dracc' => $facode->glprovdep,
-                    'crcostcode' => $facode->glrevccode,
-                    'cracc' => $facode->glrevaluation,
-                    'amount' => $accummulated
-                ]);
+                DB::table('finance.gltran')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'auditno' => $recno,
+                        'lineno_' => 2,
+                        'source' => 'FA', //kalau stock 'IV', lain dari stock 'DO'
+                        'trantype' => 'WOF',
+                        'reference' => $remarks_wo,
+                        'description' => "POSTING FROM WRITE-OFF(FA) Tagging No: ".$faregister->assetno, 
+                        'postdate' => $date_wo,
+                        'year' => $yearperiod->year,
+                        'period' => $yearperiod->period,
+                        'drcostcode' => $facode->glprovccode,
+                        'dracc' => $facode->glprovdep,
+                        'crcostcode' => $facode->glrevccode,
+                        'cracc' => $facode->glrevaluation,
+                        'amount' => $accummulated
+                    ]);
 
-            $this->init_glmastdtl(
-                        $facode->glprovccode,//drcostcode
-                        $facode->glprovdep,//dracc
-                        $facode->glrevccode,//crcostcode
-                        $facode->glrevaluation,//cracc
-                        $yearperiod,
-                        $accummulated
-                    );
+                $this->init_glmastdtl(
+                            $facode->glprovccode,//drcostcode
+                            $facode->glprovdep,//dracc
+                            $facode->glrevccode,//crcostcode
+                            $facode->glrevaluation,//cracc
+                            $yearperiod,
+                            $accummulated
+                        );
+            }
 
             DB::commit();
         } catch (\Exception $e) {
