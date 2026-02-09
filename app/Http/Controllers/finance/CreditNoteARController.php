@@ -1189,7 +1189,7 @@ class CreditNoteARController extends defaultController
         // dd($dbacthdr);
         
         $dballoc = DB::table('debtor.dballoc as a', 'debtor.dbacthdr as h')
-                    ->select('a.compcode', 'a.source', 'a.trantype', 'a.auditno', 'a.lineno_', 'a.docsource', 'a.doctrantype', 'a.docauditno', 'a.refsource', 'a.reftrantype', 'a.refauditno', 'a.refamount', 'a.mrn', 'a.episno', 'a.amount', 'a.outamount', 'a.debtortype', 'a.debtorcode', 'a.payercode', 'a.paymode', 'a.allocdate', 'a.remark', 'a.balance', 'a.adddate', 'a.adduser', 'a.recstatus', 'a.idno', 'h.entrydate as entrydate_hdr', 'p.Name as pt_name')
+                    ->select('a.compcode', 'a.source', 'a.trantype', 'a.auditno', 'a.lineno_', 'a.docsource', 'a.doctrantype', 'a.docauditno', 'a.refsource', 'a.reftrantype', 'a.refauditno', 'a.refamount', 'a.mrn', 'a.episno', 'a.amount', 'a.outamount', 'a.debtortype', 'a.debtorcode', 'a.payercode', 'a.paymode', 'a.allocdate', 'a.remark', 'a.balance', 'a.adddate', 'a.adduser', 'a.recstatus', 'a.idno', 'h.entrydate as entrydate_hdr', 'p.Name as pt_name', 'h2.invno')
                     ->join('debtor.dbacthdr as h', function($join) use ($request){
                                 $join = $join->on('a.docsource', '=', 'h.source')
                                             ->on('a.doctrantype', '=', 'h.trantype')

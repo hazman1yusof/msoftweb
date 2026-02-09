@@ -99,7 +99,7 @@
                                     @php($total_amt = $total_amt + $obj->amount)
                                     [
                                         { text: "{{\Carbon\Carbon::parse($obj->entrydate_hdr)->format('d/m/Y')}}"},
-                                        { text: '{{$obj->reftrantype}}-{{str_pad($obj->refauditno, 5, "0", STR_PAD_LEFT)}}' },
+                                        { text: '{{$obj->reftrantype}}-{{str_pad($obj->refauditno, 5, "0", STR_PAD_LEFT)}} (Inv No: {{$obj->invno}})' },
                                         @if ($obj->reftrantype == 'DN')
                                            { text: '{{$dbacthdr->remark}}' },
                                         @elseif ($obj->reftrantype == 'IN')
