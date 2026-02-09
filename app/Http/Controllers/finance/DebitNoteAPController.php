@@ -469,34 +469,43 @@ use Carbon\Carbon;
     }
       
     public function cancel(Request $request){
-        $apacthdr = DB::table('finance.apacthdr')
-                        ->where('idno','=',$request->idno)
-                        ->where('compcode','=',session('compcode'))
-                        ->first();
+        DB::beginTransaction();
+        try {
+            $apacthdr = DB::table('finance.apacthdr')
+                            ->where('idno','=',$request->idno)
+                            ->where('compcode','=',session('compcode'))
+                            ->first();
 
-        if($apacthdr->recstatus == 'POSTED'){
+            if($apacthdr->recstatus == 'POSTED'){
 
-            $this->gltran_cancel($request->idno);
+                $this->gltran_cancel($request->idno);
 
-            DB::table('finance.apacthdr')
-                ->where('idno','=',$request->idno)
-                ->where('compcode','=',session('compcode'))
-                ->update([
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'recstatus' => 'CANCELLED' 
-                ]);
+                DB::table('finance.apacthdr')
+                    ->where('idno','=',$request->idno)
+                    ->where('compcode','=',session('compcode'))
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'recstatus' => 'CANCELLED' 
+                    ]);
 
-        }else{
+            }else{
 
-            DB::table('finance.apacthdr')
-                ->where('idno','=',$request->idno)
-                ->where('compcode','=',session('compcode'))
-                ->update([
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'recstatus' => 'CANCELLED' 
-                ]);
+                DB::table('finance.apacthdr')
+                    ->where('idno','=',$request->idno)
+                    ->where('compcode','=',session('compcode'))
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'recstatus' => 'CANCELLED' 
+                    ]);
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
         }
     }
 

@@ -9145,10 +9145,6 @@ class TestController extends defaultController
         dd($array_push);
     }
 
-    public function test_yearperiod(Request $request){
-        $yearperiod = $this->getyearperiod('2025-10-01');
-    }
-
     public function pnlbalance_check(Request $request){
         $curryear=2025;
         $glmasdtl = DB::table('finance.glmasdtl as gmd')
@@ -9339,7 +9335,12 @@ class TestController extends defaultController
             }
 
         }
+    }
 
+    public function test_yearperiod(Request $request){
+        $yearperiod = $this->getyearperiod('2026-01-01');
+
+        dd($yearperiod);
     }
 
 }

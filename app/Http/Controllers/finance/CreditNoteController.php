@@ -797,32 +797,39 @@ class CreditNoteController extends defaultController
     }
 
     public function cancel(Request $request){
-        $apacthdr = DB::table('finance.apacthdr')
-                        ->where('idno','=',$request->idno)
-                        ->where('compcode','=',session('compcode'));
+        DB::beginTransaction();
+        try {
+            $apacthdr = DB::table('finance.apacthdr')
+                            ->where('idno','=',$request->idno)
+                            ->where('compcode','=',session('compcode'));
 
 
-        if($apacthdr->recstatus = 'POSTED'){
+            if($apacthdr->recstatus = 'POSTED'){
 
-            $this->gltran_cancel($request->idno);
-            $apacthdr
-                ->update([
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'recstatus' => 'CANCELLED' 
-                ]);
+                $this->gltran_cancel($request->idno);
+                $apacthdr
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'recstatus' => 'CANCELLED' 
+                    ]);
 
-        }else{
+            }else{
 
-            $apacthdr
-                ->update([
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'recstatus' => 'CANCELLED' 
-                ]);
+                $apacthdr
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'recstatus' => 'CANCELLED' 
+                    ]);
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
         }
-
-           
     }
 
     public function gltran($idno){

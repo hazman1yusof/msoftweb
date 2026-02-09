@@ -206,7 +206,6 @@ use Maatwebsite\Excel\Facades\Excel;
         $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
-
     }
 
     public function document(Request $request){
@@ -309,7 +308,6 @@ use Maatwebsite\Excel\Facades\Excel;
         $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
-
     }
 
     public function get_pv_detail(Request $request){

@@ -514,6 +514,7 @@ class CreditDebitTransController extends defaultController
                 }
 
                 //2nd step step add gltran   
+                
                 $queryDP_obj = DB::table('finance.apacthdr')
                     ->select ('apactdtl.compcode', 'apactdtl.source', 'apactdtl.trantype', 'apactdtl.auditno', 'apactdtl.lineno_', 'apactdtl.document', 'apacthdr.remarks', 'apactdtl.deptcode', 'apactdtl.category', 'apacthdr.bankcode', 'apactdtl.amount', 'apacthdr.actdate', 'apactdtl.AmtB4GST')
                     ->join('finance.apactdtl', function($join) use ($request){
@@ -527,6 +528,8 @@ class CreditDebitTransController extends defaultController
                     ->where('apactdtl.trantype', '=', $apacthdr_get->trantype)
                     ->where('apactdtl.auditno', '=', $apacthdr_get->auditno)
                     ->get();
+
+                $yearperiod = $this->getyearperiod($queryDP_obj->actdate);
 
                 foreach ($queryDP_obj as $key => $apactdtl) {
 

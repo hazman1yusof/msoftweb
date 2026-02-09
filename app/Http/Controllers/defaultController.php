@@ -856,13 +856,17 @@ abstract class defaultController extends Controller{
                 $dateto = new DateTime($arrvalue['dateto'.$x]);
                 $status = $arrvalue['periodstatus'.$x];
                 if (($datefr <= $seldate) &&  ($dateto >= $seldate)){
-                    $responce = new stdClass();
-                    $responce->year = $year;
-                    $responce->period = $period;
-                    $responce->status = $status;
-                    $responce->datefr = $arrvalue['datefr'.$x];
-                    $responce->dateto = $arrvalue['dateto'.$x];
-                    return $responce;
+                    if(strtoupper($status) == 'C'){
+                        throw new \Exception("Period closed on ".$date);
+                    }else{
+                        $responce = new stdClass();
+                        $responce->year = $year;
+                        $responce->period = $period;
+                        $responce->status = $status;
+                        $responce->datefr = $arrvalue['datefr'.$x];
+                        $responce->dateto = $arrvalue['dateto'.$x];
+                        return $responce;
+                    }
                 }
             }
         }
@@ -888,15 +892,17 @@ abstract class defaultController extends Controller{
                 $dateto = new DateTime($arrvalue['dateto'.$x]);
                 $status = $arrvalue['periodstatus'.$x];
                 if (($datefr <= $seldate) &&  ($dateto >= $seldate)){
-                    $responce = new stdClass();
-                    $responce->year = $year;
-                    $responce->period = $period;
-                    $responce->status = $status;
-                    $responce->datefr = $arrvalue['datefr'.$x];
-                    $responce->dateto = $arrvalue['dateto'.$x];
-                    return $responce;
-                }else{
-                    // throw new \Exception("Period doesnt Exists or closed on ".$date);
+                    if(strtoupper($status) == 'C'){
+                        throw new \Exception("Period closed on ".$date);
+                    }else{
+                        $responce = new stdClass();
+                        $responce->year = $year;
+                        $responce->period = $period;
+                        $responce->status = $status;
+                        $responce->datefr = $arrvalue['datefr'.$x];
+                        $responce->dateto = $arrvalue['dateto'.$x];
+                        return $responce;
+                    }
                 }
             }
         }
