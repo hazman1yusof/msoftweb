@@ -226,6 +226,9 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                         ->where('da.doctrantype', '=', $value->trantype)
                         ->where('da.docauditno', '=', $value->auditno)
                         ->whereDate('da.allocdate', '<=', $date)
+
+                // dump($this->getQueries($doc_sum));
+
                         ->sum('da.amount');
                 
                 $ref_sum = DB::table('debtor.dballoc as da')
@@ -236,6 +239,9 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                         ->where('da.reftrantype', '=', $value->trantype)
                         ->where('da.refauditno', '=', $value->auditno)
                         ->whereDate('da.allocdate', '<=', $date)
+
+                // dd($this->getQueries($ref_sum));
+
                         ->sum('da.amount');
                 
                 $newamt = -($hdr_amount - $doc_sum - $ref_sum);
