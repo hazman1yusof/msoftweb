@@ -712,9 +712,9 @@
 							<input id="db_auditno" name="db_auditno" type="text" class="form-control input-sm text-uppercase" class="form-control input-sm" rdonly>
 						</div>
 						
-						<label class="col-md-1 control-label" for="posteddate">Posted Date</label>
+						<label class="col-md-1 control-label" for="db_posteddate">Posted Date</label>
 						<div class="col-md-2">
-							<input id="posteddate" name="posteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+							<input id="db_posteddate" name="db_posteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" max="<?php echo date("Y-m-d"); ?>">
 						</div>
 					</div>
 					
@@ -1692,6 +1692,6 @@
 			}
 		});
 	</script>
-	<script src="js/finance/AR/arenquiry/arenquiryScript.js?v=1.21"></script>
+	<script src="js/finance/AR/arenquiry/arenquiryScript.js?v=1.22"></script>
 	<script src="js/finance/AR/arenquiry/allocateDialog_cancel.js?v=1"></script>
 @endsection

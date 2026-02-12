@@ -62,6 +62,8 @@ div#fail_msg{
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 	<input id="ttype_get" name="ttype_get" type="hidden" value="{{Request::get('ttype')}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+	<input id="viewonly" name="viewonly" type="hidden" value="{{Request::get('viewonly')}}">
+	<input id="viewonly_idno" name="viewonly_idno" type="hidden" value="@if(!empty(Request::get('viewonly'))){{$apacthdr->idno}}@endif">
 
 	@if (Request::get('scope') == 'ALL')
 		<input id="recstatus_use" name="recstatus_use" type="hidden" value="ALL">
@@ -564,7 +566,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/finance/AP/paymentVoucher/paymentVoucher.js?V=1.17"></script>
+	<script src="js/finance/AP/paymentVoucher/paymentVoucher.js?V=1.18"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 

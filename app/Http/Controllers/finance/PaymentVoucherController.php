@@ -19,6 +19,17 @@ class PaymentVoucherController extends defaultController
     }
 
     public function show(Request $request){   
+        if(!empty($request->viewonly)){
+            $apacthdr = DB::table('finance.apacthdr AS ap')
+                            ->where('ap.compcode','=', session('compcode'))
+                            ->where('ap.source',$request->source)
+                            ->where('ap.trantype',$request->trantype)
+                            ->where('ap.auditno',$request->auditno)
+                            ->first();
+
+            return view('finance.AP.paymentVoucher.paymentVoucher',compact('apacthdr'));
+        }
+
         return view('finance.AP.paymentVoucher.paymentVoucher');
     }
 
@@ -98,6 +109,12 @@ class PaymentVoucherController extends defaultController
                     })
                     ->where('ap.compcode','=', session('compcode'))
                     ->where('ap.source','=',$request->source);
+
+        if(!empty($request->viewonly) && !empty($request->viewonly_idno)){
+            $table = $table->Where(function ($table) use ($request) {
+                $table->Where('ap.idno',$request->viewonly_idno);
+            });
+        }
 
         if(!empty($request->filterVal) && in_array('PD',$request->filterVal)){
             $table = $table->where('ap.trantype','PD');

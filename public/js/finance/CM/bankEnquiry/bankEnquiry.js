@@ -313,12 +313,59 @@ $(document).ready(function () {
 			trantype: trantype,
 			auditno: auditno
 		}
+		let src = null;
+		let pdf = null;
 
 		switch(true){
 			case obj_id.source=='CM':
-				dialogForm_paymentVoucher(obj_id);
+				if(obj_id.trantype == 'BD'){
+					src = './bankInRegistration?scope=ALL&viewonly=viewonly&source='+source+'&trantype='+trantype+'&auditno='+auditno;
+				}else if(obj_id.trantype == 'BS'){
+					src = './bankInRegistration?scope=ALL&viewonly=viewonly&source='+source+'&trantype='+trantype+'&auditno='+auditno;
+				}else if(obj_id.trantype == 'BQ'){
+					src = './bankInRegistration?scope=ALL&viewonly=viewonly&source='+source+'&trantype='+trantype+'&auditno='+auditno;
+				}else if(obj_id.trantype == 'DP'){
+					src = './directPayment?scope=ALL&viewonly=viewonly&source='+source+'&trantype='+trantype+'&auditno='+auditno;
+				}else if(obj_id.trantype == 'CA'){
+					src = './creditDebitTrans?scope=ALL&viewonly=viewonly&source='+source+'&trantype='+trantype+'&auditno='+auditno;
+				}else if(obj_id.trantype == 'DA'){
+					src = './creditDebitTrans?scope=ALL&viewonly=viewonly&source='+source+'&trantype='+trantype+'&auditno='+auditno;
+				}
+				break;
+			case obj_id.source=='PB':
+				if(obj_id.trantype == 'RC'){
+					pdf = './receipt/showpdf?auditno='+auditno+'&source='+source+'&trantype='+trantype+'&readlauditno=true';
+				}else if(obj_id.trantype == 'RF'){
+					pdf = './receipt/showpdf?auditno='+auditno+'&source='+source+'&trantype='+trantype+'&readlauditno=true';
+				}else if(obj_id.trantype == 'RD'){
+					pdf = './receipt/showpdf?auditno='+auditno+'&source='+source+'&trantype='+trantype+'&readlauditno=true';
+				}
+				break;
+			case obj_id.source=='AP':
+				if(obj_id.trantype == 'PV'){
+					src = './paymentVoucher?source=AP&scope=ALL&viewonly=viewonly&source='+source+'&trantype='+trantype+'&auditno='+auditno;
+				}else if(obj_id.trantype == 'PD'){
+					src = './paymentVoucher?source=AP&scope=ALL&viewonly=viewonly&source='+source+'&trantype='+trantype+'&auditno='+auditno;
+				}
 				break;
 		}
+
+		if(src != null){
+			$('iframe#open_detail_iframe').attr('src',src);
+			$("#open_detail_dialog").dialog("open");
+		}else if(pdf != null){
+			window.open(pdf, '_blank');
+		}
+	});
+
+	$("#open_detail_dialog").dialog({
+		width: 9/10 * $(window).width(),
+		modal: true,
+		autoOpen: false,
+		open: function( event, ui ) {
+		},
+		close: function( event, ui ) {
+		},
 	});
 
 	hidetbl(true);

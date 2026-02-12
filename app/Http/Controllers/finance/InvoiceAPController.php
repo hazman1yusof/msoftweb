@@ -703,7 +703,7 @@ use Maatwebsite\Excel\Facades\Excel;
                 'reference' => $apacthdr_obj->document,
                 'postdate' => $apacthdr_obj->postdate,
                 'description' => $supp_obj->SuppCode.'</br>'.$supp_obj->Name, //suppliercode + suppliername
-                'postdate' => $apacthdr_obj->recdate,
+                // 'postdate' => $apacthdr_obj->recdate,
                 'year' => $yearperiod->year,
                 'period' => $yearperiod->period,
                 'drcostcode' => $debit_obj->drcostcode,

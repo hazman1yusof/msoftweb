@@ -169,6 +169,8 @@ $(document).ready(function () {
 	var urlParam={
 		action:'maintable',
 		url:'./bankInRegistration/table',
+		viewonly:$('#viewonly').val(),
+		viewonly_idno:$('#viewonly_idno').val(),
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -280,6 +282,11 @@ $(document).ready(function () {
 			cbselect.checkbox_function_on();
 			populate_form(selrowData("#jqGrid"));
 			//empty_form()
+
+			page_to_view_only($('#viewonly').val(),function(){
+				let firstrow = $("#jqGrid").getDataIDs()[0];
+				$('#jqGrid tr#'+firstrow).dblclick();
+			});
 		},
 		loadComplete: function(){
 			//calc_jq_height_onchange("jqGrid");

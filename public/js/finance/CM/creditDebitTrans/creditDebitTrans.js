@@ -155,6 +155,8 @@ $(document).ready(function () {
 		action:'maintable',
 		url:'./creditDebitTrans/table',
 		trantype:$('#adjustment').val(),
+		viewonly:$('#viewonly').val(),
+		viewonly_idno:$('#viewonly_idno').val(),
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -257,6 +259,11 @@ $(document).ready(function () {
 			cbselect.refresh_seltbl();
 			cbselect.show_hide_table();
 			cbselect.checkbox_function_on();
+
+			page_to_view_only($('#viewonly').val(),function(){
+				let firstrow = $("#jqGrid").getDataIDs()[0];
+				$('#jqGrid tr#'+firstrow).dblclick();
+			});
 		},
 		loadComplete: function(){
 			//calc_jq_height_onchange("jqGrid");

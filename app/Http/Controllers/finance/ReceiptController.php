@@ -915,9 +915,20 @@ class ReceiptController extends defaultController
     
     public function showpdf(Request $request){
         
-        $idno = $request->auditno;
-        if(!$idno){
-            abort(404);
+        if(!empty($request->readlauditno)){
+            $dbacthdr = DB::table('debtor.dbacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$request->source)
+                            ->where('trantype',$request->trantype)
+                            ->where('auditno',$request->auditno)
+                            ->first();
+
+            $idno = $dbacthdr->idno;
+        }else{
+            $idno = $request->auditno;
+            if(!$idno){
+                abort(404);
+            }
         }
 
         $no_compcode=false;

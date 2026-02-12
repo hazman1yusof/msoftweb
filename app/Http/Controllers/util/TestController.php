@@ -11,6 +11,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Mail;
 
+use App\Exports\check_cbtran_xde;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Jobs\SendEmailPV;
 use App\Mail\sendmaildefault;
 
@@ -144,6 +146,8 @@ class TestController extends defaultController
                 return $this->display_glmasref_header($request);
             case 'gltran_jnl_calc':
                 return $this->gltran_jnl_calc($request);
+            case 'check_cbtran_xde':
+                return $this->check_cbtran_xde($request);
 
                 
             case 'gltran_step1':
@@ -9341,6 +9345,21 @@ class TestController extends defaultController
         $yearperiod = $this->getyearperiod('2026-01-01');
 
         dd($yearperiod);
+    }
+
+    public function check_cbtran_xde(Request $request){
+        $period = $request->period;
+        $year = $request->year;
+
+        if(empty($period)){
+            dd('no period');
+        }
+        if(empty($year)){
+            dd('no year');
+        }
+
+        return Excel::download(new check_cbtran_xde($year,$period), 'check_cbtran_xde.xlsx');
+
     }
 
 }

@@ -195,7 +195,8 @@ $(document).ready(function () {
 		url:'./paymentVoucher/table',
 		source:$('#apacthdr_source').val(),
 		scope: $("#recstatus_use").val(),
-	
+		viewonly:$('#viewonly').val(),
+		viewonly_idno:$('#viewonly_idno').val(),
 	}
 
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
@@ -409,6 +410,11 @@ $(document).ready(function () {
 			});
 			cbselect.refresh_seltbl();
 			cbselect.show_hide_table();
+			
+			page_to_view_only($('#viewonly').val(),function(){
+				let firstrow = $("#jqGrid").getDataIDs()[0];
+				$('#jqGrid tr#'+firstrow).dblclick();
+			});
 			
 		},
 		loadComplete: function(){

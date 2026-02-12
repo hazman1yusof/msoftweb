@@ -34,6 +34,8 @@ i.fa {
 
 <input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 <input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+<input id="viewonly" name="viewonly" type="hidden" value="{{Request::get('viewonly')}}">
+<input id="viewonly_idno" name="viewonly_idno" type="hidden" value="@if(!empty(Request::get('viewonly'))){{$apacthdr->idno}}@endif">
 
 @if (Request::get('scope') == 'ALL')
 	<input id="recstatus_use" name="recstatus_use" type="hidden" value="ALL">
@@ -117,8 +119,13 @@ i.fa {
 					<div class="col-md-4">
 					<label class="control-label" for="adjustment">Transaction</label>  
 					<select id="adjustment" name="adjustment" class="form-control input-sm">
+						@if(!empty(Request::get('trantype')))
+						<option value="CA" @if(Request::get('trantype') == "CA") selected @endif>Credit</option>
+						<option value="DA" @if(Request::get('trantype') == "DA") selected @endif>Debit</option>
+						@else
 						<option selected value="CA">Credit</option>
 						<option value="DA">Debit</option>
+						@endif
 					</select>
 					</div>
 			</div>
@@ -332,5 +339,5 @@ i.fa {
 			
 		});
 	</script>
-	<script src="js/finance/CM/creditDebitTrans/creditDebitTrans.js?V=1.2"></script>
+	<script src="js/finance/CM/creditDebitTrans/creditDebitTrans.js?V=1.3"></script>
 @endsection

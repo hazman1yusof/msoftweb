@@ -83,11 +83,15 @@
     </tr>
 
     @php($total = $total_openbal)
+    @php($total_dr = 0)
+    @php($total_cr = 0)
     @foreach ($table as $obj)
         @if(!empty(floatval($obj->dramount)))
             @php($total = $total + $obj->dramount)
+            @php($total_dr = $total_dr + $obj->dramount)
         @else
             @php($total = $total - $obj->cramount)
+            @php($total_cr = $total_cr + $obj->cramount)
         @endif
         <tr>
             <td>{{$obj->source}}</td>
@@ -105,4 +109,20 @@
         </tr>
     @endforeach
     <tr></tr>
+    
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td style="font-weight: bold">{{$total_dr}}</td>
+        <td style="font-weight: bold">{{$total_cr}}</td>
+        <td style="font-weight: bold">{{$total}}</td>
+        <td></td>
+    </tr>
+
 </table>

@@ -227,13 +227,21 @@
 	<!-------------------------------- End Search + table ------------------>
 		
 		<div id="dialogForm" title="Viewing Detail"></div>
+		
+
+	<div id="open_detail_dialog" title="Detail View" style="padding:0">
+		<div class='col-md-12' style="padding:0" >
+			<iframe id='open_detail_iframe' src='' style="height: calc(100vh - 100px);width: 100%; border: none;"></iframe>
+			<!-- guna nama 'open_detail_iframe' dialog utk semua detail view, utk tak error dkt parent_close_disabled -->
+		</div>
+	</div>
 
 @endsection
 
 
 @section('scripts')
 
-	<script src="js/finance/CM/bankEnquiry/bankEnquiry.js"></script>
+	<script src="js/finance/CM/bankEnquiry/bankEnquiry.js?v=1.1"></script>
 	<script src="plugins/datatables/js/jquery.datatables.min.js"></script>
 	
 @endsection

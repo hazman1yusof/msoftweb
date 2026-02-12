@@ -26,6 +26,17 @@ class bankInRegistrationController extends defaultController
                     ->where('compcode',session('compcode'))
                     ->get();
 
+        if(!empty($request->viewonly)){
+            $apacthdr = DB::table('finance.apacthdr AS ap')
+                            ->where('ap.compcode','=', session('compcode'))
+                            ->where('ap.source',$request->source)
+                            ->where('ap.trantype',$request->trantype)
+                            ->where('ap.auditno',$request->auditno)
+                            ->first();
+
+            return view('finance.CM.bankInRegistration.bankInRegistration',compact('unit','apacthdr'));
+        }
+
         return view('finance.CM.bankInRegistration.bankInRegistration',compact('unit'));
     }
 
@@ -94,6 +105,12 @@ class bankInRegistrationController extends defaultController
                     });
             }
             
+        }
+
+        if(!empty($request->viewonly) && !empty($request->viewonly_idno)){
+            $table = $table->Where(function ($table) use ($request) {
+                $table->Where('ap.idno',$request->viewonly_idno);
+            });
         }
 
         if(!empty($request->sidx)){

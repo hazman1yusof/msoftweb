@@ -21,6 +21,18 @@ class CreditDebitTransController extends defaultController
 
     public function show(Request $request)
     {   
+
+        if(!empty($request->viewonly)){
+            $apacthdr = DB::table('finance.apacthdr AS ap')
+                            ->where('ap.compcode','=', session('compcode'))
+                            ->where('ap.source',$request->source)
+                            ->where('ap.trantype',$request->trantype)
+                            ->where('ap.auditno',$request->auditno)
+                            ->first();
+
+            return view('finance.CM.creditDebitTrans.creditDebitTrans',compact('apacthdr'));
+        }
+
         return view('finance.CM.creditDebitTrans.creditDebitTrans');
     }
 
@@ -97,6 +109,12 @@ class CreditDebitTransController extends defaultController
         if(!empty($request->filterdate)){
             $table = $table->where('ap.actdate','>=',$request->filterdate[0]);
             $table = $table->where('ap.actdate','<=',$request->filterdate[1]);
+        }
+
+        if(!empty($request->viewonly) && !empty($request->viewonly_idno)){
+            $table = $table->Where(function ($table) use ($request) {
+                $table->Where('ap.idno',$request->viewonly_idno);
+            });
         }
 
         if(!empty($request->searchCol)){

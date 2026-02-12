@@ -34,6 +34,8 @@ i.fa {
 
 <input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 <input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+<input id="viewonly" name="viewonly" type="hidden" value="{{Request::get('viewonly')}}">
+<input id="viewonly_idno" name="viewonly_idno" type="hidden" value="@if(!empty(Request::get('viewonly'))){{$apacthdr->idno}}@endif">
 
 @if (Request::get('scope') == 'ALL')
 	<input id="recstatus_use" name="recstatus_use" type="hidden" value="ALL">
@@ -392,5 +394,5 @@ i.fa {
 			
 		});
 	</script>
-	<script src="js/finance/CM/bankInRegistration/bankInRegistration.js?v=1.4"></script>
+	<script src="js/finance/CM/bankInRegistration/bankInRegistration.js?v=1.5"></script>
 @endsection
