@@ -84,7 +84,51 @@ class check_cbtran_xde implements FromView, WithEvents, WithColumnWidths
                         ->whereNotIn('db.auditno',$cbtran)
                         ->get();
 
+        // $this->create_cbtran();
+
         return view('test.check_cbtran_xde_excel',compact('dbacthdr'));
+    }
+
+    public function create_cbtran($dbacthdr){
+
+        // foreach ($dbacthdr as $obj) {
+
+        //     DB::table('finance.cbtran')
+        //             ->where('compcode',session('compcode'))
+        //             ->where('source',$obj->source)
+        //             ->where('trantype',$obj->trantype)
+        //             ->where('auditno',$obj->auditno)
+        //             ->where('bankcode',$obj->bankcode)
+
+        //     DB::table('finance.cbtran')
+        //         ->insert([
+        //             'compcode' => $obj->compcode,
+        //             'bankcode' => $obj->bankcode,
+        //             'source' => $obj->source,
+        //             'trantype' => $obj->trantype,
+        //             'auditno' => $obj->auditno,
+        //             'postdate' => $obj->postdate,
+        //             'year' => $obj->year,
+        //             'period' => $obj->period,
+        //             'cheqno' => $obj->cheqno,
+        //             'amount' => $obj->amount,
+        //             'remarks' => $obj->remarks,
+        //             'upduser' => $obj->upduser,
+        //             'upddate' => $obj->upddate,
+        //             'bitype' => $obj->bitype,
+        //             'reference' => $obj->reference,
+        //             'recstatus' => $obj->recstatus,
+        //             'refsrc' => $obj->refsrc,
+        //             'reftrantype' => $obj->reftrantype,
+        //             'refauditno' => $obj->refauditno,
+        //             'reconstatus' => $obj->reconstatus,
+        //             'recondate' => $obj->recondate,
+        //             'recptno' => $obj->recptno,
+        //         ]);
+        // }
+
+        
+
     }
     
     public function registerEvents(): array

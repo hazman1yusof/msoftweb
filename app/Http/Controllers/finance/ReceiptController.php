@@ -205,7 +205,7 @@ class ReceiptController extends defaultController
 
             //cbtran if paymode by bank
             if(strtolower($request->dbacthdr_paytype) == '#f_tab-debit'){
-                $yearperiod = $this->getyearperiod(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+                $yearperiod = $this->getyearperiod((!empty($request->dbacthdr_entrydate))? $request->dbacthdr_entrydate : Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
                 $paymode_db = DB::table('debtor.paymode')
                             ->where('compcode',session('compcode'))
                             ->where('source','AR')
@@ -246,7 +246,6 @@ class ReceiptController extends defaultController
                         ->update([
                             "actamount".$yearperiod->period => $totamt->amount
                         ]);
-
                 }else{
 
                     $totamt = $this->getCbtranTotamt($bankcode,$yearperiod->year,$yearperiod->period);
@@ -270,7 +269,7 @@ class ReceiptController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage().$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
