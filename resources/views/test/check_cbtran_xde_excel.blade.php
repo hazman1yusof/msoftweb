@@ -9,7 +9,7 @@
             <td style="font-weight:bold">year</td>
             <td style="font-weight:bold">period</td>
             <td style="font-weight:bold">amount</td>
-            <td style="font-weight:bold">remarks</td>
+            <td style="font-weight:bold">remark</td>
             <td style="font-weight:bold">adduser</td>
             <td style="font-weight:bold">recptno</td>
             <td style="font-weight:bold">debtorcode</td>
@@ -23,7 +23,7 @@
                 <td >{{$obj->auditno}}</td>
                 <td >{{$obj->posteddate}}</td>
                 <td >{{$obj->amount}}</td>
-                <td >{{$obj->remarks}}</td>
+                <td >{{$obj->remark}}</td>
                 <td >{{$obj->adduser}}</td>
                 <td >{{$obj->recptno}}</td>
                 <td >{{$obj->debtorcode}}</td>
