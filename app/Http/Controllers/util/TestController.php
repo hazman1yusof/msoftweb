@@ -150,6 +150,8 @@ class TestController extends defaultController
                 return $this->check_cbtran_xde($request);
             case 'cbtran2026':
                 return $this->cbtran2026($request);
+            case 'createcbtran2026':
+                return $this->createcbtran2026($request);
 
                 
             case 'gltran_step1':
@@ -9372,6 +9374,48 @@ class TestController extends defaultController
                 ->where('idno',$obj->idno)
                 ->update([
                     'newauditno' => substr_replace($obj->auditno,'51', 0, 2)
+                ]);
+        }
+    }
+
+    public function createcbtran2026(Request $request){
+        $table = DB::table('recondb.bankrecon2026 as br')
+                ->select('cb.compcode','cb.bankcode','cb.source','cb.trantype','cb.auditno','cb.postdate','cb.year','cb.period','cb.cheqno','cb.amount','cb.remarks','cb.upduser','cb.upddate','cb.bitype','cb.reference','cb.recstatus','cb.refsrc','cb.reftrantype','cb.refauditno','cb.reconstatus','cb.recondate','cb.recptno','cb.reconno','br.adddate','br.newauditno','br.amount_swap')
+                ->join('finance.cbtran as cb', function($join){
+                    $join = $join
+                            ->on('cb.compcode','br.compcode')
+                            ->on('cb.source','br.source')
+                            ->on('cb.trantype','br.trantype')
+                            ->on('cb.auditno','br.auditno');
+                })
+                ->get();
+
+        foreach ($table as $obj) {
+            DB::table('finance.cbtran')
+                ->insert([
+                    'compcode' => $obj->compcode,
+                    'bankcode' => $obj->bankcode,
+                    'source' => $obj->source,
+                    'trantype' => $obj->trantype,
+                    'auditno' => $obj->newauditno,
+                    'postdate' => $obj->adddate,
+                    'year' => 2026,
+                    'period' => 1,
+                    // 'cheqno' => $obj->cheqno,
+                    'amount' => $obj->amount_swap,
+                    'remarks' => $obj->remarks,
+                    // 'upduser' => $obj->upduser,
+                    // 'upddate' => $obj->upddate,
+                    // 'bitype' => $obj->bitype,
+                    // 'reference' => $obj->reference,
+                    'recstatus' => 'ACTIVE',
+                    // 'refsrc' => $obj->refsrc,
+                    // 'reftrantype' => $obj->reftrantype,
+                    // 'refauditno' => $obj->refauditno,
+                    // 'reconstatus' => $obj->reconstatus,
+                    // 'recondate' => $obj->recondate,
+                    // 'recptno' => $obj->recptno,
+                    'reconno' => $obj->auditno,
                 ]);
         }
     }
