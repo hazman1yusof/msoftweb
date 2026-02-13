@@ -57,7 +57,7 @@ class check_cbtran_xde implements FromView, WithEvents, WithColumnWidths
 
         $dbacthdr = DB::table('debtor.dbacthdr as db')
                         ->select('db.auditno')
-                        ->leftJoin('debtor.paymode as p', function($join){
+                        ->join('debtor.paymode as p', function($join){
                             $join = $join
                                         ->where('p.compcode',session('compcode'))
                                         ->on('p.paymode','db.paymode')
@@ -79,8 +79,8 @@ class check_cbtran_xde implements FromView, WithEvents, WithColumnWidths
                         ->where('cb.trantype','RC')
                         ->where('cb.year',$this->year)
                         ->where('cb.period',$this->period)
-                        // ->whereDate('cb.postdate','>=',$day_start)
-                        // ->whereDate('cb.postdate','<=',$day_end)
+                        ->whereDate('cb.postdate','>=',$day_start)
+                        ->whereDate('cb.postdate','<=',$day_end)
                         ->whereNotIn('cb.auditno',$dbacthdr)
                         ->get();
 
