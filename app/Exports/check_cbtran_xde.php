@@ -55,8 +55,18 @@ class check_cbtran_xde implements FromView, WithEvents, WithColumnWidths
         $day_start = Carbon::createFromFormat('Y-m-d',$this->year.'-'.$this->period.'-01')->startOfMonth()->format('Y-m-d');
         $day_end = Carbon::createFromFormat('Y-m-d',$this->year.'-'.$this->period.'-01')->endOfMonth()->format('Y-m-d');
 
+        $cbtran = DB::table('finance.cbtran as cb')
+                        ->where('cb.compcode',session('compcode'))
+                        ->where('cb.source','PB')
+                        ->where('cb.trantype','RC')
+                        ->where('cb.year',$this->year)
+                        ->where('cb.period',$this->period)
+                        ->whereDate('cb.postdate','>=',$day_start)
+                        ->whereDate('cb.postdate','<=',$day_end)
+                        ->get()
+                        ->pluck('auditno')->toArray();
+
         $dbacthdr = DB::table('debtor.dbacthdr as db')
-                        ->select('db.auditno')
                         ->join('debtor.paymode as p', function($join){
                             $join = $join
                                         ->where('p.compcode',session('compcode'))
@@ -70,21 +80,10 @@ class check_cbtran_xde implements FromView, WithEvents, WithColumnWidths
                         ->where('db.recstatus','POSTED')
                         ->whereDate('db.posteddate','>=',$day_start)
                         ->whereDate('db.posteddate','<=',$day_end)
-                        ->get()
-                        ->pluck('auditno')->toArray();
-
-        $cbtran = DB::table('finance.cbtran as cb')
-                        ->where('cb.compcode',session('compcode'))
-                        ->where('cb.source','PB')
-                        ->where('cb.trantype','RC')
-                        ->where('cb.year',$this->year)
-                        ->where('cb.period',$this->period)
-                        ->whereDate('cb.postdate','>=',$day_start)
-                        ->whereDate('cb.postdate','<=',$day_end)
-                        ->whereNotIn('cb.auditno',$dbacthdr)
+                        ->whereNotIn('db.auditno',$cbtran)
                         ->get();
 
-        return view('test.check_cbtran_xde_excel',compact('cbtran'));
+        return view('test.check_cbtran_xde_excel',compact('dbacthdr'));
     }
     
     public function registerEvents(): array
