@@ -299,7 +299,54 @@ $(document).ready(function () {
 	$('#TableGlmasTran').on( 'click', 'td.opendetail', function () {
 		// detbut.show($(this).closest( "tr" ));
 		var rowdata = DataTable.row(this).data();
-		console.log(rowdata)
+		var source = rowdata.source;
+		var trantype = rowdata.trantype;
+		var auditno = rowdata.auditno;
+
+		let src = null;
+		let pdf = null;
+
+		switch(true){
+			case source=='CM':
+				if(trantype == 'BD'){
+					src = './bankInRegistration?scope=ALL&viewonly=viewonly&source='+source+'&trantype='+trantype+'&auditno='+auditno;
+				}else if(trantype == 'BS'){
+					src = './bankInRegistration?scope=ALL&viewonly=viewonly&source='+source+'&trantype='+trantype+'&auditno='+auditno;
+				}else if(trantype == 'BQ'){
+					src = './bankInRegistration?scope=ALL&viewonly=viewonly&source='+source+'&trantype='+trantype+'&auditno='+auditno;
+				}else if(trantype == 'DP'){
+					src = './directPayment?scope=ALL&viewonly=viewonly&source='+source+'&trantype='+trantype+'&auditno='+auditno;
+				}else if(trantype == 'CA'){
+					src = './creditDebitTrans?scope=ALL&viewonly=viewonly&source='+source+'&trantype='+trantype+'&auditno='+auditno;
+				}else if(trantype == 'DA'){
+					src = './creditDebitTrans?scope=ALL&viewonly=viewonly&source='+source+'&trantype='+trantype+'&auditno='+auditno;
+				}
+				break;
+			case source=='PB':
+				if(trantype == 'RC'){
+					pdf = './receipt/showpdf?auditno='+auditno+'&source='+source+'&trantype='+trantype+'&readlauditno=true';
+				}else if(trantype == 'RF'){
+					pdf = './receipt/showpdf?auditno='+auditno+'&source='+source+'&trantype='+trantype+'&readlauditno=true';
+				}else if(trantype == 'RD'){
+					pdf = './receipt/showpdf?auditno='+auditno+'&source='+source+'&trantype='+trantype+'&readlauditno=true';
+				}
+				break;
+			case source=='AP':
+				if(trantype == 'PV'){
+					src = './paymentVoucher?source=AP&scope=ALL&viewonly=viewonly&source='+source+'&trantype='+trantype+'&auditno='+auditno;
+				}else if(trantype == 'PD'){
+					src = './paymentVoucher?source=AP&scope=ALL&viewonly=viewonly&source='+source+'&trantype='+trantype+'&auditno='+auditno;
+				}
+				break;
+		}
+
+		if(src != null){
+			$('iframe#open_detail_iframe').attr('src',src);
+			$("#open_detail_dialog").dialog("open");
+		}else if(pdf != null){
+			window.open(pdf, '_blank');
+		}
+
 	});
 
 	function getdata(){

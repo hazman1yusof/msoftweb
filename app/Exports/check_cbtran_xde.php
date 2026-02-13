@@ -69,7 +69,7 @@ class check_cbtran_xde implements FromView, WithEvents, WithColumnWidths
                         ->where('db.trantype','RC')
                         ->where('db.recstatus','POSTED')
                         ->whereDate('db.posteddate','>=',$day_start)
-                        ->whereDate('db.posteddate','>=',$day_end)
+                        ->whereDate('db.posteddate','<=',$day_end)
                         ->get()
                         ->pluck('auditno')->toArray();
 
@@ -79,6 +79,8 @@ class check_cbtran_xde implements FromView, WithEvents, WithColumnWidths
                         ->where('cb.trantype','RC')
                         ->where('cb.year',$this->year)
                         ->where('cb.period',$this->period)
+                        ->whereDate('cb.postdate','>=',$day_start)
+                        ->whereDate('cb.postdate','<=',$day_end)
                         ->whereNotIn('cb.auditno',$dbacthdr)
                         ->get();
 
