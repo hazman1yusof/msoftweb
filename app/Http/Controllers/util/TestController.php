@@ -148,6 +148,8 @@ class TestController extends defaultController
                 return $this->gltran_jnl_calc($request);
             case 'check_cbtran_xde':
                 return $this->check_cbtran_xde($request);
+            case 'cbtran2026':
+                return $this->cbtran2026($request);
 
                 
             case 'gltran_step1':
@@ -9359,7 +9361,19 @@ class TestController extends defaultController
         }
 
         return Excel::download(new check_cbtran_xde($year,$period), 'check_cbtran_xde.xlsx');
+    }
 
+    public function cbtran2026(Request $request){
+        $table = DB::table('recondb.bankrecon2026')
+                ->get();
+
+        foreach ($table as $obj) {
+            DB::table('recondb.bankrecon2026')
+                ->where('idno',$obj->idno)
+                ->update([
+                    'newauditno' => substr_replace($obj->auditno,'51', 0, 2)
+                ]);
+        }
     }
 
 }
