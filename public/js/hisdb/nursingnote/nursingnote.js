@@ -538,6 +538,7 @@ $(document).ready(function (){
             case 'invChart':
                 // reload first tab dulu
                 $('#invChart_file').DataTable().ajax.url('./nursingnote/table?action=invChart_file&mrn='+$('#mrn_nursNote').val()+'&episno='+$("#episno_nursNote").val()).load();
+                populate_invHeader_getdata();
                 
                 var urlparam_tbl_invcat_FBC = {
                     action: 'get_invcat',
@@ -551,9 +552,10 @@ $(document).ready(function (){
                 
                 // $('#tbl_invcat_FBC').DataTable().ajax.reload();
                 $("#jqGridInvChart_FBC").jqGrid('setGridWidth', Math.floor($("#jqGridInvChartFBC_c")[0].offsetWidth-$("#jqGridInvChartFBC_c")[0].offsetLeft-58));
-                populate_invHeader_getdata();
                 break;
             case 'progress':
+                populate_progressnote_getdata();
+                
                 var urlparam_datetime_tbl = {
                     action: 'get_table_datetime',
                     mrn: $("#mrn_nursNote").val(),
@@ -566,9 +568,10 @@ $(document).ready(function (){
                 });
                 
                 // $('#datetime_tbl').DataTable().ajax.reload();
-                populate_progressnote_getdata();
                 break;
             case 'intake':
+                populate_intakeoutput_getdata();
+                
                 var urlparam_tbl_intake_date = {
                     action: 'get_datetime_intake',
                     mrn: $("#mrn_nursNote").val(),
@@ -581,7 +584,6 @@ $(document).ready(function (){
                 });
                 
                 // $('#tbl_intake_date').DataTable().ajax.reload();
-                populate_intakeoutput_getdata();
                 
                 $('#jqGridNursNote_intake_tabs.nav-tabs a').on('shown.bs.tab', function (e){
                     let shift = $(this).data('shift');
@@ -599,6 +601,8 @@ $(document).ready(function (){
                 });
                 break;
             case 'drug':
+                populate_drugadmin_getdata();
+                
                 var urlparam_tbl_prescription = {
                     action: 'get_prescription',
                     mrn: $("#mrn_nursNote").val(),
@@ -613,9 +617,10 @@ $(document).ready(function (){
                 
                 // $('#tbl_prescription').DataTable().ajax.reload();
                 $("#jqGridPatMedic").jqGrid('setGridWidth', Math.floor($("#jqGridPatMedic_c")[0].offsetWidth-$("#jqGridPatMedic_c")[0].offsetLeft-30));
-                populate_drugadmin_getdata();
                 break;
             case 'treatment':
+                populate_treatment_getdata();
+                
                 var urlparam_tbl_treatment = {
                     action: 'get_datetime_treatment',
                     mrn: $("#mrn_nursNote").val(),
@@ -655,9 +660,10 @@ $(document).ready(function (){
                 // $('#tbl_treatment').DataTable().ajax.reload();
                 // $('#tbl_investigation').DataTable().ajax.reload();
                 // $('#tbl_injection').DataTable().ajax.reload();
-                populate_treatment_getdata();
                 break;
             case 'careplan':
+                populate_careplan_getdata();
+                
                 var urlparam_tbl_careplan_date = {
                     action: 'get_datetime_careplan',
                     mrn: $("#mrn_nursNote").val(),
@@ -670,33 +676,37 @@ $(document).ready(function (){
                 });
                 
                 // $('#tbl_careplan_date').DataTable().ajax.reload();
-                populate_careplan_getdata();
                 break;
             case 'fitchart':
+                populate_fitchart_getdata();
+                
                 urlParam_FitChart.filterVal[0] = $("#mrn_nursNote").val();
                 urlParam_FitChart.filterVal[1] = $("#episno_nursNote").val();
                 refreshGrid('#jqGridFitChart',urlParam_FitChart,'add');
                 
                 $("#jqGridFitChart").jqGrid('setGridWidth', Math.floor($("#jqGridFitChart_c")[0].offsetWidth-$("#jqGridFitChart_c")[0].offsetLeft-30));
-                populate_fitchart_getdata();
                 break;
             case 'circulation':
+                populate_circulation_getdata();
+                
                 urlParam_Circulation.filterVal[0] = $("#mrn_nursNote").val();
                 urlParam_Circulation.filterVal[1] = $("#episno_nursNote").val();
                 refreshGrid('#jqGridCirculation',urlParam_Circulation,'add');
                 
                 $("#jqGridCirculation").jqGrid('setGridWidth', Math.floor($("#jqGridCirculation_c")[0].offsetWidth-$("#jqGridCirculation_c")[0].offsetLeft-30));
-                populate_circulation_getdata();
                 break;
             case 'slidingScale':
+                // populate_slidingScale_getdata();
+                
                 urlParam_SlidingScale.filterVal[0] = $("#mrn_nursNote").val();
                 urlParam_SlidingScale.filterVal[1] = $("#episno_nursNote").val();
                 refreshGrid('#jqGridSlidingScale',urlParam_SlidingScale,'add');
                 
                 $("#jqGridSlidingScale").jqGrid('setGridWidth', Math.floor($("#jqGridSlidingScale_c")[0].offsetWidth-$("#jqGridSlidingScale_c")[0].offsetLeft-30));
-                // populate_slidingScale_getdata();
                 break;
             case 'othersChart1':
+                populate_othersChart1_getdata();
+                
                 urlParam_OthersChart.filterVal[0] = $("#mrn_nursNote").val();
                 urlParam_OthersChart.filterVal[1] = $("#episno_nursNote").val();
                 urlParam_OthersChart.filterVal[2] = $("#othersChart1_tabtitle").val();
@@ -704,9 +714,10 @@ $(document).ready(function (){
                 refreshGrid('#jqGridOthersChart1',urlParam_OthersChart,'add');
                 
                 $("#jqGridOthersChart1").jqGrid('setGridWidth', Math.floor($("#jqGridOthersChart1_c")[0].offsetWidth-$("#jqGridOthersChart1_c")[0].offsetLeft-30));
-                populate_othersChart1_getdata();
                 break;
             case 'othersChart2':
+                populate_othersChart2_getdata();
+                
                 urlParam_OthersChart.filterVal[0] = $("#mrn_nursNote").val();
                 urlParam_OthersChart.filterVal[1] = $("#episno_nursNote").val();
                 urlParam_OthersChart.filterVal[2] = $("#othersChart2_tabtitle").val();
@@ -714,7 +725,6 @@ $(document).ready(function (){
                 refreshGrid('#jqGridOthersChart2',urlParam_OthersChart,'add');
                 
                 $("#jqGridOthersChart2").jqGrid('setGridWidth', Math.floor($("#jqGridOthersChart2_c")[0].offsetWidth-$("#jqGridOthersChart2_c")[0].offsetLeft-30));
-                populate_othersChart2_getdata();
                 break;
             case 'bladder':
                 get_total_IO1();
@@ -726,7 +736,8 @@ $(document).ready(function (){
                 refreshGrid('#jqGridBladder1',urlParam_Bladder,'add');
                 
                 $('#jqGridNursNote_bladder_tabs.nav-tabs a').on('shown.bs.tab', function (e){
-                    let type = $(this).data('type');console.log(type);
+                    let type = $(this).data('type');
+                    console.log(type);
                     switch(type){
                         case 'firstShift':
                             get_total_IO1();
@@ -756,6 +767,8 @@ $(document).ready(function (){
                 });
                 break;
             case 'gcs':
+                populate_glasgow_getdata();
+                
                 var urlparam_datetimegcs_tbl = {
                     action: 'get_table_datetimeGCS',
                     mrn: $("#mrn_nursNote").val(),
@@ -768,9 +781,10 @@ $(document).ready(function (){
                 });
                 
                 // $('#datetimegcs_tbl').DataTable().ajax.reload();
-                populate_glasgow_getdata();
                 break;
             case 'pivc':
+                populate_pivc_getdata();
+                
                 var urlparam_datetimepivc_tbl = {
                     action: 'get_table_datetimePIVC',
                     mrn: $("#mrn_nursNote").val(),
@@ -783,9 +797,10 @@ $(document).ready(function (){
                 });
                 
                 // $('#datetimepivc_tbl').DataTable().ajax.reload();
-                populate_pivc_getdata();
                 break;
             case 'morsefallscale':
+                populate_morsefallscale_getdata();
+                
                 var urlparam_tbl_morsefallscale = {
                     action: 'get_datetime_morsefallscale',
                     mrn: $("#mrn_nursNote").val(),
@@ -798,9 +813,10 @@ $(document).ready(function (){
                 });
                 
                 // $('#tbl_morsefallscale_date').DataTable().ajax.reload();
-                populate_morsefallscale_getdata();
                 break;
             case 'thrombo':
+                populate_thrombo_getdata();
+                
                 var urlparam_datetimethrombo_tbl = {
                     action: 'get_table_datetimeThrombo',
                     mrn: $("#mrn_nursNote").val(),
@@ -811,9 +827,8 @@ $(document).ready(function (){
                     emptyFormdata_div("#formThrombo",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
                     $('#datetimethrombo_tbl tbody tr:eq(0)').click(); // to select first row
                 });
-
+                
                 $("#jqGridThrombo").jqGrid('setGridWidth', Math.floor($("#jqGridThrombo_c")[0].offsetWidth-$("#jqGridThrombo_c")[0].offsetLeft-30));
-                populate_thrombo_getdata();
                 break;
         }
     });
@@ -5487,7 +5502,7 @@ function textarea_init_nursingnote(){
             this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }
     }).off().on('input', function (){
-        if(this.scrollHeight>40){
+        if(this.scrollHeight > 40){
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight) + 'px';
         }else{
