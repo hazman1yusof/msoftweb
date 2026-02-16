@@ -38,16 +38,16 @@
     <tr></tr>
     <tr></tr>
     <tr>
-        <td colspan="4">{{$supp[0]->Name}} - ({{$supp[0]->suppcode}})</td>
+        <td colspan="4">{{$suppcode[0]->Name}} - ({{$suppcode[0]->suppcode}})</td>
     </tr>
     <tr>
-        <td colspan="4">{{$supp[0]->addr1}}</td>
+        <td colspan="4">{{$suppcode[0]->addr1}}</td>
     </tr>
     <tr>
-        <td colspan="4">{{$supp[0]->addr2}}</td>
+        <td colspan="4">{{$suppcode[0]->addr2}}</td>
     </tr>
     <tr>
-        <td colspan="4">{{$supp[0]->addr3}}</td>
+        <td colspan="4">{{$suppcode[0]->addr3}}</td>
         <td colspan="3">DATE PRINTED: {{$datenow}} </td>
     </tr>
     <tr></tr>
