@@ -21,6 +21,7 @@ use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\FromView;
 use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\WithTitle;
 use DateTime;
 use Carbon\Carbon;
 use stdClass;
@@ -48,6 +49,11 @@ class PeriodicStatementExport implements FromView, WithEvents, WithColumnWidths,
         $this->comp = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
             ->first();
+    }
+
+    public function title(): string
+    {
+        return 'Balance Sheet';
     }
 
     public function columnFormats(): array

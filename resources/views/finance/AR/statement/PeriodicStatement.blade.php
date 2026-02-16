@@ -36,6 +36,21 @@
         <td colspan="3" style="font-weight: bold;text-align: center">FROM {{$monthFrom}} TO {{$monthTo}}</td>
     </tr>
     <tr></tr>
+    <tr></tr>
+    <tr>
+        <td colspan="4">{{$supp[0]->Name}} - ({{$supp[0]->suppcode}})</td>
+    </tr>
+    <tr>
+        <td colspan="4">{{$supp[0]->addr1}}</td>
+    </tr>
+    <tr>
+        <td colspan="4">{{$supp[0]->addr2}}</td>
+    </tr>
+    <tr>
+        <td colspan="4">{{$supp[0]->addr3}}</td>
+        <td colspan="3">DATE PRINTED: {{$datenow}} </td>
+    </tr>
+    <tr></tr>
     <tr>
         <td style="font-weight: bold;text-align: left">DOC DATE</td>
         <td style="font-weight: bold;text-align: left">AUDIT NO</td>
@@ -55,21 +70,6 @@
 
     @php($totalAmount = $openbalance)
     @foreach($suppcode as $index => $supp)
-        <tr></tr>
-        <tr>
-            <td colspan="4">{{$supp->Name}} - ({{$supp->suppcode}})</td>
-        </tr>
-        <tr>
-            <td colspan="4">{{$supp->addr1}}</td>
-        </tr>
-        <tr>
-            <td colspan="4">{{$supp->addr2}}</td>
-        </tr>
-        <tr>
-            <td colspan="4">{{$supp->addr3}}</td>
-            <td colspan="3">DATE PRINTED: {{$datenow}} </td>
-        </tr>
-        <tr></tr>
         @foreach($array_report as $db_obj)
             @if($db_obj->suppcode == $supp->suppcode)
                 @php($totalAmount += $db_obj->newamt)
