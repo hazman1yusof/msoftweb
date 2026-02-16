@@ -135,7 +135,7 @@ function button_state_endoscopyIntestine(state){
         case 'edit':
             $("#toggle_endoscopyNotes").attr('data-toggle','collapse');
             $('#cancel_endoscopyIntestine').data('oper','edit');
-            $("#edit_endoscopyIntestine").attr('disabled',false);
+            $("#edit_endoscopyIntestine,#endoscopyIntestine_chart").attr('disabled',false);
             $('#save_endoscopyIntestine,#cancel_endoscopyIntestine,#new_endoscopyIntestine').attr('disabled',true);
             break;
         case 'wait':

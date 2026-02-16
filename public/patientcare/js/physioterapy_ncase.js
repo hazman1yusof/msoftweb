@@ -178,7 +178,7 @@ function button_state_phys_ncase(state){
 		case 'edit':
 			// $("#toggle_phys_ncase").attr('data-toggle','collapse');
 			$('#cancel_phys_ncase').data('oper','edit');
-			$("#edit_phys_ncase").attr('disabled',false);
+			$("#edit_phys_ncase,#perkeso_chart").attr('disabled',false);
 			$('#save_phys_ncase,#cancel_phys_ncase,#new_phys_ncase').attr('disabled',true);
 			break;
 		case 'wait':
