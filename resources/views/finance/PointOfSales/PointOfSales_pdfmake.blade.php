@@ -29,7 +29,7 @@
 	$(document).ready(function () {
 		var docDefinition = {
 			pageSize: 'A4',
-			pageMargins: [5, 5, 5, 5],
+			pageMargins: [1, 5, 1, 5],
 			content: [
 				{
 					style: 'tableExample',
