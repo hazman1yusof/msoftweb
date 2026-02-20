@@ -31,7 +31,7 @@
         <td></td>
         <td></td>
         <td></td>
-        <td style="text-align: center" colspan="4">GL Account : {{$glaccount}}</td>
+        <td style="text-align: center" colspan="4">GL Account : {{$glaccount}} - {{$glmasref->description}}</td>
         <td></td>
         <td></td>
         <td></td>

@@ -85,6 +85,11 @@ class acctenq_dateExport_2 implements FromView, WithEvents, WithColumnWidths, Wi
                         ->where('glaccount',$glaccount)
                         ->get();
 
+        $glmasref = DB::table('finance.glmasref')
+                        ->where('compcode',session('compcode'))
+                        ->where('glaccno',$glaccount)
+                        ->first();
+
         if($month < 1){
             $firstDay = Carbon::create($year, 1, 1)->startOfDay()->format('Y-m-d');
             $month_ = [];
@@ -118,7 +123,7 @@ class acctenq_dateExport_2 implements FromView, WithEvents, WithColumnWidths, Wi
 
                             // dd($table);
 
-        return view('finance.GL.acctenq_date.acctenq_dateExcel', compact('table','glaccount','compname','fromdate','todate','total_openbal','firstDay'));
+        return view('finance.GL.acctenq_date.acctenq_dateExcel', compact('table','glaccount','glmasref','compname','fromdate','todate','total_openbal','firstDay'));
     }
     
     public function registerEvents(): array
