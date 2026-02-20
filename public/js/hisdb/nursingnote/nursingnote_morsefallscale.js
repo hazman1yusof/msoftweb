@@ -66,9 +66,9 @@ $(document).ready(function (){
         }
         
         // to highlight selected row
-        if($(this).hasClass('selected')) {
+        if($(this).hasClass('selected')){
             $(this).removeClass('selected');
-        }else {
+        }else{
             tbl_morsefallscale_date.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
         }
@@ -76,6 +76,13 @@ $(document).ready(function (){
         emptyFormdata_div("#formMorseFallScale",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar','#morsefallscale_ward','#morsefallscale_diag','#morsefallscale_admdate']);
         $('#tbl_morsefallscale_date tbody tr').removeClass('active');
         $(this).addClass('active');
+        
+        if(check_same_usr_edit(data)){
+            button_state_morsefallscale('edit');
+        }else{
+            button_state_morsefallscale('add');
+        }
+        $('#morsefallscale_chart').attr('disabled',false);
         
         // populate_morsefallscale_getdata();
         $("#idno_morsefallscale").val(data.idno);
@@ -99,9 +106,9 @@ $(document).ready(function (){
             if(!$.isEmptyObject(data.morsefallscale)){
                 autoinsert_rowdata("#formMorseFallScale",data.morsefallscale);
                 
-                button_state_morsefallscale('edit');
+                // button_state_morsefallscale('edit');
             }else{
-                button_state_morsefallscale('add');
+                // button_state_morsefallscale('add');
             }
             
             $("#morsefallscale_ward").val($('#ward_nursNote').val());
@@ -172,7 +179,7 @@ function button_state_morsefallscale(state){
         case 'empty':
             $("#toggle_nursNote").removeAttr('data-toggle');
             $('#cancel_morsefallscale').data('oper','add');
-            $('#new_morsefallscale,#save_morsefallscale,#cancel_morsefallscale,#edit_morsefallscale').attr('disabled',true);
+            $('#new_morsefallscale,#save_morsefallscale,#cancel_morsefallscale,#edit_morsefallscale,#morsefallscale_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_nursNote").attr('data-toggle','collapse');
@@ -189,7 +196,7 @@ function button_state_morsefallscale(state){
         case 'wait':
             $("#toggle_nursNote").attr('data-toggle','collapse');
             $("#save_morsefallscale,#cancel_morsefallscale").attr('disabled',false);
-            $('#edit_morsefallscale,#new_morsefallscale').attr('disabled',true);
+            $('#edit_morsefallscale,#new_morsefallscale,#morsefallscale_chart').attr('disabled',true);
             break;
     }
 }
@@ -217,8 +224,10 @@ function populate_morsefallscale_getdata(){
             autoinsert_rowdata("#formMorseFallScale",data.morsefallscale);
             
             button_state_morsefallscale('edit');
+            $('#morsefallscale_chart').attr('disabled',false);
         }else{
             button_state_morsefallscale('add');
+            $('#morsefallscale_chart').attr('disabled',true);
         }
         
         $("#morsefallscale_ward").val($('#ward_nursNote').val());
@@ -347,13 +356,26 @@ function textarea_init_morsefallscale(){
             this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }
     }).off().on('input', function (){
-        if(this.scrollHeight>40){
+        if(this.scrollHeight > 40){
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight) + 'px';
         }else{
             this.style.height = (40) + 'px';
         }
     });
+}
+
+function check_same_usr_edit(data){
+    let same = true;
+    var adduser = data.adduser;
+    
+    if(adduser == null){
+        same = false;
+    }else if(adduser.toUpperCase() != $('#curr_user').val().toUpperCase()){
+        same = false;
+    }
+    
+    return same;
 }
 
 // function calc_jq_height_onchange(jqgrid){

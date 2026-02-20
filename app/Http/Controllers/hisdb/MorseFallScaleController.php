@@ -283,17 +283,23 @@ class MorseFallScaleController extends defaultController
     
     public function get_table_morsefallscale(Request $request){
         
-        $nursassessment_obj = DB::table('nursing.nursassessment')
-                            ->select('diagnosis')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno);
+        // $nursassessment_obj = DB::table('nursing.nursassessment')
+        //                     ->select('diagnosis')
+        //                     ->where('compcode','=',session('compcode'))
+        //                     ->where('mrn','=',$request->mrn)
+        //                     ->where('episno','=',$request->episno);
         
         // $pat_otbook_obj = DB::table('hisdb.pat_otbook')
         //                 ->select('diagnosis')
         //                 ->where('compcode','=',session('compcode'))
         //                 ->where('mrn','=',$request->mrn)
         //                 ->where('episno','=',$request->episno);
+        
+        $nursactplan_obj = DB::table('nursing.nursactplan_hdr')
+                            ->select('diagnosis')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno);
         
         $episode_obj = DB::table('hisdb.episode')
                         ->select('reg_date')
@@ -309,12 +315,12 @@ class MorseFallScaleController extends defaultController
         
         $responce = new stdClass();
         
-        if($nursassessment_obj->exists()){
-            $nursassessment_obj = $nursassessment_obj->first();
+        // if($nursassessment_obj->exists()){
+        //     $nursassessment_obj = $nursassessment_obj->first();
             
-            $diagnosis_obj = $nursassessment_obj->diagnosis;
-            $responce->diagnosis = $diagnosis_obj;
-        }
+        //     $diagnosis_obj = $nursassessment_obj->diagnosis;
+        //     $responce->diagnosis = $diagnosis_obj;
+        // }
         
         // if($pat_otbook_obj->exists()){
         //     $pat_otbook_obj = $pat_otbook_obj->first();
@@ -322,6 +328,13 @@ class MorseFallScaleController extends defaultController
         //     $diagnosis_obj = $pat_otbook_obj->diagnosis;
         //     $responce->diagnosis = $diagnosis_obj;
         // }
+        
+        if($nursactplan_obj->exists()){
+            $nursactplan_obj = $nursactplan_obj->first();
+            
+            $diagnosis_obj = $nursactplan_obj->diagnosis;
+            $responce->diagnosis = $diagnosis_obj;
+        }
         
         if($episode_obj->exists()){
             $episode_obj = $episode_obj->first();
@@ -381,6 +394,13 @@ class MorseFallScaleController extends defaultController
                     ->where('episno','=',$episno)
                     ->first();
         
+        // $nursassessment = DB::table('nursing.nursassessment')
+        //                 ->select('diagnosis')
+        //                 ->where('compcode','=',session('compcode'))
+        //                 ->where('mrn','=',$request->mrn)
+        //                 ->where('episno','=',$request->episno)
+        //                 ->first();
+        
         // $pat_otbook = DB::table('hisdb.pat_otbook')
         //             ->select('diagnosis')
         //             ->where('compcode','=',session('compcode'))
@@ -388,7 +408,7 @@ class MorseFallScaleController extends defaultController
         //             ->where('episno','=',$episno)
         //             ->first();
         
-        $nursassessment = DB::table('nursing.nursassessment')
+        $nursactplan = DB::table('nursing.nursactplan_hdr')
                         ->select('diagnosis')
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
@@ -419,7 +439,7 @@ class MorseFallScaleController extends defaultController
                         ->get();
         // dd($morsefallscale);
         
-        return view('hisdb.nursingnote.morsefallscale_pdfmake', compact('age','pat_mast','episode','nursassessment','datetime','morsefallscale'));
+        return view('hisdb.nursingnote.morsefallscale_pdfmake', compact('age','pat_mast','episode','nursactplan','datetime','morsefallscale'));
         
     }
     

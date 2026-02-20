@@ -135,7 +135,7 @@ function button_state_endoscopyStomach(state){
         case 'edit':
             $("#toggle_endoscopyNotes").attr('data-toggle','collapse');
             $('#cancel_endoscopyStomach').data('oper','edit');
-            $("#edit_endoscopyStomach").attr('disabled',false);
+            $("#edit_endoscopyStomach,#endoscopyStomach_chart").attr('disabled',false);
             $('#save_endoscopyStomach,#cancel_endoscopyStomach,#new_endoscopyStomach').attr('disabled',true);
             break;
         case 'wait':

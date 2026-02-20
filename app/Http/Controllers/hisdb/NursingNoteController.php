@@ -2696,7 +2696,13 @@ class NursingNoteController extends defaultController
     
     public function get_table_formFitChart(Request $request){
         
-        $nursassessment_obj = DB::table('nursing.nursassessment')
+        // $nursassessment_obj = DB::table('nursing.nursassessment')
+        //                     ->select('diagnosis')
+        //                     ->where('compcode','=',session('compcode'))
+        //                     ->where('mrn','=',$request->mrn)
+        //                     ->where('episno','=',$request->episno);
+        
+        $nursactplan_obj = DB::table('nursing.nursactplan_hdr')
                             ->select('diagnosis')
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
@@ -2704,10 +2710,17 @@ class NursingNoteController extends defaultController
         
         $responce = new stdClass();
         
-        if($nursassessment_obj->exists()){
-            $nursassessment_obj = $nursassessment_obj->first();
+        // if($nursassessment_obj->exists()){
+        //     $nursassessment_obj = $nursassessment_obj->first();
             
-            $diagnosis_obj = $nursassessment_obj->diagnosis;
+        //     $diagnosis_obj = $nursassessment_obj->diagnosis;
+        //     $responce->diagnosis = $diagnosis_obj;
+        // }
+        
+        if($nursactplan_obj->exists()){
+            $nursactplan_obj = $nursactplan_obj->first();
+            
+            $diagnosis_obj = $nursactplan_obj->diagnosis;
             $responce->diagnosis = $diagnosis_obj;
         }
         
@@ -2724,7 +2737,13 @@ class NursingNoteController extends defaultController
                             ->where('episno','=',$request->episno)
                             ->where('tabtitle','=',$request->tabtitle);
         
-        $nursassessment_obj = DB::table('nursing.nursassessment')
+        // $nursassessment_obj = DB::table('nursing.nursassessment')
+        //                     ->select('diagnosis')
+        //                     ->where('compcode','=',session('compcode'))
+        //                     ->where('mrn','=',$request->mrn)
+        //                     ->where('episno','=',$request->episno);
+        
+        $nursactplan_obj = DB::table('nursing.nursactplan_hdr')
                             ->select('diagnosis')
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
@@ -2740,10 +2759,17 @@ class NursingNoteController extends defaultController
             // $responce->nurs_othershdr = $nurs_othershdr_obj;
         }
         
-        if($nursassessment_obj->exists()){
-            $nursassessment_obj = $nursassessment_obj->first();
+        // if($nursassessment_obj->exists()){
+        //     $nursassessment_obj = $nursassessment_obj->first();
             
-            $diagnosis_obj = $nursassessment_obj->diagnosis;
+        //     $diagnosis_obj = $nursassessment_obj->diagnosis;
+        //     $responce->diagnosis = $diagnosis_obj;
+        // }
+        
+        if($nursactplan_obj->exists()){
+            $nursactplan_obj = $nursactplan_obj->first();
+            
+            $diagnosis_obj = $nursactplan_obj->diagnosis;
             $responce->diagnosis = $diagnosis_obj;
         }
         
@@ -2883,7 +2909,7 @@ class NursingNoteController extends defaultController
         
         $pat_mast = DB::table('hisdb.pat_mast as pm')
                     // ->select('pm.MRN','pm.Name','e.ward as e_ward','e.bed as bednum','b.ward','ba.ward as ba_ward','ba.bednum as ba_bednum','n.diagnosis')
-                    ->select('pm.MRN','pm.Name','e.bed as bednum','b.ward','n.diagnosis')
+                    ->select('pm.MRN','pm.Name','e.bed as bednum','b.ward','n.diagnosis as n_diagnosis','na.diagnosis')
                     ->leftJoin('hisdb.episode as e', function ($join){
                         $join = $join->on('e.mrn','=','pm.MRN')
                                     ->on('e.episno','=','pm.Episno')
@@ -2903,6 +2929,11 @@ class NursingNoteController extends defaultController
                         $join = $join->on('n.mrn','=','pm.MRN')
                                     ->on('n.episno','=','pm.Episno')
                                     ->where('n.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('nursing.nursactplan_hdr as na', function ($join){
+                        $join = $join->on('na.mrn','=','pm.MRN')
+                                    ->on('na.episno','=','pm.Episno')
+                                    ->where('na.compcode','=',session('compcode'));
                     })
                     ->where('pm.CompCode','=',session('compcode'))
                     ->where('pm.MRN','=',$mrn)
@@ -2953,7 +2984,7 @@ class NursingNoteController extends defaultController
         
         $pat_mast = DB::table('hisdb.pat_mast as pm')
                     // ->select('pm.MRN','pm.Name','e.ward as e_ward','e.bed as bednum','b.ward','ba.ward as ba_ward','ba.bednum as ba_bednum','n.diagnosis')
-                    ->select('pm.MRN','pm.Name','e.bed as bednum','b.ward','n.diagnosis')
+                    ->select('pm.MRN','pm.Name','e.bed as bednum','b.ward','n.diagnosis as n_diagnosis','na.diagnosis')
                     ->leftJoin('hisdb.episode as e', function ($join){
                         $join = $join->on('e.mrn','=','pm.MRN')
                                     ->on('e.episno','=','pm.Episno')
@@ -2973,6 +3004,11 @@ class NursingNoteController extends defaultController
                         $join = $join->on('n.mrn','=','pm.MRN')
                                     ->on('n.episno','=','pm.Episno')
                                     ->where('n.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('nursing.nursactplan_hdr as na', function ($join){
+                        $join = $join->on('na.mrn','=','pm.MRN')
+                                    ->on('na.episno','=','pm.Episno')
+                                    ->where('na.compcode','=',session('compcode'));
                     })
                     ->where('pm.CompCode','=',session('compcode'))
                     ->where('pm.MRN','=',$mrn)
@@ -3022,7 +3058,7 @@ class NursingNoteController extends defaultController
         
         $pat_mast = DB::table('hisdb.pat_mast as pm')
                     // ->select('pm.MRN','pm.Name','e.ward as e_ward','e.bed as bednum','b.ward','ba.ward as ba_ward','ba.bednum as ba_bednum','n.diagnosis')
-                    ->select('pm.MRN','pm.Name','e.bed as bednum','b.ward','n.diagnosis')
+                    ->select('pm.MRN','pm.Name','e.bed as bednum','b.ward','n.diagnosis as n_diagnosis','na.diagnosis')
                     ->leftJoin('hisdb.episode as e', function ($join){
                         $join = $join->on('e.mrn','=','pm.MRN')
                                     ->on('e.episno','=','pm.Episno')
@@ -3042,6 +3078,11 @@ class NursingNoteController extends defaultController
                         $join = $join->on('n.mrn','=','pm.MRN')
                                     ->on('n.episno','=','pm.Episno')
                                     ->where('n.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('nursing.nursactplan_hdr as na', function ($join){
+                        $join = $join->on('na.mrn','=','pm.MRN')
+                                    ->on('na.episno','=','pm.Episno')
+                                    ->where('na.compcode','=',session('compcode'));
                     })
                     ->where('pm.CompCode','=',session('compcode'))
                     ->where('pm.MRN','=',$mrn)
@@ -3092,7 +3133,7 @@ class NursingNoteController extends defaultController
         
         $pat_mast = DB::table('hisdb.pat_mast as pm')
                     // ->select('pm.MRN','pm.Name','e.ward as e_ward','e.bed as bednum','b.ward','ba.ward as ba_ward','ba.bednum as ba_bednum','n.diagnosis')
-                    ->select('pm.MRN','pm.Name','e.bed as bednum','b.ward','n.diagnosis')
+                    ->select('pm.MRN','pm.Name','e.bed as bednum','b.ward','n.diagnosis as n_diagnosis','na.diagnosis')
                     ->leftJoin('hisdb.episode as e', function ($join){
                         $join = $join->on('e.mrn','=','pm.MRN')
                                     ->on('e.episno','=','pm.Episno')
@@ -3112,6 +3153,11 @@ class NursingNoteController extends defaultController
                         $join = $join->on('n.mrn','=','pm.MRN')
                                     ->on('n.episno','=','pm.Episno')
                                     ->where('n.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('nursing.nursactplan_hdr as na', function ($join){
+                        $join = $join->on('na.mrn','=','pm.MRN')
+                                    ->on('na.episno','=','pm.Episno')
+                                    ->where('na.compcode','=',session('compcode'));
                     })
                     ->where('pm.CompCode','=',session('compcode'))
                     ->where('pm.MRN','=',$mrn)

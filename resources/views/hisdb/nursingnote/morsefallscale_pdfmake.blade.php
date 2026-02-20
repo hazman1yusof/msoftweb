@@ -70,8 +70,8 @@
                                 ],
                                 [
                                     { text: 'DIAGNOSIS' },
-                                    @if(!empty($nursassessment->diagnosis))
-                                        { text: `\u200B\t{!!$nursassessment->diagnosis!!}` },
+                                    @if(!empty($nursactplan->diagnosis))
+                                        { text: `\u200B\t{!!$nursactplan->diagnosis!!}` },
                                     @else
                                         { text: '' },
                                     @endif
