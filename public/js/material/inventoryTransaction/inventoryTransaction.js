@@ -2154,10 +2154,12 @@ $(document).ready(function () {
 				{label:'Unit',name:'sector', hidden:true},
 			],
 			urlParam: {
-				filterCol:['storedept', 'recstatus','compcode'],//,'sector'
-				filterVal:['1', 'ACTIVE','session.compcode'],//, 'session.unit'
-				WhereInCol:['deptcode'],
-				WhereInVal:[['FKWSTR','IMP','KHEALTH']]
+				url:"./inventoryTransaction/table",
+				action: 'get_txndept',
+				url_chk: "./inventoryTransaction/table",
+				action_chk: "get_txndept_check",
+				filterCol:[],
+				filterVal:[],
 			},
 			ondblClickRow: function () {
 				$('#trantype').focus();
@@ -2174,10 +2176,10 @@ $(document).ready(function () {
 		},{
 			title:"Select Transaction Department",
 			open: function(){
-				dialog_txndept.urlParam.filterCol=['storedept', 'recstatus','compcode'];//,'sector'
-				dialog_txndept.urlParam.filterVal=['1', 'ACTIVE','session.compcode'];//, 'session.unit'
-				dialog_txndept.urlParam.WhereInCol=['deptcode'];
-				dialog_txndept.urlParam.WhereInVal=[['FKWSTR','IMP','KHEALTH']];
+				dialog_txndept.urlParam.url="./inventoryTransaction/table";
+				dialog_txndept.urlParam.action='get_txndept';//, 'session.unit'
+				dialog_txndept.urlParam.url_chk="./inventoryTransaction/table";
+				dialog_txndept.urlParam.action_chk="get_txndept_check";
 			},
 			close: function(obj_){
 				$('#trantype').focus();

@@ -79,6 +79,10 @@ class InventoryTransactionController extends defaultController
                 return $this->maintable($request);
             case 'get_table_dtl':
                 return $this->get_table_dtl($request);
+            case 'get_txndept':
+                return $this->get_txndept($request);
+            case 'get_txndept_check':
+                return $this->get_txndept_check($request);
             default:
                 return 'error happen..';
         }
@@ -253,6 +257,60 @@ class InventoryTransactionController extends defaultController
         $responce->sql_query = $this->getQueries($table);
         
         return json_encode($responce);       
+    }
+
+    public function get_txndept(Request $request){
+        $APP_FOR = \config('get_config.APP_FOR');
+
+        if($APP_FOR == null || strtoupper($APP_FOR) == 'MEDICARE'){
+
+            $table = DB::table('sysdb.department AS d')
+                    ->whereIn('d.deptcode',['FKWSTR','IMP','KHEALTH'])
+                    ->where('d.storedept','1')
+                    ->where('d.compcode',session('compcode'))
+                    ->where('d.recstatus','ACTIVE')
+                    ->get();
+        }else{
+
+            $table = DB::table('sysdb.department AS d')
+                    ->where('d.storedept','1')
+                    ->where('d.compcode',session('compcode'))
+                    ->where('d.recstatus','ACTIVE')
+                    ->get();
+        }
+
+        $responce = new stdClass();
+        $responce->rows = $table;
+
+        return json_encode($responce);
+    }
+
+    public function get_txndept_check(Request $request){
+        $APP_FOR = \config('get_config.APP_FOR');
+
+        if($APP_FOR == null || strtoupper($APP_FOR) == 'MEDICARE'){
+        
+            $table = DB::table('sysdb.department AS d')
+                    ->where('d.deptcode',$request->filterVal[0])
+                    ->whereIn('d.deptcode',['FKWSTR','IMP','KHEALTH'])
+                    ->where('d.storedept','1')
+                    ->where('d.compcode',session('compcode'))
+                    ->where('d.recstatus','ACTIVE')
+                    ->get();
+        }else{
+        
+            $table = DB::table('sysdb.department AS d')
+                    ->where('d.deptcode',$request->filterVal[0])
+                    ->where('d.storedept','1')
+                    ->where('d.compcode',session('compcode'))
+                    ->where('d.recstatus','ACTIVE')
+                    ->get();
+        }
+
+        $responce = new stdClass();
+        $responce->rows = $table;
+
+        return json_encode($responce);
     }
 
     public function add(Request $request){
