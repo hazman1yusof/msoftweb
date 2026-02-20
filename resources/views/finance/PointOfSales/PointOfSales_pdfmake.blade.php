@@ -35,7 +35,7 @@
 					style: 'tableExample',
 					table: {
 						headerRows: 0,
-						widths: [150], //panjang standard dia 515
+						widths: [135], //panjang standard dia 515
 						body: [
 							[
 								{text: 'K-HEALTH - PPUKM\nARAS BAWAH (G) LOBI PELAWAT,\nPUSAT PERUBATAN UKM,\nJALAN YAACOB LATIFF,\n56000 CHERAS, KUALA LUMPUR.\nTel: 019-2289357\nFax: 03-91739357', alignment: 'center'},
@@ -62,7 +62,7 @@
 								{
 									style: 'tableDetail',
 									table: {
-										widths: [90,50],
+										widths: [75,50],
 										body: [
 											[
 												{text:'TOTAL',margin: [0, 0, 0, 0]},
@@ -89,7 +89,7 @@
 								{
 									style: 'tableDetail',
 									table: {
-										widths: [50,90],
+										widths: [50,75],
 										body: [
 											[
 												{text:'Card No.',margin: [0, 0, 0, 0]},
@@ -126,7 +126,7 @@
 								{
 									style: 'tableDetail',
 									table: {
-										widths: [50,90],
+										widths: [50,75],
 										body: [
 											[
 												{text:'Name',margin: [0, 0, 0, 0]},
@@ -206,7 +206,7 @@
 		var retval = {
 						style: 'tableDetail',
 						table: {
-							widths: [90,50],
+							widths: [75,50],
 							body: body
 						},
 						layout: 'noBorders',
