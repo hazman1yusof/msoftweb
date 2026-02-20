@@ -35,7 +35,7 @@
 					style: 'tableExample',
 					table: {
 						headerRows: 0,
-						widths: [135], //panjang standard dia 515
+						widths: [133], //panjang standard dia 515
 						body: [
 							[
 								{text: 'K-HEALTH - PPUKM\nARAS BAWAH (G) LOBI PELAWAT,\nPUSAT PERUBATAN UKM,\nJALAN YAACOB LATIFF,\n56000 CHERAS, KUALA LUMPUR.\nTel: 019-2289357\nFax: 03-91739357', alignment: 'center'},
@@ -44,25 +44,25 @@
 								{text: `Cashier : {{strtoupper($tilldetl->cashier)}}\nReceipt : {{$receipt[0]->recptno}}\nDate      : {{\Carbon\Carbon::parse($receipt[0]->entrydate)->format('d/m/Y')}} {{$receipt[0]->entrytime}}`, alignment: 'left'},
 							],
 							[
-								{text: `------------------------------------------------------------`, alignment: 'center'},
+								{text: `----------------------------------------------------`, alignment: 'center'},
 							],
 							[
-								{text: `Description                               Subtotal`, alignment: 'center'},
+								{text: `Description                      Subtotal`, alignment: 'center'},
 							],
 							[
-								{text: `------------------------------------------------------------`, alignment: 'center'},
+								{text: `----------------------------------------------------`, alignment: 'center'},
 							],
 							[
 								make_detail()
 							],
 							[
-								{text: `------------------------------------------------------------`, alignment: 'center'},
+								{text: `----------------------------------------------------`, alignment: 'center'},
 							],
 							[
 								{
 									style: 'tableDetail',
 									table: {
-										widths: [75,50],
+										widths: [73,50],
 										body: [
 											[
 												{text:'TOTAL',margin: [0, 0, 0, 0]},
@@ -82,14 +82,14 @@
 								}
 							],
 							[
-								{text: `------------------------------------------------------------`, alignment: 'center'},
+								{text: `----------------------------------------------------`, alignment: 'center'},
 							],
 							@foreach($receipt as $key => $receipt_obj)
 							[
 								{
 									style: 'tableDetail',
 									table: {
-										widths: [50,75],
+										widths: [50,73],
 										body: [
 											[
 												{text:'Card No.',margin: [0, 0, 0, 0]},
@@ -120,13 +120,13 @@
 							],
 							@endforeach
 							[
-								{text: `------------------------------------------------------------`, alignment: 'center'},
+								{text: `----------------------------------------------------`, alignment: 'center'},
 							],
 							[
 								{
 									style: 'tableDetail',
 									table: {
-										widths: [50,75],
+										widths: [50,73],
 										body: [
 											[
 												{text:'Name',margin: [0, 0, 0, 0]},
@@ -146,7 +146,7 @@
 								}
 							],
 							[
-								{text: `------------------------------------------------------------`, alignment: 'center'},
+								{text: `----------------------------------------------------`, alignment: 'center'},
 							],
 							[
 								{text: `Thank You ! Please Come Again !\nGoods Sold Are Not Returnable But\nExchangeble within 7 days with\nOriginal Receipt`, alignment: 'center'},
