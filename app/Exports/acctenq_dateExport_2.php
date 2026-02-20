@@ -113,6 +113,7 @@ class acctenq_dateExport_2 implements FromView, WithEvents, WithColumnWidths, Wi
 
         $table = DB::table('finance.acctenq_date')
                             ->where('job_id',$this->job_id)
+                            ->orderBy('postdate','ASC');
                             ->get();
 
                             // dd($table);
