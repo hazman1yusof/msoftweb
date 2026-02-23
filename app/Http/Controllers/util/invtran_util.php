@@ -268,7 +268,7 @@ class invtran_util extends defaultController{
             ->where('StockLoc.CompCode','=',session('compcode'))
             ->where('StockLoc.DeptCode','=',$ivtmphd->sndrcv)
             ->where('StockLoc.ItemCode','=',$value->itemcode)
-            ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->trandate))
+            ->where('StockLoc.Year','=', defaultController::toYear(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d')))
             ->where('StockLoc.UomCode','=',$value->uomcoderecv);
 
         $stockloc_first = $stockloc_obj->first();
@@ -387,7 +387,7 @@ class invtran_util extends defaultController{
             ->where('StockLoc.CompCode','=',session('compcode'))
             ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
             ->where('StockLoc.ItemCode','=',$value->itemcode)
-            ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->trandate))
+            ->where('StockLoc.Year','=', defaultController::toYear(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d')))
             ->where('StockLoc.UomCode','=',$value->uomcode);
 
         $stockloc_first = $stockloc_obj->first();
@@ -395,7 +395,7 @@ class invtran_util extends defaultController{
         //2.kalu ada stockloc, update 
         if($stockloc_obj->exists()){
 
-        //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
+            //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
             $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
             $month = defaultController::toMonth(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
             $QtyOnHand = $stockloc_first->qtyonhand + $value->txnqty; 
@@ -409,7 +409,7 @@ class invtran_util extends defaultController{
                     'NetMvVal'.$month => $NetMvVal
                 ]);
 
-        //4. tambah expdate, kalu ada batchno
+            //4. tambah expdate, kalu ada batchno
             $expdate_obj = DB::table('material.stockexp')
                 ->where('compcode',session('compcode'))
                 // ->where('unit',session('unit'))
@@ -458,7 +458,7 @@ class invtran_util extends defaultController{
             throw new \Exception("Stockloc not exist for item: ".$value->itemcode." | deptcode: ".$ivtmphd->txndept." | year: ".defaultController::toYear($ivtmphd->trandate)." | uomcode: ".$value->uomcode);
         }
 
-        //-- 6. posting product -> update qtyonhand, avgcost, currprice --//
+            //-- 6. posting product -> update qtyonhand, avgcost, currprice --//
             //1. waktu OUT trandept
 
         $product_obj = DB::table('material.product')

@@ -134,6 +134,8 @@ class TestController extends defaultController
                 return $this->checkrefund($request);
             case 'checkCNDNgltran':
                 return $this->checkCNDNgltran($request);
+            case 'no_regdept':
+                return $this->no_regdept($request);
             // case 'netmvval_from_netmvqty':
             //     return $this->netmvval_from_netmvqty($request);
             // case 'cr8_acctmaster':
@@ -9420,4 +9422,34 @@ class TestController extends defaultController
         }
     }
 
+    public function no_regdept(Request $request){
+        $table=DB::table('hisdb.episode as e')
+                ->select('e.idno as e_idno','e.mrn','e.episno','e.regdept','d.idno as d_idno')
+                ->leftJoin('sysdb.department as d', function($join){
+                    $join = $join
+                            ->where('d.compcode',session('compcode'))
+                            ->on('d.deptcode','e.regdept');
+                })
+                ->where('e.compcode',session('compcode'))
+                ->whereNull('e.dischargedate')
+                ->where('e.epistycode','IP')
+                ->whereNull('d.idno')
+                ->get()
+                ->unique('regdept');
+                // ->get();
+
+        dd($table);
+
+        // $table=DB::table('hisdb.discipline')
+        //             ->get();
+
+        // foreach ($table as $key => $value) {
+        //     DB::table('hisdb.casetype')
+        //             ->insert([
+        //                 'compcode' => session('compcode'),
+        //                 'case_code' => $value->code,
+        //                 'description' => $value->description
+        //             ]);
+        // }
+    }
 }
