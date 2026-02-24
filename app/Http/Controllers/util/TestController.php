@@ -9423,22 +9423,22 @@ class TestController extends defaultController
     }
 
     public function no_regdept(Request $request){
-        $table=DB::table('hisdb.episode as e')
-                ->select('e.idno as e_idno','e.mrn','e.episno','e.regdept','d.idno as d_idno')
-                ->leftJoin('sysdb.department as d', function($join){
-                    $join = $join
-                            ->where('d.compcode',session('compcode'))
-                            ->on('d.deptcode','e.regdept');
-                })
-                ->where('e.compcode',session('compcode'))
-                ->whereNull('e.dischargedate')
-                ->where('e.epistycode','IP')
-                ->whereNull('d.idno')
-                ->get()
-                ->unique('regdept');
-                // ->get();
+        // $table=DB::table('hisdb.episode as e')
+        //         ->select('e.idno as e_idno','e.mrn','e.episno','e.regdept','d.idno as d_idno')
+        //         ->leftJoin('sysdb.department as d', function($join){
+        //             $join = $join
+        //                     ->where('d.compcode',session('compcode'))
+        //                     ->on('d.deptcode','e.regdept');
+        //         })
+        //         ->where('e.compcode',session('compcode'))
+        //         ->whereNull('e.dischargedate')
+        //         ->where('e.epistycode','IP')
+        //         ->whereNull('d.idno')
+        //         ->get()
+        //         ->unique('regdept');
+        //         // ->get();
 
-        dd($table);
+        // dd($table);
 
         // $table=DB::table('hisdb.discipline')
         //             ->get();
@@ -9451,5 +9451,61 @@ class TestController extends defaultController
         //                 'description' => $value->description
         //             ]);
         // }
+
+        $table = DB::table('hisdb.queue as q')
+                        ->select('e.bed','e.ward','q.name','e.mrn','e.episno','e.admdoctor')
+                        ->join('hisdb.episode as e', function($join){
+                            $join = $join
+                                    ->where('e.compcode',session('compcode'))
+                                    ->on('e.mrn','q.mrn')
+                                    ->on('e.episno','q.episno')
+                                    ->whereNotNull('e.bed');
+                        })
+                        ->where('q.compcode',session('compcode'))
+                        ->where('q.epistycode','IP')
+                        ->where('q.deptcode','ALL')
+                        ->get();
+        // dd($table);
+
+        foreach ($table as $key => $value) {
+
+            $bed_obj = DB::table('hisdb.bed')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('bednum','=',$value->bed);
+
+            if($bed_obj->exists()){
+                $bed_first = $bed_obj->first();
+                DB::table('hisdb.bedalloc')
+                    ->insert([  
+                        'mrn' => $value->mrn,
+                        'episno' => $value->episno,
+                        'name' => $value->name,
+                        'astatus' => "OCCUPIED",
+                        'ward' =>  $bed_first->ward,
+                        'room' =>  $bed_first->room,
+                        'bednum' =>  $bed_first->bednum,
+                        'asdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'astime' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'compcode' => session('compcode'),
+                        'adduser' => strtoupper(session('username')),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        // 'computerid' => session('computerid')
+                    ]);
+
+                $bed_obj->update([
+                    'occup' => "OCCUPIED",
+                    'mrn' => $value->mrn,
+                    'episno' => $value->episno,
+                    'name' => $value->name,
+                    'admdoctor' => $value->admdoctor,
+                    'upduser' => strtoupper(session('username')),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                    'newic' => null
+                ]);
+
+            }
+        }
+        
     }
 }
