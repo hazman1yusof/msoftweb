@@ -303,11 +303,11 @@ class SalesOrderDetailController extends defaultController
         //     }
         // }
 
-        // if(!empty($request->filterCol)){
-        //     foreach ($request->filterCol as $key => $value) {
-        //         $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
-        //     }
-        // }
+        if(!empty($request->filterCol)){
+            foreach ($request->filterCol as $key => $value) {
+                $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
+            }
+        }
 
         if(!empty($request->whereInCol)){
             foreach ($request->whereInCol as $key => $value) {
