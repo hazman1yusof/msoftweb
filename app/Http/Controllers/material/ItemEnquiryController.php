@@ -127,7 +127,9 @@ class ItemEnquiryController extends defaultController
         $responce->sql_bind = $table->getBindings();
         $responce->sql_query = $this->getQueries($table);
         
-        return json_encode($responce);    
+        
+        return json_encode($responce, JSON_INVALID_UTF8_SUBSTITUTE);
+        // return json_encode($responce);    
     }
 
     public function detailMovement(Request $request){
