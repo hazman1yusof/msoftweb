@@ -167,6 +167,9 @@ grid.on("loaded.rs.jquery.bootgrid", function(){
         $('#mdl_patient_info').modal({backdrop: "static"});
         $("#btn_register_patient").data("oper","edit");
         $("#btn_register_patient").data("idno",rowid);
+        if(rowdata.ward != ''){
+            $("#dispdept_dflt").val(rowdata.ward);
+        }
         
         desc_show.write_desc();
     }).end().find(".command-episode").on("click", function(e) {

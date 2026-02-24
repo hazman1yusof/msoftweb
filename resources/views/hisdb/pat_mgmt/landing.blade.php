@@ -57,7 +57,7 @@
         <input name="lastidno" id="lastidno" type="hidden" >
         <input name="isdoctor" id="isdoctor" type="hidden" value="{{Auth::user()->doctor}}">
         <input name="phardept_dflt" id="phardept_dflt" type="hidden" value="{{$phardept_dflt ?? 'PHAR'}}">
-        <input name="dispdept_dflt" id="dispdept_dflt" type="hidden" value="{{$userdeptcode ?? 'PHAR'}}">
+        <input name="dispdept_dflt" id="dispdept_dflt" type="hidden" value="{{$dispdept_dflt ?? 'PHAR'}}">
         <input name="labdept_dflt" id="labdept_dflt" type="hidden" value="{{$labdept_dflt ?? 'LAB'}}">
         <input name="raddept_dflt" id="raddept_dflt" type="hidden" value="{{$raddept_dflt ?? 'RAD'}}">
         <input name="physdept_dflt" id="physdept_dflt" type="hidden" value="{{$physdept_dflt ?? 'PHY'}}">
@@ -598,7 +598,7 @@
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_emr.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/textfield_modal.js"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js?v=1.9"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js?v=1.10"></script>
 	
 	</div>
 
