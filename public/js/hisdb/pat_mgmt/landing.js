@@ -169,6 +169,7 @@ grid.on("loaded.rs.jquery.bootgrid", function(){
         $("#btn_register_patient").data("idno",rowid);
         if(rowdata.ward != ''){
             $("#dispdept_dflt").val(rowdata.ward);
+            $("#pkgdept_dflt").val(rowdata.ward);
         }
         
         desc_show.write_desc();

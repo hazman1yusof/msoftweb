@@ -625,7 +625,7 @@ function calculate_line_totgst_and_totamt_oth(event) {
 
 	var totamount = amount + discamt + taxamount;
 
-	$("#"+id_optid+"_discamt").val(numeral(discamt).format('0,0.00'));
+	$("#"+id_optid+"_discamt").val(discamt);
 	$("#"+id_optid+"_amount").val(amount);
 	$("#"+id_optid+"_taxamount").val(taxamount);
 	$("#"+id_optid+"_totamount").val(totamount);

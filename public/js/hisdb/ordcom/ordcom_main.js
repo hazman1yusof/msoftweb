@@ -297,7 +297,7 @@ function calc_discamt_main(chggroup,chgcode,unitprce,quantity){
 		return 0.00;
 	}
 
-	return numeral(discamount).format('0,0.00');
+	return discamount;
 }
 
 function abscurrency(val,opt,rowObject ){

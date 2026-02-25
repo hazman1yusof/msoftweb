@@ -534,7 +534,7 @@ function calculate_line_totgst_and_totamt_dfee(event) {
 
 	var totamount = amount + disamt + taxamount;
 
-	$("#"+id_optid+"_discamt").val(numeral(disamt).format('0,0.00'));
+	$("#"+id_optid+"_discamt").val(disamt);
 	$("#"+id_optid+"_amount").val(amount);
 	$("#"+id_optid+"_taxamount").val(taxamount);
 	$("#"+id_optid+"_totamount").val(totamount);
