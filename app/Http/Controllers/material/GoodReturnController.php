@@ -546,12 +546,12 @@ class GoodReturnController extends defaultController
                                 'NetMvVal'.$month => $NetMvVal
                             ]);
 
+                        $this->betulkan_stockexp($value->itemcode,$QtyOnHand,$value->deldept);
+
                     }else{
                     //3.kalu xde stockloc, create stockloc baru
 
                     }
-
-                    $this->betulkan_stockexp($value->itemcode,$QtyOnHand,$value->deldept);
 
                     //--- 5. posting product -> update qtyonhand, avgcost, currprice ---//
                     $product_obj = DB::table('material.product')
@@ -559,11 +559,16 @@ class GoodReturnController extends defaultController
                         ->where('product.itemcode','=',$value->itemcode)
                         ->where('product.uomcode','=',$value->uomcode);
 
-                    if($product_obj->first()){ // kalu jumpa
+                    if($product_obj->exists()){ // kalu jumpa
                         // update qtyonhand, avgcost, currprice
-                        $product_obj
+                        $product_first = $product_obj->first();
+
+                        DB::table('material.product')
+                            ->where('product.compcode','=',session('compcode'))
+                            ->where('product.itemcode','=',$value->itemcode)
+                            ->where('product.uomcode','=',$value->uomcode)
                             ->update([
-                                'qtyonhand' => $QtyOnHand ,
+                                'qtyonhand' => $product_first->qtyonhand + $txnqty,
                                 // 'avgcost' => $newAvgCost,
                                 // 'currprice' => $currprice
                             ]);
