@@ -276,7 +276,7 @@ $(document).ready(function () {
 			{ label: 'Description', name: 'ct_description', classes: 'wrap', width: 30},
 			{ label: 'UOM', name: 'uom', width: 30, formatter: showdetail, unformat: un_showdetail, hidden:false},
 			{ label: 'UOM Product', name: 'uom_product', width: 30, formatter: showdetail, unformat: un_showdetail, hidden:false},
-			{ label: 'Generic Name', name: 'brandname', width: 60},
+			{ label: 'Generic Name', name: 'brandname', width: 60, canSearch: true},
 			{ label: 'barcode', name: 'barcode', hidden:true},
 			{ label: 'constype', name: 'constype', hidden:true},
 			{ label: 'packqty', name: 'packqty', hidden:true},
