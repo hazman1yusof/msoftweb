@@ -43,13 +43,13 @@
                                 [
                                     { text: 'Debtor' },
                                     { text: ':' },
-                                    { text: '{{$dbacthdr->debtorcode}} - {{$dbacthdr->debt_name}}' ,colSpan:4},
+                                    { text: `{{$dbacthdr->debtorcode}} - {!!str_replace('`', '', $dbacthdr->debt_name)!!}` ,colSpan:4},
                                     {},{},{}
                                 ],
                                 [
                                     { text: 'Address' },
                                     { text: ':' },
-                                    { text: '{{$dbacthdr->cust_address1}}' },
+                                    { text: `{!!str_replace('`', '', $dbacthdr->cust_address1)!!}` },
                                     { text: 'Document No.' },
                                     { text: ':' },
                                     @if(!empty($dbacthdr->auditno))
@@ -61,7 +61,7 @@
                                 [
                                     { text: '' },
                                     { text: ':' },
-                                    { text: '{{$dbacthdr->cust_address2}}' },
+                                    { text: `{!!str_replace('`', '', $dbacthdr->cust_address2)!!}` },
                                     { text: 'Date' },
                                     { text: ':' },
                                     { text: '{{\Carbon\Carbon::parse($dbacthdr->entrydate)->format('d/m/Y')}}' },
@@ -69,7 +69,7 @@
                                 [
                                     { text: '' },
                                     { text: ':' },
-                                    { text: '{{$dbacthdr->cust_address3}}' },
+                                    { text: `{!!str_replace('`', '', $dbacthdr->cust_address3)!!}` },
                                     { text: 'Reference No.' },
                                     { text: ':' },
                                     { text: '{{$dbacthdr->reference}}' },
@@ -77,7 +77,7 @@
                                 [
                                     { text: '' },
                                     { text: ':' },
-                                    { text: '{{$dbacthdr->cust_address4}}' },
+                                    { text: `{!!str_replace('`', '', $dbacthdr->cust_address4)!!}` },
                                     {},{},{}
                                 ],
                             ]
@@ -113,7 +113,7 @@
                             widths: ['*'], // panjang standard dia 515
                             body: [
                                 [
-                                    { text: `REMARK : {{$dbacthdr->remark}}` },
+                                    { text: `REMARK : {!!str_replace('`', '', $dbacthdr->remark)!!}` },
                                 ],
                             ]
                         },
