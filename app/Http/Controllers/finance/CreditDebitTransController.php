@@ -547,7 +547,7 @@ class CreditDebitTransController extends defaultController
                     ->where('apactdtl.auditno', '=', $apacthdr_get->auditno)
                     ->get();
 
-                $yearperiod = $this->getyearperiod($queryDP_obj->actdate);
+                // $yearperiod = $this->getyearperiod($queryDP_obj->actdate);
 
                 foreach ($queryDP_obj as $key => $apactdtl) {
 
