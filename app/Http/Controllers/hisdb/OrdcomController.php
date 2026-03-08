@@ -2235,27 +2235,29 @@ class OrdcomController extends defaultController
                     'qtyonhand' => $sumqtyonhand->sum_qtyonhand,
                 ]);
 
+            $this->betulkan_stockexp($chargetrx_obj->chgcode,$chargetrx_obj->uom_recv,$new_qoh,$chargetrx_obj->reqdept);
+            
             //4. tolak expdate, kalu ada batchno
-            $expdate_obj = DB::table('material.stockexp')
-                ->where('compcode',session('compcode'))
-                // ->where('Year','=',defaultController::toYear($chargetrx_obj->trxdate))
-                ->where('DeptCode','=',$chargetrx_obj->reqdept)
-                ->where('ItemCode','=',$chargetrx_obj->chgcode)
-                ->where('UomCode','=',$chargetrx_obj->uom_recv)
-                ->orderBy('expdate', 'asc');
+            // $expdate_obj = DB::table('material.stockexp')
+            //     ->where('compcode',session('compcode'))
+            //     // ->where('Year','=',defaultController::toYear($chargetrx_obj->trxdate))
+            //     ->where('DeptCode','=',$chargetrx_obj->reqdept)
+            //     ->where('ItemCode','=',$chargetrx_obj->chgcode)
+            //     ->where('UomCode','=',$chargetrx_obj->uom_recv)
+            //     ->orderBy('expdate', 'asc');
 
-            if($expdate_obj->exists()){
-                $expdate_first = $expdate_obj->first();
-                $txnqty_ = $curr_quan;
-                $balqty = floatval($expdate_first->balqty) + floatval($prev_quan) - floatval($curr_quan);
-                $expdate_obj
-                        ->update([
-                            'balqty' => $balqty
-                        ]);
+            // if($expdate_obj->exists()){
+            //     $expdate_first = $expdate_obj->first();
+            //     $txnqty_ = $curr_quan;
+            //     $balqty = floatval($expdate_first->balqty) + floatval($prev_quan) - floatval($curr_quan);
+            //     $expdate_obj
+            //             ->update([
+            //                 'balqty' => $balqty
+            //             ]);
 
-            }else{
-                throw new \Exception("No stockloc");
-            }
+            // }else{
+            //     throw new \Exception("No stockloc");
+            // }
 
         }
 
@@ -2453,42 +2455,53 @@ class OrdcomController extends defaultController
                     'qtyonhand' => $sumqtyonhand->sum_qtyonhand,
                 ]);
 
-            //4. tolak expdate, kalu ada batchno
-            $expdate_obj = DB::table('material.stockexp')
-                ->where('compcode',session('compcode'))
-                // ->where('Year','=',$my_year)
-                ->where('DeptCode','=',$my_deptcode)
-                ->where('ItemCode','=',$my_chgcode)
-                ->where('UomCode','=',$my_uom)
-                ->orderBy('expdate', 'asc');
+            $this->betulkan_stockexp($my_chgcode,$my_uom,$new_qoh,$my_deptcode);
 
-            if($expdate_obj->exists()){
-                $expdate_get = $expdate_obj->get();
-                $txnqty_ = $curr_quan;
-                $balqty = 0;
-                foreach ($expdate_get as $value2) {
-                    $balqty = $value2->balqty;
-                    if($txnqty_-$balqty>0){
-                        $txnqty_ = $txnqty_-$balqty;
-                        DB::table('material.stockexp')
-                            ->where('idno','=',$value2->idno)
-                            ->update([
-                                'balqty' => '0'
-                            ]);
-                    }else{
-                        $balqty = $balqty-$txnqty_;
-                        DB::table('material.stockexp')
-                            ->where('idno','=',$value2->idno)
-                            ->update([
-                                'balqty' => $balqty
-                            ]);
-                        break;
-                    }
-                }
+            // //4. tolak expdate, kalu ada batchno
+            // $expdate_obj = DB::table('material.stockexp')
+            //     ->where('compcode',session('compcode'))
+            //     // ->where('Year','=',$my_year)
+            //     ->where('DeptCode','=',$my_deptcode)
+            //     ->where('ItemCode','=',$my_chgcode)
+            //     ->where('UomCode','=',$my_uom)
+            //     ->orderBy('expdate', 'asc');
 
-            }else{
-                throw new \Exception("No stockexp");
-            }
+            // if($expdate_obj->exists()){
+            //     $expdate_get = $expdate_obj->get();
+            //     $txnqty_ = $curr_quan;
+            //     $balqty = 0;
+            //     foreach ($expdate_get as $value2) {
+            //         $balqty = $value2->balqty;
+            //         if($txnqty_-$balqty>0){
+            //             $txnqty_ = $txnqty_-$balqty;
+            //             DB::table('material.stockexp')
+            //                 ->where('idno','=',$value2->idno)
+            //                 ->update([
+            //                     'balqty' => '0'
+            //                 ]);
+            //         }else{
+            //             $balqty = $balqty-$txnqty_;
+            //             DB::table('material.stockexp')
+            //                 ->where('idno','=',$value2->idno)
+            //                 ->update([
+            //                     'balqty' => $balqty
+            //                 ]);
+            //             break;
+            //         }
+            //     }
+
+            // }else{
+
+
+            //     DB::table('material.stockexp')
+            //         ->insert()
+            //     ->where('compcode',session('compcode'))
+            //     // ->where('Year','=',$my_year)
+            //     ->where('DeptCode','=',$my_deptcode)
+            //     ->where('ItemCode','=',$my_chgcode)
+            //     ->where('UomCode','=',$my_uom)
+            //     throw new \Exception("No stockexp");
+            // }
         }
 
         $ivdspdt_arr = [
@@ -2672,7 +2685,7 @@ class OrdcomController extends defaultController
             ->where('uomcode','=',$my_uom)
             ->where('itemcode','=',$my_chgcode)
             ->where('deptcode','=',$my_deptcode)
-            ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+            ->where('year','=',$my_year);
 
         if($stockloc->exists()){
 
@@ -2695,111 +2708,126 @@ class OrdcomController extends defaultController
                     'NetMvVal'.$month => $NetMvVal
                 ]);
 
-            $product
+            $sumqtyonhand = DB::table('material.stockloc')
+                                ->select(DB::raw('SUM(qtyonhand) AS sum_qtyonhand'))
+                                ->where('compcode','=',session('compcode'))
+                                ->where('unit','=',session('unit'))
+                                ->where('uomcode','=',$my_uom)
+                                ->where('itemcode','=',$my_chgcode)
+                                ->where('year','=',$my_year)
+                                ->first();
+
+            DB::table('material.product')
+                ->where('compcode','=',session('compcode'))
+                ->where('unit','=',session('unit'))
+                ->where('uomcode','=',$my_uom)
+                ->where('itemcode','=',$my_chgcode)
                 ->update([
-                    'qtyonhand' => $new_qoh,
+                    'qtyonhand' => $sumqtyonhand->sum_qtyonhand,
                 ]);
 
             //4. tolak expdate, kalu ada batchno
-            $expdate_obj = DB::table('material.stockexp')
-                ->where('compcode',session('compcode'))
-                // ->where('Year','=',$my_year)
-                ->where('DeptCode','=',$my_deptcode)
-                ->where('ItemCode','=',$my_chgcode)
-                ->where('UomCode','=',$my_uom)
-                ->orderBy('expdate', 'asc');
+            $this->betulkan_stockexp($my_chgcode,$my_uom,$new_qoh,$my_deptcode);
 
-            if($expdate_obj->exists()){
-                $expdate_first = $expdate_obj->first();
-                $balqty = floatval($expdate_first->balqty) + floatval($prev_quan);
-                $expdate_obj
-                        ->update([
-                            'balqty' => $balqty
-                        ]);
+            // $expdate_obj = DB::table('material.stockexp')
+            //     ->where('compcode',session('compcode'))
+            //     // ->where('Year','=',$my_year)
+            //     ->where('DeptCode','=',$my_deptcode)
+            //     ->where('ItemCode','=',$my_chgcode)
+            //     ->where('UomCode','=',$my_uom)
+            //     ->orderBy('expdate', 'asc');
 
-            }else{
-                throw new \Exception("No stockexp");
-            }
+            // if($expdate_obj->exists()){
+            //     $expdate_first = $expdate_obj->first();
+            //     $balqty = floatval($expdate_first->balqty) + floatval($prev_quan);
+            //     $expdate_obj
+            //             ->update([
+            //                 'balqty' => $balqty
+            //             ]);
+
+            // }else{
+            //     throw new \Exception("No stockexp");
+            // }
 
         }
 
-        $gltran = DB::table('finance.gltran')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('auditno','=',$chargetrx_obj->auditno);
+        // $gltran = DB::table('finance.gltran')
+        //             ->where('compcode','=',session('compcode'))
+        //             ->where('auditno','=',$chargetrx_obj->auditno);
 
-        if($gltran->exists()){
-            $gltran_first = $gltran->first();
+        // if($gltran->exists()){
+        //     $gltran_first = $gltran->first();
 
-            $OldAmount = $gltran_first->amount;
-            $yearperiod = $this->getyearperiod($ivdspdt_lama->first()->trandate);
-            $drcostcode = $gltran_first->drcostcode;
-            $dracc = $gltran_first->dracc;
-            $crcostcode = $gltran_first->crcostcode;
-            $cracc = $gltran_first->cracc;
+        //     $OldAmount = $gltran_first->amount;
+        //     $yearperiod = $this->getyearperiod($ivdspdt_lama->first()->trandate);
+        //     $drcostcode = $gltran_first->drcostcode;
+        //     $dracc = $gltran_first->dracc;
+        //     $crcostcode = $gltran_first->crcostcode;
+        //     $cracc = $gltran_first->cracc;
 
-            //2. check glmastdtl utk debit, kalu ada update kalu xde create
-            $gltranAmount =  $this->isGltranExist($drcostcode,$dracc,$yearperiod->year,$yearperiod->period);
+        //     //2. check glmastdtl utk debit, kalu ada update kalu xde create
+        //     $gltranAmount =  $this->isGltranExist($drcostcode,$dracc,$yearperiod->year,$yearperiod->period);
 
-            if($gltranAmount!==false){
-                DB::table('finance.glmasdtl')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('costcode','=',$drcostcode)
-                    ->where('glaccount','=',$dracc)
-                    ->where('year','=',$yearperiod->year)
-                    ->update([
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                        'actamount'.$yearperiod->period => $gltranAmount - $OldAmount,
-                        'recstatus' => 'ACTIVE'
-                    ]);
-            }else{
-                DB::table('finance.glmasdtl')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'costcode' => $drcostcode,
-                        'glaccount' => $dracc,
-                        'year' => $yearperiod->year,
-                        'actamount'.$yearperiod->period => -$OldAmount,
-                        'adduser' => session('username'),
-                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                        'recstatus' => 'ACTIVE'
-                    ]);
-            }
+        //     if($gltranAmount!==false){
+        //         DB::table('finance.glmasdtl')
+        //             ->where('compcode','=',session('compcode'))
+        //             ->where('costcode','=',$drcostcode)
+        //             ->where('glaccount','=',$dracc)
+        //             ->where('year','=',$yearperiod->year)
+        //             ->update([
+        //                 'upduser' => session('username'),
+        //                 'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+        //                 'actamount'.$yearperiod->period => $gltranAmount - $OldAmount,
+        //                 'recstatus' => 'ACTIVE'
+        //             ]);
+        //     }else{
+        //         DB::table('finance.glmasdtl')
+        //             ->insert([
+        //                 'compcode' => session('compcode'),
+        //                 'costcode' => $drcostcode,
+        //                 'glaccount' => $dracc,
+        //                 'year' => $yearperiod->year,
+        //                 'actamount'.$yearperiod->period => -$OldAmount,
+        //                 'adduser' => session('username'),
+        //                 'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+        //                 'recstatus' => 'ACTIVE'
+        //             ]);
+        //     }
 
-            //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
-            $gltranAmount = defaultController::isGltranExist_($crcostcode,$cracc,$yearperiod->year,$yearperiod->period);
+        //     //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+        //     $gltranAmount = defaultController::isGltranExist_($crcostcode,$cracc,$yearperiod->year,$yearperiod->period);
 
-            if($gltranAmount!==false){
-                DB::table('finance.glmasdtl')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('costcode','=',$crcostcode)
-                    ->where('glaccount','=',$cracc)
-                    ->where('year','=',$yearperiod->year)
-                    ->update([
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                        'actamount'.$yearperiod->period => $gltranAmount + $OldAmount,
-                        'recstatus' => 'ACTIVE'
-                    ]);
-            }else{
-                DB::table('finance.glmasdtl')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'costcode' => $crcostcode,
-                        'glaccount' => $cracc,
-                        'year' => $yearperiod->year,
-                        'actamount'.$yearperiod->period => +$OldAmount,
-                        'adduser' => session('username'),
-                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                        'recstatus' => 'ACTIVE'
-                    ]);
-            }
+        //     if($gltranAmount!==false){
+        //         DB::table('finance.glmasdtl')
+        //             ->where('compcode','=',session('compcode'))
+        //             ->where('costcode','=',$crcostcode)
+        //             ->where('glaccount','=',$cracc)
+        //             ->where('year','=',$yearperiod->year)
+        //             ->update([
+        //                 'upduser' => session('username'),
+        //                 'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+        //                 'actamount'.$yearperiod->period => $gltranAmount + $OldAmount,
+        //                 'recstatus' => 'ACTIVE'
+        //             ]);
+        //     }else{
+        //         DB::table('finance.glmasdtl')
+        //             ->insert([
+        //                 'compcode' => session('compcode'),
+        //                 'costcode' => $crcostcode,
+        //                 'glaccount' => $cracc,
+        //                 'year' => $yearperiod->year,
+        //                 'actamount'.$yearperiod->period => +$OldAmount,
+        //                 'adduser' => session('username'),
+        //                 'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+        //                 'recstatus' => 'ACTIVE'
+        //             ]);
+        //     }
 
-            DB::table('finance.gltran')
-                ->where('compcode','=',session('compcode'))
-                ->where('auditno','=',$chargetrx_obj->auditno)
-                ->delete();
-        }
+        //     DB::table('finance.gltran')
+        //         ->where('compcode','=',session('compcode'))
+        //         ->where('auditno','=',$chargetrx_obj->auditno)
+        //         ->delete();
+        // }
 
         // pindah ke ivdspdtlog
         // recstatus->delete
@@ -5544,6 +5572,108 @@ class OrdcomController extends defaultController
                     'adduser' => session('username'),
                     'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
                     'recstatus' => 'ACTIVE'
+                ]);
+        }
+    }
+
+    public function betulkan_stockexp($itemcode,$uomcode,$qtyonhand,$deptcode){
+
+        $stockexp = DB::table('material.stockexp')
+                        ->where('itemcode',$itemcode)
+                        ->where('compcode',session('compcode'))
+                        ->where('deptcode',$deptcode);
+
+        if($stockexp->exists()){
+            $balqty = $stockexp->sum('balqty');
+            $qtyonhand = $qtyonhand;
+
+            if($balqty != $qtyonhand){
+
+                if($qtyonhand>$balqty){
+                    $var = $qtyonhand - $balqty;
+
+                    $stockexp_chg = DB::table('material.stockexp')
+                                        ->where('compcode',session('compcode'))
+                                        ->where('itemcode',$itemcode)
+                                        ->where('deptcode',$deptcode)
+                                        ->orderBy('idno','desc')
+                                        ->first();
+
+                    DB::table('material.stockexp')
+                                ->where('idno',$stockexp_chg->idno)
+                                ->where('compcode',session('compcode'))
+                                ->where('itemcode',$itemcode)
+                                ->update([
+                                    'balqty' => $stockexp_chg->balqty + $var
+                                ]);
+
+                    $chg = $stockexp_chg->balqty + $var;
+
+                }else if($qtyonhand<$balqty){
+                    $stockexp_chg = DB::table('material.stockexp')
+                                        ->where('compcode',session('compcode'))
+                                        ->where('itemcode',$itemcode)
+                                        ->where('deptcode',$deptcode)
+                                        ->orderBy('idno','desc')
+                                        ->get();
+
+                    $baki = $qtyonhand;
+                    $zerorise = 0;
+                    foreach ($stockexp_chg as $obj) {
+                        $baki = $baki - $obj->balqty;
+                        if($zerorise == 1){
+                            DB::table('material.stockexp')
+                                ->where('idno',$obj->idno)
+                                ->where('compcode',session('compcode'))
+                                ->where('itemcode',$itemcode)
+                                ->update([
+                                    'balqty' => 0
+                                ]);
+
+                        }else{
+                            if($baki == 0){
+                                $zerorise = 1;
+                                // DB::table('material.stockexp')
+                                //     ->where('idno',$obj->idno)
+                                //     ->where('compcode','9B')
+                                //     ->where('itemcode',$itemcode)
+                                //     ->update([
+                                //         'balqty' => 0
+                                //     ]);
+
+                                // continue;
+                            }else if($baki > 0){
+                                // DB::table('material.stockexp')
+                                //     ->where('idno',$obj->idno)
+                                //     ->where('compcode','9B')
+                                //     ->where('itemcode',$itemcode)
+                                //     ->update([
+                                //         'balqty' => 0
+                                //     ]);
+                            }else if($baki < 0){
+                                DB::table('material.stockexp')
+                                    ->where('idno',$obj->idno)
+                                    ->where('compcode','9B')
+                                    ->where('itemcode',$itemcode)
+                                    ->update([
+                                        'balqty' => $baki + $obj->balqty
+                                    ]);
+                                $chg = $baki + $obj->balqty;
+
+                                $zerorise = 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }else{
+            DB::table('material.stockexp')
+                ->insert([
+                    'itemcode' => $itemcode,
+                    'uomcode' => $uomcode,
+                    'deptcode' => $deptcode,
+                    'balqty' => $qtyonhand,
+                    'unit' => session('unit')
                 ]);
         }
     }

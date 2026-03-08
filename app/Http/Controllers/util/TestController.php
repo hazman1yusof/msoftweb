@@ -136,6 +136,8 @@ class TestController extends defaultController
                 return $this->checkCNDNgltran($request);
             case 'no_regdept':
                 return $this->no_regdept($request);
+            case 'stockexp_2026':
+                return $this->stockexp_2026($request);
             // case 'netmvval_from_netmvqty':
             //     return $this->netmvval_from_netmvqty($request);
             // case 'cr8_acctmaster':
@@ -9507,5 +9509,92 @@ class TestController extends defaultController
             }
         }
         
+    }
+
+    public function stockexp_2026(Request $request){
+        // $deptcode = $request->deptcode;
+
+        // if(!$deptcode){
+        //     dd('no deptcode');
+        // }
+
+        // $chgmast = DB::table('hisdb.chgmast')
+        //     ->where('compcode',session('compcode'))
+        //     ->where('chggroup','50')
+        //     ->get();
+
+
+        // foreach ($chgmast as $key => $value) {
+        //     DB::table('material.stockexp')
+        //         ->insertGetId([
+        //             'compcode' => session('compcode'), 
+        //             'unit' => session('unit'), 
+        //             'deptcode' => $deptcode, 
+        //             'itemcode' => $value->chgcode, 
+        //             'uomcode' => $value->uom, 
+        //             'balqty' => 0, 
+        //             'adduser' => session('username'), 
+        //             'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+        //             'upduser' => session('username'), 
+        //             'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+        //            // 'lasttt' => 'GRN', 
+        //             'year' => Carbon::now("Asia/Kuala_Lumpur")->year
+        //         ]);
+        // }
+
+        $bedalloc = DB::table('hisdb.bedalloc AS b')
+                ->select('b.mrn','b.episno','b.ward','b.room','b.bednum','b.name','e.admdoctor')
+                ->leftjoin('hisdb.episode as e', function($join) use ($request){
+                    $join = $join->on('e.mrn', 'b.mrn')
+                                  ->on('e.episno', 'b.episno')
+                                  ->where('e.compcode','9B');
+                })
+                ->where('b.compcode','9B')
+                ->where('b.astatus','OCCUPIED')
+                ->get();
+
+        foreach ($bedalloc as $key => $value) {
+            $bed = DB::table('hisdb.bed')
+                    ->where('compcode','9b')
+                    // ->where('ward',$value->ward)
+                    // ->where('room',$value->room)
+                    ->where('bednum',$value->bednum);
+
+            if(!$bed->exists()){
+                DB::table('hisdb.bed')
+                    ->insert([
+                        'compcode' => '9B',
+                        'ward' => $value->ward,
+                        'room' => $value->room,
+                        'bednum' => $value->bednum,
+                        'bedtype' => 'SUIT',
+                        'tel_ext' => '0',
+                        'statistic' => 1,
+                        'occup' => 'OCCUPIED',
+                        'isolate' => 0,
+                        'baby' => 0,
+                        'bedchgcode' => '00000005',
+                        'recstatus' => 'ACTIVE',
+                        'mrn' => $value->mrn,
+                        'episno' => $value->episno,
+                        'name' => $value->name,
+                        'admdoctor' => $value->admdoctor
+                    ]);
+            }else{
+                DB::table('hisdb.bed')
+                    ->where('bednum',$value->bednum)
+                    ->update([
+                        'statistic' => 1,
+                        'occup' => 'OCCUPIED',
+                        'ward' => $value->ward,
+                        'room' => $value->room,
+                        'mrn' => $value->mrn,
+                        'episno' => $value->episno,
+                        'name' => $value->name,
+                        'admdoctor' => $value->admdoctor
+                    ]);
+            }
+        }
+
     }
 }

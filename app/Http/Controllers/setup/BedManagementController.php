@@ -110,11 +110,11 @@ class BedManagementController extends defaultController
             foreach ($count as $key => $value) {
                 $occur_ar = $this->index_of_occurance($key,$searchCol_array);
 
-                $table = $table->orWhere(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                $table = $table->Where(function ($table) use ($request,$searchCol_array,$occur_ar) {
                     foreach ($searchCol_array as $key => $value) {
                         $found = array_search($key,$occur_ar);
                         if($found !== false){
-                            $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                            $table->Where('b.'.$searchCol_array[$key],'like',$request->searchVal[$key]);
                         }
                     }
                 });
