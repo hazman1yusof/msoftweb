@@ -194,9 +194,10 @@ $(document).ready(function () {	/////////////////////////validation/////////////
 			{ label: 'Tel Ext', name: 'tel_ext', width: 8, canSearch: false, checked: true, editable: true, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Statistic', name: 'statistic', width: 10, classes: 'wrap', canSearch: false, editable: true,editrules:{required: true},edittype: 'select', formatter: 'select',editoptions:{value:{ '1': '1', '0': '0' }}
 			},
+			{ label: 'Type', name: 'epistycode', width: 8},
 			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, align: 'right', formatter: padzero, unformat: unpadzero},
 			{ label: ' ', name: 'episno', align: 'right', width: 5},
-			{ label: 'Notes', name: 'name', width: 25, canSearch: true, classes: 'wrap'},
+			{ label: 'Name', name: 'name', width: 25, canSearch: true, classes: 'wrap'},
 			{ label: 'Doctor Code', name: 'admdoctor', width: 20, canSearch: true, formatter: showdetail, unformat:un_showdetail},
 			{ label: ' ', name: 'recstatus', width: 8, classes: 'left_td', editable: false},
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},

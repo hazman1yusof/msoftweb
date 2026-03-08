@@ -68,15 +68,16 @@ class BedManagementController extends defaultController
     public function get_table(Request $request){
 
         $table = DB::table('hisdb.bed as b')
-                    ->select('b.idno','b.compcode','b.ward','b.room','b.bednum','b.bedtype','b.tel_ext','b.statistic','b.occup','b.isolate','b.baby','b.bedstatus','b.bedchgcode','b.lodchgcode','b.mealschgcode','b.otherchgcode','b.category','b.f1','b.f2','b.f3','b.f4','b.f5','b.lastuser','b.lastupdate','b.adduser','b.adddate','b.upduser','b.upddate','b.deluser','b.deldate','b.computerid','b.lastcomputerid','b.recstatus','b.mrn','b.episno','b.name','b.admdoctor','p.Sex','p.DOB','racecode.Description AS raceDesc','religion.Description AS religionDesc','occupation.description AS occupDesc','citizen.Description AS citizenDesc','areacode.Description AS areaDesc')
-                    // ->leftJoin('hisdb.episode as e', function($join) use ($request){
-                    //             $join = $join->where('e.mrn','=','b.mrn')
-                    //                          ->where('e.episno','=','b.episno')
-                    //                          ->where('e.compcode','=',session('compcode'));
+                    ->select('b.idno','b.compcode','b.ward','b.room','b.bednum','b.bedtype','b.tel_ext','b.statistic','b.occup','b.isolate','b.baby','b.bedstatus','b.bedchgcode','b.lodchgcode','b.mealschgcode','b.otherchgcode','b.category','b.f1','b.f2','b.f3','b.f4','b.f5','b.lastuser','b.lastupdate','b.adduser','b.adddate','b.upduser','b.upddate','b.deluser','b.deldate','b.computerid','b.lastcomputerid','b.recstatus','e.mrn','e.episno','p.name','e.admdoctor','p.Sex','p.DOB','racecode.Description AS raceDesc','religion.Description AS religionDesc','occupation.description AS occupDesc','citizen.Description AS citizenDesc','areacode.Description AS areaDesc','e.epistycode')
+                    ->leftJoin('hisdb.episode as e', function($join) use ($request){
+                                $join = $join
+                                             ->where('e.episactive','=','1')
+                                             ->on('e.bed','b.bednum')
+                                             ->where('e.compcode','=',session('compcode'));
 
-                    //         })
+                            })
                     ->leftJoin('hisdb.pat_mast AS p', function($join) use ($request){
-                        $join = $join->on("p.mrn", '=', 'b.mrn')
+                        $join = $join->on("p.mrn", '=', 'e.mrn')
                                      ->where('p.compcode','=',session('compcode'));
                     })
                     ->leftJoin('hisdb.racecode', function($join) use ($request){

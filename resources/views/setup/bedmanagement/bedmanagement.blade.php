@@ -389,5 +389,5 @@
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/rowgroup/1.1.2/js/dataTables.rowGroup.min.js"></script>
-	<script src="js/setup/bedmanagement/bedmanagement.js"></script>
+	<script src="js/setup/bedmanagement/bedmanagement.js?v=1.1"></script>
 @endsection
