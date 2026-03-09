@@ -1663,8 +1663,8 @@ class OrdcomController extends defaultController
         if($product->exists()){
             if($updinv == 1){
                 $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
+                $this->crtgltran($chargetrx_obj,$updinv);
             }
-            $this->crtgltran($chargetrx_obj,$updinv);
         }
     }
 
@@ -1754,13 +1754,13 @@ class OrdcomController extends defaultController
             if($ivdspdt->exists()){
                 if($updinv == 1){
                     $this->updivdspdt($chargetrx_obj);
+                    $this->updgltran($chargetrx_obj,$updinv);
                 }
-                $this->updgltran($chargetrx_obj,$updinv);
             }else{
                 if($updinv == 1){
                     $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
+                    $this->crtgltran($chargetrx_obj,$updinv);
                 }
-                $this->crtgltran($chargetrx_obj,$updinv);
             }
         }
     }
@@ -1830,13 +1830,13 @@ class OrdcomController extends defaultController
             if($ivdspdt->exists()){
                 if($updinv == 1){
                     $this->updivdspdt($chargetrx_obj);
+                    $this->updgltran($chargetrx_obj,$updinv);
                 }
-                $this->updgltran($chargetrx_obj,$updinv);
             }else{
                 if($updinv == 1){
                     $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
+                    $this->crtgltran($chargetrx_obj,$updinv);
                 }
-                $this->crtgltran($chargetrx_obj,$updinv);
             }
         }
     }
@@ -1996,8 +1996,8 @@ class OrdcomController extends defaultController
                 
                 if($updinv == 1){
                     $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
+                    $this->crtgltran($chargetrx_obj,$updinv);
                 }
-                $this->crtgltran($chargetrx_obj,$updinv);
             }
     }
 
@@ -2060,13 +2060,13 @@ class OrdcomController extends defaultController
             if($ivdspdt->exists()){
                 if($updinv == 1){
                     $this->updivdspdt($chargetrx_obj);
+                    $this->updgltran($chargetrx_obj,$updinv);
                 }
-                $this->updgltran($chargetrx_obj,$updinv);
             }else{
                 if($updinv == 1){
                     $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
+                    $this->crtgltran($chargetrx_obj,$updinv);
                 }
-                $this->crtgltran($chargetrx_obj,$updinv);
             }
         }
     }
@@ -2133,13 +2133,13 @@ class OrdcomController extends defaultController
             if($ivdspdt->exists()){
                 if($updinv == 1){
                     $this->updivdspdt($chargetrx_obj);
+                    $this->updgltran($chargetrx_obj,$updinv);
                 }
-                $this->updgltran($chargetrx_obj,$updinv);
             }else{
                 if($updinv == 1){
                     $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
+                    $this->crtgltran($chargetrx_obj,$updinv);
                 }
-                $this->crtgltran($chargetrx_obj,$updinv);
             }
         }
     }
@@ -2236,7 +2236,7 @@ class OrdcomController extends defaultController
                 ]);
 
             $this->betulkan_stockexp($chargetrx_obj->chgcode,$chargetrx_obj->uom_recv,$new_qoh,$chargetrx_obj->reqdept);
-            
+
             //4. tolak expdate, kalu ada batchno
             // $expdate_obj = DB::table('material.stockexp')
             //     ->where('compcode',session('compcode'))
