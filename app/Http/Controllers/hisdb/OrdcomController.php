@@ -3996,16 +3996,17 @@ class OrdcomController extends defaultController
                             ->whereNotNull('billno');
 
         if($chargetrx_obj->exists()){
+            $chargetrx_first = $chargetrx_obj->first();
             $this->final_bill_reverse($request);
             
-            $this->final_bill($request);
+            $this->final_bill($request,$chargetrx_first);
         }else{
-            $this->final_bill($request);
+            $this->final_bill($request,null);
         }
 
     }
 
-    public function final_bill(Request $request){
+    public function final_bill(Request $request,$chargetrx_first){
         DB::beginTransaction();
 
         try {
@@ -4090,8 +4091,13 @@ class OrdcomController extends defaultController
             
             $chargetrx_obj = $chargetrx_obj->get();
 
-            $billno = $this->recno('PB','IN');
-            $invno = $this->recno('PB','INV');
+            if($chargetrx_first != null){
+                $billno = $chargetrx_first->billno;
+                $invno = $chargetrx_first->invno;
+            }else{
+                $billno = $this->recno('PB','IN');
+                $invno = $this->recno('PB','INV');
+            }
             $gst = [];
             $disc = [];
 
@@ -4308,6 +4314,7 @@ class OrdcomController extends defaultController
                     ->where('episno',$episno)
                     ->where('recstatus','POSTED')
                     ->update([
+                        'compcode' => 'xx',
                         'recstatus' => 'CANCELLED'
                     ]);
 
