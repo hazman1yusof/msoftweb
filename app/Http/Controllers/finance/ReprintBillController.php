@@ -67,6 +67,7 @@ class ReprintBillController extends defaultController
                         ->where('db.compcode',session('compcode'))
                         ->where('db.source','PB')
                         ->where('db.trantype','IN')
+                        ->where('db.recstatus','POSTED')
                         ->where('db.mrn','!=','0')
                         ->where('db.episno','!=','0');
 
