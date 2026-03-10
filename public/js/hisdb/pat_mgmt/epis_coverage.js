@@ -64,6 +64,7 @@ $(document).ready(function () {
 			if(rowdata.pay_type == 'PT'){
 				button_state_epno_coverage('add');
 			}else{
+				button_state_epno_coverage('add_edit');
 				if(rowdata.allgroup == 0){
 					$('#except_epno_coverage').attr('disabled',false);
 				}
