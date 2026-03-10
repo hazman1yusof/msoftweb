@@ -483,7 +483,7 @@
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_diet_doc.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth_doc.js"></script> -->
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp.js?v=1.1"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee.js"></script>
@@ -573,7 +573,7 @@
 				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_diet_doc.js"></script>
 				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth_doc.js"></script> -->
 				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab.js"></script>
 				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad.js"></script>
 				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee.js"></script>

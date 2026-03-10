@@ -859,8 +859,8 @@ var dialog_chgcode_disp = new ordialog(
 			dialog_chgcode_disp.urlParam.entrydate = $("#jqGrid_disp input[name='trxdate']").val();
 			dialog_chgcode_disp.urlParam.billtype = $('#billtype_def_code').val();
 			dialog_chgcode_disp.urlParam.chgcode = $("#jqGrid_disp input[name='chgcode']").val();
-			dialog_uomcode_disp.urlParam.filterCol = [];
-			dialog_uomcode_disp.urlParam.filterVal = [];
+			dialog_chgcode_disp.urlParam.filterCol = [];
+			dialog_chgcode_disp.urlParam.filterVal = [];
 			dialog_chgcode_disp.urlParam.whereInCol = ['cm.chggroup'];
 			dialog_chgcode_disp.urlParam.whereInVal = [$('#ordcomtt_disp').val()];
 		},
