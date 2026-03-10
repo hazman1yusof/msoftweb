@@ -177,8 +177,8 @@
                         [
                             {text: '',bold: true}, 
                             {text: ': '+e_ep.address2},
-                            {text: 'Bill No.',bold: true}, 
-                            {text: ': '+e_ep.billno},
+                            {text: 'Invoice No.',bold: true}, 
+                            {text: ': '+e_ep.invno},
                         ],
                         [
                             {text: '',bold: true}, 

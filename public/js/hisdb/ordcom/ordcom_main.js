@@ -271,7 +271,7 @@ function get_ordcom_totamount(){
 	},'json').done(function(data) {
 		if(!$.isEmptyObject(data)){
 			$('span#cyclebill_totmat').text(numeral(data.totamount).format('0,0.00'));
-			$('span#cyclebill_invno').html('<b>Bill No : </b>'+data.invno);
+			$('span#cyclebill_invno').html('<b>Invoice No : </b>'+data.invno);
 		}else{
 			$('span#cyclebill_totmat').text('');
 		}

@@ -17,7 +17,7 @@
 <script>
     var patmast_episode = {
         @foreach($patmast_episode as $key => $val)
-            '{{$key}}' : '{{$val}}',
+            '{{$key}}' : `{!!$val!!}`,
         @endforeach
     };
 
@@ -85,8 +85,8 @@
                                 [
                                     {text: '',bold: true}, 
                                     {text: ': '+patmast_episode.address2},
-                                    {text: 'Bill No.',bold: true}, 
-                                    {text: ': '+chargetrx[0].billno},
+                                    {text: 'Invoice No.',bold: true}, 
+                                    {text: ': '+chargetrx[0].invno},
                                 ],
                                 [
                                     {text: '',bold: true}, 

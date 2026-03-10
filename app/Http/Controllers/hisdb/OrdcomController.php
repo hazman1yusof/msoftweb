@@ -5347,7 +5347,7 @@ class OrdcomController extends defaultController
                                 })
                                 ->leftjoin('debtor.debtormast as dm', function($join) use ($request){
                                     $join = $join->where('dm.compcode', '=', session('compcode'));
-                                    $join = $join->on('dm.debtorcode', '=', 'ep.payer');
+                                    $join = $join->on('dm.debtorcode', '=', 'ep.payercode');
                                 });
 
         if(!$patmast_episode->exists()){
@@ -5450,7 +5450,7 @@ class OrdcomController extends defaultController
                                 })
                                 ->leftjoin('debtor.debtormast as dm', function($join) use ($request){
                                     $join = $join->where('dm.compcode', '=', session('compcode'));
-                                    $join = $join->on('dm.debtorcode', '=', 'ep.payer');
+                                    $join = $join->on('dm.debtorcode', '=', 'epayr.payercode');
                                 });
 
         if(!$patmast_episode->exists()){
@@ -5461,7 +5461,7 @@ class OrdcomController extends defaultController
         // dd($patmast_episode);
 
         $chargetrx = DB::table('hisdb.chargetrx as trx')
-                        ->select('trx.chgcode','trx.uom','trx.billno','chgm.description','trx.trxdate','trx.quantity','trx.amount','trx.discamt','trx.taxamount','chgm.invgroup','chgm.chgclass','chgc.description as chgc_desc','chgc.classlevel','chgg.description as chgg_desc','chgt.description as chgt_desc','doc.doctorname','doc.doctorcode')
+                        ->select('trx.chgcode','trx.uom','trx.billno','trx.invno','chgm.description','trx.trxdate','trx.quantity','trx.amount','trx.discamt','trx.taxamount','chgm.invgroup','chgm.chgclass','chgc.description as chgc_desc','chgc.classlevel','chgg.description as chgg_desc','chgt.description as chgt_desc','doc.doctorname','doc.doctorcode')
                         ->where('trx.compcode',session('compcode'))
                         ->where('trx.trxtype','!=','PD')
                         ->where('trx.mrn' ,'=', $request->mrn)
