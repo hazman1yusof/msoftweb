@@ -105,7 +105,7 @@ class SalesOrderDetailController extends defaultController
         $entrydate = $request->entrydate;
         $billtype_obj = $this->billtype_obj_get($request);
 
-        switch ($billtype_obj->billtype->price) {
+        switch (strtoupper($billtype_obj->billtype->price)) {
             case 'PRICE1':
                 $cp_fld = 'amt1';
                 break;
