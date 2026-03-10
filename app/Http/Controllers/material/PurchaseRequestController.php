@@ -318,7 +318,7 @@ class PurchaseRequestController extends defaultController
                     throw new \Exception("supplier doesnt exists");
                 }
             }else{
-                throw new \Exception("supplier doesnt exists");
+                // throw new \Exception("supplier doesnt exists");
             }
 
             $table = DB::table("material.purreqhd");

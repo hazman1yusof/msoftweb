@@ -336,7 +336,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 							<label class="col-md-2 control-label" for="purreqhd_reqdept">Request Department</label>
 							<div class="col-md-4">
 								<div class='input-group'>
-									<input id="purreqhd_reqdept" name="purreqhd_reqdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+									<input id="purreqhd_reqdept" name="purreqhd_reqdept" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
@@ -344,7 +344,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 							
 							<label class="col-md-2 control-label" for="purreqhd_purreqno">Request No.</label>
 							<div class="col-md-2">
-								<input id="purreqhd_purreqno" name="purreqhd_purreqno" type="text" maxlength="30" class="form-control input-sm" rdonly>
+								<input id="purreqhd_purreqno" name="purreqhd_purreqno" type="text" maxlength="100" class="form-control input-sm" rdonly>
 							</div>
 						</div>
 						
@@ -352,7 +352,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 							<label class="col-md-2 control-label" for="purreqhd_prdept">Purchase Department</label>
 							<div class="col-md-4">
 								<div class='input-group'>
-									<input id="purreqhd_prdept" name="purreqhd_prdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+									<input id="purreqhd_prdept" name="purreqhd_prdept" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
@@ -368,7 +368,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 							<label class="col-md-2 control-label" for="purreqhd_suppcode">Supplier Code</label>
 							<div class="col-md-4">
 								<div class='input-group'>
-									<input id="purreqhd_suppcode" name="purreqhd_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+									<input id="purreqhd_suppcode" name="purreqhd_suppcode" type="text" maxlength="100" class="form-control input-sm text-uppercase">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
@@ -632,7 +632,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 			
 		});
 	</script>
-	<script src="js/material/purchaseRequest/purchaseRequest.js?v=1.16"></script>
+	<script src="js/material/purchaseRequest/purchaseRequest.js?v=1.17"></script>
 	<!-- <script src="js/material/purchaseRequest/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

@@ -2133,7 +2133,7 @@ $(document).ready(function () {
 	dialog_prdept.makedialog(false);
 	
 	var dialog_suppcode = new ordialog(
-		'suppcode','material.supplier','#purreqhd_suppcode',errorField,
+		'suppcode','material.supplier','#purreqhd_suppcode','errorField',
 		{	colModel:[
 				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Supplier Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
