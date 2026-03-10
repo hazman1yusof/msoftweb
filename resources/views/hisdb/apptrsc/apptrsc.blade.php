@@ -439,6 +439,6 @@ i.fa {
 	<script src="js/hisdb/pat_mgmt/episode.js"></script>
 
 	
-	<script src="js/hisdb/apptrsc/apptrsc.js"></script>
+	<script src="js/hisdb/apptrsc/apptrsc.js?v=1.1"></script>
 
 @endsection

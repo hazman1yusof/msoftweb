@@ -3984,32 +3984,41 @@ class OrdcomController extends defaultController
 
     public function final_bill_init(Request $request){
 
-        $mrn = $request->mrn;
-        $episno = $request->episno;
+        DB::beginTransaction();
 
-        $chargetrx_obj = DB::table('hisdb.chargetrx')
-                            ->where('compcode',session('compcode'))
-                            ->where('mrn' ,'=', $mrn)
-                            ->where('episno' ,'=', $episno)
-                            ->where('trxtype','!=','PD')
-                            ->where('recstatus','<>','DELETE')
-                            ->whereNotNull('billno');
+        try {
 
-        if($chargetrx_obj->exists()){
-            $chargetrx_first = $chargetrx_obj->first();
-            $this->final_bill_reverse($request);
+            $mrn = $request->mrn;
+            $episno = $request->episno;
+
+            $chargetrx_obj = DB::table('hisdb.chargetrx')
+                                ->where('compcode',session('compcode'))
+                                ->where('mrn' ,'=', $mrn)
+                                ->where('episno' ,'=', $episno)
+                                ->where('trxtype','!=','PD')
+                                ->where('recstatus','<>','DELETE')
+                                ->whereNotNull('billno');
+
+            if($chargetrx_obj->exists()){
+                $chargetrx_first = $chargetrx_obj->first();
+                $this->final_bill_reverse($request,$chargetrx_first);
+                
+                $this->final_bill($request,$chargetrx_first);
+            }else{
+                $this->final_bill($request,null);
+            }
+
             
-            $this->final_bill($request,$chargetrx_first);
-        }else{
-            $this->final_bill($request,null);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e, 500);
         }
 
     }
 
     public function final_bill(Request $request,$chargetrx_first){
-        DB::beginTransaction();
-
-        try {
 
             $mrn = $request->mrn;
             $episno = $request->episno;
@@ -4118,13 +4127,6 @@ class OrdcomController extends defaultController
             $this->make_billsum_and_round($mrn,$episno);
             $this->make_dbacthdr_and_GL($mrn,$episno);
             // $this->make_discharge($mrn,$episno);
-            
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e, 500);
-        }
     }
 
     public function handle_epispayer($net_amout,$chargetrx,$mrn,$episno,$billtype,$billno,$invno){
@@ -4301,10 +4303,7 @@ class OrdcomController extends defaultController
         }
     }
 
-    public function final_bill_reverse(Request $request){
-        DB::beginTransaction();
-        try {
-
+    public function final_bill_reverse(Request $request,$chargetrx_first){
             $mrn = $request->mrn;
             $episno = $request->episno;
 
@@ -4313,10 +4312,7 @@ class OrdcomController extends defaultController
                     ->where('mrn',$mrn)
                     ->where('episno',$episno)
                     ->where('recstatus','POSTED')
-                    ->update([
-                        'compcode' => 'xx',
-                        'recstatus' => 'CANCELLED'
-                    ]);
+                    ->delete();
 
             DB::table('hisdb.chargetrx')
                     ->where('compcode',session('compcode'))
@@ -4400,13 +4396,6 @@ class OrdcomController extends defaultController
                             ->update(['totitembal' => $obj->totitemlimit]);
                 }
             }
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e, 500);
-        }
     }
 
     public function handle_gst($gst,$taxamount){
@@ -4835,6 +4824,7 @@ class OrdcomController extends defaultController
     }
 
     public function make_dbacthdr_and_GL($mrn,$episno){
+
         $billdet_obj = DB::table('hisdb.billdet as bd')
                         ->select('bd.auditno','bd.idno','bd.chgcode','bd.uom','bd.mrn','bd.episno','chgm.description','bd.lineno_','bd.trxdate','bd.unitprce','bd.taxcode','bd.invno','bd.invcode','bd.billno','bd.billtype','bd.quantity','bd.amount','bd.discamt','bd.taxamount','chgm.invgroup','chgm.chgclass','dbmst.debtorcode','dbmst.debtortype','dbmst.actdebccode','dbmst.actdebglacc','chgt.ipacccode','chgt.opacccode','ep.epistycode','dept.costcode as dept_costcode')
                         ->where('bd.compcode',session('compcode'))
@@ -4884,6 +4874,13 @@ class OrdcomController extends defaultController
         foreach ($billdet_unq as $key_unq => $value_unq) {
             $billdet_feu = $billdet_obj->where('lineno_',$value_unq->lineno_);
             $sum_amt = $billdet_feu->sum('amount');
+                    
+            DB::table('finance.gltran')
+                    ->where('compcode',session('compcode'))
+                    ->where('source','PB')
+                    ->where('trantype','IN')
+                    ->where('auditno',$value_unq->invno)
+                    ->delete();
 
             DB::table('debtor.dbacthdr')
                 ->insert([
@@ -4984,6 +4981,14 @@ class OrdcomController extends defaultController
             }else{
                 $cracc_ = $value_obj->opacccode;
             }
+
+            DB::table('finance.gltran')
+                    ->where('compcode',session('compcode'))
+                    ->where('source','OE')
+                    ->where('trantype','IN')
+                    ->where('auditno',$value_obj->auditno)
+                    ->where('lineno_',$value_obj->lineno_)
+                    ->delete();
 
             DB::table('finance.gltran')
                 ->insert([

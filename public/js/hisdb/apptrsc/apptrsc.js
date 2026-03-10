@@ -213,6 +213,14 @@ $(document).ready(function () {
 				filterVal : ['REGISTER','session.compcode'],
 
 			},
+			ondblClickRow: function () {
+				let data = selrowData('#' + dialog_mrn.gridname);
+				// $("#addForm input[name='patname']").val(data['Name']);
+				// $("#addForm input[name='icnum']").val(data['Newic']);
+				// $("#addForm input[name='telh']").val(data['telh'].trim());
+				// $("#addForm input[name='telhp']").val(data['telhp'].trim());
+				// $(dialog_mrn.textfield).parent().next().text(" ");
+			}
 		},
 		{
 			title: "Select Case",
