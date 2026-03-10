@@ -406,6 +406,6 @@ i.fa {
 		});
 	</script>
 	
-	<script src="js/setup/doctor/doctorScript.js"></script>
+	<script src="js/setup/doctor/doctorScript.js?v=1.1"></script>
 	
 @endsection
