@@ -37,6 +37,7 @@
 			<h5 style="margin-bottom: 5px;">Order Entry</h5>
 			<span><b>Total Amount : </b></span>
 			<span id="cyclebill_totmat"></span>
+			<br><span id="cyclebill_invno"></span>
 		</div>				
 	</div>
 	<div id="jqGrid_ordcom_panel" class="panel-collapse collapse">

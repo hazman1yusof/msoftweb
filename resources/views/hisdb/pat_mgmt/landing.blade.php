@@ -472,7 +472,7 @@
 			@endif
 			
 			@if (Auth::user()->billing == 1)
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_main.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_main.js?v=1.3"></script>
 					<!-- <script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar_doc.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp_doc.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab_doc.js"></script>
@@ -562,7 +562,7 @@
 			@endif
 			
 			@if (Auth::user()->billing == 1)
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_main.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_main.js?v=1.3"></script>
 				<!-- <script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar_doc.js"></script>
 				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp_doc.js"></script>
 				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab_doc.js"></script>

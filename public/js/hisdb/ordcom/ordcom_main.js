@@ -47,6 +47,10 @@ $(document).ready(function(){
 		// }
 	});
 
+	$("#jqGrid_ordcom_panel").on("hide.bs.collapse", function(){
+		$('span#cyclebill_invno').html('');
+	});
+
 	$('.nav-tabs a').on('shown.bs.tab', function(e){
 		let ordcomtype = $(this).data('ord_chgtype');
 		switch(ordcomtype){
@@ -267,6 +271,7 @@ function get_ordcom_totamount(){
 	},'json').done(function(data) {
 		if(!$.isEmptyObject(data)){
 			$('span#cyclebill_totmat').text(numeral(data.totamount).format('0,0.00'));
+			$('span#cyclebill_invno').html('<b>Bill No : </b>'+data.invno);
 		}else{
 			$('span#cyclebill_totmat').text('');
 		}

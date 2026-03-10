@@ -3856,7 +3856,7 @@ class OrdcomController extends defaultController
 
     public function get_ordcom_totamount(Request $request){
         $chargetrx = DB::table('hisdb.chargetrx as trx')
-                        ->select('trx.amount','trx.discamt','trx.taxamount')
+                        ->select('trx.amount','trx.discamt','trx.taxamount','trx.invno')
                         ->where('trx.compcode',session('compcode'))
                         ->where('trx.trxtype','!=','PD')
                         ->where('trx.mrn' ,'=', $request->mrn)
@@ -3865,6 +3865,13 @@ class OrdcomController extends defaultController
                         ->where('trx.taxflag',0)
                         ->where('trx.discflag',0)
                         ->get();
+
+        if($chargetrx){
+            $invno = $chargetrx->unique('invno')[0]->invno;
+        }else{
+            $invno = '-';
+        }
+
 
         // dd($this->getQueries($chargetrx));
 
@@ -3879,6 +3886,7 @@ class OrdcomController extends defaultController
         $responce->discamt = $discamt;
         $responce->taxamount = $taxamount;
         $responce->totamount = $totamount;
+        $responce->invno = $invno;
 
         return json_encode($responce);
 
