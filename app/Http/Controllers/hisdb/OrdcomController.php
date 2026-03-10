@@ -4302,6 +4302,15 @@ class OrdcomController extends defaultController
             $mrn = $request->mrn;
             $episno = $request->episno;
 
+            DB::table('debtor.dbacthdr')
+                    ->where('compcode',session('compcode'))
+                    ->where('mrn',$mrn)
+                    ->where('episno',$episno)
+                    ->where('recstatus','POSTED')
+                    ->update([
+                        'recstatus' => 'CANCELLED'
+                    ]);
+
             DB::table('hisdb.chargetrx')
                     ->where('compcode',session('compcode'))
                     ->where('mrn' ,'=', $mrn)
