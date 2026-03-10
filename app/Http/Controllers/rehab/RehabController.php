@@ -86,7 +86,7 @@ class RehabController extends defaultController
                     ->where('TYPE','OT')
                     ->first();
         
-        $data_send['apptresrc_reqfor'] = $apptresrc->resourcecode;
+        // $data_send['apptresrc_reqfor'] = $apptresrc->resourcecode;
         
         $ordcomtt_phar = DB::table('sysdb.sysparam')
                         ->where('compcode',session('compcode'))
