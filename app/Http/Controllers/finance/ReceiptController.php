@@ -68,7 +68,8 @@ class ReceiptController extends defaultController
             $till = DB::table('debtor.till')
                             ->where('compcode',session('compcode'))
                             ->where('tillstatus','O')
-                            ->where('lastuser',session('username'));
+                            ->where('lastuser',session('username'))
+                            ->orderBy('idno','DESC');
 
             if($till->exists()){
 
