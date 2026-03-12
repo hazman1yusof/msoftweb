@@ -384,7 +384,7 @@ class financialReportExport_bs implements FromView, WithEvents, WithColumnWidths
             }
 
             // dd($arr_con);//1glcondtl
-            if($obj_rpt->code == $CLOSESTK->pvalue1 && $obj_con->acctfr == '20010052'){
+            if($obj_con->acctfr == '20010052'){
 
                 $arr_rpt['tot_actamount'.$monthfrom] = $arr_rpt['tot_actamount'.$monthfrom] + $arr_con['tot_actamount'.$monthfrom];
                 if($monthfrom-1 == 0){
