@@ -347,9 +347,10 @@ class financialReportExport_bs implements FromView, WithEvents, WithColumnWidths
                             ->where('code','BSCLSSTK')
                             ->get();
 
+        $monthfrom = 12;                   
         $array_month = [];
 
-        for ($i=1; $i <= 12; $i++) { 
+        for ($i=1; $i <= $monthfrom; $i++) { 
             array_push($array_month,$i);
         }
 
