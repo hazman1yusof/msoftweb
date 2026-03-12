@@ -177,7 +177,7 @@ class financialReportExport_bs implements FromView, WithEvents, WithColumnWidths
 
                             $glmasdtl_ = DB::table('finance.glmasdtl as gldt')
                                     ->where('gldt.glaccount','>=',$obj_con->acctfr)
-                                    ->where('gldt.year','=', $yearfrom)
+                                    ->where('gldt.year','=', $yearfrom-1)
                                     ->where('gldt.compcode',session('compcode'))
                                     ->first();
 
