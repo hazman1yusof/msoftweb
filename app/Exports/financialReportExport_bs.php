@@ -233,7 +233,7 @@ class financialReportExport_bs implements FromView, WithEvents, WithColumnWidths
                     $arr_rpt['curr_month'] = $arr_rpt['curr_month'] - $arr_rpt_minus;
 
                     if($monthfrom-1 == 0){
-                        $arr_rpt['last_month'] = $this->get_last_year($yearfrom);;
+                        $arr_rpt['last_month'] = $this->get_last_year($yearfrom-1);
                     }
                 }
 
