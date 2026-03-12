@@ -166,7 +166,7 @@ class financialReportExport_bsnote implements FromView, WithEvents, WithColumnWi
                 $objgl->pcurrmonth = $arrgl['actamount'.$currmonth];
 
                 //untuk close stock sahaja
-                if($objgl->code == $skipytd && $objgl->glaccount == '20010052'){
+                if($objgl->code == $skipytd){
                     $objgl->plastmonth = 0;
                     $objgl->pcurrmonth = $arrgl['actamount'.$currmonth];
                     $objgl->pytd = $objgl->pcurrmonth;
