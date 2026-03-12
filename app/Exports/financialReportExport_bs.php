@@ -179,6 +179,13 @@ class financialReportExport_bs implements FromView, WithEvents, WithColumnWidths
                                     ->where('gldt.glaccount',$obj_con->acctfr)
                                     ->where('gldt.year','=', $yearfrom-1)
                                     ->where('gldt.compcode',session('compcode'));
+                            if($obj_rpt->costcodefr!=null){
+                                $glmasdtl_ = $glmasdtl_->where('gldt.costcode','>=',$obj_rpt->costcodefr);
+                            }
+
+                            if($obj_rpt->costcodeto!=null){
+                                $glmasdtl_ = $glmasdtl_->where('gldt.costcode','<=',$obj_rpt->costcodeto);
+                            }
 
                             if($glmasdtl_->exists()){
                                 $glmasdtl_ = $glmasdtl_->first();
