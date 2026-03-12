@@ -181,8 +181,6 @@ class financialReportExport_bs implements FromView, WithEvents, WithColumnWidths
                                     ->where('gldt.compcode',session('compcode'));
 
                             if($glmasdtl_->exists()){
-
-                                dd('asd');
                                 $glmasdtl_ = $glmasdtl_->first();
                                 $arr_rpt['openbalance'] = $arr_rpt['openbalance'] + $glmasdtl_->actamount12;
                                 $arr_rpt_minus = $glmasdtl_->actamount12;
