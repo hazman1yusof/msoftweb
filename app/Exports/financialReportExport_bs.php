@@ -178,11 +178,16 @@ class financialReportExport_bs implements FromView, WithEvents, WithColumnWidths
                             $glmasdtl_ = DB::table('finance.glmasdtl as gldt')
                                     ->where('gldt.glaccount','>=',$obj_con->acctfr)
                                     ->where('gldt.year','=', $yearfrom-1)
-                                    ->where('gldt.compcode',session('compcode'))
-                                    ->first();
+                                    ->where('gldt.compcode',session('compcode'));
 
-                            $arr_rpt['openbalance'] = $glmasdtl_->actamount12;
-                            $arr_rpt_minus = $glmasdtl_->actamount12;
+                            if($glmasdtl_->exists()){
+                                $glmasdtl_ = $glmasdtl_->first();
+                                $arr_rpt['openbalance'] = $arr_rpt['openbalance'] + $glmasdtl_->actamount12;
+                                $arr_rpt_minus = $glmasdtl_->actamount12;
+                            }else{
+                                $arr_rpt_minus = 0;
+                            } 
+
                         }else{
                             $arr_rpt['tot_actamount'.($monthfrom-1)] = $arr_rpt['tot_actamount'.($monthfrom-1)] + $arr_con['tot_actamount'.($monthfrom-1)];
 
