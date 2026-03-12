@@ -218,33 +218,24 @@ class financialReportExport_bs implements FromView, WithEvents, WithColumnWidths
                 // dd($arr_rpt);//1arr_rpt
 
 
-                // if($obj_rpt->code == $CLOSESTK->pvalue1){
+                $arr_rpt['curr_month'] = $arr_rpt['openbalance'];
+                $arr_rpt['last_month'] = $arr_rpt['openbalance'];
 
-                //     $arr_rpt['curr_month'] = $arr_rpt['tot_actamount'.$monthfrom];
+                for ($i=1; $i <= $monthfrom; $i++) { 
+                    $arr_rpt['curr_month'] = $arr_rpt['curr_month'] + $arr_rpt['tot_actamount'.$i];
+                }
 
-                //     if($monthfrom-1 == 0){
-                //         $arr_rpt['last_month'] = 0;
-                //     }else{
-                //         $arr_rpt['last_month'] = $arr_rpt['tot_actamount'.($monthfrom-1)];
-                //     }
-                // }else{
-                    $this->get_last_year($yearfrom-1);
+                for ($i=1; $i < $monthfrom; $i++) { 
+                    $arr_rpt['last_month'] = $arr_rpt['last_month'] + $arr_rpt['tot_actamount'.$i];
+                }
 
-                    $arr_rpt['curr_month'] = $arr_rpt['openbalance'];
-                    $arr_rpt['last_month'] = $arr_rpt['openbalance'];
+                if($obj_rpt->code == $CLOSESTK->pvalue1){
+                    $arr_rpt['curr_month'] = $arr_rpt['curr_month'] - $arr_rpt_minus;
 
-                    for ($i=1; $i <= $monthfrom; $i++) { 
-                        $arr_rpt['curr_month'] = $arr_rpt['curr_month'] + $arr_rpt['tot_actamount'.$i];
+                    if($monthfrom-1 == 0){
+                        $arr_rpt['last_month'] = $this->get_last_year($yearfrom);;
                     }
-
-                    for ($i=1; $i < $monthfrom; $i++) { 
-                        $arr_rpt['last_month'] = $arr_rpt['last_month'] + $arr_rpt['tot_actamount'.$i];
-                    }
-                // }
-
-                    if($obj_rpt->code == $CLOSESTK->pvalue1){
-                        $arr_rpt['curr_month'] = $arr_rpt['curr_month'] - $arr_rpt_minus;
-                    }
+                }
 
                 array_push($excel_data,$arr_rpt);
             }
@@ -445,9 +436,8 @@ class financialReportExport_bs implements FromView, WithEvents, WithColumnWidths
 
         
         $arr_rpt['curr_month'] = $arr_rpt['curr_month'] - $arr_rpt_minus;
-        
 
-        dd($arr_rpt);
+        return $arr_rpt->curr_month;
 
     }
 }
