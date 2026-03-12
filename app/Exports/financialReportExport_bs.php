@@ -175,32 +175,32 @@ class financialReportExport_bs implements FromView, WithEvents, WithColumnWidths
                         $arr_rpt['tot_actamount'.$monthfrom] = $arr_rpt['tot_actamount'.$monthfrom] + $arr_con['tot_actamount'.$monthfrom];
                         if($monthfrom-1 == 0){
 
-                            $glmasdtl_ = DB::table('finance.glmasdtl as gldt')
-                                    ->where('gldt.glaccount',$obj_con->acctfr)
-                                    ->where('gldt.year','=', $yearfrom-1)
-                                    ->where('gldt.compcode',session('compcode'));
-                            if($obj_rpt->costcodefr!=null){
-                                $glmasdtl_ = $glmasdtl_->where('gldt.costcode','>=',$obj_rpt->costcodefr);
-                            }
+                            // $glmasdtl_ = DB::table('finance.glmasdtl as gldt')
+                            //         ->where('gldt.glaccount',$obj_con->acctfr)
+                            //         ->where('gldt.year','=', $yearfrom-1)
+                            //         ->where('gldt.compcode',session('compcode'));
+                            // if($obj_rpt->costcodefr!=null){
+                            //     $glmasdtl_ = $glmasdtl_->where('gldt.costcode','>=',$obj_rpt->costcodefr);
+                            // }
 
-                            if($obj_rpt->costcodeto!=null){
-                                $glmasdtl_ = $glmasdtl_->where('gldt.costcode','<=',$obj_rpt->costcodeto);
-                            }
+                            // if($obj_rpt->costcodeto!=null){
+                            //     $glmasdtl_ = $glmasdtl_->where('gldt.costcode','<=',$obj_rpt->costcodeto);
+                            // }
 
-                            if($glmasdtl_->exists()){
-                                $glmasdtl_ = $glmasdtl_->first();
-                                $arr_glmasdtl_ = (array)$glmasdtl_;
+                            // if($glmasdtl_->exists()){
+                            //     $glmasdtl_ = $glmasdtl_->first();
+                            //     $arr_glmasdtl_ = (array)$glmasdtl_;
 
-                                $actamount12_ = 0;
-                                for ($x=1; $x<=12 ; $x++) { 
-                                    $actamount12_ = $actamount12_ + $arr_glmasdtl_['actamount'.$x];
-                                }
+                            //     $actamount12_ = 0;
+                            //     for ($x=1; $x<=12 ; $x++) { 
+                            //         $actamount12_ = $actamount12_ + $arr_glmasdtl_['actamount'.$x];
+                            //     }
 
-                                $arr_rpt['openbalance'] = $arr_rpt['openbalance'] + $actamount12_;
-                                $arr_rpt_minus = $actamount12_;
-                            }else{
+                            //     $arr_rpt['openbalance'] = $arr_rpt['openbalance'] + $actamount12_;
+                            //     $arr_rpt_minus = $actamount12_;
+                            // }else{
                                 $arr_rpt_minus = 0;
-                            }
+                            // }
 
                         }else{
                             $arr_rpt['tot_actamount'.($monthfrom-1)] = $arr_rpt['tot_actamount'.($monthfrom-1)] + $arr_con['tot_actamount'.($monthfrom-1)];
@@ -228,6 +228,7 @@ class financialReportExport_bs implements FromView, WithEvents, WithColumnWidths
                 //         $arr_rpt['last_month'] = $arr_rpt['tot_actamount'.($monthfrom-1)];
                 //     }
                 // }else{
+                    $this->get_last_year($yearfrom-1);
 
                     $arr_rpt['curr_month'] = $arr_rpt['openbalance'];
                     $arr_rpt['last_month'] = $arr_rpt['openbalance'];
@@ -338,5 +339,114 @@ class financialReportExport_bs implements FromView, WithEvents, WithColumnWidths
     public static function getQueries($builder){
         $addSlashes = str_replace('?', "'?'", $builder->toSql());
         return vsprintf(str_replace('?', '%s', $addSlashes), $builder->getBindings());
+    }
+
+    public function get_last_year($yearfrom){
+        $glcondtl = DB::table('finance.glcondtl')
+                            ->where('compcode',session('compcode'))
+                            ->where('code','BSCLSSTK')
+                            ->get();
+
+        $array_month = [];
+
+        for ($i=1; $i <= 12; $i++) { 
+            array_push($array_month,$i);
+        }
+
+        $arr_rpt['openbalance'] = 0.00;
+        foreach ($array_month as $value) {
+            $arr_rpt['tot_actamount'.$value] = 0.00;
+        }
+
+        foreach ($glcondtl as $key_con => $obj_con) {
+            $arr_con = (array)$obj_con;
+            $glmasdtl = DB::table('finance.glmasdtl as gldt')
+                    ->select('gldt.glaccount','gldt.openbalance','gldt.actamount1','gldt.actamount2','gldt.actamount3','gldt.actamount4','gldt.actamount5','gldt.actamount6','gldt.actamount7','gldt.actamount8','gldt.actamount9','gldt.actamount10','gldt.actamount11','gldt.actamount12')
+                    ->where('gldt.glaccount','>=',$obj_con->acctfr)
+                    ->where('gldt.glaccount','<=',$obj_con->acctto);
+
+            $glmasdtl = $glmasdtl
+                    ->where('gldt.year','=', $yearfrom)
+                    ->where('gldt.compcode',session('compcode'))
+                    ->get();
+
+            $arr_con['openbalance'] = 0.00;
+            foreach ($array_month as $value) {
+                $arr_con['tot_actamount'.$value] = 0.00;
+            }
+
+            foreach($glmasdtl as $key_dtl => $obj_dtl){
+                $arr_dtl = (array) $obj_dtl;
+                foreach ($array_month as $value) {
+                    $arr_con['tot_actamount'.$value] = $arr_con['tot_actamount'.$value] + $arr_dtl['actamount'.$value];
+                }
+                $arr_con['openbalance'] = $arr_con['openbalance'] + $arr_dtl['openbalance'];
+            }
+
+            // dd($arr_con);//1glcondtl
+            if($obj_rpt->code == $CLOSESTK->pvalue1 && $obj_con->acctfr == '20010052'){
+
+                $arr_rpt['tot_actamount'.$monthfrom] = $arr_rpt['tot_actamount'.$monthfrom] + $arr_con['tot_actamount'.$monthfrom];
+                if($monthfrom-1 == 0){
+
+                    // $glmasdtl_ = DB::table('finance.glmasdtl as gldt')
+                    //         ->where('gldt.glaccount',$obj_con->acctfr)
+                    //         ->where('gldt.year','=', $yearfrom-1)
+                    //         ->where('gldt.compcode',session('compcode'));
+                    // if($obj_rpt->costcodefr!=null){
+                    //     $glmasdtl_ = $glmasdtl_->where('gldt.costcode','>=',$obj_rpt->costcodefr);
+                    // }
+
+                    // if($obj_rpt->costcodeto!=null){
+                    //     $glmasdtl_ = $glmasdtl_->where('gldt.costcode','<=',$obj_rpt->costcodeto);
+                    // }
+
+                    // if($glmasdtl_->exists()){
+                    //     $glmasdtl_ = $glmasdtl_->first();
+                    //     $arr_glmasdtl_ = (array)$glmasdtl_;
+
+                    //     $actamount12_ = 0;
+                    //     for ($x=1; $x<=12 ; $x++) { 
+                    //         $actamount12_ = $actamount12_ + $arr_glmasdtl_['actamount'.$x];
+                    //     }
+
+                    //     $arr_rpt['openbalance'] = $arr_rpt['openbalance'] + $actamount12_;
+                    //     $arr_rpt_minus = $actamount12_;
+                    // }else{
+                        $arr_rpt_minus = 0;
+                    // }
+
+                }else{
+                    $arr_rpt['tot_actamount'.($monthfrom-1)] = $arr_rpt['tot_actamount'.($monthfrom-1)] + $arr_con['tot_actamount'.($monthfrom-1)];
+
+                    $arr_rpt_minus = $arr_con['tot_actamount'.($monthfrom-1)];
+                }
+            }else{
+
+                foreach ($array_month as $value) {
+                    $arr_rpt['tot_actamount'.$value] = $arr_rpt['tot_actamount'.$value] + $arr_con['tot_actamount'.$value];
+                }
+                $arr_rpt['openbalance'] = $arr_rpt['openbalance'] + $arr_con['openbalance'];
+            }
+        }
+
+        $arr_rpt['curr_month'] = $arr_rpt['openbalance'];
+        $arr_rpt['last_month'] = $arr_rpt['openbalance'];
+
+        for ($i=1; $i <= $monthfrom; $i++) { 
+            $arr_rpt['curr_month'] = $arr_rpt['curr_month'] + $arr_rpt['tot_actamount'.$i];
+        }
+
+        for ($i=1; $i < $monthfrom; $i++) { 
+            $arr_rpt['last_month'] = $arr_rpt['last_month'] + $arr_rpt['tot_actamount'.$i];
+        }
+    // }
+
+        if($obj_rpt->code == $CLOSESTK->pvalue1){
+            $arr_rpt['curr_month'] = $arr_rpt['curr_month'] - $arr_rpt_minus;
+        }
+
+        dd($arr_rpt);
+
     }
 }
