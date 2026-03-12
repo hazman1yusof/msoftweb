@@ -182,8 +182,15 @@ class financialReportExport_bs implements FromView, WithEvents, WithColumnWidths
 
                             if($glmasdtl_->exists()){
                                 $glmasdtl_ = $glmasdtl_->first();
-                                $arr_rpt['openbalance'] = $arr_rpt['openbalance'] + $glmasdtl_->actamount12;
-                                $arr_rpt_minus = $glmasdtl_->actamount12;
+                                $arr_glmasdtl_ = (array)$glmasdtl_;
+
+                                $actamount12_ = 0;
+                                for ($x=1; $x<=12 ; $x++) { 
+                                    $actamount12_ = $actamount12_ + $arr_glmasdtl_['actamount'.$x];
+                                }
+
+                                $arr_rpt['openbalance'] = $arr_rpt['openbalance'] + $actamount12_;
+                                $arr_rpt_minus = $actamount12_;
                             }else{
                                 $arr_rpt_minus = 0;
                             }
