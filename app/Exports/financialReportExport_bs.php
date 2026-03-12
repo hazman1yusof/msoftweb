@@ -170,24 +170,38 @@ class financialReportExport_bs implements FromView, WithEvents, WithColumnWidths
                     }
 
                     // dd($arr_con);//1glcondtl
-                    foreach ($array_month as $value) {
-                        $arr_rpt['tot_actamount'.$value] = $arr_rpt['tot_actamount'.$value] + $arr_con['tot_actamount'.$value];
+                    if($obj_rpt->code == $CLOSESTK->pvalue1 && $obj_con->acctfr == '20010052'){
+
+                        $arr_rpt['tot_actamount'.$monthfrom] = $arr_rpt['tot_actamount'.$monthfrom] + $arr_con['tot_actamount'.$monthfrom];
+                        if($monthfrom-1 == 0){
+                            // $arr_rpt['last_month'] = 0;
+                            $arr_rpt_minus = 0;
+                        }else{
+                            $arr_rpt['tot_actamount'.($monthfrom-1)] = $arr_rpt['tot_actamount'.($monthfrom-1)] + $arr_con['tot_actamount'.($monthfrom-1)];
+
+                            $arr_rpt_minus = $arr_con['tot_actamount'.($monthfrom-1)];
+                        }
+                    }else{
+
+                        foreach ($array_month as $value) {
+                            $arr_rpt['tot_actamount'.$value] = $arr_rpt['tot_actamount'.$value] + $arr_con['tot_actamount'.$value];
+                        }
+                        $arr_rpt['openbalance'] = $arr_rpt['openbalance'] + $arr_con['openbalance'];
                     }
-                    $arr_rpt['openbalance'] = $arr_rpt['openbalance'] + $arr_con['openbalance'];
                 }
                 // dd($arr_rpt);//1arr_rpt
 
 
-                if($obj_rpt->code == $CLOSESTK->pvalue1){
+                // if($obj_rpt->code == $CLOSESTK->pvalue1){
 
-                    $arr_rpt['curr_month'] = $arr_rpt['tot_actamount'.$monthfrom];
+                //     $arr_rpt['curr_month'] = $arr_rpt['tot_actamount'.$monthfrom];
 
-                    if($monthfrom-1 == 0){
-                        $arr_rpt['last_month'] = 0;
-                    }else{
-                        $arr_rpt['last_month'] = $arr_rpt['tot_actamount'.($monthfrom-1)];
-                    }
-                }else{
+                //     if($monthfrom-1 == 0){
+                //         $arr_rpt['last_month'] = 0;
+                //     }else{
+                //         $arr_rpt['last_month'] = $arr_rpt['tot_actamount'.($monthfrom-1)];
+                //     }
+                // }else{
 
                     $arr_rpt['curr_month'] = $arr_rpt['openbalance'];
                     $arr_rpt['last_month'] = $arr_rpt['openbalance'];
@@ -199,7 +213,11 @@ class financialReportExport_bs implements FromView, WithEvents, WithColumnWidths
                     for ($i=1; $i < $monthfrom; $i++) { 
                         $arr_rpt['last_month'] = $arr_rpt['last_month'] + $arr_rpt['tot_actamount'.$i];
                     }
-                }
+                // }
+
+                    if($obj_rpt->code == $CLOSESTK->pvalue1){
+                        $arr_rpt['curr_month'] = $arr_rpt['curr_month'] - $arr_rpt_minus;
+                    }
 
                 array_push($excel_data,$arr_rpt);
             }
