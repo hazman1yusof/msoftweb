@@ -437,7 +437,7 @@ class financialReportExport_bs implements FromView, WithEvents, WithColumnWidths
         
         $arr_rpt['curr_month'] = $arr_rpt['curr_month'] - $arr_rpt_minus;
 
-        return $arr_rpt->curr_month;
+        return $arr_rpt['curr_month'];
 
     }
 }
