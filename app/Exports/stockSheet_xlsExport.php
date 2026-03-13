@@ -141,6 +141,7 @@ class stockSheet_xlsExport implements FromView, WithEvents, WithColumnWidths, Wi
 
         $isi = 0;
         foreach ($stockloc as $obj) {
+            $obj->description = str_replace('Ø', '', $obj->description);
             $loop = $loop + 1;
             $isi = $isi + 1;
             $obj->unit = strtoupper($obj->unit);

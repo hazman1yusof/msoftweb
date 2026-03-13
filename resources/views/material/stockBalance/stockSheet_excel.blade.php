@@ -18,7 +18,7 @@
             @if($obj->deptcode == $dept->deptcode)
             <tr>
                 <td>{{$obj->itemcode}}</td>
-                <td>{{str_replace('Ø', '', $obj->description)}}</td>
+                <td>{{$obj->description}}</td>
                 <td>{{$obj->uomcode}}</td>
                 <td>{{$obj->close_balqty}}</td>
                 <td></td>
