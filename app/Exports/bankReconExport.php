@@ -189,7 +189,7 @@ class bankReconExport implements FromView, WithEvents, WithColumnWidths, WithCol
 
         $bankrecondel = DB::table('finance.bankrecondel as bd')
                             ->where('bd.compcode',session('compcode'))
-                            ->where('bd.addate','<=',$cbhdr->recdate)
+                            ->where('bd.adddate','<=',$cbhdr->recdate)
                             ->get();
 
         if(count($bankrecondel) > 0){
