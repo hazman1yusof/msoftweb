@@ -9636,10 +9636,10 @@ class TestController extends defaultController
             DB::table('finance.gltran')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'auditno' => $bankrecondel->auditno,
+                    'auditno' => $value->auditno,
                     'lineno_' => 50,
-                    'source' => $bankrecondel->source,
-                    'trantype' => $bankrecondel->trantype,
+                    'source' => $value->source,
+                    'trantype' => $value->trantype,
                     'reference' => strtoupper($reference),
                     'description' => strtoupper($description),
                     'year' => '2026',
@@ -9648,7 +9648,7 @@ class TestController extends defaultController
                     'crcostcode' => $bankmaster->glccode,
                     'dracc' => $accrcred->pvalue2,
                     'cracc' => $bankmaster->glaccno,
-                    'amount' => $bankrecondel->amount_gl,
+                    'amount' => $value->amount_gl,
                     'postdate' => '2026-02-28',
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
