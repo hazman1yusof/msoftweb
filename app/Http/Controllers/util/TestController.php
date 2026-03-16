@@ -156,6 +156,8 @@ class TestController extends defaultController
                 return $this->cbtran2026($request);
             case 'createcbtran2026':
                 return $this->createcbtran2026($request);
+            case 'reversecbtran2026':
+                return $this->reversecbtran2026($request);
 
                 
             case 'gltran_step1':
@@ -9594,6 +9596,63 @@ class TestController extends defaultController
                         'admdoctor' => $value->admdoctor
                     ]);
             }
+        }
+    }
+
+    public function reversecbtran2026(Request $request){
+        
+        $bankrecondel = DB::table('finance.bankrecondel')
+                            ->where('compcode','9B')
+                            ->where('adddate','=','2026-02-28')
+                            ->get();
+
+        $bankmaster = DB::table('finance.bank')
+                            ->where('compcode','9B')
+                            ->where('bankcode','MBBUKMM')
+                            ->first();
+
+        $accrcred = DB::table('sysdb.sysparam')
+                            ->where('compcode','9B')
+                            ->where('source','AP')
+                            ->where('trantype','ACC')
+                            ->first();
+
+        foreach ($bankrecondel as $key => $value) {
+
+            $apacthdr = DB::table('finance.apacthdr')
+                            ->where('compcode','9B')
+                            ->where('source',$value->source)
+                            ->where('trantype',$value->trantype)
+                            ->where('auditno',$value->auditno);
+
+            if($apacthdr->exists()){
+                $reference = $apacthdr->first()->refsource;
+                $description = 'Reversal '.$apacthdr->first()->remarks;
+            }else{
+                $reference = null;
+                $description = 'Reversal ';
+            }
+
+            DB::table('finance.gltran')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'auditno' => $bankrecondel->auditno,
+                    'lineno_' => 50,
+                    'source' => $bankrecondel->source,
+                    'trantype' => $bankrecondel->trantype,
+                    'reference' => strtoupper($reference),
+                    'description' => strtoupper($description),
+                    'year' => '2026',
+                    'period' => '2',
+                    'drcostcode' => $accrcred->pvalue1,
+                    'crcostcode' => $bankmaster->glccode,
+                    'dracc' => $accrcred->pvalue2,
+                    'cracc' => $bankmaster->glaccno,
+                    'amount' => $bankrecondel->amount_gl,
+                    'postdate' => '2026-02-28',
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                ]);
         }
 
     }
