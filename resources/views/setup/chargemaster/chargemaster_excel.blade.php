@@ -32,7 +32,7 @@
                             <td data-format="0.00" style="text-align: right">{{number_format($obj_ar->amt1, 2, '.', ',')}}</td>
                             <td data-format="0.00" style="text-align: right">{{number_format($obj_ar->amt2, 2, '.', ',')}}</td>
                             <td data-format="0.00" style="text-align: right">{{number_format($obj_ar->amt3, 2, '.', ',')}}</td>
-                            <td data-format="0.00" style="text-align: right">{{number_format($obj_ar->costprice, 2, '.', ',')}}</td>
+                            <td data-format="0.00" style="text-align: right">{{number_format($obj_ar->avgcost, 2, '.', ',')}}</td>
                             <td></td>
                         </tr>
                     @endif
