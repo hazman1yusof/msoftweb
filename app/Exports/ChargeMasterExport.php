@@ -119,7 +119,7 @@ class ChargeMasterExport implements FromView, WithEvents, WithColumnWidths
                 $chgprice_obj = $chgprice_obj->first();
 
                 if($value->chgcode == $chgprice_obj->chgcode && $value->cp_idno != $chgprice_obj->cp_idno){
-                    // unset($chgmast[$key]);
+                    unset($chgmast[$key]);
                     continue;
                 }
             }
