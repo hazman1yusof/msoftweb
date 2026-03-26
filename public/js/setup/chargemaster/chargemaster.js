@@ -166,7 +166,7 @@ $(document).ready(function () {
 		},
 		{
 			text: "Generate Excel",click: function() {
-				window.location='./chargemaster/showExcel?chggroup_from='+$('#chggroup_from').val()+'&chggroup_to='+$("#chggroup_to").val()+'&chgcode_from='+$("#chgcode_from").val()+'&chgcode_to='+$("#chgcode_to").val();
+				window.open('./chargemaster/showExcel?chggroup_from='+$('#chggroup_from').val()+'&chggroup_to='+$("#chggroup_to").val()+'&chgcode_from='+$("#chgcode_from").val()+'&chgcode_to='+$("#chgcode_to").val(),  '_blank'); 
 			}
 		},{
 			text: "Close",click: function() {
