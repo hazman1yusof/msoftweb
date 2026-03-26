@@ -202,7 +202,8 @@ $(document).ready(function () {
 	});
 
 	$('#excelPkg').click(function(){
-		window.location='./chargemaster/showExcelPkg?pkgcodePkg='+$('#pkgcodePkg').val()+'&effectdate='+$("#effectdate").val();
+		window.open('./chargemaster/showExcelPkg?pkgcodePkg='+$('#pkgcodePkg').val()+'&effectdate='+$("#effectdate").val(), '_blank'); 
+		// window.location='./chargemaster/showExcelPkg?pkgcodePkg='+$('#pkgcodePkg').val()+'&effectdate='+$("#effectdate").val();
 	});
 
 	$('#pdfgen_excelPkg').click(function(){
