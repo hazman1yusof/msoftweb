@@ -29,10 +29,10 @@
                             <td>{{$obj_ar->uom_cm}}</td>
                             <td>{{$obj_ar->packqty}}</td>
                             <td style="text-align: left">{{$obj_ar->chgcode}}</td>
-                            <td data-format="0.00" style="text-align: right">{{number_format($obj_ar->amt1, 2, '.', ',')}}</td>
-                            <td data-format="0.00" style="text-align: right">{{number_format($obj_ar->amt2, 2, '.', ',')}}</td>
-                            <td data-format="0.00" style="text-align: right">{{number_format($obj_ar->amt3, 2, '.', ',')}}</td>
-                            <td data-format="0.00" style="text-align: right">{{number_format($obj_ar->avgcost, 2, '.', ',')}}</td>
+                            <td data-format="0.00" style="text-align: right">{{$obj_ar->amt1}}</td>
+                            <td data-format="0.00" style="text-align: right">{{$obj_ar->amt2}}</td>
+                            <td data-format="0.00" style="text-align: right">{{$obj_ar->amt3}}</td>
+                            <td data-format="0.00" style="text-align: right">{{$obj_ar->avgcost}}</td>
                             <td></td>
                         </tr>
                     @endif

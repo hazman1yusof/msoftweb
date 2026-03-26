@@ -23,7 +23,7 @@ use DateTime;
 use Carbon\Carbon;
 use stdClass;
 
-class ChargeMasterExport implements FromView, WithEvents, WithColumnWidths
+class ChargeMasterExport implements FromView, WithEvents, WithColumnWidths, WithColumnFormatting
 {
     
     /**
@@ -49,6 +49,17 @@ class ChargeMasterExport implements FromView, WithEvents, WithColumnWidths
             ->where('compcode','=',session('compcode'))
             ->first();
     }
+
+    public function columnFormats(): array
+    {
+        return [
+            'D' => NumberFormat::FORMAT_NUMBER,
+            'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+        ];
+    }
     
     public function columnWidths(): array
     {
@@ -73,14 +84,15 @@ class ChargeMasterExport implements FromView, WithEvents, WithColumnWidths
         $chgcode_to = $this->chgcode_to;
 
         $chgmast = DB::table('hisdb.chgmast as cm')
-                ->select('cm.idno', 'cm.compcode', 'cm.unit', 'cm.chgcode', 'cm.description', 'cm.uom as uom_cm', 'cm.packqty', 'cm.recstatus', 'cm.chgtype', 'cm.chggroup', 'cm.chgclass', 'cp.idno as cp_idno','cp.uom as uom_cp','cp.amt1', 'cp.effdate', 'cp.amt2', 'cp.amt3', 'cp.costprice', 'ct.description as ct_desc', 'cg.grpcode', 'cg.description as cg_desc', 'p.uomcode as uom_p','p.avgcost')
-                ->join('hisdb.chgprice as cp', function($join) {
-                    $join = $join->on('cp.chgcode', '=', 'cm.chgcode')
-                                ->on('cp.uom', '=', 'cm.uom')
-                                ->where('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur"))
-                                ->where('cp.compcode', '=', session('compcode'))
-                                ->where('cp.recstatus', '=', 'ACTIVE');
-                })
+                ->select('cm.idno', 'cm.compcode', 'cm.unit', 'cm.chgcode', 'cm.description', 'cm.uom as uom_cm', 'cm.packqty', 'cm.recstatus', 'cm.chgtype', 'cm.chggroup', 'cm.chgclass','p.uomcode as uom_p','p.avgcost')
+                // , 'cp.idno as cp_idno','cp.uom as uom_cp','cp.amt1', 'cp.effdate', 'cp.amt2', 'cp.amt3', 'cp.costprice', 'ct.description as ct_desc', 'cg.grpcode', 'cg.description as cg_desc', 
+                // ->join('hisdb.chgprice as cp', function($join) {
+                //     $join = $join->on('cp.chgcode', '=', 'cm.chgcode')
+                //                 ->on('cp.uom', '=', 'cm.uom')
+                //                 ->where('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur"))
+                //                 ->where('cp.compcode', '=', session('compcode'))
+                //                 ->where('cp.recstatus', '=', 'ACTIVE');
+                // })
                 ->join('hisdb.chgtype as ct', function($join) {
                     $join = $join->on('ct.chgtype', '=', 'cm.chgtype')
                                 ->where('ct.compcode', '=', session('compcode'))
@@ -100,14 +112,14 @@ class ChargeMasterExport implements FromView, WithEvents, WithColumnWidths
                 ->where('cm.recstatus', '=', 'ACTIVE')
                 ->whereBetween('cm.chggroup', [$chggroup_from, $chggroup_to.'%'])
                 ->whereBetween('cm.chgcode', [$chgcode_from, $chgcode_to.'%'])
-                ->orderBy('cp.chgcode','ASC')
+                ->orderBy('cm.chgcode','ASC')
                 ->get();
 
         $array_report = [];
 
-        $chgcode_ = null;
+        // $chgcode_ = null;
         foreach ($chgmast as $key => $value){
-            if($chgcode_ == $value->chgcode){
+            // if($chgcode_ == $value->chgcode){
                 $chgprice_obj = DB::table('hisdb.chgprice as cp')
                         ->select('cp.chgcode','cp.idno as cp_idno','cp.uom as uom_cp','cp.amt1', 'cp.effdate', 'cp.amt2', 'cp.amt3', 'cp.costprice')
                         ->where('cp.compcode', '=', session('compcode'))
@@ -116,16 +128,25 @@ class ChargeMasterExport implements FromView, WithEvents, WithColumnWidths
                         ->whereDate('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur"))
                         ->orderBy('cp.effdate','desc');
 
-                $chgprice_obj = $chgprice_obj->first();
+                if($chgprice_obj->exists()){
+                    $chgprice_obj = $chgprice_obj->first();
+                    $value->amt1 = $chgprice_obj->amt1;
+                    $value->amt2 = $chgprice_obj->amt2;
+                    $value->amt3 = $chgprice_obj->amt3;
 
-                if($value->chgcode == $chgprice_obj->chgcode && $value->cp_idno != $chgprice_obj->cp_idno){
-                    unset($chgmast[$key]);
-                    continue;
+                }else{
+                    $value->amt1 = '-';
+                    $value->amt2 = '-';
+                    $value->amt3 = '-';
                 }
-            }
-            $chgcode_=$value->chgcode;
-            array_push($array_report, $value);
 
+            //     if($value->chgcode == $chgprice_obj->chgcode && $value->cp_idno != $chgprice_obj->cp_idno){
+            //         unset($chgmast[$key]);
+            //         continue;
+            //     }
+            // }
+            // $chgcode_=$value->chgcode;
+            array_push($array_report, $value);
         }
 
         $chggroup = collect($array_report)->unique('chggroup');
