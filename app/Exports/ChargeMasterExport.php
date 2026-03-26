@@ -100,7 +100,7 @@ class ChargeMasterExport implements FromView, WithEvents, WithColumnWidths
                 ->where('cm.recstatus', '=', 'ACTIVE')
                 ->whereBetween('cm.chggroup', [$chggroup_from, $chggroup_to.'%'])
                 ->whereBetween('cm.chgcode', [$chgcode_from, $chgcode_to.'%'])
-                ->orderBy('cp.idno','DESC')
+                ->orderBy('cp.chgcode','ASC')
                 ->get();
 
         $array_report = [];
