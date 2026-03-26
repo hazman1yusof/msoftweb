@@ -13,7 +13,7 @@
 
     @foreach ($chggroup as $obj_cg)
     <tr>
-        <td style="font-weight:bold; text-align: left">GROUP: {{$obj_cg->chggroup}} {{$obj_cg->cg_desc}}</td>
+        <td style="font-weight:bold; text-align: left">GROUP: {{$obj_cg->chggroup}} {{$obj_cg->description}}</td>
     </tr>
     
         @foreach ($chgtype as $obj_ct)

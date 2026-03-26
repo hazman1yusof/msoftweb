@@ -84,8 +84,8 @@ class ChargeMasterExport implements FromView, WithEvents, WithColumnWidths, With
         $chgcode_to = $this->chgcode_to;
 
         $chgmast = DB::table('hisdb.chgmast as cm')
-                ->select('cm.idno', 'cm.compcode', 'cm.unit', 'cm.chgcode', 'cm.description', 'cm.uom as uom_cm', 'cm.packqty', 'cm.recstatus', 'cm.chgtype', 'cm.chggroup', 'cm.chgclass','p.uomcode as uom_p','p.avgcost')
-                // , 'cp.idno as cp_idno','cp.uom as uom_cp','cp.amt1', 'cp.effdate', 'cp.amt2', 'cp.amt3', 'cp.costprice', 'ct.description as ct_desc', 'cg.grpcode', 'cg.description as cg_desc', 
+                ->select('cm.idno', 'cm.compcode', 'cm.unit', 'cm.chgcode', 'cm.description', 'cm.uom as uom_cm', 'cm.packqty', 'cm.recstatus', 'cm.chgtype', 'cm.chggroup', 'cm.chgclass','p.uomcode as uom_p','p.avgcost','ct.description as ct_desc', 'cg.grpcode', 'cg.description as cg_desc')
+                // , 'cp.idno as cp_idno','cp.uom as uom_cp','cp.amt1', 'cp.effdate', 'cp.amt2', 'cp.amt3', 'cp.costprice' 
                 // ->join('hisdb.chgprice as cp', function($join) {
                 //     $join = $join->on('cp.chgcode', '=', 'cm.chgcode')
                 //                 ->on('cp.uom', '=', 'cm.uom')
