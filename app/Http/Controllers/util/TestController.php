@@ -9662,8 +9662,9 @@ class TestController extends defaultController
 
         $chgmast = DB::table('hisdb.chgmast')
                         ->where('compcode',session('compcode'))
-                        ->where('description','like','%Ø%')
-                        ->where('chgcode','71500001')
+                        // ->where('description','like','%Ø%')
+                        ->where('chgcode','like','7150%')
+                        // ->where('chgcode','<=','71501601')
                         ->get();
 
         foreach ($chgmast as $key => $value) {
