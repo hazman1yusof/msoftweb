@@ -9667,12 +9667,14 @@ class TestController extends defaultController
                         ->get();
 
         foreach ($chgmast as $key => $value) {
-            $newdesc = str_replace("Ø", "", $value->description);
+            // $newdesc = str_replace("Ø", "", $value->description);
+            $desc = mb_convert_encoding($value->description, 'UTF-8', 'auto');
+            $desc = str_replace('?', '', $desc);
 
             DB::table('hisdb.chgmast')
                 ->where('idno', $value->idno)
                 ->update([
-                    'description' => $newdesc
+                    'description' => $desc
                 ]);
         }
     }

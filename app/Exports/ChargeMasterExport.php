@@ -120,8 +120,6 @@ class ChargeMasterExport implements FromView, WithEvents, WithColumnWidths, With
         // $chgcode_ = null;
         foreach ($chgmast as $key => $value){
 
-            $value->description = preg_replace('/[^\x00-\x7F]/u', '', $value->description);
-
             $chgprice_obj = DB::table('hisdb.chgprice as cp')
                     ->select('cp.chgcode','cp.idno as cp_idno','cp.uom as uom_cp','cp.amt1', 'cp.effdate', 'cp.amt2', 'cp.amt3', 'cp.costprice')
                     ->where('cp.compcode', '=', session('compcode'))
@@ -141,7 +139,7 @@ class ChargeMasterExport implements FromView, WithEvents, WithColumnWidths, With
                 $value->amt2 = '-';
                 $value->amt3 = '-';
             }
-
+                
             array_push($array_report, $value);
         }
 
