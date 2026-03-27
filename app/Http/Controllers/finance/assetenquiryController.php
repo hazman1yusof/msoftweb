@@ -259,9 +259,10 @@ class assetenquiryController extends defaultController
                                 ->sum('amount');
             $nbv = $origcost - $accummulated;
 
-            if($faregister->recstatus != 'ACTIVE'){
+            if($faregister->recstatus == 'DEACTIVE'){
                 // dd(strtoupper($faregister->recstatus));
-                if(strtoupper($faregister->trantype) != 'FUL'){
+
+                if(!in_array(strtoupper($faregister->trantype),['FUL','ADD'])) {
                     throw new \Exception("asset is already deactive");
                 }
             }
