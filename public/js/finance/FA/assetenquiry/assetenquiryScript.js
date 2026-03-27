@@ -374,7 +374,7 @@ $(document).ready(function () {
 				if(rowData.recstatus == 'ACTIVE'){
 					$('#writeoff_btn').show();
 				}else{
-					if(rowData.trantype.toUpperCase() == 'FUL'){
+					if(rowData.trantype.toUpperCase() == 'FUL' || rowData.trantype.toUpperCase() == 'ADD'){
 						$('#writeoff_btn').show();
 					}else{
 						$('#writeoff_btn').hide();

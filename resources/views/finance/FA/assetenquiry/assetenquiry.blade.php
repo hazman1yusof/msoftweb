@@ -475,7 +475,7 @@
 		});
 	</script>
 
-	<script src="js/finance/FA/assetenquiry/assetenquiryScript.js?v=1.4"></script>
+	<script src="js/finance/FA/assetenquiry/assetenquiryScript.js?v=1.5"></script>
 	<script src="js/finance/FA/assetenquiry/assetenquiryDtl2Script.js"></script>	
 	<script src="js/finance/FA/assettransfer2/assettransfer2Script.js"></script>	
 
