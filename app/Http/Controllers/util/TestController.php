@@ -138,6 +138,8 @@ class TestController extends defaultController
                 return $this->no_regdept($request);
             case 'stockexp_2026':
                 return $this->stockexp_2026($request);
+            case 'chgmast_desc':
+                return $this->chgmast_desc($request);
             // case 'netmvval_from_netmvqty':
             //     return $this->netmvval_from_netmvqty($request);
             // case 'cr8_acctmaster':
@@ -9654,6 +9656,24 @@ class TestController extends defaultController
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
         }
+    }
 
+    public function chgmast_desc(Request $request){
+
+        $chgmast = DB::table('hisdb.chgmast')
+                        ->where('compcode',session('compcode'))
+                        ->where('description','like','%Ø%')
+                        ->where('chgcode','71500001')
+                        ->get();
+
+        foreach ($chgmast as $key => $value) {
+            $newdesc = str_replace("Ø", "", $value->description);
+
+            DB::table('hisdb.chgmast')
+                ->where('idno', $value->idno)
+                ->update([
+                    'description' => $newdesc
+                ]);
+        }
     }
 }
