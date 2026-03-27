@@ -119,33 +119,29 @@ class ChargeMasterExport implements FromView, WithEvents, WithColumnWidths, With
 
         // $chgcode_ = null;
         foreach ($chgmast as $key => $value){
-            // if($chgcode_ == $value->chgcode){
-                $chgprice_obj = DB::table('hisdb.chgprice as cp')
-                        ->select('cp.chgcode','cp.idno as cp_idno','cp.uom as uom_cp','cp.amt1', 'cp.effdate', 'cp.amt2', 'cp.amt3', 'cp.costprice')
-                        ->where('cp.compcode', '=', session('compcode'))
-                        ->where('cp.chgcode', '=', $value->chgcode)
-                        ->where('cp.uom', '=', $value->uom_cm)
-                        ->whereDate('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur"))
-                        ->orderBy('cp.effdate','desc');
 
-                if($chgprice_obj->exists()){
-                    $chgprice_obj = $chgprice_obj->first();
-                    $value->amt1 = $chgprice_obj->amt1;
-                    $value->amt2 = $chgprice_obj->amt2;
-                    $value->amt3 = $chgprice_obj->amt3;
+            $value->description = preg_replace('/[^\x00-\x7F]/u', '', $value->description);
 
-                }else{
-                    $value->amt1 = '-';
-                    $value->amt2 = '-';
-                    $value->amt3 = '-';
-                }
+            $chgprice_obj = DB::table('hisdb.chgprice as cp')
+                    ->select('cp.chgcode','cp.idno as cp_idno','cp.uom as uom_cp','cp.amt1', 'cp.effdate', 'cp.amt2', 'cp.amt3', 'cp.costprice')
+                    ->where('cp.compcode', '=', session('compcode'))
+                    ->where('cp.chgcode', '=', $value->chgcode)
+                    ->where('cp.uom', '=', $value->uom_cm)
+                    ->whereDate('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur"))
+                    ->orderBy('cp.effdate','desc');
 
-            //     if($value->chgcode == $chgprice_obj->chgcode && $value->cp_idno != $chgprice_obj->cp_idno){
-            //         unset($chgmast[$key]);
-            //         continue;
-            //     }
-            // }
-            // $chgcode_=$value->chgcode;
+            if($chgprice_obj->exists()){
+                $chgprice_obj = $chgprice_obj->first();
+                $value->amt1 = $chgprice_obj->amt1;
+                $value->amt2 = $chgprice_obj->amt2;
+                $value->amt3 = $chgprice_obj->amt3;
+
+            }else{
+                $value->amt1 = '-';
+                $value->amt2 = '-';
+                $value->amt3 = '-';
+            }
+
             array_push($array_report, $value);
         }
 
