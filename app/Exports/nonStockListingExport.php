@@ -23,21 +23,32 @@ use DateTime;
 use Carbon\Carbon;
 use stdClass;
 
-class nonStockListingExport implements FromView, WithEvents, WithColumnWidths
+class nonStockListingExport implements FromView, WithEvents, WithColumnWidths, WithColumnFormatting
 {
     
     /**
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($item_from,$item_to)
+    public function __construct($item_from,$item_to,$unit)
     {
         $this->item_from = $item_from;
         $this->item_to = $item_to;
+        $this->unit = $unit;
 
         $this->comp = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
             ->first();
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+            'A' => NumberFormat::FORMAT_NUMBER,
+            'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+        ];
     }
     
     public function columnWidths(): array
@@ -63,11 +74,18 @@ class nonStockListingExport implements FromView, WithEvents, WithColumnWidths
             $item_from = '%';
         }
         $item_to = $this->item_to;
+        $unit = $this->unit;
       
         $product = DB::table('material.product as p')
                 ->select('p.idno','p.compcode','p.itemcode','p.description','p.groupcode','p.uomcode','p.qtyonhand','p.avgcost','p.recstatus','p.currprice','p.unit')
-                ->where('p.compcode','=',session('compcode'))
-                ->where('p.unit','=',session('unit'))
+                ->where('p.compcode','=',session('compcode'));
+
+        if(strtoupper($unit) == 'ALL'){
+        }else{
+            $product = $product->where('p.unit','=',$unit);
+        }
+                
+        $product = $product
                 ->where('p.recstatus', '=', 'ACTIVE')
                 ->where('p.groupcode', '!=', 'Stock')
                 ->whereBetween('p.itemcode', [$item_from, $item_to])

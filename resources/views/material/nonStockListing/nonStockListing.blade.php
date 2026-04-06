@@ -69,6 +69,15 @@
 							</div>
 							<span class="help-block"></span>
 						</div>
+						
+						<div class="col-md-12" style="padding-top: 30px;">
+							<label class="control-label" for="Scol">Unit</label>
+                            <div class='input-group'>
+								<input id="unit_from" name="unit_from" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="ALL">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
+						</div>
 					</div>
 					
 					<div class="col-md-4" style="margin-left: 100px;">
@@ -76,9 +85,9 @@
 							<div class="panel-body">
 								<div class='col-md-12 btnform' style="padding: 20px 0px">
 									<fieldset>
-										<button name="pdf" type="button" class="mybtn btn btn-sm mybtnpdf" id="pdfgen">
+										<!-- <button name="pdf" type="button" class="mybtn btn btn-sm mybtnpdf" id="pdfgen">
 											<span class="fa fa-file-pdf-o fa-lg"></span> Generate Report PDF
-										</button>
+										</button> -->
 										<button name="excel" type="button" class="mybtn btn btn-sm mybtnxls" id="excelgen">
 											<span class="fa fa-file-excel-o fa-lg"></span> Generate Report Excel
 										</button>
@@ -94,5 +103,5 @@
 @endsection
 
 @section('scripts')
-	<script src="js/material/nonStockListing/nonStockListing.js"></script>
+	<script src="js/material/nonStockListing/nonStockListing.js?v=1.1"></script>
 @endsection

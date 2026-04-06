@@ -32,11 +32,11 @@ $(document).ready(function () {
 	});
    
 	$('#pdfgen').click(function(){
-		window.open('./nonStockListing/showpdf?item_from='+$('#item_from').val()+'&item_to='+$("#item_to").val(),  '_blank'); 
+		window.open('./nonStockListing/showpdf?item_from='+$('#item_from').val()+'&item_to='+$("#item_to").val()+'&unit='+$("#unit_from").val(),  '_blank'); 
 	});
 
 	$('#excelgen').click(function(){
-		window.location='./nonStockListing/showExcel?item_from='+$('#item_from').val()+'&item_to='+$("#item_to").val();
+		window.open('./nonStockListing/showExcel?item_from='+$('#item_from').val()+'&item_to='+$("#item_to").val()+'&unit='+$("#unit_from").val(),  '_blank'); 
 	});
 
     /////////////////////////////////////dialog handler///////////////////////////////
@@ -141,5 +141,59 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dialog_itemcodeto.makedialog(true);
+
+	var unit_from = new ordialog(
+		'unit_from','sysdb.sector','#unit_from',errorField,
+		{	
+			colModel:[
+				{label:'Unit',name:'sectorcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
+			],
+			urlParam: {
+				filterCol:['compcode'],//,'sector'
+				filterVal:['session.compcode']//, 'session.unit'
+			},
+			sortname:'sectorcode',
+			sortorder:'asc',
+			ondblClickRow: function () {
+				let data=selrowData('#'+unit_from.gridname);
+
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+			}
+		},{
+			title:"Select Unit",
+			open: function(){
+				dept_from.urlParam.filterCol=['compcode'];//,'sector'
+				dept_from.urlParam.filterVal=['session.compcode'];//, 'session.unit'
+			},
+			close: function(obj_){
+			},
+            after_check: function(data,self,id,fail,errorField){
+                let value = $(id).val();
+                if(value.toUpperCase() == 'ALL'){
+                    ordialog_buang_error_shj(id,errorField);
+                    if($.inArray('unit_from',errorField)!==-1){
+                        errorField.splice($.inArray('unit_from',errorField), 1);
+                    }
+                }
+            },
+			justb4refresh: function(obj_){
+				obj_.urlParam.searchCol2=[];
+				obj_.urlParam.searchVal2=[];
+			},
+			justaftrefresh: function(obj_){
+				$("#Dtext_"+obj_.unique).val('');
+			}
+		},'urlParam','radio','tab'
+	);
+	unit_from.makedialog(true);
 
 });

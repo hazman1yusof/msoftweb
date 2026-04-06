@@ -11,10 +11,10 @@
     <tr>
         <td>{{$obj->itemcode}}</td>
         <td>{{$obj->description}}</td>
-        <td>{!!$obj->uomcode!!}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->qtyonhand, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->avgcost, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->currprice, 2, '.', ',') }}</td>
+        <td>{{$obj->uomcode}}</td>
+        <td data-format="0.00" style="text-align: right">{{ $obj->qtyonhand }}</td>
+        <td data-format="0.00" style="text-align: right">{{ $obj->avgcost }}</td>
+        <td data-format="0.00" style="text-align: right">{{ $obj->currprice }}</td>
     </tr>
     @endforeach
 </table>

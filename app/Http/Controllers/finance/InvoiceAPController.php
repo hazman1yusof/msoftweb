@@ -43,7 +43,7 @@ use Maatwebsite\Excel\Facades\Excel;
                     break;
                 
                 default:
-                    $type = 'IN';
+                    $ttype = 'IN';
                     $desc = 'Invoice';
                     break;
             }

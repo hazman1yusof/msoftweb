@@ -28,7 +28,7 @@ class nonStockListingController extends defaultController
     }
 
     public function showExcel(Request $request){
-        return Excel::download(new nonStockListingExport($request->item_from,$request->item_to), 'nonStockListingExport.xlsx');
+        return Excel::download(new nonStockListingExport($request->item_from,$request->item_to,$request->unit), 'nonStockListingExport.xlsx');
     }
 
     public function showpdf(Request $request){
