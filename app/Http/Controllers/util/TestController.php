@@ -9516,8 +9516,13 @@ class TestController extends defaultController
     }
 
     public function stockexp_2026(Request $request){
-        // $deptcode = $request->deptcode;
+        $deptcode = $request->deptcode;
 
+        if($deptcode == '2'){
+            dd('no deptcode');
+        }else{
+            dd('ok');
+        }
         // if(!$deptcode){
         //     dd('no deptcode');
         // }
