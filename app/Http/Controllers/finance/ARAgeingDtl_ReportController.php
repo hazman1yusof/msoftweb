@@ -64,12 +64,13 @@ class ARAgeingDtl_ReportController extends defaultController
     {
         switch($request->action){
             case 'showExcel':
-                $PYTHON_PATH = \config('get_config.PYTHON_PATH');
-                if($PYTHON_PATH != null){
-                    return $this->process_excel($request);
-                }else{
-                    return $this->process_excel_link($request);
-                }
+                return $this->process_pyserver($request);
+                // $PYTHON_PATH = \config('get_config.PYTHON_PATH');
+                // if($PYTHON_PATH != null){
+                //     return $this->process_excel($request);
+                // }else{
+                //     return $this->process_excel_link($request);
+                // }
             case 'showExcel_statement':
                 $PYTHON_PATH = \config('get_config.PYTHON_PATH');
                 if($PYTHON_PATH != null){
@@ -77,6 +78,8 @@ class ARAgeingDtl_ReportController extends defaultController
                 }else{
                     return $this->process_excel_statement_link($request);
                 }
+            case 'process_pyserver':
+                return $this->process_pyserver($request);
             default:
                 return 'error happen..';
         }
@@ -301,6 +304,44 @@ class ARAgeingDtl_ReportController extends defaultController
                 'status' => 'Python script started in background (Windows)'
             ]);
         }
+    }
+
+    public function process_pyserver(Request $request){
+
+        $username = session('username');
+        $compcode = session('compcode');
+        $pyserver = \config('get_config.DB_HOST_PYSERVER');
+        $page = 'ARAgeing';
+        $filename = $request->filename;
+        $process = $request->process;
+        $type = $request->type;
+        $date = $request->date;
+        $debtortype = $request->debtortype;
+        $debtorcode_from = $request->debtorcode_from;
+        $debtorcode_to = $request->debtorcode_to;
+        $groupOne = $request->groupOne;
+        $groupTwo = $request->groupTwo;
+        $groupThree = $request->groupThree;
+        $groupFour = $request->groupFour;
+        $groupFive = $request->groupFive;
+        $groupSix = $request->groupSix;
+        $groupby = $request->groupby;
+
+        $job_id = $this->start_job_queue($compcode,$page,$filename,$process,$username,$type,$date,$debtortype,$debtorcode_from,$debtorcode_to,$groupOne,$groupTwo,$groupThree,$groupFour,$groupFive,$groupSix,$groupby);
+
+        $client = new \GuzzleHttp\Client();
+
+        $url = 'http://localhost:5000/api/arageing?username='.$username.'&compcode='.$compcode.'&pyserver='.$pyserver.'&page='.$page.'&filename='.$filename.'&process='.$process.'&username='.$username.'&type='.$type.'&date='.$date.'&debtortype='.$debtortype.'&debtorcode_from='.$debtorcode_from.'&debtorcode_to='.$debtorcode_to.'&groupone='.$groupOne.'&grouptwo='.$groupTwo.'&groupthree='.$groupThree.'&groupfour='.$groupFour.'&groupfive='.$groupFive.'&groupsix='.$groupSix.'&groupby='.$groupby.'&job_id='.$job_id.'&host='.$pyserver;
+
+        $response = $client->request('GET', $url, [
+          'headers' => [
+            'accept' => 'application/json',
+          ],
+        ]);
+
+        $responce = new stdClass();
+        $responce->job_id = $job_id;
+        return json_encode($responce);
     }
 
     public function process_excel_lama(Request $request){
@@ -584,30 +625,37 @@ class ARAgeingDtl_ReportController extends defaultController
         return $group;
     }
 
-    public function start_job_queue($page){
+    public function start_job_queue($compcode,$page,$filename,$process,$username,$type,$date,$debtortype,$debtorcode_from,$debtorcode_to,$groupOne,$groupTwo,$groupThree,$groupFour,$groupFive,$groupSix,$groupby){
+
+
+        if($type == "detail"){
+            $filename = "ARAgeingDetail ".Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d h:i A').".xlsx";
+        }else{
+            $filename = "ARAgeingSummary ".Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d h:i A').".xlsx";
+        }
 
         $idno_job_queue = DB::table('sysdb.job_queue')
                             ->insertGetId([
-                                'compcode' => $this->compcode,
+                                'compcode' => $compcode,
                                 'page' => $page,
-                                'filename' => $this->filename,
-                                'process' => $this->process,
-                                'adduser' => $this->username,
+                                'filename' => $filename,
+                                'process' => $process,
+                                'adduser' => $username,
                                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                                 'status' => 'PENDING',
-                                'remarks' => 'AR Ageing '.$this->type.' as of '.$this->date.', debtortype: '.$this->debtortype.', debtorcode from:"'.$this->debtorcode_from.'" to "'.$this->debtorcode_to.'"',
-                                'type' => $this->type,
-                                'date' => $this->date,
-                                'debtortype' => $this->debtortype,
-                                'debtorcode_from' => $this->debtorcode_from,
-                                'debtorcode_to' => $this->debtorcode_to,
-                                'groupOne' => $this->groupOne,
-                                'groupTwo' => $this->groupTwo,
-                                'groupThree' => $this->groupThree,
-                                'groupFour' => $this->groupFour,
-                                'groupFive' => $this->groupFive,
-                                'groupSix' => $this->groupSix,
-                                'groupby' => $this->groupby
+                                'remarks' => 'AR Ageing '.$type.' as of '.$date.', debtortype: '.$debtortype.', debtorcode from:"'.$debtorcode_from.'" to "'.$debtorcode_to.'"',
+                                'type' => $type,
+                                'date' => $date,
+                                'debtortype' => $debtortype,
+                                'debtorcode_from' => $debtorcode_from,
+                                'debtorcode_to' => $debtorcode_to,
+                                'groupOne' => $groupOne,
+                                'groupTwo' => $groupTwo,
+                                'groupThree' => $groupThree,
+                                'groupFour' => $groupFour,
+                                'groupFive' => $groupFive,
+                                'groupSix' => $groupSix,
+                                'groupby' => $groupby
                             ]);
 
         return $idno_job_queue;
