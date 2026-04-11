@@ -1451,6 +1451,11 @@ Route::get('/clientprogressnoteref','hisdb\ClientProgressNoteRefController@show'
 Route::get('/clientprogressnoteref/table','hisdb\ClientProgressNoteRefController@table');
 Route::post('/clientprogressnoteref/form','hisdb\ClientProgressNoteRefController@form');
 
+//// Client Progress Note (Doctor Note (Referral)) page ///
+Route::get('/mohreport','hisdb\mohreportController@show');
+Route::get('/mohreport/table','hisdb\mohreportController@table');
+Route::post('/mohreport/form','hisdb\mohreportController@form');
+
 //// Doctor Note page ///
 Route::get('/doctornote','hisdb\DoctorNoteController@show');
 Route::get('/bpgraph','hisdb\DoctorNoteController@bpgraph');
