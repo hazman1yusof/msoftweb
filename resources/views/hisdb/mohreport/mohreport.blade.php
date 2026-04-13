@@ -72,19 +72,24 @@
         <div class="panel panel-info">
             <div class="panel-heading text-center"><b>MOH Reporting</b></div>
             <div class="panel-body" style="padding: 15px 0;">
-                <div class="col-md-8" style="padding-left: 0px;padding-right: 0px;">
-                    <label for="option1" class="mylabel">1. In Patient Returns (PS 101)    
-                        <input type="radio" id="option1" name="choice" value="1" checked>
-                    </label>
-                    <label for="option2" class="mylabel">2. DayCare/Health Screening of Foreign Patient (PS 102)
-                        <input type="radio" id="option2" name="choice" value="2">
-                    </label>
-                    <label for="option3" class="mylabel">3. Monthly Report on Foreign Patient (PS 202)
-                        <input type="radio" id="option3" name="choice" value="3">
-                    </label>
-                    <label for="option4" class="mylabel">4. Monthly Report on Foreign Patient, Health Tourist (PS 203)
-                        <input type="radio" id="option4" name="choice" value="4">
-                    </label>
+
+                <div class="col-md-8" style="padding-left: 10px;padding-right: 10px;">
+                    <div class="panel panel-default" style="">
+                        <div class="panel-body">
+                            <label for="option1" class="mylabel">1. In Patient Returns (PS 101)    
+                                <input type="radio" id="option1" name="choice" value="1" checked>
+                            </label>
+                            <label for="option2" class="mylabel">2. DayCare/Health Screening of Foreign Patient (PS 102)
+                                <input type="radio" id="option2" name="choice" value="2">
+                            </label>
+                            <label for="option3" class="mylabel">3. Monthly Report on Foreign Patient (PS 202)
+                                <input type="radio" id="option3" name="choice" value="3">
+                            </label>
+                            <label for="option4" class="mylabel">4. Monthly Report on Foreign Patient, Health Tourist (PS 203)
+                                <input type="radio" id="option4" name="choice" value="4">
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="col-md-4" style="padding-left: 0px;padding-right: 10px;">

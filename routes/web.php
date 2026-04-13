@@ -1456,6 +1456,10 @@ Route::get('/mohreport','hisdb\mohreportController@show');
 Route::get('/mohreport/table','hisdb\mohreportController@table');
 Route::post('/mohreport/form','hisdb\mohreportController@form');
 
+Route::get('/drfeesvoucher','hisdb\drfeesvoucherController@show');
+Route::get('/drfeesvoucher/table','hisdb\drfeesvoucherController@table');
+Route::post('/drfeesvoucher/form','hisdb\drfeesvoucherController@form');
+
 //// Doctor Note page ///
 Route::get('/doctornote','hisdb\DoctorNoteController@show');
 Route::get('/bpgraph','hisdb\DoctorNoteController@bpgraph');
