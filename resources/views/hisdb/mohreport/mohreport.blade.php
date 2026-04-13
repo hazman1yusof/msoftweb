@@ -74,7 +74,7 @@
             <div class="panel-body" style="padding: 15px 0;">
                 <div class="col-md-8" style="padding-left: 0px;padding-right: 0px;">
                     <label for="option1" class="mylabel">1. In Patient Returns (PS 101)    
-                        <input type="radio" id="option1" name="choice" value="1">
+                        <input type="radio" id="option1" name="choice" value="1" checked>
                     </label>
                     <label for="option2" class="mylabel">2. DayCare/Health Screening of Foreign Patient (PS 102)
                         <input type="radio" id="option2" name="choice" value="2">
@@ -99,6 +99,19 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="panel panel-default" style="">
+                        <div class="panel-body">
+                            <div class='col-md-6' >
+                                <label>Date From</label>
+                                <input type="date" name="datefrom" id="datefrom" class="form-control input-sm text-uppercase">
+                            </div>
+                            <div class='col-md-6' >
+                                <label>Date To</label>
+                                <input type="date" name="dateto" id="dateto" class="form-control input-sm text-uppercase">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -113,7 +126,7 @@
                 var report = $('input:radio[name=choice]:checked').val()
 
                 if(report != undefined){
-                    window.open('./mohreport/table?action=download_report&reportno='+report, '_blank');
+                    window.open('./mohreport/table?action=download_report&reportno='+report+'&datefrom='+$('#datefrom').val()+'&dateto='+$('#dateto').val(), '_blank');
                 }
             });
         });
