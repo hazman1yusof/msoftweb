@@ -40,10 +40,8 @@ class drfeesvoucherController extends defaultController
     public function download_report(Request $request){
         
         $filename = 'drfeesvoucher.xlsx';
-
+        
         $file_path = public_path()."\\assets\\mohreport\\".$filename;
-
-        dd($file_path);
 
         return Response::download($file_path,$filename);
     }
