@@ -568,6 +568,14 @@ class ItemEnquiryController extends defaultController
                 dd('no year');
             }
 
+
+            $deldept_unit = DB::table('sysdb.department')
+                            ->where('compcode',session('compcode'))
+                            ->where('deptcode',$deptcode)
+                            ->first();
+
+            $unit = $deldept_unit->sector;
+
             $stockloc = DB::table('material.stockloc as s')
                         ->select('s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit','e.idno as e_idno')
                         ->where('s.compcode',session('compcode'))
@@ -596,6 +604,7 @@ class ItemEnquiryController extends defaultController
                     $stockexp = DB::table('material.stockexp')
                                 ->where('itemcode',$obj->itemcode)
                                 ->where('compcode',session('compcode'))
+                                ->where('unit',$unit)
                                 ->where('deptcode',$deptcode);
 
                     $balqty = $stockexp->sum('balqty');
@@ -610,7 +619,8 @@ class ItemEnquiryController extends defaultController
                             $var = $qtyonhand - $balqty;
 
                             $stockexp_chg = DB::table('material.stockexp')
-                                                ->where('compcode','9B')
+                                                ->where('compcode',session('compcode'))
+                                                ->where('unit',$unit)
                                                 ->where('itemcode',$obj->itemcode)
                                                 ->where('deptcode',$deptcode)
                                                 ->orderBy('idno','desc')
@@ -618,7 +628,8 @@ class ItemEnquiryController extends defaultController
 
                             DB::table('material.stockexp')
                                         ->where('idno',$stockexp_chg->idno)
-                                        ->where('compcode','9B')
+                                        ->where('compcode',session('compcode'))
+                                        ->where('unit',$unit)
                                         ->where('itemcode',$obj->itemcode)
                                         ->update([
                                             'balqty' => $stockexp_chg->balqty + $var
@@ -629,7 +640,8 @@ class ItemEnquiryController extends defaultController
 
                         }else if($qtyonhand<$balqty){
                             $stockexp_chg = DB::table('material.stockexp')
-                                                ->where('compcode','9B')
+                                                ->where('compcode',session('compcode'))
+                                                ->where('unit',$unit)
                                                 ->where('itemcode',$obj->itemcode)
                                                 ->where('deptcode',$deptcode)
                                                 ->orderBy('idno','desc')
@@ -641,7 +653,8 @@ class ItemEnquiryController extends defaultController
                                 $baki = $baki - $obj->balqty;
                                 if($zerorise == 1){
                                     DB::table('material.stockexp')
-                                        ->where('idno',$obj->idno)
+                                        ->where('compcode',session('compcode'))
+                                        ->where('unit',$unit)
                                         ->where('compcode','9B')
                                         ->where('itemcode',$obj->itemcode)
                                         ->update([
@@ -671,7 +684,8 @@ class ItemEnquiryController extends defaultController
                                     }else if($baki < 0){
                                         DB::table('material.stockexp')
                                             ->where('idno',$obj->idno)
-                                            ->where('compcode','9B')
+                                            ->where('compcode',session('compcode'))
+                                            ->where('unit',$unit)
                                             ->where('itemcode',$obj->itemcode)
                                             ->update([
                                                 'balqty' => $baki + $obj->balqty
