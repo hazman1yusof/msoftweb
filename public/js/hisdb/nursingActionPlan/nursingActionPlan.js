@@ -89,7 +89,7 @@ $(document).ready(function (){
 
     /////////////////////////////////////header starts/////////////////////////////////////
     disableForm('#formHeader');
-    
+
     $("#new_header").click(function (){
         button_state_header('wait');
         enableForm('#formHeader');
@@ -118,6 +118,7 @@ $(document).ready(function (){
     $("#cancel_header").click(function (){
         disableForm('#formHeader');
         button_state_header($(this).data('oper'));
+
     });
     //////////////////////////////////////header ends//////////////////////////////////////
     
@@ -176,11 +177,13 @@ $(document).ready(function (){
 				autoinsert_rowdata("#formHeader",data.header);
 				button_state_header('edit');
 				textarea_init_nursingActionPlan();
+
 			}else{
                 autoinsert_rowdata("#formHeader",data.episode);
 				autoinsert_rowdata("#formHeader",data.header);
 				button_state_header('add');
 				textarea_init_nursingActionPlan();
+                emptyFormdata(errorField,'#formHeader');
 			}
 		});
         // populate_header_getdata();
@@ -2098,6 +2101,41 @@ $(document).ready(function (){
     ////////////////////////////////////////////end grid////////////////////////////////////////////
     //////////////////////////////////////////Procedure ends//////////////////////////////////////////
 
+    var dialog_icd = new ordialog(
+		'icd','hisdb.diagtab',"#formHeader input[name='icd']",errorField,
+		{
+			colModel: [
+				{ label: 'Code', name: 'icdcode', width: 100, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'description', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+			],
+			urlParam: {
+				filterCol: ['type'],
+				filterVal: ['icd-10'],
+			},
+			ondblClickRow: function (){
+                let data=selrowData('#'+dialog_icd.gridname);
+				$("#formHeader textarea[name='icd_desc']").val(data['description']);
+			},
+            gridComplete: function(obj){
+                var gridname = '#'+obj.gridname;
+                if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+                    $(gridname+' tr#1').click();
+                    $(gridname+' tr#1').dblclick();
+                    $('#rhesus').focus();
+                }else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+                    $('#'+obj.dialogname).dialog('close');
+                }
+            }
+		},
+		{
+			title: "Select ICD Code",
+			open: function (){
+				dialog_icd.urlParam.filterCol = ['type'];
+				dialog_icd.urlParam.filterVal = ['icd-10'];
+			},
+		},'urlParam','radio','tab'
+	);
+	dialog_icd.makedialog(true);
 });
 
 var errorField = [];
@@ -2115,6 +2153,7 @@ conf = {
         }
     },
 };
+
 
 
 button_state_header('empty');
@@ -2191,13 +2230,10 @@ function populate_header_getdata(){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formHeader",data.episode);
             autoinsert_rowdata("#formHeader",data.header);
-            
             button_state_header('edit');
-            // textarea_init_nursingActionPlan();
 
         }else{
             button_state_header('add');
-            // textarea_init_nursingActionPlan();
 
         }
     });
@@ -2304,14 +2340,4 @@ function galGridCustomValue_nurs(elem, operation, value){
         $('input',elem).val(value);
     }
 }
-
-// function calc_jq_height_onchange(jqgrid){
-//     let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
-//     if(scrollHeight < 50){
-//         scrollHeight = 50;
-//     }else if(scrollHeight > 300){
-//         scrollHeight = 300;
-//     }
-//     $('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
-// }
 

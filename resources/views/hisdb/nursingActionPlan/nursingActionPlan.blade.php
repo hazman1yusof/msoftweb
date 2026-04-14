@@ -31,9 +31,9 @@
                                         padding: 0 0 0 0;
                                         right: 40px;
                                         top: 5px;">
-                                <button type="button" class="btn btn-default" id="new_header">
+                                <!-- <button type="button" class="btn btn-default" id="new_header">
                                     <span class="fa fa-plus-square-o"></span> New 
-                                </button>
+                                </button> -->
                                 <button type="button" class="btn btn-default" id="edit_header">
                                     <span class="fa fa-edit fa-lg"></span> Edit 
                                 </button>
@@ -49,27 +49,42 @@
                         <div class="panel-body" style="padding-right: 0px;">
                             <form class='form-horizontal' style='width: 99%;' id='formHeader'>
                                     <div class="form-group">
-                                        <label class="col-md-2 control-label" for="reg_date">Date of Admission</label>
+                                        <label class="col-md-1 control-label" for="reg_date">Date of Admission</label>
                                         <div class="col-md-2">
                                             <input id="reg_date" name="reg_date" type="date" class="form-control input-sm" rdonly>
                                         </div>
                                         
-                                        <label class="col-md-2 control-label" for="diagnosis">Diagnosis</label>
-                                        <div class="col-md-4">
+                                        <label class="col-md-1 control-label" for="diagnosis">Diagnosis</label>
+                                        <div class="col-md-3">
                                             <textarea id="diagnosis" name="diagnosis" type="text" class="form-control input-sm"></textarea>
+                                        </div>
+
+                                        <label class="col-md-1 control-label" for="icd">ICD</label>
+                                        <div class="col-md-2">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control input-sm" id="icd" name="icd">
+                                                <a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+                                            </div>
+                                            <!-- <span class='help-block'></span> -->
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-md-2 control-label" for="op_date">Date of Operation</label>
+                                        <label class="col-md-1 control-label" for="op_date">Date of Operation</label>
                                         <div class="col-md-2">
                                             <input id="op_date" name="op_date" type="date" class="form-control input-sm">
                                         </div>
 
-                                        <label class="col-md-2 control-label" for="operation">Operation</label>
-                                        <div class="col-md-4">
+                                        <label class="col-md-1 control-label" for="operation">Operation</label>
+                                        <div class="col-md-3">
                                             <textarea id="operation" name="operation" type="text" class="form-control input-sm"></textarea>
                                         </div>
+
+                                        <label class="col-md-1 control-label" for="icd_desc"></label>
+                                        <div class="col-md-3">
+                                            <textarea id="icd_desc" name="icd_desc" type="text" class="form-control input-sm"></textarea>
+                                        </div>
+                                        
                                     </div>
                                 </div>
                             </form>

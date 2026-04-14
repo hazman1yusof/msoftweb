@@ -137,6 +137,8 @@ class NursingActionPlanController extends defaultController
                     'op_date' => $request->op_date,
                     'operation' => $request->operation,
                     'diagnosis' => $request->diagnosis,
+                    'icd' => $request->icd,
+                    'icd_desc' => $request->icd_desc,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
@@ -174,6 +176,8 @@ class NursingActionPlanController extends defaultController
                         'op_date' => $request->op_date,
                         'operation' => $request->operation,
                         'diagnosis' => $request->diagnosis,
+                        'icd' => $request->icd,
+                        'icd_desc' => $request->icd_desc,
                         'upduser'  => session('username'),
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
@@ -187,6 +191,8 @@ class NursingActionPlanController extends defaultController
                         'op_date' => $request->op_date,
                         'operation' => $request->operation,
                         'diagnosis' => $request->diagnosis,
+                        'icd' => $request->icd,
+                        'icd_desc' => $request->icd_desc,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
