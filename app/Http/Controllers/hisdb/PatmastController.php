@@ -3609,7 +3609,7 @@ class PatmastController extends defaultController
             $nok_ec = $nok_ec->first();
             $ini_array['NextofKinName'] = $nok_ec->name;
             $ini_array['NextofKinTelNo'] = $nok_ec->tel_hp;
-            $ini_array['Relationship'] = $nok_ec->relationship;
+            $ini_array['Relationship'] = $nok_ec->description;
         }
 
         if(true){
