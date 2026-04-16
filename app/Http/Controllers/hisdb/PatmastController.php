@@ -3667,6 +3667,17 @@ class PatmastController extends defaultController
             $ini_array['ward'] = $bedalloc->ward.' - '.$bedalloc->room;
         }
 
+        $nursactplan_hdr = DB::table('nursing.nursactplan_hdr')
+                        ->where('mrn', '=', $request->mrn)
+                        ->where('episno', '=', $request->episno)
+                        ->where('ba.compcode','=',session('compcode'));
+
+        if($nursactplan_hdr->exists()){
+            $nursactplan_hdr = $nursactplan_hdr->first();
+            $ini_array['MainDiagCodeNo'] = $nursactplan_hdr->icd;
+            $ini_array['MainDiag'] = $nursactplan_hdr->icd_desc;
+        }
+
         if(true){
             return view('hisdb.pat_mgmt.patform_pdfmake',compact('ini_array','pat_mast','episode'));
         }else{

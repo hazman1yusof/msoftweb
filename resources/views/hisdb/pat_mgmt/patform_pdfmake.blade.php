@@ -84,8 +84,8 @@
         var FirstTopUp = ``;
         var SecTopUp = ``;
         var ThirdTopUp = ``;
-        var MainDiag = ``;
-        var MainDiagCodeNo = ``;
+        var MainDiag = `{!!$ini_array['MainDiag']!!}`;
+        var MainDiagCodeNo = `{!!$ini_array['MainDiagCodeNo']!!}`;
         var Cause = ``;
         var CauseCodeNo = ``;
         var OtherDiag = ``;
@@ -643,7 +643,7 @@
                                     {
                                         text: [
                                             '5. Nama Pakar / Pegawai Perubatan\n',
-                                            { text: 'Name of Specialist / Medical Officer\n\n', italics: true },
+                                            { text: 'Name of Specialist / Medical Officer : \n\n', italics: true },
                                             { text: SpecialistName },
                                         ], colSpan: 4, alignment: 'left'
                                     },{},{},{},
