@@ -3657,10 +3657,10 @@ class PatmastController extends defaultController
         }
 
         $bedalloc = DB::table('hisdb.bedalloc as ba')
-                        ->where('bedalloc.mrn', '=', $request->mrn)
-                        ->where('bedalloc.episno', '=', $request->episno)
-                        ->where('bedalloc.astatus', '=', 'OCCUPIED')
-                        ->where('bedalloc.compcode','=',session('compcode'));
+                        ->where('ba.mrn', '=', $request->mrn)
+                        ->where('ba.episno', '=', $request->episno)
+                        ->where('ba.astatus', '=', 'OCCUPIED')
+                        ->where('ba.compcode','=',session('compcode'));
         
         if($bedalloc->exists()){
             $bedalloc = $bedalloc->first();
