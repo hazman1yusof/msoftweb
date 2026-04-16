@@ -3558,6 +3558,9 @@ class PatmastController extends defaultController
             'pages' => $request->pages,
             'district' => '-',
             'state' => '-',
+            'NextofKinName' => '-',
+            'NextofKinTelNo' => '-',
+            'Relationship' => '-',
         ];
 
 
@@ -3590,6 +3593,23 @@ class PatmastController extends defaultController
                         ->first();
 
             $ini_array['religion'] = $religion->Description;
+        }
+
+        $nok_ec = DB::table('hisdb.nok_ec as n')
+                    ->select('n.name','n.tel_hp','r.description')
+                    ->leftjoin('hisdb.relationship as r', function($join) use ($request){
+                            $join = $join->where('r.compcode', session('compcode'));
+                            $join = $join->on('r.relationshipcode', 'n.relationshipcode');
+                        });
+                    ->where('n.compcode',session('compcode'))
+                    ->where('n.mrn',$pat_mast->MRN)
+                    ->orderBy('n.idno', 'desc');
+
+        if($nok_ec->exists()){
+            $nok_ec = $nok_ec->first();
+            $ini_array['NextofKinName'] = $nok_ec->name;
+            $ini_array['NextofKinTelNo'] = $nok_ec->tel_hp;
+            $ini_array['Relationship'] = $nok_ec->relationship;
         }
 
         if(true){

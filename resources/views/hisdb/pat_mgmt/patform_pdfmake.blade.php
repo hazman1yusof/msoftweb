@@ -30,9 +30,9 @@
         var State = `{!!$ini_array['state']!!}`;
         var Race = `{!!$ini_array['race']!!}`;
         var Religion = `{!!$ini_array['religion']!!}`;
-        var NextofKinName = ``;
-        var NextofKinTelNo = ``;
-        var Relationship = ``;
+        var NextofKinName = `{!!$ini_array['NextofKinName']!!}`;
+        var NextofKinTelNo = `{!!$ini_array['NextofKinTelNo']!!}`;
+        var Relationship = `{!!$ini_array['Relationship']!!}`;
         var Occupation = ``;
         var EmployersAddress = ``;
         var TelNo = `{!!$pat_mast->telh!!}`;
