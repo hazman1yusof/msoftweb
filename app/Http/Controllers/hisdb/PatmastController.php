@@ -3600,7 +3600,7 @@ class PatmastController extends defaultController
                     ->leftjoin('hisdb.relationship as r', function($join) use ($request){
                             $join = $join->where('r.compcode', session('compcode'));
                             $join = $join->on('r.relationshipcode', 'n.relationshipcode');
-                        });
+                        })
                     ->where('n.compcode',session('compcode'))
                     ->where('n.mrn',$pat_mast->MRN)
                     ->orderBy('n.idno', 'desc');
