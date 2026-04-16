@@ -3620,7 +3620,7 @@ class PatmastController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('debtorcode','=',$pat_mast->CorpComp);
         
-        if($corpstaff->exists()){
+        if($debtormast->exists()){
             $debtormast = $debtormast->first();
             $ini_array['EmployersAddress1'] = $debtormast->address1;
             $ini_array['EmployersAddress2'] = $debtormast->address2;
