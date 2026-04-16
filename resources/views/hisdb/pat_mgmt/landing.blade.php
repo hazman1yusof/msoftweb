@@ -592,7 +592,7 @@
 		
 	@endif
 	
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/patlabel.js?v=1.1"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/patlabel.js?v=1.2"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_doctor.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js?v=1.1"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_payer.js"></script>

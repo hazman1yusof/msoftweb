@@ -3550,11 +3550,14 @@ class PatmastController extends defaultController
             'date' => $request->date,
             'newic' => $request->newic,
             'dob' => $request->dob,
-            'race' => $request->race,
+            'race' => '-',
+            'religion' => '-',
             'bedno' => $request->bedno,
             'ward' => $request->ward,
             'doc' => $request->doc,
             'pages' => $request->pages,
+            'district' => '-',
+            'state' => '-',
         ];
 
 
@@ -3562,6 +3565,32 @@ class PatmastController extends defaultController
                         ->where('compcode',session('compcode'))
                         ->where('mrn',$request->mrn)
                         ->first();
+
+        if(!empty($pat_mast->postcode)){
+            $postcode = DB::table('hisdb.postcode')
+                        ->where('compcode',session('compcode'))
+                        ->where('postcode',$pat_mast->postcode)
+                        ->first();
+
+            $ini_array['district'] = $postcode->place_name;
+            $ini_array['state'] = $postcode->statecode;
+        }
+        if(!empty($pat_mast->RaceCode)){
+            $racecode = DB::table('hisdb.racecode')
+                        ->where('compcode',session('compcode'))
+                        ->where('code',$pat_mast->RaceCode)
+                        ->first();
+
+            $ini_array['race'] = $racecode->Description;
+        }
+        if(!empty($pat_mast->Religion)){
+            $religion = DB::table('hisdb.religion')
+                        ->where('compcode',session('compcode'))
+                        ->where('Code',$pat_mast->Religion)
+                        ->first();
+
+            $ini_array['religion'] = $postcode->Description;
+        }
 
         if(true){
             return view('hisdb.pat_mgmt.patform_pdfmake',compact('ini_array','pat_mast'));

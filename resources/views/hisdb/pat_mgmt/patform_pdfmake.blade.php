@@ -25,11 +25,11 @@
         var CurrAddress = `{!!$pat_mast->Address1!!}
 {!!$pat_mast->Address2!!}
 {!!$pat_mast->Address3!!}`;
-        var District = ``;
+        var District = `{!!$ini_array['district']!!}`;
         var PostCode = `{!!$pat_mast->Postcode!!}`;
-        var State = `{!!$pat_mast->StateCode!!}`;
+        var State = `{!!$ini_array['state']!!}`;
         var Race = `{!!$ini_array['race']!!}`;
-        var Religion = ``;
+        var Religion = `{!!$ini_array['religion']!!}`;
         var NextofKinName = ``;
         var NextofKinTelNo = ``;
         var Relationship = ``;
