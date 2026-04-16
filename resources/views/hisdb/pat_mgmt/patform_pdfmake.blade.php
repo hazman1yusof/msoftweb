@@ -643,7 +643,7 @@
                                     {
                                         text: [
                                             '5. Nama Pakar / Pegawai Perubatan\n',
-                                            { text: 'Name of Specialist / Medical Officer : \n\n', italics: true },
+                                            { text: 'Name of Specialist / Medical Officer\n', italics: true },
                                             { text: SpecialistName },
                                         ], colSpan: 4, alignment: 'left'
                                     },{},{},{},
@@ -773,7 +773,7 @@
                                     {
                                         text: [
                                             '7. Nama Pakar / Pegawai\n',
-                                            { text: 'Name of specialist / medical officer', italics: true },
+                                            { text: 'Name of specialist / medical officer\n', italics: true },
                                             { text: MedOfficerName, italics: true },
                                         ], colSpan: 2, alignment: 'left'
                                     },{},
