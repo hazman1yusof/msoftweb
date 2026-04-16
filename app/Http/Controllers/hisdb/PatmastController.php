@@ -3589,7 +3589,7 @@ class PatmastController extends defaultController
                         ->where('Code',$pat_mast->Religion)
                         ->first();
 
-            $ini_array['religion'] = $postcode->Description;
+            $ini_array['religion'] = $religion->Description;
         }
 
         if(true){
