@@ -1044,7 +1044,7 @@ class PatmastController extends defaultController
         }
 
         $responce->data = $data;
-        return json_encode($responce);
+        return json_encode($responce, JSON_INVALID_UTF8_SUBSTITUTE);
     }
 
     public function _add(Request $request){
@@ -3336,8 +3336,6 @@ class PatmastController extends defaultController
         if($corpstaff->exists()){
             $corpstaff
                 ->update([
-                    'debtorcode' => strtoupper($request->CorpComp),
-
                     'debtorcode' => strtoupper($request->CorpComp)
                 ]);
         }
