@@ -509,7 +509,7 @@ class AppointmentController extends defaultController
         // dump('habis');
         // dump($result);
         $curl = curl_init();
-        $token = "fKG1hEhWH4GgWiVrxcrz7GTqmClByf9hDl3ahpcQ6oyyYNAPvaAq8AcXhPO7f82O";
+        $token = "8PfMecKx2LZwICbkMkYBVtLIIzmosOeFuxyVPCoZZ9oK1BCls6Wi49u";
         $random = true;
         $payload = [
             "data" => $request->telhp_arr
@@ -523,7 +523,7 @@ class AppointmentController extends defaultController
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($payload) );
-        curl_setopt($curl, CURLOPT_URL,  "https://jogja.wablas.com/api/v2/send-message");
+        curl_setopt($curl, CURLOPT_URL,  "https://jkt.wablas.com/api/v2/send-message");
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
 
