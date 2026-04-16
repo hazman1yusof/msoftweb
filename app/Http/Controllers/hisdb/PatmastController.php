@@ -3670,7 +3670,7 @@ class PatmastController extends defaultController
         $nursactplan_hdr = DB::table('nursing.nursactplan_hdr')
                         ->where('mrn', '=', $request->mrn)
                         ->where('episno', '=', $request->episno)
-                        ->where('ba.compcode','=',session('compcode'));
+                        ->where('compcode','=',session('compcode'));
 
         if($nursactplan_hdr->exists()){
             $nursactplan_hdr = $nursactplan_hdr->first();
