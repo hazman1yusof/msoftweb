@@ -37,4 +37,25 @@ $(document).ready(function () {
 	    }
 	    window.open("./pat_mast/patlabel"+"?"+$.param(param));
     });
+
+    $('#btn_labelform').click(function(){
+
+	    var lastrowdata = getrow_bootgrid();
+	    var param = {
+	    	action:'patform',
+	    	name:lastrowdata.Name,
+	    	mrn:lastrowdata.MRN,
+	    	episno:lastrowdata.Episno,
+	    	sex:lastrowdata.Sex,
+	    	age:gettheage(lastrowdata.DOB),
+	    	date:lastrowdata.reg_date,
+	    	newic:lastrowdata.Newic,
+	    	dob:lastrowdata.DOB,
+	    	race:lastrowdata.raceDesc,
+	    	bedno:lastrowdata.bednum,
+	    	ward:lastrowdata.ward,
+	    	doc:lastrowdata.q_doctorname,
+	    }
+	    window.open("./pat_mast/patlabel"+"?"+$.param(param));
+    });
 });

@@ -3525,6 +3525,9 @@ class PatmastController extends defaultController
             case 'patlabel':
                 return $this->patlabel_pdf($request);
                 break;
+            case 'patform':
+                return $this->patform_pdf($request);
+                break;
             case 'pharlabel':
                 return $this->pharlabel_pdf($request);
                 break;
@@ -3532,6 +3535,40 @@ class PatmastController extends defaultController
             default:
                 dd('error');
                 break;
+        }
+    }
+
+    public function patform_pdf(Request $request){
+        $company = DB::table('sysdb.company')
+                        ->where('compcode',session('compcode'))
+                        ->first();
+        
+        $ini_array = [
+            'comp_name' => $company->name,
+            'name' => $request->name,
+            'mrn' => $request->mrn,
+            'sex' => $request->sex,
+            'age' => $request->age,
+            'date' => $request->date,
+            'newic' => $request->newic,
+            'dob' => $request->dob,
+            'race' => $request->race,
+            'bedno' => $request->bedno,
+            'ward' => $request->ward,
+            'doc' => $request->doc,
+            'pages' => $request->pages,
+        ];
+
+
+        $pat_mast = DB::table('hisdb.pat_mast')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn',$request->mrn)
+                        ->first();
+
+        if(true){
+            return view('hisdb.pat_mgmt.patform_pdfmake',compact('ini_array','pat_mast'));
+        }else{
+            abort(403, 'MC not found');
         }
     }
 

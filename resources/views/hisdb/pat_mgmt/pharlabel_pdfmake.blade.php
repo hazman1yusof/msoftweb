@@ -78,7 +78,7 @@
 		var content = [];
 
 		item_dtl.forEach(function(e,i){
-			content.push({text:pat_mast.company.toUpperCase(), bold:true, fontSize:10,alignment:'center' });
+			content.push({text:pat_mast.company.toUpperCase(), bold:true, fontSize:8,alignment:'center' });
 			content.push({text:pat_mast.Name.toUpperCase(), style: 'normal', bold:true ,alignment:'center' });
 
 			content.push({
@@ -92,7 +92,7 @@
 							{text: 'MRN',bold: true, style: 'normal_tbl'}, 
 							{text: ': '+pat_mast.MRN.toUpperCase(), style: 'normal_tbl'},
 						],[
-							{text: e.description,bold: true, style: 'normal_tbl',colSpan:4,margin: [0,5, 0, 0]}, 
+							{text: e.description,bold: true, style: 'normal_tbl',colSpan:4,margin: [0,0, 0, 0]}, 
 							{}, 
 							{}, 
 							{},

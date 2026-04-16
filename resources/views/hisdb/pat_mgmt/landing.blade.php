@@ -84,6 +84,9 @@
 			@if (request()->get('curpat') == 'true')
 			<button id="btn_patlabel" type="button" class="btn btn-default btn-md" >
 			<img src="img/labelprinter.png" width="22" /> Pat Label </button>
+
+			<button id="btn_labelform" type="button" class="btn btn-default btn-md" >
+			<img src="img/labelform.png" width="22" /> Pat Form </button>
 			@endif
 		</div>
 
@@ -589,7 +592,7 @@
 		
 	@endif
 	
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/patlabel.js"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/patlabel.js?v=1.1"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_doctor.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js?v=1.1"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_payer.js"></script>
