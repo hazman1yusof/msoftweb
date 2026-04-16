@@ -3616,28 +3616,24 @@ class PatmastController extends defaultController
             $ini_array['Relationship'] = $nok_ec->description;
         }
 
-        $corpstaff = DB::table('hisdb.corpstaff as cs')
-                    ->select('cs.debtorcode','dm.name as debtor_name','cs.staffid','cs.childno','cs.relatecode','cs.name','o.occupcode','o.description as occup_desc','cs.deptcode','cs.remark','dm.address1','dm.address2','dm.address3')
-                    ->leftJoin('debtor.debtormast AS dm', function($join){
-                        $join = $join->on('dm.debtorcode', '=', 'cs.debtorcode')
-                                        ->where('dm.compcode','=',session('compcode'));
-                    })
-                    ->leftJoin('hisdb.pat_mast AS pm', function($join){
-                        $join = $join->on('pm.MRN', '=', 'cs.mrn')
-                                        ->where('pm.compcode','=',session('compcode'));
-                    })->leftJoin('hisdb.occupation AS o', function($join){
-                            $join = $join->on('o.occupcode', '=', 'pm.OccupCode')
-                                            ->where('o.compcode','=',session('compcode'));
-                        })
-                    ->where('cs.compcode','=',session('compcode'))
-                    ->where('cs.mrn','=',$pat_mast->MRN);
+        $debtormast = DB::table('debtor.debtormast')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('debtorcode','=',$pat_mast->CorpComp);
         
         if($corpstaff->exists()){
-            $corpstaff = $corpstaff->first();
-            $ini_array['Occupation'] = $corpstaff->occup_desc;
-            $ini_array['EmployersAddress1'] = $corpstaff->address1;
-            $ini_array['EmployersAddress2'] = $corpstaff->address2;
-            $ini_array['EmployersAddress3'] = $corpstaff->address3;
+            $debtormast = $debtormast->first();
+            $ini_array['EmployersAddress1'] = $debtormast->address1;
+            $ini_array['EmployersAddress2'] = $debtormast->address2;
+            $ini_array['EmployersAddress3'] = $debtormast->address3;
+        }
+
+        $occupation = DB::table('hisdb.occupation')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('occupcode','=',$pat_mast->OccupCode);
+        
+        if($occupation->exists()){
+            $occupation = $occupation->first();
+            $ini_array['Occupation'] = $occupation->description;
         }
 
         if(true){
