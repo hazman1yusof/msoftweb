@@ -3553,7 +3553,7 @@ class PatmastController extends defaultController
             'race' => '-',
             'religion' => '-',
             'bedno' => $request->bedno,
-            'ward' => $request->ward,
+            'ward' => '-',
             'doc' => $request->doc,
             'pages' => $request->pages,
             'district' => '-',
@@ -3567,10 +3567,15 @@ class PatmastController extends defaultController
             'EmployersAddress3' => '-',
         ];
 
-
         $pat_mast = DB::table('hisdb.pat_mast')
                         ->where('compcode',session('compcode'))
                         ->where('mrn',$request->mrn)
+                        ->first();
+
+        $episode = DB::table('hisdb.episode')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn',$request->mrn)
+                        ->where('episno',$request->episno)
                         ->first();
 
         if(!empty($pat_mast->Postcode)){
@@ -3601,7 +3606,7 @@ class PatmastController extends defaultController
 
         $nok_ec = DB::table('hisdb.nok_ec as n')
                     ->select('n.name','n.tel_hp','r.description')
-                    ->leftjoin('hisdb.relationship as r', function($join) use ($request){
+                    ->leftjoin('hisdb.relationship as r', function($join){
                             $join = $join->where('r.compcode', session('compcode'));
                             $join = $join->on('r.relationshipcode', 'n.relationshipcode');
                         })
@@ -3636,8 +3641,34 @@ class PatmastController extends defaultController
             $ini_array['Occupation'] = $occupation->description;
         }
 
+        $doctor = DB::table('hisdb.doctor as d')
+                    ->select('d.doctorname','dis.description')
+                    ->leftjoin('hisdb.discipline as dis', function($join){
+                        $join = $join->where('dis.compcode', session('compcode'));
+                        $join = $join->on('dis.code', 'd.disciplinecode');
+                    })
+                    ->where('d.compcode','=',session('compcode'))
+                    ->where('d.doctorcode','=',$episode->admdoctor);
+        
+        if($doctor->exists()){
+            $doctor = $doctor->first();
+            $ini_array['AdmDicipline'] = $doctor->description;
+            $ini_array['doctorname'] = $doctor->doctorname;
+        }
+
+        $bedalloc = DB::table('hisdb.bedalloc as ba')
+                        ->where('bedalloc.mrn', '=', $request->mrn)
+                        ->where('bedalloc.episno', '=', $request->episno)
+                        ->where('bedalloc.astatus', '=', 'OCCUPIED')
+                        ->where('bedalloc.compcode','=',session('compcode'));
+        
+        if($bedalloc->exists()){
+            $bedalloc = $bedalloc->first();
+            $ini_array['ward'] = $bedalloc->ward.' - '.$bedalloc->room;
+        }
+
         if(true){
-            return view('hisdb.pat_mgmt.patform_pdfmake',compact('ini_array','pat_mast'));
+            return view('hisdb.pat_mgmt.patform_pdfmake',compact('ini_array','pat_mast','episode'));
         }else{
             abort(403, 'MC not found');
         }
