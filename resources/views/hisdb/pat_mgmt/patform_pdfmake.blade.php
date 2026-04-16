@@ -66,8 +66,8 @@
         var ThirdTranDate = ``;
         var DischargeDate = ``;
         var Note1 = ``;
-        var AdmWard = `{!!$episode->ward!!}`;
-        var FirstTranWard = `{!!$ini_array['ward']!!}`;
+        var AdmWard = `{!!$ini_array['ward']!!}`;
+        var FirstTranWard = ``;
         var SecTranWard = ``;
         var ThirdTranWard = ``;
         var DischargeWard = ``;
