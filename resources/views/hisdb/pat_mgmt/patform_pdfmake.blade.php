@@ -33,8 +33,10 @@
         var NextofKinName = `{!!$ini_array['NextofKinName']!!}`;
         var NextofKinTelNo = `{!!$ini_array['NextofKinTelNo']!!}`;
         var Relationship = `{!!$ini_array['Relationship']!!}`;
-        var Occupation = ``;
-        var EmployersAddress = ``;
+        var Occupation = `{!!$ini_array['Occupation']!!}`;
+        var EmployersAddress = `{!!$ini_array['EmployersAddress1']!!}
+{!!$ini_array['EmployersAddress2']!!}
+{!!$ini_array['EmployersAddress3']!!}`;
         var TelNo = `{!!$pat_mast->telh!!}`;
         var HouseNo = `{!!$pat_mast->telh!!}`;
         var OfficeNo = `{!!$pat_mast->telo!!}`;

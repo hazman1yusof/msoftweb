@@ -3561,6 +3561,10 @@ class PatmastController extends defaultController
             'NextofKinName' => '-',
             'NextofKinTelNo' => '-',
             'Relationship' => '-',
+            'Occupation' => '-',
+            'EmployersAddress1' => '-',
+            'EmployersAddress2' => '-',
+            'EmployersAddress3' => '-',
         ];
 
 
@@ -3610,6 +3614,30 @@ class PatmastController extends defaultController
             $ini_array['NextofKinName'] = $nok_ec->name;
             $ini_array['NextofKinTelNo'] = $nok_ec->tel_hp;
             $ini_array['Relationship'] = $nok_ec->description;
+        }
+
+        $corpstaff = DB::table('hisdb.corpstaff as cs')
+                    ->select('cs.debtorcode','dm.name as debtor_name','cs.staffid','cs.childno','cs.relatecode','cs.name','o.occupcode','o.description as occup_desc','cs.deptcode','cs.remark','dm.address1','dm.address2','dm.address3')
+                    ->leftJoin('debtor.debtormast AS dm', function($join){
+                        $join = $join->on('dm.debtorcode', '=', 'cs.debtorcode')
+                                        ->where('dm.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('hisdb.pat_mast AS pm', function($join){
+                        $join = $join->on('pm.MRN', '=', 'cs.mrn')
+                                        ->where('pm.compcode','=',session('compcode'));
+                    })->leftJoin('hisdb.occupation AS o', function($join){
+                            $join = $join->on('o.occupcode', '=', 'pm.OccupCode')
+                                            ->where('o.compcode','=',session('compcode'));
+                        })
+                    ->where('cs.compcode','=',session('compcode'))
+                    ->where('cs.mrn','=',$pat_mast->MRN);
+        
+        if($corpstaff->exists()){
+            $corpstaff = $corpstaff->first();
+            $ini_array['Occupation'] = $corpstaff->occup_desc;
+            $ini_array['EmployersAddress1'] = $corpstaff->address1;
+            $ini_array['EmployersAddress2'] = $corpstaff->address2;
+            $ini_array['EmployersAddress3'] = $corpstaff->address3;
         }
 
         if(true){
