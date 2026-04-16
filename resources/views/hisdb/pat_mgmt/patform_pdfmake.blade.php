@@ -109,9 +109,18 @@
                 pageMargins: [23, 23, 23, 23],
                 // pageOrientation: 'landscape',
                 content: [
-                    {
-                        image: 'ukmsc_logo', width: 175, style: 'tableHeader', colSpan: 5, alignment: 'center'
-                    },
+                    // {
+                    //     image: 'ukmsc_logo', width: 175, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                    // },
+                    [
+                        {
+                            text: [
+                                'ABC SPECIALIST CENTRE',
+                            ],
+                            style: 'header',
+                            alignment: 'center',
+                        },
+                    ],
                     [
                         {
                             text: [

@@ -83,10 +83,10 @@
 			@endif
 			@if (request()->get('curpat') == 'true')
 			<button id="btn_patlabel" type="button" class="btn btn-default btn-md" >
-			<img src="img/labelprinter.png" width="22" /> Pat Label </button>
+			<img src="img/labelprinter.png" width="22" />Patient Label</button>
 
 			<button id="btn_labelform" type="button" class="btn btn-default btn-md" >
-			<img src="img/labelform.png" width="22" /> Pat Form </button>
+			<img src="img/labelform.png" width="22" />Patient Form</button>
 			@endif
 		</div>
 
