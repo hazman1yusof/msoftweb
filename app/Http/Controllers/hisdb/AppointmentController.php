@@ -508,32 +508,69 @@ class AppointmentController extends defaultController
         // print_r($result);
         // dump('habis');
         // dump($result);
+        // $curl = curl_init();
+        // $token = "8PfMecKx2LZwICbkMkYBVtLIIzmosOeFuxyVPCoZZ9oK1BCls6Wi49u";
+        // $random = true;
+        // $payload = [
+        //     "data" => $request->telhp_arr
+        // ];
+        // curl_setopt($curl, CURLOPT_HTTPHEADER,
+        //     array(
+        //         "Authorization: $token",
+        //         "Content-Type: application/json"
+        //     )
+        // );
+        // curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+        // curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        // curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($payload) );
+        // curl_setopt($curl, CURLOPT_URL,  "https://jkt.wablas.com/api/v2/send-message");
+        // curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+        // curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+
+        // $result = curl_exec($curl);
+        // curl_close($curl);
+
         $curl = curl_init();
+
+        // Your API credentials
         $token = "8PfMecKx2LZwICbkMkYBVtLIIzmosOeFuxyVPCoZZ9oK1BCls6Wi49u";
-        $random = true;
+        $secret_key = "ZPFbUSvS";
+
+        // Prepare message data for multiple recipients
         $payload = [
             "data" => $request->telhp_arr
         ];
-        curl_setopt($curl, CURLOPT_HTTPHEADER,
-            array(
-                "Authorization: $token",
-                "Content-Type: application/json"
-            )
-        );
+
+        // Set up the API request headers
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            "Authorization: $token.$secret_key",
+            "Content-Type: application/json"
+        ]);
+
+        // Configure cURL options
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($payload) );
-        curl_setopt($curl, CURLOPT_URL,  "https://jkt.wablas.com/api/v2/send-message");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($payload));
+        curl_setopt($curl, CURLOPT_URL, "https://jkt.wablas.com/api/v2/send-message");
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
 
+        // Execute the request
         $result = curl_exec($curl);
-        curl_close($curl);
-        
 
-        $responce = new stdClass();
-        $responce->done = 'done';
-        echo json_encode($responce);
+        // Check for errors
+        if(curl_errno($curl)) {
+            echo 'Request failed: ' . curl_error($curl);
+        }
+
+        // Close cURL session
+        curl_close($curl);
+
+        // Display the result
+        echo "<pre>";
+        print_r($result);
+        echo "</pre>";
+        
     }
 
 }
