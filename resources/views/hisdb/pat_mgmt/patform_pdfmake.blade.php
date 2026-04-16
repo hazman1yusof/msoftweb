@@ -14,6 +14,7 @@
     </object>
     
     <script>
+        var comp_name = `{!!$ini_array['comp_name']!!}`;
         var NRP = `{!!$ini_array['mrn']!!}`;
         var Name = `{!!$ini_array['name']!!}`;
         var Age = `{!!$ini_array['age']!!}`;
@@ -820,7 +821,7 @@
                                 [
                                     {
                                         text: [
-                                            'PERSETUJUAN UNTUK RAWATAN DI PUSAT PAKAR UKM / ',
+                                            'PERSETUJUAN UNTUK RAWATAN DI '+comp_name+' / ',
                                             { text: '\nCONSENT TO UNDER TREATMENT IN UKM SPECIALIST CENTRE', italics: true },
                                         ], colSpan: 4, style: 'subheader1', alignment: 'center'
                                     },{},{},{},
@@ -829,9 +830,9 @@
                                     {
                                         text: [
                                             '1. Saya dengan ini bersetuju untuk diberi penjagaan di ',
-                                            { text: 'PUSAT PAKAR UKM', bold: true },
+                                            { text: comp_name, bold: true },
                                             ', termasuk prosedur-prosedur diagnosis dan rawatan seperti yang telah dipertimbangkan sebagai sesuai dan perlu oleh doktor di bawah penyeliaannya. Sebarang fotograf yang diambil semasa rawatan dijalankan akan menjadi hakmilik ',
-                                            { text: 'PUSAT PAKAR UKM.', bold: true },
+                                            { text: comp_name+'.', bold: true },
                                             { text: '\nI do hereby give consent for myself/child/dependent to undergo treatment in UKM Specialist Centre. I further consent to submit myself to any additional/other procedures, diagnosis and treatment deemed necessary and required by the attending doctor. I agree that any photograph taken during my treatment in UKMSC is rightfully owned by UKMSC.', italics: true }
                                         ], colSpan: 4, border: [true, true, true, false],
                                     },{},{},{}
@@ -840,9 +841,9 @@
                                     {
                                         text: [
                                             '2. Saya dengan ini memberi kuasa agar maklumat berkenaan dengan saya boleh dikeluarkan kepada doktor yang merujuk, majikan, dan mana-mana pihak yang berkenaan yang dianggap wajar oleh ',
-                                            { text: 'PUSAT PAKAR UKM ', bold: true },
+                                            { text: comp_name+' ', bold: true },
                                             'dan sekiranya saya perlu dipindahkan ke hospital yang lain saya juga bersetuju terhadap komunikasi maklumat yang berkaitan dari rekod pejabat saya dan rekod yang terdapat di ',
-                                            { text: 'PUSAT PAKAR UKM ', bold: true },
+                                            { text: comp_name+' ', bold: true },
                                             'kepada hospital di mana saya akan dirawat, yang diperlukan untuk tujuan pendaftaran dan kemasukan ke hospital itu.',
                                             { text: '\nI do hereby agree to allow UKMSC to furnish any information in relation to the treatment of myself/child/dependent to my employer / referring doctor / any other party / as deemed appropriate by UKMSC. In the event that / my child / dependent is transferred to any other hospital, I further agree for the purpose of registration and admission, to allow the communication and transfer of any necessary information relating to the treatment received by myself/child/dependent to the hospital where I/my child/dependent am to receive treatment.', italics: true }
                                         ], colSpan: 4, border: [true, false, true, false],
@@ -852,9 +853,9 @@
                                     {
                                         text: [
                                             '3. Saya akan bertanggungjawab untuk semua bayaran yang akan dikenakan ke atas saya oleh ',
-                                            { text: 'PUSAT PAKAR UKM ', bold: true },
+                                            { text: comp_name+' ', bold: true },
                                             'untuk rawatan saya dan sekiranya saya mempunyai insurans saya akan bertanggungjawab untuk semua bayaran yang tidak dibayar oleh polisi insurans saya. Sekiranya saya tidak berkesempatan untuk membayar apa-apa bayaran yang perlu dibayar kepada ',
-                                            { text: 'PUSAT PAKAR UKM ', bold: true },
+                                            { text: comp_name+' ', bold: true },
                                             'kerana kematian saya maka waris-waris saya akan dipertanggungjawabkan untuk menyelesaikan segala bayaran yang perlu dibayar atau yang tertunggak.',
                                             { text: '\nI do hereby undertake to pay UKMSC for all and any changes due and payable to UKMSC for the services provided by UKMSC during the course of treatment received by myself/child/depend. Where payment is made by insurance provider, I further undertake to pay UKMSC for all and any changes due and payable in excess of my insurance policy entitlement.\n\n', italics: true }
                                         ], colSpan: 4, border: [true, false, true, false],
@@ -904,7 +905,7 @@
                                             // '  (Nama) No. K/P  ',
                                             // { text: NRIC, decoration: 'underline' },
                                             'Saya, ........................................................(Nama) No.K/P ........................................................, dengan ini mengakujanji bahawa saya kan bertanggungjawab untuk semua bayaran yang akan di kenakan ke atas pesakit oleh ',
-                                            { text: 'PUSAT PAKAR UKM ', bold: true },
+                                            { text: comp_name+' ', bold: true },
                                             'untuk rawatan beliau dan sekiranya pesakit mempunyai insurans saya kan bertanggungjawab untuk membayar segala bayaran yang perlu dibayar atau yang tertunggak yang tidak di bayar oleh polisi insurans pesakit.',
                                             // { text: '\nIn the event of the patient`s demise, I ', italics: true },
                                             // { text: Name, decoration: 'underline' },
