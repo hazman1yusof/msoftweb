@@ -3566,10 +3566,10 @@ class PatmastController extends defaultController
                         ->where('mrn',$request->mrn)
                         ->first();
 
-        if(!empty($pat_mast->postcode)){
+        if(!empty($pat_mast->Postcode)){
             $postcode = DB::table('hisdb.postcode')
                         ->where('compcode',session('compcode'))
-                        ->where('postcode',$pat_mast->postcode)
+                        ->where('postcode',$pat_mast->Postcode)
                         ->first();
 
             $ini_array['district'] = $postcode->place_name;
