@@ -237,11 +237,11 @@ $(document).ready(function () {
 		'mrn', 'hisdb.pat_mast', "#dialogForm input[name='mrn']", errorField,
 		{
 			colModel: [
-				{	label: 'MRN', name: 'MRN', width: 100, classes: 'pointer', formatter: padzero, canSearch: true, or_search: true },
+				{	label: 'MRN', name: 'MRN', width: 50, classes: 'pointer', formatter: padzero, canSearch: true, or_search: true },
 				{	label: 'Name', name: 'Name', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{	label: 'telhp', name: 'telhp', width: 200, classes: 'pointer',hidden:true},
 				{	label: 'telh', name: 'telh', width: 200, classes: 'pointer',hidden:true},
-				{	label: 'Newic', name: 'Newic', width: 200, classes: 'pointer',hidden:true},
+				{	label: 'Newic', name: 'Newic', width: 200, classes: 'pointer', canSearch: true},
 			],
 			urlParam: {
 				filterCol : ['compcode'],
@@ -258,7 +258,7 @@ $(document).ready(function () {
 			}
 		},
 		{
-			title: "Select Case",
+			title: "Select Patient",
 			open: function () {
 				dialog_mrn.urlParam.filterCol = ['compcode'];
 				dialog_mrn.urlParam.filterVal = ['session.compcode'];
