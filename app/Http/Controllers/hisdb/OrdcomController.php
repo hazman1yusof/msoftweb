@@ -5368,7 +5368,7 @@ class OrdcomController extends defaultController
                                 })
                                 ->leftjoin('debtor.debtormast as dm', function($join) use ($request){
                                     $join = $join->where('dm.compcode', '=', session('compcode'));
-                                    $join = $join->on('dm.debtorcode', '=', 'ep.payercode');
+                                    $join = $join->on('dm.debtorcode', '=', 'epayr.payercode');
                                 });
 
         if(!$patmast_episode->exists()){
