@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
+|
 */
 
 Route::get('/','HomeController@index')->name('home');
@@ -22,13 +23,11 @@ Route::get('/dialysis','HomeController@dialysis');
 Route::get('/implant','HomeController@implant');
 Route::get('/khealth','HomeController@khealth');
 Route::get('/warehouse','HomeController@warehouse');
-Route::get('/eis_dashboard','HomeController@eis_dashboard');
-Route::get('/sessionUnit','SessionController@changeSessionUnit');
+Route::post('/sessionUnit','HomeController@changeSessionUnit');
 Route::get('/login','SessionController@create')->name('login');
 Route::get('/loginappt','SessionController@create2')->name('login2');
 Route::get('/qrcode','SessionController@qrcode');
 Route::post('/qrcode','SessionController@qrcode_prereg');
-Route::get('/autologin','SessionController@autologin');
 Route::post('/login','SessionController@store');
 Route::get('/logout','SessionController@destroy')->name('logout');
 Route::get('/mobile','HomeController@mobile')->name('mobile');
@@ -240,11 +239,6 @@ Route::get('/computerid/table','setup\ComputeridController@table');
 Route::post('/computerid/form','setup\ComputeridController@form');
 
 //// receipt AR setup page ///
-Route::get('/jtr','finance\JTRController@show');
-Route::get('/jtr/table','finance\JTRController@table');
-Route::post('/jtr/form','finance\JTRController@form');
-
-//// receipt AR setup page ///
 Route::get('/receipt','finance\ReceiptController@show');
 Route::get('/receipt/table','finance\ReceiptController@table');
 Route::post('/receipt/form','finance\ReceiptController@form');
@@ -333,8 +327,6 @@ Route::post('/otdischarge/form','hisdb\OTDischargeController@form');
 Route::get('/endoscopyNotes','hisdb\EndoscopyNotesController@show');
 Route::get('/endoscopyNotes/table','hisdb\EndoscopyNotesController@table');
 Route::post('/endoscopyNotes/form','hisdb\EndoscopyNotesController@form');
-Route::get('/endoscopyNotes/endoscopystomach_chart','hisdb\EndoscopyNotesController@endoscopystomach_chart');
-Route::get('/endoscopyNotes/endoscopyintestine_chart','hisdb\EndoscopyNotesController@endoscopyintestine_chart');
 
 //// OT Status setup page ///
 Route::get('/ot_status','hisdb\OTStatusController@show');
@@ -512,14 +504,6 @@ Route::post('/goodReturn/form','material\GoodReturnController@form');
 Route::get('/goodReturn/form','material\GoodReturnController@form');
 Route::post('/goodReturnDetail/form','material\GoodReturnDetailController@form');
 Route::get('/goodReturn/showpdf','material\GoodReturnController@showpdf');
-
-//// good Return setup page ///
-Route::get('/goodReturnCredit','material\GoodReturnCreditController@show');
-Route::get('/goodReturnCredit/table','material\GoodReturnCreditController@table');
-Route::post('/goodReturnCredit/form','material\GoodReturnCreditController@form');
-Route::get('/goodReturnCredit/form','material\GoodReturnCreditController@form');
-Route::post('/goodReturnCreditDetail/form','material\GoodReturnCreditDetailController@form');
-Route::get('/goodReturnCredit/showpdf','material\GoodReturnCreditController@showpdf');
 
 //// sequence material setup ///
 Route::get('/sequence','material\SequenceController@show');
@@ -824,7 +808,6 @@ Route::post('/reprintBill/form','finance\ReprintBillController@form');
 
 //// Reprint Bill ///
 Route::get('/einvoice','finance\einvoiceController@show');
-Route::get('/implant_patmast','finance\einvoiceController@show_imp');
 Route::get('/einvoice/table','finance\einvoiceController@table');
 Route::post('/einvoice/form','finance\einvoiceController@form');
 
@@ -914,11 +897,6 @@ Route::get('/reportFormat/showExcel','finance\ReportFormatController@showExcel')
 Route::get('/reportFormat/showpdf','finance\ReportFormatController@showpdf');
 
 //// period setup ///
-Route::get('/finance_yearend','finance\finance_yearendController@show');
-Route::get('/finance_yearend/table','finance\finance_yearendController@table');
-Route::post('/finance_yearend/form','finance\finance_yearendController@form');
-
-//// period setup ///
 Route::get('/period','finance\PeriodController@show');
 Route::get('/period/table','finance\PeriodController@table');
 Route::post('/period/form','finance\PeriodController@form');
@@ -935,11 +913,6 @@ Route::get('/DebtorMaster_Report','finance\DebtorMaster_ReportController@show');
 Route::get('/DebtorMaster_Report/table','finance\DebtorMaster_ReportController@table');
 Route::post('/DebtorMaster_Report/form','finance\DebtorMaster_ReportController@form');
 Route::get('/DebtorMaster_Report/showExcel','finance\DebtorMaster_ReportController@showExcel');
-
-//// reminder ////
-Route::get('/reminder','finance\ReminderController@show');
-Route::get('/reminder/table','finance\ReminderController@table');
-Route::post('/reminder/form','finance\ReminderController@form');
 
 //// Deposit Type setup ///
 Route::get('/depositType','finance\DepositTypeController@show');
@@ -1146,14 +1119,6 @@ Route::get('/arenquiry/form','finance\arenquiryController@form');
 Route::get('/arenquiry/showExcel','finance\arenquiryController@showExcel');
 Route::get('/arenquiry/showpdf','finance\arenquiryController@showpdf');
 
-//// CC Update
-Route::get('/ccupdate','finance\ccupdateController@show');
-Route::get('/ccupdate/table','finance\ccupdateController@table');
-Route::post('/ccupdate/form','finance\ccupdateController@form');
-Route::get('/ccupdate/form','finance\ccupdateController@form');
-Route::get('/ccupdate/showExcel','finance\ccupdateController@showExcel');
-Route::get('/ccupdate/showpdf','finance\ccupdateController@showpdf');
-
 //// Till Enquiry
 Route::get('/tillenquiry','finance\TillEnquiryController@show');
 Route::get('/tillenquiry/table','finance\TillEnquiryController@table');
@@ -1243,28 +1208,6 @@ Route::post('/ARAgeingDtl_Report/form','finance\ARAgeingDtl_ReportController@for
 Route::get('/ARAgeingDtl_Report/showExcel','finance\ARAgeingDtl_ReportController@showExcel');
 Route::get('/ARAgeingDtl_Report/showpdf','finance\ARAgeingDtl_ReportController@showpdf');
 
-//// SOA -- Report
-Route::get('/statement','finance\StatementController@show');
-Route::get('/statement/table','finance\StatementController@table');
-Route::post('/statement/form','finance\StatementController@form');
-
-//// AR Ageing Details -- Report
-Route::get('/ARAgeingColl_Report','finance\ARAgeingColl_ReportController@show');
-Route::get('/ARAgeingColl_Report/table','finance\ARAgeingColl_ReportController@table');
-Route::post('/ARAgeingColl_Report/form','finance\ARAgeingColl_ReportController@form');
-
-//// Unallocated Receipt -- Report
-Route::get('/unallocated_receipt','finance\unallocated_receiptController@show');
-Route::get('/unallocated_receipt/table','finance\unallocated_receiptController@table');
-Route::post('/unallocated_receipt/form','finance\unallocated_receiptController@form');
-Route::get('/unallocated_receipt/showExcel','finance\unallocated_receiptController@showExcel');
-Route::get('/unallocated_receipt/showpdf','finance\unallocated_receiptController@showpdf');
-
-//// uninvgrn -- Report
-Route::get('/uninvgrn','finance\UnInvGRNController@show');
-Route::get('/uninvgrn/table','finance\UnInvGRNController@table');
-Route::post('/uninvgrn/form','finance\UnInvGRNController@form');
-
 //// Debtor List -- Report
 Route::get('/DebtorList_Report','finance\DebtorList_ReportController@show');
 Route::get('/DebtorList_Report/table','finance\DebtorList_ReportController@table');
@@ -1340,7 +1283,6 @@ Route::get('/pat_mast','hisdb\PatmastController@show');
 Route::get('/pat_mast/get_entry','hisdb\PatmastController@get_entry');
 Route::get('/pat_mast/table','hisdb\PatmastController@table');
 Route::post('/pat_mast/post_entry','hisdb\PatmastController@post_entry');
-Route::get('/pat_mast/post_entry','hisdb\PatmastController@post_entry');
 Route::post('/pat_mast/save_patient','hisdb\PatmastController@save_patient');
 Route::post('/pat_mast/save_episode','hisdb\PatmastController@save_episode');
 Route::post('/pat_mast/save_adm','hisdb\PatmastController@save_adm');
@@ -1351,23 +1293,6 @@ Route::post('/pat_mast/new_areacode_form','hisdb\PatmastController@new_areacode_
 Route::post('/pat_mast/new_relationship_form','hisdb\PatmastController@new_relationship_form');
 Route::post('/pat_mast/auto_save','hisdb\PatmastController@auto_save');
 Route::get('/pat_mast/patlabel','hisdb\PatmastController@patlabel');
-
-//// pat_mast_ registration ////
-Route::get('/pat_mast_','hisdb\PatmastController_@show');
-Route::get('/pat_mast_/get_entry','hisdb\PatmastController_@get_entry');
-Route::get('/pat_mast_/table','hisdb\PatmastController_@table');
-Route::post('/pat_mast_/post_entry','hisdb\PatmastController_@post_entry');
-Route::get('/pat_mast_/post_entry','hisdb\PatmastController_@post_entry');
-Route::post('/pat_mast_/save_patient','hisdb\PatmastController_@save_patient');
-Route::post('/pat_mast_/save_episode','hisdb\PatmastController_@save_episode');
-Route::post('/pat_mast_/save_adm','hisdb\PatmastController_@save_adm');
-Route::post('/pat_mast_/save_gl','hisdb\PatmastController_@save_gl');
-Route::post('/pat_mast_/new_occup_form','hisdb\PatmastController_@new_occup_form');
-Route::post('/pat_mast_/new_title_form','hisdb\PatmastController_@new_title_form');
-Route::post('/pat_mast_/new_areacode_form','hisdb\PatmastController_@new_areacode_form');
-Route::post('/pat_mast_/new_relationship_form','hisdb\PatmastController_@new_relationship_form');
-Route::post('/pat_mast_/auto_save','hisdb\PatmastController_@auto_save');
-Route::get('/pat_mast_/patlabel','hisdb\PatmastController_@patlabel');
 
 
 Route::post('/episode/save_doc','hisdb\PatmastController@save_doc');
@@ -1443,38 +1368,20 @@ Route::get('/nursingnote/circulation_chart','hisdb\NursingNoteController@circula
 Route::get('/nursingnote/slidingScale_chart','hisdb\NursingNoteController@slidingScale_chart');
 Route::get('/nursingnote/othersChart_chart','hisdb\NursingNoteController@othersChart_chart');
 Route::get('/nursingnote/bladder_chart','hisdb\NursingNoteController@bladder_chart');
-Route::get('/nursingnote/morsefallscale_chart','hisdb\MorseFallScaleController@morsefallscale_chart');
-Route::post('/glasgow/form','hisdb\GlasgowController@form');
-Route::get('/glasgow/table','hisdb\GlasgowController@table');
-Route::get('/glasgow/glasgow_chart','hisdb\GlasgowController@glasgow_chart');
-Route::post('/pivc/form','hisdb\PivcController@form');
-Route::get('/pivc/table','hisdb\PivcController@table');
-Route::get('/pivc/pivc_chart','hisdb\PivcController@pivc_chart');
 Route::post('/morsefallscale/form','hisdb\MorseFallScaleController@form');
 Route::get('/morsefallscale/table','hisdb\MorseFallScaleController@table');
 Route::post('/thrombophlebitis/form','hisdb\ThrombophlebitisController@form');
 Route::get('/thrombophlebitis/table','hisdb\ThrombophlebitisController@table');
-Route::get('/thrombophlebitis/thrombophlebitis_chart','hisdb\ThrombophlebitisController@thrombophlebitis_chart');
 
 //// Client Progress Note (Doctor Note) page ///
 Route::get('/clientprogressnote','hisdb\ClientProgressNoteController@show');
 Route::get('/clientprogressnote/table','hisdb\ClientProgressNoteController@table');
 Route::post('/clientprogressnote/form','hisdb\ClientProgressNoteController@form');
-Route::get('/clientprogressnote/refLetterClientProgNote_chart','hisdb\ClientProgressNoteController@refLetterClientProgNote_chart');
 
 //// Client Progress Note (Doctor Note (Referral)) page ///
 Route::get('/clientprogressnoteref','hisdb\ClientProgressNoteRefController@show');
 Route::get('/clientprogressnoteref/table','hisdb\ClientProgressNoteRefController@table');
 Route::post('/clientprogressnoteref/form','hisdb\ClientProgressNoteRefController@form');
-
-//// Client Progress Note (Doctor Note (Referral)) page ///
-Route::get('/mohreport','hisdb\mohreportController@show');
-Route::get('/mohreport/table','hisdb\mohreportController@table');
-Route::post('/mohreport/form','hisdb\mohreportController@form');
-
-Route::get('/drfeesvoucher','hisdb\drfeesvoucherController@show');
-Route::get('/drfeesvoucher/table','hisdb\drfeesvoucherController@table');
-Route::post('/drfeesvoucher/form','hisdb\drfeesvoucherController@form');
 
 //// Doctor Note page ///
 Route::get('/doctornote','hisdb\DoctorNoteController@show');
@@ -1488,8 +1395,6 @@ Route::get('/doctornote/radClinic_chart','hisdb\DoctorNoteController@radClinic_c
 Route::get('/doctornote/mri_chart','hisdb\DoctorNoteController@mri_chart');
 Route::get('/doctornote/physio_chart','hisdb\DoctorNoteController@physio_chart');
 Route::get('/doctornote/dressing_chart','hisdb\DoctorNoteController@dressing_chart');
-Route::get('/doctornote/preContrast_chart','hisdb\DoctorNoteController@preContrast_chart');
-Route::get('/doctornote/consentForm_chart','hisdb\DoctorNoteController@consentForm_chart');
 
 //// Request For page ///
 Route::get('/requestfor','hisdb\RequestForController@show');
@@ -1575,11 +1480,6 @@ Route::get('/assetcategory/table','finance\assetcategoryController@table');
 Route::post('/assetcategory/form','finance\assetcategoryController@form');
 
 /// Fixed Asset Enquiry /// 
-Route::get('/assetreport','finance\assetreportController@show');
-Route::get('/assetreport/table','finance\assetreportController@table');
-Route::post('/assetreport/form','finance\assetreportController@form');
-
-/// Fixed Asset Enquiry /// 
 Route::get('/assetenquiry','finance\assetenquiryController@show');
 Route::get('/assetenquiry/table','finance\assetenquiryController@table');
 Route::post('/assetenquiry/form','finance\assetenquiryController@form');
@@ -1621,13 +1521,6 @@ Route::get('/till_close','finance\tillController@till_close');
 Route::get('/till/table','finance\tillController@table');
 Route::post('/till/form','finance\tillController@form');
 
-Route::get('/gltb','finance\gltbController@show');
-Route::get('/gltb/table','finance\gltbController@table');
-Route::post('/gltb/form','finance\gltbController@form');
-
-Route::get('/updPNLAccount','finance\updPNLAccount@show');
-Route::get('/updPNLAccount/table','finance\updPNLAccount@table');
-
 // //// facontrol2 ///
 // Route::get('/facontrol2','finance\facontrolController2@show');
 // Route::get('/facontrol2/table','finance\facontrolController2@table');
@@ -1654,9 +1547,6 @@ Route::get('/test/table','util\TestController@table');
 Route::post('/test/form','util\TestController@form');
 Route::get('/export_csv','util\ExportController@show');
 Route::get('/export_csv/table','util\ExportController@table');
-
-Route::get('/exec','util\ExecController@show');
-Route::get('/exec/table','util\ExecController@table');
 
 Route::get('/barcode','util\BarcodeController@show');
 Route::post('/barcode/form','util\BarcodeController@form');
@@ -1706,19 +1596,10 @@ Route::post('/ptcare_dieteticCareNotes/form','patientcare\DieteticCareNotesContr
 Route::get('/ptcare_phys','patientcare\physioController@show');
 Route::get('/ptcare_phys/table','patientcare\physioController@table');
 Route::post('/ptcare_phys/form','patientcare\physioController@form');
-Route::get('/ptcare_phys/rehabperkeso_chart','patientcare\physioController@rehabperkeso_chart');
 
 Route::get('/ptcare_nursing','patientcare\NursingController@show');
 Route::get('/ptcare_nursing/table','patientcare\NursingController@table');
 Route::post('/ptcare_nursing/form','patientcare\NursingController@form');
-
-Route::get('/ptcare_nursingAppt','patientcare\NursingApptController@show');
-Route::get('/ptcare_nursingAppt/table','patientcare\NursingApptController@table');
-Route::post('/ptcare_nursingAppt/form','patientcare\NursingApptController@form');
-
-Route::get('/ptcare_admhandoverAppt','patientcare\AdmHandoverApptController@show');
-Route::get('/ptcare_admhandoverAppt/table','patientcare\AdmHandoverApptController@table');
-Route::post('/ptcare_admhandoverAppt/form','patientcare\AdmHandoverApptController@form');
 
 Route::get('/ptcare_preview','patientcare\PreviewController@preview');
 Route::get('/ptcare_preview/data','patientcare\PreviewController@previewdata');
@@ -1734,92 +1615,6 @@ Route::get('/ptcare_previewvideo/{id}','patientcare\PreviewController@previewvid
 
 Route::get('/ptcare_upload','patientcare\PreviewController@upload');
 Route::post('/ptcare_upload','patientcare\PreviewController@form');
-
-//dari rehab
-
-Route::get('/rehab','rehab\RehabController@index');
-Route::get('/rehab/table','rehab\RehabController@table');
-Route::post('/rehab/form','rehab\RehabController@form');
-// Route::post('/ptcare_doctornote_transaction_save', "rehab\RehabController@transaction_save");
-
-//// Physiotherapy page ////
-Route::get('/sixMinWalking','rehab\SixMinWalkingController@show');
-Route::get('/sixMinWalking/table','rehab\SixMinWalkingController@table');
-Route::post('/sixMinWalking/form','rehab\SixMinWalkingController@form');
-Route::get('/sixMinWalking/sixminwalking_chart','rehab\SixMinWalkingController@sixminwalking_chart');
-
-Route::get('/bergBalanceTest','rehab\BergBalanceTestController@show');
-Route::get('/bergBalanceTest/table','rehab\BergBalanceTestController@table');
-Route::post('/bergBalanceTest/form','rehab\BergBalanceTestController@form');
-Route::get('/bergBalanceTest/bergbalancetest_chart','rehab\BergBalanceTestController@bergbalancetest_chart');
-
-Route::get('/musculoAssessment','rehab\MusculoAssessmentController@show');
-Route::get('/musculoAssessment/table','rehab\MusculoAssessmentController@table');
-Route::post('/musculoAssessment/form','rehab\MusculoAssessmentController@form');
-Route::get('/musculoAssessment/musculoassessment_chart','rehab\MusculoAssessmentController@musculoassessment_chart');
-
-Route::get('/posturalAssessment','rehab\PosturalAssessmentController@show');
-Route::get('/posturalAssessment/table','rehab\PosturalAssessmentController@table');
-Route::post('/posturalAssessment/form','rehab\PosturalAssessmentController@form');
-Route::get('/posturalAssessment/posturalassessment_chart','rehab\PosturalAssessmentController@posturalassessment_chart');
-
-Route::get('/oswestryQuest','rehab\OswestryQuestController@show');
-Route::get('/oswestryQuest/table','rehab\OswestryQuestController@table');
-Route::post('/oswestryQuest/form','rehab\OswestryQuestController@form');
-Route::get('/oswestryQuest/oswestryquest_chart','rehab\OswestryQuestController@oswestryquest_chart');
-
-Route::get('/cardiorespAssessment','rehab\CardiorespAssessmentController@show');
-Route::get('/cardiorespAssessment/table','rehab\CardiorespAssessmentController@table');
-Route::post('/cardiorespAssessment/form','rehab\CardiorespAssessmentController@form');
-Route::get('/cardiorespAssessment/cardiorespassessment_chart','rehab\CardiorespAssessmentController@cardiorespassessment_chart');
-
-Route::get('/neuroAssessment','rehab\NeuroAssessmentController@show');
-Route::get('/neuroAssessment/table','rehab\NeuroAssessmentController@table');
-Route::post('/neuroAssessment/form','rehab\NeuroAssessmentController@form');
-Route::get('/neuroAssessment/neuroassessment_chart','rehab\NeuroAssessmentController@neuroassessment_chart');
-
-Route::get('/motorScale','rehab\MotorScaleController@show');
-Route::get('/motorScale/table','rehab\MotorScaleController@table');
-Route::post('/motorScale/form','rehab\MotorScaleController@form');
-Route::get('/motorScale/motorscale_chart','rehab\MotorScaleController@motorscale_chart');
-
-Route::get('/spinalCord','rehab\SpinalCordController@show');
-Route::get('/spinalCord/table','rehab\SpinalCordController@table');
-Route::post('/spinalCord/form','rehab\SpinalCordController@form');
-Route::get('/spinalCord/spinalcord_chart','rehab\SpinalCordController@spinalcord_chart');
-
-Route::get('/physioNotes','rehab\PhysioNotesController@show');
-Route::get('/physioNotes/table','rehab\PhysioNotesController@table');
-Route::post('/physioNotes/form','rehab\PhysioNotesController@form');
-Route::get('/physioNotes/physionotes_chart','rehab\PhysioNotesController@physionotes_chart');
-
-/// occuptherapy
-Route::get('/occupTherapy','rehab\OccupTherapyController@show');
-Route::get('/occupTherapy/table','rehab\OccupTherapyController@table');
-Route::post('/occupTherapy/form','rehab\OccupTherapyController@form');
-
-Route::get('/occupTherapy_cognitive/table','rehab\OccupTherapyCognitiveController@table');
-Route::post('/occupTherapy_cognitive/form','rehab\OccupTherapyCognitiveController@form');
-Route::get('/occupTherapy_cognitive/mmse_chart','rehab\OccupTherapyCognitiveController@mmse_chart');
-Route::get('/occupTherapy_cognitive/moca_chart','rehab\OccupTherapyCognitiveController@moca_chart');
-
-Route::get('/occupTherapy_barthel/table','rehab\OccupTherapyBarthelController@table');
-Route::post('/occupTherapy_barthel/form','rehab\OccupTherapyBarthelController@form');
-Route::get('/occupTherapy_barthel/barthel_chart','rehab\OccupTherapyBarthelController@barthel_chart');
-
-Route::get('/occupTherapy_upperExtremity/table','rehab\OccupTherapyUpperExtremityController@table');
-Route::post('/occupTherapy_upperExtremity/form','rehab\OccupTherapyUpperExtremityController@form');
-Route::get('/occupTherapy_upperExtremity/upperExtremity_chart','rehab\OccupTherapyUpperExtremityController@upperExtremity_chart');
-
-Route::get('/occupTherapy_notes/table','rehab\OccupTherapyNotesController@table');
-Route::post('/occupTherapy_notes/form','rehab\OccupTherapyNotesController@form');
-Route::get('/occupTherapy_notes/notes_chart','rehab\OccupTherapyNotesController@notes_chart');
-
-//dari appointment
-
-Route::get('/appointment','appointment\AppointmentController@index');
-Route::get('/appointment/table','appointment\AppointmentController@table');
-Route::post('/appointment/form','appointment\AppointmentController@form');
 
 //dari dialysis
 
@@ -1867,6 +1662,3 @@ Route::get('/dialysis_enquiry/table','dialysis\enquiryController@table');
 
 Route::get('/dialysis_enquiry_order','dialysis\enquiryController@show_order');
 Route::get('/dialysis_enquiry_order/table','dialysis\enquiryController@table');
-
-//UKMSC
-Route::post('/ukmsc_analytic','ukmsc\ukmsc_analyticController@table');
