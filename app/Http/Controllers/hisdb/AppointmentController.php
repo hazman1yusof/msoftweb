@@ -567,10 +567,13 @@ class AppointmentController extends defaultController
         curl_close($curl);
 
         // Display the result
-        echo "<pre>";
-        print_r($result);
-        echo "</pre>";
+        // echo "<pre>";
+        // print_r($result);
+        // echo "</pre>";
         
+        $responce = new stdClass();
+        $responce->done = 'done';
+        echo json_encode($responce);
     }
 
 }
