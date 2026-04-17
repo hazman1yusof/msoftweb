@@ -356,31 +356,18 @@ $(document).ready(function () {
 
     $('#rembtn_wassap').click(function(){
     	var telhp_arr=[];
-    	$('#table_reminder tbody tr').each(function(){
-    		let telhp = $(this).children('td.reminder_telhp').text().trim();
-    		let pat_name = $(this).children('td.reminder_pat_name').text().trim();
-    		let time = $(this).children('td.reminder_start').text().trim();
-    		let date = $('#reminder_date').text().trim();
-    		let doc_name = $('#reminder_doc_name').text().trim();
 
-    		let msg = `*APPOINTMENT REMINDER* \n\n`+pat_name+`\n*Time:* `+time+` *Date:* `+date+`\n*Doctor :* `+doc_name;
-    		if(telhp != ''){
-    			if(telhp.substring(0, 1) != '6'){
-    				telhp = '6'+telhp;
-    			}
-    			telhp_arr.push({
-    				'phone':telhp,
-    				'message':msg
-    			});
-
-    		}
+    	$("#table_reminder input[type='checkbox'][name='wassap_cb']:checked").each(function(){
+    		telhp_arr.push({
+				'phone':$(this).data('telhp'),
+				'message':$(this).data('msg')
+			});
     	});
 
     	let param = {
 			action: 'wassap_appt',
 			telhp_arr:telhp_arr
 		}
-
 
 		$.get( "./apptrsc/table"+"?"+$.param(param), function( data ) {
 		
@@ -574,7 +561,6 @@ $(document).ready(function () {
 							pat_arr.push(elem);
 						}
 					});
-					console.log(pat_arr);
 					populatereminder(pat_arr);
 					$("#dialogForm_reminder").dialog("open");
             	}
@@ -1280,9 +1266,22 @@ function populatereminder(pat_arr,empty=false){
 	}
 	$('#table_reminder tbody').html('');
 	pat_arr.forEach(function(elem,id){
-		$('#table_reminder tbody').append(`<tr><td class='reminder_start'>`+elem.start.format('hh:mm A')+`</td><td class='reminder_mrn'>`+elem.mrn+`</td><td class='reminder_pat_name'>`+elem.pat_name+`</td><td class='reminder_icnum'>`+ret_if_null(elem.icnum)+`</td><td class='reminder_telhp'>`+ret_if_null(elem.telhp)+`</td></tr>`);
+		let telhp = ret_if_null(elem.telhp);
+    	let pat_name = elem.pat_name;
+		let time = elem.start.format('hh:mm A');
+		let date = $('#reminder_date').text().trim();
+		let doc_name = $('#reminder_doc_name').text().trim();
+		let msg = `*APPOINTMENT REMINDER* \n\n`+pat_name+`\n*Time:* `+time+` *Date:* `+date+`\n*Doctor :* `+doc_name;
 
-
+		$('#table_reminder tbody').append(`
+			<tr id=`+id+`>
+				<td class='reminder_start'>`+elem.start.format('hh:mm A')+`</td>
+				<td class='reminder_mrn'>`+elem.mrn+`</td>
+				<td class='reminder_pat_name'>`+elem.pat_name+`</td>
+				<td class='reminder_icnum'>`+ret_if_null(elem.icnum)+`</td>
+				<td class='reminder_telhp'>`+ret_if_null(elem.telhp)+`
+				<input type="checkbox" name="wassap_cb" value="`+id+`" style="float:right;" data-msg="`+msg+`" data-telhp="`+telhp+`" checked></td>
+			</tr>`);
 	});
 }
 
