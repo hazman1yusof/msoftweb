@@ -241,7 +241,7 @@ $(document).ready(function () {
 				{	label: 'Name', name: 'Name', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{	label: 'telhp', name: 'telhp', width: 200, classes: 'pointer',hidden:true},
 				{	label: 'telh', name: 'telh', width: 200, classes: 'pointer',hidden:true},
-				{	label: 'Newic', name: 'Newic', width: 200, classes: 'pointer', canSearch: true},
+				{	label: 'Newic', name: 'Newic', width: 100, classes: 'pointer', canSearch: true},
 			],
 			urlParam: {
 				filterCol : ['compcode'],
