@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Route;
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
-|
 */
 
 Route::get('/','HomeController@index')->name('home');
@@ -1352,6 +1351,23 @@ Route::post('/pat_mast/new_areacode_form','hisdb\PatmastController@new_areacode_
 Route::post('/pat_mast/new_relationship_form','hisdb\PatmastController@new_relationship_form');
 Route::post('/pat_mast/auto_save','hisdb\PatmastController@auto_save');
 Route::get('/pat_mast/patlabel','hisdb\PatmastController@patlabel');
+
+//// pat_mast_ registration ////
+Route::get('/pat_mast_','hisdb\PatmastController_@show');
+Route::get('/pat_mast_/get_entry','hisdb\PatmastController_@get_entry');
+Route::get('/pat_mast_/table','hisdb\PatmastController_@table');
+Route::post('/pat_mast_/post_entry','hisdb\PatmastController_@post_entry');
+Route::get('/pat_mast_/post_entry','hisdb\PatmastController_@post_entry');
+Route::post('/pat_mast_/save_patient','hisdb\PatmastController_@save_patient');
+Route::post('/pat_mast_/save_episode','hisdb\PatmastController_@save_episode');
+Route::post('/pat_mast_/save_adm','hisdb\PatmastController_@save_adm');
+Route::post('/pat_mast_/save_gl','hisdb\PatmastController_@save_gl');
+Route::post('/pat_mast_/new_occup_form','hisdb\PatmastController_@new_occup_form');
+Route::post('/pat_mast_/new_title_form','hisdb\PatmastController_@new_title_form');
+Route::post('/pat_mast_/new_areacode_form','hisdb\PatmastController_@new_areacode_form');
+Route::post('/pat_mast_/new_relationship_form','hisdb\PatmastController_@new_relationship_form');
+Route::post('/pat_mast_/auto_save','hisdb\PatmastController_@auto_save');
+Route::get('/pat_mast_/patlabel','hisdb\PatmastController_@patlabel');
 
 
 Route::post('/episode/save_doc','hisdb\PatmastController@save_doc');
