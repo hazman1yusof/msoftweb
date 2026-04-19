@@ -4313,7 +4313,9 @@ class OrdcomController extends defaultController
                     ->where('source','OE')
                     ->where('trantype','IN')
                     ->where('reference',$invno)
-                    ->delete();
+                    ->update([
+                            'compcode' => 'xx'
+                    ]);
 
             DB::table('debtor.dbacthdr')
                     ->where('compcode',session('compcode'))
