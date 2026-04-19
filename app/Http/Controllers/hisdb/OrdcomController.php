@@ -5453,6 +5453,7 @@ class OrdcomController extends defaultController
     public function showpdf_summ_final(Request $request){
         $mrn = $request->mrn;
         $episno = $request->episno;
+        $lineno_ = $request->lineno_;
 
         if(empty($mrn) || empty($episno)){
             abort(403, 'Patient Not Exist');
@@ -5505,6 +5506,18 @@ class OrdcomController extends defaultController
                             $join = $join->where('chgm.compcode', '=', session('compcode'));
                             $join = $join->on('chgm.chgcode', '=', 'trx.chgcode');
                             $join = $join->on('chgm.uom', '=', 'trx.uom');
+                        })
+                        ->join('hisdb.billdet as bd', function($join) use ($request,$lineno_){
+                            $join = $join->where('bd.compcode', '=', session('compcode'));
+                            $join = $join->on('bd.auditno', '=', 'trx.auditno');
+                            $join = $join->on('bd.mrn', '=', 'trx.mrn');
+                            $join = $join->on('bd.episno', '=', 'trx.episno');
+                            $join = $join->on('bd.chgcode', '=', 'trx.chgcode');
+
+                            if(!empty($lineno_)){
+                                $join = $join->where('bd.lineno_', '=', $lineno_);
+                            }
+
                         })
                         ->leftjoin('hisdb.chggroup as chgg', function($join) use ($request){
                             $join = $join->where('chgg.compcode', '=', session('compcode'));
