@@ -4266,6 +4266,7 @@ class OrdcomController extends defaultController
                             'taxamount' => $chargetrx->taxamount,
                             'billno' => $billno,
                             'invno' => $invno,
+                            'mmacode' => $chargetrx->mmacode,
                             'uom' => $chargetrx->uom,
                             'billtime' => $chargetrx->billtime,
                             'invgroup' => $chargetrx->invgroup,
@@ -5150,7 +5151,7 @@ class OrdcomController extends defaultController
         }
 
         $billdet = DB::table('hisdb.billdet as bd')
-                        ->select('bd.idno','bd.mrn','bd.episno','bd.billno','bd.invno','bd.billdate','bd.trxdate','bd.billtype','btm.description as billtype_desc','bd.chgcode','chgm.description','bd.uom','bd.quantity','bd.unitprce','bd.amount','bd.taxamount','bd.discamt','bd.lineno_','ep.payercode','dm.name as debtorname','dm.address1','dm.address2','dm.address3','dm.address4','dm.contact','ep.refno','chgc.description as chgc_desc','chgc.classlevel','chgg.description as chgg_desc','chgt.description as chgt_desc','chgm.invgroup','chgm.chgclass','epis.pay_type','epis.reg_date','epis.reg_time','pm.name as pat_name','pm.newic','doc.doctorname as doc_name')
+                        ->select('bd.idno','bd.mrn','bd.episno','bd.billno','bd.invno','bd.billdate','bd.trxdate','bd.billtype','btm.description as billtype_desc','bd.chgcode','bd.mmacode','chgm.description','bd.uom','bd.quantity','bd.unitprce','bd.amount','bd.taxamount','bd.discamt','bd.lineno_','ep.payercode','dm.name as debtorname','dm.address1','dm.address2','dm.address3','dm.address4','dm.contact','ep.refno','chgc.description as chgc_desc','chgc.classlevel','chgg.description as chgg_desc','chgt.description as chgt_desc','chgm.invgroup','chgm.chgclass','epis.pay_type','epis.reg_date','epis.reg_time','pm.name as pat_name','pm.newic','doc.doctorname as doc_name','doc.doctorname as doc_name','mm.description as mm_desc')
                         ->join('hisdb.chgmast as chgm', function($join) use ($mrn,$episno){
                             $join = $join->where('chgm.compcode',session('compcode'));
                             $join = $join->on('chgm.chgcode', '=', 'bd.chgcode');
@@ -5174,6 +5175,10 @@ class OrdcomController extends defaultController
                             $join = $join->on('ep.lineno', '=', 'bd.lineno_');
                             $join = $join->where('ep.mrn',$mrn);
                             $join = $join->where('ep.episno',$episno);
+                        })
+                        ->leftJoin('hisdb.mmamaster as mm', function($join) use ($request){
+                            $join = $join->where('mm.compcode',session('compcode'));
+                            $join = $join->on('mm.mmacode', '=', 'bd.mmacode');
                         })
                         ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
                             $join = $join->where('dm.compcode',session('compcode'));
