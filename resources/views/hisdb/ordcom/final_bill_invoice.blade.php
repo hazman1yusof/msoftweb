@@ -339,8 +339,6 @@
                             {text:myparseFloat(total_inv),alignment: 'right', style: 'body_row_2', border: [false, false, false, false]},
                         ];
                     if(parseFloat_(total_inv) > 0){
-                        retval.push(arrtot);
-
                         if(e_inv.doctorcode != ''){
                             arrtot2 =  [
                                 {text:e_inv.doctorcode+'\n\u200B\t -'+e_inv.doc_bd_name, style: 'body_row', border: [false, false, false, false],colSpan:5},
@@ -351,6 +349,7 @@
                             ];
                             retval.push(arrtot2);
                         }
+                        retval.push(arrtot);
                     }
                     total_sub = parseFloat_(total_sub) + parseFloat_(total_inv);
                 }
