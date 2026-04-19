@@ -4891,6 +4891,7 @@ class OrdcomController extends defaultController
                     ->where('source','PB')
                     ->where('trantype','IN')
                     ->where('auditno',$value_unq->invno)
+                    ->where('lineno_',$value_unq->lineno_)
                     ->delete();
 
             DB::table('debtor.dbacthdr')
