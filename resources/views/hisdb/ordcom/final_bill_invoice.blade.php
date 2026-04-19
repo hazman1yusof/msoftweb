@@ -340,6 +340,17 @@
                         ];
                     if(parseFloat_(total_inv) > 0){
                         retval.push(arrtot);
+
+                        if(e_inv.doctorcode != ''){
+                            arrtot2 =  [
+                                {text:e_inv.doctorcode+'\n\u200B\t -'+e_inv.doc_bd_name, style: 'body_row', border: [false, false, false, false]},
+                                {},
+                                {},
+                                {},
+                                {},
+                            ];
+                        }
+                        retval.push(arrtot2);
                     }
                     total_sub = parseFloat_(total_sub) + parseFloat_(total_inv);
                 }

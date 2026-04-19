@@ -5151,7 +5151,7 @@ class OrdcomController extends defaultController
         }
 
         $billdet = DB::table('hisdb.billdet as bd')
-                        ->select('bd.idno','bd.mrn','bd.episno','bd.billno','bd.invno','bd.billdate','bd.trxdate','bd.billtype','btm.description as billtype_desc','bd.chgcode','bd.mmacode','chgm.description','bd.uom','bd.quantity','bd.unitprce','bd.amount','bd.taxamount','bd.discamt','bd.lineno_','ep.payercode','dm.name as debtorname','dm.address1','dm.address2','dm.address3','dm.address4','dm.contact','ep.refno','chgc.description as chgc_desc','chgc.classlevel','chgg.description as chgg_desc','chgt.description as chgt_desc','chgm.invgroup','chgm.chgclass','epis.pay_type','epis.reg_date','epis.reg_time','pm.name as pat_name','pm.newic','doc.doctorname as doc_name','doc.doctorname as doc_name','mm.description as mm_desc')
+                        ->select('bd.idno','bd.mrn','bd.episno','bd.billno','bd.invno','bd.billdate','bd.trxdate','bd.billtype','btm.description as billtype_desc','bd.chgcode','bd.mmacode','bd.doctorcode','chgm.description','bd.uom','bd.quantity','bd.unitprce','bd.amount','bd.taxamount','bd.discamt','bd.lineno_','ep.payercode','dm.name as debtorname','dm.address1','dm.address2','dm.address3','dm.address4','dm.contact','ep.refno','chgc.description as chgc_desc','chgc.classlevel','chgg.description as chgg_desc','chgt.description as chgt_desc','chgm.invgroup','chgm.chgclass','epis.pay_type','epis.reg_date','epis.reg_time','pm.name as pat_name','pm.newic','doc.doctorname as doc_name','doc.doctorname as doc_name','mm.description as mm_desc','doc_bd.doctorname as doc_bd_name')
                         ->join('hisdb.chgmast as chgm', function($join) use ($mrn,$episno){
                             $join = $join->where('chgm.compcode',session('compcode'));
                             $join = $join->on('chgm.chgcode', '=', 'bd.chgcode');
@@ -5169,6 +5169,10 @@ class OrdcomController extends defaultController
                         ->join('hisdb.doctor as doc', function($join) use ($request){
                             $join = $join->where('doc.compcode', '=', session('compcode'));
                             $join = $join->on('doc.doctorcode', '=', 'epis.admdoctor');
+                        })
+                        ->join('hisdb.doctor as doc_bd', function($join) use ($request){
+                            $join = $join->where('doc_bd.compcode', '=', session('compcode'));
+                            $join = $join->on('doc_bd.doctorcode', '=', 'bd.doctorcode');
                         })
                         ->join('hisdb.epispayer as ep', function($join) use ($mrn,$episno){
                             $join = $join->where('ep.compcode',session('compcode'));
