@@ -316,7 +316,7 @@
                                 ];
 
                                 if(e_trx.mm_desc != ''){
-                                    arr1[0] = {text:e_trx.chgcode.'\n - '.e_trx.mm_desc, style: 'body_row', border: [false, false, false, false], margin:[10,0,0,0]}
+                                    arr1[0] = {text:e_trx.chgcode+'\n - '+e_trx.mm_desc, style: 'body_row', border: [false, false, false, false], margin:[10,0,0,0]}
                                 }
                                 retval.push(arr1);
                                 total_inv = parseFloat_(total_inv) + parseFloat_(e_trx.net_amount);
