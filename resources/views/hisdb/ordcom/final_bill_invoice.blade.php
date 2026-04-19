@@ -343,7 +343,7 @@
 
                         if(e_inv.doctorcode != ''){
                             arrtot2 =  [
-                                {text:e_inv.doctorcode+'\n\u200B\t -'+e_inv.doc_bd_name, style: 'body_row', border: [false, false, false, false]},
+                                {text:e_inv.doctorcode+'\n\u200B\t -'+e_inv.doc_bd_name, style: 'body_row', border: [false, false, false, false],colSpan:5},
                                 {},
                                 {},
                                 {},
