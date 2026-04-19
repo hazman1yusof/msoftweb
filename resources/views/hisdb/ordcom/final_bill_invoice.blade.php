@@ -320,7 +320,7 @@
 
                                 if(e_trx.mm_desc != ''){
                                     let arr1_mma = [
-                                        {text:' - '+e_trx.mm_desc, style: 'body_row', border: [false, false, false, false], colSpan:5, fontSize: 8},
+                                        {text:' - '+e_trx.mm_desc, style: 'body_row', border: [false, false, false, false], colSpan:5},
                                         {},
                                         {},
                                         {},
