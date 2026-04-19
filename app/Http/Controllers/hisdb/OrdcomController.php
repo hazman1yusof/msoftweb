@@ -5537,7 +5537,7 @@ class OrdcomController extends defaultController
                         })
                         ->get();
 
-        // dd($chargetrx);
+        dd($chargetrx);
 
         foreach ($chargetrx as $key => $value) {
             if(strtoupper($value->invgroup) == 'CC'){
