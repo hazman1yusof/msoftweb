@@ -5491,7 +5491,7 @@ class OrdcomController extends defaultController
         // dd($patmast_episode);
 
         $chargetrx = DB::table('hisdb.chargetrx as trx')
-                        ->select('trx.chgcode','trx.uom','trx.billno','trx.invno','chgm.description','trx.trxdate','trx.quantity','trx.amount','trx.discamt','trx.taxamount','chgm.invgroup','chgm.chgclass','chgc.description as chgc_desc','chgc.classlevel','chgg.description as chgg_desc','chgt.description as chgt_desc','doc.doctorname','doc.doctorcode','bd.lineno_','bd.amount as bdamt')
+                        ->select('trx.chgcode','trx.uom','trx.billno','trx.invno','chgm.description','trx.trxdate','trx.quantity','trx.amount as trxamt','trx.discamt','trx.taxamount','chgm.invgroup','chgm.chgclass','chgc.description as chgc_desc','chgc.classlevel','chgg.description as chgg_desc','chgt.description as chgt_desc','doc.doctorname','doc.doctorcode','bd.lineno_','bd.amount')
                         ->where('trx.compcode',session('compcode'))
                         ->where('trx.trxtype','!=','PD')
                         ->where('trx.mrn' ,'=', $request->mrn)
@@ -5537,7 +5537,7 @@ class OrdcomController extends defaultController
                         })
                         ->get();
 
-        dd($chargetrx);
+        // dd($chargetrx);
 
         foreach ($chargetrx as $key => $value) {
             if(strtoupper($value->invgroup) == 'CC'){
