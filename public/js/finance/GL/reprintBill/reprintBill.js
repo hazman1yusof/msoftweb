@@ -122,13 +122,15 @@ $(document).ready(function () {
 	$('#reprint_bill').click(function(){
 		var mrn = selrowData('#jqGrid').mrn;
 		var episno = selrowData('#jqGrid').episno;
-		window.open('./ordcom/table?action=final_bill_invoice&mrn='+mrn+'&episno='+episno, '_blank');
+		var lineno_ = selrowData('#jqGrid').lineno_;
+		window.open('./ordcom/table?action=final_bill_invoice&mrn='+mrn+'&episno='+episno+'&lineno_='+lineno_, '_blank');
 	});
 
 	$('#reprint__summbill').click(function(){
 		var mrn = selrowData('#jqGrid').mrn;
 		var episno = selrowData('#jqGrid').episno;
-		window.open('./ordcom/table?action=showpdf_summ_final&mrn='+mrn+'&episno='+episno, '_blank');
+		var lineno_ = selrowData('#jqGrid').lineno_;
+		window.open('./ordcom/table?action=showpdf_summ_final&mrn='+mrn+'&episno='+episno+'&lineno_='+lineno_, '_blank');
 	});
 
 

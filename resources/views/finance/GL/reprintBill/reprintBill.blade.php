@@ -143,5 +143,5 @@ i.fa {
 			
 		});
 	</script>
-	<script src="js/finance/GL/reprintBill/reprintBill.js"></script>
+	<script src="js/finance/GL/reprintBill/reprintBill.js?v=1.1"></script>
 @endsection

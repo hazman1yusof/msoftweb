@@ -5188,7 +5188,7 @@ class OrdcomController extends defaultController
 
         if(!empty($lineno_)){
             $billdet = $billdet    
-                        ->where('bd.lineno_',$lineno_)
+                        ->where('bd.lineno_',$lineno_);
         }
 
         $billdet = $billdet    
