@@ -4306,6 +4306,14 @@ class OrdcomController extends defaultController
     public function final_bill_reverse(Request $request,$chargetrx_first){
             $mrn = $request->mrn;
             $episno = $request->episno;
+            $invno = $chargetrx_first->invno;
+
+            DB::table('finance.gltran')
+                    ->where('compcode',session('compcode'))
+                    ->where('source','OE')
+                    ->where('trantype','IN')
+                    ->where('auditno',$invno)
+                    ->delete();
 
             DB::table('debtor.dbacthdr')
                     ->where('compcode',session('compcode'))
