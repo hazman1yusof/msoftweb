@@ -150,7 +150,7 @@ class ReprintBillController extends defaultController
                         ->get();
 
         foreach ($gltran_debit as $key => $value) {
-            $value->description = $debtorname;
+            // $value->description = $debtorname;
             $value->credit='';
             array_push($array_show,$value);
         }
