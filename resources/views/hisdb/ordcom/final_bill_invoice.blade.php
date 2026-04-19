@@ -349,8 +349,8 @@
                                 {},
                                 {},
                             ];
+                            retval.push(arrtot2);
                         }
-                        retval.push(arrtot2);
                     }
                     total_sub = parseFloat_(total_sub) + parseFloat_(total_inv);
                 }
