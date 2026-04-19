@@ -314,9 +314,11 @@
                                     {text:e_trx.quantity, style: 'body_row', border: [false, false, false, false]},
                                     {text:myparseFloat(e_trx.net_amount),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
                                 ];
+                                retval.push(arr1);
+                                total_inv = parseFloat_(total_inv) + parseFloat_(e_trx.net_amount);
+
 
                                 if(e_trx.mm_desc != ''){
-
                                     let arr1_mma = [
                                         {text:' - '+e_trx.mm_desc, style: 'body_row', border: [false, false, false, false], colSpan:5, fontSize: 8},
                                         {},
@@ -324,9 +326,8 @@
                                         {},
                                         {},
                                     ];
+                                    retval.push(arr1_mma);
                                 }
-                                retval.push(arr1);
-                                total_inv = parseFloat_(total_inv) + parseFloat_(e_trx.net_amount);
                             }
                         }
                     });
