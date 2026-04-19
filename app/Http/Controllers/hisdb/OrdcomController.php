@@ -4905,8 +4905,8 @@ class OrdcomController extends defaultController
                     'payercode' => $value_unq->debtorcode,
                     'billdebtor' => $value_unq->debtorcode,
                     'remark' => 'Final Bill',
-                    'mrn' => $value_unq->mrn,
-                    'episno' => $value_unq->episno,
+                    'mrn' => $mrn,
+                    'episno' => $episno,
                     // 'authno' => ,
                     // 'expdate' => ,
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -5133,6 +5133,7 @@ class OrdcomController extends defaultController
     public function final_bill_invoice(Request $request){
         $mrn = $request->mrn;
         $episno = $request->episno;
+        $lineno_ = $request->lineno_;
 
         if(empty($mrn) || empty($episno)){
             abort(403, 'Patient Not Exist');
@@ -5183,7 +5184,14 @@ class OrdcomController extends defaultController
                         ->leftjoin('hisdb.chgclass as chgc', function($join) use ($request){
                             $join = $join->where('chgc.compcode', '=', session('compcode'));
                             $join = $join->on('chgc.classcode', '=', 'chgm.chgclass');
-                        })
+                        });
+
+        if(!empty($lineno_)){
+            $billdet = $billdet    
+                        ->where('bd.lineno_',$lineno_)
+        }
+
+        $billdet = $billdet    
                         ->where('bd.compcode',session('compcode'))
                         ->where('bd.mrn',$mrn)
                         ->where('bd.episno',$episno)
