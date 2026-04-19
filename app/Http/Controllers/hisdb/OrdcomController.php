@@ -5170,7 +5170,7 @@ class OrdcomController extends defaultController
                             $join = $join->where('doc.compcode', '=', session('compcode'));
                             $join = $join->on('doc.doctorcode', '=', 'epis.admdoctor');
                         })
-                        ->join('hisdb.doctor as doc_bd', function($join) use ($request){
+                        ->leftJoin('hisdb.doctor as doc_bd', function($join) use ($request){
                             $join = $join->where('doc_bd.compcode', '=', session('compcode'));
                             $join = $join->on('doc_bd.doctorcode', '=', 'bd.doctorcode');
                         })
