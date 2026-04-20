@@ -1127,9 +1127,9 @@ Route::get('/tillenquiry/form','finance\TillEnquiryController@form');
 Route::get('/tillenquiry/showpdf','finance\TillEnquiryController@showpdf');
 
 //// Dr contrib
-Route::get('/drcontrib','finance\drcontribController@show');
-Route::get('/drcontrib/table','finance\drcontribController@table');
-Route::post('/drcontrib/form','finance\drcontribController@form');
+Route::get('/drcontrib','hisdb\drcontribController@show');
+Route::get('/drcontrib/table','hisdb\drcontribController@table');
+Route::post('/drcontrib/form','hisdb\drcontribController@form');
 
 //// Dr contrib
 Route::get('/drfeesvoucher','finance\drfeesvoucherController@show');

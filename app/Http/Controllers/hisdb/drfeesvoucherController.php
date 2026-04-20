@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\hisdb;
+namespace App\Http\Controllers\finance;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
