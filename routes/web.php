@@ -1127,14 +1127,14 @@ Route::get('/tillenquiry/form','finance\TillEnquiryController@form');
 Route::get('/tillenquiry/showpdf','finance\TillEnquiryController@showpdf');
 
 //// Dr contrib
-Route::get('/drcontrib','hisdb\drcontribController@show');
-Route::get('/drcontrib/table','hisdb\drcontribController@table');
-Route::post('/drcontrib/form','hisdb\drcontribController@form');
+Route::get('/drcontrib','finance\drcontribController@show');
+Route::get('/drcontrib/table','finance\drcontribController@table');
+Route::post('/drcontrib/form','finance\drcontribController@form');
 
 //// Dr contrib
-Route::get('/drfeesvoucher','finance\drfeesvoucherController@show');
-Route::get('/drfeesvoucher/table','finance\drfeesvoucherController@table');
-Route::post('/drfeesvoucher/form','finance\drfeesvoucherController@form');
+Route::get('/drfeesvoucher','hisdb\drfeesvoucherController@show');
+Route::get('/drfeesvoucher/table','hisdb\drfeesvoucherController@table');
+Route::post('/drfeesvoucher/form','hisdb\drfeesvoucherController@form');
 
 //// Summary Receipt Listing Daily -- Report
 Route::get('/SummaryRcptListing_Report','finance\SummaryRcptListing_ReportController@show');
