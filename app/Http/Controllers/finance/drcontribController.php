@@ -231,7 +231,8 @@ class drcontribController extends defaultController
                             ->where('compcode',session('compcode'))
                             ->where('mrn',$dbacthdr->mrn)
                             ->where('episno',$dbacthdr->episno)
-                            ->where('billno',$dbacthdr->auditno);
+                            ->where('billno',$dbacthdr->auditno)
+                            ->where('lineno_',$dbacthdr->lineno_);
 
         $paginate = $table->paginate($request->rows);
 

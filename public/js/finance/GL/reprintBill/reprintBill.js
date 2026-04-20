@@ -45,6 +45,7 @@ $(document).ready(function () {
 			{ label: 'Line No', name: 'lineno_', width: 30, classes: 'wrap'},
 			{ label: 'MRN', name: 'mrn', width: 30, classes: 'wrap', canSearch: true, checked:true},
 			{ label: 'Episno', name: 'episno', width: 25, classes: 'wrap'},
+			{ label: 'Epistype', name: 'epistype', width: 25, classes: 'wrap'},
 			{ label: 'Patient Name', name: 'Name', width: 110, classes: 'wrap', canSearch: true},
 			{ label: 'Debtor Code', name: 'debtorcode', width: 50, classes: 'wrap'},
 			{ label: 'Debtor Name', name: 'dbname', width: 110, classes: 'wrap', canSearch: true},

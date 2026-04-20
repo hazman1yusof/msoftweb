@@ -55,7 +55,7 @@ class ReprintBillController extends defaultController
 
     public function maintable(Request $request){
         $table = DB::table('debtor.dbacthdr as db')
-                        ->select('db.idno','db.compcode','db.source','db.trantype','db.auditno','db.lineno_','db.invno','db.mrn','db.episno','db.debtorcode','db.amount','db.entrydate','pm.Name','dm.name as dbname')
+                        ->select('db.idno','db.compcode','db.source','db.trantype','db.epistype','db.auditno','db.lineno_','db.invno','db.mrn','db.episno','db.debtorcode','db.amount','db.entrydate','pm.Name','dm.name as dbname')
                         ->leftJoin('hisdb.pat_mast as pm', function($join) use ($request){
                             $join = $join->where('pm.compcode', '=', session('compcode'));
                             $join = $join->on('pm.mrn', '=', 'db.mrn');
