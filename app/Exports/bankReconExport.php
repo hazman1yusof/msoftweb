@@ -187,6 +187,10 @@ class bankReconExport implements FromView, WithEvents, WithColumnWidths, WithCol
         // $cb_tran_ = $cb_tran1->merge($cb_tran2);
 
 
+        foreach ($cb_tran as $objcb) {
+            $objcb->hide = 'false';
+        }
+
         $bankrecondel = DB::table('finance.bankrecondel as bd')
                             ->where('bd.compcode',session('compcode'))
                             ->where('bd.adddate','<=',$cbhdr->recdate)
