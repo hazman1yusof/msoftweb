@@ -1131,6 +1131,11 @@ Route::get('/drcontrib','finance\drcontribController@show');
 Route::get('/drcontrib/table','finance\drcontribController@table');
 Route::post('/drcontrib/form','finance\drcontribController@form');
 
+//// Dr contrib
+Route::get('/drfeesvoucher','finance\drfeesvoucherController@show');
+Route::get('/drfeesvoucher/table','finance\drfeesvoucherController@table');
+Route::post('/drfeesvoucher/form','finance\drfeesvoucherController@form');
+
 //// Summary Receipt Listing Daily -- Report
 Route::get('/SummaryRcptListing_Report','finance\SummaryRcptListing_ReportController@show');
 Route::get('/SummaryRcptListing_Report/table','finance\SummaryRcptListing_ReportController@table');
