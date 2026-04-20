@@ -1136,6 +1136,11 @@ Route::get('/drfeesvoucher','hisdb\drfeesvoucherController@show');
 Route::get('/drfeesvoucher/table','hisdb\drfeesvoucherController@table');
 Route::post('/drfeesvoucher/form','hisdb\drfeesvoucherController@form');
 
+//// Dr contrib
+Route::get('/reminder','finance\ReminderController@show');
+Route::get('/reminder/table','finance\ReminderController@table');
+Route::post('/reminder/form','finance\ReminderController@form');
+
 //// Summary Receipt Listing Daily -- Report
 Route::get('/SummaryRcptListing_Report','finance\SummaryRcptListing_ReportController@show');
 Route::get('/SummaryRcptListing_Report/table','finance\SummaryRcptListing_ReportController@table');
