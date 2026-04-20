@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'MOH Reporting')
+@section('title', 'Dr Fees Voucher Reporting')
 
 @section('css')
     <style>
