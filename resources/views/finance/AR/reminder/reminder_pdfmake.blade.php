@@ -32,19 +32,19 @@
                         text: `\n{{$debtormast->name}}`,style: 'basic'
                     },
                     {
-                        text: `({{$debtormast->debtorcode}})`,style: 'basic'
+                        text: `({!!$debtormast->debtorcode!!})`,style: 'basic'
                     },
                     {
-                        text: `{{$debtormast->address1}}`,style: 'basic'
+                        text: `{!!$debtormast->address1!!}`,style: 'basic'
                     },
                     {
-                        text: `{{$debtormast->address2}}`,style: 'basic'
+                        text: `{!!$debtormast->address2!!}`,style: 'basic'
                     },
                     {
-                        text: `{{$debtormast->address3}}`,style: 'basic'
+                        text: `{!!$debtormast->address3!!}`,style: 'basic'
                     },
                     {
-                        text: `{{$debtormast->address4}}`,style: 'basic'
+                        text: `{!!$debtormast->address4!!}`,style: 'basic'
                     },
                     {
                         text: `\nAttn: {{$debtormast->contact}}`,style: 'basic'
