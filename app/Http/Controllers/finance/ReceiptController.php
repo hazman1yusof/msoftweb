@@ -614,6 +614,51 @@ class ReceiptController extends defaultController
                         'adduser' => session('username'),
                         'recstatus' => 'POSTED'
                     ]);
+
+                $billsum = DB::table('debtor.billsum')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$invoice_first->source)
+                            ->where('trantype',$invoice_first->trantype)
+                            ->where('invno',$invoice_first->invno);
+
+                if($billsum->exists()){
+
+                    if($value['obj']['amtbal'] == 0){
+                        DB::table('debtor.billsum')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$invoice_first->source)
+                            ->where('trantype',$invoice_first->trantype)
+                            ->where('invno',$invoice_first->invno)
+                            ->update([
+                                'outamt' => 0.00
+                            ]);
+                    }else{
+                        $amtpaid_bs_inv = floatval($value['obj']['amtpaid']);
+                        $outamt_bs_inv = $invoice_first->amount;
+
+                        $billsum_obj = DB::table('debtor.billsum')
+                                        ->where('compcode',session('compcode'))
+                                        ->where('source',$invoice_first->source)
+                                        ->where('trantype',$invoice_first->trantype)
+                                        ->where('invno',$invoice_first->invno)
+                                        ->get();
+
+                        foreach ($billsum_obj as $bs_obj) {
+                            $amtpaid_proR = $amtpaid_bs_inv / $outamt_bs_inv * $bs_obj->amount;
+                            $outamt_bs = $bs_obj->amount - $amtpaid_proR;
+
+                            DB::table('debtor.billsum')
+                                        ->where('compcode',session('compcode'))
+                                        ->where('source',$invoice_first->source)
+                                        ->where('trantype',$invoice_first->trantype)
+                                        ->where('invno',$invoice_first->invno)
+                                        ->where('idno',$bs_obj->idno)
+                                        ->update([
+                                            'outamt' => $outamt_bs
+                                        ]);
+                        }
+                    }
+                }
             }
             
             if($amt_paid > 0){
