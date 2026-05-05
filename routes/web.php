@@ -1358,6 +1358,22 @@ Route::post('/pat_mast/new_relationship_form','hisdb\PatmastController@new_relat
 Route::post('/pat_mast/auto_save','hisdb\PatmastController@auto_save');
 Route::get('/pat_mast/patlabel','hisdb\PatmastController@patlabel');
 
+////////patmast medical record////////////
+Route::get('/pat_mast_MR','hisdb\PatmastMRController@show');
+Route::get('/pat_mast_MR/get_entry','hisdb\PatmastMRController@get_entry');
+Route::get('/pat_mast_MR/table','hisdb\PatmastMRController@table');
+Route::post('/pat_mast_MR/post_entry','hisdb\PatmastMRController@post_entry');
+Route::get('/pat_mast_MR/post_entry','hisdb\PatmastMRController@post_entry');
+Route::post('/pat_mast_MR/save_patient','hisdb\PatmastMRController@save_patient');
+Route::post('/pat_mast_MR/save_episode','hisdb\PatmastMRController@save_episode');
+Route::post('/pat_mast_MR/save_adm','hisdb\PatmastMRController@save_adm');
+Route::post('/pat_mast_MR/save_gl','hisdb\PatmastMRController@save_gl');
+Route::post('/pat_mast_MR/new_occup_form','hisdb\PatmastMRController@new_occup_form');
+Route::post('/pat_mast_MR/new_title_form','hisdb\PatmastMRController@new_title_form');
+Route::post('/pat_mast_MR/new_areacode_form','hisdb\PatmastMRController@new_areacode_form');
+Route::post('/pat_mast_MR/new_relationship_form','hisdb\PatmastMRController@new_relationship_form');
+Route::post('/pat_mast_MR/auto_save','hisdb\PatmastMRController@auto_save');
+Route::get('/pat_mast_MR/patlabel','hisdb\PatmastMRController@patlabel');
 
 Route::post('/episode/save_doc','hisdb\PatmastController@save_doc');
 Route::post('/episode/save_bed','hisdb\PatmastController@save_bed');
