@@ -1216,6 +1216,11 @@ Route::post('/DailyBillCollection_Report/form','finance\DailyBillCollection_Repo
 Route::get('/DailyBillCollection_Report/showExcel','finance\DailyBillCollection_ReportController@showExcel');
 Route::get('/DailyBillCollection_Report/showpdf','finance\DailyBillCollection_ReportController@showpdf');
 
+//// Daily Bill And Collection -- Report
+Route::get('/OutstandingBill_Report','finance\OutstandingBillController@show');
+Route::get('/OutstandingBill_Report/table','finance\OutstandingBillController@table');
+Route::post('/OutstandingBill_Report/form','finance\OutstandingBillController@form');
+
 //// Refund Listing -- Report
 Route::get('/refundListing_Report','finance\refundListing_ReportController@show');
 Route::get('/refundListing_Report/table','finance\refundListing_ReportController@table');

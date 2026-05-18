@@ -66,15 +66,15 @@
                         <div class="ui fields">
                             <div class="eight wide field">
                                 <label>Resource Date</label>
-                                <input name="date" type="date">
+                                <input name="date" type="date" data-validation="required" data-validation-error-msg-required="Please enter information." required>
                             </div>
                             <div class="four wide field">
                                 <label>Time Start</label>
-                                <input name="time_start" type="time">
+                                <input name="time_start" type="time" data-validation="required" data-validation-error-msg-required="Please enter information." required>
                             </div>
                             <div class="four wide field">
                                 <label>Time End</label>
-                                <input name="time_end" type="time">
+                                <input name="time_end" type="time" data-validation="required" data-validation-error-msg-required="Please enter information." required>
                             </div>
                         </div>
 
@@ -305,28 +305,33 @@
                             'action':'reserve_ot_iframe',
                             '_token': $('#_token').val()
                         };
-
+                        
                         var serializedForm = trimmall("#modalform",true)
-
+                        
                         $.post("apptrsc_rsc/form",serializedForm+'&'+$.param(obj), function (data) {
-
+                            
                         }).fail(function (data) {
-                            $('#fail_msg').html("<li>"+data.responseText+"</li>");
+                            // Convert text to object
+                            let obj = JSON.parse(data.responseText);
+                            // Target the specific "message" key
+                            let messageOnly = obj.message;
+                            
+                            $('#fail_msg').html("<li>"+messageOnly+"</li>");
                         }).done(function (data) {
                             $('#calendar').fullCalendar( 'refetchEventSources', 'apptbook' );
                             refreshGrid("#jqGrid", urlParam);
                             $('#modal_reserve').modal('hide');
                         });
-
+                        
                         return false;
                     }
                 }).modal('show').modal('refresh').modal('refresh');
             });
-
+            
             init_icd_but();
             init_mma_but();
-	    });
-
+        });
+        
         function init_icd_but(){
             var gridname = 'icd_grid';
             var dialogname = 'icd_dialog'

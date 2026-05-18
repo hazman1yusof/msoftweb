@@ -4685,19 +4685,19 @@ class OrdcomController extends defaultController
                 $billdet->pdescription = $billdet->chgg_desc;
             }
 
-            if(empty($sum_amt[intval($billdet->lineno_)])){
+            if(empty($sum_amt[$billdet->pdescription.'_'.$billdet->lineno_])){
                 $sum_amt[$billdet->pdescription.'_'.$billdet->lineno_] = $billdet->amount;
             }else{
                 $sum_amt[$billdet->pdescription.'_'.$billdet->lineno_] = $sum_amt[$billdet->pdescription.'_'.$billdet->lineno_] + $billdet->amount;
             }
 
-            if(empty($sum_disc[intval($billdet->lineno_)])){
+            if(empty($sum_disc[$billdet->pdescription.'_'.$billdet->lineno_])){
                 $sum_disc[$billdet->pdescription.'_'.$billdet->lineno_] = $billdet->discamt;
             }else{
                 $sum_disc[$billdet->pdescription.'_'.$billdet->lineno_] = $sum_disc[$billdet->pdescription.'_'.$billdet->lineno_] + $billdet->discamt;
             }
 
-            if(empty($sum_tax[intval($billdet->lineno_)])){
+            if(empty($sum_tax[$billdet->pdescription.'_'.$billdet->lineno_])){
                 $sum_tax[$billdet->pdescription.'_'.$billdet->lineno_] = $billdet->taxamount;
             }else{
                 $sum_tax[$billdet->pdescription.'_'.$billdet->lineno_] = $sum_tax[$billdet->pdescription.'_'.$billdet->lineno_] + $billdet->taxamount;
