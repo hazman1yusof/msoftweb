@@ -17,17 +17,18 @@ $(document).ready(function (){
     var fdl = new faster_detail_load();
 
     textarea_init_thrombo();
-    refreshGrid('#jqGridThrombo',urlParam_Thrombo,'add_thrombojqgrid');
+    refreshGrid('#jqGridThrombo',urlParam_Thrombo);
     
     /////////////////////////////////////thrombo starts/////////////////////////////////////
     disableForm('#formThrombo');
     
     $("#new_thrombo").click(function (){
+        $("#jqGridThrombo").jqGrid('clearGridData', true);
         button_state_thrombo('wait');
         enableForm('#formThrombo');
         rdonly('#formThrombo');
         emptyFormdata_div("#formThrombo",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
-        
+
         document.getElementById("idno_thrombo").value = "";
         document.getElementById("cannulationNo").value = "";
     });
@@ -99,7 +100,7 @@ $(document).ready(function (){
         urlParam_Thrombo.filterVal[0] = data.mrn;
         urlParam_Thrombo.filterVal[1] = data.episno;
         urlParam_Thrombo.filterVal[2] = data.idno;
-        refreshGrid('#jqGridThrombo',urlParam_Thrombo,'add_thrombojqgrid');
+        refreshGrid("#jqGridThrombo", urlParam_Thrombo);
         
         var saveParam = {
             action: 'get_table_thrombo',

@@ -24,6 +24,7 @@ $(document).ready(function (){
     disableForm('#formThrombo_ED');
     
     $("#new_thrombo_ED").click(function (){
+        $("#jqGridThrombo_ED").jqGrid('clearGridData', true);
         button_state_thrombo_ED('wait');
         enableForm('#formThrombo_ED');
         rdonly('#formThrombo_ED');
