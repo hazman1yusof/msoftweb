@@ -302,19 +302,30 @@ $(document).ready(function (){
 				}
 			},
 			loadComplete: function (data,obj){
-				$("input[type='radio'][name='dcolr']").click(function (){
-					if($("input[name='dcolr']:checked").val() == 'DOB'){
-						// console.log("test1");
-					}else{
-						// console.log("test2");
-					}
-				});
+				
 			}
 		},{
 			title: "Select MRN",
 			open: function (){
 				patient_search.urlParam.filterCol = ['compcode','recstatus','ACTIVE'];
 				patient_search.urlParam.filterVal = ['session.compcode','ACTIVE','1'];
+
+				$("input[type='radio'][name='dcolr']").click(function (){
+					if($("input[name='dcolr']:checked").val() == 'DOB'){
+						$('#Dtext_patient_search').attr('type','date');
+						$("#Dtext_patient_search").on('change',function(){
+							console.log('asd');
+							$( "#Dtext_patient_search" ).trigger( "keyup" );
+						});
+					}else{
+						$('#Dtext_patient_search').attr('type','text');
+						$("#Dtext_patient_search").off('change');
+					}
+				});
+			},
+			close: function(){
+				$("input[type='radio'][name='dcolr']").off('click');
+				$("#Dtext_patient_search").off('change');
 			}
 		},'urlParam','radio','tab'
 	);
