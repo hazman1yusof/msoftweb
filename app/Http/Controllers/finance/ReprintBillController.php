@@ -21,7 +21,13 @@ class ReprintBillController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('finance.GL.reprintBill.reprintBill');
+        $phar_invcode = DB::table('sysdb.sysparam')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','OE')
+                            ->where('trantype','PHAR')
+                            ->first();
+
+        return view('finance.GL.reprintBill.reprintBill',compact('phar_invcode'));
     }
 
     public function table(Request $request)

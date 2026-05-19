@@ -31,6 +31,7 @@ i.fa {
 @section('body')
 
 <input id="viewonly" name="viewonly" type="hidden" value="{{Request::get('viewonly')}}">
+<input id="phar_invcode" type="hidden" value="{{$phar_invcode->pvalue1}}">
 @if(Request::get('viewonly') == 'viewonly')
 <input id="viewonly_auditno" type="hidden" value="{{Request::get('auditno')}}">
 <input id="viewonly_lineno_" type="hidden" value="{{Request::get('lineno_')}}">
@@ -80,6 +81,31 @@ i.fa {
 		    </div>
 		</div>
 
+		<div class="panel panel-default" style="position: relative;" id="detailBill_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#detailBill_panel" id="panel_detailBill">
+				<b>Detail</b>
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+			</div>
+			<div id="detailBill_panel" class="panel-collapse collapse">
+				<div class="panel-body" style="min-height: 50vh;">
+					<b>Detail Bill</b>
+					<div class='pull-right pointer text-primary' style="padding-right:20px">
+						<b>
+							<a style="padding-right: 10px" id='a_detail_pre' data-type='sales'> Prescription </a>
+						</b> | 
+						<b>
+							<a style="padding-left: 10px" id='a_detail_bill' data-type='cost'> itemised </a>
+						</b>
+					</div>
+					<div class='col-md-12' style="padding:15px 0 15px 0">
+						<table id="gridDetail_bill" class="table table-striped"></table>
+						<div id="jqGridPagerDetail_bill"></div>
+					</div>
+				</div>
+			</div>
+		</div> 
+
 		<div class="panel panel-default" style="position: relative;" id="acctent_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#acctent_panel" id="panel_acctent">
 				<b>Account Entries</b>
@@ -104,7 +130,8 @@ i.fa {
 				</div>
 			</div>	
 		</div> 
-    </div>
+
+</div>
 
 @endsection
 

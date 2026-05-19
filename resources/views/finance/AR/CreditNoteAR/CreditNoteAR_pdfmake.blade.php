@@ -27,7 +27,15 @@
                 pageSize: 'A4',
                 content: [
                     {
-                        image: 'letterhead',width:275, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        columns: [
+                            {
+                                image: 'letterhead',width: 150,alignment:'left'
+                            },
+                            {
+                                width: '*',alignment:'right',fontSize:9,
+                                text: '{{$company->name}}\n{{$company->address1}}\n{{$company->address2}}\n{{$company->address3}}\n{{$company->address4}}'
+                            }
+                        ]
                     },
                     {
                         text: '\n{{$title}}\n',
@@ -203,7 +211,7 @@
                 },
                  images: {
                     letterhead: {
-                        url: "{{asset('/img/letterheadukm.png')}}",
+                        url: '{{asset("/img/$company->logo1")}}',
                         headers: {
                             myheader: '123',
                             myotherheader: 'abc',

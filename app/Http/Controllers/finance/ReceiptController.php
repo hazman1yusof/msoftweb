@@ -147,6 +147,7 @@ class ReceiptController extends defaultController
                 'payername' => $request->dbacthdr_payername,
                 'paytype' => $request->dbacthdr_paytype,
                 'paymode' => $paymode_,
+                'bankcharges' => $dbacthdr_bankcharges,  
                 'amount' => $dbacthdr_amount,  
                 'outamount' => $dbacthdr_outamount,  
                 'remark' => strtoupper($request->dbacthdr_remark),  
@@ -235,33 +236,69 @@ class ReceiptController extends defaultController
                         'recstatus' => 'ACTIVE' 
                     ]);
 
-                //1st step, 2nd phase, update bank detaild
-                if($this->isCBtranExist($bankcode,$yearperiod->year,$yearperiod->period)){
-
-                    $totamt = $this->getCbtranTotamt($bankcode,$yearperiod->year,$yearperiod->period);
-
-                    DB::table('finance.bankdtl')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('year','=',$yearperiod->year)
-                        ->where('bankcode','=',$bankcode)
-                        ->update([
-                            "actamount".$yearperiod->period => $totamt->amount
+                //bank charges
+                if(!empty($request->dbacthdr_bankcharges)){
+                    $auditnoCMCA = $this->defaultSysparam('CM','CA');
+                
+                    DB::table('finance.cbtran')
+                        ->insert([  
+                                'compcode' => session('compcode'), 
+                                'bankcode' => $bankcode, 
+                                'source' => 'CM', 
+                                'trantype' => 'CA', 
+                                'auditno' => $auditnoCMCA, 
+                                'postdate' => (!empty($request->dbacthdr_entrydate))? $request->dbacthdr_entrydate : Carbon::now("Asia/Kuala_Lumpur"), 
+                                'year' => $yearperiod->year, 
+                                'period' => $yearperiod->period, 
+                                'amount' => $request->dbacthdr_bankcharges,
+                                'remarks' => 'Bank charges '.$request->dbacthdr_payercode, 
+                                'upduser' => session('username'), 
+                                'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'recptno' => $recptno,
+                                'reference' => $recptno, 
+                                'reftrantype' => $request->dbacthdr_trantype,
+                                'recstatus' => 'ACTIVE' 
                         ]);
-                }else{
 
-                    $totamt = $this->getCbtranTotamt($bankcode,$yearperiod->year,$yearperiod->period);
+                    $sysparam_cmca = DB::table('sysdb.sysparam')
+                                        ->where('compcode',session('compcode'))
+                                        ->where('source', 'AR')
+                                        ->where('trantype', 'BCHG')
+                                        ->first();
+                    $bank_cmca = $this->getGLcode($bankcode);
 
-                    DB::table('finance.bankdtl')
-                            ->insert([
-                                'compcode' => session('compcode'),
-                                'bankcode' => $bankcode,
-                                'year' => $yearperiod->year,
-                                'actamount'.$yearperiod->period => $totamt->amount,
-                                'upduser' => session('username'),
-                                'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    DB::table('finance.gltran')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'source' => 'CM', //kalau stock 'IV', lain dari stock 'DO'
+                            'trantype' => 'CA',
+                            'auditno' => $auditnoCMCA,
+                            'lineno_' => 1,
+                            'reference' => $recptno,
+                            'description' => 'Bank charges '.$request->dbacthdr_payercode, 
+                            'postdate' => (!empty($request->dbacthdr_entrydate))? $request->dbacthdr_entrydate : Carbon::now("Asia/Kuala_Lumpur"),
+                            'year' => $yearperiod->year,
+                            'period' => $yearperiod->period,
+                            'drcostcode' => $sysparam_cmca->pvalue1,
+                            'dracc' => $sysparam_cmca->pvalue2,
+                            'crcostcode' => $bank_cmca->glccode,
+                            'cracc' => $bank_cmca->glaccno,
+                            'amount' => $request->dbacthdr_bankcharges
+                        ]);
 
-                            ]);
+                    $this->init_glmastdtl_def(
+                                $sysparam_cmca->pvalue1,//drcostcode
+                                $sysparam_cmca->pvalue2,//dracc
+                                $bank_cmca->glccode,//crcostcode
+                                $bank_cmca->glaccno,//cracc
+                                $yearperiod,
+                                $request->dbacthdr_bankcharges
+                            );
                 }
+
+                $this->init_bankdtl_def($bankcode,$yearperiod);           
             }
 
             $this->gltran($auditno,$request->dbacthdr_trantype);
@@ -1096,6 +1133,18 @@ class ReceiptController extends defaultController
         // }
         
     }
+
+    public function getGLcode($bankcode){
+        $bank = DB::table('finance.bank')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('bankcode','=',$bankcode)
+                    ->first();
+
+        $responce = new stdClass();
+        $responce->glccode = $bank->glccode;
+        $responce->glaccno = $bank->glaccno;
+        return $responce;
+    }   
 
 }
 

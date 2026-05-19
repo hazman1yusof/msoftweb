@@ -2,6 +2,7 @@
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
+var fdl = new faster_detail_load();
 
 $(document).ready(function () {
 	$("body").show();
@@ -24,7 +25,6 @@ $(document).ready(function () {
 		},
 	};
 
-	var fdl = new faster_detail_load();
 	page_to_view_only($('#viewonly').val());
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
@@ -68,7 +68,9 @@ $(document).ready(function () {
 			urlParam_acctent.lineno_ = selrowData('#jqGrid').lineno_;
 			urlParam_acctent.auditno = selrowData('#jqGrid').auditno;
 			urlParam_acctent.dbname = selrowData('#jqGrid').dbname;
+			urlParamGridDetail.idnoIN = selrowData('#jqGrid').idno;
 			refreshGrid("#gridacctent", urlParam_acctent);
+			refreshGrid("#gridDetail_bill", urlParamGridDetail);
 		},
 		loadComplete: function(){
 			if($('#jqGrid').data('lastselrow') == 'none'){
@@ -241,8 +243,100 @@ $(document).ready(function () {
 		}
 	});
 
+	/////start detail bill/////
+
+	$("#detailBill_panel").on("shown.bs.collapse", function(){
+        SmoothScrollTo("#detailBill_panel",100);
+		$("#gridDetail_bill").jqGrid ('setGridWidth', Math.floor($("#detailBill_c")[0].offsetWidth-$("#detailBill_c")[0].offsetLeft-28));
+		calc_jq_height_onchange("gridDetail_bill",false,parseInt($('#detailBill_c').prop('clientHeight'))-150);
+		refreshGrid("#gridDetail_bill", urlParamGridDetail);
+	});
+
+	var urlParamGridDetail = {
+		action: 'specific_allocate',
+		url: './arenquiry/table',
+	}
+
+	$("#gridDetail_bill").jqGrid({
+		datatype: "local",
+		colModel: [
+			{ label: 'idno', name: 'idno', width: 40, hidden: true, key:true },
+			{ label: 'Chg Class', name: 'chgclass', width: 20, classes: 'wrap' },
+			{ label: 'Invoice Code', name: 'invcode', width: 20, classes: 'wrap' },
+			{ label: 'Description', name: 'description', width: 100 },
+			{ label: 'Doctor Code', name: 'doctorcode', width: 100, classes: 'wrap', formatter: showdetail},
+			{ label: 'Amount', name: 'amount', formatter: 'currency', width: 40 },
+			{ label: 'O/S Amount', name: 'outamt', formatter: 'currency', width: 40  },
+		],
+		autowidth: true,
+		viewrecords: true,
+		multiSort: true,
+		loadonce: false,
+		height: 400,
+		scroll: false,
+		rowNum: 100,
+		pager: "#jqGridPagerDetail_bill",
+		onSelectRow: function (rowid){
+			calc_jq_height_onchange("gridDetail_bill",false,parseInt($('#detailBill_c').prop('clientHeight'))-150);
+		},
+		onPaging: function (button){
+		},
+		gridComplete: function (rowid){
+			fdl.set_array().reset();
+			calc_jq_height_onchange("gridDetail_bill",false,parseInt($('#detailBill_c').prop('clientHeight'))-150);
+			if($('#gridDetail_bill').jqGrid('getGridParam', 'reccount') > 0 ){
+				$("#gridDetail_bill").setSelection($("#gridDetail_bill").getDataIDs()[0]);
+			}
+			$("#jqGridPagerDetail_bill td.ui-disabled").hide();
+		},
+	});
+
+	$("#gridDetail_bill").inlineNav('#jqGridPagerDetail_bill', {
+		add: false,
+		edit: false,
+		cancel: false,
+	}).jqGrid('navButtonAdd', "#jqGridPagerDetail_bill", {
+		id: "jqGridPagerDetailRefresh",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function () {
+			refreshGrid("#gridDetail_bill", urlParamGridDetail);
+		},
+	});
+
+	$('#a_detail_bill').click(function(){
+		var mrn = selrowData('#jqGrid').mrn;
+		var episno = selrowData('#jqGrid').episno;
+		var lineno_ = selrowData('#jqGrid').lineno_;
+		var invcode = selrowData('#gridDetail_bill').invcode;
+		window.open('./ordcom/table?action=final_bill_invoice&mrn='+mrn+'&episno='+episno+'&lineno_='+lineno_+'&invcode='+invcode, '_blank');
+	});
+
+	$('#a_detail_pre').click(function(){
+		var mrn = selrowData('#jqGrid').mrn;
+		var episno = selrowData('#jqGrid').episno;
+		var lineno_ = selrowData('#jqGrid').lineno_;
+		var invcode = $('#phar_invcode').val();
+		window.open('./ordcom/table?action=final_bill_invoice&mrn='+mrn+'&episno='+episno+'&lineno_='+lineno_+'&invcode='+invcode+'&pres_=1', '_blank');
+	});
+
 });
 
 function dateFormatter_(cellvalue, options, rowObject){
 	return moment(cellvalue, 'YYYY-MM-DD HH:mm:ss').format("DD-MM-YYYY");
+}
+
+function showdetail(cellvalue, options, rowObject){
+	var field, table, case_;
+	switch(options.colModel.name){
+		//allo_spec
+		case 'doctorcode': field = ['doctorcode','doctorname'];table = "hisdb.doctor";case_ = 'doctor';break;
+
+	}
+	var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+	
+	fdl.get_array('reprintbill',options,param,case_,cellvalue);
+	if(cellvalue == null)cellvalue = " ";
+	return cellvalue;
 }

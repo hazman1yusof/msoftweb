@@ -231,10 +231,7 @@ $(document).ready(function (){
 				// Appointment
 			
 			}
-		
-		
-		
-		
+			window.open('./pat_mast_MR?epistycode='+epistycode+'&curpat=true&PatClass=HIS&mrn='+mrn+'&episno='+episno, '_blank');
 		});
 	}
 	

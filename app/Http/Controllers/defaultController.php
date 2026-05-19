@@ -1100,5 +1100,142 @@ abstract class defaultController extends Controller{
         return abs(floatval($a) - floatval($b)) < $epsilon;
     }
 
+    public function init_glmastdtl_def($dbcc,$dbacc,$crcc,$cracc,$yearperiod,$amount){
+        //2. check glmastdtl utk debit, kalu ada update kalu xde create
+        $gltranAmount =  $this->isGltranExist($dbcc,$dbacc,$yearperiod->year,$yearperiod->period);
+
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$dbcc)
+                ->where('glaccount','=',$dbacc)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => floatval($amount) + $gltranAmount,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $dbcc,
+                    'glaccount' => $dbacc,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => floatval($amount),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+
+        //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+        $gltranAmount = defaultController::isGltranExist_($crcc,$cracc,$yearperiod->year,$yearperiod->period);
+
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$crcc)
+                ->where('glaccount','=',$cracc)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => $gltranAmount - floatval($amount),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $crcc,
+                    'glaccount' => $cracc,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => -floatval($amount),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+    }
+
+    public function init_bankdtl_def($bankcode,$yearperiod){
+        if($this->isCBtranExist($bankcode,$yearperiod->year,$yearperiod->period)){
+
+            $totamt = $this->getCbtranTotamt($bankcode,$yearperiod->year,$yearperiod->period);
+
+            DB::table('finance.bankdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('year','=',$yearperiod->year)
+                ->where('bankcode','=',$bankcode)
+                ->update([
+                    "actamount".$yearperiod->period => $totamt->amount
+                ]);
+        }else{
+
+            $totamt = $this->getCbtranTotamt($bankcode,$yearperiod->year,$yearperiod->period);
+
+            DB::table('finance.bankdtl')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'bankcode' => $bankcode,
+                        'year' => $yearperiod->year,
+                        'actamount'.$yearperiod->period => $totamt->amount,
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+
+                    ]);
+        }
+    }
+
+    public function recalc_bankdtl($bankcode,$yearperiod){
+
+        $cbtran_sum = DB::table('finance.cbtran')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('bankcode','=',$bankcode)
+                        ->where('year','=',$yearperiod->year)
+                        ->where('period','=',$yearperiod->period)
+                        ->sum('amount');
+
+        DB::table('finance.bankdtl')
+            ->where('compcode','=',session('compcode'))
+            ->where('year','=',$yearperiod->year)
+            ->where('bankcode','=',$bankcode)
+            ->update([
+                "actamount".$yearperiod->period => $cbtran_sum
+            ]);
+    }
+
+    public function recalc_glmasdtl($costcode,$glaccount,$yearperiod){
+
+        $gltran_d = DB::table('finance.gltran')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('drcostcode','=',$costcode)
+                        ->where('dracc','=',$glaccount)
+                        ->where('year','=',$yearperiod->year)
+                        ->where('period','=',$yearperiod->period)
+                        ->sum('amount');
+
+        $gltran_c = DB::table('finance.gltran')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('crcostcode','=',$costcode)
+                        ->where('cracc','=',$glaccount)
+                        ->where('year','=',$yearperiod->year)
+                        ->where('period','=',$yearperiod->period)
+                        ->sum('amount');
+                        
+        $sum_amt = $gltran_d - $gltran_c;
+
+        DB::table('finance.glmasdtl')
+            ->where('compcode','=',session('compcode'))
+            ->where('year','=',$yearperiod->year)
+            ->where('costcode','=',$costcode)
+            ->where('glaccount','=',$glaccount)
+            ->update([
+                "actamount".$yearperiod->period => $sum_amt
+            ]);
+    }
+
 
 }

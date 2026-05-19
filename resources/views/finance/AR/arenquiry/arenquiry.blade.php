@@ -41,6 +41,22 @@
 	.clearfix {
 		overflow: auto;
 	}
+
+	.button_field_title{
+		margin-top: -4px;
+	    padding: 4px 15px;
+	    border-right: 1px #c1c1c1 solid;
+	}
+
+	fieldset#allocate_span{
+		padding: 5px 8px 1px 8px;
+	    margin-top: -6px;
+	    display: none;
+	    float: right;
+	    background: aliceblue;
+	    border: 1px solid grey;
+	    border-radius: 4px;
+	}
 	
 	<!-- start RC/RD -->
 	#gridAllo_c input[type='text'][rowid]{
@@ -72,6 +88,24 @@
 		padding: 4px 12px 4px 12px;
 	}
 	#alloSearch_cancel{
+		border-style: solid;
+		border-width: 0px 1px 1px 1px;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		border-radius: 0px 0px 5px 5px;
+		background-color: #f8f8f8;
+		border-color: #e7e7e7;
+	}
+	<!-- end RC/RD -->
+
+	<!-- start RC/RD spec -->
+	#alloText_spec{width:9%;}#alloText_spec{width:60%;}#alloCol_spec{width: 30%;}
+	#alloCol_spec, #alloText_spec{
+		display: inline-block;
+		height: 70%;
+		padding: 4px 12px 4px 12px;
+	}
+	#alloSearch_spec{
 		border-style: solid;
 		border-width: 0px 1px 1px 1px;
 		padding-top: 5px;
@@ -195,18 +229,24 @@
 		
 		<div class="panel panel-default">
 			<div class="panel-heading">Enquiry (AR) Header
-				<a class='pull-right pointer text-primary' style="padding-left: 30px;" id='reprint_receipt' href="" target="_blank">
+				<a class='pull-right pointer text-primary button_field_title' style="" id='reprint_receipt' href="" target="_blank">
 					Reprint Receipt
 				</a>
-				<a class='pull-right pointer text-primary' style="padding-left: 30px;display:none" id='allocate_cancel'>
-					Cancel Allocation
-				</a>
-				<a class='pull-right pointer text-primary' style="padding-left: 30px;display:none" id='allocate'>
-					Allocate
-				</a>
-				<a class='pull-right pointer text-primary' style="padding-left: 30px;" id='ar_statement'>
+				<a class='pull-right pointer text-primary button_field_title' style="" id='ar_statement'>
 					Statement
 				</a>
+				<a class='pull-right pointer text-primary button_field_title' style="display:none" id='allocate_cancel'>
+					Cancel Allocation
+				</a>
+				<fieldset id="allocate_span" style="display:block">
+					<a class='pull-right pointer text-primary button_field_title' id='allocate' style="border-right: none">
+						Pro-Rate
+					</a>
+					<a class='pull-right pointer text-primary button_field_title' id='allocate_spec'>
+						Specific
+					</a>
+					<label class='pull-right'>Allocate : </label>
+				</fieldset>
 			</div>
 			<div class="panel-body">
 				<div class='col-md-12' style="padding:0 0 15px 0">
@@ -331,7 +371,10 @@
 		
 		<div class="panel panel-default" style="position: relative;" id="jqGridAlloc_c">
 			<a class='pull-right pointer text-primary' id='pdf_RCRD' href="" target="_blank" style="position: absolute; right: 140px; top: 59px; display: none;">
-				<span class='fa fa-print'></span> Print
+				<span class='fa fa-print'></span> Print Receipt
+			</a>
+			<a class='pull-right pointer text-primary' id='pdf_DBalloSum' href="" target="_blank" style="position: absolute; right: 140px; top: 59px; display: none;">
+				<span class='fa fa-print'></span> Print Allocation
 			</a>
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridAlloc_panel">
 				<b>DOCUMENT NO: </b><span id="alloc_docno_show"></span><br>
@@ -1615,6 +1658,118 @@
 			</select>
 		</div>
 	</div>
+
+	<div id="allocateDialog_spec" title="Cancel Allocation">
+		<form id='formallo_spec'>
+			<input id="ALLoidnoRC_spec" type="hidden" class="form-control input-sm" readonly>
+			<input id="ALLoidnoIN_spec" type="hidden" class="form-control input-sm" readonly>
+			<input id="AlloAuditno_spec" type="hidden" class="form-control input-sm" readonly>
+			<div class='col-md-9 nohassuccess'>
+				<div class="col-md-6">
+					<label class="control-label">Document Type</label>
+					<input id="AlloDtype_spec" type="text" class="form-control input-sm" readonly>
+					<span class="help-block" id="AlloDtype2_spec"></span>
+				</div>
+				
+				<div class="col-md-6">
+					<label class="control-label">Document No.</label>
+					<input id="AlloDno_spec" type="text" class="form-control input-sm" readonly>
+				</div>
+				
+				<div class="col-md-6">
+					<label class="control-label">Debtor</label>
+					<input id="AlloDebtor_spec" type="text" class="form-control input-sm" readonly>
+				</div>
+				
+				<div class="col-md-6">
+					<label class="control-label">Debtor Name</label>
+					<input id="AlloDebtorName_spec" type="text" class="form-control input-sm" readonly>
+				</div>
+				
+				<div class="col-md-3">
+					<label class="control-label">MRN</label>
+					<input id="AlloMRN_spec" type="text" class="form-control input-sm" readonly>
+				</div>
+				
+				<div class="col-md-3">
+					<label class="control-label">Episode</label>
+					<input id="AlloEpisode_spec" type="text" class="form-control input-sm" readonly>
+				</div>
+				
+				<div class="col-md-3">
+					<label class="control-label">Invoice No</label>
+					<input id="Alloinvno_spec" type="text" class="form-control input-sm" readonly>
+				</div>
+				
+				<div class="col-md-3">
+					<label class="control-label">Line No.</label>
+					<input id="Allolineno_spec" type="text" class="form-control input-sm" readonly>
+				</div>
+				
+				<div class="col-md-6">
+					<label class="control-label">Payer</label>
+					<input id="AlloPayer_spec" type="text" class="form-control input-sm" readonly>
+				</div>
+				
+				<div class="col-md-6">
+					<label class="control-label">Payer Name</label>
+					<input id="AlloPayerName_spec" type="text" class="form-control input-sm" readonly>
+				</div>
+				
+				<div class="col-md-6">
+					<label class="control-label">Document Amount</label>
+					<input id="AlloAmt_spec" type="text" class="form-control input-sm" readonly>
+				</div>
+				
+				<div class="col-md-6">
+					<label class="control-label">Document O/S</label>
+					<input id="AlloOutamt_spec" type="text" class="form-control input-sm" readonly>
+				</div>
+			</div>
+			
+			<div class='col-md-3'>
+				<div class="col-md-12">
+					<span>
+						<label class="control-label" for="AlloDebtor">MRN</label>
+						<div class='input-group'>
+							<input id="Alloinvno_spec2" name="Alloinvno_spec2" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value">
+							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+						</div>
+						<span class="help-block" id="Alloinvno_spec2_hb"></span>
+					</span>
+				</div>
+				<div class="col-md-12"><hr>
+					<label class="control-label">Balance After Allocate</label>
+					<input id="AlloBalance_spec" type="text" class="form-control input-sm" readonly>
+				</div>
+				
+				<div class="col-md-12">
+					<label class="control-label">Total Allocate</label>
+					<input id="AlloTotal_spec" type="text" class="form-control input-sm" readonly><hr>
+				</div>
+			</div>
+		</form>
+		
+		<div class='col-md-12' id='gridManAlloc_spec_c' style="padding:0">
+			<hr>
+			<table id="gridManAlloc_spec" class="table table-striped"></table>
+			<div id="pagerManAlloc_spec"></div>
+		</div>
+		
+		<div class="col-md-10 col-md-offset-1" id="alloSearch_spec">
+			<label class="control-label" id='alloLabel_spec'>Search</label>
+			<input id="alloText_spec" type="text" class="form-control input-sm">
+			<select class="form-control" id="alloCol_spec">
+				<option value="invno" >Invoice No</option>
+				<option value="auditno" >Audit No</option>
+				<option value="mrn" >MRN</option>
+				<option value="recptno" >Document No</option>
+				<option value="newic" >New IC</option>
+				<option value="staffid" >Staff ID</option>
+				<option value="batchno" >Batch No</option>
+			</select>
+		</div>
+	</div>
 	
 	<div id="ARStatementDialog" title="Statement">
 		<div class="panel panel-default">
@@ -1694,4 +1849,5 @@
 	</script>
 	<script src="js/finance/AR/arenquiry/arenquiryScript.js?v=1.22"></script>
 	<script src="js/finance/AR/arenquiry/allocateDialog_cancel.js?v=1"></script>
+	<script src="js/finance/AR/arenquiry/allocateSpecific.js?v=1.1"></script>
 @endsection

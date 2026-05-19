@@ -130,8 +130,22 @@
                         layout: 'noBorders',
                     }
 
-                var image = {image: 'letterhead', width: 200, height: 40, style: 'tableHeader', colSpan: 5, alignment: 'center',margin:[0,10,0,0]};
-                retval.push(image);
+                // var image = {image: 'letterhead', width: 200, height: 40, style: 'tableHeader', colSpan: 5, alignment: 'center',margin:[0,10,0,0]};
+
+                var logoimage = {
+                        columns: [
+                            {
+                                image: 'letterhead',width: 150,alignment:'left', margin: [30, 30, 30, 0]
+                            },
+                            {
+                                width: '*',alignment:'right',fontSize:9, margin: [30, 30, 30, 0],
+                                text: '{{$company->name}}\n{{$company->address1}}\n{{$company->address2}}\n{{$company->address3}}\n{{$company->address4}}'
+                            }
+                        ]
+                    }
+                if(currentPage == 1){
+                    retval.push(logoimage);
+                }
 
                 retval.push(header_tbl);
                 return retval
@@ -193,7 +207,7 @@
             },
             images: {
                 letterhead: {
-                    url: '{{asset('/img/letterheadukm.png')}}',
+                    url: '{{asset("/img/$company->logo1")}}',
                     headers: {
                         myheader: '123',
                         myotherheader: 'abc',

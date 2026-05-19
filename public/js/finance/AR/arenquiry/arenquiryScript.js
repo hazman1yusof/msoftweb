@@ -741,28 +741,29 @@ $(document).ready(function (){
 		colModel: [
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
 			// { label: 'Debtor Code', name: 'db_debtorcode', width: 30, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat: un_showdetail },
-			{ label: 'Debtor Code', name: 'db_debtorcode', width: 10, classes: 'text-uppercase', canSearch: true },
-			{ label: 'Debtor Name', name: 'dm_name', classes: 'wrap', width: 28, canSearch: true, selected: true },
-			{ label: 'Payer Code', name: 'db_payercode', width: 20, hidden: true },
-			{ label: 'Audit No', name: 'db_auditno', width: 9, align: 'right', canSearch: true, formatter: padzero, unformat: unpadzero },
+			{ label: 'Debtor Code', name: 'db_debtorcode', width: 8, classes: 'text-uppercase', canSearch: true },
+			{ label: 'Debtor Name', name: 'dm_name', classes: 'wrap', width: 25, canSearch: true, selected: true },
+			{ label: 'Payer Code', name: 'db_payercode', width: 15, hidden: true },
+			{ label: 'Audit No', name: 'db_auditno', width: 8, align: 'right', canSearch: true, formatter: padzero, unformat: unpadzero },
 			{ label: 'Invoice No', name: 'db_invno', hidden: true, canSearch: true },
 			{ label: 'Sector', name: 'db_unit', width: 10, hidden: true },
 			{ label: 'PO No', name: 'db_ponum', width: 8, formatter: padzero5, unformat: unpadzero, hidden: true },
-			{ label: 'Document No', name: 'db_recptno', width: 17, align: 'right', canSearch: true },
-			{ label: 'Doc Date', name: 'db_entrydate', width: 10, formatter: dateFormatter, unformat: dateUNFormatter },
-			{ label: 'Post Date', name: 'db_posteddate', width: 10, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
+			{ label: 'Document No', name: 'db_recptno', width: 12, align: 'right', canSearch: true },
+			{ label: 'Doc Date', name: 'db_entrydate', width: 8, formatter: dateFormatter, unformat: dateUNFormatter },
+			{ label: 'Post Date', name: 'db_posteddate', width: 8, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'Amount', name: 'db_amount', width: 12, align: 'right', formatter: 'currency' },
 			{ label: 'Outamount', name: 'db_outamount', width: 12, align: 'right', formatter: 'currency' },
-			{ label: 'Status', name: 'db_recstatus', width: 12 },
+			{ label: 'Status', name: 'db_recstatus', width: 8 },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
-			{ label: 'Type', name: 'db_trantype', width: 5, canSearch: true, },
+			{ label: 'Type', name: 'db_trantype', width: 6, canSearch: true, },
 			{ label: 'lineno_', name: 'db_lineno_', width: 10, hidden: true },
 			{ label: 'db_orderno', name: 'db_orderno', width: 10, hidden: true },
 			{ label: 'debtortype', name: 'db_debtortype', width: 20, hidden: true },
 			{ label: 'billdebtor', name: 'db_billdebtor', width: 20, hidden: true },
 			{ label: 'approvedby', name: 'db_approvedby', width: 20, hidden: true },
-			{ label: 'MRN', name: 'db_mrn', width: 9, align: 'right', canSearch: true, classes: 'text-uppercase', formatter: showdetail, unformat: un_showdetail },
-			{ label: 'episno', name: 'db_episno', width: 10, hidden: true },
+			{ label: 'MRN', name: 'db_mrn', width: 8, canSearch: true, classes: 'text-uppercase' },
+			{ label: 'Episno', name: 'db_episno', width: 6 },
+			{ label: 'Name', name: 'db_patname', width: 15, classes: 'text-uppercase', classes: 'wrap'},
 			{ label: 'unit', name: 'db_unit', width: 10, hidden: true },
 			{ label: 'termmode', name: 'db_termmode', width: 10, hidden: true },
 			{ label: 'hdrtype', name: 'db_hdrtype', width: 10, hidden: true },
@@ -770,8 +771,8 @@ $(document).ready(function (){
 			{ label: 'RCCASHbalance', name: 'db_RCCASHbalance', width: 10, hidden: true },
 			{ label: 'RCFinalbalance', name: 'db_RCFinalbalance', width: 10, hidden: true },
 			{ label: 'Department', name: 'db_deptcode', hidden: true },
-			{ label: 'Date Send', name: 'db_datesend', width: 12, formatter: dateFormatter, unformat: dateUNFormatter },
-			{ label: 'Paymode', name: 'db_paymode', width: 9, classes: 'text-uppercase', hidden: false },
+			{ label: 'Date Send', name: 'db_datesend', width: 8, formatter: dateFormatter, unformat: dateUNFormatter },
+			{ label: 'Paymode', name: 'db_paymode', width: 8, classes: 'text-uppercase', hidden: false },
 			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key: true },
 			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
 			{ label: 'adddate', name: 'db_adddate', width: 10, hidden: true },
@@ -790,6 +791,9 @@ $(document).ready(function (){
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow: function (rowid, selected){
+			$("#pdf_DBalloSum").hide();
+			$('#allocate_span').hide();
+			$('#allocate_cancel').hide();
 			if(selrowData("#jqGrid").db_trantype == 'RC' || selrowData("#jqGrid").db_trantype == 'RD' || selrowData("#jqGrid").db_trantype == 'RF'){
 				$("#reprint_receipt").attr('href','./receipt/showpdf?auditno='+selrowData("#jqGrid").db_idno+'&scol='+$('#Scol').val());
 				$('#reprint_receipt').show();
@@ -798,15 +802,13 @@ $(document).ready(function (){
 			}
 
 			if(((selrowData("#jqGrid").db_trantype == 'RC') || (selrowData("#jqGrid").db_trantype == 'RD') || (selrowData("#jqGrid").db_trantype == 'CN') ) && ((selrowData("#jqGrid").db_outamount > 0))){
-				$('#allocate').show();
-			}else{
-				$('#allocate').hide();
+				if(selrowData("#jqGrid").db_recstatus == 'POSTED'){
+					$('#allocate_span').show();
+				}
 			}
 
 			if(((selrowData("#jqGrid").db_trantype == 'RC') || (selrowData("#jqGrid").db_trantype == 'RD') || (selrowData("#jqGrid").db_trantype == 'CN') ) && ((selrowData("#jqGrid").db_outamount != selrowData("#jqGrid").db_amount))){
 				$('#allocate_cancel').show();
-			}else{
-				$('#allocate_cancel').hide();
 			}
 
 			$('#CN_debtorcode_show, #DN_debtorcode_show, #IN_debtorcode_show, #alloc_debtorcode_show, #track_debtorcode_show,#DF_debtorcode_show').text(selrowData("#jqGrid").db_debtorcode);
@@ -853,6 +855,12 @@ $(document).ready(function (){
 				refreshGrid("#jqGrid_da",urlParam2_da);
 				
 				$('#jqGrid3_IN_c,#jqGrid_Tracking_c,#jqGrid_df_c').show();
+
+				if(parseInt(selrowData("#jqGrid").db_episno) > 0){
+					$("#pdf_DBalloSum").show();
+					$("#pdf_DBalloSum").attr('href','./arenquiry/table?action=showPDF_alloSum&idno='+selrowData("#jqGrid").db_idno);
+				}
+
 			}else if(selrowData("#jqGrid").db_trantype == 'RF'){ // RF
 				urlParamAllo.payercode = selrowData("#jqGrid").db_payercode;
 				// refreshGrid("#gridAllo",urlParamAllo);
@@ -886,7 +894,8 @@ $(document).ready(function (){
 			if(selrowData("#jqGrid").db_episno == '0' || selrowData("#jqGrid").db_episno == ''){
 				$("#pdf_IN").attr('href','./SalesOrder/showpdf?idno='+selrowData("#jqGrid").db_idno);
 			}else{
-				$("#pdf_IN").attr('href','./SalesOrder/showpdf?idno='+selrowData("#jqGrid").db_idno+'&idno_billsum='+selrowData("#jqGrid3_IN").idno);
+				$("#pdf_IN").attr('href','./ordcom/table?action=showpdf_summ_final&mrn='+selrowData("#jqGrid").db_mrn+'&episno='+selrowData("#jqGrid").db_episno+'&lineno_='+selrowData("#jqGrid").db_lineno_);
+				// $("#pdf_IN").attr('href','./SalesOrder/showpdf?idno='+selrowData("#jqGrid").db_idno+'&idno_billsum='+selrowData("#jqGrid3_IN").idno);
 			}
 			$("#pdf_RCRD").attr('href','./receipt/showpdf?auditno='+selrowData("#jqGrid").db_auditno);
 			
@@ -1035,6 +1044,9 @@ $(document).ready(function (){
 		},
 		gridComplete: function (){
 			fdl.set_array().reset();
+		},
+		onSelectRow: function (rowid){
+			calc_jq_height_onchange("jqGridAlloc");
 		},
 	});
 	jqgrid_label_align_right("#jqGridAlloc");
@@ -1495,11 +1507,11 @@ $(document).ready(function (){
 			$("#jqGrid3_IN").setSelection($("#jqGrid3_IN").getDataIDs()[0]);
 		},
 		onSelectRow: function (data){
-			if(selrowData("#jqGrid").db_episno == '0' || selrowData("#jqGrid").db_episno == ''){
-				$("#pdf_IN").attr('href','./SalesOrder/showpdf?idno='+selrowData("#jqGrid").db_idno);
-			}else{
-				$("#pdf_IN").attr('href','./SalesOrder/showpdf?idno='+selrowData("#jqGrid").db_idno+'&idno_billsum='+selrowData("#jqGrid3_IN").idno);
-			}
+			// if(selrowData("#jqGrid").db_episno == '0' || selrowData("#jqGrid").db_episno == ''){
+			// 	$("#pdf_IN").attr('href','./SalesOrder/showpdf?idno='+selrowData("#jqGrid").db_idno);
+			// }else{
+			// 	$("#pdf_IN").attr('href','./SalesOrder/showpdf?idno='+selrowData("#jqGrid").db_idno+'&idno_billsum='+selrowData("#jqGrid3_IN").idno);
+			// }
 		},
 		gridComplete: function (){
 			fdl.set_array().reset();
@@ -4165,6 +4177,9 @@ function showdetail(cellvalue, options, rowObject){
 		//DF
 		case 'chgcode': field = ['chgcode','description'];table = "hisdb.chgmast";case_ = 'chgmast';break;
 		case 'drcode': field = ['doctorcode','doctorname'];table = "hisdb.doctor";case_ = 'doctor';break;
+
+		//allo_spec
+		case 'doctorcode': field = ['doctorcode','doctorname'];table = "hisdb.doctor";case_ = 'doctor';break;
 
 	}
 	var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};

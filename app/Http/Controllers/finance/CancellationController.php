@@ -560,11 +560,57 @@ class CancellationController extends defaultController
                         ->where('source','=',$dballoc->refsource)
                         ->where('trantype','=',$dballoc->reftrantype)
                         ->where('auditno','=',$dballoc->refauditno)
+                        ->where('lineno_',$dballoc_first->reflineno)
                         ->first();
             
             $ref_outamt = floatval($hdr_ref->outamount);
             $ref_newoutamt = floatval($ref_outamt + $alloc_amt);
             // dd($ref_newoutamt);
+
+            $dballocsum = DB::table('debtor.dballocsum')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$dballoc_first->source)
+                            ->where('trantype',$dballoc_first->trantype)
+                            ->where('auditno',$dballoc_first->auditno)
+                            ->where('lineno_',$dballoc_first->lineno_);
+
+            if($dballocsum->exists()){
+                $dballocsum_get = $dballocsum->get();
+                foreach ($dballocsum_get as $dals_obj) {
+                    $billsum_ = DB::table('debtor.billsum')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('source',$hdr_ref->source)
+                                    ->where('trantype',$hdr_ref->trantype)
+                                    ->where('invno',$hdr_ref->invno)
+                                    ->where('lineno_',$hdr_ref->lineno_)
+                                    ->where('chggroup',$dals_obj->chggroup)
+                                    ->where('chgclass',$dals_obj->chgclass)
+                                    ->first();
+
+                    // dd($dbacthdr_rev1);
+
+                    $newoutamt = $billsum_->outamt + $dals_obj->amount;
+                    if($newoutamt > $billsum_->amount){
+                        $newoutamt = $billsum_->amount;
+                    }
+
+                    DB::table('debtor.billsum')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$hdr_ref->source)
+                            ->where('trantype',$hdr_ref->trantype)
+                            ->where('invno',$hdr_ref->invno)
+                            ->where('lineno_',$hdr_ref->lineno_)
+                            ->where('invcode',$dals_obj->chggroup)
+                            ->where('chgclass',$dals_obj->chgclass)
+                            ->update([
+                                'outamt' => $newoutamt
+                            ]);
+                }
+
+                $dballocsum->update([
+                    'compcode' => 'XX'
+                ]);
+            }
             
             DB::table('debtor.dballoc')
                 ->where('idno','=',$request->idno)
@@ -662,6 +708,8 @@ class CancellationController extends defaultController
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                 ]);
 
+            $yearperiod = $this->getyearperiod($dbacthdr->posteddate);
+
             DB::table('finance.gltran')
                 ->where('compcode','=',session('compcode'))
                 ->where('source','=',$dbacthdr->source)
@@ -672,6 +720,56 @@ class CancellationController extends defaultController
                     'upduser' => session('username'), 
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                 ]);
+                       
+            //bank charges
+
+            $gltranCMCA = DB::table('finance.gltran')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=','CM')
+                        ->where('trantype','=','CA')
+                        ->where('reference','=',$dbacthdr->recptno);
+
+            if($gltranCMCA->exists()){
+               $gltranCMCA = $gltranCMCA->first();
+
+               DB::table('finance.gltran')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=','CM')
+                ->where('trantype','=','CA')
+                ->where('reference','=',$dbacthdr->recptno)
+                ->update([
+                    'compcode' => 'xx',
+                    'upduser' => session('username'), 
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                ]);
+
+                $this->recalc_glmasdtl($gltranCMCA->drcostcode,$gltranCMCA->dracc,$yearperiod);
+                $this->recalc_glmasdtl($gltranCMCA->crcostcode,$gltranCMCA->cracc,$yearperiod);
+
+                $cbtran = DB::table('finance.cbtran')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=','CM')
+                    ->where('trantype','=','CA')
+                    ->where('reference','=',$dbacthdr->recptno);
+
+                if($cbtran->exists()){
+                    $cbtran = $cbtran->first();
+
+                    DB::table('finance.cbtran')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=','CM')
+                        ->where('trantype','=','CA')
+                        ->where('reference','=',$dbacthdr->recptno)
+                        ->update([
+                            'compcode' => 'xx',
+                            'upduser' => session('username'), 
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        ]);
+
+                    $this->recalc_bankdtl($cbtran->bankcode,$yearperiod);
+                }
+            }
+
             
             DB::commit();
             
@@ -684,7 +782,7 @@ class CancellationController extends defaultController
             
             DB::rollback();
             
-            return response($e->getMessage(), 500);
+            return response($e, 500);
             
         }
     }

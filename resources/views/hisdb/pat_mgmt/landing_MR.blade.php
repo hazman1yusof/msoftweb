@@ -35,6 +35,8 @@
     </div>
 	<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
 	<input type="hidden" name="rng" id="rng">
+	<input type="hidden" name="mrnMR" id="mrnMR" value="{{request()->get('mrn')}}">
+	<input type="hidden" name="episnoMR" id="episnoMR" value="{{request()->get('episno')}}">
 	<input type="hidden" name="ismobile" id="ismobile" value="false">
 	<input type="hidden" name="epistycode_label" id="epistycode_label" value="{{$epistycode_label}}">
 
@@ -69,7 +71,7 @@
 
         <div id="info"></div>
 
-		<div class="panel panel-primary" style="position: relative;margin: 0 12px 12px 12px">
+		<div class="panel panel-primary" style="position: relative;margin: 0 12px 12px 12px;display: none;">
 			<div  class="panel-heading clearfix">
 				<h5><strong>
 					@if (request()->get('curpat') == 'true' && request()->get('epistycode') == 'IP'){{'CURRENT IN-PATIENT'}}

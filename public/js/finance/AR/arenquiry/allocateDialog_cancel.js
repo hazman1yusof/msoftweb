@@ -102,9 +102,9 @@ $(document).ready(function (){
 							
 						}).fail(function (data){
 							alert('error');
-							// $('button[classes=allocateDialog_cancel_save_btn]').show();
+							$('button[classes=allocateDialog_cancel_save_btn]').show();
 						}).success(function (data){
-							// $('button[classes=allocateDialog_cancel_save_btn]').show();
+							$('button[classes=allocateDialog_cancel_save_btn]').show();
 							$('#refresh_jqGrid').click();
 							$('#allocateDialog_cancel').dialog('close');
 						});

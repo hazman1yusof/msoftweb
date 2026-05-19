@@ -168,18 +168,20 @@ class PatmastMRController extends defaultController
             }
 
             $table_patm = DB::table('hisdb.queue') //ambil dari patmast balik
-            ->select($select_array)
+                        ->select($select_array)
                                 ->where('queue.compcode','=',session('compcode'))
-                                ->where('queue.billflag','=',0)
+                                // ->where('queue.billflag','=',0)
                                 ->where('queue.deptcode','=',"ALL")
                                 ->where('queue.epistycode','=',$sel_epistycode);
                                 // ->whereIn('queue.epistycode', ['IP','DP']);
 
-            // if($sel_epistycode == 'OP'){
-            //     $table_patm = $table_patm->whereIn('queue.epistycode', ['OP','OTC']);
-            // }else{
-            //     $table_patm = $table_patm->whereIn('queue.epistycode', ['IP','DP']);
-            // }
+            if(isset($request->mrn)){
+                $table_patm = $table_patm->where('pat_mast.MRN', $request->mrn);
+            }
+            if(isset($request->episno)){
+                $table_patm = $table_patm->where('pat_mast.Episno', $request->episno);
+            }
+            
                             
 
 

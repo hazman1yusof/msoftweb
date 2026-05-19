@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Debit Note AR</title>
+        <title>Receipt</title>
     </head>
     
     <!-- <script src="https://unpkg.com/@jsreport/browser-client/dist/jsreport.umd.js"></script>
@@ -14,8 +14,6 @@
     </object>
     
     <script>
-
-        var totamt_eng = '{{$totamt_eng}}';
         
         $(document).ready(function () {
             var docDefinition = {
@@ -42,6 +40,11 @@
                         style: 'header',
                         alignment: 'center'
                     },
+                    // {
+                    //     text: '{{$company->name}}\n{{$company->address1}}\n{{$company->address2}}\n{{$company->address3}}\n{{$company->address4}}\n\n\n',
+                    //     alignment: 'center',
+                    //     style: 'comp_header'
+                    // },
                     {
                         style: 'tableExample',
                         table: {
@@ -49,84 +52,93 @@
                             widths: [70,1,'*',70,1,70], // panjang standard dia 515
                             body: [
                                 [
-                                    { text: 'Debtor' },
+                                    { text: 'RECEIVED FROM' },
                                     { text: ':' },
-                                    { text: `{{$dbacthdr->debtorcode}} - {!!str_replace('`', '', $dbacthdr->debt_name)!!}` ,colSpan:4},
-                                    {},{},{}
-                                ],
-                                [
-                                    { text: 'Address' },
+                                    { text: `({!!$dbacthdr->payercode!!}) {!!$dbacthdr->payername!!}` },
+                                    { text: 'DATE' },
                                     { text: ':' },
-                                    { text: `{!!str_replace('`', '', $dbacthdr->cust_address1)!!}` },
-                                    { text: 'Document No.' },
-                                    { text: ':' },
-                                    @if(!empty($dbacthdr->auditno))
-                                        { text: 'DN-{{str_pad($dbacthdr->auditno, 5, "0", STR_PAD_LEFT)}}' },
+                                    @if(!empty($dbacthdr->posteddate))
+                                        { text: '{{\Carbon\Carbon::parse($dbacthdr->posteddate)->format('d/m/Y')}}' },
                                     @else
                                         { text: '' },
                                     @endif
                                 ],
                                 [
                                     { text: '' },
+                                    { text: '' },
+                                    { text: '' },
+                                    { text: 'TIME' },
                                     { text: ':' },
-                                    { text: `{!!str_replace('`', '', $dbacthdr->cust_address2)!!}` },
-                                    { text: 'Date' },
-                                    { text: ':' },
-                                    { text: '{{\Carbon\Carbon::parse($dbacthdr->entrydate)->format('d/m/Y')}}' },
+                                    @if(!empty($dbacthdr->entrytime))
+                                        { text: '{{\Carbon\Carbon::parse($dbacthdr->entrytime)->format('H:i:s')}}' },
+                                    @else
+                                        { text: '' },
+                                    @endif
                                 ],
                                 [
-                                    { text: '' },
+                                    { text: 'RECEIPT NO' },
                                     { text: ':' },
-                                    { text: `{!!str_replace('`', '', $dbacthdr->cust_address3)!!}` },
-                                    { text: 'Reference No.' },
+                                    { text: '{{$dbacthdr->recptno}}' },
+                                    { text: 'CASHIER' },
                                     { text: ':' },
-                                    { text: '{{$dbacthdr->reference}}' },
+                                    { text: '{{strtoupper($dbacthdr->entryuser)}}' },
                                 ],
                                 [
-                                    { text: '' },
+                                    { text: 'IC NO' },
                                     { text: ':' },
-                                    { text: `{!!str_replace('`', '', $dbacthdr->cust_address4)!!}` },
-                                    {},{},{}
+                                    { text: '{{$dbacthdr->Newic}}' },
+                                    { text: 'PAY BY' },
+                                    { text: ':' },
+                                    { text: '{{$dbacthdr->paymode}}' },
+                                ],
+                                [
+                                    { text: 'MRN' },
+                                    { text: ':' },
+                                    @if(empty($dbacthdr->mrn))
+                                        { text: '-' },
+                                    @else
+                                        { text: `({{str_pad($dbacthdr->mrn, 7, "0", STR_PAD_LEFT)}}) {!!$dbacthdr->Name!!}` },
+                                    @endif
+                                    { text: 'AUTHORISED NO' },
+                                    { text: ':' },
+                                    { text: '{{$dbacthdr->authno}}' },
                                 ],
                             ]
                         },
                         layout: 'noBorders',
                     },
+                    @if(count($dballocsum) > 0 )
                     {
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [70,'*','*'], // panjang standard dia 515
+                            widths: ['*',100], // panjang standard dia 515
                             body: [
                                 [
-                                    { text: 'Date', style: 'tableHeader' },
                                     { text: 'Description', style: 'tableHeader' },
-                                    { text: 'Amount', style: 'tableHeader', alignment: 'right' },
+                                    { text: 'Amount Paid', style: 'tableHeader', alignment: 'right' },
                                 ],
-                                @foreach ($dbactdtl as $obj)
                                 [
-                                    { text: '{{\Carbon\Carbon::parse($obj->entrydate)->format('d/m/Y')}}' },
-                                    { text: '{{$obj->dept_description}}' },
-                                    { text: '{{number_format($obj->amount,2)}}', alignment: 'right' },
+                                    { text: 'Being payment for', bold:true, margin: [0, 5, 0, 0] },
+                                    { text: '' }
+                                ],
+                                @if($unallocated>0)
+                                [
+                                    { text: 'UNALLOCATED', margin: [15, 0, 0, 0] },
+                                    { text: '{{number_format($unallocated,2)}}', alignment: 'right'}
+                                ],
+                                @endif
+                                @foreach ($dballocsum as $obj)
+                                [
+                                    { text: '{{$obj->remark}}', margin: [15, 0, 0, 0]},
+                                    { text: '{{number_format($obj->amount,2)}}', alignment: 'right' }
                                 ],
                                 @endforeach
                             ]
                         },
                         layout: 'lightHorizontalLines',
                     },
-                    {
-                        style: 'tableExample',
-                        table: {
-                            headerRows: 1,
-                            widths: ['*'], // panjang standard dia 515
-                            body: [
-                                [
-                                    { text: `REMARK : {!!str_replace('`', '', $dbacthdr->remark)!!}` },
-                                ],
-                            ]
-                        },
-                        layout: 'noBorders',
-                    },
+                    @endif
                     { canvas: [ { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 } ] },
                     {
                         style: 'tableExample',
@@ -146,26 +158,79 @@
                         },
                         layout: 'noBorders',
                     },
+                    @if($dbacthdr->trantype == 'RD')
+                        {
+                            style: 'tableExample',
+                            table: {
+                                headerRows: 1,
+                                widths: [65,1,80], // panjang standard dia 515
+                                body: [
+                                    [
+                                        { text: 'REFUND INFORMATION', alignment: 'center', bold: true, colSpan: 3, border: [true, true, true, false] },{},{},
+                                    ],
+                                    [
+                                        { text: 'PAYABLE TO', border: [true, false, false, false] },
+                                        { text: ':', border: [false, false, false, false] },
+                                        { text: '___________________', border: [false, false, true, false] },
+                                    ],
+                                    [
+                                        { text: 'IC NO', border: [true, false, false, false] },
+                                        { text: ':', border: [false, false, false, false] },
+                                        { text: '___________________', border: [false, false, true, false] },
+                                    ],
+                                    [
+                                        { text: 'BANK NAME', border: [true, false, false, false] },
+                                        { text: ':', border: [false, false, false, false] },
+                                        { text: '___________________', border: [false, false, true, false] },
+                                    ],
+                                    [
+                                        { text: 'BANK ACCT NO', border: [true, false, false, false] },
+                                        { text: ':', border: [false, false, false, false] },
+                                        { text: '___________________', border: [false, false, true, false] },
+                                    ],
+                                    [
+                                        { text: 'CONTACT NO', border: [true, false, false, false] },
+                                        { text: ':', border: [false, false, false, false] },
+                                        { text: '___________________', border: [false, false, true, false] },
+                                    ],
+                                    [
+                                        { text: 'PATIENT / NEXT OF KIN', colSpan: 3, border: [true, false, true, true] },{},{},
+                                    ],
+                                ]
+                            },
+                            // layout: 'noBorders',
+                        },
+                    @endif
+                    @if($dbacthdr->trantype == 'RF')
+                        {
+                            style: 'body_sign',
+                            table: {
+                                widths: [250,100,200],//panjang standard dia 515
+                                dontBreakRows: true,
+                                body: [
+                                    [
+                                        {text: 'Verified By\n\n\n\n_____________________________',bold: true,alignment: 'left',margin: [0, 0, 0, 0]},
+                                        {text: 'Received By\n\nName\n\nI/C No.',bold: true,alignment: 'right'},
+                                        {text: ': ________________________\n\n: ________________________\n\n: ________________________',bold: true,alignment: 'left'},
+                                    ],
+                                    [
+                                        {text: 'Approved By\n\n\n\n_____________________________',bold: true,alignment: 'left',margin: [0, 0, 0, 0]},
+                                        {},
+                                        {},
+                                    ],
+                                ]
+                            },
+                            layout: 'noBorders',
+                        },
+                    @endif
                     {
-                        text: 'Note:', fontSize: 9,
+                        text: 'Terms and Condition:', fontSize: 9,
                     },
                     {
-                        text: '1. Please quote document number when making payments.', fontSize: 9,
+                        text: '- Item listed are considered sold and neither returnable nor refundable.', fontSize: 9,
                     },
                     {
-                        text: '2. Recipient Copy is to be returned with payment.', fontSize: 9,
-                    },
-                    {
-                        text: '3. All cheque / money order should be crossed and payable to \n {{$company->name}} / ACCOUNT NO: {{$sysparam->pvalue2}}', fontSize: 9,
-                    },
-                    {
-                        text: '4. This invoice must be paid within 14 days after its date of issue.', fontSize: 9,
-                    },
-                    {
-                        text: '5. Please ignore this invoice if payment has been made.', fontSize: 9,
-                    },
-                    {
-                        text: '6. Please inform us with payment proof for EFT / direct payment.', fontSize: 9,
+                        text: '\nNote: \nValidity of receipt subject to clearing of cheques. Any refund below RM2000.00 will be on the same day, otherwise within 2 weeks by cheque. Please bring official receipt upon collection of refund', fontSize: 9,
                     },
                     {
                         text: '\nTHIS IS COMPUTER GENERATED DOCUMENT. NO SIGNATURE IS REQUIRED.', fontSize: 10, alignment: 'center'
