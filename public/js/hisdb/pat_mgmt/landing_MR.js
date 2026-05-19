@@ -158,8 +158,7 @@ grid.on("loaded.rs.jquery.bootgrid", function(){
     /* Executes after data is loaded and rendered */
     grid.find(".command-edit").on("click", function(e){
         disableForm('#mdl_patient_info_MR');
-        $('#jqGridPager_nok_pat_MR_left').hide();
-        $('#jqGridPager_nok_emr_MR').hide();
+        $('#jqGridPager_nok_pat_MR_left, #jqGridPager_nok_emr_MR_left').hide();
         
         let rowid = $(this).data("rowId");
         $('#lastrowid').val(rowid);

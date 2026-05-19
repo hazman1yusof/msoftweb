@@ -70,7 +70,7 @@ $(document).ready(function () {
 		},
 	});
 
-	$("#jqGrid_nok_emr_MR").inlineNav('#jqGridPager_nok_emr_MR', {edit:false,add:false,del:false,search:false,
+	$("#jqGrid_nok_emr_MR").inlineNav('#jqGridPager_nok_emr_MR', {edit:false,add:false,del:false,search:false,save:false,
 		restoreAfterSelect: false
 	}).jqGrid('navButtonAdd', "#jqGridPager_nok_emr_MR", {
 		id: "jqGridPagerRefresh",

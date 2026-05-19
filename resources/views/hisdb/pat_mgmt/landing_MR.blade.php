@@ -121,11 +121,11 @@
 			@if (request()->get('epistycode') == 'OP')
 				@if (Auth::user()->doctor == 1)
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="nursing_row">
-						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
+						@include('hisdb.nursing_MR.nursing_MR',['page_screen' => "patmast"])
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="antenatal_row">
-						@include('hisdb.antenatal.antenatal')
+						@include('hisdb.antenatal_MR.antenatal_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
@@ -133,23 +133,23 @@
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.nursingnote.nursingnote')
+						@include('hisdb.nursingnote_MR.nursingnote_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.clientprogressnote.clientprogressnote')
+						@include('hisdb.clientprogressnote_MR.clientprogressnote_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.clientprogressnote.clientprogressnoteref')
+						@include('hisdb.clientprogressnote_MR.clientprogressnoteref_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.doctornote.doctornote')
+						@include('hisdb.doctornote_MR.doctornote_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.requestfor.requestfor')
+						@include('hisdb.requestfor_MR.requestfor_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
@@ -157,35 +157,35 @@
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.dieteticCareNotes.dieteticCareNotes')
+						@include('hisdb.dieteticCareNotes_MR.dieteticCareNotes_MR')
 					</div>
 					
 					<!-- <div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.dietorder.dietorder')
+						@include('hisdb.dietorder_MR.dietorder_MR')
 					</div> -->
 				@elseif (Auth::user()->nurse == 1)
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
+						@include('hisdb.nursing_MR.nursing_MR',['page_screen' => "patmast"])
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.nursingnote.nursingnote')
+						@include('hisdb.nursingnote_MR.nursingnote_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.clientprogressnote.clientprogressnote')
+						@include('hisdb.clientprogressnote_MR.clientprogressnote_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.clientprogressnote.clientprogressnoteref')
+						@include('hisdb.clientprogressnote_MR.clientprogressnoteref_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.doctornote.doctornote')
+						@include('hisdb.doctornote_MR.doctornote_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.requestfor.requestfor')
+						@include('hisdb.requestfor_MR.requestfor_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
@@ -193,17 +193,17 @@
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.dieteticCareNotes.dieteticCareNotes')
+						@include('hisdb.dieteticCareNotes_MR.dieteticCareNotes_MR')
 					</div>
 					
 					<!-- <div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.dietorder.dietorder')
+						@include('hisdb.dietorder_MR.dietorder_MR')
 					</div> -->
 				@endif
 				
 				@if (Auth::user()->billing == 1)
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.ordcom.ordcom',['phase' => '1'])
+						@include('hisdb.ordcom_MR.ordcom_MR',['phase' => '1'])
 					</div>
 				@endif
 				
@@ -214,99 +214,99 @@
 			
 			@if (request()->get('epistycode') == 'IP' || request()->get('epistycode') == 'DP')
 				@if (Auth::user()->doctor == 1)
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="nursingED_row">
-						@include('hisdb.nursingED.nursingED')
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.nursingED_MR.nursingED_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="nursing_row">
-						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
+						@include('hisdb.nursing_MR.nursing_MR',['page_screen' => "patmast"])
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.nursingActionPlan.nursingActionPlan')
+						@include('hisdb.nursingActionPlan_MR.nursingActionPlan_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.nursingnote.nursingnote')
+						@include('hisdb.nursingnote_MR.nursingnote_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="antenatal_row">
-						@include('hisdb.antenatal.antenatal')
+						@include('hisdb.antenatal_MR.antenatal_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.clientprogressnote.clientprogressnote')
+						@include('hisdb.clientprogressnote_MR.clientprogressnote_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.clientprogressnote.clientprogressnoteref')
+						@include('hisdb.clientprogressnote_MR.clientprogressnoteref_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.doctornote.doctornote')
+						@include('hisdb.doctornote_MR.doctornote_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.requestfor.requestfor')
+						@include('hisdb.requestfor_MR.requestfor_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.dieteticCareNotes.dieteticCareNotes')
+						@include('hisdb.dieteticCareNotes_MR.dieteticCareNotes_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.dietorder.dietorder')
+						@include('hisdb.dietorder_MR.dietorder_MR')
 					</div>
 				@elseif (Auth::user()->nurse == 1)
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="nursingED_row">
-						@include('hisdb.nursingED.nursingED')
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.nursingED_MR.nursingED_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
+						@include('hisdb.nursing_MR.nursing_MR',['page_screen' => "patmast"])
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.nursingActionPlan.nursingActionPlan')
+						@include('hisdb.nursingActionPlan_MR.nursingActionPlan_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.nursingnote.nursingnote')
+						@include('hisdb.nursingnote_MR.nursingnote_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.clientprogressnote.clientprogressnote')
+						@include('hisdb.clientprogressnote_MR.clientprogressnote_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.clientprogressnote.clientprogressnoteref')
+						@include('hisdb.clientprogressnote_MR.clientprogressnoteref_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.doctornote.doctornote')
+						@include('hisdb.doctornote_MR.doctornote_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.requestfor.requestfor')
+						@include('hisdb.requestfor_MR.requestfor_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.dieteticCareNotes.dieteticCareNotes')
+						@include('hisdb.dieteticCareNotes_MR.dieteticCareNotes_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.dietorder.dietorder')
+						@include('hisdb.dietorder_MR.dietorder_MR')
 					</div>
 				@endif
 				
 				@if (Auth::user()->billing == 1)
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.ordcom.ordcom',['phase' => '1'])
+						@include('hisdb.ordcom_MR.ordcom_MR',['phase' => '1'])
 					</div>
 				@endif
 				
 				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-					@include('hisdb.discharge.discharge',['type' => "IP",'type_desc' => "In Patient"])
+					@include('hisdb.discharge_MR.discharge_MR',['type' => "IP",'type_desc' => "In Patient"])
 				</div>
 			@endif
 			
@@ -367,86 +367,77 @@
 	
 	@if (request()->get('curpat') == 'true')
 		
-		<!-- <script type="text/javascript" src="js/hisdb/discharge/discharge.js"></script> -->
+		<!-- <script type="text/javascript" src="js/hisdb/discharge_MR/discharge_MR.js"></script> -->
 		
 		@if (request()->get('epistycode') == 'OP')
 			@if (Auth::user()->doctor == 1)
-				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.2"></script>
-				<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
+				<script type="text/javascript" src="js/hisdb/nursing_MR/nursing_MR.js?v=1.2"></script>
+				<script type="text/javascript" src="js/hisdb/antenatal_MR/antenatal_MR.js"></script>
 				<script type="text/javascript" src="js/hisdb/paediatric/paediatric.js"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_intake.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote.js?v=2.4"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invFBC.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCoag.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invRP.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invLFT.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invElect.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invABGVBG.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invUFEME.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCE.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCS.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_glasgow.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_pivc.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_morsefallscale.js?v=1.2"></script>
-				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnote.js"></script>
-				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnoteref.js"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_intake_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_MR.js?v=2.4"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invFBC_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invCoag_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invRP_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invLFT_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invElect_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invABGVBG_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invUFEME_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invCE_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invCS_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_glasgow_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_pivc_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_morsefallscale_MR.js?v=1.2"></script>
+				<script type="text/javascript" src="js/hisdb/clientprogressnote_MR/clientprogressnote_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/clientprogressnote_MR/clientprogressnoteref_MR.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.6"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
-				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js?v=1.6"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote_MR/doctornote_MR.js?v=1.6"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote_MR/doctornote_medc_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote_MR/doctornote_bpgraph_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/requestfor_MR/requestfor_MR.js?v=1.6"></script>
 				<script type="text/javascript" src="js/hisdb/admhandover/admhandover.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
-				<!-- <script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script> -->
+				<script type="text/javascript" src="js/hisdb/dieteticCareNotes_MR/dieteticCareNotes_MR.js"></script>
+				<!-- <script type="text/javascript" src="js/hisdb/dietorder_MR/dietorder_MR.js?v=2"></script> -->
 			@elseif (Auth::user()->nurse == 1)
-				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.2"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_intake.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote.js?v=2.4"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invFBC.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCoag.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invRP.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invLFT.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invElect.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invABGVBG.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invUFEME.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCE.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCS.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_glasgow.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_pivc.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_morsefallscale.js?v=1.2"></script>
-				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnote.js"></script>
-				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnoteref.js"></script>
+				<script type="text/javascript" src="js/hisdb/nursing_MR/nursing_MR.js?v=1.2"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_intake_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_MR.js?v=2.4"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invFBC_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invCoag_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invRP_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invLFT_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invElect_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invABGVBG_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invUFEME_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invCE_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invCS_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_glasgow_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_pivc_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_morsefallscale_MR.js?v=1.2"></script>
+				<script type="text/javascript" src="js/hisdb/clientprogressnote_MR/clientprogressnote_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/clientprogressnote_MR/clientprogressnoteref_MR.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.6"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
-				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js?v=1.6"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote_MR/doctornote_MR.js?v=1.6"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote_MR/doctornote_medc_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote_MR/doctornote_bpgraph_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/requestfor_MR/requestfor_MR.js?v=1.6"></script>
 				<script type="text/javascript" src="js/hisdb/admhandover/admhandover.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
-				<!-- <script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script> -->
+				<script type="text/javascript" src="js/hisdb/dieteticCareNotes_MR/dieteticCareNotes_MR.js"></script>
+				<!-- <script type="text/javascript" src="js/hisdb/dietorder_MR/dietorder_MR.js?v=2"></script> -->
 			@endif
 			
 			@if (Auth::user()->billing == 1)
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_main.js?v=1.3"></script>
-					<!-- <script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rehab_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_diet_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth_doc.js"></script> -->
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp.js?v=1.1"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rehab.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_diet.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_pkg.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_main_MR.js?v=1.3"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_phar_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_disp_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_lab_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_rad_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_dfee_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_phys_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_rehab_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_diet_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_oth_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_pkg_MR.js"></script>
 			@endif
 			
 			<script type="text/javascript" src="js/hisdb/endConsult/endConsult.js"></script>
@@ -456,90 +447,81 @@
 			<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script>
 			
 			@if (Auth::user()->doctor == 1)
-				<script type="text/javascript" src="js/hisdb/nursingED/nursingED.js?v=1.3"></script>
-				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.2"></script>
+				<script type="text/javascript" src="js/hisdb/nursingED_MR/nursingED_MR.js?v=1.3"></script>
+				<script type="text/javascript" src="js/hisdb/nursing_MR/nursing_MR.js?v=1.2"></script>
 				<!-- <script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script> -->
-				<script type="text/javascript" src="js/hisdb/nursingActionPlan/nursingActionPlan.js?v=1.4"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_intake.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote.js?v=2.4"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invFBC.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCoag.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invRP.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invLFT.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invElect.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invABGVBG.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invUFEME.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCE.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCS.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_glasgow.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_pivc.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_morsefallscale.js?v=1.2"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_thrombo.js?v=1"></script>
-				<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
-				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnote.js"></script>
-				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnoteref.js"></script>
+				<script type="text/javascript" src="js/hisdb/nursingActionPlan_MR/nursingActionPlan_MR.js?v=1.4"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_intake_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_MR.js?v=2.4"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invFBC_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invCoag_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invRP_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invLFT_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invElect_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invABGVBG_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invUFEME_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invCE_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invCS_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_glasgow_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_pivc_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_morsefallscale_MR.js?v=1.2"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_thrombo_MR.js?v=1"></script>
+				<script type="text/javascript" src="js/hisdb/antenatal_MR/antenatal_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/clientprogressnote_MR/clientprogressnote_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/clientprogressnote_MR/clientprogressnoteref_MR.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.6"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
-				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js?v=1.6"></script>
-				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
-				<script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote_MR/doctornote_MR.js?v=1.6"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote_MR/doctornote_medc_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote_MR/doctornote_bpgraph_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/requestfor_MR/requestfor_MR.js?v=1.6"></script>
+				<script type="text/javascript" src="js/hisdb/dieteticCareNotes_MR/dieteticCareNotes_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/dietorder_MR/dietorder_MR.js?v=2"></script>
 			@elseif (Auth::user()->nurse == 1)
-				<script type="text/javascript" src="js/hisdb/nursingED/nursingED.js?v=1.3"></script>
-				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.2"></script>
+				<script type="text/javascript" src="js/hisdb/nursingED_MR/nursingED_MR.js?v=1.3"></script>
+				<script type="text/javascript" src="js/hisdb/nursing_MR/nursing_MR.js?v=1.2"></script>
 				<!-- <script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script> -->
-				<script type="text/javascript" src="js/hisdb/nursingActionPlan/nursingActionPlan.js?v=1.4"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_intake.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote.js?v=2.4"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invFBC.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCoag.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invRP.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invLFT.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invElect.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invABGVBG.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invUFEME.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCE.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCS.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_glasgow.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_pivc.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_morsefallscale.js?v=1.2"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_thrombo.js?v=1"></script>
-				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnote.js"></script>
-				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnoteref.js"></script>
+				<script type="text/javascript" src="js/hisdb/nursingActionPlan_MR/nursingActionPlan_MR.js?v=1.4"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_intake_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_MR.js?v=2.4"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invFBC_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invCoag_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invRP_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invLFT_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invElect_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invABGVBG_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invUFEME_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invCE_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invCS_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_glasgow_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_pivc_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_morsefallscale_MR.js?v=1.2"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_thrombo_MR.js?v=1"></script>
+				<script type="text/javascript" src="js/hisdb/clientprogressnote_MR/clientprogressnote_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/clientprogressnote_MR/clientprogressnoteref_MR.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.6"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
-				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js?v=1.6"></script>
-				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
-				<script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote_MR/doctornote_MR.js?v=1.6"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote_MR/doctornote_medc_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote_MR/doctornote_bpgraph_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/requestfor_MR/requestfor_MR.js?v=1.6"></script>
+				<script type="text/javascript" src="js/hisdb/dieteticCareNotes_MR/dieteticCareNotes_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/dietorder_MR/dietorder_MR.js?v=2"></script>
 			@endif
 			
 			@if (Auth::user()->billing == 1)
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_main.js?v=1.3"></script>
-				<!-- <script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar_doc.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp_doc.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab_doc.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad_doc.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee_doc.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys_doc.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rehab_doc.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_diet_doc.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth_doc.js"></script> -->
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rehab.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_diet.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_pkg.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_main_MR.js?v=1.3"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_phar_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_disp_MR.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_lab_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_rad_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_dfee_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_phys_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_rehab_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_diet_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_oth_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_pkg_MR.js"></script>
 			@endif
 			
-			<script type="text/javascript" src="js/hisdb/discharge/discharge.js"></script>
+			<script type="text/javascript" src="js/hisdb/discharge_MR/discharge_MR.js"></script>
 		@endif
 		
 	@endif
