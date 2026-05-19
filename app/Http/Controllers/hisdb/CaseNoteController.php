@@ -19,19 +19,115 @@ class CaseNoteController extends defaultController
         $this->middleware('auth');
     }
 
-    public function show(Request $request)
-    {       
-        $user = DB::table('sysdb.users')->where('username','=',session('username'))->first();
-        $dept = DB::table('sysdb.department')->where('deptcode','=',$user->deptcode)->first();
-        return view('hisdb.casenote.casenote',
-            [
-                'userdeptcode' => $dept->deptcode,
-                'userdeptdesc' => $dept->description
-            ]);
+    public function table(Request $request){
+        switch($request->action){
+            case 'preepisode_table':
+                return $this->preepisode_table($request);
+            case 'preepisode_epis':
+                return $this->preepisode_epis($request);
+            case 'dosage_table':
+                return $this->dosage_table($request);
+            case 'post_entry':
+                return $this->post_entry($request);
+        }
     }
 
+    public function show(Request $request){
+        $user = DB::table('sysdb.users')->where('username','=',session('username'))->where('compcode',session('compcode'))->first();
+        $dept = DB::table('sysdb.department')->where('deptcode','=',$user->dept)->where('compcode',session('compcode'))->first();
+        $btype = DB::table('sysdb.sysparam')->where('source','=','OP')->where('trantype','=','BILLTYPE')->where('compcode',session('compcode'))->first();
+        // $epistype = DB::table('hisdb.epistype')->where('epistycode',$request->epistycode)->where('compcode',session('compcode'))->first();
+        $cashier = DB::table('debtor.tilldetl')
+                        ->where('compcode',session('compcode'))
+                        ->where('cashier',session('username'))
+                        ->whereNull('closedate')
+                        ->exists();
+        
+        $btype_ = DB::table('hisdb.billtymst')->where('compcode','=',session('compcode'))->where('billtype','=',$btype->pvalue1)->first();
+        
+        $data_send = [
+                // 'epistycode_label' => $epistype->label,
+                'userdeptcode' => $dept->deptcode,
+                'userdeptdesc' => $dept->description,
+                'billtype_def_code' => $btype_->billtype,
+                'billtype_def_desc' => $btype_->description,
+                'cashier' => $cashier,
+            ];
+        
+        if(Auth::user()->billing == 1){
+            $ordcomtt_phar = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','OE')
+                        ->where('trantype','=','PHAR')->first();
+            $ordcomtt_disp = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','OE')
+                        ->where('trantype','=','DISP')->first();
+            $ordcomtt_rad = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','OE')
+                        ->where('trantype','=','RAD')->first();
+            $ordcomtt_lab = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','OE')
+                        ->where('trantype','=','LAB')->first();
+            $ordcomtt_phys = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','OE')
+                        ->where('trantype','=','PHYSIOTERAPHY')->first();
+            $ordcomtt_rehab = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','OE')
+                        ->where('trantype','=','REHABILITATION')->first();
+            $ordcomtt_diet = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','OE')
+                        ->where('trantype','=','DIETATIC')->first();
+            $ordcomtt_dfee = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','OE')
+                        ->where('trantype','=','DOCTORFEES')->first();
+            $ordcomtt_oth = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','OE')
+                        ->where('trantype','=','OTH')->first();
+            $ordcomtt_pkg = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','OE')
+                        ->where('trantype','=','PKG')->first();
+            
+            $data_send['ordcomtt_phar'] = $ordcomtt_phar->pvalue1;
+            $data_send['ordcomtt_disp'] = $ordcomtt_disp->pvalue1;
+            $data_send['ordcomtt_rad'] = $ordcomtt_rad->pvalue1;
+            $data_send['ordcomtt_lab'] = $ordcomtt_lab->pvalue1;
+            $data_send['ordcomtt_phys'] = $ordcomtt_phys->pvalue1;
+            $data_send['ordcomtt_rehab'] = $ordcomtt_rehab->pvalue1;
+            $data_send['ordcomtt_diet'] = $ordcomtt_diet->pvalue1;
+            $data_send['ordcomtt_dfee'] = $ordcomtt_dfee->pvalue1;
+            $data_send['ordcomtt_oth'] = $ordcomtt_oth->pvalue1;
+            $data_send['ordcomtt_pkg'] = $ordcomtt_pkg->pvalue1;
+            
+            $data_send['phardept_dflt'] = session('deptcode');
+            $data_send['dispdept_dflt'] = session('deptcode');
+            $data_send['labdept_dflt'] = $ordcomtt_lab->pvalue2;
+            $data_send['raddept_dflt'] = $ordcomtt_rad->pvalue2;
+            $data_send['physdept_dflt'] = $ordcomtt_phys->pvalue2;
+            $data_send['rehabdept_dflt'] = $ordcomtt_rehab->pvalue2;
+            $data_send['dfeedept_dflt'] = $ordcomtt_dfee->pvalue2;
+            $data_send['dietdept_dflt'] = $ordcomtt_diet->pvalue2;
+            $data_send['pkgdept_dflt'] = $dept->deptcode;
+            $data_send['othdept_dflt'] = session('deptcode');
+        }
+        
+        // untuk tabs nursing note
+        $invest_type = DB::table('nursing.nurs_invest_type')
+                    ->where('compcode','=',session('compcode'))
+                    ->get();
+        
+        return view('hisdb.casenote.casenote',$data_send,compact('invest_type'));
+    }
+    
     public function save_patient(Request $request){
-        DB::connection()->enableQueryLog();
         switch ($request->oper) {
             case 'add':
                 $this->_add($request);
@@ -50,86 +146,492 @@ class CaseNoteController extends defaultController
                 break;
         }
     }
+    
+    public function post_entry(Request $request){  //get_patient_list 
 
-    public function post_entry(Request $request)
-    {   
+        // $mrn_range = $this->mrn_range($request);
 
-        $mrn_range = $this->mrn_range($request);
+        if($request->curpat == 'true'){
 
-        $table_patm = DB::table('hisdb.pat_mast'); //ambil dari patmast balik
-                        // ->where('compcode','=',session('compcode'));
+            $isdoctor = Auth::user()->doctor;
+            $request->rows = $request->rowCount;
 
+            $sel_epistycode = $request->epistycode;
+
+            $select_array = ['pat_mast.idno','pat_mast.CompCode','pat_mast.MRN','queue.Episno','pat_mast.Name','pat_mast.Call_Name','pat_mast.addtype','pat_mast.Address1','pat_mast.Address2','pat_mast.Address3','pat_mast.Postcode','pat_mast.citycode','pat_mast.AreaCode','pat_mast.StateCode','pat_mast.CountryCode','pat_mast.telh','pat_mast.telhp','pat_mast.telo','pat_mast.Tel_O_Ext','pat_mast.ptel','pat_mast.ptel_hp','pat_mast.ID_Type','pat_mast.idnumber','pat_mast.Newic','pat_mast.Oldic','pat_mast.icolor','pat_mast.Sex','pat_mast.DOB','pat_mast.Religion','pat_mast.AllergyCode1','pat_mast.AllergyCode2','pat_mast.Century','pat_mast.Citizencode','pat_mast.OccupCode','pat_mast.Staffid','pat_mast.MaritalCode','pat_mast.LanguageCode','pat_mast.TitleCode','pat_mast.RaceCode','pat_mast.bloodgrp','pat_mast.Accum_chg','pat_mast.Accum_Paid','pat_mast.first_visit_date','pat_mast.last_visit_date','pat_mast.last_episno','pat_mast.PatStatus','pat_mast.Confidential','pat_mast.Active','pat_mast.FirstIpEpisNo','pat_mast.FirstOpEpisNo','pat_mast.AddUser','pat_mast.AddDate','pat_mast.Lastupdate','pat_mast.LastUser','pat_mast.OffAdd1','pat_mast.OffAdd2','pat_mast.OffAdd3','pat_mast.OffPostcode','pat_mast.MRFolder','pat_mast.MRLoc','pat_mast.MRActive','pat_mast.OldMrn','pat_mast.NewMrn','pat_mast.Remarks','pat_mast.RelateCode','pat_mast.ChildNo','pat_mast.CorpComp','pat_mast.Email','pat_mast.Email_official','pat_mast.CurrentEpis','pat_mast.NameSndx','pat_mast.BirthPlace','pat_mast.TngID','pat_mast.PatientImage','pat_mast.pAdd1','pat_mast.pAdd2','pat_mast.pAdd3','pat_mast.pPostCode','pat_mast.DeptCode','pat_mast.DeceasedDate','pat_mast.PatientCat','pat_mast.PatType','pat_mast.PatClass','pat_mast.upduser','pat_mast.upddate','pat_mast.recstatus','pat_mast.loginid','pat_mast.pat_category','pat_mast.idnumber_exp','pat_mast.PatientImage','queue.epistycode as q_epistycode', 'queue.reg_date', 'queue.QueueNo','episode.idno as e_idno','episode.bed as bednum','episode.newcaseP','episode.followupP','pat_mast.iPesakit','doctor.doctorname as q_doctorname','epispayer.payercode','debtormast.name as payername','episode.billtype','episode.epistycode'];
+
+            // ,'bed.ward as ward'
+
+            if($sel_epistycode == 'IP'){
+                // array_push($select_array, 'bedalloc.ward','bedalloc.bednum');
+            }
+
+            $table_patm = DB::table('hisdb.queue') //ambil dari patmast balik
+            ->select($select_array)
+                                ->where('queue.compcode','=',session('compcode'))
+                                ->where('queue.billflag','=',0)
+                                ->where('queue.deptcode','=',"ALL")
+                                ->where('queue.epistycode','=',$sel_epistycode);
+                                // ->whereIn('queue.epistycode', ['IP','DP']);
+
+            // if($sel_epistycode == 'OP'){
+            //     $table_patm = $table_patm->whereIn('queue.epistycode', ['OP','OTC']);
+            // }else{
+            //     $table_patm = $table_patm->whereIn('queue.epistycode', ['IP','DP']);
+            // }
+                            
+
+
+            $table_patm = $table_patm->join('hisdb.pat_mast', function($join){
+                                $join = $join->where('pat_mast.compcode','=',session('compcode'))
+                                                ->on('queue.mrn', '=', 'pat_mast.MRN');
+                                                // ->where('pat_mast.Active','=','1')
+                                                // ->whereBetween('pat_mast.MRN',$mrn_range);
+                                            
+                            })
+                            ->leftJoin('hisdb.epispayer', function($join) use ($request){
+                                $join = $join->where('epispayer.compcode','=',session('compcode'))
+                                                ->on('epispayer.mrn', '=', 'pat_mast.MRN')
+                                                ->on('epispayer.episno','=','pat_mast.Episno')
+                                                ->where('epispayer.lineno','=','1');
+                            })
+                            ->leftJoin('hisdb.episode', function($join) use ($request){
+                                $join = $join->on('episode.mrn', '=', 'queue.MRN')
+                                                ->on('episode.episno','=','queue.Episno')
+                                                ->where('episode.compcode','=',session('compcode'));
+                            })
+                            // ->leftJoin('hisdb.bed', function($join) use ($request){
+                            //     $join = $join->where('bed.compcode','=',session('compcode'))
+                            //                     ->on('bed.bednum','=','episode.bed');
+                            // })
+                            ->leftJoin('debtor.debtormast', function($join) use ($request){
+                                $join = $join->where('debtormast.compcode','=',session('compcode'))
+                                                ->on('debtormast.debtorcode', '=', 'epispayer.payercode');
+                            });
+                            // ->leftJoin('hisdb.racecode', function($join) use ($request){
+                            //     $join = $join->on('racecode.Code', '=', 'pat_mast.RaceCode')
+                            //                     ->where('racecode.compcode','=',session('compcode'));
+                            // })
+                            // ->leftJoin('hisdb.religion', function($join) use ($request){
+                            //     $join = $join->on('religion.Code', '=', 'pat_mast.Religion')
+                            //                     ->where('religion.compcode','=',session('compcode'));
+                            // })
+                            // ->leftJoin('hisdb.occupation', function($join) use ($request){
+                            //     $join = $join->on('occupation.occupcode', '=', 'pat_mast.OccupCode')
+                            //                     ->where('occupation.compcode','=',session('compcode'));
+                            // })
+                            // ->leftJoin('hisdb.citizen', function($join) use ($request){
+                            //     $join = $join->on('citizen.Code', '=', 'pat_mast.Citizencode')
+                            //                     ->where('citizen.compcode','=',session('compcode'));
+                            // })
+                            // ->leftJoin('hisdb.areacode', function($join) use ($request){
+                            //     $join = $join->on('areacode.areacode', '=', 'pat_mast.AreaCode')
+                            //                     ->where('areacode.compcode','=',session('compcode'));
+                            // });
+
+            // if($isdoctor){
+            //     if(empty(Auth::user()->doctorcode)){
+            //         $table_patm = $table_patm->leftJoin('hisdb.doctor', function($join) use ($request){
+            //                     $join = $join->on('doctor.doctorcode', '=', 'queue.admdoctor')
+            //                                 ->where('doctor.compcode','=',session('compcode'));
+            //                 });
+            //     }else{
+            //         $table_patm = $table_patm->join('hisdb.doctor', function($join) use ($request){
+            //                         $join = $join->on('doctor.doctorcode', '=', 'queue.admdoctor')
+            //                                     ->where('queue.admdoctor', '=', Auth::user()->doctorcode)
+            //                                     ->where('doctor.compcode','=',session('compcode'));
+            //                     });
+            //     }
+            // }else{
+                $table_patm = $table_patm->leftJoin('hisdb.doctor', function($join) use ($request){
+                                $join = $join->on('doctor.doctorcode', '=', 'queue.admdoctor')
+                                            ->where('doctor.compcode','=',session('compcode'));
+                            });
+            // }
+
+
+                            
+            // if($sel_epistycode == 'IP'){
+            //     $table_patm = $table_patm->leftJoin('hisdb.bedalloc', function($join) use ($request){
+            //                     $join = $join->on('bedalloc.mrn', '=', 'pat_mast.MRN')
+            //                                 ->on('bedalloc.episno', '=', 'pat_mast.Episno')
+            //                                 ->where('bedalloc.astatus', '=', 'OCCUPIED')
+            //                                 ->where('bedalloc.compcode','=',session('compcode'));
+            //                 });
+            // }
+                            // ->leftJoin('hisdb.doctor','doctor.doctorcode','=','queue.admdoctor')
+                            // ->leftJoin('hisdb.racecode','racecode.Code','=','pat_mast.RaceCode')
+                            // ->leftJoin('hisdb.religion','religion.Code','=','pat_mast.Religion')
+                            // ->leftJoin('hisdb.occupation','occupation.occupcode','=','pat_mast.OccupCode')
+                            // ->leftJoin('hisdb.citizen','citizen.Code','=','pat_mast.Citizencode')
+                            // ->leftJoin('hisdb.areacode','areacode.areacode','=','pat_mast.AreaCode')
+            // dump($table_patm->get());
+            // dd($table_patm->paginate());
+
+            if(!empty($request->searchCol) && $request->searchCol[0]!='doctor'){
+                $table_patm = $table_patm->where('pat_mast.'.$request->searchCol[0],'like',$request->searchVal[0]);
+            }
+
+           if(!empty($request->sort)){
+                foreach ($request->sort as $key => $value) {
+                    $table_patm = $table_patm->orderBy($key, $value);
+                }
+            }else{
+                $table_patm = $table_patm->orderBy('queue.idno', 'DESC');
+            }
+
+            $paginate_patm = $table_patm->paginate($request->rows);
+
+
+            foreach ($paginate_patm->items() as $key => $value) {
+                // foreach ($paginate->items() as $key2 => $value2) {
+                //     if($value->MRN == $value2->mrn){
+                //         $value->q_doctorname = $value2->doctorname;
+                //         $value->q_epistycode = $value2->epistycode;
+                //     }
+                // }
+
+                // $episode = DB::table('hisdb.episode')
+                //             ->select('newcaseP','newcaseNP','followupP','followupNP','billtype','regdept')
+                //             ->where('compcode',session('compcode'))
+                //             ->where('mrn','=',$value->MRN)
+                //             ->where('episno','=',$value->Episno);
+
+                // if($episode->exists()){
+                //     $totamount = $this->get_ordcom_totamount($value->MRN,$value->Episno);
+                //     $episode = $episode->first();
+                if(!empty($value->e_idno)){
+                    if($value->newcaseP == 1 || $value->followupP == 1){
+                        $value->pregnant = 1;
+                    }else{
+                        $value->pregnant = 0;
+                    }
+                }
+
+                //     $value->billtype = $episode->billtype;
+                //     $value->regdept = $episode->regdept;
+                //     $value->totamount = $totamount;
+                // }
+
+
+            }
+
+            $responce = new stdClass();
+            $responce->current = $paginate_patm->currentPage();
+            $responce->lastPage = $paginate_patm->lastPage();
+            $responce->total = $paginate_patm->total();
+            $responce->rowCount = $request->rowCount;
+            $responce->rows = $paginate_patm->items();
+            $responce->query = $this->getQueries($table_patm);
+            
+            return json_encode($responce);
+
+        }else{
+            
+            // SELECT COUNT(*) FROM 'pat_mast' WHERE idno <= 62863
+            // if(!empty($request->lastidno)){
+                // $count_ = DB::table('hisdb.pat_mast')
+                //             ->where('idno','<=','62863')
+                //             ->count();
+            // }
+            // dd($count_);
+            
+            // SELECT * FROM pat_mast WHERE idno = 62863
+            // $lastrow = DB::table('hisdb.pat_mast')
+            //                 ->where('idno','<=','62863');
+            
+            // SELECT * FROM pat_mast LIMIT 10 OFFSET 62814  
+            // $lastrow = DB::table('hisdb.pat_mast')
+            //                 ->where('idno','<=','62863');
+            
+            $table_patm = DB::table('hisdb.pat_mast')
+                        ->select('pat_mast.idno','pat_mast.CompCode','pat_mast.MRN','pat_mast.Episno','pat_mast.iPesakit','pat_mast.Name','pat_mast.Call_Name','pat_mast.addtype','pat_mast.Address1','pat_mast.Address2','pat_mast.Address3','pat_mast.Postcode','pat_mast.citycode','pat_mast.AreaCode','pat_mast.StateCode','pat_mast.CountryCode','pat_mast.telh','pat_mast.telhp','pat_mast.telo','pat_mast.Tel_O_Ext','pat_mast.ptel','pat_mast.ptel_hp','pat_mast.ID_Type','pat_mast.idnumber','pat_mast.Newic','pat_mast.Oldic','pat_mast.icolor','pat_mast.Sex','pat_mast.DOB','pat_mast.Religion','pat_mast.AllergyCode1','pat_mast.AllergyCode2','pat_mast.Century','pat_mast.Citizencode','pat_mast.OccupCode','pat_mast.Staffid','pat_mast.MaritalCode','pat_mast.LanguageCode','pat_mast.TitleCode','pat_mast.RaceCode','pat_mast.bloodgrp','pat_mast.Accum_chg','pat_mast.Accum_Paid','pat_mast.first_visit_date','pat_mast.Reg_Date','pat_mast.last_visit_date','pat_mast.last_episno','pat_mast.PatStatus','pat_mast.Confidential','pat_mast.Active','pat_mast.FirstIpEpisNo','pat_mast.FirstOpEpisNo','pat_mast.AddUser','pat_mast.AddDate','pat_mast.Lastupdate','pat_mast.LastUser','pat_mast.OffAdd1','pat_mast.OffAdd2','pat_mast.OffAdd3','pat_mast.OffPostcode','pat_mast.MRFolder','pat_mast.MRLoc','pat_mast.MRActive','pat_mast.OldMrn','pat_mast.NewMrn','pat_mast.Remarks','pat_mast.RelateCode','pat_mast.ChildNo','pat_mast.CorpComp','pat_mast.Email','pat_mast.Email_official','pat_mast.CurrentEpis','pat_mast.NameSndx','pat_mast.BirthPlace','pat_mast.TngID','pat_mast.PatientImage','pat_mast.pAdd1','pat_mast.pAdd2','pat_mast.pAdd3','pat_mast.pPostCode','pat_mast.DeptCode','pat_mast.DeceasedDate','pat_mast.PatientCat','pat_mast.PatType','pat_mast.PatClass','pat_mast.upduser','pat_mast.upddate','pat_mast.recstatus','pat_mast.loginid','pat_mast.pat_category','pat_mast.idnumber_exp','pat_mast.telhp2','pat_mast.patient_status','pat_mast.totallimit','pat_mast.HDlimit','pat_mast.EPlimit','pat_mast.computerid','episode.episno as ep_episno','episode.epistycode as ep_epistycode','episode.reg_date as ep_regdate','episode.dischargedate as ep_dischargedate','episode.regdept as ep_regdept','casetype.description as case_description','doctor.doctorname','racecode.Description as raceDesc','religion.Description as religionDesc','occupation.description as occupDesc','citizen.Description as cityDesc','areacode.Description as areaDesc')
+                        ->where('pat_mast.CompCode','=',session('compcode'));
+            
+            // dd($table_patm->limit(10)->offset(intval($count_) - 10)->get());
+            
+            $table_patm = $table_patm->leftJoin('hisdb.episode', function($join) use ($request){
+                            $join = $join->on('episode.mrn', '=', 'pat_mast.MRN')
+                                        // ->on('episode.episno','=','pat_mast.Episno')
+                                        ->where('episode.compcode','=',session('compcode'));
+                        })
+                        ->leftJoin('hisdb.casetype', function($join) use ($request){
+                            $join = $join->on('casetype.case_code', '=', 'episode.case_code')
+                                        ->where('casetype.recstatus','=','ACTIVE')
+                                        ->where('casetype.compcode','=',session('compcode'));
+                        })
+                        ->leftJoin('hisdb.doctor', function($join) use ($request){
+                            $join = $join->on('doctor.doctorcode', '=', 'episode.admdoctor')
+                                        ->where('doctor.recstatus','=','ACTIVE')
+                                        ->where('doctor.compcode','=',session('compcode'));
+                        })
+                        ->leftJoin('hisdb.racecode', function($join) use ($request){
+                            $join = $join->on('racecode.Code', '=', 'pat_mast.RaceCode')
+                                        ->where('racecode.compcode','=',session('compcode'));
+                        })
+                        ->leftJoin('hisdb.religion', function($join) use ($request){
+                            $join = $join->on('religion.Code', '=', 'pat_mast.Religion')
+                                        ->where('religion.compcode','=',session('compcode'));
+                        })
+                        ->leftJoin('hisdb.occupation', function($join) use ($request){
+                            $join = $join->on('occupation.occupcode', '=', 'pat_mast.OccupCode')
+                                        ->where('occupation.compcode','=',session('compcode'));
+                        })
+                        ->leftJoin('hisdb.citizen', function($join) use ($request){
+                            $join = $join->on('citizen.Code', '=', 'pat_mast.Citizencode')
+                                        ->where('citizen.compcode','=',session('compcode'));
+                        })
+                        ->leftJoin('hisdb.areacode', function($join) use ($request){
+                            $join = $join->on('areacode.areacode', '=', 'pat_mast.AreaCode')
+                                        ->where('areacode.compcode','=',session('compcode'));
+                        });
+            
+            if(!empty($request->MRN)){
+                $table_patm = $table_patm->where('pat_mast.MRN','=',$request->MRN);
+            }
+            
+            if(!empty($request->Newic)){
+                $table_patm = $table_patm->where('pat_mast.Newic','=',$request->Newic);
+            }
+            
+            if(!empty($request->dob)){
+                $table_patm = $table_patm->where('pat_mast.DOB','=',$request->dob);
+            }
+            
+            if(!empty($request->searchCol)){
+                $searchCol_array = $request->searchCol;
+                $count = array_count_values($searchCol_array);
+                
+                foreach ($count as $key => $value) {
+                    $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+                    
+                    $table_patm = $table_patm->orWhere(function ($table_patm) use ($request,$searchCol_array,$occur_ar) {
+                        foreach ($searchCol_array as $key => $value) {
+                            $found = array_search($key,$occur_ar);
+                            if($found !== false){
+                                $table_patm->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                            }
+                        }
+                    });
+                }
+            }
+            
+            // $table_patm = $table_patm
+            //             ->where('Active','=','1')
+            //             ->where('compcode','=',session('compcode'))
+            //             ->whereBetween('MRN',$mrn_range);
+            
+            if(!empty($request->sort)){
+                foreach ($request->sort as $key => $value) {
+                    $table_patm = $table_patm->orderBy($key, $value);
+                }
+            }else{
+                $table_patm = $table_patm->orderBy('pat_mast.idno', 'DESC');
+            }
+            
+            $request->page = $request->current;
+            
+            //////////paginate/////////
+            // $paginate = $table_patm->paginate($request->rowCount);
+            $paginate = $table_patm->paginate($request->rows);
+            
+            // foreach ($paginate->items() as $key => $value) {
+            //     // if($value->PatStatus==1){
+            //     //     // $queue = DB::table('hisdb.queue')
+            //     //     //             ->select(['queue.mrn','doctor.doctorname','queue.epistycode'])
+            //     //     //             ->leftJoin('hisdb.doctor','doctor.doctorcode','=','queue.admdoctor')
+            //     //     //             ->where('queue.mrn','=',$value->MRN)
+            //     //     //             ->where('queue.episno','=',$value->Episno)
+            //     //     //             ->where('queue.deptcode','=',"ALL");
+            //     //     $episode = DB::table('hisdb.episode')
+            //     //                 ->select(['episode.mrn','doctor.doctorname','episode.epistycode'])
+            //     //                 ->leftJoin('hisdb.doctor','doctor.doctorcode','=','episode.admdoctor')
+            //     //                 ->where('episode.mrn','=',$value->MRN)
+            //     //                 ->where('episode.episno','=',$value->Episno)
+            //     //                 ->where('episode.compcode','=',session('compcode'));
+            
+            //     //     if($episode->exists()){
+            //     //         $episode = $episode->first();
+            //     //     // dump($episode->epistycode);
+            //     //         $value->q_epistycode = $episode->epistycode;
+            //     //         $value->q_doctorname = $episode->doctorname;
+            //     //     }
+            //     // }
+            // }
+            
+            $responce = new stdClass();
+            $responce->current = $paginate->currentPage();
+            $responce->lastPage = $paginate->lastPage();
+            $responce->total = $paginate->total();
+            $responce->rowCount = $request->rowCount;
+            $responce->rows = $paginate->items();
+            $responce->sql = $table_patm->toSql();
+            $responce->sql_bind = $table_patm->getBindings();
+            
+            return json_encode($responce);
+            
+        }
+    }
+    
+    public function post_entry1(Request $request){
+        
+        $table = DB::table('hisdb.pat_mast')
+                ->select('pat_mast.idno','pat_mast.CompCode','pat_mast.MRN','pat_mast.Episno','pat_mast.iPesakit','pat_mast.Name','pat_mast.Call_Name','pat_mast.addtype','pat_mast.Address1','pat_mast.Address2','pat_mast.Address3','pat_mast.Postcode','pat_mast.citycode','pat_mast.AreaCode','pat_mast.StateCode','pat_mast.CountryCode','pat_mast.telh','pat_mast.telhp','pat_mast.telo','pat_mast.Tel_O_Ext','pat_mast.ptel','pat_mast.ptel_hp','pat_mast.ID_Type','pat_mast.idnumber','pat_mast.Newic','pat_mast.Oldic','pat_mast.icolor','pat_mast.Sex','pat_mast.DOB','pat_mast.Religion','pat_mast.AllergyCode1','pat_mast.AllergyCode2','pat_mast.Century','pat_mast.Citizencode','pat_mast.OccupCode','pat_mast.Staffid','pat_mast.MaritalCode','pat_mast.LanguageCode','pat_mast.TitleCode','pat_mast.RaceCode','pat_mast.bloodgrp','pat_mast.Accum_chg','pat_mast.Accum_Paid','pat_mast.first_visit_date','pat_mast.Reg_Date','pat_mast.last_visit_date','pat_mast.last_episno','pat_mast.PatStatus','pat_mast.Confidential','pat_mast.Active','pat_mast.FirstIpEpisNo','pat_mast.FirstOpEpisNo','pat_mast.AddUser','pat_mast.AddDate','pat_mast.Lastupdate','pat_mast.LastUser','pat_mast.OffAdd1','pat_mast.OffAdd2','pat_mast.OffAdd3','pat_mast.OffPostcode','pat_mast.MRFolder','pat_mast.MRLoc','pat_mast.MRActive','pat_mast.OldMrn','pat_mast.NewMrn','pat_mast.Remarks','pat_mast.RelateCode','pat_mast.ChildNo','pat_mast.CorpComp','pat_mast.Email','pat_mast.Email_official','pat_mast.CurrentEpis','pat_mast.NameSndx','pat_mast.BirthPlace','pat_mast.TngID','pat_mast.PatientImage','pat_mast.pAdd1','pat_mast.pAdd2','pat_mast.pAdd3','pat_mast.pPostCode','pat_mast.DeptCode','pat_mast.DeceasedDate','pat_mast.PatientCat','pat_mast.PatType','pat_mast.PatClass','pat_mast.upduser','pat_mast.upddate','pat_mast.recstatus','pat_mast.loginid','pat_mast.pat_category','pat_mast.idnumber_exp','pat_mast.telhp2','pat_mast.patient_status','pat_mast.totallimit','pat_mast.HDlimit','pat_mast.EPlimit','pat_mast.computerid','episode.episno as ep_episno','episode.epistycode as ep_epistycode','episode.reg_date as ep_regdate','episode.dischargedate as ep_dischargedate','episode.regdept as ep_regdept','casetype.description as case_description','doctor.doctorname','racecode.Description as raceDesc','religion.Description as religionDesc','occupation.description as occupDesc','citizen.Description as cityDesc','areacode.Description as areaDesc')
+                ->where('pat_mast.CompCode','=',session('compcode'));
+        
+        $table = $table->leftJoin('hisdb.episode', function($join) use ($request){
+                    $join = $join->on('episode.mrn', '=', 'pat_mast.MRN')
+                                // ->on('episode.episno','=','pat_mast.Episno')
+                                ->where('episode.compcode','=',session('compcode'));
+                })
+                ->leftJoin('hisdb.casetype', function($join) use ($request){
+                    $join = $join->on('casetype.case_code', '=', 'episode.case_code')
+                                ->where('casetype.recstatus','=','ACTIVE')
+                                ->where('casetype.compcode','=',session('compcode'));
+                })
+                ->leftJoin('hisdb.doctor', function($join) use ($request){
+                    $join = $join->on('doctor.doctorcode', '=', 'episode.admdoctor')
+                                ->where('doctor.recstatus','=','ACTIVE')
+                                ->where('doctor.compcode','=',session('compcode'));
+                })
+                ->leftJoin('hisdb.racecode', function($join) use ($request){
+                    $join = $join->on('racecode.Code', '=', 'pat_mast.RaceCode')
+                                ->where('racecode.compcode','=',session('compcode'));
+                })
+                ->leftJoin('hisdb.religion', function($join) use ($request){
+                    $join = $join->on('religion.Code', '=', 'pat_mast.Religion')
+                                ->where('religion.compcode','=',session('compcode'));
+                })
+                ->leftJoin('hisdb.occupation', function($join) use ($request){
+                    $join = $join->on('occupation.occupcode', '=', 'pat_mast.OccupCode')
+                                ->where('occupation.compcode','=',session('compcode'));
+                })
+                ->leftJoin('hisdb.citizen', function($join) use ($request){
+                    $join = $join->on('citizen.Code', '=', 'pat_mast.Citizencode')
+                                ->where('citizen.compcode','=',session('compcode'));
+                })
+                ->leftJoin('hisdb.areacode', function($join) use ($request){
+                    $join = $join->on('areacode.areacode', '=', 'pat_mast.AreaCode')
+                                ->where('areacode.compcode','=',session('compcode'));
+                });
+        
+        if(!empty($request->filterCol)){
+            foreach ($request->filterCol as $key => $value) {
+                $pieces = explode(".", $request->filterVal[$key], 2);
+                if($pieces[0] == 'session'){
+                    $table = $table->where($request->filterCol[$key],'=',session($pieces[1]));
+                }else if($pieces[0] == '<>'){
+                    $table = $table->where($request->filterCol[$key],'<>',$pieces[1]);
+                }else if($pieces[0] == '>'){
+                    $table = $table->where($request->filterCol[$key],'>',$pieces[1]);
+                }else if($pieces[0] == '>='){
+                    $table = $table->where($request->filterCol[$key],'>=',$pieces[1]);
+                }else if($pieces[0] == '<'){
+                    $table = $table->where($request->filterCol[$key],'<',$pieces[1]);
+                }else if($pieces[0] == '<='){
+                    $table = $table->where($request->filterCol[$key],'<=',$pieces[1]);
+                }else if($pieces[0] == 'on'){
+                    $table = $table->whereColumn($request->filterCol[$key],$pieces[1]);
+                }else if($pieces[0] == 'null'){
+                    $table = $table->whereNull($request->filterCol[$key]);
+                }else if($pieces[0] == 'raw'){
+                    $table = $table->where($request->filterCol[$key],'=',DB::raw($pieces[1]));
+                }else{
+                    $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
+                }
+            }
+        }
+        
+        if(!empty($request->MRN)){
+            $table = $table->where('pat_mast.MRN','=',$request->MRN);
+        }
+        
+        if(!empty($request->Newic)){
+            $table = $table->where('pat_mast.Newic','=',$request->Newic);
+        }
+        
+        if(!empty($request->dob)){
+            $table = $table->where('pat_mast.DOB','=',$request->dob);
+        }
+        
         if(!empty($request->searchCol)){
-            $searchCol_array = $request->searchCol;
+            if(!empty($request->fixPost)){
+                $searchCol_array = $this->fixPost3($request->searchCol);
+            }else{
+                $searchCol_array = $request->searchCol;
+            }
+            
             $count = array_count_values($searchCol_array);
-
+            // dump($request->searchCol);
+            
             foreach ($count as $key => $value) {
                 $occur_ar = $this->index_of_occurance($key,$searchCol_array);
-
-                $table_patm = $table_patm->orWhere(function ($table_patm) use ($request,$searchCol_array,$occur_ar) {
+                
+                $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
                     foreach ($searchCol_array as $key => $value) {
                         $found = array_search($key,$occur_ar);
                         if($found !== false){
-                            $table_patm->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                            $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
                         }
                     }
                 });
             }
         }
-
-        $table_patm = $table_patm
-                    ->where('Active','=','1')
-                    ->where('compcode','=',session('compcode'))
-                    ->whereBetween('MRN',$mrn_range);
-
-        if(!empty($request->sort)){
-            foreach ($request->sort as $key => $value) {
-                $table_patm = $table_patm->orderBy($key, $value);
-            }
-        }
-
-        $request->page = $request->current;
-
-        //////////paginate/////////
-        $paginate = $table_patm->paginate($request->rowCount);
-
-        foreach ($paginate->items() as $key => $value) {
-            if($value->PatStatus==1){
-                // $queue = DB::table('hisdb.queue')
-                //             ->select(['queue.mrn','doctor.doctorname','queue.epistycode'])
-                //             ->leftJoin('hisdb.doctor','doctor.doctorcode','=','queue.admdoctor')
-                //             ->where('queue.mrn','=',$value->MRN)
-                //             ->where('queue.episno','=',$value->Episno)
-                //             ->where('queue.deptcode','=',"ALL");
-                $episode = DB::table('hisdb.episode')
-                            ->select(['episode.mrn','doctor.doctorname','episode.epistycode'])
-                            ->leftJoin('hisdb.doctor','doctor.doctorcode','=','episode.admdoctor')
-                            ->where('episode.mrn','=',$value->MRN)
-                            ->where('episode.episno','=',$value->Episno);
-
-                if($episode->exists()){
-                    $episode = $episode->first();
-                    $value->q_epistycode = $episode->epistycode;
-                    $value->q_doctorname = $episode->doctorname;
+        
+        // if(!empty($request->searchCol)){
+        //     if($request->searchCol[0] == 'MRN'){
+        //         $table = $table->Where(function ($table) use ($request) {
+        //                 $table->Where('pat_mast.MRN','like',$request->searchVal[0]);
+        //             });
+        //     }else if($request->searchCol[0] == 'Newic'){
+        //         $table = $table->Where(function ($table) use ($request) {
+        //                 $table->Where('pat_mast.Newic','like',$request->searchVal[0]);
+        //             });
+        //     }else if($request->searchCol[0] == 'DOB'){
+        //         $table = $table->Where(function ($table) use ($request) {
+        //                 $table->Where('pat_mast.DOB','like',$request->searchVal[0]);
+        //             });
+        //     }else{
+        //         $table = $table->Where(function ($table) use ($request) {
+        //                 $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
+        //             });
+        //     }          
+        // }
+        
+        if(!empty($request->sidx)){
+            
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                foreach ($pieces as $key => $value) {
+                    $value_ = substr_replace($value,"pat_mast.",0,strpos($value,"_")+1);
+                    $pieces_inside = explode(" ", $value_);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
                 }
             }
+        }else{
+            $table = $table->orderBy('pat_mast.idno','DESC');
         }
-
+        
+        $paginate = $table->paginate($request->rows);
+        
+        //////////paginate/////////
+        
         $responce = new stdClass();
-        $responce->current = $paginate->currentPage();
-        $responce->lastPage = $paginate->lastPage();
-        $responce->total = $paginate->total();
-        $responce->rowCount = $request->rowCount;
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
         $responce->rows = $paginate->items();
-        $responce->sql = $table_patm->toSql();
-        $responce->sql_bind = $table_patm->getBindings();
-
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+        
         return json_encode($responce);
-
     }
-
-    public function get_entry(Request $request)
-    {   
+    
+    public function get_entry(Request $request){   
         $responce = new stdClass();
 
         switch ($request->action) {
@@ -286,11 +788,19 @@ class CaseNoteController extends defaultController
                 $data = DB::table('sysdb.department')
                     ->select('deptcode as code','description')
                     ->where('compcode','=',session('compcode'))
-                    ->where('recstatus','=','ACTIVE')
-                    ->where('regdept','=','1');
+                    ->where('recstatus','=','ACTIVE');
+
+                if($request->epistycode == 'IP'){
+                    $data = $data->where('admdept','=','1');
+                }else{
+                    $data = $data->where('regdept','=','1');
+                }
+
 
                 if(!empty($request->search)){
-                    $data = $data->where('description','=',$request->search)->first();
+                    $data = $data->where('description','=',$request->search)
+                                ->orwhere('deptcode','=', $request->search)
+                                ->first();
                 }else{
                     $data = $data->get();
                 }
@@ -373,24 +883,53 @@ class CaseNoteController extends defaultController
                 break;
 
             case 'get_debtor_list':
+                if($request->epistycode=='IP'){
+                    $billtype_fld = 'dm.billtype';
+                }else{
+                    $billtype_fld = 'dm.billtypeop';
+                }
+
                 if($request->type == 1){
                     $data = DB::table('debtor.debtormast AS dm')
-                            ->select('dm.debtortype','dm.debtorcode','dm.name','dt.description')
-                            ->leftJoin('debtor.debtortype as dt', 'dt.debtortycode', '=', 'dm.debtortype')
-                            ->where('dm.compcode','=',session('compcode'))  
-                            // ->where('debtorcode','=',ltrim($request->mrn, '0'))
+                            ->select('dm.debtortype','dm.debtorcode','dm.name','dt.description','dt.debtortycode',$billtype_fld.' as billtype','bt.description as billtype_desc')
+                            ->leftJoin('debtor.debtortype as dt', function($join) use ($request){
+                                $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
+                                                ->where('dt.compcode','=',session('compcode'))
+                                                ->where('dt.recstatus','=','ACTIVE');
+                            })->leftJoin('hisdb.billtymst as bt', function($join) use ($request,$billtype_fld){
+                                $join = $join->on('bt.billtype', '=', $billtype_fld)
+                                                ->where('bt.compcode','=',session('compcode'));
+                            })
+                            ->where('dm.compcode','=',session('compcode'))
                             ->whereIn('dm.debtortype', ['PR', 'PT'])
                             ->get();
                 }else if($request->type == 2){
                     $data = DB::table('debtor.debtormast AS dm')
-                            ->select('dm.debtortype','dm.debtorcode','dm.name','dt.description')
-                            ->leftJoin('debtor.debtortype AS dt', 'dt.debtortycode', '=', 'dm.debtortype')
+                            ->select('dm.debtortype','dm.debtorcode','dm.name','dt.description','dt.debtortycode',$billtype_fld.' as billtype','bt.description as billtype_desc')
+                            ->join('debtor.debtortype as dt', function($join) use ($request){
+                                $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
+                                                ->where('dt.compcode','=',session('compcode'))
+                                                ->where('dt.recstatus','=','ACTIVE');
+                            })->leftJoin('hisdb.billtymst as bt', function($join) use ($request,$billtype_fld){
+                                $join = $join->on('bt.billtype', '=', $billtype_fld)
+                                                ->where('bt.compcode','=',session('compcode'));
+                            })
+                            ->where('dm.compcode','=',session('compcode'))
+                            ->whereNotIn('dm.debtortype', ['PR', 'PT'])
+                            ->get();
+                }else if($request->type == 'newgl'){
+                    $data = DB::table('debtor.debtormast AS dm')
+                            ->select('dm.debtorcode as code','dm.name as description')
+                            ->join('debtor.debtortype AS dt', 'dt.debtortycode', '=', 'dm.debtortype')
+                            ->where('dt.recstatus','=','ACTIVE')  
                             ->where('dm.compcode','=',session('compcode'))  
+                            ->where('dt.compcode','=',session('compcode'))  
                             // ->where('debtorcode','=',ltrim($request->mrn, '0'))
                             ->whereNotIn('dm.debtortype', ['PR', 'PT'])
                             ->get();
                 }else{
                     $data = DB::table('debtor.debtormast')
+                            ->select('debtorcode','name')
                             ->where('compcode','=',session('compcode'))  
                             ->whereIn('debtortype', ['PR', 'PT'])
                             // ->where('debtorcode','=',ltrim($request->mrn, '0'))
@@ -445,12 +984,62 @@ class CaseNoteController extends defaultController
                     ->get();
                 break;
 
+            case 'loadcorpstaff':
+                $data = DB::table('hisdb.corpstaff as cs')
+                    ->select('cs.debtorcode','dm.name as debtor_name','cs.staffid','cs.childno','cs.relatecode','r.Description as relate_desc','cs.name','o.occupcode','o.description as occup_desc','cs.deptcode','cs.remark')
+                    ->leftJoin('debtor.debtormast AS dm', function($join) use ($request){
+                        $join = $join->on('dm.debtorcode', '=', 'cs.debtorcode')
+                                        ->where('dm.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('hisdb.relationship AS r', function($join) use ($request){
+                        $join = $join->on('r.RelationShipCode', '=', 'cs.relatecode')
+                                        ->where('r.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('hisdb.pat_mast AS pm', function($join) use ($request){
+                        $join = $join->on('pm.MRN', '=', 'cs.mrn')
+                                        ->where('pm.compcode','=',session('compcode'));
+                    })->leftJoin('hisdb.occupation AS o', function($join) use ($request){
+                            $join = $join->on('o.occupcode', '=', 'pm.OccupCode')
+                                            ->where('o.compcode','=',session('compcode'));
+                        })
+                    ->where('cs.compcode','=',session('compcode'))
+                    ->where('cs.mrn','=',$request->mrn)
+                    ->first();
+
+
+                if($request->panel == true && $request->oper =='edit'){
+                    $epispayer = DB::table('hisdb.epispayer as ep')
+                                    ->where('compcode','=',session('compcode'))
+                                    ->where('mrn','=',$request->mrn)
+                                    ->where('episno','=',$request->episno)
+                                    ->where('lineno','=','1');
+
+                    if($epispayer->exists()){
+                        $data->refno = $epispayer->first()->refno;
+                    }
+                }
+                
+                break;
+
             case 'get_refno_list':
-                $data = DB::table('hisdb.guarantee')
-                    ->select('debtorcode','name','gltype','staffid','refno','ourrefno','childno','episno','medcase','mrn','relatecode','remark','startdate','enddate')
-                    ->where('debtorcode','=',$request->debtorcode)
-                    ->where('mrn','=',$request->mrn)
-                    ->get();
+                $data = DB::table('hisdb.guarantee AS g')
+                            ->select('g.idno','g.compcode','g.debtorcode','g.staffid','g.relatecode','g.childno','g.refno','g.gltype','g.startdate','g.enddate','g.adduser','g.adddate','g.upduser','g.upddate','g.visitno','g.visitbal','g.medcase','g.remark','g.name','g.ourrefno','g.mrn','g.active','g.episno','g.lineno_','g.case','dm.name as debtor_name','r.Description as relate_desc','o.occupcode','o.description as occup_desc')
+                            ->leftJoin('debtor.debtormast AS dm', function($join) use ($request){
+                                $join = $join->on('dm.debtorcode', '=', 'g.debtorcode')
+                                                ->where('dm.compcode','=',session('compcode'));
+                            })->leftJoin('hisdb.relationship AS r', function($join) use ($request){
+                                $join = $join->on('r.RelationShipCode', '=', 'g.relatecode')
+                                                ->where('r.compcode','=',session('compcode'));
+                            })->leftJoin('hisdb.pat_mast AS pm', function($join) use ($request){
+                                $join = $join->on('pm.MRN', '=', 'g.mrn')
+                                                ->where('pm.compcode','=',session('compcode'));
+                            })->leftJoin('hisdb.occupation AS o', function($join) use ($request){
+                                $join = $join->on('o.occupcode', '=', 'pm.OccupCode')
+                                                ->where('o.compcode','=',session('compcode'));
+                            })
+                            ->where('g.mrn','=',$request->mrn)
+                            ->where('g.compcode','=',session('compcode'))
+                            ->get();
 
                 break;
 
@@ -459,7 +1048,6 @@ class CaseNoteController extends defaultController
                         ->select('b.ward','b.room','b.bednum','b.bedtype','b.occup','bt.description as desc_bt','d.description as desc_d')
                         ->leftJoin('hisdb.bedtype as bt', 'b.bedtype', '=', 'bt.bedtype')
                         ->leftJoin('sysdb.department as d', 'b.ward', '=', 'd.deptcode')
-                        ->where('b.occup','=',"VACANT")
                         ->where('b.recstatus','=','ACTIVE')
                         ->where('b.compcode','=',session('compcode'))
                         ->orderBy('b.bedtype', 'desc')
@@ -473,7 +1061,7 @@ class CaseNoteController extends defaultController
                         ->select('debtormast.debtorcode as code','debtormast.name as description')
                         ->leftJoin('debtor.debtortype', 'debtortype.debtortycode', '=', 'debtormast.debtortype')
                         ->where('debtormast.compcode','=',session('compcode'))
-                        ->whereNotIn('debtortype.debtortycode',['PT','PR']);
+                        ->whereNotIn('debtormast.debtortype',['PT','PR']);
 
                 if(!empty($request->search)){
                     $data = $data->where('debtormast.name','=',$request->search)->first();
@@ -484,15 +1072,82 @@ class CaseNoteController extends defaultController
 
             case 'get_epis_other_data':
 
-                $episode = DB::table('hisdb.episode')
-                            ->where('mrn','=',$request->mrn)
-                            ->orderBy('episno', 'desc')
-                            ->first();
+                // $episode = DB::table('hisdb.episode')
+                //             ->select('admsrccode','case_code','admdoctor','pay_type','pyrmode','payer')
+                //             ->where('compcode',session('compcode'))
+                //             ->where('mrn','=',$request->mrn)
+                //             ->orderBy('episno', 'desc')
+                //             ->first();
+
+                // $epispayer = DB::table('hisdb.epispayer')
+                //             ->where('compcode',session('compcode'))
+                //             ->where('mrn','=',$request->mrn)
+                //             ->orderBy('episno', 'desc')
+                //             ->first();
+
+                $episode = DB::table('hisdb.episode as e')
+                                    ->select(
+                                        'reg_date',
+                                        'reg_time',
+                                        'episno',
+                                        'epistycode',
+                                        'e.bed',
+                                        'newcaseP',
+                                        'newcaseNP',
+                                        'followupP',
+                                        'followupP',
+                                        'e.regdept',
+                                        'e.admsrccode',
+                                        'e.case_code',
+                                        'e.admdoctor',
+                                        'e.pay_type',
+                                        'e.pyrmode',
+                                        'e.payer',
+                                        'e.billtype',
+                                        'dpmt.description as reg_desc',
+                                        'adm.description as adm_desc',
+                                        'cas.description as cas_desc',
+                                        'doc.doctorname as doc_desc',
+                                        'dbty.description as dbty_desc',
+                                        'dbms.name as dbms_name',
+                                        'bmst.description as bmst_desc')
+                                    ->leftJoin('sysdb.department as dpmt', 'dpmt.deptcode', '=', 'e.regdept')
+                                    ->leftJoin('hisdb.admissrc as adm', 'adm.admsrccode', '=', 'e.admsrccode')
+                                    ->leftJoin('hisdb.casetype as cas', 'cas.case_code', '=', 'e.case_code')
+                                    ->leftJoin('hisdb.doctor as doc', 'doc.doctorcode', '=', 'e.admdoctor')
+                                    ->leftJoin('debtor.debtortype as dbty', 'dbty.debtortycode', '=', 'e.pay_type')
+                                    ->leftJoin('debtor.debtormast as dbms', 'dbms.debtorcode', '=', 'e.payer')
+                                    ->leftJoin('hisdb.billtymst as bmst', 'bmst.billtype', '=', 'e.billtype')
+                                    ->where('e.compcode','=',session('compcode'))
+                                    ->where('e.mrn',$request->mrn)
+                                    ->where('e.episno',$request->episno)
+                                    ->first();
 
                 $epispayer = DB::table('hisdb.epispayer')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$request->mrn)
+                    ->where('Episno','=',$request->episno)
+                    ->first();
+
+                if($request->epistycode=='IP'){
+                    $patmast = DB::table('hisdb.pat_mast')
+                            ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
-                            ->orderBy('episno', 'desc')
                             ->first();
+
+                    $bed = DB::table('hisdb.bed')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('occup','=','RESERVE')
+                            ->where('newic','=',$patmast->Newic)
+                            ->orderBy('upddate', 'DESC');
+
+                    if($bed->exists()){
+                        $responce->bed = $bed->first();
+                    }else{
+                        $responce->bed = null;
+                    }
+
+                }
 
                 $responce->episode = $episode;
                 $responce->epispayer = $epispayer;
@@ -510,6 +1165,85 @@ class CaseNoteController extends defaultController
                             ->first();
 
                 break;
+
+            case 'chk_duplicate_corpstaff':
+
+                if($this->duplicate_corpstaff($request)){
+                    $data = 'true';
+                }else{
+                    $data = 'false';
+                }
+
+                break;
+
+            case 'get_default_value':
+                $pat = DB::table('hisdb.pat_mast')
+                            ->select('Episno')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn',$request->mrn)
+                            ->first();
+
+                if($pat->Episno != 0){
+                    $data = DB::table('hisdb.episode as e')
+                                ->select(
+                                    'newcaseP',
+                                    'newcaseNP',
+                                    'followupP',
+                                    'followupP',
+                                    'e.admsrccode',
+                                    'e.case_code',
+                                    'e.admdoctor',
+                                    'e.attndoctor',
+                                    'e.pay_type',
+                                    'e.pyrmode',
+                                    'e.payer',
+                                    'e.billtype',
+                                    'adm.description as adm_desc',
+                                    'cas.description as cas_desc',
+                                    'dbty.description as dbty_desc',
+                                    'dbms.name as dbms_name',
+                                    'bmst.description as bmst_desc')
+                                ->leftJoin('hisdb.admissrc as adm', 'adm.admsrccode', '=', 'e.admsrccode')
+                                ->leftJoin('hisdb.casetype as cas', 'cas.case_code', '=', 'e.case_code')
+                                ->leftJoin('debtor.debtortype as dbty', 'dbty.debtortycode', '=', 'e.pay_type')
+                                ->leftJoin('debtor.debtormast as dbms', 'dbms.debtorcode', '=', 'e.payer')
+                                ->leftJoin('hisdb.billtymst as bmst', 'bmst.billtype', '=', 'e.billtype')
+                                ->where('e.compcode','=',session('compcode'))
+                                ->where('e.mrn',$request->mrn)
+                                ->where('e.episno',$pat->Episno);
+
+
+
+                    if(!$data->exists()){
+                        $data = 'nothing';
+                    }else{
+                        $data = $data->first();
+                        $admdoctor_desc = DB::table('hisdb.doctor')
+                                        ->where('doctorcode',$data->admdoctor);
+
+                        if($admdoctor_desc->exists()){
+                            $data->admdoctor_desc = $admdoctor_desc->first()->doctorname;
+                        }else{
+                            $data->admdoctor_desc = null;
+                        }
+
+                        $attndoctor_desc = DB::table('hisdb.doctor')
+                                        ->where('doctorcode',$data->attndoctor);
+
+                        if($attndoctor_desc->exists()){
+                            $data->attndoctor_desc = $attndoctor_desc->first()->doctorname;
+                        }else{
+                            $data->attndoctor_desc = null;
+                        }
+                    }
+
+
+
+                }else{
+                    $data = 'nothing';
+                }
+
+                break;
             
             default:
                 $data = 'nothing';
@@ -523,42 +1257,51 @@ class CaseNoteController extends defaultController
     public function _add(Request $request){
         DB::beginTransaction();
 
-        $table = DB::table('hisdb.pat_mast');
-
-        if(!empty($request->Email_official)){
-            $loginid = $request->Email_official;
-        }else{
-            $loginid = $request->Newic;
-        }
-
-        $array_insert = [
-            'loginid' => $loginid,
-            'compcode' => session('compcode'),
-            'adduser' => session('username'),
-            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'recstatus' => 'A'
-        ];
-
-        $request['first_visit_date'] = Carbon::now("Asia/Kuala_Lumpur");
-        $request['last_visit_date'] = Carbon::now("Asia/Kuala_Lumpur");
-
-        foreach ($request->field as $key => $value) {
-            if(empty($request[$request->field[$key]]))continue;
-            // dump($request[$request->field[$key]]);
-            $array_insert[$value] = strtoupper($request[$request->field[$key]]);
-        }
-
         try {
 
-            $mrn = $this->defaultSysparam($request->sysparam['source'],$request->sysparam['trantype']);
+            $table = DB::table('hisdb.pat_mast');
+
+            if(!empty($request->Email_official)){
+                $loginid = $request->Email_official;
+            }else{
+                $loginid = $request->Newic;
+            }
+
+            if(!empty($request->PatientImage)){
+                $PatientImage = $request->PatientImage;
+            }else{
+                $PatientImage = null;
+            }
+
+            $array_insert = [
+                'Episno' => 0,
+                'loginid' => $loginid,
+                'compcode' => session('compcode'),
+                'adduser' => session('username'),
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'recstatus' => 'A',
+                'Active' => 1,
+                'PatientImage' => $PatientImage,
+            ];
+
+            $request['first_visit_date'] = Carbon::now("Asia/Kuala_Lumpur");
+            $request['last_visit_date'] = Carbon::now("Asia/Kuala_Lumpur");
+
+            foreach ($request->field as $key => $value) {
+                if(empty($request[$request->field[$key]]))continue;
+                // dump($request[$request->field[$key]]);
+                $array_insert[$value] = strtoupper($request[$request->field[$key]]);
+            }
+
+            $mrn = $this->defaultSysparam('HIS','MRN');
             $array_insert['MRN'] = $mrn;
             $lastidno = $table->insertGetId($array_insert);
 
-            if(!empty($request->func_after)){
-                if($request->func_after == 'save_preepis'){
-                    $this->save_preepis($request,$mrn);
-                }
-            }
+            // if(!empty($request->func_after)){
+            //     if($request->func_after == 'save_preepis'){
+            //         $this->save_preepis($request,$mrn);
+            //     }
+            // }
 
             $responce = new stdClass();
             $responce->lastMrn = $mrn;
@@ -637,6 +1380,8 @@ class CaseNoteController extends defaultController
 
             $responce = new stdClass();
             $responce->sql = $queries;
+            $responce->lastMrn = $request->MRN;
+            $responce->lastidno = $request->idno;
             echo json_encode($responce);
 
             DB::commit();
@@ -645,7 +1390,6 @@ class CaseNoteController extends defaultController
 
             return response('Error'.$e, 500);
         }
-
     }
 
     public function _delete(Request $request){
@@ -660,6 +1404,7 @@ class CaseNoteController extends defaultController
                 'deluser' => session('username'),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'recstatus' => 'D',
+                'Active' => 0,
             ]);
 
             $responce = new stdClass();
@@ -742,19 +1487,32 @@ class CaseNoteController extends defaultController
         $epis_fee = $request->epis_fee;
         $epis_bednum = $request->epis_bed;
         $epis_apptidno = $request->apptidno;
+        $epis_preepisidno = $request->preepisidno;
 
         $epis_typeepis;
         if ($epis_maturity == "1"){
             if($epis_preg == "Pregnant"){
                 $epis_typeepis = "newcaseP";
+                $epis_typeepis2 = "newcaseNP";
+                $epis_typeepis3 = "followupP";
+                $epis_typeepis4 = "followupNP";
             }else{
                 $epis_typeepis = "newcaseNP";
+                $epis_typeepis2 = "newcaseP";
+                $epis_typeepis3 = "followupP";
+                $epis_typeepis4 = "followupNP";
             }
         }else{
             if($epis_preg == "Pregnant"){
                 $epis_typeepis = "followupP";
+                $epis_typeepis2 = "newcaseNP";
+                $epis_typeepis3 = "newcaseP";
+                $epis_typeepis4 = "followupNP";
             }else{
                 $epis_typeepis = "followupNP";
+                $epis_typeepis2 = "newcaseNP";
+                $epis_typeepis3 = "followupP";
+                $epis_typeepis4 = "newcaseP";
             }
         }
 
@@ -762,6 +1520,16 @@ class CaseNoteController extends defaultController
         DB::beginTransaction();
 
         try {
+
+            if(!$this->check_regdept($epis_type,$epis_dept)){
+                throw new \Exception('dept_wrong');
+            }
+
+            if($epis_dept == 'A&E'){
+                $reff_ed = 1;
+            }else{
+                $reff_ed = null;
+            }
 
             DB::table("hisdb.episode")
                 ->insert([
@@ -779,13 +1547,19 @@ class CaseNoteController extends defaultController
                     "pyrmode" => $epis_paymode,
                     "billtype" => $epis_billtype,
                     "bed" => $epis_bednum,
+                    "payer" => $epis_payer,
                     $epis_typeepis => 1,
+                    $epis_typeepis2 => null,
+                    $epis_typeepis3 => null,
+                    $epis_typeepis4 => null,
                     "AdminFees" => $epis_fee,
                     "adddate" => Carbon::now("Asia/Kuala_Lumpur"),
                     "adduser" => session('username'),
                     "episactive" => 1,
                     "allocpayer" => 1,
+                    "reff_ed" => $reff_ed,
                     'episstatus' => 'CURRENT',
+                    'computerid' => session('computerid')
                 ]);
 
             //update patmast
@@ -803,9 +1577,8 @@ class CaseNoteController extends defaultController
                     'episno' => $epis_no,
                     'patstatus' => 1,
                     'last_visit_date' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'first_visit_date' => Carbon::now("Asia/Kuala_Lumpur"),
                     'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'LastUser' => session('username'),
+                    'LastUser' => session('username')
                 ]);
 
             if($epis_no == 1){
@@ -837,22 +1610,22 @@ class CaseNoteController extends defaultController
                     //computerid
 
             if($epis_fin == "PT"){
-                $debtortype_data = DB::table('debtor.debtortype')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('DebtorTyCode','=',$epis_fin)
-                    ->first();
-
                 $debtormast_obj = DB::table('debtor.debtormast')
                     ->where('compcode','=',session('compcode'))
-                    ->where('debtorcode','=',$epis_mrn);
-
+                    ->where('debtorcode','=',str_pad($epis_mrn, 7, "0", STR_PAD_LEFT));
 
                 if(!$debtormast_obj->exists()){
+
+                    $debtortype_data = DB::table('debtor.debtortype')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('DebtorTyCode','=',$epis_fin)
+                        ->first();
+
                     //kalu xjumpa debtormast, buat baru
                     DB::table('debtor.debtormast')
                         ->insert([
                             'CompCode' => session('compcode'),
-                            'DebtorCode' => $epis_mrn,
+                            'DebtorCode' => str_pad($epis_mrn, 7, "0", STR_PAD_LEFT),
                             'Name' => $patmast_data->Name,
                             'Address1' => $patmast_data->Address1,
                             'Address2' => $patmast_data->Address2,
@@ -866,12 +1639,102 @@ class CaseNoteController extends defaultController
                             'ActDebGlAcc' => $debtortype_data->actdebglacc,
                             'upduser' => session('username'),
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'RecStatus' => "A"
+                            'RecStatus' => "ACTIVE"
                         ]);
                 }else{
 
                     // $debtormast_data = $debtormast_obj->first();
 
+                }
+
+                $epispayer_obj = DB::table('hisdb.epispayer')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$epis_mrn)
+                    ->where('Episno','=',$epis_no);
+
+                if(!$epispayer_obj->exists()){
+
+                    if(!empty($epis_refno)){
+                        $use_refno = $epis_refno;
+                    }else{
+                        $use_refno = null;
+                    }
+
+                    //kalu xjumpa epispayer, buat baru
+                    DB::table('hisdb.epispayer')
+                        ->insert([
+                            'CompCode' => session('compcode'),
+                            'MRN' => $epis_mrn,
+                            'Episno' => $epis_no,
+                            'EpisTyCode' => $epis_type,
+                            'LineNo' => '1',
+                            'BillType' => $epis_billtype,
+                            'PayerCode' => str_pad($epis_mrn, 7, "0", STR_PAD_LEFT),
+                            'Pay_Type' => $epis_fin,
+                            'refno' => $use_refno,
+                            'allgroup' => 1,
+                            'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'AddUser' => session('username'),
+                            'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'LastUser' => session('username'),
+                            'computerid' => session('computerid')
+                        ]);
+
+
+                    DB::table('hisdb.episode')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$epis_mrn)
+                        ->where('Episno','=',$epis_no)
+                        ->update(['payer'=>str_pad($epis_mrn, 7, "0", STR_PAD_LEFT)]);
+
+                }
+            }else{
+                $epispayer_obj = DB::table('hisdb.epispayer')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$epis_mrn)
+                    ->where('Episno','=',$epis_no);
+
+                if(!empty($epis_refno)){
+                    $use_refno = $epis_refno;
+                }else{
+                    $use_refno = null;
+                }
+
+                if(!$epispayer_obj->exists()){
+                    //kalu xjumpa epispayer, buat baru
+                    DB::table('hisdb.epispayer')
+                        ->insert([
+                            'CompCode' => session('compcode'),
+                            'MRN' => $epis_mrn,
+                            'Episno' => $epis_no,
+                            'refno' => $use_refno,
+                            'EpisTyCode' => "OP",
+                            'LineNo' => '1',
+                            'BillType' => $epis_billtype,
+                            'PayerCode' => $epis_payer,
+                            'Pay_Type' => $epis_fin,
+                            'allgroup' => 1,
+                            'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'AddUser' => session('username'),
+                            'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'LastUser' => session('username'),
+                            'computerid' => session('computerid')
+                        ]);
+                }else{
+                    DB::table('hisdb.epispayer')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$epis_mrn)
+                        ->where('Episno','=',$epis_no)
+                        ->where('LineNo','=','1')
+                        ->update([
+                            'refno' => $use_refno,
+                            'BillType' => $epis_billtype,
+                            'PayerCode' => $epis_payer,
+                            'Pay_Type' => $epis_fin,
+                            'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'LastUser' => session('username'),
+                            'computerid' => session('computerid')
+                        ]);
                 }
             }
 
@@ -888,30 +1751,48 @@ class CaseNoteController extends defaultController
                 // adddate
                 // computerid
 
-            $epispayer_obj = DB::table('hisdb.epispayer')
-                ->where('compcode','=',session('compcode'))
-                ->where('mrn','=',$epis_mrn)
-                ->where('Episno','=',$epis_no);
+            if($request->epis_pay == 'PANEL'){
 
-            if(!$epispayer_obj->exists()){
-                //kalu xjumpa epispayer, buat baru
-                DB::table('hisdb.epispayer')
-                ->insert([
-                    'CompCode' => session('compcode'),
-                    'MRN' => $epis_mrn,
-                    'Episno' => $epis_no,
-                    'EpisTyCode' => $epis_type,
-                    'LineNo' => '1',
-                    'BillType' => $epis_billtype,
-                    'PayerCode' => $epis_payer,
-                    'Pay_Type' => $epis_fin,
-                    'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'AddUser' => session('username'),
-                    'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'LastUser' => session('username')
-                ]);
+                if(!$this->duplicate_corpstaff_panel($request)){
+                    DB::table('hisdb.pat_mast')
+                        ->where('MRN',$epis_mrn)
+                        ->where('compcode',session('compcode'))
+                        ->update([
+                            'CorpComp' => $request['newpanel_corpcomp'],
+                            'RelateCode' => $request['newpanel_relatecode'],
+                            'Staffid' => $request['newpanel_staffid'],
+                        ]);
+
+                    if($this->corpstaff_exists_panel($request)){
+                        DB::table('hisdb.corpstaff')
+                            ->where('MRN',$epis_mrn)
+                            ->where('compcode',session('compcode'))
+                            ->where('relatecode',$request['newpanel_relatecode'])
+                            ->where('debtorcode',$request['newpanel_corpcomp'])
+                            ->where('staffid',$request['newpanel_staffid'])
+                            ->update([
+                                'name' => $request['newpanel_name'],
+                                'remark' => $request['newpanel_case'],
+                                'deptcode' => $request['newpanel_deptcode']
+                            ]);
+                    }else{
+                        DB::table('hisdb.corpstaff')
+                            ->insert([
+                                'compcode' => session('compcode'),
+                                'debtorcode' => $request['newpanel_corpcomp'],
+                                'staffid' => $request['newpanel_staffid'],
+                                'relatecode' => $request['newpanel_relatecode'],
+                                'name' => $request['newpanel_name'],
+                                'remark' => $request['newpanel_case'],
+                                'deptcode' => $request['newpanel_deptcode'],
+                                'recstatus' => 'ACTIVE',
+                                'adduser' => session('username'),
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'mrn' => $epis_mrn,
+                            ]);
+                    }
+                }
             }
-
             //CREATE NOK
 
             //CREATE docalloc
@@ -954,7 +1835,8 @@ class CaseNoteController extends defaultController
                         'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'LastUser' => session('username'),
                         'ASDate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'ASTime' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString()
+                        'ASTime' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString(),
+                        'computerid' => session('computerid')
                     ]);
             }
 
@@ -978,7 +1860,7 @@ class CaseNoteController extends defaultController
                             'mrn' => $epis_mrn,
                             'episno' => $epis_no,
                             'name' => $patmast_data->Name,
-                            'astatus' => "Occupied",
+                            'astatus' => "OCCUPIED",
                             'ward' =>  $bed_first->ward,
                             'room' =>  $bed_first->room,
                             'bednum' =>  $bed_first->bednum,
@@ -986,7 +1868,8 @@ class CaseNoteController extends defaultController
                             'astime' => Carbon::now("Asia/Kuala_Lumpur"),
                             'compcode' => session('compcode'),
                             'adduser' => strtoupper(session('username')),
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'computerid' => session('computerid')
                         ]);
 
                     $bed_obj->update([
@@ -994,7 +1877,11 @@ class CaseNoteController extends defaultController
                         'mrn' => $epis_mrn,
                         'episno' => $epis_no,
                         'name' => $patmast_data->Name,
-                        'admdoctor' => $epis_doctor
+                        'admdoctor' => $epis_doctor,
+                        'upduser' => strtoupper(session('username')),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid' => session('computerid'),
+                        'newic' => null
                     ]);
 
                 }
@@ -1014,6 +1901,7 @@ class CaseNoteController extends defaultController
 
             //cari queue utk source que dgn trantype epistycode
             $queue_obj = DB::table('sysdb.sysparam')
+                ->where('compcode','=',session('compcode'))
                 ->where('source','=','QUE')
                 ->where('trantype','=',$epistycode_q);
 
@@ -1021,7 +1909,7 @@ class CaseNoteController extends defaultController
             if(!$queue_obj->exists()){
                 DB::table('sysdb.sysparam')
                     ->insert([
-                        'compcode' => '9A',
+                        'compcode' => session('compcode'),
                         'source' => 'QUE',
                         'trantype' => $epistycode_q,
                         'description' => $epistycode_q.' Queue No.',
@@ -1029,6 +1917,7 @@ class CaseNoteController extends defaultController
                     ]);
 
                 $queue_obj = DB::table('sysdb.sysparam')
+                    ->where('compcode','=',session('compcode'))
                     ->where('source','=','QUE')
                     ->where('trantype','=',$epistycode_q);
             }
@@ -1039,7 +1928,7 @@ class CaseNoteController extends defaultController
             if($queue_data->pvalue2 != Carbon::now("Asia/Kuala_Lumpur")->toDateString()){
                 $queue_obj
                     ->update([
-                        'pvalue1' => 0,
+                        'pvalue1' => 1,
                         'pvalue2' => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
                     ]);
             }
@@ -1057,7 +1946,6 @@ class CaseNoteController extends defaultController
                 ->where('episno','=',$epis_no)
                 ->where('deptcode','=','ALL');
 
-            $queueAll_data=$queueAll_obj->first();
             if(!$queueAll_obj->exists()){
                 DB::table('hisdb.queue')
                     ->insert([
@@ -1076,7 +1964,7 @@ class CaseNoteController extends defaultController
                         'Reg_Time' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString(),
                         'Bed' => '',
                         'Room' => '',
-                        'QueueNo' => $current_pvalue1+1,
+                        'QueueNo' => $current_pvalue1,
                         'Deptcode' => 'ALL',
                         'DOB' => $this->null_date($patmast_data->DOB),
                         'NAME' => $patmast_data->Name,
@@ -1097,8 +1985,6 @@ class CaseNoteController extends defaultController
                 ->where('episno','=',$epis_no)
                 ->where('deptcode','=','SPEC');
 
-            $queueSPEC_data=$queueSPEC_obj->first();
-
             if(!$queueSPEC_obj->exists()){
                 DB::table('hisdb.queue')
                     ->insert([
@@ -1117,7 +2003,7 @@ class CaseNoteController extends defaultController
                         'Reg_Time' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString(),
                         'Bed' => '',
                         'Room' => '',
-                        'QueueNo' => $current_pvalue1+1,
+                        'QueueNo' => $current_pvalue1,
                         'Deptcode' => 'SPEC',
                         'DOB' => $this->null_date($patmast_data->DOB),
                         'NAME' => $patmast_data->Name,
@@ -1131,17 +2017,83 @@ class CaseNoteController extends defaultController
                     ]);
             }
 
-            if(!empty($epis_apptidno)){
+            $dialysis_epis = DB::table('hisdb.dialysis_episode')
+                                ->where('compcode',session('compcode'))
+                                ->where('mrn',$epis_mrn)
+                                ->where('episno',$epis_no)
+                                ->whereDate('arrival_date',Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+
+            if(!$dialysis_epis->exists()){
+                $dialysis_epis = DB::table('hisdb.dialysis_episode')
+                                ->where('compcode',session('compcode'))
+                                ->where('mrn',$epis_mrn)
+                                ->where('episno',$epis_no);
+
+                if($dialysis_epis->exists()){
+                    $lineno_ = intval($dialysis_epis->max('lineno_')) + 1;
+
+                    $dialysis_epis_latest = DB::table('hisdb.dialysis_episode')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('mrn',$epis_mrn)
+                                    ->where('episno',$epis_no)
+                                    ->where('lineno_',intval($dialysis_epis->max('lineno_')));
+
+                    $mcrstat = $dialysis_epis_latest->first()->mcrstat;
+                    $hdstat = $dialysis_epis_latest->first()->hdstat;
+                    $packagecode = $dialysis_epis_latest->first()->packagecode;
+                }else{
+                    $lineno_ = 1;
+                    $mcrstat = 0;
+                    $hdstat = 0;
+                    $packagecode = 'EPO';
+                }
+
+                $array_insert = [
+                    'compcode'=>session('compcode'),
+                    'mrn'=>$epis_mrn,
+                    'episno'=>$epis_no,
+                    'lineno_'=>$lineno_,
+                    'mcrstat'=>$mcrstat,
+                    'hdstat'=>$hdstat,
+                    'arrival_date'=>Carbon::now("Asia/Kuala_Lumpur"),
+                    'arrival_time'=>Carbon::now("Asia/Kuala_Lumpur"),
+                    'packagecode'=>$packagecode,
+                    'order'=>0,
+                    'complete'=>0
+                ];
+        
+                $latest_idno = DB::table('hisdb.dialysis_episode')->insertGetId($array_insert);
+
+                DB::table('hisdb.episode')
+                    ->where('mrn',$epis_mrn)
+                    ->where('episno',$epis_no)
+                    ->update([
+                        'lastarrivalno' => $latest_idno,
+                        'lastarrivaldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastarrivaltime' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+            }
+
+            // if(!empty($epis_apptidno)){
+            //     DB::table('hisdb.pre_episode')
+            //             ->where('apptidno','=',$epis_apptidno)
+            //             ->update([
+            //                 'episno' => $epis_no
+            //             ]);
+            // }
+
+            if(!empty($epis_preepisidno)){
                 DB::table('hisdb.pre_episode')
-                        ->where('apptidno','=',$epis_apptidno)
+                        ->where('idno','=',$epis_preepisidno)
                         ->update([
-                            'episno' => $epis_no
+                            'episno' => $epis_no,
+                            'episactive' => 1,
                         ]);
             }
 
             $queries = DB::getQueryLog();
 
-            dump($queries);
+            // dump($queries);
 
             DB::commit();
 
@@ -1158,6 +2110,7 @@ class CaseNoteController extends defaultController
         DB::enableQueryLog();
 
         $epis_mrn = $request->epis_mrn;
+        $epis_mrn_pad = str_pad($request->epis_mrn, 7, "0", STR_PAD_LEFT);
         $epis_no = $request->epis_no;
         $epis_type = $request->epis_type;
         $epis_maturity = $request->epis_maturity;
@@ -1179,14 +2132,26 @@ class CaseNoteController extends defaultController
         if ($epis_maturity == "1"){
             if($epis_preg == "Pregnant"){
                 $epis_typeepis = "newcaseP";
+                $epis_typeepis2 = "newcaseNP";
+                $epis_typeepis3 = "followupP";
+                $epis_typeepis4 = "followupNP";
             }else{
                 $epis_typeepis = "newcaseNP";
+                $epis_typeepis2 = "newcaseP";
+                $epis_typeepis3 = "followupP";
+                $epis_typeepis4 = "followupNP";
             }
         }else{
             if($epis_preg == "Pregnant"){
                 $epis_typeepis = "followupP";
+                $epis_typeepis2 = "newcaseNP";
+                $epis_typeepis3 = "newcaseP";
+                $epis_typeepis4 = "followupNP";
             }else{
                 $epis_typeepis = "followupNP";
+                $epis_typeepis2 = "newcaseNP";
+                $epis_typeepis3 = "followupP";
+                $epis_typeepis4 = "newcaseP";
             }
         }
 
@@ -1195,11 +2160,16 @@ class CaseNoteController extends defaultController
 
         try {
 
+
+            if(!$this->check_regdept($epis_type,$epis_dept)){
+                throw new \Exception('dept_wrong');
+            }
+
             DB::table("hisdb.episode")
+                ->where("compcode",session('compcode'))
                 ->where("mrn",'=',$epis_mrn)
                 ->where("episno",'=',$epis_no)
                 ->update([
-                    "compcode" => session('compcode'),
                     "regdept" => $epis_dept,
                     "admsrccode" => $epis_src,
                     "case_code" => $epis_case,
@@ -1207,8 +2177,12 @@ class CaseNoteController extends defaultController
                     "pay_type" => $epis_fin,
                     "pyrmode" => $epis_paymode,
                     "billtype" => $epis_billtype,
-                    "bed" => $epis_bednum,
+                    // "bed" => $epis_bednum,
                     $epis_typeepis => 1,
+                    $epis_typeepis2 => null,
+                    $epis_typeepis3 => null,
+                    $epis_typeepis4 => null,
+                    "payer" => $epis_payer,
                     "AdminFees" => $epis_fee,
                     "adddate" => Carbon::now("Asia/Kuala_Lumpur"),
                     "adduser" => session('username'),
@@ -1238,94 +2212,193 @@ class CaseNoteController extends defaultController
                                 ->where('compcode','=',session('compcode'))
                                 ->first();
 
-            //if pay_type = PT
-                //buat debtormaster KALAU TAK JUMPA
-                    //debtortype = pay_type
-                    //debtorcode = MRN prefix until 7 zero
-                    //debtorname = patmast.name
-                    //address1 address2 address3 address4
-                    //actdebccode //select dari debtortype where compcode=session and debtortycode=pay_type
-                    //actdebglacc //select dari debtortype where compcode=session and debtortycode=pay_type
-                    //depccode //select dari debtortype where compcode=session and debtortycode=pay_type
-                    //depglacc //select dari debtortype where compcode=session and debtortycode=pay_type
-                    //adduser
-                    //adddate
-                    //computerid
+            $debtormast_obj = DB::table('debtor.debtormast')
+                ->where('compcode','=',session('compcode'))
+                ->where('debtorcode','=',$epis_mrn_pad);
 
-            if($epis_fin == "PT"){
+            if(!$debtormast_obj->exists()){
                 $debtortype_data = DB::table('debtor.debtortype')
                     ->where('compcode','=',session('compcode'))
                     ->where('DebtorTyCode','=',$epis_fin)
                     ->first();
 
-                $debtormast_obj = DB::table('debtor.debtormast')
+                //kalu xjumpa debtormast, buat baru
+                DB::table('debtor.debtormast')
+                    ->insert([
+                        'CompCode' => session('compcode'),
+                        'DebtorCode' => $epis_mrn_pad,
+                        'Name' => $patmast_data->Name,
+                        'Address1' => $patmast_data->Address1,
+                        'Address2' => $patmast_data->Address2,
+                        'Address3' => $patmast_data->Address3,
+                        'DebtorType' => "PR",
+                        'DepCCode'  => $debtortype_data->depccode,
+                        'DepGlAcc' => $debtortype_data->depglacc,
+                        'BillType' => "IP",
+                        'BillTypeOP' => "OP",
+                        'ActDebCCode' => $debtortype_data->actdebccode,
+                        'ActDebGlAcc' => $debtortype_data->actdebglacc,
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'RecStatus' => "ACTIVE"
+                    ]);
+            }else{
+                DB::table('debtor.debtormast')
                     ->where('compcode','=',session('compcode'))
-                    ->where('debtorcode','=',$epis_mrn);
+                    ->where('debtorcode','=',$epis_mrn_pad)
+                    ->update([
+                        'Name' => $patmast_data->Name,
+                        'Address1' => $patmast_data->Address1,
+                        'Address2' => $patmast_data->Address2,
+                        'Address3' => $patmast_data->Address3,
+                        'DebtorType' => "PR",
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'RecStatus' => "ACTIVE"
+                    ]);
+            }
 
+            if($epis_fin == "PT"){
+                $epispayer_obj = DB::table('hisdb.epispayer')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$epis_mrn)
+                    ->where('Episno','=',$epis_no);
 
-                if(!$debtormast_obj->exists()){
-                    //kalu xjumpa debtormast, buat baru
-                    DB::table('debtor.debtormast')
+                if(!$epispayer_obj->exists()){
+
+                    if(!empty($epis_refno)){
+                        $use_refno = $epis_refno;
+                    }else{
+                        $use_refno = null;
+                    }
+
+                    //kalu xjumpa epispayer, buat baru
+                    DB::table('hisdb.epispayer')
                         ->insert([
                             'CompCode' => session('compcode'),
-                            'DebtorCode' => $epis_mrn,
-                            'Name' => $patmast_data->Name,
-                            'Address1' => $patmast_data->Address1,
-                            'Address2' => $patmast_data->Address2,
-                            'Address3' => $patmast_data->Address3,
-                            'DebtorType' => "PR",
-                            'DepCCode'  => $debtortype_data->depccode,
-                            'DepGlAcc' => $debtortype_data->depglacc,
-                            'BillType' => "IP",
-                            'BillTypeOP' => "OP",
-                            'ActDebCCode' => $debtortype_data->actdebccode,
-                            'ActDebGlAcc' => $debtortype_data->actdebglacc,
-                            'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'RecStatus' => "A"
+                            'MRN' => $epis_mrn,
+                            'Episno' => $epis_no,
+                            'EpisTyCode' => $epis_type,
+                            'LineNo' => '1',
+                            'BillType' => $epis_billtype,
+                            'PayerCode' => str_pad($epis_mrn, 7, "0", STR_PAD_LEFT),
+                            'Pay_Type' => $epis_fin,
+                            'refno' => $use_refno,
+                            'allgroup' => 1,
+                            'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'AddUser' => session('username'),
+                            'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'LastUser' => session('username'),
+                            'computerid' => session('computerid')
+                        ]);
+
+
+                    DB::table('hisdb.episode')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$epis_mrn)
+                        ->where('Episno','=',$epis_no)
+                        ->update(['payer'=>str_pad($epis_mrn, 7, "0", STR_PAD_LEFT)]);
+
+                }
+
+            }else{
+
+                $epispayer_obj = DB::table('hisdb.epispayer')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$epis_mrn)
+                    ->where('Episno','=',$epis_no);
+
+                if(!$epispayer_obj->exists()){
+                    //kalu xjumpa epispayer, buat baru
+                    if($epis_fin == "PT"){
+                        $epis_payer == $epis_mrn_pad;
+                    }
+
+                    DB::table('hisdb.epispayer')
+                        ->insert([
+                            'CompCode' => session('compcode'),
+                            'MRN' => $epis_mrn,
+                            'Episno' => $epis_no,
+                            'refno' => $epis_refno,
+                            'EpisTyCode' => $epis_type,
+                            'LineNo' => '1',
+                            'BillType' => $epis_billtype,
+                            'PayerCode' => $epis_payer,
+                            'Pay_Type' => $epis_fin,
+                            'allgroup' => 1,
+                            'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'AddUser' => session('username'),
+                            'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'LastUser' => session('username'),
+                            'computerid' => session('computerid')
                         ]);
                 }else{
 
-                    // $debtormast_data = $debtormast_obj->first();
+                    if($epis_fin == "PT"){
+                        $epis_payer == $epis_mrn_pad;
+                    }
 
+                    DB::table('hisdb.epispayer')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$epis_mrn)
+                        ->where('Episno','=',$epis_no)
+                        ->where('LineNo','=','1')
+                        ->update([
+                            'refno' => $epis_refno,
+                            'BillType' => $epis_billtype,
+                            'PayerCode' => $epis_payer,
+                            'Pay_Type' => $epis_fin,
+                            'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'LastUser' => session('username'),
+                            'computerid' => session('computerid')
+                        ]);
                 }
+
             }
 
-            //CREATE EPISPAYER
-                // mrn
-                // episno
-                // payercode
-                // lineno = 1
-                // epistycode
-                // pay_type
-                // pyrmode
-                // billtype
-                // adduser
-                // adddate
-                // computerid
+            
 
-            $epispayer_obj = DB::table('hisdb.epispayer')
-                ->where('compcode','=',session('compcode'))
-                ->where('mrn','=',$epis_mrn)
-                ->where('Episno','=',$epis_no);
+            if($request->epis_pay == 'PANEL'){
 
-            if(!$epispayer_obj->exists()){
-                //kalu xjumpa epispayer, buat baru
-                DB::table('hisdb.epispayer')
-                    ->insert([
-                        'CompCode' => session('compcode'),
-                        'MRN' => $epis_mrn,
-                        'Episno' => $epis_no,
-                        'EpisTyCode' => "OP",
-                        'LineNo' => '1',
-                        'BillType' => $epis_billtype,
-                        'PayerCode' => $epis_payer,
-                        'Pay_Type' => $epis_fin,
-                        'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'AddUser' => session('username'),
-                        'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'LastUser' => session('username')
-                    ]);
+                if(!$this->duplicate_corpstaff_panel($request)){
+                    DB::table('hisdb.pat_mast')
+                        ->where('MRN',$epis_mrn)
+                        ->where('compcode',session('compcode'))
+                        ->update([
+                            'CorpComp' => $request['newpanel_corpcomp'],
+                            'RelateCode' => $request['newpanel_relatecode'],
+                            'Staffid' => $request['newpanel_staffid'],
+                        ]);
+
+                    if($this->corpstaff_exists_panel($request)){
+                        DB::table('hisdb.corpstaff')
+                            ->where('MRN',$epis_mrn)
+                            ->where('compcode',session('compcode'))
+                            ->where('relatecode',$request['newpanel_relatecode'])
+                            ->where('debtorcode',$request['newpanel_corpcomp'])
+                            ->where('staffid',$request['newpanel_staffid'])
+                            ->update([
+                                'name' => $request['newpanel_name'],
+                                'remark' => $request['newpanel_case'],
+                                'deptcode' => $request['newpanel_deptcode']
+                            ]);
+                    }else{
+                        DB::table('hisdb.corpstaff')
+                            ->insert([
+                                'compcode' => session('compcode'),
+                                'debtorcode' => $request['newpanel_corpcomp'],
+                                'staffid' => $request['newpanel_staffid'],
+                                'relatecode' => $request['newpanel_relatecode'],
+                                'name' => $request['newpanel_name'],
+                                'remark' => $request['newpanel_case'],
+                                'deptcode' => $request['newpanel_deptcode'],
+                                'recstatus' => 'ACTIVE',
+                                'adduser' => session('username'),
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'mrn' => $epis_mrn,
+                            ]);
+                    }
+                }
             }
 
             //CREATE NOK
@@ -1404,66 +2477,76 @@ class CaseNoteController extends defaultController
                     //mrn = episode.mrn
                     //episno = episode.episno
                     //name = patmast.name
+
             if($epis_type == "IP" || $epis_type == "DP"){
 
-                $bedalloc_oldidno=DB::table('hisdb.bedalloc')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('mrn','=',$epis_mrn)
-                    ->where('episno','=',$epis_no);
+                $bednull = DB::table("hisdb.episode")
+                                ->where('compcode','=',session('compcode'))
+                                ->where('mrn','=',$epis_mrn)
+                                ->where('episno','=',$epis_no)
+                                ->whereNull('bed');
 
-                if($bedalloc_oldidno->exists()){
-                    $bedalloc_old = DB::table('hisdb.bedalloc')
-                        ->where('idno','=',$bedalloc_oldidno->max('idno'))
-                        ->first();
-
-                    $bed_old = DB::table('hisdb.bed')
+                if($bednull->exists()){
+                   $bedalloc_oldidno=DB::table('hisdb.bedalloc')
                         ->where('compcode','=',session('compcode'))
-                        ->where('bednum','=',$bedalloc_old->bednum)
-                        ->update([
-                            'occup' => "VACANT"
-                        ]);
+                        ->where('mrn','=',$epis_mrn)
+                        ->where('episno','=',$epis_no);
 
-                }
+                    if($bedalloc_oldidno->exists()){
+                        $bedalloc_old = DB::table('hisdb.bedalloc')
+                            ->where('idno','=',$bedalloc_oldidno->max('idno'))
+                            ->first();
 
-                $bed_obj = DB::table('hisdb.bed')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('bednum','=',$epis_bednum);
+                        $bed_old = DB::table('hisdb.bed')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('bednum','=',$bedalloc_old->bednum)
+                            ->update([
+                                'occup' => "VACANT"
+                            ]);
 
-                if($bed_obj->exists()){
-                    $bed_first = $bed_obj->first();
-                    DB::table('hisdb.bedalloc')
-                        ->insert([  
+                    }
+
+                    $bed_obj = DB::table('hisdb.bed')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('bednum','=',$epis_bednum);
+
+                    if($bed_obj->exists()){
+                        $bed_first = $bed_obj->first();
+                        DB::table('hisdb.bedalloc')
+                            ->insert([  
+                                'mrn' => $epis_mrn,
+                                'episno' => $epis_no,
+                                'name' => $patmast_data->Name,
+                                'astatus' => "OCCUPIED",
+                                'ward' =>  $bed_first->ward,
+                                'room' =>  $bed_first->room,
+                                'bednum' =>  $bed_first->bednum,
+                                'asdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'astime' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'compcode' => session('compcode'),
+                                'computerid' => session('computerid'),
+                                'adduser' => strtoupper(session('username')),
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            ]);
+
+                        $bed_obj->update([
+                            'occup' => "OCCUPIED",
                             'mrn' => $epis_mrn,
                             'episno' => $epis_no,
                             'name' => $patmast_data->Name,
-                            'astatus' => "OCCUPIED",
-                            'ward' =>  $bed_obj->ward,
-                            'room' =>  $bed_obj->room,
-                            'bednum' =>  $bed_obj->bednum,
-                            'asdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'astime' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'compcode' => session('compcode'),
-                            'adduser' => strtoupper(session('username')),
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            'admdoctor' => $epis_doctor
                         ]);
 
-                    $bed_obj->update([
-                        'occup' => "OCCUPIED",
-                        'mrn' => $epis_mrn,
-                        'episno' => $epis_no,
-                        'name' => $patmast_data->Name,
-                        'admdoctor' => $epis_doctor
-                    ]);
+                        DB::table("hisdb.episode")
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$epis_mrn)
+                            ->where('episno','=',$epis_no)
+                            ->update([
+                                'bed' => $epis_bednum
+                            ]);
 
-                    DB::table("hisdb.episode")
-                        ->where('mrn','=',$request->mrn)
-                        ->where('episno','=',$request->episno)
-                        ->update([
-                            'bed' => $request->bed_bednum
-                        ]);
-
+                    } 
                 }
-
             }
 
 
@@ -1477,53 +2560,59 @@ class CaseNoteController extends defaultController
                 $epistycode_q = "OP";
             }
 
-            //cari queue utk source que dgn trantype epistycode
-            $queue_obj = DB::table('sysdb.sysparam')
-                ->where('source','=','QUE')
-                ->where('trantype','=',$epistycode_q);
-
-                //kalu xjumpe buat baru
-            if(!$queue_obj->exists()){
-                DB::table('sysdb.sysparam')
-                    ->insert([
-                        'compcode' => '9A',
-                        'source' => 'QUE',
-                        'trantype' => $epistycode_q,
-                        'description' => $epistycode_q.' Queue No.',
-                        'pvalue2' => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
-                    ]);
-
-                $queue_obj = DB::table('sysdb.sysparam')
-                    ->where('source','=','QUE')
-                    ->where('trantype','=',$epistycode_q);
-            }
-
-            $queue_data = $queue_obj->first();
-
-                //ni start kosong balik bila hari baru
-            // if($queue_data->pvalue2 != Carbon::now("Asia/Kuala_Lumpur")->toDateString()){
-            //     $queue_obj
-            //         ->update([
-            //             'pvalue1' => 0,
-            //             'pvalue2' => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
-            //         ]);
-            // }
-
-                //tambah satu dkt queue sysparam
-            $current_pvalue1 = intval($queue_data->pvalue1);
-            // $queue_obj
-            //     ->update([
-            //         'pvalue1' => $current_pvalue1+1
-            //     ]);
-
-
             $queueAll_obj=DB::table('hisdb.queue')
+                ->where('compcode',session('compcode'))
                 ->where('mrn','=',$epis_mrn)
                 ->where('episno','=',$epis_no)
                 ->where('deptcode','=','ALL');
 
-            $queueAll_data=$queueAll_obj->first();
             if(!$queueAll_obj->exists()){
+
+                //QUEUE FOR ALL
+                //epistycode = IP if epis_type  = IP @ DP
+                //epistycode = OP if epis_type  = OP @ OTC
+
+                //cari queue utk source que dgn trantype epistycode
+                $queue_obj = DB::table('sysdb.sysparam')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=','QUE')
+                    ->where('trantype','=',$epistycode_q);
+
+                    //kalu xjumpe buat baru
+                if(!$queue_obj->exists()){
+                    DB::table('sysdb.sysparam')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'source' => 'QUE',
+                            'trantype' => $epistycode_q,
+                            'description' => $epistycode_q.' Queue No.',
+                            'pvalue2' => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                        ]);
+
+                    $queue_obj = DB::table('sysdb.sysparam')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=','QUE')
+                        ->where('trantype','=',$epistycode_q);
+                }
+
+                $queue_data = $queue_obj->first();
+
+                    //ni start kosong balik bila hari baru
+                if($queue_data->pvalue2 != Carbon::now("Asia/Kuala_Lumpur")->toDateString()){
+                    $queue_obj
+                        ->update([
+                            'pvalue1' => 1,
+                            'pvalue2' => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                        ]);
+                }
+
+                    //tambah satu dkt queue sysparam
+                $current_pvalue1 = intval($queue_data->pvalue1);
+                $queue_obj
+                    ->update([
+                        'pvalue1' => $current_pvalue1+1
+                    ]);
+
                 DB::table('hisdb.queue')
                     ->insert([
                         'AdmDoctor' => $epis_doctor,
@@ -1569,9 +2658,50 @@ class CaseNoteController extends defaultController
                 ->where('episno','=',$epis_no)
                 ->where('deptcode','=','SPEC');
 
-            $queueSPEC_data=$queueSPEC_obj->first();
-
             if(!$queueSPEC_obj->exists()){
+
+
+                //cari queue utk source que dgn trantype epistycode
+                $queue_obj = DB::table('sysdb.sysparam')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=','QUE')
+                    ->where('trantype','=',$epistycode_q);
+
+                    //kalu xjumpe buat baru
+                if(!$queue_obj->exists()){
+                    DB::table('sysdb.sysparam')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'source' => 'QUE',
+                            'trantype' => $epistycode_q,
+                            'description' => $epistycode_q.' Queue No.',
+                            'pvalue2' => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                        ]);
+
+                    $queue_obj = DB::table('sysdb.sysparam')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=','QUE')
+                        ->where('trantype','=',$epistycode_q);
+                }
+
+                $queue_data = $queue_obj->first();
+
+                    //ni start kosong balik bila hari baru
+                if($queue_data->pvalue2 != Carbon::now("Asia/Kuala_Lumpur")->toDateString()){
+                    $queue_obj
+                        ->update([
+                            'pvalue1' => 1,
+                            'pvalue2' => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                        ]);
+                }
+
+                    //tambah satu dkt queue sysparam
+                $current_pvalue1 = intval($queue_data->pvalue1);
+                $queue_obj
+                    ->update([
+                        'pvalue1' => $current_pvalue1+1
+                    ]);
+
                 DB::table('hisdb.queue')
                     ->insert([
                         'AdmDoctor' => $epis_doctor,
@@ -1740,15 +2870,23 @@ class CaseNoteController extends defaultController
                     ->where('episno','=',$request->episno);
 
             if($bedalloc_oldidno->exists()){
+                $last_bedalloc_idno = $bedalloc_oldidno->max('idno');
+
+                DB::table('hisdb.bedalloc')
+                    ->where('idno','=',$last_bedalloc_idno)
+                    ->update([
+                        'astatus' => "VACANT",
+                    ]);
+
                 $bedalloc_old = DB::table('hisdb.bedalloc')
-                    ->where('idno','=',$bedalloc_oldidno->max('idno'))
+                    ->where('idno','=',$last_bedalloc_idno)
                     ->first();
 
                 $bed_old = DB::table('hisdb.bed')
                                 ->where('compcode','=',session('compcode'))
                                 ->where('bednum','=',$bedalloc_old->bednum)
                                 ->update([
-                                    'occup' => "VACANT"
+                                    'occup' => "VACANT",
                                 ]);
 
             }
@@ -1759,6 +2897,13 @@ class CaseNoteController extends defaultController
 
             if($bed_obj->exists()){
                 $bed_first = $bed_obj->first();
+
+                $episode = DB::table("hisdb.episode")
+                                ->where('compcode',session('compcode'))
+                                ->where('mrn','=',$request->mrn)
+                                ->where('episno','=',$request->episno)
+                                ->first();
+
                 DB::table('hisdb.bedalloc')
                     ->insert([  
                         'mrn' => $request->mrn,
@@ -1773,23 +2918,32 @@ class CaseNoteController extends defaultController
                         'asdate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'astime' => Carbon::now("Asia/Kuala_Lumpur"),
                         'compcode' => session('compcode'),
+                        'computerid' => session('computerid'),
                         'adduser' => strtoupper(session('username')),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
                 $bed_obj->update([
-                    'occup' => "OCCUPIED"
+                    'occup' => "OCCUPIED",
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'admdoctor' => $episode->admdoctor,
+                    'name' => $request->name,
+                    'upduser' => strtoupper(session('username')),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                    'newic' => null
                 ]);
 
                 DB::table("hisdb.episode")
+                    ->where('compcode',session('compcode'))
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno)
                     ->update([
-                        'bed' => $request->bed_bednum
+                        'bed' => $request->bed_bednum,
                     ]);
 
             }
-
 
             DB::commit();
 
@@ -1834,6 +2988,7 @@ class CaseNoteController extends defaultController
                         'epistycode'    =>  $request->epistycode,
                         'adddate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
                         'adduser'    =>  session('username'),
+                        'computerid'    =>  session('computerid'),
                         'lastupdate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
                         'lastuser'    =>  session('username')
                     ]);
@@ -1851,7 +3006,8 @@ class CaseNoteController extends defaultController
                         'asdate'        =>  Carbon::now("Asia/Kuala_Lumpur"), 
                         'astime'    =>  Carbon::now("Asia/Kuala_Lumpur"),
                         'lastupdate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
-                        'lastuser'    =>  session('username')
+                        'lastuser'    =>  session('username'),
+                        'computerid'    =>  session('computerid'),
                     ]);
                 }
             }else{
@@ -1876,9 +3032,9 @@ class CaseNoteController extends defaultController
 
             $debtormast = DB::table('debtor.debtormast')
                 ->where('compcode','=', session('compcode'))
-                ->where('debtorcode','=',$request->debtorcode)
+                ->where('debtorcode','=',$request['hid_newgl_corpcomp'])
                 ->first();
-
+            
             $sysparam = DB::table('sysdb.sysparam')
                 ->where('source','=','GL')
                 ->where('trantype','=',$debtormast->debtortype);
@@ -1887,11 +3043,11 @@ class CaseNoteController extends defaultController
                 $sysparam_get = $sysparam->first();
                 $pvalue1 = $sysparam_get->pvalue1;
 
+                $ourrefno = $debtormast->debtortype .intval($pvalue1+1);
+
                 $sysparam->update([
                     'pvalue1' => intval($pvalue1+1)
                 ]);
-
-                $ourrefno = $debtormast->debtortype .intval($pvalue1+1);
             }else{
                 DB::table('sysdb.sysparam')->insert([
                     'compcode' => session('compcode'),
@@ -1902,20 +3058,24 @@ class CaseNoteController extends defaultController
                 $ourrefno = $debtormast->debtortype . strval(1);
             }
 
-             DB::table('hisdb.guarantee')
+            DB::table('hisdb.guarantee')
                 ->insert([
                     'compcode' => session('compcode'),
                     'mrn'    =>  $request->mrn,
-                    'debtorcode'  =>  $request->debtorcode,
                     'episno' =>   $request->episno,
-                    'staffid' =>   $request['newgl-staffid'],
+                    'ourrefno' =>  $ourrefno,
+                    'refno' =>   $request['newgl-refno'],
+                    'visitno' =>   $request['newgl-visitno'],
+                    'debtorcode'  =>  $request['hid_newgl_corpcomp'],
+                    // 'occupcode'  =>  $request['hid_newgl_occupcode'],
+                    'case'  =>  $request['newgl-case'],
+                    'name'  =>  strtoupper($request['newgl-name']),
+                    'staffid' =>   strtoupper($request['newgl-staffid']),
                     'childno' =>   $request['newgl-childno'],
                     'relatecode' =>   $request['hid_newgl_relatecode'],
-                    'gltype' =>   $request['newgl-childno'],
+                    'gltype' =>   $request['newgl-gltype'],
                     'startdate' =>   $request['newgl-effdate'],
                     'enddate' =>   $request['newgl-expdate'],
-                    'refno' =>   $request['newgl-refno'],
-                    'ourrefno' =>   $ourrefno,
                     'remark' =>   $request['newgl-remark'],
                     'medcase' =>   $request['newgl-case'],
                     'active' =>   'ACTIVE',
@@ -1923,8 +3083,59 @@ class CaseNoteController extends defaultController
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
 
+            // check duplicate corpstaff
+            if(!$this->duplicate_corpstaff($request)){
+                DB::table('hisdb.pat_mast')
+                    ->where('MRN',$request->mrn)
+                    ->where('compcode',session('compcode'))
+                    ->update([
+                        'OccupCode' => $request['hid_newgl_occupcode'],
+                        'RelateCode' => $request['hid_newgl_relatecode'],
+                        'ChildNo' => $request['newgl-childno'],
+                        'CorpComp' => $request['hid_newgl_corpcomp'],
+                        'Staffid' => $request['newgl-staffid'],
+                    ]);
+
+                if($this->corpstaff_exists($request)){
+                    DB::table('hisdb.corpstaff')
+                        ->where('MRN',$request->mrn)
+                        ->where('compcode',session('compcode'))
+                        ->where('relatecode',$request['hid_newgl_relatecode'])
+                        ->where('debtorcode',$request['hid_newgl_corpcomp'])
+                        ->where('staffid',$request['newgl-staffid'])
+                        ->where('childno',$request['newgl-childno'])
+                        ->update([
+                            'name' => strtoupper($request['newgl-name']),
+                            'gltype' => $request['newgl-gltype']
+                        ]);
+                }else{
+                    DB::table('hisdb.corpstaff')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'debtorcode' => $request['hid_newgl_corpcomp'],
+                            'staffid' => $request['newgl-staffid'],
+                            'childno' => $request['newgl-childno'],
+                            'relatecode' => $request['hid_newgl_relatecode'],
+                            'name' => strtoupper($request['newgl-name']),
+                            'recstatus' => 'ACTIVE',
+                            'gltype' => $request['newgl-gltype'],
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'mrn' => $request->mrn,
+                        ]);
+                }
+            }else{
+                throw new \Exception("Duplicate Corp Staff!");
+            }
 
             DB::commit();
+
+
+            $responce = new stdClass();
+            $responce->ourrefno = $ourrefno;
+            $responce->refno = $request['newgl-refno'];
+
+            return json_encode($responce);
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -1945,16 +3156,21 @@ class CaseNoteController extends defaultController
                         'compcode' => session('compcode'),
                         'mrn'    =>  $request->mrn,
                         'episno'  =>  $request->episno,
-                        'name'  =>  $request->name,
-                        'relationshipcode' =>  $request->relationshipcode, 
-                        'address1'    =>  $request->address1,
-                        'address2'    =>  $request->address2,
-                        'address3'    =>  $request->address3,
+                        'name'  =>  strtoupper($request->name),
+                        'relationshipcode' =>  strtoupper($request->relationshipcode), 
+                        'address1'    =>  strtoupper($request->address1),
+                        'address2'    =>  strtoupper($request->address2),
+                        'address3'    =>  strtoupper($request->address3),
                         'postcode'    =>  $request->postcode,
                         'tel_h'    =>   $request->tel_h,
                         'tel_hp'    =>   $request->tel_hp,
                         'tel_o'    =>  $request->tel_o,
-                        'tel_o_ext'    =>  $request->tel_o_ext
+                        'tel_o_ext'    =>  $request->tel_o_ext,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser' => session('username'),
+                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid'    =>  session('computerid')
                     ]);
 
             }else if($request->oper == 'edit'){
@@ -1964,16 +3180,19 @@ class CaseNoteController extends defaultController
                 if($nok_ec_obj->exists()){
                     $nok_ec_obj
                         ->update([
-                            'name'  =>  $request->name,
-                            'relationshipcode' =>  $request->relationshipcode, 
-                            'address1'    =>  $request->address1,
-                            'address2'    =>  $request->address2,
-                            'address3'    =>  $request->address3,
+                            'name'  =>  strtoupper($request->name),
+                            'relationshipcode' =>  strtoupper($request->relationshipcode), 
+                            'address1'    =>  strtoupper($request->address1),
+                            'address2'    =>  strtoupper($request->address2),
+                            'address3'    =>  strtoupper($request->address3),
                             'postcode'    =>  $request->postcode,
                             'tel_h'    =>   $request->tel_h,
                             'tel_hp'    =>   $request->tel_hp,
                             'tel_o'    =>  $request->tel_o,
-                            'tel_o_ext'    =>  $request->tel_o_ext
+                            'tel_o_ext'    =>  $request->tel_o_ext,
+                            'lastuser' => session('username'),
+                            'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'computerid'    =>  session('computerid')
                         ]);
                 }
 
@@ -2002,8 +3221,8 @@ class CaseNoteController extends defaultController
                     ->insert([
                         'compcode' => session('compcode'),
                         'mrn'    =>  $request->mrn,
-                        'name'  =>  $request->name,
-                        'relationship' =>  $request->relationshipcode, 
+                        'name'  =>  strtoupper($request->name),
+                        'relationship' =>  strtoupper($request->relationshipcode), 
                         'telh'    =>   $request->tel_h,
                         'telhp'    =>   $request->tel_hp,
                         'email'    =>  $request->email
@@ -2018,8 +3237,8 @@ class CaseNoteController extends defaultController
                         ->update([
                             'compcode' => session('compcode'),
                             'mrn'    =>  $request->mrn,
-                            'name'  =>  $request->name,
-                            'relationship' =>  $request->relationshipcode, 
+                            'name'  =>  strtoupper($request->name),
+                            'relationship' =>  strtoupper($request->relationshipcode), 
                             'telh'    =>   $request->tel_h,
                             'telhp'    =>   $request->tel_hp,
                             'email'    =>  $request->email
@@ -2042,32 +3261,89 @@ class CaseNoteController extends defaultController
 
     public function get_episode_by_mrn(Request $request){
 
-        $episode = DB::table('hisdb.episode')
-                ->where('mrn','=',$request->mrn)
-                ->where('episno','=',$request->episno)
-                ->first();
+        $episode = DB::table('hisdb.episode as e')
+                                ->select(
+                                    'reg_date',
+                                    'reg_time',
+                                    'episno',
+                                    'epistycode',
+                                    'e.bed',
+                                    'newcaseP',
+                                    'newcaseNP',
+                                    'followupP',
+                                    'followupP',
+                                    'e.regdept',
+                                    'e.admsrccode',
+                                    'e.case_code',
+                                    'e.admdoctor',
+                                    'e.pay_type',
+                                    'e.pyrmode',
+                                    'e.payer',
+                                    'e.billtype',
+                                    'dpmt.description as reg_desc',
+                                    'adm.description as adm_desc',
+                                    'cas.description as cas_desc',
+                                    'doc.doctorname as doc_desc',
+                                    'dbty.description as dbty_desc',
+                                    'dbms.name as dbms_name',
+                                    'bmst.description as bmst_desc')
+                                ->leftJoin('sysdb.department as dpmt', 'dpmt.deptcode', '=', 'e.regdept')
+                                ->leftJoin('hisdb.admissrc as adm', 'adm.admsrccode', '=', 'e.admsrccode')
+                                ->leftJoin('hisdb.casetype as cas', 'cas.case_code', '=', 'e.case_code')
+                                ->leftJoin('hisdb.doctor as doc', 'doc.doctorcode', '=', 'e.admdoctor')
+                                ->leftJoin('debtor.debtortype as dbty', 'dbty.debtortycode', '=', 'e.pay_type')
+                                ->leftJoin('debtor.debtormast as dbms', 'dbms.debtorcode', '=', 'e.payer')
+                                ->leftJoin('hisdb.billtymst as bmst', 'bmst.billtype', '=', 'e.billtype')
+                                ->where('e.compcode','=',session('compcode'))
+                                ->where('e.mrn',$request->mrn)
+                                ->where('e.episno',$request->episno)
+                                ->first();
 
         $epispayer = DB::table('hisdb.epispayer')
                 ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$request->mrn)
                 ->where('Episno','=',$request->episno)
+                ->where('LineNo','=','1')
                 ->first();
+
+        $txt_epis_refno = "";
+        $txt_epis_our_refno = "";
+        if(!empty($epispayer->refno)){
+            $txt_epis_refno = $epispayer->refno;
+
+            $guarantee = DB::table('hisdb.guarantee')
+                ->where('compcode','=',session('compcode'))
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->where('refno','=',$epispayer->refno);
+
+            if($guarantee->exists()){
+                $guarantee = $guarantee->first();
+                $txt_epis_our_refno = $guarantee->ourrefno;
+            }
+        }
 
         $debtormast = DB::table('debtor.debtormast')
                 ->where('compcode','=',session('compcode'))
                 ->where('debtorcode','=',$epispayer->payercode)
-                ->where('debtortype','=',$epispayer->pay_type)
+                // ->where('debtortype','=',$epispayer->pay_type)
                 ->first();
 
-        $bed = DB::table('hisdb.bed')
-                ->where('compcode','=',session('compcode'))
-                ->where('bednum','=',$episode->bed)
+        $bed = DB::table('hisdb.bed as bed')
+                ->select('bed.idno','bed.compcode','bed.ward','bed.room','bed.bednum','bed.bedtype','bed.tel_ext','bed.statistic','bed.occup','bed.isolate','bed.baby','bed.bedstatus','bed.bedchgcode','bed.lodchgcode','bed.mealschgcode','bed.otherchgcode','bed.category','bed.f1','bed.f2','bed.f3','bed.f4','bed.f5','bed.lastuser','bed.lastupdate','bed.adduser','bed.adddate','bed.upduser','bed.upddate','bed.deluser','bed.deldate','bed.computerid','bed.lastcomputerid','bed.recstatus','bed.mrn','bed.episno','bed.name','bed.admdoctor','bed.newic','bedtype.description')
+                ->leftJoin('hisdb.bedtype AS bedtype', function($join){
+                        $join = $join->where('bedtype.compcode','=',session('compcode'));
+                })
+                ->where('bed.bednum','=',$episode->bed)
+                ->where('bed.compcode','=',session('compcode'))
                 ->first();
 
         $responce = new stdClass();
         $responce->episode = $episode;
         $responce->epispayer = $epispayer;
         $responce->debtormast = $debtormast;
+        $responce->txt_epis_refno = $txt_epis_refno;
+        $responce->txt_epis_our_refno = $txt_epis_our_refno;
         $responce->bed = $bed;
 
         return json_encode($responce);
@@ -2086,8 +3362,8 @@ class CaseNoteController extends defaultController
                 ->insert([
                     'compcode' => session('compcode'),
                     'occupcode' => intval($idno) + 1,
-                    'description' => $request->occup_desc,
-                    'recstatus' => 'A',
+                    'description' => strtoupper($request->occup_desc),
+                    'recstatus' => 'ACTIVE',
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
@@ -2106,15 +3382,17 @@ class CaseNoteController extends defaultController
         DB::beginTransaction();
 
         try {
-
-            $idno = DB::table('hisdb.title')->max('idno');
+            
+            if($this->default_duplicate('hisdb.title','Code',$request->title_code)>0){
+                throw new \Exception("Title Code already exist");
+            }
 
             DB::table('hisdb.title')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'Code' => intval($idno) + 1,
-                    'description' => $request->title_desc,
-                    'recstatus' => 'A',
+                    'Code' => strtoupper($request->title_code),
+                    'description' => strtoupper($request->title_desc),
+                    'recstatus' => 'ACTIVE',
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
@@ -2134,15 +3412,18 @@ class CaseNoteController extends defaultController
 
         try {
 
-            $idno = DB::table('hisdb.areacode')->max('idno');
+            // if($this->default_duplicate('hisdb.areacode','areacode',$request->title_code)>0){
+            //     throw new \Exception("Areacode already exist");
+            // }
 
+            $areacode = DB::table('hisdb.areacode')->max('areacode');
 
             DB::table('hisdb.areacode')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'areacode' => intval($idno) + 1,
-                    'description' => $request->areacode_desc,
-                    'recstatus' => 'A',
+                    'areacode' => intval($areacode) + 1,
+                    'description' => strtoupper($request->areacode_desc),
+                    'recstatus' => 'ACTIVE',
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
@@ -2162,15 +3443,19 @@ class CaseNoteController extends defaultController
 
         try {
 
+            // if($this->default_duplicate('hisdb.relationship','RelationShipCode',$request->title_code)>0){
+            //     throw new \Exception("Areacode already exist");
+            // }
+
             $idno = DB::table('hisdb.relationship')->max('idno');
 
 
             DB::table('hisdb.relationship')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'areacode' => intval($idno) + 1,
+                    'RelationShipCode' => intval($idno) + 1,
                     'description' => $request->relationship_desc,
-                    'recstatus' => 'A',
+                    'recstatus' => 'ACTIVE',
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
@@ -2185,14 +3470,24 @@ class CaseNoteController extends defaultController
     }
 
     public function mrn_range(Request $request){
-        $table = DB::table('sysdb.sysparam')
-                    ->where('source','=','HIS')
-                    ->where('trantype','=','MRN')
-                    ->first();
+        if($request->PatClass == 'HIS'){
+            $table = DB::table('sysdb.sysparam')
+                        ->where('source','=','HIS')
+                        ->where('trantype','=','MRN')
+                        ->first();
 
-        return explode(',', $table->pvalue2);
+            return explode(',', $table->pvalue2);
+        }else if($request->PatClass == 'OTC'){
+            $table = DB::table('sysdb.sysparam')
+                        ->where('source','=','OTC')
+                        ->where('trantype','=','MRN')
+                        ->first();
+
+            return explode(',', $table->pvalue2);
+        }else{
+            dump('wrong patclass, choose only HIS or OTC');
+        }
     }
-
 
     public function get_preepis_data(Request $request){
 
@@ -2251,6 +3546,316 @@ class CaseNoteController extends defaultController
                     'debtorcode' => strtoupper($request->CorpComp)
                 ]);
         }
+
+    }
+
+    public function auto_save(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            if($this->default_duplicate( ///check duplicate
+                $request->table_name,
+                $request->code_name,
+                $request[$request->code_name]
+            )){
+                return response('Already Exists', 500);
+            };
+
+
+            DB::table($request->table_name)
+                ->insert([
+                    'compcode'          =>  session('compcode'),
+                    $request->code_name =>  $request[$request->code_name],
+                    $request->desc_name =>  $request[$request->desc_name],
+                    'recstatus'         =>  'ACTIVE',
+                    'adduser'           =>  session('username'),
+                    'adddate'           =>  Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function duplicate_corpstaff(Request $request){
+        return  DB::table('hisdb.pat_mast')
+                        ->where('mrn','!=',$request->mrn)
+                        ->where('compcode',session('compcode'))
+                        // ->where('OccupCode',$request['hid_newgl_occupcode'])
+                        ->where('RelateCode',$request['hid_newgl_relatecode'])
+                        ->where('ChildNo',$request['newgl-childno'])
+                        ->where('CorpComp',$request['hid_newgl_corpcomp'])
+                        ->where('Staffid',$request['newgl-staffid'])
+                        ->exists();
+    }
+
+    public function corpstaff_exists(Request $request){
+        return DB::table('hisdb.corpstaff')
+                        ->where('mrn',$request->mrn)
+                        ->where('compcode',session('compcode'))
+                        ->where('relatecode',$request['hid_newgl_relatecode'])
+                        ->where('debtorcode',$request['hid_newgl_corpcomp'])
+                        ->where('staffid',$request['newgl-staffid'])
+                        ->where('childno',$request['newgl-childno'])
+                        ->exists();
+    }
+
+    public function duplicate_corpstaff_panel(Request $request){
+        return  DB::table('hisdb.pat_mast')
+                        ->where('mrn','!=',$request->mrn)
+                        ->where('compcode',session('compcode'))
+                        // ->where('OccupCode',$request['hid_newgl_occupcode'])
+                        ->where('RelateCode',$request['newpanel_relatecode'])
+                        ->where('CorpComp',$request['newpanel_corpcomp'])
+                        ->where('Staffid',$request['newpanel_staffid'])
+                        ->exists();
+    }
+
+    public function corpstaff_exists_panel(Request $request){
+        return DB::table('hisdb.corpstaff')
+                        ->where('mrn',$request->mrn)
+                        ->where('compcode',session('compcode'))
+                        ->where('relatecode',$request['newpanel_relatecode'])
+                        ->where('debtorcode',$request['newpanel_corpcomp'])
+                        ->where('staffid',$request['newpanel_staffid'])
+                        ->exists();
+    }
+
+    public function check_regdept($epis_type,$epis_dept){
+        $data = DB::table('sysdb.department')
+            ->where('compcode','=',session('compcode'))
+            ->where('deptcode','=',$epis_dept)
+            ->where('recstatus','=','ACTIVE');
+
+        if($epis_type == 'IP'){
+            $data = $data->where('admdept','=','1');
+        }else{
+            $data = $data->where('regdept','=','1');
+        }
+
+        return $data->exists();
+    }
+
+    public function preepisode_table(Request $request){
+
+        $table=DB::table('hisdb.pre_episode as pre')
+                    ->select('pre.idno','pm.compcode','pm.Name','pm.mrn','pm.episno','pre.apptidno','pm.Newic','pm.telhp','pm.telh','pm.DOB','pm.sex')
+                    ->where('pre.compcode',session('compcode'))
+                    ->whereDate('pre.adddate',Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'))
+
+                    ->join('hisdb.pat_mast as pm', function($join) use ($request){
+                        $join = $join->on('pm.mrn', '=', 'pre.MRN')
+                                        ->where('pm.compcode','=',session('compcode'))
+                                        ->where('pm.PatStatus','!=','1')
+                                        ->where('pm.Active','=','1');
+                    });
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+    }
+
+
+    public function preepisode_epis(Request $request){
+
+        $table=DB::table('hisdb.pre_episode as pre')
+                    ->select('pre.idno','pre.case_code','pre.admdoctor','pm.compcode','pm.Name','pm.MRN','pm.episno','pre.apptidno','pm.Newic','pm.telhp','pm.telh','pm.DOB','pm.sex')
+                    ->where('pre.compcode',session('compcode'))
+                    ->whereDate('pre.adddate',Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'))
+                    ->where('pre.MRN',$request->mrn)
+                    ->where('pm.episno',$request->episno)
+
+                    ->join('hisdb.pat_mast as pm', function($join) use ($request){
+                        $join = $join->on('pm.mrn', '=', 'pre.MRN')
+                                        ->where('pm.compcode','=',session('compcode'))
+                                        ->where('pm.Active','=','1');
+                    });
+
+        $responce = new stdClass();
+        $responce->rows = $table->get();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+    }
+
+    public function dosage_table(Request $request){
+        
+        $table=DB::table('hisdb.pre_episode as pre')
+                    ->select('pre.idno','pre.case_code','pre.admdoctor','pm.compcode','pm.Name','pm.MRN','pm.episno','pre.apptidno','pm.Newic','pm.telhp','pm.telh','pm.DOB','pm.sex')
+                    ->where('pre.compcode',session('compcode'))
+                    ->whereDate('pre.adddate',Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'))
+                    ->where('pre.MRN',$request->mrn)
+                    ->where('pm.episno',$request->episno)
+
+                    ->join('hisdb.pat_mast as pm', function($join) use ($request){
+                        $join = $join->on('pm.mrn', '=', 'pre.MRN')
+                                        ->where('pm.compcode','=',session('compcode'))
+                                        ->where('pm.Active','=','1');
+                    });
+
+        $responce = new stdClass();
+        $responce->rows = $table->get();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+    }
+
+    public function change_to_jsarray($str){
+        $array=explode(",",$str);
+
+        return "'".implode("','",$array)."'";
+    }
+
+    public function patlabel(Request $request){
+        switch ($request->action) {
+            case 'patlabel':
+                return $this->patlabel_pdf($request);
+                break;
+            case 'pharlabel':
+                return $this->pharlabel_pdf($request);
+                break;
+            
+            default:
+                dd('error');
+                break;
+        }
+    }
+
+    public function patlabel_pdf(Request $request){
+        $company = DB::table('sysdb.company')
+                        ->where('compcode',session('compcode'))
+                        ->first();
+        
+        $ini_array = [
+            'comp_name' => $company->name,
+            'name' => $request->name,
+            'mrn' => $request->mrn,
+            'sex' => $request->sex,
+            'age' => $request->age,
+            'date' => $request->date,
+            'newic' => $request->newic,
+            'dob' => $request->dob,
+            'race' => $request->race,
+            'bedno' => $request->bedno,
+            'ward' => $request->ward,
+            'doc' => $request->doc,
+            'pages' => $request->pages,
+        ];
+
+        if(true){
+            return view('hisdb.pat_mgmt.patlabel_pdfmake',compact('ini_array'));
+        }else{
+            abort(403, 'MC not found');
+        }
+    }
+
+    public function pharlabel_pdf(Request $request){
+        $company = DB::table('sysdb.company')
+                        ->where('compcode',session('compcode'))
+                        ->first();
+
+        $ordcomtt_phar = DB::table('sysdb.sysparam')
+                    ->where('compcode',session('compcode'))
+                    ->where('source','=','OE')
+                    ->where('trantype','=','PHAR')->first();
+
+        $table_chgtrx = DB::table('hisdb.chargetrx as trx')
+                    ->select('trx.auditno','trx.compcode','trx.idno','trx.mrn','trx.episno','trx.epistype','trx.trxtype','trx.docref','trx.trxdate','trx.chgcode','trx.billcode','trx.costcd','trx.revcd','trx.mmacode','trx.billflag','trx.billdate','trx.billtype','trx.doctorcode','doc.doctorname','trx.chg_class','trx.unitprce','trx.quantity','trx.amount','trx.trxtime','trx.chggroup','trx.qstat','trx.dracccode','trx.cracccode','trx.arprocess','trx.taxamount','trx.billno','trx.invno','trx.uom','trx.uom_recv','trx.billtime','trx.invgroup','trx.reqdept as deptcode','trx.issdept','trx.invcode','trx.resulttype','trx.resultstatus','trx.inventory','trx.updinv','trx.invbatch','trx.doscode','trx.duration','trx.instruction','trx.discamt','trx.disccode','trx.pkgcode','trx.remarks','trx.frequency','trx.ftxtdosage','trx.addinstruction','trx.qtyorder','trx.ipqueueno','trx.itemseqno','trx.doseqty','trx.freqqty','trx.isudept','trx.qtyissue','trx.durationcode','trx.reqdoctor','trx.unit','trx.agreementid','trx.chgtype','trx.adduser','trx.adddate','trx.lastuser','trx.lastupdate','trx.daytaken','trx.qtydispense','trx.takehomeentry','trx.latechargesentry','trx.taxcode','trx.recstatus','trx.drugindicator','trx.id','trx.patmedication','trx.mmaprice','pt.avgcost as cost_price','pt.avgcost as cost_price','dos.dosedesc as doscode_desc','fre.freqdesc as frequency_desc','ins.description as addinstruction_desc','dru.description as drugindicator_desc','cm.brandname','cm.description')
+                    ->where('trx.mrn' ,'=', $request->mrn)
+                    ->where('trx.episno' ,'=', $request->episno)
+                    ->where('trx.compcode','=',session('compcode'))
+                    ->where('trx.recstatus','<>','DELETE')
+                    ->orderBy('trx.adddate', 'desc');
+
+        $table_chgtrx = $table_chgtrx->where('trx.chggroup',$ordcomtt_phar->pvalue1);
+
+        $table_chgtrx = $table_chgtrx->leftjoin('material.product as pt', function($join) use ($request){
+                            $join = $join->where('pt.compcode', '=', session('compcode'));
+                            $join = $join->on('pt.itemcode', '=', 'trx.chgcode');
+                            $join = $join->on('pt.uomcode', '=', 'trx.uom_recv');
+                            $join = $join->where('pt.unit', '=', session('unit'));
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.chgmast as cm', function($join) use ($request){
+                            $join = $join->where('cm.compcode', '=', session('compcode'));
+                            $join = $join->on('cm.chgcode', '=', 'trx.chgcode');
+                            $join = $join->on('cm.uom', '=', 'trx.uom');
+                            $join = $join->where('cm.unit', '=', session('unit'));
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.dose as dos', function($join) use ($request){
+                            $join = $join->where('dos.compcode', '=', session('compcode'));
+                            $join = $join->on('dos.dosecode', '=', 'trx.doscode');
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.freq as fre', function($join) use ($request){
+                            $join = $join->where('fre.compcode', '=', session('compcode'));
+                            $join = $join->on('fre.freqcode', '=', 'trx.frequency');
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.instruction as ins', function($join) use ($request){
+                            $join = $join->where('ins.compcode', '=', session('compcode'));
+                            $join = $join->on('ins.inscode', '=', 'trx.addinstruction');
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.drugindicator as dru', function($join) use ($request){
+                            $join = $join->where('dru.compcode', '=', session('compcode'));
+                            $join = $join->on('dru.drugindcode', '=', 'trx.drugindicator');
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.doctor as doc', function($join) use ($request){
+                            $join = $join->where('doc.compcode', '=', session('compcode'));
+                            $join = $join->on('doc.doctorcode', '=', 'trx.doctorcode');
+                        })
+                        ->get();
+
+        $pat_mast = DB::table('hisdb.pat_mast as pm')
+                        ->select('pm.Name','pm.Newic','pm.MRN')
+                        ->where('mrn',$request->mrn)
+                        ->where('compcode',session('compcode'))
+                        ->first();
+        if(true){
+            return view('hisdb.pat_mgmt.pharlabel_pdfmake',compact('table_chgtrx','pat_mast','company'));
+        }else{
+            abort(403, 'MC not found');
+        }
+    }
+
+    public function get_ordcom_totamount($mrn,$episno){
+        $chargetrx = DB::table('hisdb.chargetrx as trx')
+                        ->select('trx.amount','trx.discamt','trx.taxamount')
+                        ->where('trx.compcode',session('compcode'))
+                        ->where('trx.trxtype','!=','PD')
+                        ->where('trx.mrn' ,'=', $mrn)
+                        ->where('trx.episno' ,'=', $episno)
+                        ->where('trx.recstatus','<>','DELETE')
+                        ->get();
+
+        $amount = $chargetrx->sum('amount');
+        $discamt = $chargetrx->sum('discamt');
+        $taxamount = $chargetrx->sum('taxamount');
+        $totamount = $amount + $discamt + $taxamount;
+
+        return $totamount;
 
     }
 

@@ -1659,6 +1659,7 @@ Route::get('/diagnosedel','util\DiagnoseController@test');
 
 //// Case Note page ////
 Route::get('/casenote','hisdb\CaseNoteController@show');
+Route::get('/casenote/table','hisdb\CaseNoteController@table');
 Route::get('/casenote/get_entry','hisdb\CaseNoteController@get_entry');
 Route::post('/casenote/post_entry','hisdb\CaseNoteController@post_entry');
 Route::post('/casenote/save_patient','hisdb\CaseNoteController@save_patient');
