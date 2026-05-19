@@ -131,7 +131,7 @@
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.paediatric.paediatric')
+						@include('hisdb.paediatric_MR.paediatric_MR')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
@@ -375,7 +375,7 @@
 			@if (Auth::user()->doctor == 1)
 				<script type="text/javascript" src="js/hisdb/nursing_MR/nursing_MR.js?v=1.2"></script>
 				<script type="text/javascript" src="js/hisdb/antenatal_MR/antenatal_MR.js"></script>
-				<script type="text/javascript" src="js/hisdb/paediatric/paediatric.js"></script>
+				<script type="text/javascript" src="js/hisdb/paediatric_MR/paediatric_MR.js"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_intake_MR.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_MR.js?v=2.4"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invFBC_MR.js?v=1.1"></script>
