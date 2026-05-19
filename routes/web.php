@@ -1427,6 +1427,11 @@ Route::get('/antenatal_MR/table','hisdb\AntenatalMRController@table');
 Route::post('/antenatal_MR/form','hisdb\AntenatalMRController@form');
 Route::get('/antenatal_MR','hisdb\AntenatalMRController@chart');
 
+//// Paediatric MR page ///
+Route::get('/paediatric_MR','hisdb\PaediatricMRController@show');
+Route::get('/paediatric_MR/table','hisdb\PaediatricMRController@table');
+Route::post('/paediatric_MR/form','hisdb\PaediatricMRController@form');
+
 //// Client Progress Note MR (Doctor Note) page ///
 Route::get('/clientprogressnote_MR','hisdb\ClientProgressNoteMRController@show');
 Route::get('/clientprogressnote_MR/table','hisdb\ClientProgressNoteMRController@table');
