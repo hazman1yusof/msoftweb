@@ -11,6 +11,8 @@
 @endsection
 
 @section('body')
+@include('hisdb.pat_mgmt.mdl_patient_MR')
+@include('hisdb.pat_mgmt.itemselector_MR')
     
     <!--***************************** Search + table *****************************-->
     <div class='row'>
@@ -27,8 +29,11 @@
                 CITIZENSHIP: <span id="citizenship_show_casenote"></span>
                 AREA: <span id="area_show_casenote"></span>
             </div>
+            <div class='col-md-12' style="padding: 15px 15px;">
+                <button type="button" class="btn btn-primary btn-sm" id="profile">Profile</button>
+            </div>
         </form>
-        
+
         <form id="searchForm" class="formclass" style='width: 40%; position: relative; float: right;' onkeydown="return event.key != 'Enter';">
             <fieldset>
                 <input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
@@ -114,5 +119,19 @@
     </script>
     
     <script src="js/hisdb/casenote/casenote.js"></script>
-    
+    <script src="js/hisdb/pat_mgmt/pat_nok_MR.js"></script>
+	<script src="js/hisdb/pat_mgmt/pat_emr_MR.js"></script>
+	<script src="js/hisdb/pat_mgmt/textfield_modal_MR.js"></script>
+	<script src="js/hisdb/pat_mgmt/landing_MR.js?v=1.10"></script>
+    <script src="js/myjs/modal-fix.js"></script>
+	<script src="js/hisdb/pat_mgmt/biodata_MR.js?v=1.1"></script>
+    <script>$.fn.modal.Constructor.prototype.enforceFocus = function() {};</script>
+    <script src="plugins/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+	<script src="plugins/form-validator/jquery.form-validator.min.js"></script>
+	
+	<script src="plugins/flot/jquery.flot.js"></script>
+	<script src="plugins/flot/jquery.flot.errorbars.js"></script>
+	<script src="plugins/flot/jquery.flot.navigate.js"></script>
+	<script src="plugins/flot/jquery.flot.crosshair.js"></script>
+	<script src="plugins/flot/jquery.flot.symbol.js"></script>
 @endsection

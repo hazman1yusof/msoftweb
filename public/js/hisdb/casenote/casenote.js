@@ -234,6 +234,15 @@ $(document).ready(function (){
 			window.open('./pat_mast_MR?epistycode='+epistycode+'&curpat=true&PatClass=HIS&mrn='+mrn+'&episno='+episno, '_blank');
 		});
 	}
+
+	$('#profile').click(function(){
+        
+		disableForm('#mdl_patient_info_MR');
+        $('#jqGridPager_nok_pat_MR_left, #jqGridPager_nok_emr_MR_left').hide();
+		
+        // populate_patient();
+        $('#mdl_patient_info_MR').modal({backdrop: "static"});	
+	});
 	
 	function populate_patDetail(obj){
 		$('#name_show_casenote').text(obj.Name);

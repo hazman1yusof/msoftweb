@@ -1,6 +1,6 @@
 <!-- Large modal -->
 <div id="mdl_patient_info_MR" data-keyboard="false" class="modal fade ba" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" style="display: none; z-index: 100; padding-left: 0px !important;">
-    <div class="modal-dialog half modal-lg">
+    <div class="modal-dialog modal-lg" style="width: 750px;">
         <form id="frm_patient_info_MR" class="form-horizontal" autocomplete="off">
 			<input type="hidden" name="idno" id="txt_pat_idno_MR">
             <input name="pat_mrn" id="pat_mrn_MR" type="hidden">
