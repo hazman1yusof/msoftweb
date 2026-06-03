@@ -62,10 +62,32 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: ['*'], // panjang standard dia 515
+                            widths: [160,10,'*'], // panjang standard dia 515
                             body: [
                                 [
-                                    { text: 'TYPE OF OPERATION / PROCEDURE\u200B\t:\u200B\t{{$pat_otbook->oper_type}}' },
+                                    { text: 'TYPE OF OPERATION / PROCEDURE' },
+                                    { text: '1.' },
+                                    { text: '{{$pat_otbook->oper_type}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: '2.' },
+                                    { text: '{{$pat_otbook->oper_type2}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: '3.' },
+                                    { text: '{{$pat_otbook->oper_type3}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: '4.' },
+                                    { text: '{{$pat_otbook->oper_type4}}' },
+                                ],
+                                [
+                                    { text: '' },
+                                    { text: '5.' },
+                                    { text: '{{$pat_otbook->oper_type5}}' },
                                 ],
                             ]
                         },
