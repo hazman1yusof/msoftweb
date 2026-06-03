@@ -45,127 +45,198 @@
                                         <div class="ui segment">
                                             <div class="ui grid">
                                                 <div class="sixteen wide column centered grid" style="padding: 14px 14px 0px 150px;">
-                                                    <div class="inline field">
-                                                        <label>iPesakit</label>
-                                                        <input type="text" id="otReqFor_iPesakit" name="iPesakit">
-                                                    </div>
-                                                    
-                                                    <div class="inline fields">
-                                                        <label for="req_type">Type</label>
-                                                        <div class="field">
-                                                            <div class="ui radio checkbox">
-                                                                <input type="radio" id="req_type_ward" name="req_type" value="WARD">
-                                                                <label for="req_type_ward">Ward</label>
+                                                    <div class="ui grid">
+                                                        <div class="four wide column" style="padding-top:8px">
+                                                            <div class="field">
+                                                                <label>iPesakit</label>
                                                             </div>
                                                         </div>
-                                                        <div class="field">
-                                                            <div class="ui radio checkbox">
-                                                                <input type="radio" id="req_type_ot" name="req_type" value="OT">
-                                                                <label for="req_type_ot">OT</label>
+                                                        <div class="twelve wide column">
+                                                            <div class="field eight wide column">
+                                                                <input type="text" id="otReqFor_iPesakit" name="iPesakit">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="ui grid">
+                                                        <div class="four wide column" style="padding-top:8px">
+                                                            <div class="field">
+                                                                <label for="req_type">Type</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="twelve wide column">
+                                                            <div class="field eight wide column">
+                                                                <div class="inline fields">
+                                                                    <div class="field">
+                                                                        <div class="ui radio checkbox">
+                                                                            <input type="radio" id="req_type_ward" name="req_type" value="WARD">
+                                                                            <label for="req_type_ward">Ward</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        <div class="ui radio checkbox">
+                                                                            <input type="radio" id="req_type_ot" name="req_type" value="OT">
+                                                                            <label for="req_type_ot">OT</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     
                                                     <div class="ui grid">
-                                                        <div class="field two wide column" style="margin: 0px;">
+                                                        <div class="field two wide column" style="margin: 0px;padding-top:8px">
                                                             <label>Bed</label>
                                                             <input id="ReqFor_bed" name="ReqFor_bed" type="text" rdonly>
                                                         </div>
-                                                        <div class="field two wide column" style="margin: 0px;">
+                                                        <div class="field two wide column" style="margin: 0px;padding-top:8px">
                                                             <label>Ward</label>
                                                             <input id="ReqFor_ward" name="ReqFor_ward" type="text" rdonly>
                                                         </div>
-                                                        <div class="field three wide column" style="margin: 0px;">
+                                                        <div class="field three wide column" style="margin: 0px;padding-top:8px">
                                                             <label>Room</label>
                                                             <input id="ReqFor_room" name="ReqFor_room" type="text" rdonly>
                                                         </div>
-                                                        <div class="field three wide column" style="margin: 0px;">
+                                                        <div class="field three wide column" style="margin: 0px;padding-top:8px">
                                                             <label>Bed Type</label>
                                                             <input id="ReqFor_bedtype" name="ReqFor_bedtype" type="text" rdonly>
                                                         </div>
                                                     </div>
                                                     
-                                                    <div class="inline field" style="padding-top:10px">
-                                                        <label>Date for OP</label>
-                                                        <input id="ReqFor_op_date" name="op_date" type="date">
-                                                    </div>
-                                                    
-                                                    <div class="inline field">
-                                                        <label>Type of Operation / Procedure</label>
-                                                        <input id="ReqFor_oper_type" name="oper_type" type="text" style="width: 350px;">
-                                                    </div>
-                                                    
-                                                    <div class="inline fields">
-                                                        <label for="adm_type">Type of Admission</label>
-                                                        <div class="field">
-                                                            <div class="ui radio checkbox">
-                                                                <input type="radio" name="adm_type" value="DC" id="req_adm_dc">
-                                                                <label for="req_adm_dc">Day Case</label>
+                                                    <div class="ui grid">
+                                                        <div class="four wide column" style="padding-top:8px">
+                                                            <div class="inline field">
+                                                                <label>Date for OP</label>
                                                             </div>
                                                         </div>
-                                                        <div class="field">
-                                                            <div class="ui radio checkbox">
-                                                                <input type="radio" name="adm_type" value="IP" id="req_adm_ip">
-                                                                <label for="req_adm_ip">In Patient</label>
+                                                        <div class="twelve wide column">
+                                                            <div class="inline field">
+                                                                <input id="op_date" name="op_date" type="date">
                                                             </div>
                                                         </div>
                                                     </div>
                                                     
-                                                    <div class="inline fields">
-                                                        <label for="anaesthetist">Anaesthetist</label>
-                                                        <div class="field">
-                                                            <div class="ui radio checkbox">
-                                                                <input type="radio" name="anaesthetist" value="1" id="req_anas_req">
-                                                                <label for="req_anas_req">Required</label>
+                                                    <div class="ui grid">
+                                                        <div class="four wide column" style="padding-top:8px">
+                                                            <div class="field">
+                                                                <label>Type of Operation / Procedure</label>
                                                             </div>
                                                         </div>
-                                                        <div class="field">
-                                                            <div class="ui radio checkbox">
-                                                                <input type="radio" name="anaesthetist" value="0" id="req_anas_notreq">
-                                                                <label for="req_anas_notreq">Not Required</label>
+                                                        <div class="twelve wide column">
+                                                            <div class="field eight wide column">
+                                                                1.  <input id="ReqFor_oper_type" name="oper_type" type="text" style="width: 350px;">
+                                                            </div>
+                                                            <div class="field eight wide column">
+                                                                2.  <input id="ReqFor_oper_type2" name="oper_type2" type="text" style="width: 350px;">
+                                                            </div>
+                                                            <div class="field eight wide column">
+                                                                3.  <input id="ReqFor_oper_type3" name="oper_type3" type="text" style="width: 350px;">
+                                                            </div>
+                                                            <div class="field eight wide column">
+                                                                4.  <input id="ReqFor_oper_type4" name="oper_type4" type="text" style="width: 350px;">
+                                                            </div>
+                                                            <div class="field eight wide column">
+                                                                5.  <input id="ReqFor_oper_type5" name="oper_type5" type="text" style="width: 350px;">
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="four wide column" style="padding: 0px 14px 14px 150px;">
-                                                    <div class="field">
-                                                        <label>Diagnosis</label>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="twelve wide column" style="padding-top: 0px;">
-                                                    <div class="field nine wide column">
-                                                        <textarea id="otReqFor_diagnosis" name="ot_diagnosis" type="text" rows="5"></textarea>
-                                                        
-                                                        <div class="inline field" style="padding-top: 15px;">
-                                                            <label>Diagnosed By</label>
-                                                            <input id="otReqFor_diagnosedby" name="ot_diagnosedby" type="text" style="width: 320px; text-transform: uppercase;">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="six wide column" style="padding: 0px 14px 14px 150px;">
-                                                    <div class="field">
-                                                        <label>Special remarks / instructions for medication or any related to case</label>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="ten wide column" style="padding-top: 0px;">
-                                                    <div class="field eight wide column">
-                                                        <textarea id="otReqFor_remarks" name="ot_remarks" type="text" rows="5"></textarea>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="sixteen wide column centered grid" style="padding: 0px 14px 14px 150px;">
-                                                    <div class="inline field">
-                                                        <label>Doctor's Name</label>
-                                                        <input id="otReqFor_doctorname" name="ot_doctorname" type="text" style="width: 350px; text-transform: uppercase;">
                                                     </div>
                                                     
-                                                    <div class="inline field">
-                                                        <label>Entered By</label>
-                                                        <input id="otReqFor_lastuser" name="ot_lastuser" type="text" style="width: 350px; text-transform: uppercase;">
+                                                    <div class="ui grid">
+                                                        <div class="four wide column" style="padding-top:8px">
+                                                            <div class="field">
+                                                                <label for="adm_type">Type of Admission</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="twelve wide column">
+                                                            <div class="field eight wide column">
+                                                                <div class="inline fields">
+                                                                    <div class="field">
+                                                                        <div class="ui radio checkbox">
+                                                                            <input type="radio" name="adm_type" value="DC" id="req_adm_dc">
+                                                                            <label for="req_adm_dc">Day Case</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        <div class="ui radio checkbox">
+                                                                            <input type="radio" name="adm_type" value="IP" id="req_adm_ip">
+                                                                            <label for="req_adm_ip">In Patient</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="ui grid">
+                                                        <div class="four wide column" style="padding-top:8px">
+                                                            <div class="field">
+                                                                <label for="anaesthetist">Anaesthetist</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="twelve wide column">
+                                                            <div class="field eight wide column">
+                                                                <div class="inline fields">
+                                                                    <div class="field">
+                                                                        <div class="ui radio checkbox">
+                                                                            <input type="radio" name="anaesthetist" value="1" id="req_anas_req">
+                                                                            <label for="req_anas_req">Required</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        <div class="ui radio checkbox">
+                                                                            <input type="radio" name="anaesthetist" value="0" id="req_anas_notreq">
+                                                                            <label for="req_anas_notreq">Not Required</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="ui grid">
+                                                        <div class="four wide column" style="padding-top:8px">
+                                                            <div class="field">
+                                                                <label>Diagnosis</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="twelve wide column">
+                                                           <div class="field nine wide column">
+                                                                <textarea id="otReqFor_diagnosis" name="ot_diagnosis" type="text" rows="5"></textarea>
+                                                                
+                                                                <div class="inline field" style="padding-top: 15px;">
+                                                                    <label>Diagnosed By</label>
+                                                                    <input id="otReqFor_diagnosedby" name="ot_diagnosedby" type="text" style="width: 320px; text-transform: uppercase;">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="ui grid">
+                                                        <div class="four wide column" style="padding-top:8px">
+                                                            <div class="field">
+                                                                <label>Special remarks / instructions for medication or any related to case</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="twelve wide column">
+                                                            <textarea id="otReqFor_remarks" name="ot_remarks" type="text" rows="5"></textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="ui grid">
+                                                        <div class="equal width row">
+                                                            <div class="column">
+                                                                <div class="inline field">
+                                                                    <label>Doctor's Name</label>
+                                                                    <input id="otReqFor_doctorname" name="ot_doctorname" type="text" style="width: 350px; text-transform: uppercase;">
+                                                                </div>
+                                                            </div>
+                                                            <div class="column">
+                                                                <div class="inline field" style="padding-bottom:8px">
+                                                                    <label>Entered By</label>
+                                                                    <input id="otReqFor_lastuser" name="ot_lastuser" type="text" style="width: 350px; text-transform: uppercase;">
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

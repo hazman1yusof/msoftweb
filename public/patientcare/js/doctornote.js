@@ -1638,6 +1638,22 @@ function saveForm_otbook(callback){
 		value: $('#formOTBook input[name=oper_type]').val()
 	})
 	values.push({
+        name: 'oper_type2',
+        value: $('#formOTBookReqFor input[name=oper_type2]').val()
+    })
+    values.push({
+        name: 'oper_type3',
+        value: $('#formOTBookReqFor input[name=oper_type3]').val()
+    })
+    values.push({
+        name: 'oper_type4',
+        value: $('#formOTBookReqFor input[name=oper_type4]').val()
+    })
+    values.push({
+        name: 'oper_type5',
+        value: $('#formOTBookReqFor input[name=oper_type5]').val()
+    })
+	values.push({
 		name: 'ot_diagnosis',
 		value: $('#formOTBook textarea[name=ot_diagnosis]').val()
 	})

@@ -144,6 +144,10 @@ class RequestForController extends defaultController
                     'req_type' => $request->req_type,
                     'op_date' => $request->op_date,
                     'oper_type' => $request->oper_type,
+                    'oper_type2' => $request->oper_type2,
+                    'oper_type3' => $request->oper_type3,
+                    'oper_type4' => $request->oper_type4,
+                    'oper_type5' => $request->oper_type5,
                     'adm_type' => $request->adm_type,
                     'anaesthetist' => $request->anaesthetist,
                     'diagnosis' => $request->ot_diagnosis,
@@ -245,6 +249,10 @@ class RequestForController extends defaultController
                 //         'req_type' => $request->req_type,
                 //         'op_date' => $request->op_date,
                 //         'oper_type' => $request->oper_type,
+                //          'oper_type2' => $request->oper_type2,
+                //          'oper_type3' => $request->oper_type3,
+                //          'oper_type4' => $request->oper_type4,
+                //          'oper_type5' => $request->oper_type5,
                 //         'adm_type' => $request->adm_type,
                 //         'anaesthetist' => $request->anaesthetist,
                 //         'diagnosis' => $request->ot_diagnosis,
@@ -305,6 +313,10 @@ class RequestForController extends defaultController
                         'req_type' => $request->req_type,
                         'op_date' => $request->op_date,
                         'oper_type' => $request->oper_type,
+                        'oper_type2' => $request->oper_type2,
+                        'oper_type3' => $request->oper_type3,
+                        'oper_type4' => $request->oper_type4,
+                        'oper_type5' => $request->oper_type5,
                         'adm_type' => $request->adm_type,
                         'anaesthetist' => $request->anaesthetist,
                         'diagnosis' => $request->ot_diagnosis,
@@ -327,6 +339,10 @@ class RequestForController extends defaultController
                         'req_type' => $request->req_type,
                         'op_date' => $request->op_date,
                         'oper_type' => $request->oper_type,
+                        'oper_type2' => $request->oper_type2,
+                        'oper_type3' => $request->oper_type3,
+                        'oper_type4' => $request->oper_type4,
+                        'oper_type5' => $request->oper_type5,
                         'adm_type' => $request->adm_type,
                         'anaesthetist' => $request->anaesthetist,
                         'diagnosis' => $request->ot_diagnosis,
@@ -394,7 +410,7 @@ class RequestForController extends defaultController
                             ->where('episno','=',$request->episno);
         
         $pat_otbook_obj = DB::table('hisdb.pat_otbook')
-                        ->select('idno','compcode','mrn','episno','iPesakit as p_iPesakit','req_type','op_date','oper_type','adm_type','anaesthetist','diagnosis as ot_diagnosis','diagnosedby as ot_diagnosedby','remarks as ot_remarks','doctorname as ot_doctorname','adduser','adddate','upduser','upddate','lastuser as ot_lastuser','lastupdate','computerid')
+                        ->select('idno','compcode','mrn','episno','iPesakit as p_iPesakit','req_type','op_date','oper_type','oper_type2','oper_type3','oper_type4','oper_type5','adm_type','anaesthetist','diagnosis as ot_diagnosis','diagnosedby as ot_diagnosedby','remarks as ot_remarks','doctorname as ot_doctorname','adduser','adddate','upduser','upddate','lastuser as ot_lastuser','lastupdate','computerid')
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno);
