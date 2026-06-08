@@ -33,7 +33,7 @@
 				<span class="fa fa-save fa-lg"></span> Save 
 			</button>
 			<button type="button" class="btn btn-default" id="cancel_dietOrder">
-				<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
+				<span class="fa fa-ban fa-lg" aria-hidden="true"></span> Cancel 
 			</button>
 		</div>
 	</div>

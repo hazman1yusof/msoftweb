@@ -1,7 +1,7 @@
 <div class="panel panel-default" style="position: relative;" id="jqGrid_discharge_c">
 	
-	<div class="panel-heading clearfix collapsed position" id="toggle_discharge" style="position: sticky;top: 0px;z-index: 3;">
-		<b>NAME: <span id="name_show_discharge"></span></b><br>
+	<div class="panel-heading clearfix collapsed position" id="toggle_discharge" style="position: sticky; top: 0px; z-index: 3; height: 65px;">
+		<!-- <b>NAME: <span id="name_show_discharge"></span></b><br>
 		MRN: <span id="mrn_show_discharge"></span>
 		SEX: <span id="sex_show_discharge"></span>
 		DOB: <span id="dob_show_discharge"></span>
@@ -10,7 +10,7 @@
 		RELIGION: <span id="religion_show_discharge"></span><br>
 		OCCUPATION: <span id="occupation_show_discharge"></span>
 		CITIZENSHIP: <span id="citizenship_show_discharge"></span>
-		AREA: <span id="area_show_discharge"></span>
+		AREA: <span id="area_show_discharge"></span> -->
 		
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid_discharge_panel"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid_discharge_panel"></i>

@@ -20,13 +20,42 @@
 
     <link rel="stylesheet" href="plugins/css/trirand/ui.jqgrid-bootstrap.css" />
 	<link rel="stylesheet" href="css/landing.css?v=1">
-
+	
 	<style>
 		#Dtext_chgcode_dfee {
 			margin-left: 10px;
-	    }
+		}
+		
+		/* change the colour of second navtab dalam nursing */
+		/* 1. Default (Inactive) Tabs background */
+		.nav-tabs-second > li > a {
+			background-color: #f0f0f0;
+			color: #555555;
+		}
+		
+		/* 2. Hover and Focus states for Inactive Tabs */
+		.nav-tabs-second > li > a:hover,
+		.nav-tabs-second > li > a:focus {
+			background-color: #e0e0e0 !important;
+			color: #333333;
+		}
+		
+		/* 3. Active Tab background (the currently selected tab) */
+		.nav-tabs-second > li.active > a,
+		.nav-tabs-second > li.active > a:hover,
+		.nav-tabs-second > li.active > a:focus {
+			background-color: #007bff !important;
+			color: #ffffff !important;
+			border: 1px solid #007bff; /* Keeps borders cohesive */
+		}
+		
+		/* 4. Optional: Background of the entire tab bar row */
+		.nav-tabs-second {
+			background-color: #ffffff;
+		}
+		/* change colour of second navtab ends */
 	</style>
-
+	
 </head>
 
 <body class="header-fixed">
@@ -261,91 +290,12 @@
 			@endif
 			
 			@if (request()->get('epistycode') == 'IP' || request()->get('epistycode') == 'DP')
-				@if (Auth::user()->doctor == 1)
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="nursingED_row">
-						@include('hisdb.nursingED.nursingED')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="nursing_row">
-						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.nursingActionPlan.nursingActionPlan')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.nursingnote.nursingnote')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="antenatal_row">
-						@include('hisdb.antenatal.antenatal')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.clientprogressnote.clientprogressnote')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.clientprogressnote.clientprogressnoteref')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.doctornote.doctornote')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.requestfor.requestfor')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.dieteticCareNotes.dieteticCareNotes')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.dietorder.dietorder')
-					</div>
-				@elseif (Auth::user()->nurse == 1)
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="nursingED_row">
-						@include('hisdb.nursingED.nursingED')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.nursingActionPlan.nursingActionPlan')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.nursingnote.nursingnote')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.clientprogressnote.clientprogressnote')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.clientprogressnote.clientprogressnoteref')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.doctornote.doctornote')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.requestfor.requestfor')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.dieteticCareNotes.dieteticCareNotes')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.dietorder.dietorder')
-					</div>
-				@endif
+				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+					@include('hisdb.ward_main.ward_main')
+				</div>
+				
+				<!-- include panel yang lama ada dalam ni -->
+				<!-- include'hisdb.pat_mgmt.landing_lama' -->
 				
 				@if (Auth::user()->billing == 1)
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
@@ -588,6 +538,7 @@
 			@endif
 			
 			<script type="text/javascript" src="js/hisdb/discharge/discharge.js"></script>
+			<script type="text/javascript" src="js/hisdb/ward_main/ward_main.js"></script>
 		@endif
 		
 	@endif

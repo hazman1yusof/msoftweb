@@ -543,14 +543,14 @@
                                                     <div class="panel panel-info">
                                                         <div class="panel-body">
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="ot_iPesakit">iPesakit</label>
+                                                                <label class="col-md-4 control-label" for="ot_iPesakit">iPesakit</label>
                                                                 <div class="col-md-2">
                                                                     <input id="ot_iPesakit" name="iPesakit" type="text" class="form-control input-sm">
                                                                 </div>
                                                             </div>
                                                             
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="req_type">Type</label>
+                                                                <label class="col-md-4 control-label" for="req_type">Type</label>
                                                                 <div class="col-md-6">
                                                                     <label class="radio-inline">
                                                                         <input type="radio" id="type_ward" name="req_type" value="WARD">Ward
@@ -562,21 +562,54 @@
                                                             </div>
                                                             
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="op_date">Date for OP</label>
+                                                                <label class="col-md-4 control-label" for="op_date">Date for OP</label>
                                                                 <div class="col-md-4">
                                                                     <input id="op_date" name="op_date" type="date" class="form-control input-sm">
                                                                 </div>
                                                             </div>
                                                             
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="oper_type">Type of Operation / Procedure</label>
+                                                                <label class="col-md-3 control-label">Type of Operation / Procedure</label>
+                                                                <label class="col-md-1 control-label" for="oper_type">1.</label>
                                                                 <div class="col-md-6">
                                                                     <input id="oper_type" name="oper_type" type="text" class="form-control input-sm" style="text-transform: none;">
                                                                 </div>
                                                             </div>
                                                             
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="adm_type">Type of Admission</label>
+                                                                <label class="col-md-3 control-label"></label>
+                                                                <label class="col-md-1 control-label" for="oper_type2">2.</label>
+                                                                <div class="col-md-6">
+                                                                    <input id="oper_type2" name="oper_type2" type="text" class="form-control input-sm" style="text-transform: none;">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label"></label>
+                                                                <label class="col-md-1 control-label" for="oper_type3">3.</label>
+                                                                <div class="col-md-6">
+                                                                    <input id="oper_type3" name="oper_type3" type="text" class="form-control input-sm" style="text-transform: none;">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label"></label>
+                                                                <label class="col-md-1 control-label" for="oper_type4">4.</label>
+                                                                <div class="col-md-6">
+                                                                    <input id="oper_type4" name="oper_type4" type="text" class="form-control input-sm" style="text-transform: none;">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label"></label>
+                                                                <label class="col-md-1 control-label" for="oper_type5">5.</label>
+                                                                <div class="col-md-6">
+                                                                    <input id="oper_type5" name="oper_type5" type="text" class="form-control input-sm" style="text-transform: none;">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="adm_type">Type of Admission</label>
                                                                 <div class="col-md-6">
                                                                     <label class="radio-inline">
                                                                         <input type="radio" name="adm_type" value="DC">Day Case
@@ -588,7 +621,7 @@
                                                             </div>
                                                             
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="anaesthetist">Anaesthetist</label>
+                                                                <label class="col-md-4 control-label" for="anaesthetist">Anaesthetist</label>
                                                                 <div class="col-md-6">
                                                                     <label class="radio-inline">
                                                                         <input type="radio" name="anaesthetist" value="1">Required
@@ -600,7 +633,7 @@
                                                             </div>
                                                             
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="ot_diagnosis">Diagnosis</label>
+                                                                <label class="col-md-4 control-label" for="ot_diagnosis">Diagnosis</label>
                                                                 <div class="col-md-6">
                                                                     <textarea id="ot_diagnosis" name="ot_diagnosis" type="text" class="form-control input-sm"></textarea>
                                                                     
@@ -612,21 +645,21 @@
                                                             </div>
                                                             
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="ot_remarks">Special remarks / instructions for medication or any related to case</label>
+                                                                <label class="col-md-4 control-label" for="ot_remarks">Special remarks / instructions for medication or any related to case</label>
                                                                 <div class="col-md-6">
                                                                     <textarea id="ot_remarks" name="ot_remarks" type="text" class="form-control input-sm"></textarea>
                                                                 </div>
                                                             </div>
                                                             
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="ot_doctorname">Doctor's Name</label>
+                                                                <label class="col-md-4 control-label" for="ot_doctorname">Doctor's Name</label>
                                                                 <div class="col-md-6">
                                                                     <input id="ot_doctorname" name="ot_doctorname" type="text" class="form-control input-sm">
                                                                 </div>
                                                             </div>
                                                             
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="ot_lastuser">Entered By</label>
+                                                                <label class="col-md-4 control-label" for="ot_lastuser">Entered By</label>
                                                                 <div class="col-md-6">
                                                                     <input id="ot_lastuser" name="ot_lastuser" type="text" class="form-control input-sm">
                                                                 </div>

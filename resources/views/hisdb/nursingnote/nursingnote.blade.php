@@ -30,7 +30,7 @@
                         <li><a data-toggle="tab" id="navtab_progress" href="#tab-progress" data-type='progress'>Progress Note</a></li>
                         <li><a data-toggle="tab" id="navtab_intake" href="#tab-intake" data-type='intake'>Intake Output</a></li>
                         <li><a data-toggle="tab" id="navtab_drug" href="#tab-drug" data-type='drug'>Drug Administration</a></li>
-                        <li><a data-toggle="tab" id="navtab_treatment" href="#tab-treatment" data-type='treatment'>Nursing Report</a></li>
+                        <li><a data-toggle="tab" id="navtab_treatmentP" href="#tab-treatmentP" data-type='treatmentP'>Nursing Report</a></li>
                         <li><a data-toggle="tab" id="navtab_careplan" href="#tab-careplan" data-type='careplan'>Care Plan</a></li>
                         <li><a data-toggle="tab" id="navtab_fitchart" href="#tab-fitchart" data-type='fitchart'>Fit Chart</a></li>
                         <li><a data-toggle="tab" id="navtab_circulation" href="#tab-circulation" data-type='circulation'>Circulation Chart</a></li>
@@ -500,7 +500,7 @@
                             </div>
                         </form>
                     </div>
-                    <div id="tab-treatment" class="tab-pane fade">
+                    <div id="tab-treatmentP" class="tab-pane fade">
                         <div class='col-md-12' style="padding-left: 0px; padding-right: 3px;">
                             <div class="panel panel-info">
                                 <div class="panel-heading text-center">TREATMENT & PROCEDURE
@@ -509,21 +509,21 @@
                                         <h6>PROCEDURE</h6>
                                     </div> -->
                                     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-                                        id="btn_grp_edit_treatment"
+                                        id="btn_grp_edit_treatmentP"
                                         style="position: absolute;
                                                 padding: 0 0 0 0;
                                                 right: 10px;
                                                 top: 5px;">
-                                        <button type="button" class="btn btn-default" id="new_treatment">
+                                        <button type="button" class="btn btn-default" id="new_treatmentP">
                                             <span class="fa fa-plus-square-o"></span> New 
                                         </button>
-                                        <button type="button" class="btn btn-default" id="edit_treatment">
+                                        <button type="button" class="btn btn-default" id="edit_treatmentP">
                                             <span class="fa fa-edit fa-lg"></span> Edit 
                                         </button>
-                                        <button type="button" class="btn btn-default" data-oper='add' id="save_treatment">
+                                        <button type="button" class="btn btn-default" data-oper='add' id="save_treatmentP">
                                             <span class="fa fa-save fa-lg"></span> Save 
                                         </button>
-                                        <button type="button" class="btn btn-default" id="cancel_treatment">
+                                        <button type="button" class="btn btn-default" id="cancel_treatmentP">
                                             <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                         </button>
                                     </div>
@@ -537,7 +537,7 @@
                                         <div class="col-md-3">
                                             <div class="panel panel-info">
                                                 <div class="panel-body">
-                                                    <table id="tbl_treatment" class="ui celled table" style="width: 100%;">
+                                                    <table id="tbl_treatmentP" class="ui celled table" style="width: 100%;">
                                                         <thead>
                                                             <tr>
                                                                 <th class="scope">idno</th>

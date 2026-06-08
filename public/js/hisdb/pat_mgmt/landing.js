@@ -305,6 +305,8 @@ grid.on("click.rs.jquery.bootgrid", function (e,c,r){
                 populate_endConsult_currpt(lastrowdata);
             }
         }else if($('#epistycode').val() == 'IP' || $('#epistycode').val() == 'DP'){
+            populate_wardMain(lastrowdata);
+            
             if($('#user_doctor').val() == '1'){
                 populate_triageED_currpt(lastrowdata);
                 populate_triage_currpt(lastrowdata);

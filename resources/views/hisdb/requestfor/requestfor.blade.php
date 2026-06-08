@@ -107,14 +107,14 @@
                                                     <div class="panel panel-info">
                                                         <div class="panel-body">
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="otReqFor_iPesakit">iPesakit</label>
+                                                                <label class="col-md-4 control-label" for="otReqFor_iPesakit">iPesakit</label>
                                                                 <div class="col-md-2">
                                                                     <input id="otReqFor_iPesakit" name="iPesakit" type="text" class="form-control input-sm">
                                                                 </div>
                                                             </div>
                                                             
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="req_type">Type</label>
+                                                                <label class="col-md-4 control-label" for="req_type">Type</label>
                                                                 <div class="col-md-6">
                                                                     <label class="radio-inline">
                                                                         <input type="radio" id="req_type_ward" name="req_type" value="WARD">Ward
@@ -126,44 +126,77 @@
                                                             </div>
                                                             
                                                             <div class="form-row">
-                                                                <label class="col-md-3 control-label" for="req_type"></label>
+                                                                <label class="col-md-4 control-label" for="req_type"></label>
                                                                 <div class="form-group col-md-2" style="margin-left: 2px;">
                                                                     <label for="vs_bloodpressure">Bed</label>
-                                                                        <input id="ReqFor_bed" name="ReqFor_bed" type="text" class="form-control input-sm" rdonly readonly>
+                                                                    <input id="ReqFor_bed" name="ReqFor_bed" type="text" class="form-control input-sm" rdonly readonly>
                                                                 </div>
                                                                 
                                                                 <div class="form-group col-md-2" style="margin-left: 2px;">
                                                                     <label for="ReqFor_ward">Ward</label>
-                                                                        <input id="ReqFor_ward" name="ReqFor_ward" type="text" class="form-control input-sm" rdonly readonly>
+                                                                    <input id="ReqFor_ward" name="ReqFor_ward" type="text" class="form-control input-sm" rdonly readonly>
                                                                 </div>
                                                                 
                                                                 <div class="form-group col-md-2" style="margin-left: 2px;">
                                                                     <label for="ReqFor_room">Room</label>
-                                                                        <input id="ReqFor_room" name="ReqFor_room" type="text" class="form-control input-sm" rdonly readonly>
+                                                                    <input id="ReqFor_room" name="ReqFor_room" type="text" class="form-control input-sm" rdonly readonly>
                                                                 </div>
                                                                 
                                                                 <div class="form-group col-md-2" style="margin-left: 2px;">
                                                                     <label for="ReqFor_bedtype">Bed Type</label>
-                                                                        <input id="ReqFor_bedtype" name="ReqFor_bedtype" type="text" class="form-control input-sm" rdonly readonly>
+                                                                    <input id="ReqFor_bedtype" name="ReqFor_bedtype" type="text" class="form-control input-sm" rdonly readonly>
                                                                 </div>
                                                             </div>
                                                             
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="ReqFor_op_date">Date for OP</label>
+                                                                <label class="col-md-4 control-label" for="ReqFor_op_date">Date for OP</label>
                                                                 <div class="col-md-4">
                                                                     <input id="ReqFor_op_date" name="op_date" type="date" class="form-control input-sm">
                                                                 </div>
                                                             </div>
                                                             
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="ReqFor_oper_type">Type of Operation / Procedure</label>
+                                                                <label class="col-md-3 control-label">Type of Operation / Procedure</label>
+                                                                <label class="col-md-1 control-label" for="ReqFor_oper_type">1.</label>
                                                                 <div class="col-md-6">
                                                                     <input id="ReqFor_oper_type" name="oper_type" type="text" class="form-control input-sm" style="text-transform: none;">
                                                                 </div>
                                                             </div>
                                                             
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="adm_type">Type of Admission</label>
+                                                                <label class="col-md-3 control-label"></label>
+                                                                <label class="col-md-1 control-label" for="ReqFor_oper_type2">2.</label>
+                                                                <div class="col-md-6">
+                                                                    <input id="ReqFor_oper_type2" name="oper_type2" type="text" class="form-control input-sm" style="text-transform: none;">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label"></label>
+                                                                <label class="col-md-1 control-label" for="ReqFor_oper_type3">3.</label>
+                                                                <div class="col-md-6">
+                                                                    <input id="ReqFor_oper_type3" name="oper_type3" type="text" class="form-control input-sm" style="text-transform: none;">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label"></label>
+                                                                <label class="col-md-1 control-label" for="ReqFor_oper_type4">4.</label>
+                                                                <div class="col-md-6">
+                                                                    <input id="ReqFor_oper_type4" name="oper_type4" type="text" class="form-control input-sm" style="text-transform: none;">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label"></label>
+                                                                <label class="col-md-1 control-label" for="ReqFor_oper_type5">5.</label>
+                                                                <div class="col-md-6">
+                                                                    <input id="ReqFor_oper_type5" name="oper_type5" type="text" class="form-control input-sm" style="text-transform: none;">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="adm_type">Type of Admission</label>
                                                                 <div class="col-md-6">
                                                                     <label class="radio-inline">
                                                                         <input type="radio" name="adm_type" value="DC">Day Case
@@ -175,7 +208,7 @@
                                                             </div>
                                                             
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="anaesthetist">Anaesthetist</label>
+                                                                <label class="col-md-4 control-label" for="anaesthetist">Anaesthetist</label>
                                                                 <div class="col-md-6">
                                                                     <label class="radio-inline">
                                                                         <input type="radio" name="anaesthetist" value="1">Required
@@ -187,7 +220,7 @@
                                                             </div>
                                                             
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="otReqFor_diagnosis">Diagnosis</label>
+                                                                <label class="col-md-4 control-label" for="otReqFor_diagnosis">Diagnosis</label>
                                                                 <div class="col-md-6">
                                                                     <textarea id="otReqFor_diagnosis" name="ot_diagnosis" type="text" class="form-control input-sm"></textarea>
                                                                     
@@ -199,21 +232,21 @@
                                                             </div>
                                                             
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="otReqFor_remarks">Special remarks / instructions for medication or any related to case</label>
+                                                                <label class="col-md-4 control-label" for="otReqFor_remarks">Special remarks / instructions for medication or any related to case</label>
                                                                 <div class="col-md-6">
                                                                     <textarea id="otReqFor_remarks" name="ot_remarks" type="text" class="form-control input-sm"></textarea>
                                                                 </div>
                                                             </div>
                                                             
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="otReqFor_doctorname">Doctor's Name</label>
+                                                                <label class="col-md-4 control-label" for="otReqFor_doctorname">Doctor's Name</label>
                                                                 <div class="col-md-6">
                                                                     <input id="otReqFor_doctorname" name="ot_doctorname" type="text" class="form-control input-sm">
                                                                 </div>
                                                             </div>
                                                             
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="otReqFor_lastuser">Entered By</label>
+                                                                <label class="col-md-4 control-label" for="otReqFor_lastuser">Entered By</label>
                                                                 <div class="col-md-6">
                                                                     <input id="otReqFor_lastuser" name="ot_lastuser" type="text" class="form-control input-sm">
                                                                 </div>

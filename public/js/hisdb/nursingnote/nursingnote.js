@@ -128,8 +128,8 @@ $(document).ready(function (){
     disableForm('#formInvestigation');
     disableForm('#formInjection');
     
-    $("#new_treatment").click(function (){
-        button_state_treatment('wait');
+    $("#new_treatmentP").click(function (){
+        button_state_treatmentP('wait');
         enableForm('#formTreatmentP');
         rdonly('#formTreatmentP');
         emptyFormdata_div("#formTreatmentP",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
@@ -138,22 +138,22 @@ $(document).ready(function (){
         // dialog_mrn_edit.on();
     });
     
-    $("#edit_treatment").click(function (){
-        button_state_treatment('wait');
+    $("#edit_treatmentP").click(function (){
+        button_state_treatmentP('wait');
         enableForm('#formTreatmentP');
         rdonly('#formTreatmentP');
         $("#tr_entereddate,#treatment_adduser").attr("readonly", true);
         // dialog_mrn_edit.on();
     });
     
-    $("#save_treatment").click(function (){
+    $("#save_treatmentP").click(function (){
         disableForm('#formTreatmentP');
         if($('#formTreatmentP').isValid({requiredFields: ''}, conf, true)){
-            saveForm_treatment(function (){
-                $("#cancel_treatment").data('oper','edit');
-                $("#cancel_treatment").click();
+            saveForm_treatmentP(function (){
+                $("#cancel_treatmentP").data('oper','edit');
+                $("#cancel_treatmentP").click();
                 // $("#jqGridPagerRefresh").click();
-                // $('#tbl_treatment').DataTable().ajax.reload();
+                // $('#tbl_treatmentP').DataTable().ajax.reload();
             });
         }else{
             enableForm('#formTreatmentP');
@@ -161,10 +161,10 @@ $(document).ready(function (){
         }
     });
     
-    $("#cancel_treatment").click(function (){
+    $("#cancel_treatmentP").click(function (){
         disableForm('#formTreatmentP');
-        button_state_treatment($(this).data('oper'));
-        $('#tbl_treatment').DataTable().ajax.reload();
+        button_state_treatmentP($(this).data('oper'));
+        $('#tbl_treatmentP').DataTable().ajax.reload();
         // dialog_mrn_edit.off();
     });
     
@@ -495,7 +495,7 @@ $(document).ready(function (){
     $("#jqGridNursNote_panel").on("hidden.bs.collapse", function (){
         button_state_progress('empty');
         button_state_intake('empty');
-        button_state_treatment('empty');
+        button_state_treatmentP('empty');
         button_state_investigation('empty');
         button_state_injection('empty');
         button_state_careplan('empty');
@@ -618,19 +618,19 @@ $(document).ready(function (){
                 // $('#tbl_prescription').DataTable().ajax.reload();
                 $("#jqGridPatMedic").jqGrid('setGridWidth', Math.floor($("#jqGridPatMedic_c")[0].offsetWidth-$("#jqGridPatMedic_c")[0].offsetLeft-30));
                 break;
-            case 'treatment':
-                populate_treatment_getdata();
+            case 'treatmentP':
+                populate_treatmentP_getdata();
                 
-                var urlparam_tbl_treatment = {
+                var urlparam_tbl_treatmentP = {
                     action: 'get_datetime_treatment',
                     mrn: $("#mrn_nursNote").val(),
                     episno: $("#episno_nursNote").val(),
                     type: "TREATMENT",
                 }
                 
-                tbl_treatment.ajax.url("./nursingnote/table?"+$.param(urlparam_tbl_treatment)).load(function (data){
+                tbl_treatmentP.ajax.url("./nursingnote/table?"+$.param(urlparam_tbl_treatmentP)).load(function (data){
                     emptyFormdata_div("#formTreatmentP",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
-                    $('#tbl_treatment tbody tr:eq(0)').click(); // to select first row
+                    $('#tbl_treatmentP tbody tr:eq(0)').click(); // to select first row
                 });
                 
                 var urlparam_tbl_investigation = {
@@ -657,7 +657,7 @@ $(document).ready(function (){
                     $('#tbl_injection tbody tr:eq(0)').click(); // to select first row
                 });
                 
-                // $('#tbl_treatment').DataTable().ajax.reload();
+                // $('#tbl_treatmentP').DataTable().ajax.reload();
                 // $('#tbl_investigation').DataTable().ajax.reload();
                 // $('#tbl_injection').DataTable().ajax.reload();
                 break;
@@ -1310,8 +1310,8 @@ $(document).ready(function (){
     //////////////////////////////////////////drug admin ends//////////////////////////////////////////
     
     /////////////////////////////////////////treatment starts/////////////////////////////////////////
-    $('#tbl_treatment tbody').on('click', 'tr', function (){
-        var data = tbl_treatment.row( this ).data();
+    $('#tbl_treatmentP tbody').on('click', 'tr', function (){
+        var data = tbl_treatmentP.row( this ).data();
         
         if(data == undefined){
             return;
@@ -1321,21 +1321,21 @@ $(document).ready(function (){
         if($(this).hasClass('selected')) {
             $(this).removeClass('selected');
         }else {
-            tbl_treatment.$('tr.selected').removeClass('selected');
+            tbl_treatmentP.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
         }
         
         emptyFormdata_div("#formTreatmentP",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
-        $('#tbl_treatment tbody tr').removeClass('active');
+        $('#tbl_treatmentP tbody tr').removeClass('active');
         $(this).addClass('active');
         
         if(check_same_usr_edit(data)){
-            button_state_treatment('edit');
+            button_state_treatmentP('edit');
         }else{
-            button_state_treatment('add');
+            button_state_treatmentP('add');
         }
         
-        // populate_treatment_getdata();
+        // populate_treatmentP_getdata();
         $("#tr_idno").val(data.idno);
         $("#tr_adduser").val(data.adduser);
         
@@ -1358,10 +1358,10 @@ $(document).ready(function (){
             if(!$.isEmptyObject(data)){
                 autoinsert_rowdata("#formTreatmentP",data.treatment);
                 
-                // button_state_treatment('edit');
+                // button_state_treatmentP('edit');
                 textarea_init_nursingnote();
             }else{
-                // button_state_treatment('add');
+                // button_state_treatmentP('add');
                 textarea_init_nursingnote();
             }
         });
@@ -4112,7 +4112,7 @@ var tbl_prescription = $('#tbl_prescription').DataTable({
 ///////////////////////drug admin ends///////////////////////
 
 //////////////////////treatment starts//////////////////////
-var tbl_treatment = $('#tbl_treatment').DataTable({
+var tbl_treatmentP = $('#tbl_treatmentP').DataTable({
     "ajax": "",
     "sDom": "",
     "paging": false,
@@ -4470,30 +4470,30 @@ function button_state_progress(state){
 }
 
 //////////////////////////////////////treatment starts//////////////////////////////////////
-button_state_treatment('empty');
-function button_state_treatment(state){
+button_state_treatmentP('empty');
+function button_state_treatmentP(state){
     switch(state){
         case 'empty':
             $("#toggle_nursNote").removeAttr('data-toggle');
-            $('#cancel_treatment').data('oper','add');
-            $('#new_treatment,#save_treatment,#cancel_treatment,#edit_treatment').attr('disabled',true);
+            $('#cancel_treatmentP').data('oper','add');
+            $('#new_treatmentP,#save_treatmentP,#cancel_treatmentP,#edit_treatmentP').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_nursNote").attr('data-toggle','collapse');
-            $('#cancel_treatment').data('oper','add');
-            $("#new_treatment").attr('disabled',false);
-            $('#save_treatment,#cancel_treatment,#edit_treatment').attr('disabled',true);
+            $('#cancel_treatmentP').data('oper','add');
+            $("#new_treatmentP").attr('disabled',false);
+            $('#save_treatmentP,#cancel_treatmentP,#edit_treatmentP').attr('disabled',true);
             break;
         case 'edit':
             $("#toggle_nursNote").attr('data-toggle','collapse');
-            $('#cancel_treatment').data('oper','edit');
-            $("#new_treatment,#edit_treatment").attr('disabled',false);
-            $('#save_treatment,#cancel_treatment').attr('disabled',true);
+            $('#cancel_treatmentP').data('oper','edit');
+            $("#new_treatmentP,#edit_treatmentP").attr('disabled',false);
+            $('#save_treatmentP,#cancel_treatmentP').attr('disabled',true);
             break;
         case 'wait':
             $("#toggle_nursNote").attr('data-toggle','collapse');
-            $("#save_treatment,#cancel_treatment").attr('disabled',false);
-            $('#new_treatment,#edit_treatment').attr('disabled',true);
+            $("#save_treatmentP,#cancel_treatmentP").attr('disabled',false);
+            $('#new_treatmentP,#edit_treatmentP').attr('disabled',true);
             break;
     }
 }
@@ -4716,7 +4716,7 @@ function populate_drugadmin_getdata(){
     textarea_init_nursingnote();
 }
 
-function populate_treatment_getdata(){
+function populate_treatmentP_getdata(){
     disableForm('#formTreatmentP');
     disableForm('#formInvestigation');
     disableForm('#formInjection');
@@ -4743,10 +4743,10 @@ function populate_treatment_getdata(){
         if(!$.isEmptyObject(data.treatment)){
             autoinsert_rowdata("#formTreatmentP",data.treatment);
             
-            button_state_treatment('edit');
+            button_state_treatmentP('edit');
             textarea_init_nursingnote();
         }else{
-            button_state_treatment('add');
+            button_state_treatmentP('add');
             textarea_init_nursingnote();
         }
         
@@ -5119,10 +5119,10 @@ function saveForm_progress(callback){
 }
 
 ////////////////////////////////////////////////////treatment starts////////////////////////////////////////////////////
-function saveForm_treatment(callback){
+function saveForm_treatmentP(callback){
     var saveParam = {
         action: 'save_table_treatment',
-        oper: $("#cancel_treatment").data('oper')
+        oper: $("#cancel_treatmentP").data('oper')
     }
     
     var postobj = {
