@@ -31,6 +31,7 @@
 		.nav-tabs-second > li > a {
 			background-color: #f0f0f0;
 			color: #555555;
+        	height: 70px;
 		}
 		
 		/* 2. Hover and Focus states for Inactive Tabs */
