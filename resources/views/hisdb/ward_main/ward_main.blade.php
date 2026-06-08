@@ -32,7 +32,7 @@
         <i class="arrow fa fa-angle-double-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#jqGridWardMain_panel"></i>
         <i class="arrow fa fa-angle-double-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#jqGridWardMain_panel"></i>
         <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 25px;">
-            <h5>Nursing</h5>
+            <h5>Clinical</h5>
         </div>
     </div>
     
