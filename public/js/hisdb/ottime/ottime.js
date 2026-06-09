@@ -1,4 +1,3 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
@@ -25,7 +24,7 @@ $(document).ready(function (){
         button_state_ottime('wait');
         enableForm('#form_ottime');
         rdonly('#form_ottime');
-        // emptyFormdata_div("#form_ottime",['#mrn_ottime','#episno_ottime']);
+        // emptyFormdata_div("#form_ottime",['#mrn_otMain','#episno_otMain']);
         // dialog_mrn_edit.on();
     });
     
@@ -39,7 +38,7 @@ $(document).ready(function (){
     $("#save_ottime").click(function (){
         if($('#form_ottime').isValid({requiredFields: ''}, conf, true)){
             saveForm_ottime(function (data){
-                // emptyFormdata_div("#form_ottime",['#mrn_ottime','#episno_ottime']);
+                // emptyFormdata_div("#form_ottime",['#mrn_otMain','#episno_otMain']);
                 disableForm('#form_ottime');
             });
         }else{
@@ -49,7 +48,7 @@ $(document).ready(function (){
     });
     
     $("#cancel_ottime").click(function (){
-        // emptyFormdata_div("#form_ottime",['#mrn_ottime','#episno_ottime']);
+        // emptyFormdata_div("#form_ottime",['#mrn_otMain','#episno_otMain']);
         disableForm('#form_ottime');
         button_state_ottime($(this).data('oper'));
         getdata_ottime();
@@ -131,60 +130,60 @@ function empty_ottime(){
     button_state_ottime('empty');
     
     // panel header
-    $('#name_show_ottime').text('');
-    $('#mrn_show_ottime').text('');
-    $('#icpssprt_show_ottime').text('');
-    $('#sex_show_ottime').text('');
-    $('#height_show_ottime').text('');
-    $('#weight_show_ottime').text('');
-    $('#dob_show_ottime').text('');
-    $('#age_show_ottime').text('');
-    $('#race_show_ottime').text('');
-    $('#religion_show_ottime').text('');
-    $('#occupation_show_ottime').text('');
-    $('#citizenship_show_ottime').text('');
-    $('#area_show_ottime').text('');
-    $('#ward_show_ottime').text('');
-    $('#bednum_show_ottime').text('');
-    $('#oproom_show_ottime').text('');
-    $('#diagnosis_show_ottime').text('');
-    $('#procedure_show_ottime').text('');
-    $('#unit_show_ottime').text('');
-    $('#type_show_ottime').text('');
+    // $('#name_show_ottime').text('');
+    // $('#mrn_show_ottime').text('');
+    // $('#icpssprt_show_ottime').text('');
+    // $('#sex_show_ottime').text('');
+    // $('#height_show_ottime').text('');
+    // $('#weight_show_ottime').text('');
+    // $('#dob_show_ottime').text('');
+    // $('#age_show_ottime').text('');
+    // $('#race_show_ottime').text('');
+    // $('#religion_show_ottime').text('');
+    // $('#occupation_show_ottime').text('');
+    // $('#citizenship_show_ottime').text('');
+    // $('#area_show_ottime').text('');
+    // $('#ward_show_ottime').text('');
+    // $('#bednum_show_ottime').text('');
+    // $('#oproom_show_ottime').text('');
+    // $('#diagnosis_show_ottime').text('');
+    // $('#procedure_show_ottime').text('');
+    // $('#unit_show_ottime').text('');
+    // $('#type_show_ottime').text('');
     
     // form_ottime
-    $('#mrn_ottime').val('');
-    $("#episno_ottime").val('');
+    $('#mrn_otMain').val('');
+    $("#episno_otMain").val('');
 }
 
 function populate_ottime(obj){
     // panel header
-    $('#name_show_ottime').text(obj.pat_name);
-    $('#mrn_show_ottime').text(("0000000" + obj.mrn).slice(-7));
-    $('#icpssprt_show_ottime').text(obj.icnum);
-    $('#sex_show_ottime').text(if_none(obj.Sex).toUpperCase());
-    $('#height_show_ottime').text(obj.height+' (CM)');
-    $('#weight_show_ottime').text(obj.weight+' (KG)');
-    $('#dob_show_ottime').text(dob_chg(obj.DOB));
-    $('#age_show_ottime').text(dob_age(obj.DOB)+' (YRS)');
-    $('#race_show_ottime').text(if_none(obj.RaceCode).toUpperCase());
-    $('#religion_show_ottime').text(if_none(obj.Religion).toUpperCase());
-    $('#occupation_show_ottime').text(if_none(obj.OccupCode).toUpperCase());
-    $('#citizenship_show_ottime').text(if_none(obj.Citizencode).toUpperCase());
-    $('#area_show_ottime').text(if_none(obj.AreaCode).toUpperCase());
-    $('#ward_show_ottime').text(obj.ward);
-    $('#bednum_show_ottime').text(obj.bednum);
-    $('#oproom_show_ottime').text(obj.ot_description);
-    $('#diagnosis_show_ottime').text(obj.appt_diag);
-    $('#procedure_show_ottime').text(obj.appt_prcdure);
-    $('#unit_show_ottime').text(obj.op_unit);
-    $('#type_show_ottime').text(obj.oper_type);
+    // $('#name_show_ottime').text(obj.pat_name);
+    // $('#mrn_show_ottime').text(("0000000" + obj.mrn).slice(-7));
+    // $('#icpssprt_show_ottime').text(obj.icnum);
+    // $('#sex_show_ottime').text(if_none(obj.Sex).toUpperCase());
+    // $('#height_show_ottime').text(obj.height+' (CM)');
+    // $('#weight_show_ottime').text(obj.weight+' (KG)');
+    // $('#dob_show_ottime').text(dob_chg(obj.DOB));
+    // $('#age_show_ottime').text(dob_age(obj.DOB)+' (YRS)');
+    // $('#race_show_ottime').text(if_none(obj.RaceCode).toUpperCase());
+    // $('#religion_show_ottime').text(if_none(obj.Religion).toUpperCase());
+    // $('#occupation_show_ottime').text(if_none(obj.OccupCode).toUpperCase());
+    // $('#citizenship_show_ottime').text(if_none(obj.Citizencode).toUpperCase());
+    // $('#area_show_ottime').text(if_none(obj.AreaCode).toUpperCase());
+    // $('#ward_show_ottime').text(obj.ward);
+    // $('#bednum_show_ottime').text(obj.bednum);
+    // $('#oproom_show_ottime').text(obj.ot_description);
+    // $('#diagnosis_show_ottime').text(obj.appt_diag);
+    // $('#procedure_show_ottime').text(obj.appt_prcdure);
+    // $('#unit_show_ottime').text(obj.op_unit);
+    // $('#type_show_ottime').text(obj.oper_type);
     
     // form_ottime
-    $('#mrn_ottime').val(obj.mrn);
-    $("#episno_ottime").val(obj.latest_episno);
+    $('#mrn_otMain').val(obj.mrn);
+    $("#episno_otMain").val(obj.latest_episno);
     
-    $("#tab_ottime").collapse('hide');
+    // $("#tab_ottime").collapse('hide');
 }
 
 function autoinsert_rowdata(form,rowData){
@@ -289,13 +288,13 @@ function textarea_init_ottime(){
 $('#tab_ottime').on('shown.bs.collapse', function (){
     SmoothScrollTo('#tab_ottime', 300, 114);
     
-    if($('#mrn_ottime').val() != ''){
+    if($('#mrn_otMain').val() != ''){
         getdata_ottime();
     }
 });
 
 $('#tab_ottime').on('hide.bs.collapse', function (){
-    emptyFormdata_div("#form_ottime",['#mrn_ottime','#episno_ottime']);
+    emptyFormdata_div("#form_ottime",['#mrn_otMain','#episno_otMain']);
     button_state_ottime('empty');
 });
 
@@ -306,8 +305,8 @@ function getdata_ottime(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_ottime').val(),
-        episno: $("#episno_ottime").val()
+        mrn: $('#mrn_otMain').val(),
+        episno: $("#episno_otMain").val()
     };
     
     $.post("./ottime/form?"+$.param(urlparam), $.param(postobj), function (data){

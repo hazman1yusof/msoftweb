@@ -16,7 +16,7 @@ $(document).ready(function (){
         button_state_endoscopyIntestine('wait');
         enableForm('#formEndoscopyIntestine');
         rdonly('#formEndoscopyIntestine');
-        // emptyFormdata_div("#formEndoscopyIntestine",['#mrn_endoscopyNotes','#episno_endoscopyNotes']);
+        // emptyFormdata_div("#formEndoscopyIntestine",['#mrn_otMain','#episno_otMain']);
         // dialog_mrn_edit.on();
     });
     
@@ -30,7 +30,7 @@ $(document).ready(function (){
     $("#save_endoscopyIntestine").click(function (){
         if($('#formEndoscopyIntestine').isValid({requiredFields: ''}, conf, true)){
             saveForm_endoscopyIntestine(function (data){
-                // emptyFormdata_div("#formEndoscopyIntestine",['#mrn_endoscopyNotes','#episno_endoscopyNotes']);
+                // emptyFormdata_div("#formEndoscopyIntestine",['#mrn_otMain','#episno_otMain']);
                 disableForm('#formEndoscopyIntestine');
             });
         }else{
@@ -40,7 +40,7 @@ $(document).ready(function (){
     });
     
     $("#cancel_endoscopyIntestine").click(function (){
-        // emptyFormdata_div("#formEndoscopyIntestine",['#mrn_endoscopyNotes','#episno_endoscopyNotes']);
+        // emptyFormdata_div("#formEndoscopyIntestine",['#mrn_otMain','#episno_otMain']);
         disableForm('#formEndoscopyIntestine');
         button_state_endoscopyIntestine($(this).data('oper'));
         getdata_endoscopyIntestine();
@@ -68,8 +68,8 @@ $(document).ready(function (){
     
     //////////////////////////////////////////body diagram starts//////////////////////////////////////////
     $('a.ui.card.bodydia_endoscopyIntestine').click(function (){
-        let mrn = $('#mrn_endoscopyNotes').val();
-        let episno = $('#episno_endoscopyNotes').val();
+        let mrn = $('#mrn_otMain').val();
+        let episno = $('#episno_otMain').val();
         let type = $(this).data('type');
         let istablet = $(window).width() <= 1024;
         
@@ -96,7 +96,7 @@ $(document).ready(function (){
     ///////////////////////////////////////////body diagram ends///////////////////////////////////////////
     
     $("#endoscopyIntestine_chart").click(function (){
-        window.open('./endoscopyNotes/endoscopyintestine_chart?mrn='+$('#mrn_endoscopyNotes').val()+'&episno='+$("#episno_endoscopyNotes").val()+'&age='+$("#age_endoscopyNotes").val()+'&type=INTESTINE', '_blank');
+        window.open('./endoscopyNotes/endoscopyintestine_chart?mrn='+$('#mrn_otMain').val()+'&episno='+$("#episno_otMain").val()+'&age='+$("#age_otMain").val()+'&type=INTESTINE', '_blank');
     });
     
 });
@@ -171,8 +171,8 @@ function saveForm_endoscopyIntestine(callback){
     var saveParam = {
         action: 'save_table_endoscopyIntestine',
         oper: oper,
-        mrn: $('#mrn_endoscopyNotes').val(),
-        episno: $("#episno_endoscopyNotes").val(),
+        mrn: $('#mrn_otMain').val(),
+        episno: $("#episno_otMain").val(),
     }
     
     if(oper == 'add'){
@@ -254,8 +254,8 @@ function getdata_endoscopyIntestine(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_endoscopyNotes').val(),
-        episno: $("#episno_endoscopyNotes").val()
+        mrn: $('#mrn_otMain').val(),
+        episno: $("#episno_otMain").val()
     };
     
     $.post("./endoscopyNotes/form?"+$.param(urlparam), $.param(postobj), function (data){

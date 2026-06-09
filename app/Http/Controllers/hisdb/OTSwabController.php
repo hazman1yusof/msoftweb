@@ -74,8 +74,8 @@ class OTSwabController extends defaultController
             DB::table('nursing.otswab')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn_otswab,
-                    'episno' => $request->episno_otswab,
+                    'mrn' => $request->mrn_otMain,
+                    'episno' => $request->episno_otMain,
                     'startdate' => $request->startdate,
                     'starttime' => $request->starttime,
                     'enddate' => $request->enddate,
@@ -133,8 +133,8 @@ class OTSwabController extends defaultController
         try {
             
             DB::table('nursing.otswab')
-                ->where('mrn','=',$request->mrn_otswab)
-                ->where('episno','=',$request->episno_otswab)
+                ->where('mrn','=',$request->mrn_otMain)
+                ->where('episno','=',$request->episno_otMain)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'startdate' => $request->startdate,
@@ -199,8 +199,8 @@ class OTSwabController extends defaultController
             DB::table('nursing.otswab')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn_otswab,
-                    'episno' => $request->episno_otswab,
+                    'mrn' => $request->mrn_otMain,
+                    'episno' => $request->episno_otMain,
                     'iPesakit' => $request->iPesakit,
                     'basicset' => $request->basicset,
                     'supplemntryset' => $request->supplemntryset,
@@ -220,13 +220,13 @@ class OTSwabController extends defaultController
             if(!empty($request->iPesakit)){
                 $pat_mast = DB::table('hisdb.pat_mast')
                             ->where('CompCode',session('compcode'))
-                            ->where('MRN',$request->mrn_otswab)
+                            ->where('MRN',$request->mrn_otMain)
                             ->first();
                 
                 if($pat_mast->iPesakit != $request->iPesakit){
                     DB::table('hisdb.pat_mast')
                         ->where('CompCode',session('compcode'))
-                        ->where('MRN',$request->mrn_otswab)
+                        ->where('MRN',$request->mrn_otMain)
                         ->update([
                             'iPesakit' => $request->iPesakit,
                         ]);
@@ -256,8 +256,8 @@ class OTSwabController extends defaultController
         try {
             
             DB::table('nursing.otswab')
-                ->where('mrn','=',$request->mrn_otswab)
-                ->where('episno','=',$request->episno_otswab)
+                ->where('mrn','=',$request->mrn_otMain)
+                ->where('episno','=',$request->episno_otMain)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'iPesakit' => $request->iPesakit,
@@ -279,13 +279,13 @@ class OTSwabController extends defaultController
             if(!empty($request->iPesakit)){
                 $pat_mast = DB::table('hisdb.pat_mast')
                             ->where('CompCode',session('compcode'))
-                            ->where('MRN',$request->mrn_otswab)
+                            ->where('MRN',$request->mrn_otMain)
                             ->first();
                 
                 if($pat_mast->iPesakit != $request->iPesakit){
                     DB::table('hisdb.pat_mast')
                         ->where('CompCode',session('compcode'))
-                        ->where('MRN',$request->mrn_otswab)
+                        ->where('MRN',$request->mrn_otMain)
                         ->update([
                             'iPesakit' => $request->iPesakit,
                         ]);

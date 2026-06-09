@@ -1,4 +1,3 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
@@ -17,7 +16,7 @@ $(document).ready(function (){
         enableForm('#form_otdischarge');
         rdonly('#form_otdischarge');
         // $("#predischg_pat_remark,#predischg_consciouslvl_remark,#predischg_vitalsign_remark,#predischg_checksite_remark,#predischg_checkdrains_remark,#predischg_checkiv_remark,#predischg_blood_remark,#predischg_specimen_remark,#predischg_docs_remark,#predischg_imgstudies_remark,#predischg_painrelief_remark,#predischg_others_remark,#predischg_arterial_remark,#predischg_pcapump_remark,#predischg_addmore1_remark,#predischg_addmore2_remark,#predischg_addmore3_remark,#predischg_addmore4_remark,#predischg_addmore5_remark,#predischg_addmore6_remark").prop("readonly",true);
-        // emptyFormdata_div("#form_otdischarge",['#mrn_otdischarge','#episno_otdischarge']);
+        // emptyFormdata_div("#form_otdischarge",['#mrn_otMain','#episno_otMain']);
         // dialog_mrn_edit.on();
     });
     
@@ -32,7 +31,7 @@ $(document).ready(function (){
     $("#save_otdischarge").click(function (){
         if($('#form_otdischarge').isValid({requiredFields: ''}, conf, true)){
             saveForm_otdischarge(function (data){
-                // emptyFormdata_div("#form_otdischarge",['#mrn_otdischarge','#episno_otdischarge']);
+                // emptyFormdata_div("#form_otdischarge",['#mrn_otMain','#episno_otMain']);
                 disableForm('#form_otdischarge');
             });
         }else{
@@ -43,7 +42,7 @@ $(document).ready(function (){
     });
     
     $("#cancel_otdischarge").click(function (){
-        // emptyFormdata_div("#form_otdischarge",['#mrn_otdischarge','#episno_otdischarge']);
+        // emptyFormdata_div("#form_otdischarge",['#mrn_otMain','#episno_otMain']);
         disableForm('#form_otdischarge');
         button_state_otdischarge($(this).data('oper'));
         getdata_otdischarge();
@@ -125,58 +124,58 @@ function empty_otdischarge(){
     button_state_otdischarge('empty');
     
     // panel header
-    $('#name_show_otdischarge').text('');
-    $('#mrn_show_otdischarge').text('');
-    $('#icpssprt_show_otdischarge').text('');
-    $('#sex_show_otdischarge').text('');
-    $('#height_show_otdischarge').text('');
-    $('#weight_show_otdischarge').text('');
-    $('#dob_show_otdischarge').text('');
-    $('#age_show_otdischarge').text('');
-    $('#race_show_otdischarge').text('');
-    $('#religion_show_otdischarge').text('');
-    $('#occupation_show_otdischarge').text('');
-    $('#citizenship_show_otdischarge').text('');
-    $('#area_show_otdischarge').text('');
-    $('#ward_show_otdischarge').text('');
-    $('#bednum_show_otdischarge').text('');
-    $('#oproom_show_otdischarge').text('');
-    $('#diagnosis_show_otdischarge').text('');
-    $('#procedure_show_otdischarge').text('');
-    $('#unit_show_otdischarge').text('');
-    $('#type_show_otdischarge').text('');
+    // $('#name_show_otdischarge').text('');
+    // $('#mrn_show_otdischarge').text('');
+    // $('#icpssprt_show_otdischarge').text('');
+    // $('#sex_show_otdischarge').text('');
+    // $('#height_show_otdischarge').text('');
+    // $('#weight_show_otdischarge').text('');
+    // $('#dob_show_otdischarge').text('');
+    // $('#age_show_otdischarge').text('');
+    // $('#race_show_otdischarge').text('');
+    // $('#religion_show_otdischarge').text('');
+    // $('#occupation_show_otdischarge').text('');
+    // $('#citizenship_show_otdischarge').text('');
+    // $('#area_show_otdischarge').text('');
+    // $('#ward_show_otdischarge').text('');
+    // $('#bednum_show_otdischarge').text('');
+    // $('#oproom_show_otdischarge').text('');
+    // $('#diagnosis_show_otdischarge').text('');
+    // $('#procedure_show_otdischarge').text('');
+    // $('#unit_show_otdischarge').text('');
+    // $('#type_show_otdischarge').text('');
     
     // form_otdischarge
-    $('#mrn_otdischarge').val('');
-    $("#episno_otdischarge").val('');
+    $('#mrn_otMain').val('');
+    $("#episno_otMain").val('');
 }
 
 function populate_otdischarge(obj){
     // panel header
-    $('#name_show_otdischarge').text(obj.pat_name);
-    $('#mrn_show_otdischarge').text(("0000000" + obj.mrn).slice(-7));
-    $('#icpssprt_show_otdischarge').text(obj.icnum);
-    $('#sex_show_otdischarge').text(if_none(obj.Sex).toUpperCase());
-    $('#height_show_otdischarge').text(obj.height+' (CM)');
-    $('#weight_show_otdischarge').text(obj.weight+' (KG)');
-    $('#dob_show_otdischarge').text(dob_chg(obj.DOB));
-    $('#age_show_otdischarge').text(dob_age(obj.DOB)+' (YRS)');
-    $('#race_show_otdischarge').text(if_none(obj.RaceCode).toUpperCase());
-    $('#religion_show_otdischarge').text(if_none(obj.Religion).toUpperCase());
-    $('#occupation_show_otdischarge').text(if_none(obj.OccupCode).toUpperCase());
-    $('#citizenship_show_otdischarge').text(if_none(obj.Citizencode).toUpperCase());
-    $('#area_show_otdischarge').text(if_none(obj.AreaCode).toUpperCase());
-    $('#ward_show_otdischarge').text(obj.ward);
-    $('#bednum_show_otdischarge').text(obj.bednum);
-    $('#oproom_show_otdischarge').text(obj.ot_description);
-    $('#diagnosis_show_otdischarge').text(obj.appt_diag);
-    $('#procedure_show_otdischarge').text(obj.appt_prcdure);
-    $('#unit_show_otdischarge').text(obj.op_unit);
-    $('#type_show_otdischarge').text(obj.oper_type);
+    // $('#name_show_otdischarge').text(obj.pat_name);
+    // $('#mrn_show_otdischarge').text(("0000000" + obj.mrn).slice(-7));
+    // $('#icpssprt_show_otdischarge').text(obj.icnum);
+    // $('#sex_show_otdischarge').text(if_none(obj.Sex).toUpperCase());
+    // $('#height_show_otdischarge').text(obj.height+' (CM)');
+    // $('#weight_show_otdischarge').text(obj.weight+' (KG)');
+    // $('#dob_show_otdischarge').text(dob_chg(obj.DOB));
+    // $('#age_show_otdischarge').text(dob_age(obj.DOB)+' (YRS)');
+    // $('#race_show_otdischarge').text(if_none(obj.RaceCode).toUpperCase());
+    // $('#religion_show_otdischarge').text(if_none(obj.Religion).toUpperCase());
+    // $('#occupation_show_otdischarge').text(if_none(obj.OccupCode).toUpperCase());
+    // $('#citizenship_show_otdischarge').text(if_none(obj.Citizencode).toUpperCase());
+    // $('#area_show_otdischarge').text(if_none(obj.AreaCode).toUpperCase());
+    // $('#ward_show_otdischarge').text(obj.ward);
+    // $('#bednum_show_otdischarge').text(obj.bednum);
+    // $('#oproom_show_otdischarge').text(obj.ot_description);
+    // $('#diagnosis_show_otdischarge').text(obj.appt_diag);
+    // $('#procedure_show_otdischarge').text(obj.appt_prcdure);
+    // $('#unit_show_otdischarge').text(obj.op_unit);
+    // $('#type_show_otdischarge').text(obj.oper_type);
     
     // form_otdischarge
-    $('#mrn_otdischarge').val(obj.mrn);
-    $("#episno_otdischarge").val(obj.latest_episno);
+    $('#mrn_otMain').val(obj.mrn);
+    $("#episno_otMain").val(obj.latest_episno);
     
     $("#tab_otdischarge").collapse('hide');
 }
@@ -283,13 +282,13 @@ function textare_init_otdischarge(){
 $('#tab_otdischarge').on('shown.bs.collapse', function (){
     SmoothScrollTo('#tab_otdischarge', 300, 114);
     
-    if($('#mrn_otdischarge').val() != ''){
+    if($('#mrn_otMain').val() != ''){
         getdata_otdischarge();
     }
 });
 
 $('#tab_otdischarge').on('hide.bs.collapse', function (){
-    emptyFormdata_div("#form_otdischarge",['#mrn_otdischarge','#episno_otdischarge']);
+    emptyFormdata_div("#form_otdischarge",['#mrn_otMain','#episno_otMain']);
     button_state_otdischarge('empty');
 });
 
@@ -300,8 +299,8 @@ function getdata_otdischarge(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_otdischarge').val(),
-        episno: $("#episno_otdischarge").val()
+        mrn: $('#mrn_otMain').val(),
+        episno: $("#episno_otMain").val()
     };
     
     $.post("./otdischarge/form?"+$.param(urlparam), $.param(postobj), function (data){

@@ -63,8 +63,8 @@ class OperTeamController extends defaultController
             DB::table('nursing.otteam')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn_oper_team,
-                    'episno' => $request->episno_oper_team,
+                    'mrn' => $request->mrn_otMain,
+                    'episno' => $request->episno_otMain,
                     'confirmedPt' => $request->confirmedPt,
                     'opSite_mark' => $request->opSite_mark,
                     'opSite_na' => $request->opSite_na,
@@ -132,8 +132,8 @@ class OperTeamController extends defaultController
         try {
             
             DB::table('nursing.otteam')
-                ->where('mrn','=',$request->mrn_oper_team)
-                ->where('episno','=',$request->episno_oper_team)
+                ->where('mrn','=',$request->mrn_otMain)
+                ->where('episno','=',$request->episno_otMain)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'confirmedPt' => $request->confirmedPt,
@@ -208,8 +208,8 @@ class OperTeamController extends defaultController
             DB::table('nursing.otteam')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn_oper_team,
-                    'episno' => $request->episno_oper_team,
+                    'mrn' => $request->mrn_otMain,
+                    'episno' => $request->episno_otMain,
                     'iPesakit' => $request->iPesakit,
                     // BEFORE INDUCTION OF ANAESTHESIA
                     'confirmedPt' => $request->confirmedPt,
@@ -257,13 +257,13 @@ class OperTeamController extends defaultController
             if(!empty($request->iPesakit)){
                 $pat_mast = DB::table('hisdb.pat_mast')
                             ->where('CompCode',session('compcode'))
-                            ->where('MRN',$request->mrn_oper_team)
+                            ->where('MRN',$request->mrn_otMain)
                             ->first();
                 
                 if($pat_mast->iPesakit != $request->iPesakit){
                     DB::table('hisdb.pat_mast')
                         ->where('CompCode',session('compcode'))
-                        ->where('MRN',$request->mrn_oper_team)
+                        ->where('MRN',$request->mrn_otMain)
                         ->update([
                             'iPesakit' => $request->iPesakit,
                         ]);
@@ -293,8 +293,8 @@ class OperTeamController extends defaultController
         try {
             
             DB::table('nursing.otteam')
-                ->where('mrn','=',$request->mrn_oper_team)
-                ->where('episno','=',$request->episno_oper_team)
+                ->where('mrn','=',$request->mrn_otMain)
+                ->where('episno','=',$request->episno_otMain)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'iPesakit' => $request->iPesakit,
@@ -344,13 +344,13 @@ class OperTeamController extends defaultController
             if(!empty($request->iPesakit)){
                 $pat_mast = DB::table('hisdb.pat_mast')
                             ->where('CompCode',session('compcode'))
-                            ->where('MRN',$request->mrn_oper_team)
+                            ->where('MRN',$request->mrn_otMain)
                             ->first();
                 
                 if($pat_mast->iPesakit != $request->iPesakit){
                     DB::table('hisdb.pat_mast')
                         ->where('CompCode',session('compcode'))
-                        ->where('MRN',$request->mrn_oper_team)
+                        ->where('MRN',$request->mrn_otMain)
                         ->update([
                             'iPesakit' => $request->iPesakit,
                         ]);

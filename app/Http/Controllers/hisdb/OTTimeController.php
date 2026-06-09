@@ -63,8 +63,8 @@ class OTTimeController extends defaultController
             DB::table('nursing.ottime')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn_ottime,
-                    'episno' => $request->episno_ottime,
+                    'mrn' => $request->mrn_otMain,
+                    'episno' => $request->episno_otMain,
                     'iPesakit' => $request->iPesakit,
                     'ottimeDate' => $request->ottimeDate,
                     'case' => $request->case,
@@ -100,13 +100,13 @@ class OTTimeController extends defaultController
             if(!empty($request->iPesakit)){
                 $pat_mast = DB::table('hisdb.pat_mast')
                             ->where('CompCode',session('compcode'))
-                            ->where('MRN',$request->mrn_ottime)
+                            ->where('MRN',$request->mrn_otMain)
                             ->first();
                 
                 if($pat_mast->iPesakit != $request->iPesakit){
                     DB::table('hisdb.pat_mast')
                         ->where('CompCode',session('compcode'))
-                        ->where('MRN',$request->mrn_ottime)
+                        ->where('MRN',$request->mrn_otMain)
                         ->update([
                             'iPesakit' => $request->iPesakit,
                         ]);
@@ -136,8 +136,8 @@ class OTTimeController extends defaultController
         try {
             
             DB::table('nursing.ottime')
-                ->where('mrn','=',$request->mrn_ottime)
-                ->where('episno','=',$request->episno_ottime)
+                ->where('mrn','=',$request->mrn_otMain)
+                ->where('episno','=',$request->episno_otMain)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'iPesakit' => $request->iPesakit,
@@ -175,13 +175,13 @@ class OTTimeController extends defaultController
             if(!empty($request->iPesakit)){
                 $pat_mast = DB::table('hisdb.pat_mast')
                             ->where('CompCode',session('compcode'))
-                            ->where('MRN',$request->mrn_ottime)
+                            ->where('MRN',$request->mrn_otMain)
                             ->first();
                 
                 if($pat_mast->iPesakit != $request->iPesakit){
                     DB::table('hisdb.pat_mast')
                         ->where('CompCode',session('compcode'))
-                        ->where('MRN',$request->mrn_ottime)
+                        ->where('MRN',$request->mrn_otMain)
                         ->update([
                             'iPesakit' => $request->iPesakit,
                         ]);
@@ -216,8 +216,8 @@ class OTTimeController extends defaultController
             DB::table('nursing.ottime')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn_ottime,
-                    'episno' => $request->episno_ottime,
+                    'mrn' => $request->mrn_otMain,
+                    'episno' => $request->episno_otMain,
                     'pcrResult' => $request->pcrResult,
                     'pcrDate' => $request->pcrDate,
                     'callPtTime' => $request->callPtTime,
@@ -272,8 +272,8 @@ class OTTimeController extends defaultController
         try {
             
             DB::table('nursing.ottime')
-                ->where('mrn','=',$request->mrn_ottime)
-                ->where('episno','=',$request->episno_ottime)
+                ->where('mrn','=',$request->mrn_otMain)
+                ->where('episno','=',$request->episno_otMain)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'pcrResult' => $request->pcrResult,

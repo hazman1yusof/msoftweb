@@ -63,8 +63,8 @@ class OTDischargeController extends defaultController
             DB::table('nursing.otdischarge')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn_otdischarge,
-                    'episno' => $request->episno_otdischarge,
+                    'mrn' => $request->mrn_otMain,
+                    'episno' => $request->episno_otMain,
                     'patID' => $request->patID,
                     'use2iden' => $request->use2iden,
                     'pat_ot' => $request->pat_ot,
@@ -171,8 +171,8 @@ class OTDischargeController extends defaultController
         try {
             
             DB::table('nursing.otdischarge')
-                ->where('mrn','=',$request->mrn_otdischarge)
-                ->where('episno','=',$request->episno_otdischarge)
+                ->where('mrn','=',$request->mrn_otMain)
+                ->where('episno','=',$request->episno_otMain)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'patID' => $request->patID,
@@ -286,8 +286,8 @@ class OTDischargeController extends defaultController
             DB::table('nursing.otdischarge')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn_otdischarge,
-                    'episno' => $request->episno_otdischarge,
+                    'mrn' => $request->mrn_otMain,
+                    'episno' => $request->episno_otMain,
                     'iPesakit' => $request->iPesakit,
                     'patName' => $request->patName,
                     'identitytag' => $request->identitytag,
@@ -353,13 +353,13 @@ class OTDischargeController extends defaultController
             if(!empty($request->iPesakit)){
                 $pat_mast = DB::table('hisdb.pat_mast')
                             ->where('CompCode',session('compcode'))
-                            ->where('MRN',$request->mrn_otdischarge)
+                            ->where('MRN',$request->mrn_otMain)
                             ->first();
                 
                 if($pat_mast->iPesakit != $request->iPesakit){
                     DB::table('hisdb.pat_mast')
                         ->where('CompCode',session('compcode'))
-                        ->where('MRN',$request->mrn_otdischarge)
+                        ->where('MRN',$request->mrn_otMain)
                         ->update([
                             'iPesakit' => $request->iPesakit,
                         ]);
@@ -389,8 +389,8 @@ class OTDischargeController extends defaultController
         try {
             
             DB::table('nursing.otdischarge')
-                ->where('mrn','=',$request->mrn_otdischarge)
-                ->where('episno','=',$request->episno_otdischarge)
+                ->where('mrn','=',$request->mrn_otMain)
+                ->where('episno','=',$request->episno_otMain)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'iPesakit' => $request->iPesakit,
@@ -458,13 +458,13 @@ class OTDischargeController extends defaultController
             if(!empty($request->iPesakit)){
                 $pat_mast = DB::table('hisdb.pat_mast')
                             ->where('CompCode',session('compcode'))
-                            ->where('MRN',$request->mrn_otdischarge)
+                            ->where('MRN',$request->mrn_otMain)
                             ->first();
                 
                 if($pat_mast->iPesakit != $request->iPesakit){
                     DB::table('hisdb.pat_mast')
                         ->where('CompCode',session('compcode'))
-                        ->where('MRN',$request->mrn_otdischarge)
+                        ->where('MRN',$request->mrn_otMain)
                         ->update([
                             'iPesakit' => $request->iPesakit,
                         ]);

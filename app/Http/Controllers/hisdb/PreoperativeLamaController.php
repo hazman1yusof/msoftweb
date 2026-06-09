@@ -63,8 +63,8 @@ class PreoperativeController extends defaultController
             DB::table('nursing.otpreop')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn_otMain,
-                    'episno' => $request->episno_otMain,
+                    'mrn' => $request->mrn_preoperative,
+                    'episno' => $request->episno_preoperative,
                     'patID' => $request->patID,
                     'use2iden' => $request->use2iden,
                     'pat_ward' => $request->pat_ward,
@@ -176,8 +176,8 @@ class PreoperativeController extends defaultController
         try {
             
             DB::table('nursing.otpreop')
-                ->where('mrn','=',$request->mrn_otMain)
-                ->where('episno','=',$request->episno_otMain)
+                ->where('mrn','=',$request->mrn_preoperative)
+                ->where('episno','=',$request->episno_preoperative)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'patID' => $request->patID,
@@ -296,8 +296,8 @@ class PreoperativeController extends defaultController
             DB::table('nursing.otpreop')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn_otMain,
-                    'episno' => $request->episno_otMain,
+                    'mrn' => $request->mrn_preoperative,
+                    'episno' => $request->episno_preoperative,
                     // PATIENT PROFILE
                     'iPesakit' => $request->iPesakit,
                     // 'regno' => $request->regno,
@@ -377,13 +377,13 @@ class PreoperativeController extends defaultController
             if(!empty($request->iPesakit)){
                 $pat_mast = DB::table('hisdb.pat_mast')
                             ->where('CompCode',session('compcode'))
-                            ->where('MRN',$request->mrn_otMain)
+                            ->where('MRN',$request->mrn_preoperative)
                             ->first();
                 
                 if($pat_mast->iPesakit != $request->iPesakit){
                     DB::table('hisdb.pat_mast')
                         ->where('CompCode',session('compcode'))
-                        ->where('MRN',$request->mrn_otMain)
+                        ->where('MRN',$request->mrn_preoperative)
                         ->update([
                             'iPesakit' => $request->iPesakit,
                         ]);
@@ -413,8 +413,8 @@ class PreoperativeController extends defaultController
         try {
             
             DB::table('nursing.otpreop')
-                ->where('mrn','=',$request->mrn_otMain)
-                ->where('episno','=',$request->episno_otMain)
+                ->where('mrn','=',$request->mrn_preoperative)
+                ->where('episno','=',$request->episno_preoperative)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     // PATIENT PROFILE
@@ -496,13 +496,13 @@ class PreoperativeController extends defaultController
             if(!empty($request->iPesakit)){
                 $pat_mast = DB::table('hisdb.pat_mast')
                             ->where('CompCode',session('compcode'))
-                            ->where('MRN',$request->mrn_otMain)
+                            ->where('MRN',$request->mrn_preoperative)
                             ->first();
                 
                 if($pat_mast->iPesakit != $request->iPesakit){
                     DB::table('hisdb.pat_mast')
                         ->where('CompCode',session('compcode'))
-                        ->where('MRN',$request->mrn_otMain)
+                        ->where('MRN',$request->mrn_preoperative)
                         ->update([
                             'iPesakit' => $request->iPesakit,
                         ]);

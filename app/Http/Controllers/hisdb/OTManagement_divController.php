@@ -63,8 +63,8 @@ class OTManagement_divController extends defaultController
             DB::table('nursing.otmanage')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn_otmgmt_div,
-                    'episno' => $request->episno_otmgmt_div,
+                    'mrn' => $request->mrn_otMain,
+                    'episno' => $request->episno_otMain,
                     'iPesakit' => $request->iPesakit,
                     'admdate' => $request->admdate,
                     'admtime' => $request->admtime,
@@ -98,7 +98,7 @@ class OTManagement_divController extends defaultController
                 ]);
             
             DB::table('hisdb.apptbook')
-                ->where('mrn','=',$request->mrn_otmgmt_div)
+                ->where('mrn','=',$request->mrn_otMain)
                 ->where('Type','=','OT')
                 ->where('compcode','=',session('compcode'))
                 ->update([
@@ -115,8 +115,8 @@ class OTManagement_divController extends defaultController
                 ]);
             
             DB::table('nursing.ottime')
-                ->where('mrn','=',$request->mrn_otmgmt_div)
-                ->where('episno','=', $request->episno_otmgmt_div)
+                ->where('mrn','=',$request->mrn_otMain)
+                ->where('episno','=', $request->episno_otMain)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'procedure' => $request->natureoper,
@@ -128,13 +128,13 @@ class OTManagement_divController extends defaultController
             if(!empty($request->iPesakit)){
                 $pat_mast = DB::table('hisdb.pat_mast')
                             ->where('CompCode',session('compcode'))
-                            ->where('MRN',$request->mrn_otmgmt_div)
+                            ->where('MRN',$request->mrn_otMain)
                             ->first();
                 
                 if($pat_mast->iPesakit != $request->iPesakit){
                     DB::table('hisdb.pat_mast')
                         ->where('CompCode',session('compcode'))
-                        ->where('MRN',$request->mrn_otmgmt_div)
+                        ->where('MRN',$request->mrn_otMain)
                         ->update([
                             'iPesakit' => $request->iPesakit,
                         ]);
@@ -164,16 +164,16 @@ class OTManagement_divController extends defaultController
         try {
             
             $otmanage = DB::table('nursing.otmanage')
-                        ->where('mrn','=',$request->mrn_otmgmt_div)
-                        ->where('episno','=',$request->episno_otmgmt_div)
+                        ->where('mrn','=',$request->mrn_otMain)
+                        ->where('episno','=',$request->episno_otMain)
                         ->where('compcode','=',session('compcode'));
             
             if(!$otmanage->exists()){
                 DB::table('nursing.otmanage')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_otmgmt_div,
-                        'episno' => $request->episno_otmgmt_div,
+                        'mrn' => $request->mrn_otMain,
+                        'episno' => $request->episno_otMain,
                         'iPesakit' => $request->iPesakit,
                         'admdate' => $request->admdate,
                         'admtime' => $request->admtime,
@@ -207,7 +207,7 @@ class OTManagement_divController extends defaultController
                     ]);
                 
                 DB::table('hisdb.apptbook')
-                    ->where('mrn','=',$request->mrn_otmgmt_div)
+                    ->where('mrn','=',$request->mrn_otMain)
                     ->where('Type','=','OT')
                     ->where('compcode','=',session('compcode'))
                     ->update([
@@ -224,8 +224,8 @@ class OTManagement_divController extends defaultController
                     ]);
                 
                 DB::table('nursing.ottime')
-                    ->where('mrn','=',$request->mrn_otmgmt_div)
-                    ->where('episno','=', $request->episno_otmgmt_div)
+                    ->where('mrn','=',$request->mrn_otMain)
+                    ->where('episno','=', $request->episno_otMain)
                     ->where('compcode','=',session('compcode'))
                     ->update([
                         'procedure' => $request->natureoper,
@@ -269,7 +269,7 @@ class OTManagement_divController extends defaultController
                     ]);
                 
                 DB::table('hisdb.apptbook')
-                    ->where('mrn','=',$request->mrn_otmgmt_div)
+                    ->where('mrn','=',$request->mrn_otMain)
                     ->where('Type','=','OT')
                     ->where('compcode','=',session('compcode'))
                     ->update([
@@ -286,8 +286,8 @@ class OTManagement_divController extends defaultController
                     ]);
                 
                 DB::table('nursing.ottime')
-                    ->where('mrn','=',$request->mrn_otmgmt_div)
-                    ->where('episno','=', $request->episno_otmgmt_div)
+                    ->where('mrn','=',$request->mrn_otMain)
+                    ->where('episno','=', $request->episno_otMain)
                     ->where('compcode','=',session('compcode'))
                     ->update([
                         'procedure' => $request->natureoper,
@@ -300,13 +300,13 @@ class OTManagement_divController extends defaultController
             if(!empty($request->iPesakit)){
                 $pat_mast = DB::table('hisdb.pat_mast')
                             ->where('CompCode',session('compcode'))
-                            ->where('MRN',$request->mrn_otmgmt_div)
+                            ->where('MRN',$request->mrn_otMain)
                             ->first();
                 
                 if($pat_mast->iPesakit != $request->iPesakit){
                     DB::table('hisdb.pat_mast')
                         ->where('CompCode',session('compcode'))
-                        ->where('MRN',$request->mrn_otmgmt_div)
+                        ->where('MRN',$request->mrn_otMain)
                         ->update([
                             'iPesakit' => $request->iPesakit,
                         ]);

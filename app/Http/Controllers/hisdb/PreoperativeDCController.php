@@ -63,8 +63,8 @@ class PreoperativeDCController extends defaultController
             DB::table('nursing.otpreopdaycare')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn_preoperativeDC,
-                    'episno' => $request->episno_preoperativeDC,
+                    'mrn' => $request->mrn_otMain,
+                    'episno' => $request->episno_otMain,
                     'iPesakit' => $request->iPesakit,
                     'surgeonDC' => $request->surgeonDC,
                     'anaestDC' => $request->anaestDC,
@@ -231,13 +231,13 @@ class PreoperativeDCController extends defaultController
             if(!empty($request->iPesakit)){
                 $pat_mast = DB::table('hisdb.pat_mast')
                             ->where('CompCode',session('compcode'))
-                            ->where('MRN',$request->mrn_preoperativeDC)
+                            ->where('MRN',$request->mrn_otMain)
                             ->first();
                 
                 if($pat_mast->iPesakit != $request->iPesakit){
                     DB::table('hisdb.pat_mast')
                         ->where('CompCode',session('compcode'))
-                        ->where('MRN',$request->mrn_preoperativeDC)
+                        ->where('MRN',$request->mrn_otMain)
                         ->update([
                             'iPesakit' => $request->iPesakit,
                         ]);
@@ -267,8 +267,8 @@ class PreoperativeDCController extends defaultController
         try {
             
             DB::table('nursing.otpreopdaycare')
-                ->where('mrn','=',$request->mrn_preoperativeDC)
-                ->where('episno','=',$request->episno_preoperativeDC)
+                ->where('mrn','=',$request->mrn_otMain)
+                ->where('episno','=',$request->episno_otMain)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'iPesakit' => $request->iPesakit,
@@ -436,13 +436,13 @@ class PreoperativeDCController extends defaultController
             if(!empty($request->iPesakit)){
                 $pat_mast = DB::table('hisdb.pat_mast')
                             ->where('CompCode',session('compcode'))
-                            ->where('MRN',$request->mrn_preoperativeDC)
+                            ->where('MRN',$request->mrn_otMain)
                             ->first();
                 
                 if($pat_mast->iPesakit != $request->iPesakit){
                     DB::table('hisdb.pat_mast')
                         ->where('CompCode',session('compcode'))
-                        ->where('MRN',$request->mrn_preoperativeDC)
+                        ->where('MRN',$request->mrn_otMain)
                         ->update([
                             'iPesakit' => $request->iPesakit,
                         ]);

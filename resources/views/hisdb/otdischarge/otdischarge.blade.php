@@ -16,8 +16,8 @@
     <div class="ui segment" style="padding: 10px 10px 30px 30px;">
         <form id="form_otdischarge" class="ui form">
             <div class="ui grid">
-                <input id="mrn_otdischarge" name="mrn_otdischarge" type="hidden">
-                <input id="episno_otdischarge" name="episno_otdischarge" type="hidden">
+                <!-- <input id="mrn_otdischarge" name="mrn_otdischarge" type="hidden">
+                <input id="episno_otdischarge" name="episno_otdischarge" type="hidden"> -->
                 
                 <div class="sixteen wide column">
                     <div class="ui segment">

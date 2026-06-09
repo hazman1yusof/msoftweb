@@ -16,8 +16,8 @@
     <div class="ui segment" style="padding: 10px 10px 30px 30px;">
         <form id="form_preoperativeDC" class="ui form">
             <div class="ui grid">
-                <input id="mrn_preoperativeDC" name="mrn_preoperativeDC" type="hidden">
-                <input id="episno_preoperativeDC" name="episno_preoperativeDC" type="hidden">
+                <!-- <input id="mrn_preoperativeDC" name="mrn_preoperativeDC" type="hidden">
+                <input id="episno_preoperativeDC" name="episno_preoperativeDC" type="hidden"> -->
                 
                 <div class="sixteen wide column">
                     <div class="ui segments">

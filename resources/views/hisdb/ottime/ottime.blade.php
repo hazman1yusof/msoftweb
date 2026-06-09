@@ -16,8 +16,8 @@
     <div class="ui segment" style="padding: 10px 10px 30px 30px;">
         <form id="form_ottime" class="ui form">
             <div class="ui grid">
-                <input id="mrn_ottime" name="mrn_ottime" type="hidden">
-                <input id="episno_ottime" name="episno_ottime" type="hidden">
+                <!-- <input id="mrn_ottime" name="mrn_ottime" type="hidden">
+                <input id="episno_ottime" name="episno_ottime" type="hidden"> -->
                 
                 <div class="sixteen wide column">
                     <div class="ui segments">

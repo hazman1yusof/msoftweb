@@ -152,6 +152,7 @@ $(document).ready(function () {
 			rowNum: 30,
 			onSelectRow:function(rowid, selected){
 				$('button#timer_stop').click();
+				populate_otMain(selrowData('#jqGrid'));
 				populate_otmgmt_div(selrowData('#jqGrid'));
 				populate_preoperative(selrowData('#jqGrid'));
 				populate_preoperativeDC(selrowData('#jqGrid'));
@@ -166,6 +167,7 @@ $(document).ready(function () {
 			gridComplete: function () {
 				$('.jqgridsegment').removeClass('loading');
 				$('#no_of_pat').text($("#jqGrid").getGridParam("reccount"));
+				empty_otMain();
 				empty_otmgmt_div();
 				empty_preoperative();
 				empty_preoperativeDC();
@@ -243,6 +245,7 @@ $(document).ready(function () {
 			rowNum: 30,
 			onSelectRow:function(rowid, selected){
 				$('button#timer_stop').click();
+				populate_otMain(selrowData('#jqGrid'));
 				populate_otmgmt_div(selrowData('#jqGrid'));
 				populate_preoperative(selrowData('#jqGrid'));
 				populate_preoperativeDC(selrowData('#jqGrid'));
@@ -258,6 +261,7 @@ $(document).ready(function () {
 			gridComplete: function () {
 				$('.jqgridsegment').removeClass('loading');
 				$('#no_of_pat').text($("#jqGrid").getGridParam("reccount"));
+				empty_otMain();
 				empty_otmgmt_div();
 				empty_preoperative();
 				empty_preoperativeDC();

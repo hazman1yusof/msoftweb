@@ -1,4 +1,3 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
@@ -33,7 +32,7 @@ $(document).ready(function (){
     
     $('#endoscopyNotes .top.menu .item').tab({'onVisible': function (){
         let tab = $(this).data('tab');
-        // console.log(tab);
+        console.log(tab);
         
         switch(tab){
             case 'endoscopyStomach':
@@ -71,62 +70,62 @@ function empty_endoscopyNotes(){
     button_state_endoscopyIntestine('empty');
     
     // panel header
-    $('#name_show_endoscopyNotes').text('');
-    $('#mrn_show_endoscopyNotes').text('');
-    $('#icpssprt_show_endoscopyNotes').text('');
-    $('#sex_show_endoscopyNotes').text('');
-    $('#height_show_endoscopyNotes').text('');
-    $('#weight_show_endoscopyNotes').text('');
-    $('#dob_show_endoscopyNotes').text('');
-    $('#age_show_endoscopyNotes').text('');
-    $('#race_show_endoscopyNotes').text('');
-    $('#religion_show_endoscopyNotes').text('');
-    $('#occupation_show_endoscopyNotes').text('');
-    $('#citizenship_show_endoscopyNotes').text('');
-    $('#area_show_endoscopyNotes').text('');
-    $('#ward_show_endoscopyNotes').text('');
-    $('#bednum_show_endoscopyNotes').text('');
-    $('#oproom_show_endoscopyNotes').text('');
-    $('#diagnosis_show_endoscopyNotes').text('');
-    $('#procedure_show_endoscopyNotes').text('');
-    $('#unit_show_endoscopyNotes').text('');
-    $('#type_show_endoscopyNotes').text('');
+    // $('#name_show_endoscopyNotes').text('');
+    // $('#mrn_show_endoscopyNotes').text('');
+    // $('#icpssprt_show_endoscopyNotes').text('');
+    // $('#sex_show_endoscopyNotes').text('');
+    // $('#height_show_endoscopyNotes').text('');
+    // $('#weight_show_endoscopyNotes').text('');
+    // $('#dob_show_endoscopyNotes').text('');
+    // $('#age_show_endoscopyNotes').text('');
+    // $('#race_show_endoscopyNotes').text('');
+    // $('#religion_show_endoscopyNotes').text('');
+    // $('#occupation_show_endoscopyNotes').text('');
+    // $('#citizenship_show_endoscopyNotes').text('');
+    // $('#area_show_endoscopyNotes').text('');
+    // $('#ward_show_endoscopyNotes').text('');
+    // $('#bednum_show_endoscopyNotes').text('');
+    // $('#oproom_show_endoscopyNotes').text('');
+    // $('#diagnosis_show_endoscopyNotes').text('');
+    // $('#procedure_show_endoscopyNotes').text('');
+    // $('#unit_show_endoscopyNotes').text('');
+    // $('#type_show_endoscopyNotes').text('');
     
     // formEndoscopyNotes
-    $('#mrn_endoscopyNotes').val('');
-    $("#episno_endoscopyNotes").val('');
+    $('#mrn_otMain').val('');
+    $("#episno_otMain").val('');
 }
 
 function populate_endoscopyNotes(obj){
-    emptyFormdata_div("#formEndoscopyStomach",['#mrn_endoscopyNotes','#episno_endoscopyNotes']);
-    emptyFormdata_div("#formEndoscopyIntestine",['#mrn_endoscopyNotes','#episno_endoscopyNotes']);
+    emptyFormdata_div("#formEndoscopyStomach",['#mrn_otMain','#episno_otMain']);
+    emptyFormdata_div("#formEndoscopyIntestine",['#mrn_otMain','#episno_otMain']);
     
     // panel header
-    $('#name_show_endoscopyNotes').text(obj.pat_name);
-    $('#mrn_show_endoscopyNotes').text(("0000000" + obj.mrn).slice(-7));
-    $('#icpssprt_show_endoscopyNotes').text(obj.icnum);
-    $('#sex_show_endoscopyNotes').text(if_none(obj.Sex).toUpperCase());
-    $('#height_show_endoscopyNotes').text(obj.height+' (CM)');
-    $('#weight_show_endoscopyNotes').text(obj.weight+' (KG)');
-    $('#dob_show_endoscopyNotes').text(dob_chg(obj.DOB));
-    $('#age_show_endoscopyNotes').text(dob_age(obj.DOB)+' (YRS)');
-    $('#race_show_endoscopyNotes').text(if_none(obj.RaceCode).toUpperCase());
-    $('#religion_show_endoscopyNotes').text(if_none(obj.Religion).toUpperCase());
-    $('#occupation_show_endoscopyNotes').text(if_none(obj.OccupCode).toUpperCase());
-    $('#citizenship_show_endoscopyNotes').text(if_none(obj.Citizencode).toUpperCase());
-    $('#area_show_endoscopyNotes').text(if_none(obj.AreaCode).toUpperCase());
-    $('#ward_show_endoscopyNotes').text(obj.ward);
-    $('#bednum_show_endoscopyNotes').text(obj.bednum);
-    $('#oproom_show_endoscopyNotes').text(obj.ot_description);
-    $('#diagnosis_show_endoscopyNotes').text(obj.appt_diag);
-    $('#procedure_show_endoscopyNotes').text(obj.appt_prcdure);
-    $('#unit_show_endoscopyNotes').text(obj.op_unit);
-    $('#type_show_endoscopyNotes').text(obj.oper_type);
+    // $('#name_show_endoscopyNotes').text(obj.pat_name);
+    // $('#mrn_show_endoscopyNotes').text(("0000000" + obj.mrn).slice(-7));
+    // $('#icpssprt_show_endoscopyNotes').text(obj.icnum);
+    // $('#sex_show_endoscopyNotes').text(if_none(obj.Sex).toUpperCase());
+    // $('#height_show_endoscopyNotes').text(obj.height+' (CM)');
+    // $('#weight_show_endoscopyNotes').text(obj.weight+' (KG)');
+    // $('#dob_show_endoscopyNotes').text(dob_chg(obj.DOB));
+    // $('#age_show_endoscopyNotes').text(dob_age(obj.DOB)+' (YRS)');
+    // $('#race_show_endoscopyNotes').text(if_none(obj.RaceCode).toUpperCase());
+    // $('#religion_show_endoscopyNotes').text(if_none(obj.Religion).toUpperCase());
+    // $('#occupation_show_endoscopyNotes').text(if_none(obj.OccupCode).toUpperCase());
+    // $('#citizenship_show_endoscopyNotes').text(if_none(obj.Citizencode).toUpperCase());
+    // $('#area_show_endoscopyNotes').text(if_none(obj.AreaCode).toUpperCase());
+    // $('#ward_show_endoscopyNotes').text(obj.ward);
+    // $('#bednum_show_endoscopyNotes').text(obj.bednum);
+    // $('#oproom_show_endoscopyNotes').text(obj.ot_description);
+    // $('#diagnosis_show_endoscopyNotes').text(obj.appt_diag);
+    // $('#procedure_show_endoscopyNotes').text(obj.appt_prcdure);
+    // $('#unit_show_endoscopyNotes').text(obj.op_unit);
+    // $('#type_show_endoscopyNotes').text(obj.oper_type);
     
     // formEndoscopyNotes
-    $('#mrn_endoscopyNotes').val(obj.mrn);
-    $("#episno_endoscopyNotes").val(obj.latest_episno);
-    $("#age_endoscopyNotes").val(dob_age(obj.DOB));
+    $('#mrn_otMain').val(obj.mrn);
+    $("#episno_otMain").val(obj.latest_episno);
+    $("#age_otMain").val(dob_age(obj.DOB));
     
     $("#tab_endoscopyNotes").collapse('hide');
 }
@@ -156,14 +155,14 @@ $('#tab_endoscopyNotes').on('shown.bs.collapse', function (){
     $('#endoscopyNotes .top.menu .item').tab('change tab','endoscopyStomach');
     getdata_endoscopyStomach();
     
-    // if($('#mrn_endoscopyNotes').val() != ''){
+    // if($('#mrn_otMain').val() != ''){
     //     getdata_endoscopyStomach();
     //     getdata_endoscopyIntestine();
     // }
 });
 
 $('#tab_endoscopyNotes').on('hide.bs.collapse', function (){
-    emptyFormdata_div("#formEndoscopyNotes",['#mrn_endoscopyNotes','#episno_endoscopyNotes']);
+    emptyFormdata_div("#formEndoscopyNotes",['#mrn_otMain','#episno_otMain']);
     button_state_endoscopyStomach('empty');
     button_state_endoscopyIntestine('empty');
 });

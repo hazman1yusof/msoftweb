@@ -16,9 +16,9 @@
     <div class="ui segment" style="padding: 10px 10px 30px 30px;">
         <form id="formEndoscopyNotes" class="ui form">
             <div class="ui grid">
-                <input id="mrn_endoscopyNotes" name="mrn_endoscopyNotes" type="hidden">
+                <!-- <input id="mrn_endoscopyNotes" name="mrn_endoscopyNotes" type="hidden">
                 <input id="episno_endoscopyNotes" name="episno_endoscopyNotes" type="hidden">
-                <input id="age_endoscopyNotes" name="age_endoscopyNotes" type="hidden">
+                <input id="age_endoscopyNotes" name="age_endoscopyNotes" type="hidden"> -->
             </div>
         </form>
         

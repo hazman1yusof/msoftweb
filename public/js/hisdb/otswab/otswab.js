@@ -1,4 +1,3 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
@@ -41,7 +40,7 @@ $(document).ready(function (){
         button_state_otswab('wait');
         enableForm('#form_otswab');
         rdonly('#form_otswab');
-        // emptyFormdata_div("#form_otswab",['#mrn_otswab','#episno_otswab']);
+        // emptyFormdata_div("#form_otswab",['#mrn_otMain','#episno_otMain']);
         // dialog_mrn_edit.on();
     });
     
@@ -55,7 +54,7 @@ $(document).ready(function (){
     $("#save_otswab").click(function (){
         if($('#form_otswab').isValid({requiredFields: ''}, conf, true)){
             saveForm_otswab(function (data){
-                // emptyFormdata_div("#form_otswab",['#mrn_otswab','#episno_otswab']);
+                // emptyFormdata_div("#form_otswab",['#mrn_otMain','#episno_otMain']);
                 disableForm('#form_otswab');
             });
         }else{
@@ -65,7 +64,7 @@ $(document).ready(function (){
     });
     
     $("#cancel_otswab").click(function (){
-        // emptyFormdata_div("#form_otswab",['#mrn_otswab','#episno_otswab']);
+        // emptyFormdata_div("#form_otswab",['#mrn_otMain','#episno_otMain']);
         disableForm('#form_otswab');
         button_state_otswab($(this).data('oper'));
         getdata_otswab();
@@ -202,8 +201,8 @@ $(document).ready(function (){
             
             let editurl = "./otswab/form?"+
                 $.param({
-                    mrn: $('#mrn_otswab').val(),
-                    episno: $('#episno_otswab').val(),
+                    mrn: $('#mrn_otMain').val(),
+                    episno: $('#episno_otMain').val(),
                     iPesakit: $('#otswab_iPesakit').val(),
                     action: 'addJqgrid_save',
                 });
@@ -259,8 +258,8 @@ $(document).ready(function (){
             let editurl = "./otswab/form?"+
                 $.param({
                     idno: selrowData('#jqGrid_otswab').idno,
-                    mrn: $('#mrn_otswab').val(),
-                    episno: $('#episno_otswab').val(),
+                    mrn: $('#mrn_otMain').val(),
+                    episno: $('#episno_otMain').val(),
                     iPesakit: $('#otswab_iPesakit').val(),
                     action: 'addJqgrid_edit',
                 });
@@ -502,58 +501,58 @@ function empty_otswab(){
     button_state_otswab('empty');
     
     // panel header
-    $('#name_show_otswab').text('');
-    $('#mrn_show_otswab').text('');
-    $('#icpssprt_show_otswab').text('');
-    $('#sex_show_otswab').text('');
-    $('#height_show_otswab').text('');
-    $('#weight_show_otswab').text('');
-    $('#dob_show_otswab').text('');
-    $('#age_show_otswab').text('');
-    $('#race_show_otswab').text('');
-    $('#religion_show_otswab').text('');
-    $('#occupation_show_otswab').text('');
-    $('#citizenship_show_otswab').text('');
-    $('#area_show_otswab').text('');
-    $('#ward_show_otswab').text('');
-    $('#bednum_show_otswab').text('');
-    $('#oproom_show_otswab').text('');
-    $('#diagnosis_show_otswab').text('');
-    $('#procedure_show_otswab').text('');
-    $('#unit_show_otswab').text('');
-    $('#type_show_otswab').text('');
+    // $('#name_show_otswab').text('');
+    // $('#mrn_show_otswab').text('');
+    // $('#icpssprt_show_otswab').text('');
+    // $('#sex_show_otswab').text('');
+    // $('#height_show_otswab').text('');
+    // $('#weight_show_otswab').text('');
+    // $('#dob_show_otswab').text('');
+    // $('#age_show_otswab').text('');
+    // $('#race_show_otswab').text('');
+    // $('#religion_show_otswab').text('');
+    // $('#occupation_show_otswab').text('');
+    // $('#citizenship_show_otswab').text('');
+    // $('#area_show_otswab').text('');
+    // $('#ward_show_otswab').text('');
+    // $('#bednum_show_otswab').text('');
+    // $('#oproom_show_otswab').text('');
+    // $('#diagnosis_show_otswab').text('');
+    // $('#procedure_show_otswab').text('');
+    // $('#unit_show_otswab').text('');
+    // $('#type_show_otswab').text('');
     
     // form_otswab
-    $('#mrn_otswab').val('');
-    $("#episno_otswab").val('');
+    $('#mrn_otMain').val('');
+    $("#episno_otMain").val('');
 }
 
 function populate_otswab(obj){
     // panel header
-    $('#name_show_otswab').text(obj.pat_name);
-    $('#mrn_show_otswab').text(("0000000" + obj.mrn).slice(-7));
-    $('#icpssprt_show_otswab').text(obj.icnum);
-    $('#sex_show_otswab').text(if_none(obj.Sex).toUpperCase());
-    $('#height_show_otswab').text(obj.height+' (CM)');
-    $('#weight_show_otswab').text(obj.weight+' (KG)');
-    $('#dob_show_otswab').text(dob_chg(obj.DOB));
-    $('#age_show_otswab').text(dob_age(obj.DOB)+' (YRS)');
-    $('#race_show_otswab').text(if_none(obj.RaceCode).toUpperCase());
-    $('#religion_show_otswab').text(if_none(obj.Religion).toUpperCase());
-    $('#occupation_show_otswab').text(if_none(obj.OccupCode).toUpperCase());
-    $('#citizenship_show_otswab').text(if_none(obj.Citizencode).toUpperCase());
-    $('#area_show_otswab').text(if_none(obj.AreaCode).toUpperCase());
-    $('#ward_show_otswab').text(obj.ward);
-    $('#bednum_show_otswab').text(obj.bednum);
-    $('#oproom_show_otswab').text(obj.ot_description);
-    $('#diagnosis_show_otswab').text(obj.appt_diag);
-    $('#procedure_show_otswab').text(obj.appt_prcdure);
-    $('#unit_show_otswab').text(obj.op_unit);
-    $('#type_show_otswab').text(obj.oper_type);
+    // $('#name_show_otswab').text(obj.pat_name);
+    // $('#mrn_show_otswab').text(("0000000" + obj.mrn).slice(-7));
+    // $('#icpssprt_show_otswab').text(obj.icnum);
+    // $('#sex_show_otswab').text(if_none(obj.Sex).toUpperCase());
+    // $('#height_show_otswab').text(obj.height+' (CM)');
+    // $('#weight_show_otswab').text(obj.weight+' (KG)');
+    // $('#dob_show_otswab').text(dob_chg(obj.DOB));
+    // $('#age_show_otswab').text(dob_age(obj.DOB)+' (YRS)');
+    // $('#race_show_otswab').text(if_none(obj.RaceCode).toUpperCase());
+    // $('#religion_show_otswab').text(if_none(obj.Religion).toUpperCase());
+    // $('#occupation_show_otswab').text(if_none(obj.OccupCode).toUpperCase());
+    // $('#citizenship_show_otswab').text(if_none(obj.Citizencode).toUpperCase());
+    // $('#area_show_otswab').text(if_none(obj.AreaCode).toUpperCase());
+    // $('#ward_show_otswab').text(obj.ward);
+    // $('#bednum_show_otswab').text(obj.bednum);
+    // $('#oproom_show_otswab').text(obj.ot_description);
+    // $('#diagnosis_show_otswab').text(obj.appt_diag);
+    // $('#procedure_show_otswab').text(obj.appt_prcdure);
+    // $('#unit_show_otswab').text(obj.op_unit);
+    // $('#type_show_otswab').text(obj.oper_type);
     
     // form_otswab
-    $('#mrn_otswab').val(obj.mrn);
-    $("#episno_otswab").val(obj.latest_episno);
+    $('#mrn_otMain').val(obj.mrn);
+    $("#episno_otMain").val(obj.latest_episno);
     
     // table jqGrid_otswab
 	urlParam_otswab.filterVal[1] = obj.mrn;
@@ -561,7 +560,7 @@ function populate_otswab(obj){
     // urlParam_otswab.mrn = obj.mrn;
     // urlParam_otswab.episno = obj.latest_episno;
     
-    $("#tab_otswab").collapse('hide');
+    // $("#tab_otswab").collapse('hide');
 }
 
 function autoinsert_rowdata(form,rowData){
@@ -667,13 +666,13 @@ $('#tab_otswab').on('shown.bs.collapse', function (){
     SmoothScrollTo('#tab_otswab', 300, 114);
     $("#jqGrid_otswab").jqGrid('setGridWidth', Math.floor($("#jqGrid_otswab_c")[0].offsetWidth-$("#jqGrid_otswab_c")[0].offsetLeft-14));
     
-    if($('#mrn_otswab').val() != ''){
+    if($('#mrn_otMain').val() != ''){
         getdata_otswab();
     }
 });
 
 $('#tab_otswab').on('hide.bs.collapse', function (){
-    emptyFormdata_div("#form_otswab",['#mrn_otswab','#episno_otswab']);
+    emptyFormdata_div("#form_otswab",['#mrn_otMain','#episno_otMain']);
     button_state_otswab('empty');
 });
 
@@ -684,8 +683,8 @@ function getdata_otswab(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_otswab').val(),
-        episno: $("#episno_otswab").val()
+        mrn: $('#mrn_otMain').val(),
+        episno: $("#episno_otMain").val()
     };
     
     $.post("./otswab/form?"+$.param(urlparam), $.param(postobj), function (data){

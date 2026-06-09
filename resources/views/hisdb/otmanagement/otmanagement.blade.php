@@ -63,7 +63,41 @@
     <input id="sel_date" name="sel_date" value="{{ \Carbon\Carbon::now()->toDateString() }}" type="hidden">
     <input id="_token" name="_token" value="{{ csrf_token() }}" type="hidden">
     
-    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="preoperative_panel">
+    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="otMain_panel">
+        <div class="panel-heading" id="toggle_otMain">
+            <b>NAME: <span id="name_show_otMain"></span></b> <br>
+            <b>MRN:</b> <span id="mrn_show_otMain"></span> &nbsp;
+            <b>IC NO./PASSPORT:</b> <span id="icpssprt_show_otMain"></span> &nbsp;
+            <b>SEX:</b> <span id="sex_show_otMain"></span> &nbsp;
+            <b>HEIGHT:</b> <span id="height_show_otMain"></span> &nbsp;
+            <b>WEIGHT:</b> <span id="weight_show_otMain"></span> &nbsp;
+            <b>DOB:</b> <span id="dob_show_otMain"></span> &nbsp;
+            <b>AGE:</b> <span id="age_show_otMain"></span> &nbsp;
+            <b>RACE:</b> <span id="race_show_otMain"></span> &nbsp;
+            <b>RELIGION:</b> <span id="religion_show_otMain"></span> <br>
+            <b>OCCUPATION:</b> <span id="occupation_show_otMain"></span> &nbsp;
+            <b>CITIZENSHIP:</b> <span id="citizenship_show_otMain"></span> &nbsp;
+            <b>AREA:</b> <span id="area_show_otMain"></span> &nbsp;
+            <b>WARD / BED:</b> <span id="ward_show_preoperative"></span> / <span id="bednum_show_otMain"></span> &nbsp;
+            <b>OP ROOM:</b> <span id="oproom_show_otMain"></span> <br>
+            <b>DIAGNOSIS:</b> <span id="diagnosis_show_otMain"></span> &nbsp;
+            <b>PLANNED PROCEDURE:</b> <span id="procedure_show_otMain"></span> &nbsp;
+            <b>UNIT/DISCIPLINE:</b> <span id="unit_show_otMain"></span> &nbsp;
+            <b>OPERATION TYPE:</b> <span id="type_show_otMain"></span> &nbsp;
+            
+            <!-- <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_preoperative"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_preoperative"></i> -->
+            
+        </div>
+        
+        <div id="tab_otMain" class="panel-collapse">
+            <div class="panel-body paneldiv">
+                @include('hisdb.otMain.otMain')
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px;display:none" id="preoperative_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_preoperative">
             <b>NAME: <span id="name_show_preoperative"></span></b> <br>
             <b>MRN:</b> <span id="mrn_show_preoperative"></span> &nbsp;
@@ -103,7 +137,7 @@
         </div>
     </div>
     
-    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="preoperativeDC_panel">
+    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px;display: none;" id="preoperativeDC_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_preoperativeDC">
             <b>NAME: <span id="name_show_preoperativeDC"></span></b> <br>
             <b>MRN:</b> <span id="mrn_show_preoperativeDC"></span> &nbsp;
@@ -143,7 +177,7 @@
         </div>
     </div>
     
-    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="oper_team_panel">
+    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px;display: none;" id="oper_team_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_oper_team">
             <b>NAME: <span id="name_show_oper_team"></span></b> <br>
             <b>MRN:</b> <span id="mrn_show_oper_team"></span> &nbsp;
@@ -183,7 +217,7 @@
         </div>
     </div>
     
-    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="otswab_panel">
+    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px;display: none;" id="otswab_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_otswab">
             <b>NAME: <span id="name_show_otswab"></span></b> <br>
             <b>MRN:</b> <span id="mrn_show_otswab"></span> &nbsp;
@@ -223,7 +257,7 @@
         </div>
     </div>
     
-    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="ottime_panel">
+    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px;display: none;" id="ottime_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_ottime">
             <b>NAME: <span id="name_show_ottime"></span></b> <br>
             <b>MRN:</b> <span id="mrn_show_ottime"></span> &nbsp;
@@ -263,7 +297,7 @@
         </div>
     </div>
     
-    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="otdischarge_panel">
+    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px;display: none;" id="otdischarge_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_otdischarge">
             <b>NAME: <span id="name_show_otdischarge"></span></b> <br>
             <b>MRN:</b> <span id="mrn_show_otdischarge"></span> &nbsp;
@@ -303,7 +337,7 @@
         </div>
     </div>
     
-    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="endoscopyNotes_panel">
+    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px;display: none;" id="endoscopyNotes_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_endoscopyNotes">
             <b>NAME: <span id="name_show_endoscopyNotes"></span></b> <br>
             <b>MRN:</b> <span id="mrn_show_endoscopyNotes"></span> &nbsp;
@@ -343,7 +377,7 @@
         </div>
     </div>
 
-    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="otmgmt_div_panel">
+    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px;display: none;" id="otmgmt_div_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_otmgmt_div">
             <b>NAME: <span id="name_show_otmgmt_div"></span></b> <br>
             <b>MRN:</b> <span id="mrn_show_otmgmt_div"></span> &nbsp;
@@ -442,6 +476,7 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy_ncase.js') }}"></script> -->
     <!-- <script type="text/javascript" src="{{ asset('patientcare/js/doctornote_main.js') }}"></script> -->
     <script type="text/javascript" src="js/myjs/utility.js"></script>
+    <script type="text/javascript" src="js/hisdb/otMain/otMain.js"></script>
     <script type="text/javascript" src="js/hisdb/otmanagement/otmanagement_main.js"></script>
     <script type="text/javascript" src="js/hisdb/otmanagement/otmanagement_div.js?v=1.2"></script>
     <script type="text/javascript" src="js/hisdb/preoperative/preoperative.js?v=1.1"></script>

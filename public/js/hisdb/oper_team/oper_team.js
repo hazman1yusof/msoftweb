@@ -1,4 +1,3 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
@@ -16,7 +15,7 @@ $(document).ready(function (){
         button_state_oper_team('wait');
         enableForm('#form_oper_team');
         rdonly('#form_oper_team');
-        // emptyFormdata_div("#form_oper_team",['#mrn_oper_team','#episno_oper_team']);
+        // emptyFormdata_div("#form_oper_team",['#mrn_otMain','#episno_otMain']);
         // dialog_mrn_edit.on();
     });
     
@@ -30,7 +29,7 @@ $(document).ready(function (){
     $("#save_oper_team").click(function (){
         if($('#form_oper_team').isValid({requiredFields: ''}, conf, true)){
             saveForm_oper_team(function (data){
-                // emptyFormdata_div("#form_oper_team",['#mrn_oper_team','#episno_oper_team']);
+                // emptyFormdata_div("#form_oper_team",['#mrn_otMain','#episno_otMain']);
                 disableForm('#form_oper_team');
             });
         }else{
@@ -40,7 +39,7 @@ $(document).ready(function (){
     });
     
     $("#cancel_oper_team").click(function (){
-        // emptyFormdata_div("#form_oper_team",['#mrn_oper_team','#episno_oper_team']);
+        // emptyFormdata_div("#form_oper_team",['#mrn_otMain','#episno_otMain']);
         disableForm('#form_oper_team');
         button_state_oper_team($(this).data('oper'));
         getdata_oper_team();
@@ -266,60 +265,60 @@ function empty_oper_team(){
     button_state_oper_team('empty');
     
     // panel header
-    $('#name_show_oper_team').text('');
-    $('#mrn_show_oper_team').text('');
-    $('#icpssprt_show_oper_team').text('');
-    $('#sex_show_oper_team').text('');
-    $('#height_show_oper_team').text('');
-    $('#weight_show_oper_team').text('');
-    $('#dob_show_oper_team').text('');
-    $('#age_show_oper_team').text('');
-    $('#race_show_oper_team').text('');
-    $('#religion_show_oper_team').text('');
-    $('#occupation_show_oper_team').text('');
-    $('#citizenship_show_oper_team').text('');
-    $('#area_show_oper_team').text('');
-    $('#ward_show_oper_team').text('');
-    $('#bednum_show_oper_team').text('');
-    $('#oproom_show_oper_team').text('');
-    $('#diagnosis_show_oper_team').text('');
-    $('#procedure_show_oper_team').text('');
-    $('#unit_show_oper_team').text('');
-    $('#type_show_oper_team').text('');
+    // $('#name_show_oper_team').text('');
+    // $('#mrn_show_oper_team').text('');
+    // $('#icpssprt_show_oper_team').text('');
+    // $('#sex_show_oper_team').text('');
+    // $('#height_show_oper_team').text('');
+    // $('#weight_show_oper_team').text('');
+    // $('#dob_show_oper_team').text('');
+    // $('#age_show_oper_team').text('');
+    // $('#race_show_oper_team').text('');
+    // $('#religion_show_oper_team').text('');
+    // $('#occupation_show_oper_team').text('');
+    // $('#citizenship_show_oper_team').text('');
+    // $('#area_show_oper_team').text('');
+    // $('#ward_show_oper_team').text('');
+    // $('#bednum_show_oper_team').text('');
+    // $('#oproom_show_oper_team').text('');
+    // $('#diagnosis_show_oper_team').text('');
+    // $('#procedure_show_oper_team').text('');
+    // $('#unit_show_oper_team').text('');
+    // $('#type_show_oper_team').text('');
     
     // form_oper_team
-    $('#mrn_oper_team').val('');
-    $("#episno_oper_team").val('');
+    $('#mrn_otMain').val('');
+    $("#episno_otMain").val('');
 }
 
 function populate_oper_team(obj){
     // panel header
-    $('#name_show_oper_team').text(obj.pat_name);
-    $('#mrn_show_oper_team').text(("0000000" + obj.mrn).slice(-7));
-    $('#icpssprt_show_oper_team').text(obj.icnum);
-    $('#sex_show_oper_team').text(if_none(obj.Sex).toUpperCase());
-    $('#height_show_oper_team').text(obj.height+' (CM)');
-    $('#weight_show_oper_team').text(obj.weight+' (KG)');
-    $('#dob_show_oper_team').text(dob_chg(obj.DOB));
-    $('#age_show_oper_team').text(dob_age(obj.DOB)+' (YRS)');
-    $('#race_show_oper_team').text(if_none(obj.RaceCode).toUpperCase());
-    $('#religion_show_oper_team').text(if_none(obj.Religion).toUpperCase());
-    $('#occupation_show_oper_team').text(if_none(obj.OccupCode).toUpperCase());
-    $('#citizenship_show_oper_team').text(if_none(obj.Citizencode).toUpperCase());
-    $('#area_show_oper_team').text(if_none(obj.AreaCode).toUpperCase());
-    $('#ward_show_oper_team').text(obj.ward);
-    $('#bednum_show_oper_team').text(obj.bednum);
-    $('#oproom_show_oper_team').text(obj.ot_description);
-    $('#diagnosis_show_oper_team').text(obj.appt_diag);
-    $('#procedure_show_oper_team').text(obj.appt_prcdure);
-    $('#unit_show_oper_team').text(obj.op_unit);
-    $('#type_show_oper_team').text(obj.oper_type);
+    // $('#name_show_oper_team').text(obj.pat_name);
+    // $('#mrn_show_oper_team').text(("0000000" + obj.mrn).slice(-7));
+    // $('#icpssprt_show_oper_team').text(obj.icnum);
+    // $('#sex_show_oper_team').text(if_none(obj.Sex).toUpperCase());
+    // $('#height_show_oper_team').text(obj.height+' (CM)');
+    // $('#weight_show_oper_team').text(obj.weight+' (KG)');
+    // $('#dob_show_oper_team').text(dob_chg(obj.DOB));
+    // $('#age_show_oper_team').text(dob_age(obj.DOB)+' (YRS)');
+    // $('#race_show_oper_team').text(if_none(obj.RaceCode).toUpperCase());
+    // $('#religion_show_oper_team').text(if_none(obj.Religion).toUpperCase());
+    // $('#occupation_show_oper_team').text(if_none(obj.OccupCode).toUpperCase());
+    // $('#citizenship_show_oper_team').text(if_none(obj.Citizencode).toUpperCase());
+    // $('#area_show_oper_team').text(if_none(obj.AreaCode).toUpperCase());
+    // $('#ward_show_oper_team').text(obj.ward);
+    // $('#bednum_show_oper_team').text(obj.bednum);
+    // $('#oproom_show_oper_team').text(obj.ot_description);
+    // $('#diagnosis_show_oper_team').text(obj.appt_diag);
+    // $('#procedure_show_oper_team').text(obj.appt_prcdure);
+    // $('#unit_show_oper_team').text(obj.op_unit);
+    // $('#type_show_oper_team').text(obj.oper_type);
     
     // form_oper_team
-    $('#mrn_oper_team').val(obj.mrn);
-    $("#episno_oper_team").val(obj.latest_episno);
+    $('#mrn_otMain').val(obj.mrn);
+    $("#episno_otMain").val(obj.latest_episno);
     
-    $("#tab_oper_team").collapse('hide');
+    // $("#tab_oper_team").collapse('hide');
 }
 
 function autoinsert_rowdata(form,rowData){
@@ -424,13 +423,13 @@ function textarea_init_oper_team(){
 $('#tab_oper_team').on('shown.bs.collapse', function (){
     SmoothScrollTo('#tab_oper_team', 300, 114);
     
-    if($('#mrn_oper_team').val() != ''){
+    if($('#mrn_otMain').val() != ''){
         getdata_oper_team();
     }
 });
 
 $('#tab_oper_team').on('hide.bs.collapse', function (){
-    emptyFormdata_div("#form_oper_team",['#mrn_oper_team','#episno_oper_team']);
+    emptyFormdata_div("#form_oper_team",['#mrn_otMain','#episno_otMain']);
     button_state_oper_team('empty');
 });
 
@@ -441,8 +440,8 @@ function getdata_oper_team(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_oper_team').val(),
-        episno: $("#episno_oper_team").val()
+        mrn: $('#mrn_otMain').val(),
+        episno: $("#episno_otMain").val()
     };
     
     $.post("./oper_team/form?"+$.param(urlparam), $.param(postobj), function (data){
