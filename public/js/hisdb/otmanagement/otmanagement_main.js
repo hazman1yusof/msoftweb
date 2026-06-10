@@ -161,6 +161,8 @@ $(document).ready(function () {
 				populate_ottime(selrowData('#jqGrid'));
 				populate_otdischarge(selrowData('#jqGrid'));
 				populate_endoscopyNotes(selrowData('#jqGrid'));
+
+                getdata_preoperative();
 			},
 			ondblClickRow: function (rowid, iRow, iCol, e) {
 			},
@@ -255,6 +257,8 @@ $(document).ready(function () {
 				populate_otdischarge(selrowData('#jqGrid'));
 				populate_endoscopyNotes(selrowData('#jqGrid'));
 				$("#jqGrid").data('lastidno',rowid);
+
+                getdata_preoperative();
 			},
 			ondblClickRow: function (rowid, iRow, iCol, e) {
 			},
@@ -277,6 +281,38 @@ $(document).ready(function () {
 			},
 		});
 	}
+
+	$('#otMain_tab .top.menu .item').tab({'onVisible': function (){
+        let tab = $(this).data('tab');
+        console.log(tab);
+        
+        switch(tab){
+            case 'preoperative':
+                getdata_preoperative();
+                break;
+            case 'preoperativeDC':
+                getdata_preoperativeDC();
+                break;
+            case 'oper_team':
+                getdata_oper_team();
+                break;
+            case 'otswab':
+                getdata_otswab();
+                break;
+            case 'ottime':
+                getdata_ottime();
+                break;
+            case 'otdischarge':
+                getdata_otdischarge();
+                break;
+            case 'endoscopyNotes':
+                getdata_endoscopyStomach();
+                break;
+            case 'otmanagement_div':
+                getdata_otmgmt();
+                break;
+        }
+    }});
 	
 	// $("#jqGrid").jqGrid('setGroupHeaders', {
 	// 	useColSpanStyle: true,

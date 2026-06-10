@@ -91,7 +91,7 @@
         </div>
         
         <div id="tab_otMain" class="panel-collapse">
-            <div class="panel-body paneldiv">
+            <div class=" paneldiv">
                 @include('hisdb.otMain.otMain')
             </div>
         </div>

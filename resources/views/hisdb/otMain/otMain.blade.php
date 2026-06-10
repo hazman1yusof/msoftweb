@@ -1,6 +1,6 @@
-<div class="ui segments" style="position: relative;">
+<div class="ui segments" style="position: relative;padding: 10px">
     
-    <div class="ui segment" style="padding: 10px 10px 30px 30px;">
+    <!-- <div class="ui segment" style=""> -->
         <form id="formOtMain" class="ui form">
             <div class="ui grid">
                 <input id="mrn_otMain" name="mrn_otMain" type="hidden">
@@ -53,5 +53,5 @@
                 @include('hisdb.otmanagement.otmanagement_div')
             </div>
         </div>
-    </div>
+    <!-- </div> -->
 </div>
