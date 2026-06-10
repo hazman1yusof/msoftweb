@@ -206,7 +206,6 @@ function saveForm_otdischarge(callback){
         action: 'save_table_otdischarge',
         oper: oper,
     }
-    
     if(oper == 'add'){
         saveParam.sel_date = $('#sel_date').val();
     }else if(oper == 'edit'){
@@ -217,8 +216,8 @@ function saveForm_otdischarge(callback){
     
     var postobj = {
         _token: $('#_token').val(),
-        // sex_edit: $('#sex_edit').val(),
-        // idtype_edit: $('#idtype_edit').val()
+        mrn_otMain: $('#mrn_otMain').val(),
+        episno_otMain: $('#episno_otMain').val(),
     };
     
     values = $("#form_otdischarge").serializeArray();

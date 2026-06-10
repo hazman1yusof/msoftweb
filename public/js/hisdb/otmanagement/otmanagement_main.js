@@ -247,6 +247,9 @@ $(document).ready(function () {
 			rowNum: 30,
 			onSelectRow:function(rowid, selected){
 				$('button#timer_stop').click();
+				$('#otMain_tab .top.menu .item').tab('change tab','preoperative');
+				// button_state_preoperative('add');
+				// empty_preoperative();
 				populate_otMain(selrowData('#jqGrid'));
 				populate_otmgmt_div(selrowData('#jqGrid'));
 				populate_preoperative(selrowData('#jqGrid'));
@@ -258,7 +261,8 @@ $(document).ready(function () {
 				populate_endoscopyNotes(selrowData('#jqGrid'));
 				$("#jqGrid").data('lastidno',rowid);
 
-                getdata_preoperative();
+				getdata_preoperative();
+
 			},
 			ondblClickRow: function (rowid, iRow, iCol, e) {
 			},
@@ -284,32 +288,49 @@ $(document).ready(function () {
 
 	$('#otMain_tab .top.menu .item').tab({'onVisible': function (){
         let tab = $(this).data('tab');
-        console.log(tab);
+        // console.log(tab);
         
         switch(tab){
             case 'preoperative':
-                getdata_preoperative();
+                if($('#mrn_otMain').val() != ''){
+                    getdata_preoperative();
+                }  				
                 break;
             case 'preoperativeDC':
-                getdata_preoperativeDC();
+                if($('#mrn_otMain').val() != ''){
+                    getdata_preoperativeDC();
+                }
                 break;
             case 'oper_team':
-                getdata_oper_team();
+                if($('#mrn_otMain').val() != ''){
+                    getdata_oper_team();
+                }
                 break;
             case 'otswab':
-                getdata_otswab();
+                $("#jqGrid_otswab").jqGrid('setGridWidth', Math.floor($("#jqGrid_otswab_c")[0].offsetWidth-$("#jqGrid_otswab_c")[0].offsetLeft-14));
+    
+                if($('#mrn_otMain').val() != ''){
+                    getdata_otswab();
+                }
                 break;
             case 'ottime':
-                getdata_ottime();
+                if($('#mrn_otMain').val() != ''){
+                    getdata_ottime();
+                }
                 break;
             case 'otdischarge':
-                getdata_otdischarge();
+                if($('#mrn_otMain').val() != ''){
+                    getdata_otdischarge();
+                }
                 break;
             case 'endoscopyNotes':
+                $('#endoscopyNotes .top.menu .item').tab('change tab','endoscopyStomach');
                 getdata_endoscopyStomach();
                 break;
             case 'otmanagement_div':
-                getdata_otmgmt();
+                if($('#mrn_otMain').val() != ''){
+                    getdata_otmgmt();
+                }
                 break;
         }
     }});

@@ -173,6 +173,7 @@ function saveForm_endoscopyIntestine(callback){
         oper: oper,
         mrn: $('#mrn_otMain').val(),
         episno: $("#episno_otMain").val(),
+        age: $("#age_otMain").val()
     }
     
     if(oper == 'add'){
