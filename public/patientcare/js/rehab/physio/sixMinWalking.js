@@ -1,4 +1,3 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
@@ -17,7 +16,7 @@ $(document).ready(function (){
         button_state_sixMinWalking('wait');
         enableForm('#formSixMinWalking');
         rdonly('#formSixMinWalking');
-        emptyFormdata_div("#formSixMinWalking",['#mrn_physio','#episno_physio']);
+        emptyFormdata_div("#formSixMinWalking",['#mrn_rehabMain','#episno_rehabMain']);
         document.getElementById("idno_sixMinWalking").value = "";
         // dialog_mrn_edit.on();
     });
@@ -34,7 +33,7 @@ $(document).ready(function (){
             saveForm_sixMinWalking(function (data){
                 $("#cancel_sixMinWalking").data('oper','edit');
                 $("#cancel_sixMinWalking").click();
-                // emptyFormdata_div("#formSixMinWalking",['#mrn_physio','#episno_physio']);
+                // emptyFormdata_div("#formSixMinWalking",['#mrn_rehabMain','#episno_rehabMain']);
                 disableForm('#formSixMinWalking');
             });
         }else{
@@ -44,7 +43,7 @@ $(document).ready(function (){
     });
     
     $("#cancel_sixMinWalking").click(function (){
-        // emptyFormdata_div("#formSixMinWalking",['#mrn_physio','#episno_physio']);
+        // emptyFormdata_div("#formSixMinWalking",['#mrn_rehabMain','#episno_rehabMain']);
         disableForm('#formSixMinWalking');
         button_state_sixMinWalking($(this).data('oper'));
         $('#tbl_sixMinWalking_date').DataTable().ajax.reload();
@@ -87,7 +86,7 @@ $(document).ready(function (){
             $(this).addClass('selected');
         }
         
-        emptyFormdata_div("#formSixMinWalking",['#mrn_physio','#episno_physio']);
+        emptyFormdata_div("#formSixMinWalking",['#mrn_rehabMain','#episno_rehabMain']);
         $('#tbl_sixMinWalking_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
@@ -125,8 +124,8 @@ $(document).ready(function (){
             }
             
             // $("#sixMinWalking_patName").val(data.patName);
-            // $("#sixMinWalking_age").val($("#age_physio").val());
-            // $("#sixMinWalking_race").val($('#race_show_physio').text());
+            // $("#sixMinWalking_age").val($("#age_rehabMain").val());
+            // $("#sixMinWalking_race").val($('#race_show_rehabMain').text());
             
             // gender_M = document.getElementById("genderM");
             // gender_F = document.getElementById("genderF");
@@ -142,7 +141,7 @@ $(document).ready(function (){
     ///////////////////////////////////////sixMinWalking ends///////////////////////////////////////
     
     $("#sixMinWalking_chart").click(function (){
-        window.open('./sixMinWalking/sixminwalking_chart?mrn='+$('#mrn_physio').val()+'&episno='+$("#episno_physio").val()+'&entereddate='+$("#sixMinWalking_entereddate").val()+'&age='+$("#age_physio").val(), '_blank');
+        window.open('./sixMinWalking/sixminwalking_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#sixMinWalking_entereddate").val()+'&age='+$("#age_rehabMain").val(), '_blank');
     });
     
 });
@@ -240,8 +239,8 @@ function saveForm_sixMinWalking(callback){
     var saveParam = {
         action: 'save_table_sixMinWalking',
         oper: oper,
-        mrn: $('#mrn_physio').val(),
-        episno: $("#episno_physio").val(),
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val(),
     }
     
     if(oper == 'add'){
@@ -328,8 +327,8 @@ function getdata_sixMinWalking(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_physio').val(),
-        episno: $("#episno_physio").val()
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val()
     };
     
     $.post("./sixMinWalking/form?"+$.param(urlparam), $.param(postobj), function (data){
@@ -347,8 +346,8 @@ function getdata_sixMinWalking(){
         }
         
         // $("#sixMinWalking_patName").val(data.patName);
-        // $("#sixMinWalking_age").val($("#age_physio").val());
-        // $("#sixMinWalking_race").val($('#race_show_physio').text());
+        // $("#sixMinWalking_age").val($("#age_rehabMain").val());
+        // $("#sixMinWalking_race").val($('#race_show_rehabMain').text());
         
         // gender_M = document.getElementById("genderM");
         // gender_F = document.getElementById("genderF");
@@ -369,8 +368,8 @@ function get_default_sixMinWalking(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_physio').val(),
-        episno: $("#episno_physio").val()
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val()
     };
     
     $.post("./sixMinWalking/form?"+$.param(urlparam), $.param(postobj), function (data){
@@ -386,8 +385,8 @@ function get_default_sixMinWalking(){
         }
         
         $("#sixMinWalking_patName").val(data.patName);
-        $("#sixMinWalking_age").val($("#age_physio").val());
-        $("#sixMinWalking_race").val($('#race_show_physio').text());
+        $("#sixMinWalking_age").val($("#age_rehabMain").val());
+        $("#sixMinWalking_race").val($('#race_show_rehabMain').text());
         
         gender_M = document.getElementById("genderM");
         gender_F = document.getElementById("genderF");

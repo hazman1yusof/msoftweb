@@ -48,7 +48,7 @@
                         
                         <div class="ui grid">
                             <div class='sixteen wide column'>
-                                @include('rehab.posturalAssessmt_div')
+                                @include('rehab.physio.posturalAssessmt_div')
                             </div>
                         </div>
                     </div>

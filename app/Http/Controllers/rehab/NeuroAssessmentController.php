@@ -22,7 +22,7 @@ class NeuroAssessmentController extends defaultController
     
     public function show(Request $request)
     {
-        return view('rehab.neuroAssessment');
+        return view('rehab.physio.neuroAssessment');
     }
     
     public function form(Request $request)
@@ -2115,7 +2115,7 @@ class NeuroAssessmentController extends defaultController
         $attachment_files2 = $this->get_attachment_files2($mrn,$episno,$entereddate,$type2);
         // dd($attachment_files);
         
-        return view('rehab.neuroAssessmentChart_pdfmake',compact('neuroassessment','romaffectedside','romsoundside','musclepower','company','attachment_files1','attachment_files2'));
+        return view('rehab.physio.neuroAssessmentChart_pdfmake',compact('neuroassessment','romaffectedside','romsoundside','musclepower','company','attachment_files1','attachment_files2'));
         
     }
     

@@ -21,7 +21,7 @@ class OswestryQuestController extends defaultController
     
     public function show(Request $request)
     {
-        return view('rehab.oswestryQuest');
+        return view('rehab.physio.oswestryQuest');
     }
     
     public function form(Request $request)
@@ -295,7 +295,7 @@ class OswestryQuestController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->first();
         
-        return view('rehab.oswestryQuestChart_pdfmake',compact('oswestryquest','company'));
+        return view('rehab.physio.oswestryQuestChart_pdfmake',compact('oswestryquest','company'));
         
     }
     

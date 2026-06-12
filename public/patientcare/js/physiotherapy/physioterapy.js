@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
 	$('.menu .item').tab();
 	$('.ui.radio.checkbox.pastcurr').checkbox({
@@ -7,12 +6,12 @@ $(document).ready(function () {
 	    	var dateParam_phys={
 				action:'get_table_date_phys',
 				type:type,
-				mrn:$('#mrn_phys').val(),
-				episno:$("#episno_phys").val(),
+				mrn:$('#mrn_rehabMain').val(),
+				episno:$("#episno_rehabMain").val(),
 			}
 
 		    phys_date_tbl.ajax.url( "./ptcare_phys/table?"+$.param(dateParam_phys) ).load(function(data){
-				// emptyFormdata_div("#formphys",['#mrn_phys','#episno_phys']);
+				// emptyFormdata_div("#formphys",['#mrn_rehabMain','#episno_rehabMain']);
 				// $('#phys_date_tbl tbody tr:eq(0)').click();	//to select first row
 		    });
 	    }
@@ -23,8 +22,8 @@ $(document).ready(function () {
 	});
 	
 	$('a.ui.card.bodydia').click(function(){
-		let mrn = $('#mrn_phys').val();
-		let episno = $("#episno_phys").val();
+		let mrn = $('#mrn_rehabMain').val();
+		let episno = $("#episno_rehabMain").val();
 		let type = $(this).data('type');
 		let istablet = $(window).width() <= 1024;
 		
@@ -118,53 +117,7 @@ $(document).ready(function () {
 	$('#tab_phys').on('shown.bs.collapse', function (){
 		SmoothScrollTo('#tab_phys', 300);
 		
-		var postobj = {
-			_token: $('#_token').val(),
-			mrn: $('#mrn_phys').val(),
-			episno: $("#episno_phys").val()
-		};
-		
-		var dateParam_phys = {
-			action: 'get_table_date_phys',
-			type: 'Current',
-			mrn: $('#mrn_phys').val(),
-			episno: $("#episno_phys").val(),
-			date: $('#sel_date').val()
-		}
-		
-		phys_date_tbl.ajax.url("./ptcare_phys/table?"+$.param(dateParam_phys)).load();
-		
-		var phys_ncase_urlparam = {
-			action: 'get_table_phys_ncase'
-		};
-		
-		var postobj = {
-			_token: $('#_token').val(),
-			mrn: $('#mrn_phys').val(),
-			episno: $("#episno_phys").val(),
-		};
-		
-		$.post("./ptcare_phys/form?"+$.param(phys_ncase_urlparam), $.param(postobj), function (data){
-			
-		},'json').fail(function (data){
-			alert('there is an error');
-		}).done(function (data){
-			if(!$.isEmptyObject(data.patrehab_ncase)){
-				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.patrehab_ncase);
-				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.pat_physio);
-				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.neuroassessment);
-				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.romaffectedside);
-				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.romsoundside);
-				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.musclepower);
-				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.patrehabperkeso);
-				button_state_phys_ncase('edit');
-				$('#perkeso_chart').attr('disabled',false);
-			}else{
-				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.pat_physio);
-				button_state_phys_ncase('add');
-				$('#perkeso_chart').attr('disabled',true);
-			}
-		});
+		getdata_physio();
 	});
 	
 	// $('input.hidden[type=checkbox]').change(function(){
@@ -212,12 +165,12 @@ $(document).ready(function () {
 	// 			var dateParam_phys={
 	// 				action:'get_table_date_phys',
 	// 				type:$('.ui.radio.checkbox').val(),
-	// 				mrn:$('#mrn_phys').val(),
-	// 				episno:$("#episno_phys").val(),
+	// 				mrn:$('#mrn_rehabMain').val(),
+	// 				episno:$("#episno_rehabMain").val(),
 	// 			}
 
 	// 		    phys_date_tbl.ajax.url( "./phys/table?"+$.param(dateParam_phys) ).load(function(data){
-	// 				// emptyFormdata_div("#formphys",['#mrn_phys','#episno_phys']);
+	// 				// emptyFormdata_div("#formphys",['#mrn_rehabMain','#episno_rehabMain']);
 	// 				// $('#phys_date_tbl tbody tr:eq(0)').click();	//to select first row
 	// 		    });
 	// 		});
@@ -253,7 +206,7 @@ $(document).ready(function () {
 		}
 
 		disableForm('#formphys');
-		emptyFormdata_div("#formphys",['#mrn_phys','#episno_phys']);
+		emptyFormdata_div("#formphys",['#mrn_rehabMain','#episno_rehabMain']);
 	    $('#phys_date_tbl tbody tr').removeClass('active');
 	    $(this).addClass('active');
 
@@ -288,7 +241,7 @@ $(document).ready(function () {
 	});
 	
 	$("#perkeso_chart").click(function (){
-		window.open('./ptcare_phys/rehabperkeso_chart?mrn='+$('#mrn_phys').val()+'&episno='+$("#episno_phys").val()+'&type1=BB_PERKESO'+'&type2=BF_PERKESO', '_blank');
+		window.open('./ptcare_phys/rehabperkeso_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&type1=BB_PERKESO'+'&type2=BF_PERKESO', '_blank');
 	});
 });
 
@@ -297,9 +250,11 @@ function saveForm_phys(callback){
         action:'save_table_phys',
         oper:$("#cancel_phys").data('oper')
     }
-
+ 	console.log($('#episno_rehabMain').val());
     var postobj={
     	_token : $('#_token').val(),
+		mrn_rehabMain: $('#mrn_rehabMain').val(),
+    	episno_rehabMain: $("#episno_rehabMain").val(),
     };
 
 	values = $("#formphys").serializeArray();
@@ -312,6 +267,56 @@ function saveForm_phys(callback){
     }).done(function(data){
         callback();
     });
+}
+
+function getdata_physio(){
+	var postobj = {
+			_token: $('#_token').val(),
+			mrn: $('#mrn_rehabMain').val(),
+			episno: $("#episno_rehabMain").val()
+		};
+		
+		var dateParam_phys = {
+			action: 'get_table_date_phys',
+			type: 'Current',
+			mrn: $('#mrn_rehabMain').val(),
+			episno: $("#episno_rehabMain").val(),
+			date: $('#sel_date').val()
+		}
+		
+		phys_date_tbl.ajax.url("./ptcare_phys/table?"+$.param(dateParam_phys)).load();
+		
+		var phys_ncase_urlparam = {
+			action: 'get_table_phys_ncase'
+		};
+		
+		var postobj = {
+			_token: $('#_token').val(),
+			mrn: $('#mrn_rehabMain').val(),
+			episno: $("#episno_rehabMain").val(),
+		};
+		
+		$.post("./ptcare_phys/form?"+$.param(phys_ncase_urlparam), $.param(postobj), function (data){
+			
+		},'json').fail(function (data){
+			alert('there is an error');
+		}).done(function (data){
+			if(!$.isEmptyObject(data.patrehab_ncase)){
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.patrehab_ncase);
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.pat_physio);
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.neuroassessment);
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.romaffectedside);
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.romsoundside);
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.musclepower);
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.patrehabperkeso);
+				button_state_phys_ncase('edit');
+				$('#perkeso_chart').attr('disabled',false);
+			}else{
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.pat_physio);
+				button_state_phys_ncase('add');
+				$('#perkeso_chart').attr('disabled',true);
+			}
+		});
 }
 
 // function button_state_phys(state){
@@ -367,51 +372,51 @@ var phys_date_tbl = $('#phys_date_tbl').DataTable({
 });
 
 function empty_currphys(){
-	emptyFormdata_div("#formphys",['#mrn_phys','#episno_phys']);
+	emptyFormdata_div("#formphys",['#mrn_rehabMain','#episno_rehabMain']);
 	empty_currphys_ncase();
 	$('.ui.checkbox.box').checkbox('set unchecked');
 	// button_state_phys('empty');
 
 	//panel header
-	$('#name_show_phys').text('');
-	$('#mrn_show_phys').text('');
-	$('#sex_show_phys').text('');
-	$('#dob_show_phys').text('');
-	$('#age_show_phys').text('');
-	$('#race_show_phys').text('');
-	$('#religion_show_phys').text('');
-	$('#occupation_show_phys').text('');
-	$('#citizenship_show_phys').text('');
-	$('#area_show_phys').text('');
+	// $('#name_show_phys').text('');
+	// $('#mrn_show_phys').text('');
+	// $('#sex_show_phys').text('');
+	// $('#dob_show_phys').text('');
+	// $('#age_show_phys').text('');
+	// $('#race_show_phys').text('');
+	// $('#religion_show_phys').text('');
+	// $('#occupation_show_phys').text('');
+	// $('#citizenship_show_phys').text('');
+	// $('#area_show_phys').text('');
 
 	//formphys
-	$('#mrn_phys').val('');
-	$("#episno_phys").val('');
+	$('#mrn_rehabMain').val('');
+	$("#episno_rehabMain").val('');
 
 	phys_date_tbl.clear().draw();
 }
 
 function populate_phys(obj){
-	emptyFormdata_div("#formphys",['#mrn_phys','#episno_phys']);
+	emptyFormdata_div("#formphys",['#mrn_rehabMain','#episno_rehabMain']);
 	$('.ui.checkbox.box').checkbox('set unchecked');
 	
 	// panel header
-	$('#name_show_phys').text(obj.Name);
-	$('#mrn_show_phys').text(("0000000" + obj.MRN).slice(-7));
-	$('#sex_show_phys').text(if_none(obj.Sex).toUpperCase());
-	$('#dob_show_phys').text(dob_chg(obj.DOB));
-	$('#age_show_phys').text(dob_age(obj.DOB)+' (YRS)');
-	$('#race_show_phys').text(if_none(obj.raceDesc).toUpperCase());
-	$('#religion_show_phys').text(if_none(obj.religion).toUpperCase());
-	$('#occupation_show_phys').text(if_none(obj.OccupCode).toUpperCase());
-	$('#citizenship_show_phys').text(if_none(obj.Citizencode).toUpperCase());
-	$('#area_show_phys').text(if_none(obj.AreaCode).toUpperCase());
-	$('#stats_rehab').text(obj.stats_rehab.toUpperCase());
-	$('#stats_physio').text(obj.stats_physio.toUpperCase());
+	// $('#name_show_phys').text(obj.Name);
+	// $('#mrn_show_phys').text(("0000000" + obj.MRN).slice(-7));
+	// $('#sex_show_phys').text(if_none(obj.Sex).toUpperCase());
+	// $('#dob_show_phys').text(dob_chg(obj.DOB));
+	// $('#age_show_phys').text(dob_age(obj.DOB)+' (YRS)');
+	// $('#race_show_phys').text(if_none(obj.raceDesc).toUpperCase());
+	// $('#religion_show_phys').text(if_none(obj.religion).toUpperCase());
+	// $('#occupation_show_phys').text(if_none(obj.OccupCode).toUpperCase());
+	// $('#citizenship_show_phys').text(if_none(obj.Citizencode).toUpperCase());
+	// $('#area_show_phys').text(if_none(obj.AreaCode).toUpperCase());
+	// $('#stats_rehab').text(obj.stats_rehab.toUpperCase());
+	// $('#stats_physio').text(obj.stats_physio.toUpperCase());
 	
 	// formphys
-	$('#mrn_phys').val(obj.MRN);
-	$("#episno_phys").val(obj.Episno);
+	$('#mrn_rehabMain').val(obj.MRN);
+	$("#episno_rehabMain").val(obj.Episno);
 	
 	populate_phys_ncase(obj);
 	

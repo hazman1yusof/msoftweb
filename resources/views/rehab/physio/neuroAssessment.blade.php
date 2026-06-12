@@ -145,7 +145,7 @@
                                 </div>
                             </div>
                             
-                            @include('rehab.neuroAssessment_p1')
+                            @include('rehab.physio.neuroAssessment_p1')
                             
                             <div class="sixteen wide column">
                                 <div class="ui segments">
@@ -1389,7 +1389,7 @@
                                 </div>
                             </div>
                             
-                            @include('rehab.neuroAssessment_p2')
+                            @include('rehab.physio.neuroAssessment_p2')
                             
                             <div class="sixteen wide column">
                                 <div class="ui segments">

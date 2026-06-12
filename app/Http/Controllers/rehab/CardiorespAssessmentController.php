@@ -22,7 +22,7 @@ class CardiorespAssessmentController extends defaultController
     
     public function show(Request $request)
     {
-        return view('rehab.cardiorespAssessment');
+        return view('rehab.physio.cardiorespAssessment');
     }
     
     public function form(Request $request)
@@ -288,7 +288,7 @@ class CardiorespAssessmentController extends defaultController
         $attachment_files = $this->get_attachment_files($mrn,$episno,$entereddate,$type);
         // dd($attachment_files);
         
-        return view('rehab.cardiorespAssessmentChart_pdfmake',compact('cardiorespassessment','company','attachment_files'));
+        return view('rehab.physio.cardiorespAssessmentChart_pdfmake',compact('cardiorespassessment','company','attachment_files'));
         
     }
     

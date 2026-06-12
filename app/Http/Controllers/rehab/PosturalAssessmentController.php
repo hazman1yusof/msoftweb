@@ -22,7 +22,7 @@ class PosturalAssessmentController extends defaultController
     
     public function show(Request $request)
     {
-        return view('rehab.posturalAssessment');
+        return view('rehab.physio.posturalAssessment');
     }
     
     public function form(Request $request)
@@ -407,7 +407,7 @@ class PosturalAssessmentController extends defaultController
         $attachment_files2 = $this->get_attachment_files2($mrn,$episno,$entereddate,$type2);
         // dd($attachment_files);
         
-        return view('rehab.posturalAssessmentChart_pdfmake',compact('posturalassessment','company','attachment_files1','attachment_files2'));
+        return view('rehab.physio.posturalAssessmentChart_pdfmake',compact('posturalassessment','company','attachment_files1','attachment_files2'));
         
     }
     

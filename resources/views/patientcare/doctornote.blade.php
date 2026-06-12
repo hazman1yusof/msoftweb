@@ -454,7 +454,7 @@
 
         <div id="tab_phys" class="panel-collapse collapse">
             <div class="panel-body paneldiv">
-                @include('patientcare.physioterapy')
+                @include('patientcare.physiotherapy.physioterapy')
             </div>
         </div>
     </div>

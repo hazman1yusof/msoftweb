@@ -1,4 +1,4 @@
-<div class="ui segments" style="position: relative;">
+<div class="ui segments">
     <div class="ui secondary segment bluecloudsegment" style="height: 50px;">
         <div class="ui small blue icon buttons" id="btn_grp_edit_sixMinWalking" style="position: absolute;
             padding: 0 0 0 0;

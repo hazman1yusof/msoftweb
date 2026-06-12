@@ -782,7 +782,6 @@ class OccupTherapyUpperExtremityController extends defaultController
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastcomputerid' => session('computerid'),
                 ]);
-            
             // $queries = DB::getQueryLog();
             // dump($queries);
             

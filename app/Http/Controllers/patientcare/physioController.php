@@ -76,8 +76,8 @@ class physioController extends defaultController
             
             $episode = DB::table('hisdb.episode')
                         ->where('compcode','=',session('compcode'))
-                        ->where('mrn','=',$request->mrn)
-                        ->where('episno','=',$request->episno);
+                        ->where('mrn','=',$request->mrn_rehabMain)
+                        ->where('episno','=',$request->episno_rehabMain);
             
             $episode_obj = $episode->first();
             
@@ -92,7 +92,7 @@ class physioController extends defaultController
             }else{
                 $episode->update(['reff_diet' => null]);
             }
-            
+            // dd($request->episno_rehabMain);
             DB::table('hisdb.patrehabncase')
                 ->insert([
                     'ques1' => $request->ques1,
@@ -172,7 +172,7 @@ class physioController extends defaultController
                     'severity_ncase' => $request->severity_ncase,
                     'addNotes' => $request->addNotes,
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn,
+                    'mrn' => $request->mrn_rehabMain,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
@@ -180,8 +180,8 @@ class physioController extends defaultController
             DB::table('hisdb.patrehab')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn,
-                    'episno' => $request->episno_phys,
+                    'mrn' => $request->mrn_rehabMain,
+                    'episno' => $request->episno_rehabMain,
                     'category' => $request->category,
                     'complain' => $request->complain,
                     'genobserv' => $request->genobserv,
@@ -205,8 +205,8 @@ class physioController extends defaultController
                 ]);
             
             // $pat_physio = DB::table('hisdb.pat_physio')
-            //             ->where('mrn','=',$request->mrn)
-            //             ->where('episno','=',$request->episno_phys)
+            //             ->where('mrn','=',$request->mrn_rehabMain)
+            //             ->where('episno','=',$request->episno_rehabMain)
             //             ->where('compcode','=',session('compcode'));
             
             // if($pat_physio->exists()){
@@ -230,8 +230,8 @@ class physioController extends defaultController
             //     DB::table('hisdb.pat_physio')
             //         ->insert([
             //             'compcode' => session('compcode'),
-            //             'mrn' => $request->mrn,
-            //             'episno' => $request->episno_phys,
+            //             'mrn' => $request->mrn_rehabMain,
+            //             'episno' => $request->episno_rehabMain,
             //             'findings' => $request->findings,
             //             // 'treatment' => $request->phy_treatment,
             //             'tr_physio' => $request->tr_physio,
@@ -252,8 +252,8 @@ class physioController extends defaultController
             DB::table('hisdb.phy_neuroassessment')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn,
-                    'episno' => $request->episno,
+                    'mrn' => $request->mrn_rehabMain,
+                    'episno' => $request->episno_rehabMain,
                     'type' => $request->type,
                     // 'entereddate' => $request->entereddate,
                     'objective' => $request->objective,
@@ -336,8 +336,8 @@ class physioController extends defaultController
             DB::table('hisdb.phy_romaffectedside')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn,
-                    'episno' => $request->episno,
+                    'mrn' => $request->mrn_rehabMain,
+                    'episno' => $request->episno_rehabMain,
                     'type' => $request->type,
                     // 'entereddate' => $request->entereddate,
                     'romAffectedSide' => $request->romAffectedSide,
@@ -507,8 +507,8 @@ class physioController extends defaultController
             DB::table('hisdb.phy_romsoundside')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn,
-                    'episno' => $request->episno,
+                    'mrn' => $request->mrn_rehabMain,
+                    'episno' => $request->episno_rehabMain,
                     'type' => $request->type,
                     // 'entereddate' => $request->entereddate,
                     'romSoundSide' => $request->romSoundSide,
@@ -679,8 +679,8 @@ class physioController extends defaultController
             DB::table('hisdb.phy_musclepower')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn,
-                    'episno' => $request->episno,
+                    'mrn' => $request->mrn_rehabMain,
+                    'episno' => $request->episno_rehabMain,
                     'type' => $request->type,
                     // 'entereddate' => $request->entereddate,
                     'affectedSide' => $request->affectedSide,
@@ -853,8 +853,8 @@ class physioController extends defaultController
             DB::table('hisdb.patrehabperkeso')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn,
-                    'episno' => $request->episno,
+                    'mrn' => $request->mrn_rehabMain,
+                    'episno' => $request->episno_rehabMain,
                     'type' => $request->type,
                     'diagnosis' => $request->diagnosis,
                     'incomeSource' => $request->incomeSource,
@@ -939,7 +939,7 @@ class physioController extends defaultController
             DB::commit();
             
             $responce = new stdClass();
-            $responce->mrn = $request->mrn;
+            $responce->mrn = $request->mrn_rehabMain;
             return json_encode($responce);
             
         } catch (\Exception $e) {
@@ -960,8 +960,8 @@ class physioController extends defaultController
             
             $episode = DB::table('hisdb.episode')
                         ->where('compcode','=',session('compcode'))
-                        ->where('mrn','=',$request->mrn)
-                        ->where('episno','=',$request->episno);
+                        ->where('mrn','=',$request->mrn_rehabMain)
+                        ->where('episno','=',$request->episno_rehabMain);
             
             $episode_obj = $episode->first();
             
@@ -979,7 +979,7 @@ class physioController extends defaultController
             
             DB::table('hisdb.patrehabncase')
                 ->where('compcode','=',session('compcode'))
-                ->where('mrn','=',$request->mrn)
+                ->where('mrn','=',$request->mrn_rehabMain)
                 ->update([
                     'ques1' => $request->ques1,
                     'ques2' => $request->ques2,
@@ -1063,8 +1063,8 @@ class physioController extends defaultController
             
             DB::table('hisdb.patrehab')
                 ->where('compcode','=',session('compcode'))
-                ->where('mrn','=',$request->mrn)
-                ->where('episno','=',$request->episno)
+                ->where('mrn','=',$request->mrn_rehabMain)
+                ->where('episno','=',$request->episno_rehabMain)
                 ->update([
                     'category' => $request->category,
                     'complain' => $request->complain,
@@ -1085,8 +1085,8 @@ class physioController extends defaultController
                 ]);
             
             // $pat_physio = DB::table('hisdb.pat_physio')
-            //             ->where('mrn','=',$request->mrn)
-            //             ->where('episno','=',$request->episno)
+            //             ->where('mrn','=',$request->mrn_rehabMain)
+            //             ->where('episno','=',$request->episno_rehabMain)
             //             ->where('compcode','=',session('compcode'));
             
             // if($pat_physio->exists()){
@@ -1110,8 +1110,8 @@ class physioController extends defaultController
             //     DB::table('hisdb.pat_physio')
             //         ->insert([
             //             'compcode' => session('compcode'),
-            //             'mrn' => $request->mrn,
-            //             'episno' => $request->episno,
+            //             'mrn' => $request->mrn_rehabMain,
+            //             'episno' => $request->episno_rehabMain,
             //             'findings' => $request->findings,
             //             // 'treatment' => $request->phy_treatment,
             //             'tr_physio' => $request->tr_physio,
@@ -1131,8 +1131,8 @@ class physioController extends defaultController
             // perkeso starts
             DB::table('hisdb.phy_neuroassessment')
                 ->where('compcode','=',session('compcode'))
-                ->where('mrn','=',$request->mrn)
-                ->where('episno','=',$request->episno)
+                ->where('mrn','=',$request->mrn_rehabMain)
+                ->where('episno','=',$request->episno_rehabMain)
                 ->where('type','=','perkeso')
                 ->update([
                     // 'entereddate' => $request->entereddate,
@@ -1215,8 +1215,8 @@ class physioController extends defaultController
             
             DB::table('hisdb.phy_romaffectedside')
                 ->where('compcode','=',session('compcode'))
-                ->where('mrn','=',$request->mrn)
-                ->where('episno','=',$request->episno)
+                ->where('mrn','=',$request->mrn_rehabMain)
+                ->where('episno','=',$request->episno_rehabMain)
                 ->where('type','=','perkeso')
                 ->update([
                     // 'entereddate' => $request->entereddate,
@@ -1386,8 +1386,8 @@ class physioController extends defaultController
             
             DB::table('hisdb.phy_romsoundside')
                 ->where('compcode','=',session('compcode'))
-                ->where('mrn','=',$request->mrn)
-                ->where('episno','=',$request->episno)
+                ->where('mrn','=',$request->mrn_rehabMain)
+                ->where('episno','=',$request->episno_rehabMain)
                 ->where('type','=','perkeso')
                 ->update([
                     // 'entereddate' => $request->entereddate,
@@ -1558,8 +1558,8 @@ class physioController extends defaultController
             
             DB::table('hisdb.phy_musclepower')
                 ->where('compcode','=',session('compcode'))
-                ->where('mrn','=',$request->mrn)
-                ->where('episno','=',$request->episno)
+                ->where('mrn','=',$request->mrn_rehabMain)
+                ->where('episno','=',$request->episno_rehabMain)
                 ->where('type','=','perkeso')
                 ->update([
                     // 'entereddate' => $request->entereddate,
@@ -1732,8 +1732,8 @@ class physioController extends defaultController
             
             DB::table('hisdb.patrehabperkeso')
                 ->where('compcode','=',session('compcode'))
-                ->where('mrn','=',$request->mrn)
-                ->where('episno','=',$request->episno)
+                ->where('mrn','=',$request->mrn_rehabMain)
+                ->where('episno','=',$request->episno_rehabMain)
                 ->where('type','=','perkeso')
                 ->update([
                     'diagnosis' => $request->diagnosis,
@@ -1822,7 +1822,7 @@ class physioController extends defaultController
             DB::commit();
             
             $responce = new stdClass();
-            $responce->mrn = $request->mrn_phys;
+            $responce->mrn = $request->mrn_rehabMain;
             
             return json_encode($responce);
             
@@ -1840,13 +1840,13 @@ class physioController extends defaultController
         
         $patrehab_obj = DB::table('hisdb.patrehab')
                         ->where('compcode','=',session('compcode'))
-                        ->where('mrn','=',$request->mrn)
-                        ->where('episno','=',$request->episno);
+                        ->where('mrn','=',$request->mrn_rehabMain)
+                        ->where('episno','=',$request->episno_rehabMain);
         
         $patrehabncase_obj = DB::table('hisdb.patrehabncase')
                             // ->select('presenthistory','pasthistory','mh','sh','investigation','function_','drmgmt','test','neuro','analysis','long_','evaluation')
                             ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn);
+                            ->where('mrn','=',$request->mrn_rehabMain);
         
         $responce = new stdClass();
         
@@ -1874,10 +1874,10 @@ class physioController extends defaultController
                         $join = $join->on('p.compcode','=','e.compcode');
                     })
                     ->where('e.compcode','=',session('compcode'))
-                    ->where('e.mrn','=',$request->mrn);
+                    ->where('e.mrn','=',$request->mrn_rehabMain);
         
         if($request->type == 'Current'){
-            $phys_obj = $phys_obj->where('p.episno','=',$request->episno)->orderBy('p.adddate','desc');
+            $phys_obj = $phys_obj->where('p.episno','=',$request->episno_rehabMain)->orderBy('p.adddate','desc');
         }else{
             $phys_obj = $phys_obj->orderBy('p.adddate','desc');
         }
@@ -1922,25 +1922,25 @@ class physioController extends defaultController
             if(!empty($request->referdiet) && $request->referdiet == 'yes'){
                 DB::table('hisdb.episode')
                     ->where('compcode','=',session('compcode'))
-                    ->where('mrn','=',$request->mrn)
-                    ->where('episno','=',$request->episno)
+                    ->where('mrn','=',$request->mrn_rehabMain)
+                    ->where('episno','=',$request->episno_rehabMain)
                     ->update(['reff_diet' => 'YES']);
             }else{
                 DB::table('hisdb.episode')
                     ->where('compcode','=',session('compcode'))
-                    ->where('mrn','=',$request->mrn)
-                    ->where('episno','=',$request->episno)
+                    ->where('mrn','=',$request->mrn_rehabMain)
+                    ->where('episno','=',$request->episno_rehabMain)
                     ->update(['reff_diet' => null]);
             }
             
             $patrehabncase = DB::table('hisdb.patrehabncase')
                             ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn);
+                            ->where('mrn','=',$request->mrn_rehabMain);
             
             if($patrehabncase->exists()){
                 DB::table('hisdb.patrehabncase')
                     ->where('compcode','=',session('compcode'))
-                    ->where('mrn','=',$request->mrn)
+                    ->where('mrn','=',$request->mrn_rehabMain)
                     ->update([
                         'ques1' => $request->ques1,
                         'ques2' => $request->ques2,
@@ -2075,7 +2075,7 @@ class physioController extends defaultController
                         'irritability' => $request->irritability,
                         'severity' => $request->severity,
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn,
+                        'mrn' => $request->mrn_rehabMain,
                         'upduser'  => session('username'),
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
@@ -2084,7 +2084,7 @@ class physioController extends defaultController
             DB::commit();
             
             $responce = new stdClass();
-            $responce->mrn = $request->mrn_phys;
+            $responce->mrn = $request->mrn_rehabMain;
             return json_encode($responce);
             
         } catch (\Exception $e) {
@@ -2106,20 +2106,20 @@ class physioController extends defaultController
             if(!empty($request->referdiet) && $request->referdiet == 'yes'){
                 DB::table('hisdb.episode')
                     ->where('compcode','=',session('compcode'))
-                    ->where('mrn','=',$request->mrn)
-                    ->where('episno','=',$request->episno)
+                    ->where('mrn','=',$request->mrn_rehabMain)
+                    ->where('episno','=',$request->episno_rehabMain)
                     ->update(['reff_diet' => 'YES']);
             }else{
                 DB::table('hisdb.episode')
                     ->where('compcode','=',session('compcode'))
-                    ->where('mrn','=',$request->mrn)
-                    ->where('episno','=',$request->episno)
+                    ->where('mrn','=',$request->mrn_rehabMain)
+                    ->where('episno','=',$request->episno_rehabMain)
                     ->update(['reff_diet' => null]);
             }
             
             DB::table('hisdb.patrehabncase')
                 ->where('compcode','=',session('compcode'))
-                ->where('mrn','=',$request->mrn)
+                ->where('mrn','=',$request->mrn_rehabMain)
                 ->update([
                     'ques1' => $request->ques1,
                     'ques2' => $request->ques2,
@@ -2191,7 +2191,7 @@ class physioController extends defaultController
             DB::commit();
             
             $responce = new stdClass();
-            $responce->mrn = $request->mrn_phys;
+            $responce->mrn = $request->mrn_rehabMain;
             return json_encode($responce);
             
         } catch (\Exception $e) {
@@ -2208,42 +2208,42 @@ class physioController extends defaultController
         
         $patrehab_ncase_obj = DB::table('hisdb.patrehabncase')
                             ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn);
+                            ->where('mrn','=',$request->mrn_rehabMain);
         
         $pat_physio_obj = DB::table('hisdb.pat_physio')
                         ->select('compcode','mrn','episno','req_date','clinic_diag','findings','treatment as phy_treatment','tr_physio','tr_occuptherapy','tr_respiphysio','tr_neuro','tr_splint','tr_speech','remarks','doctorname as phy_doctorname','adduser','adddate','upduser','upddate','lastuser as phy_lastuser','lastupdate','computerid')
                         ->where('compcode','=',session('compcode'))
-                        ->where('mrn','=',$request->mrn)
-                        ->where('episno','=',$request->episno);
+                        ->where('mrn','=',$request->mrn_rehabMain)
+                        ->where('episno','=',$request->episno_rehabMain);
         
         $neuroassessment_obj = DB::table('hisdb.phy_neuroassessment')
                                 ->where('compcode','=',session('compcode'))
-                                ->where('mrn','=',$request->mrn)
-                                ->where('episno','=',$request->episno)
+                                ->where('mrn','=',$request->mrn_rehabMain)
+                                ->where('episno','=',$request->episno_rehabMain)
                                 ->where('type','=','perkeso');
         
         $romaffectedside_obj = DB::table('hisdb.phy_romaffectedside')
                                 ->where('compcode','=',session('compcode'))
-                                ->where('mrn','=',$request->mrn)
-                                ->where('episno','=',$request->episno)
+                                ->where('mrn','=',$request->mrn_rehabMain)
+                                ->where('episno','=',$request->episno_rehabMain)
                                 ->where('type','=','perkeso');
         
         $romsoundside_obj = DB::table('hisdb.phy_romsoundside')
                             ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno)
+                            ->where('mrn','=',$request->mrn_rehabMain)
+                            ->where('episno','=',$request->episno_rehabMain)
                             ->where('type','=','perkeso');
         
         $musclepower_obj = DB::table('hisdb.phy_musclepower')
                             ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno)
+                            ->where('mrn','=',$request->mrn_rehabMain)
+                            ->where('episno','=',$request->episno_rehabMain)
                             ->where('type','=','perkeso');
         
         $patrehabperkeso_obj = DB::table('hisdb.patrehabperkeso')
                                 ->where('compcode','=',session('compcode'))
-                                ->where('mrn','=',$request->mrn)
-                                ->where('episno','=',$request->episno)
+                                ->where('mrn','=',$request->mrn_rehabMain)
+                                ->where('episno','=',$request->episno_rehabMain)
                                 ->where('type','=','perkeso');
         
         $responce = new stdClass();
@@ -2289,8 +2289,8 @@ class physioController extends defaultController
     
     public function rehabperkeso_chart(Request $request){
         
-        $mrn = $request->mrn;
-        $episno = $request->episno;
+        $mrn = $request->mrn_rehabMain;
+        $episno = $request->episno_rehabMain;
         // $entereddate = $request->entereddate;
         $type1 = $request->type1;
         $type2 = $request->type2;

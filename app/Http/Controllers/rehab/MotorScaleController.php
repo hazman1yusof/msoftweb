@@ -21,7 +21,7 @@ class MotorScaleController extends defaultController
     
     public function show(Request $request)
     {
-        return view('rehab.motorScale');
+        return view('rehab.physio.motorScale');
     }
     
     public function form(Request $request)
@@ -289,7 +289,7 @@ class MotorScaleController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->first();
         
-        return view('rehab.motorScaleChart_pdfmake',compact('motorscale','company'));
+        return view('rehab.physio.motorScaleChart_pdfmake',compact('motorscale','company'));
         
     }
     

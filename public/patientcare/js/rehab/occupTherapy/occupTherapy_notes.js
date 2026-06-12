@@ -12,7 +12,7 @@ $(document).ready(function (){
         button_state_notes('wait');
         enableForm('#formOccupTherapyNotes');
         rdonly('#formOccupTherapyNotes');
-        emptyFormdata_div("#formOccupTherapyNotes",['#mrn_occupTherapy','#episno_occupTherapy']);
+        emptyFormdata_div("#formOccupTherapyNotes",['#mrn_rehabMain','#episno_rehabMain']);
 
         document.getElementById("idno_notes").value = "";
     });
@@ -48,7 +48,7 @@ $(document).ready(function (){
 
     /////////////////////////////////////////print button starts/////////////////////////////////////////
     $("#notes_chart").click(function (){
-        window.open('./occupTherapy_notes/notes_chart?mrn='+$('#mrn_occupTherapy').val()+'&episno='+$("#episno_occupTherapy").val()+'&dateNotes='+$("#dateNotes").val(), '_blank');
+        window.open('./occupTherapy_notes/notes_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&dateNotes='+$("#dateNotes").val(), '_blank');
     });
 
     // to format number input to two decimal places (0.00)
@@ -86,7 +86,7 @@ $(document).ready(function (){
             $(this).addClass('selected');
         }
         
-        emptyFormdata_div("#formOccupTherapyNotes",['#mrn_occupTherapy','#episno_occupTherapy']);
+        emptyFormdata_div("#formOccupTherapyNotes",['#mrn_rehabMain','#episno_rehabMain']);
         $('#datetimeNotes_tbl tbody tr').removeClass('active');
         $(this).addClass('active');
         
@@ -225,8 +225,8 @@ function saveForm_notes(callback){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_occupTherapy').val(),
-        episno: $("#episno_occupTherapy").val(),
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val(),
     };
     
     values = $("#formOccupTherapyNotes").serializeArray();
@@ -274,7 +274,7 @@ function saveForm_notes(callback){
 function populate_notes_getdata(){
     // console.log('populate');
     disableForm('#formOccupTherapyNotes');
-    emptyFormdata(errorField,"#formOccupTherapyNotes",["#mrn_occupTherapy","#episno_occupTherapy"]);
+    emptyFormdata(errorField,"#formOccupTherapyNotes",["#mrn_rehabMain","#episno_rehabMain"]);
 
     var saveParam = {
         action: 'get_table_notes',
@@ -282,8 +282,8 @@ function populate_notes_getdata(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_occupTherapy').val(),
-        episno: $("#episno_occupTherapy").val()
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val()
     };
     
     $.post("./occupTherapy_notes/form?"+$.param(saveParam), $.param(postobj), function (data){
@@ -302,7 +302,7 @@ function populate_notes_getdata(){
 
 function getdata_notes(){
     // console.log('populate');
-    emptyFormdata(errorField,"#formOccupTherapyNotes",["#mrn_occupTherapy","#episno_occupTherapy"]);
+    emptyFormdata(errorField,"#formOccupTherapyNotes",["#mrn_rehabMain","#episno_rehabMain"]);
 
     var urlparam = {
         action: 'get_table_notes',
@@ -310,8 +310,8 @@ function getdata_notes(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_occupTherapy').val(),
-        episno: $("#episno_occupTherapy").val()
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val()
     };
     
     $.post("./occupTherapy_notes/form?"+$.param(urlparam), $.param(postobj), function (data){

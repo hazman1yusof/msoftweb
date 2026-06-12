@@ -21,7 +21,7 @@ class SixMinWalkingController extends defaultController
     
     public function show(Request $request)
     {
-        return view('rehab.sixMinWalking');
+        return view('rehab.physio.sixMinWalking');
     }
     
     public function form(Request $request)
@@ -401,7 +401,7 @@ class SixMinWalkingController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->first();
         
-        return view('rehab.sixMinWalkingChart_pdfmake',compact('age','sixminwalk','company'));
+        return view('rehab.physio.sixMinWalkingChart_pdfmake',compact('age','sixminwalk','company'));
         
     }
     

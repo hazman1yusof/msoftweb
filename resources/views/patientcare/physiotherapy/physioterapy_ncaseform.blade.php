@@ -885,7 +885,7 @@
 			
 			<div class="ui bottom attached tab raised segment" data-tab="physPerkeso">
 				<div class="ui form">
-					@include('patientcare.physioterapy_perkeso')
+					@include('patientcare.physiotherapy.physioterapy_perkeso')
 				</div>
 			</div>
 			
