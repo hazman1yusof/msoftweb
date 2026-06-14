@@ -21,7 +21,7 @@ class BergBalanceTestController extends defaultController
     
     public function show(Request $request)
     {
-        return view('rehab.bergBalanceTest');
+        return view('rehab.physio.bergBalanceTest');
     }
     
     public function form(Request $request)
@@ -304,7 +304,7 @@ class BergBalanceTestController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->first();
         
-        return view('rehab.bergBalanceTestChart_pdfmake',compact('bergtest','company'));
+        return view('rehab.physio.bergBalanceTestChart_pdfmake',compact('bergtest','company'));
         
     }
     

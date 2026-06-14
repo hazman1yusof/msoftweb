@@ -1,4 +1,4 @@
-<div class="ui segments" style="position: relative;">
+<!-- <div class="ui segments" style="position: relative;"> -->
     <div class="ui secondary segment bluecloudsegment" style="display: none;">
         PHYSIOTHERAPY
         <div class="ui small blue icon buttons" id="btn_grp_edit_physio" style="position: absolute; 
@@ -13,13 +13,13 @@
         </div>
     </div>
     
-    <div class="ui segment" style="padding: 10px 10px 30px 30px;">
+    <!-- <div class="ui segment"> -->
         <form id="formPhysiotherapy" class="ui form">
             <div class="ui grid">
                 <!-- <input type="hidden" name="curr_user" id="curr_user_physio" value="{{ Auth::user()->username }}"> -->
-                <input id="mrn_physio" name="mrn_physio" type="hidden">
+                <!-- <input id="mrn_physio" name="mrn_physio" type="hidden">
                 <input id="episno_physio" name="episno_physio" type="hidden">
-                <input id="age_physio" name="age_physio" type="hidden">
+                <input id="age_physio" name="age_physio" type="hidden"> -->
             </div>
         </form>
         
@@ -38,44 +38,44 @@
             </div>
             
             <div class="ui bottom attached tab raised segment active" data-tab="sixMinWalking">
-                @include('rehab.sixMinWalking')
+                @include('rehab.physio.sixMinWalking')
             </div>
             
             <div class="ui bottom attached tab raised segment" data-tab="bergBalanceTest">
-                @include('rehab.bergBalanceTest')
+                @include('rehab.physio.bergBalanceTest')
             </div>
             
             <div class="ui bottom attached tab raised segment" data-tab="musculoAssessment">
-                @include('rehab.musculoAssessment')
+                @include('rehab.physio.musculoAssessment')
             </div>
             
             <div class="ui bottom attached tab raised segment" data-tab="posturalAssessment">
-                @include('rehab.posturalAssessment')
+                @include('rehab.physio.posturalAssessment')
             </div>
             
             <div class="ui bottom attached tab raised segment" data-tab="oswestryQuest">
-                @include('rehab.oswestryQuest')
+                @include('rehab.physio.oswestryQuest')
             </div>
             
             <div class="ui bottom attached tab raised segment" data-tab="cardiorespAssessment">
-                @include('rehab.cardiorespAssessment')
+                @include('rehab.physio.cardiorespAssessment')
             </div>
             
             <div class="ui bottom attached tab raised segment" data-tab="neuroAssessment">
-                @include('rehab.neuroAssessment')
+                @include('rehab.physio.neuroAssessment')
             </div>
             
             <div class="ui bottom attached tab raised segment" data-tab="motorScale">
-                @include('rehab.motorScale')
+                @include('rehab.physio.motorScale')
             </div>
             
             <div class="ui bottom attached tab raised segment" data-tab="spinalCord">
-                @include('rehab.spinalCord')
+                @include('rehab.physio.spinalCord')
             </div>
             
             <div class="ui bottom attached tab raised segment" data-tab="physioNotes">
-                @include('rehab.physioNotes')
+                @include('rehab.physio.physioNotes')
             </div>
         </div>
-    </div>
-</div>
+    <!-- </div> -->
+<!-- </div> -->

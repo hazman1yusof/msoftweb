@@ -16,7 +16,7 @@ $(document).ready(function (){
         button_state_spinalCord('wait');
         enableForm('#formSpinalCord');
         rdonly('#formSpinalCord');
-        emptyFormdata_div("#formSpinalCord",['#mrn_physio','#episno_physio']);
+        emptyFormdata_div("#formSpinalCord",['#mrn_rehabMain','#episno_rehabMain']);
         document.getElementById("idno_spinalCord").value = "";
         // dialog_mrn_edit.on();
         // $('#movementScore').prop('disabled',true);
@@ -35,7 +35,7 @@ $(document).ready(function (){
             saveForm_spinalCord(function (data){
                 $("#cancel_spinalCord").data('oper','edit');
                 $("#cancel_spinalCord").click();
-                // emptyFormdata_div("#formSpinalCord",['#mrn_physio','#episno_physio']);
+                // emptyFormdata_div("#formSpinalCord",['#mrn_rehabMain','#episno_rehabMain']);
                 disableForm('#formSpinalCord');
             });
         }else{
@@ -45,7 +45,7 @@ $(document).ready(function (){
     });
     
     $("#cancel_spinalCord").click(function (){
-        // emptyFormdata_div("#formSpinalCord",['#mrn_physio','#episno_physio']);
+        // emptyFormdata_div("#formSpinalCord",['#mrn_rehabMain','#episno_rehabMain']);
         disableForm('#formSpinalCord');
         button_state_spinalCord($(this).data('oper'));
         $('#tbl_spinalCord_date').DataTable().ajax.reload();
@@ -88,7 +88,7 @@ $(document).ready(function (){
             $(this).addClass('selected');
         }
         
-        emptyFormdata_div("#formSpinalCord",['#mrn_physio','#episno_physio']);
+        emptyFormdata_div("#formSpinalCord",['#mrn_rehabMain','#episno_rehabMain']);
         $('#tbl_spinalCord_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
@@ -240,7 +240,7 @@ $(document).ready(function (){
     ///////////////////////////////////////////////////////////////////////////////////////////////
     
     $("#spinalCord_chart").click(function (){
-        window.open('./spinalCord/spinalcord_chart?mrn='+$('#mrn_physio').val()+'&episno='+$("#episno_physio").val()+'&entereddate='+$("#spinalCord_entereddate").val(), '_blank');
+        window.open('./spinalCord/spinalcord_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#spinalCord_entereddate").val(), '_blank');
     });
     
 });
@@ -338,8 +338,8 @@ function saveForm_spinalCord(callback){
     var saveParam = {
         action: 'save_table_spinalCord',
         oper: oper,
-        mrn: $('#mrn_physio').val(),
-        episno: $("#episno_physio").val(),
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val(),
     }
     
     if(oper == 'add'){
@@ -426,8 +426,8 @@ function getdata_spinalCord(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_physio').val(),
-        episno: $("#episno_physio").val()
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val()
     };
     
     $.post("./spinalCord/form?"+$.param(urlparam), $.param(postobj), function (data){

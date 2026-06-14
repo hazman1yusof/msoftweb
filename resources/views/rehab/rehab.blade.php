@@ -102,7 +102,49 @@
     <input id="_token" name="_token" value="{{ csrf_token() }}" type="hidden">
     <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
     
-    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;" id="phys_panel">
+    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;" id="rehabMain_panel">
+        <div class="panel-heading clearfix collapsed" role="tab" id="toggle_rehabMain">
+            <b>NAME: <span id="name_show_rehabMain"></span></b><br>
+            MRN: <span id="mrn_show_rehabMain"></span>
+            SEX: <span id="sex_show_rehabMain"></span>
+            DOB: <span id="dob_show_rehabMain"></span>
+            AGE: <span id="age_show_rehabMain"></span>
+            RACE: <span id="race_show_rehabMain"></span>
+            RELIGION: <span id="religion_show_rehabMain"></span><br>
+            OCCUPATION: <span id="occupation_show_rehabMain"></span>
+            CITIZENSHIP: <span id="citizenship_show_rehabMain"></span>
+            AREA: <span id="area_show_rehabMain"></span>
+            
+            <!-- <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_phys"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_phys"></i> -->
+            
+            <!-- <div style="position: absolute; 
+                        padding: 0 0 0 0; 
+                        right: 0px; 
+                        top: 0px; 
+                        z-index: 1000;">
+                <button class="ui icon tertiary button refreshbtn_phys">
+                    <i class="sync alternate icon"></i>
+                </button>
+            </div>
+            
+            <div style="position: absolute; 
+                        padding: 0 0 0 0; 
+                        right: 50px; 
+                        top: 48px;">
+                <h5><strong>Rehabilitation</strong>&nbsp;&nbsp;
+                    <span class="metal"></span></h5>
+            </div> -->
+        </div>
+        
+        <div id="tab_rehabMain" class="panel-collapse">
+            <div class="panel-body paneldiv">
+                @include('rehab.rehabMain.rehabMain')
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;display:none" id="phys_panel">
         <div class="panel-heading clearfix collapsed" role="tab" id="toggle_phys">
             <b>NAME: <span id="name_show_phys"></span></b><br>
             MRN: <span id="mrn_show_phys"></span>
@@ -137,14 +179,14 @@
             </div>
         </div>
         
-        <div id="tab_phys" class="panel-collapse collapse">
+        <div id="tab_phys" class="panel-collapse">
             <div class="panel-body paneldiv">
-                @include('patientcare.physioterapy')
+                @include('patientcare.physiotherapy.physioterapy')
             </div>
         </div>
     </div>
     
-    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;" id="physio_panel">
+    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;display:none" id="physio_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_physio">
             <b>NAME: <span id="name_show_physio"></span></b><br>
             MRN: <span id="mrn_show_physio"></span>
@@ -181,12 +223,12 @@
         
         <div id="tab_physio" class="panel-collapse collapse" data-curtype='navtab_otbookReqFor'>
             <div class="panel-body paneldiv" id="tab_physio_sticky">
-                @include('rehab.physio')
+                @include('rehab.physio.physio')
             </div>
         </div>
     </div>
     
-    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;" id="occupTherapy_panel">
+    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;display:none" id="occupTherapy_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_occupTherapy">
             <b>NAME: <span id="name_show_occupTherapy"></span></b><br>
             MRN: <span id="mrn_show_occupTherapy"></span>
@@ -223,7 +265,7 @@
         
         <div id="tab_occupTherapy" class="panel-collapse collapse" data-curtype='navtab_occupTherapy'>
             <div class="panel-body paneldiv" id="tab_occupTherapy_sticky">
-                @include('rehab.occupTherapy')
+                @include('rehab.occupTherapy.occupTherapy')
             </div>
         </div>
     </div>
@@ -265,35 +307,25 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- <script type="text/javascript" src="{{ asset('patientcare/js/transaction.js') }}"></script> -->
     <!-- <script type="text/javascript" src="{{ asset('patientcare/js/transaction_diet.js') }}"></script> -->
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/rehabMain/rehabMain.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/transaction_phys.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy.js?v=1.4') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy_ncase.js?v=1.1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/physiotherapy/physioterapy.js?v=1.4') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/physiotherapy/physioterapy_ncase.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/rehab_main.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio.js?v=1.5') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/sixMinWalking.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/bergBalanceTest.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/musculoAssessment.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/posturalAssessment.js?v=1.3') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/oswestryQuest.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/cardiorespAssessment.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/neuroAssessment.js?v=1.4') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/motorScale.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/spinalCord.js?v=1.3') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physioNotes.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/physio.js?v=1.5') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/sixMinWalking.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/bergBalanceTest.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/musculoAssessment.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/posturalAssessment.js?v=1.3') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/oswestryQuest.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/cardiorespAssessment.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/neuroAssessment.js?v=1.4') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/motorScale.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/spinalCord.js?v=1.3') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/physioNotes.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_cognitive.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_barthel.js?v=1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_upperExtremity.js?v=1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_notes.js?v=1') }}"></script>
-    <!-- <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_main.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_phar.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_disp.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_lab.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_rad.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_dfee.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_phys.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_rehab.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_diet.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_oth.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_pkg.js') }}"></script> -->
 @endsection

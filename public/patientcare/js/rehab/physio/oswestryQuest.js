@@ -16,7 +16,7 @@ $(document).ready(function (){
         button_state_oswestryQuest('wait');
         enableForm('#formOswestryQuest');
         rdonly('#formOswestryQuest');
-        emptyFormdata_div("#formOswestryQuest",['#mrn_physio','#episno_physio']);
+        emptyFormdata_div("#formOswestryQuest",['#mrn_rehabMain','#episno_rehabMain']);
         document.getElementById("idno_oswestryQuest").value = "";
         // dialog_mrn_edit.on();
         $('#oswestryQuest_totalScore').prop('disabled',true);
@@ -36,7 +36,7 @@ $(document).ready(function (){
             saveForm_oswestryQuest(function (data){
                 $("#cancel_oswestryQuest").data('oper','edit');
                 $("#cancel_oswestryQuest").click();
-                // emptyFormdata_div("#formOswestryQuest",['#mrn_physio','#episno_physio']);
+                // emptyFormdata_div("#formOswestryQuest",['#mrn_rehabMain','#episno_rehabMain']);
                 disableForm('#formOswestryQuest');
             });
         }else{
@@ -46,7 +46,7 @@ $(document).ready(function (){
     });
     
     $("#cancel_oswestryQuest").click(function (){
-        // emptyFormdata_div("#formOswestryQuest",['#mrn_physio','#episno_physio']);
+        // emptyFormdata_div("#formOswestryQuest",['#mrn_rehabMain','#episno_rehabMain']);
         disableForm('#formOswestryQuest');
         button_state_oswestryQuest($(this).data('oper'));
         $('#tbl_oswestryQuest_date').DataTable().ajax.reload();
@@ -89,7 +89,7 @@ $(document).ready(function (){
             $(this).addClass('selected');
         }
         
-        emptyFormdata_div("#formOswestryQuest",['#mrn_physio','#episno_physio']);
+        emptyFormdata_div("#formOswestryQuest",['#mrn_rehabMain','#episno_rehabMain']);
         $('#tbl_oswestryQuest_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
@@ -164,7 +164,7 @@ $(document).ready(function (){
     ///////////////////////////////to calculate the total score ends///////////////////////////////
     
     $("#oswestryQuest_chart").click(function (){
-        window.open('./oswestryQuest/oswestryquest_chart?mrn='+$('#mrn_physio').val()+'&episno='+$("#episno_physio").val()+'&entereddate='+$("#oswestryQuest_entereddate").val(), '_blank');
+        window.open('./oswestryQuest/oswestryquest_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#oswestryQuest_entereddate").val(), '_blank');
     });
     
 });
@@ -262,8 +262,8 @@ function saveForm_oswestryQuest(callback){
     var saveParam = {
         action: 'save_table_oswestryQuest',
         oper: oper,
-        mrn: $('#mrn_physio').val(),
-        episno: $("#episno_physio").val(),
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val(),
         totalScore: $("#oswestryQuest_totalScore").val(),
         disabilityLevel: $("#oswestryQuest_disabilityLevel").text(),
     }
@@ -352,8 +352,8 @@ function getdata_oswestryQuest(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_physio').val(),
-        episno: $("#episno_physio").val()
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val()
     };
     
     $.post("./oswestryQuest/form?"+$.param(urlparam), $.param(postobj), function (data){

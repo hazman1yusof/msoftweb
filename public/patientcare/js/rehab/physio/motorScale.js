@@ -5,51 +5,51 @@ var editedRow = 0;
 
 $(document).ready(function (){
     
-    // textarea_init_bergBalanceTest();
+    // textarea_init_motorScale();
     
     var fdl = new faster_detail_load();
     
-    disableForm('#formBergBalanceTest');
+    disableForm('#formMotorScale');
     
-    $("#new_bergBalanceTest").click(function (){
-        $('#cancel_bergBalanceTest').data('oper','add');
-        button_state_bergBalanceTest('wait');
-        enableForm('#formBergBalanceTest');
-        rdonly('#formBergBalanceTest');
-        emptyFormdata_div("#formBergBalanceTest",['#mrn_physio','#episno_physio']);
-        document.getElementById("idno_bergBalanceTest").value = "";
+    $("#new_motorScale").click(function (){
+        $('#cancel_motorScale').data('oper','add');
+        button_state_motorScale('wait');
+        enableForm('#formMotorScale');
+        rdonly('#formMotorScale');
+        emptyFormdata_div("#formMotorScale",['#mrn_rehabMain','#episno_rehabMain']);
+        document.getElementById("idno_motorScale").value = "";
         // dialog_mrn_edit.on();
-        $('#bergBalanceTest_totalScore').prop('disabled',true);
+        $('#movementScore').prop('disabled',true);
     });
     
-    $("#edit_bergBalanceTest").click(function (){
-        button_state_bergBalanceTest('wait');
-        enableForm('#formBergBalanceTest');
-        rdonly('#formBergBalanceTest');
+    $("#edit_motorScale").click(function (){
+        button_state_motorScale('wait');
+        enableForm('#formMotorScale');
+        rdonly('#formMotorScale');
         // dialog_mrn_edit.on();
-        $('#bergBalanceTest_totalScore').prop('disabled',true);
+        $('#movementScore').prop('disabled',true);
     });
     
-    $("#save_bergBalanceTest").click(function (){
-        if($('#formBergBalanceTest').isValid({requiredFields: ''}, conf, true)){
-            saveForm_bergBalanceTest(function (data){
-                $("#cancel_bergBalanceTest").data('oper','edit');
-                $("#cancel_bergBalanceTest").click();
-                // emptyFormdata_div("#formBergBalanceTest",['#mrn_physio','#episno_physio']);
-                disableForm('#formBergBalanceTest');
+    $("#save_motorScale").click(function (){
+        if($('#formMotorScale').isValid({requiredFields: ''}, conf, true)){
+            saveForm_motorScale(function (data){
+                $("#cancel_motorScale").data('oper','edit');
+                $("#cancel_motorScale").click();
+                // emptyFormdata_div("#formMotorScale",['#mrn_rehabMain','#episno_rehabMain']);
+                disableForm('#formMotorScale');
             });
         }else{
-            enableForm('#formBergBalanceTest');
-            rdonly('#formBergBalanceTest');
+            enableForm('#formMotorScale');
+            rdonly('#formMotorScale');
         }
     });
     
-    $("#cancel_bergBalanceTest").click(function (){
-        // emptyFormdata_div("#formBergBalanceTest",['#mrn_physio','#episno_physio']);
-        disableForm('#formBergBalanceTest');
-        button_state_bergBalanceTest($(this).data('oper'));
-        $('#tbl_bergBalanceTest_date').DataTable().ajax.reload();
-        getdata_bergBalanceTest();
+    $("#cancel_motorScale").click(function (){
+        // emptyFormdata_div("#formMotorScale",['#mrn_rehabMain','#episno_rehabMain']);
+        disableForm('#formMotorScale');
+        button_state_motorScale($(this).data('oper'));
+        $('#tbl_motorScale_date').DataTable().ajax.reload();
+        getdata_motorScale();
         // dialog_mrn_edit.off();
     });
     
@@ -72,9 +72,9 @@ $(document).ready(function (){
         }, 0);
     });
     
-    /////////////////////////////////////bergBalanceTest starts/////////////////////////////////////
-    $('#tbl_bergBalanceTest_date tbody').on('click', 'tr', function (){
-        var data = tbl_bergBalanceTest_date.row( this ).data();
+    ///////////////////////////////////////motorScale starts///////////////////////////////////////
+    $('#tbl_motorScale_date tbody').on('click', 'tr', function (){
+        var data = tbl_motorScale_date.row( this ).data();
         
         if(data == undefined){
             return;
@@ -84,26 +84,26 @@ $(document).ready(function (){
         if($(this).hasClass('selected')) {
             $(this).removeClass('selected');
         }else {
-            tbl_bergBalanceTest_date.$('tr.selected').removeClass('selected');
+            tbl_motorScale_date.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
         }
         
-        emptyFormdata_div("#formBergBalanceTest",['#mrn_physio','#episno_physio']);
-        $('#tbl_bergBalanceTest_date tbody tr').removeClass('active');
+        emptyFormdata_div("#formMotorScale",['#mrn_rehabMain','#episno_rehabMain']);
+        $('#tbl_motorScale_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
         if(check_same_usr_edit(data)){
-            button_state_bergBalanceTest('edit');
+            button_state_motorScale('edit');
         }else{
-            button_state_bergBalanceTest('add');
+            button_state_motorScale('add');
         }
-        $('#bergBalanceTest_chart').attr('disabled',false);
+        $('#motorScale_chart').attr('disabled',false);
         
-        // getdata_bergBalanceTest();
-        $("#idno_bergBalanceTest").val(data.idno);
+        // getdata_motorScale();
+        $("#idno_motorScale").val(data.idno);
         
         var saveParam = {
-            action: 'get_table_bergBalanceTest',
+            action: 'get_table_motorScale',
         }
         
         var postobj = {
@@ -113,45 +113,45 @@ $(document).ready(function (){
             episno: data.episno
         };
         
-        $.post("./bergBalanceTest/form?"+$.param(saveParam), $.param(postobj), function (data){
+        $.post("./motorScale/form?"+$.param(saveParam), $.param(postobj), function (data){
             
         },'json').fail(function (data){
             alert('there is an error');
         }).done(function (data){
-            if(!$.isEmptyObject(data.bergtest)){
-                autoinsert_rowdata("#formBergBalanceTest",data.bergtest);
-                // button_state_bergBalanceTest('edit');
+            if(!$.isEmptyObject(data.motorscale)){
+                autoinsert_rowdata("#formMotorScale",data.motorscale);
+                // button_state_motorScale('edit');
             }else{
-                // button_state_bergBalanceTest('add');
+                // button_state_motorScale('add');
             }
             
-            // textarea_init_bergBalanceTest();
+            // textarea_init_motorScale();
         });
     });
-    //////////////////////////////////////bergBalanceTest ends//////////////////////////////////////
+    ////////////////////////////////////////motorScale ends////////////////////////////////////////
     
-    //////////////////////////////to calculate the total score starts//////////////////////////////
-    function calculate_bergBalanceTest(){
+    ////////////////////to calculate the total of movement scoring sheet starts////////////////////
+    function calculate_movementScore(){
         var score = 0;
-        $(".calc_bergBalanceTest:checked").each(function (){
+        $(".calc_movementScore:checked").each(function (){
             score+=parseInt($(this).val());
         });
-        $("#formBergBalanceTest input[name=totalScore]").val(score);
+        $("#formMotorScale input[name=movementScore]").val(score);
     }
     
-    $(".calc_bergBalanceTest").change(function (){
-        calculate_bergBalanceTest();
+    $(".calc_movementScore").change(function (){
+        calculate_movementScore();
     });
-    ///////////////////////////////to calculate the total score ends///////////////////////////////
+    /////////////////////to calculate the total of movement scoring sheet ends/////////////////////
     
-    $("#bergBalanceTest_chart").click(function (){
-        window.open('./bergBalanceTest/bergbalancetest_chart?mrn='+$('#mrn_physio').val()+'&episno='+$("#episno_physio").val()+'&entereddate='+$("#bergBalanceTest_entereddate").val(), '_blank');
+    $("#motorScale_chart").click(function (){
+        window.open('./motorScale/motorscale_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#motorScale_entereddate").val(), '_blank');
     });
     
 });
 
-/////////////////////bergBalanceTest starts/////////////////////
-var tbl_bergBalanceTest_date = $('#tbl_bergBalanceTest_date').DataTable({
+///////////////////////motorScale starts///////////////////////
+var tbl_motorScale_date = $('#tbl_motorScale_date').DataTable({
     "ajax": "",
     "sDom": "",
     "paging": false,
@@ -171,7 +171,7 @@ var tbl_bergBalanceTest_date = $('#tbl_bergBalanceTest_date').DataTable({
         $(this).find('tbody tr')[0].click();
     }
 });
-//////////////////////bergBalanceTest ends//////////////////////
+////////////////////////motorScale ends////////////////////////
 
 var errorField = [];
 conf = {
@@ -189,31 +189,31 @@ conf = {
     },
 };
 
-button_state_bergBalanceTest('empty');
-function button_state_bergBalanceTest(state){
+button_state_motorScale('empty');
+function button_state_motorScale(state){
     // empty_transaction('add');
     switch(state){
         case 'empty':
             $("#toggle_physio").removeAttr('data-toggle');
-            $('#cancel_bergBalanceTest').data('oper','add');
-            $('#new_bergBalanceTest,#save_bergBalanceTest,#cancel_bergBalanceTest,#edit_bergBalanceTest,#bergBalanceTest_chart').attr('disabled',true);
+            $('#cancel_motorScale').data('oper','add');
+            $('#new_motorScale,#save_motorScale,#cancel_motorScale,#edit_motorScale,#motorScale_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_physio").attr('data-toggle','collapse');
-            $('#cancel_bergBalanceTest').data('oper','add');
-            $("#new_bergBalanceTest").attr('disabled',false);
-            $('#save_bergBalanceTest,#cancel_bergBalanceTest,#edit_bergBalanceTest').attr('disabled',true);
+            $('#cancel_motorScale').data('oper','add');
+            $("#new_motorScale").attr('disabled',false);
+            $('#save_motorScale,#cancel_motorScale,#edit_motorScale').attr('disabled',true);
             break;
         case 'edit':
             $("#toggle_physio").attr('data-toggle','collapse');
-            $('#cancel_bergBalanceTest').data('oper','edit');
-            $("#new_bergBalanceTest,#edit_bergBalanceTest").attr('disabled',false);
-            $('#save_bergBalanceTest,#cancel_bergBalanceTest').attr('disabled',true);
+            $('#cancel_motorScale').data('oper','edit');
+            $("#new_motorScale,#edit_motorScale").attr('disabled',false);
+            $('#save_motorScale,#cancel_motorScale').attr('disabled',true);
             break;
         case 'wait':
             $("#toggle_physio").attr('data-toggle','collapse');
-            $("#save_bergBalanceTest,#cancel_bergBalanceTest").attr('disabled',false);
-            $('#edit_bergBalanceTest,#new_bergBalanceTest,#bergBalanceTest_chart').attr('disabled',true);
+            $("#save_motorScale,#cancel_motorScale").attr('disabled',false);
+            $('#edit_motorScale,#new_motorScale,#motorScale_chart').attr('disabled',true);
             break;
     }
 }
@@ -238,14 +238,14 @@ function autoinsert_rowdata(form,rowData){
     });
 }
 
-function saveForm_bergBalanceTest(callback){
-    let oper = $("#cancel_bergBalanceTest").data('oper');
+function saveForm_motorScale(callback){
+    let oper = $("#cancel_motorScale").data('oper');
     var saveParam = {
-        action: 'save_table_bergBalanceTest',
+        action: 'save_table_motorScale',
         oper: oper,
-        mrn: $('#mrn_physio').val(),
-        episno: $("#episno_physio").val(),
-        totalScore: $("#bergBalanceTest_totalScore").val(),
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val(),
+        movementScore: $("#movementScore").val(),
     }
     
     if(oper == 'add'){
@@ -262,41 +262,41 @@ function saveForm_bergBalanceTest(callback){
         // idtype_edit: $('#idtype_edit').val()
     };
     
-    values = $("#formBergBalanceTest").serializeArray();
+    values = $("#formMotorScale").serializeArray();
     
     values = values.concat(
-        $('#formBergBalanceTest input[type=checkbox]:not(:checked)').map(
+        $('#formMotorScale input[type=checkbox]:not(:checked)').map(
         function (){
             return {"name": this.name, "value": 0}
         }).get()
     );
     
     values = values.concat(
-        $('#formBergBalanceTest input[type=checkbox]:checked').map(
+        $('#formMotorScale input[type=checkbox]:checked').map(
         function (){
             return {"name": this.name, "value": 1}
         }).get()
     );
     
     values = values.concat(
-        $('#formBergBalanceTest input[type=radio]:checked').map(
+        $('#formMotorScale input[type=radio]:checked').map(
         function (){
             return {"name": this.name, "value": this.value}
         }).get()
     );
     
     values = values.concat(
-        $('#formBergBalanceTest select').map(
+        $('#formMotorScale select').map(
         function (){
             return {"name": this.name, "value": this.value}
         }).get()
     );
     
-    $.post("./bergBalanceTest/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+    $.post("./motorScale/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').done(function (data){
         callback(data);
-        button_state_bergBalanceTest('edit');
+        button_state_motorScale('edit');
     }).fail(function (data){
         if(data.responseText !== ''){
             // $('#p_error_intake').text(data.responseText);
@@ -304,12 +304,12 @@ function saveForm_bergBalanceTest(callback){
         }
         
         callback(data);
-        button_state_bergBalanceTest($(this).data('oper'));
+        button_state_motorScale($(this).data('oper'));
     });
 }
 
-function textarea_init_bergBalanceTest(){
-    $('textarea#bergBalanceTest_totalScore').each(function (){
+function textarea_init_motorScale(){
+    $('textarea#motorScale_comments').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{
@@ -325,32 +325,32 @@ function textarea_init_bergBalanceTest(){
     });
 }
 
-function getdata_bergBalanceTest(){
+function getdata_motorScale(){
     var urlparam = {
-        action: 'get_table_bergBalanceTest',
+        action: 'get_table_motorScale',
     }
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_physio').val(),
-        episno: $("#episno_physio").val()
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val()
     };
     
-    $.post("./bergBalanceTest/form?"+$.param(urlparam), $.param(postobj), function (data){
+    $.post("./motorScale/form?"+$.param(urlparam), $.param(postobj), function (data){
         
     },'json').fail(function (data){
         alert('there is an error');
     }).done(function (data){
         if(!$.isEmptyObject(data)){
-            autoinsert_rowdata("#formBergBalanceTest",data.bergtest);
-            button_state_bergBalanceTest('edit');
-            $('#bergBalanceTest_chart').attr('disabled',false);
+            autoinsert_rowdata("#formMotorScale",data.motorscale);
+            button_state_motorScale('edit');
+            $('#motorScale_chart').attr('disabled',false);
         }else{
-            button_state_bergBalanceTest('add');
-            $('#bergBalanceTest_chart').attr('disabled',true);
+            button_state_motorScale('add');
+            $('#motorScale_chart').attr('disabled',true);
         }
         
-        // textarea_init_bergBalanceTest();
+        // textarea_init_motorScale();
     });
 }
 

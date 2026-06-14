@@ -21,7 +21,7 @@ class SpinalCordController extends defaultController
     
     public function show(Request $request)
     {
-        return view('rehab.spinalCord');
+        return view('rehab.physio.spinalCord');
     }
     
     public function form(Request $request)
@@ -751,7 +751,7 @@ class SpinalCordController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->first();
         
-        return view('rehab.spinalCordChart_pdfmake',compact('spinalcord','company'));
+        return view('rehab.physio.spinalCordChart_pdfmake',compact('spinalcord','company'));
         
     }
     

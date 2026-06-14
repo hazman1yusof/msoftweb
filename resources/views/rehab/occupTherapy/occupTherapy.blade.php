@@ -1,9 +1,9 @@
-<div class="ui segments" style="position: relative;">    
-    <div class="ui segment" style="padding: 10px 10px 30px 30px;">
+<!-- <div class="ui segments" style="position: relative;">     -->
+    <!-- <div class="ui segment" style="position: relative;"> -->
         <form id="formOccupTherapy" class="ui form">
             <div class="ui grid">
-                <input id="mrn_occupTherapy" name="mrn_occupTherapy" type="hidden">
-                <input id="episno_occupTherapy" name="episno_occupTherapy" type="hidden">
+                <!-- <input id="mrn_occupTherapy" name="mrn_occupTherapy" type="hidden">
+                <input id="episno_occupTherapy" name="episno_occupTherapy" type="hidden"> -->
             </div>
         </form>
         
@@ -31,5 +31,5 @@
                 @include('rehab.occupTherapy.occupTherapy_barthel')
             </div>
         </div>
-    </div>
-</div>
+    <!-- </div> -->
+<!-- </div> -->

@@ -35,7 +35,7 @@ $(document).ready(function (){
         button_state_mmse('wait');
         enableForm('#formOccupTherapyMMSE');
         rdonly('#formOccupTherapyMMSE');
-        emptyFormdata_div("#formOccupTherapyMMSE",['#mrn_occupTherapy','#episno_occupTherapy']);
+        emptyFormdata_div("#formOccupTherapyMMSE",['#mrn_rehabMain','#episno_rehabMain']);
 
         mmsetbl.clear().draw();
         document.getElementById("idno_mmse").value = "";
@@ -78,7 +78,7 @@ $(document).ready(function (){
         button_state_moca('wait');
         enableForm('#formOccupTherapyMOCA');
         rdonly('#formOccupTherapyMOCA');
-        emptyFormdata_div("#formOccupTherapyMOCA",['#mrn_occupTherapy','#episno_occupTherapy']);
+        emptyFormdata_div("#formOccupTherapyMOCA",['#mrn_rehabMain','#episno_rehabMain']);
 
         document.getElementById("idno_moca").value = "";
     });
@@ -114,11 +114,11 @@ $(document).ready(function (){
 
     /////////////////////////////////////////print button starts/////////////////////////////////////////
     $("#mmse_chart").click(function (){
-        window.open('./occupTherapy_cognitive/mmse_chart?mrn='+$('#mrn_occupTherapy').val()+'&episno='+$("#episno_occupTherapy").val()+'&dateofexam='+$("#dateofexam").val(), '_blank');
+        window.open('./occupTherapy_cognitive/mmse_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&dateofexam='+$("#dateofexam").val(), '_blank');
     });
 
      $("#moca_chart").click(function (){
-        window.open('./occupTherapy_cognitive/moca_chart?mrn='+$('#mrn_occupTherapy').val()+'&episno='+$("#episno_occupTherapy").val()+'&dateAssessment='+$("#dateAssessment").val(), '_blank');
+        window.open('./occupTherapy_cognitive/moca_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&dateAssessment='+$("#dateAssessment").val(), '_blank');
     });
 
     // to format number input to two decimal places (0.00)
@@ -156,7 +156,7 @@ $(document).ready(function (){
             $(this).addClass('selected');
         }
         
-        emptyFormdata_div("#formOccupTherapyMMSE",['#mrn_occupTherapy','#episno_occupTherapy']);
+        emptyFormdata_div("#formOccupTherapyMMSE",['#mrn_rehabMain','#episno_rehabMain']);
         $('#datetimeMMSE_tbl tbody tr').removeClass('active');
         $(this).addClass('active');
         
@@ -208,7 +208,7 @@ $(document).ready(function (){
             $(this).addClass('selected');
         }
         
-        emptyFormdata_div("#formOccupTherapyMOCA",['#mrn_occupTherapy','#episno_occupTherapy']);
+        emptyFormdata_div("#formOccupTherapyMOCA",['#mrn_rehabMain','#episno_rehabMain']);
         $('#datetimeMOCA_tbl tbody tr').removeClass('active');
         $(this).addClass('active');
         
@@ -489,8 +489,8 @@ function saveForm_mmse(callback){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_occupTherapy').val(),
-        episno: $("#episno_occupTherapy").val(),
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val(),
     };
     
     values = $("#formOccupTherapyMMSE").serializeArray();
@@ -553,8 +553,8 @@ function saveForm_moca(callback){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_occupTherapy').val(),
-        episno: $("#episno_occupTherapy").val(),
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val(),
     };
     
     values = $("#formOccupTherapyMOCA").serializeArray();
@@ -602,7 +602,7 @@ function saveForm_moca(callback){
 function populate_mmse_getdata(){
     // console.log('populate');
     disableForm('#formOccupTherapyMMSE');
-    emptyFormdata(errorField,"#formOccupTherapyMMSE",["#mrn_occupTherapy","#episno_occupTherapy"]);
+    emptyFormdata(errorField,"#formOccupTherapyMMSE",["#mrn_rehabMain","#episno_rehabMain"]);
 
     var saveParam = {
         action: 'get_table_mmse',
@@ -610,8 +610,8 @@ function populate_mmse_getdata(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_occupTherapy').val(),
-        episno: $("#episno_occupTherapy").val(),
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val(),
 
     };
     
@@ -631,7 +631,7 @@ function populate_mmse_getdata(){
 
 function getdata_mmse(){
     // console.log('populate');
-    emptyFormdata(errorField,"#formOccupTherapyMMSE",["#mrn_occupTherapy","#episno_occupTherapy"]);
+    emptyFormdata(errorField,"#formOccupTherapyMMSE",["#mrn_rehabMain","#episno_rehabMain"]);
 
     var urlparam = {
         action: 'get_table_mmse',
@@ -639,8 +639,8 @@ function getdata_mmse(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_occupTherapy').val(),
-        episno: $("#episno_occupTherapy").val()
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val()
     };
     
     $.post("./occupTherapy_cognitive/form?"+$.param(urlparam), $.param(postobj), function (data){
@@ -660,7 +660,7 @@ function getdata_mmse(){
 function populate_moca_getdata(){
     // console.log('populate');
     disableForm('#formOccupTherapyMOCA');
-    emptyFormdata(errorField,"#formOccupTherapyMOCA",["#mrn_occupTherapy","#episno_occupTherapy"]);
+    emptyFormdata(errorField,"#formOccupTherapyMOCA",["#mrn_rehabMain","#episno_rehabMain"]);
 
     var saveParam = {
         action: 'get_table_moca',
@@ -668,8 +668,8 @@ function populate_moca_getdata(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_occupTherapy').val(),
-        episno: $("#episno_occupTherapy").val()
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val()
     };
     
     $.post("./occupTherapy_cognitive/form?"+$.param(saveParam), $.param(postobj), function (data){
@@ -688,7 +688,7 @@ function populate_moca_getdata(){
 
 function getdata_moca(){
     // console.log('populate');
-    emptyFormdata(errorField,"#formOccupTherapyMOCA",["#mrn_occupTherapy","#episno_occupTherapy"]);
+    emptyFormdata(errorField,"#formOccupTherapyMOCA",["#mrn_rehabMain","#episno_rehabMain"]);
 
     var urlparam = {
         action: 'get_table_moca',
@@ -696,8 +696,8 @@ function getdata_moca(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_occupTherapy').val(),
-        episno: $("#episno_occupTherapy").val()
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val()
     };
     
     $.post("./occupTherapy_cognitive/form?"+$.param(urlparam), $.param(postobj), function (data){

@@ -600,8 +600,8 @@ function saveForm_otswab(callback){
     
     var postobj = {
         _token: $('#_token').val(),
-        // sex_edit: $('#sex_edit').val(),
-        // idtype_edit: $('#idtype_edit').val()
+        mrn_otMain: $('#mrn_otMain').val(),
+        episno_otMain: $('#episno_otMain').val(),
     };
     
     values = $("#form_otswab").serializeArray();

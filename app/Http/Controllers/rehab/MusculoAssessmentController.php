@@ -22,7 +22,7 @@ class MusculoAssessmentController extends defaultController
     
     public function show(Request $request)
     {
-        return view('rehab.musculoAssessment');
+        return view('rehab.physio.musculoAssessment');
     }
     
     public function form(Request $request)
@@ -2077,7 +2077,7 @@ class MusculoAssessmentController extends defaultController
         $attachment_files = $this->get_attachment_files($mrn,$episno,$entereddate,$type);
         // dd($attachment_files);
         
-        return view('rehab.musculoAssessmentChart_pdfmake',compact('musculoassessment','romaffectedside','romsoundside','musclepower','company','attachment_files'));
+        return view('rehab.physio.musculoAssessmentChart_pdfmake',compact('musculoassessment','romaffectedside','romsoundside','musclepower','company','attachment_files'));
         
     }
     

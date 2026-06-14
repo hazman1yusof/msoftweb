@@ -5,51 +5,50 @@ var editedRow = 0;
 
 $(document).ready(function (){
     
-    // textarea_init_motorScale();
+    // textarea_init_physioNotes();
     
     var fdl = new faster_detail_load();
     
-    disableForm('#formMotorScale');
+    disableForm('#formPhysioNotes');
     
-    $("#new_motorScale").click(function (){
-        $('#cancel_motorScale').data('oper','add');
-        button_state_motorScale('wait');
-        enableForm('#formMotorScale');
-        rdonly('#formMotorScale');
-        emptyFormdata_div("#formMotorScale",['#mrn_physio','#episno_physio']);
-        document.getElementById("idno_motorScale").value = "";
+    $("#new_physioNotes").click(function (){
+        // get_default_physioNotes();
+        $('#cancel_physioNotes').data('oper','add');
+        button_state_physioNotes('wait');
+        enableForm('#formPhysioNotes');
+        rdonly('#formPhysioNotes');
+        emptyFormdata_div("#formPhysioNotes",['#mrn_rehabMain','#episno_rehabMain']);
+        document.getElementById("idno_physioNotes").value = "";
         // dialog_mrn_edit.on();
-        $('#movementScore').prop('disabled',true);
     });
     
-    $("#edit_motorScale").click(function (){
-        button_state_motorScale('wait');
-        enableForm('#formMotorScale');
-        rdonly('#formMotorScale');
+    $("#edit_physioNotes").click(function (){
+        button_state_physioNotes('wait');
+        enableForm('#formPhysioNotes');
+        rdonly('#formPhysioNotes');
         // dialog_mrn_edit.on();
-        $('#movementScore').prop('disabled',true);
     });
     
-    $("#save_motorScale").click(function (){
-        if($('#formMotorScale').isValid({requiredFields: ''}, conf, true)){
-            saveForm_motorScale(function (data){
-                $("#cancel_motorScale").data('oper','edit');
-                $("#cancel_motorScale").click();
-                // emptyFormdata_div("#formMotorScale",['#mrn_physio','#episno_physio']);
-                disableForm('#formMotorScale');
+    $("#save_physioNotes").click(function (){
+        if($('#formPhysioNotes').isValid({requiredFields: ''}, conf, true)){
+            saveForm_physioNotes(function (data){
+                $("#cancel_physioNotes").data('oper','edit');
+                $("#cancel_physioNotes").click();
+                // emptyFormdata_div("#formPhysioNotes",['#mrn_rehabMain','#episno_rehabMain']);
+                disableForm('#formPhysioNotes');
             });
         }else{
-            enableForm('#formMotorScale');
-            rdonly('#formMotorScale');
+            enableForm('#formPhysioNotes');
+            rdonly('#formPhysioNotes');
         }
     });
     
-    $("#cancel_motorScale").click(function (){
-        // emptyFormdata_div("#formMotorScale",['#mrn_physio','#episno_physio']);
-        disableForm('#formMotorScale');
-        button_state_motorScale($(this).data('oper'));
-        $('#tbl_motorScale_date').DataTable().ajax.reload();
-        getdata_motorScale();
+    $("#cancel_physioNotes").click(function (){
+        // emptyFormdata_div("#formPhysioNotes",['#mrn_rehabMain','#episno_rehabMain']);
+        disableForm('#formPhysioNotes');
+        button_state_physioNotes($(this).data('oper'));
+        $('#tbl_physioNotes_date').DataTable().ajax.reload();
+        getdata_physioNotes();
         // dialog_mrn_edit.off();
     });
     
@@ -72,9 +71,9 @@ $(document).ready(function (){
         }, 0);
     });
     
-    ///////////////////////////////////////motorScale starts///////////////////////////////////////
-    $('#tbl_motorScale_date tbody').on('click', 'tr', function (){
-        var data = tbl_motorScale_date.row( this ).data();
+    ///////////////////////////////////////physioNotes starts///////////////////////////////////////
+    $('#tbl_physioNotes_date tbody').on('click', 'tr', function (){
+        var data = tbl_physioNotes_date.row( this ).data();
         
         if(data == undefined){
             return;
@@ -84,26 +83,26 @@ $(document).ready(function (){
         if($(this).hasClass('selected')) {
             $(this).removeClass('selected');
         }else {
-            tbl_motorScale_date.$('tr.selected').removeClass('selected');
+            tbl_physioNotes_date.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
         }
         
-        emptyFormdata_div("#formMotorScale",['#mrn_physio','#episno_physio']);
-        $('#tbl_motorScale_date tbody tr').removeClass('active');
+        emptyFormdata_div("#formPhysioNotes",['#mrn_rehabMain','#episno_rehabMain']);
+        $('#tbl_physioNotes_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
         if(check_same_usr_edit(data)){
-            button_state_motorScale('edit');
+            button_state_physioNotes('edit');
         }else{
-            button_state_motorScale('add');
+            button_state_physioNotes('add');
         }
-        $('#motorScale_chart').attr('disabled',false);
+        $('#physioNotes_chart').attr('disabled',false);
         
-        // getdata_motorScale();
-        $("#idno_motorScale").val(data.idno);
+        // getdata_physioNotes();
+        $("#idno_physioNotes").val(data.idno);
         
         var saveParam = {
-            action: 'get_table_motorScale',
+            action: 'get_table_physioNotes',
         }
         
         var postobj = {
@@ -113,45 +112,31 @@ $(document).ready(function (){
             episno: data.episno
         };
         
-        $.post("./motorScale/form?"+$.param(saveParam), $.param(postobj), function (data){
+        $.post("./physioNotes/form?"+$.param(saveParam), $.param(postobj), function (data){
             
         },'json').fail(function (data){
             alert('there is an error');
         }).done(function (data){
-            if(!$.isEmptyObject(data.motorscale)){
-                autoinsert_rowdata("#formMotorScale",data.motorscale);
-                // button_state_motorScale('edit');
+            if(!$.isEmptyObject(data.notes)){
+                autoinsert_rowdata("#formPhysioNotes",data.notes);
+                // button_state_physioNotes('edit');
             }else{
-                // button_state_motorScale('add');
+                // button_state_physioNotes('add');
             }
             
-            // textarea_init_motorScale();
+            // textarea_init_physioNotes();
         });
     });
-    ////////////////////////////////////////motorScale ends////////////////////////////////////////
+    ////////////////////////////////////////physioNotes ends////////////////////////////////////////
     
-    ////////////////////to calculate the total of movement scoring sheet starts////////////////////
-    function calculate_movementScore(){
-        var score = 0;
-        $(".calc_movementScore:checked").each(function (){
-            score+=parseInt($(this).val());
-        });
-        $("#formMotorScale input[name=movementScore]").val(score);
-    }
-    
-    $(".calc_movementScore").change(function (){
-        calculate_movementScore();
-    });
-    /////////////////////to calculate the total of movement scoring sheet ends/////////////////////
-    
-    $("#motorScale_chart").click(function (){
-        window.open('./motorScale/motorscale_chart?mrn='+$('#mrn_physio').val()+'&episno='+$("#episno_physio").val()+'&entereddate='+$("#motorScale_entereddate").val(), '_blank');
+    $("#physioNotes_chart").click(function (){
+        window.open('./physioNotes/physionotes_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#physioNotes_entereddate").val()+'&age='+$("#age_rehabMain").val(), '_blank');
     });
     
 });
 
-///////////////////////motorScale starts///////////////////////
-var tbl_motorScale_date = $('#tbl_motorScale_date').DataTable({
+///////////////////////physioNotes starts///////////////////////
+var tbl_physioNotes_date = $('#tbl_physioNotes_date').DataTable({
     "ajax": "",
     "sDom": "",
     "paging": false,
@@ -171,7 +156,7 @@ var tbl_motorScale_date = $('#tbl_motorScale_date').DataTable({
         $(this).find('tbody tr')[0].click();
     }
 });
-////////////////////////motorScale ends////////////////////////
+////////////////////////physioNotes ends////////////////////////
 
 var errorField = [];
 conf = {
@@ -189,31 +174,31 @@ conf = {
     },
 };
 
-button_state_motorScale('empty');
-function button_state_motorScale(state){
+button_state_physioNotes('empty');
+function button_state_physioNotes(state){
     // empty_transaction('add');
     switch(state){
         case 'empty':
             $("#toggle_physio").removeAttr('data-toggle');
-            $('#cancel_motorScale').data('oper','add');
-            $('#new_motorScale,#save_motorScale,#cancel_motorScale,#edit_motorScale,#motorScale_chart').attr('disabled',true);
+            $('#cancel_physioNotes').data('oper','add');
+            $('#new_physioNotes,#save_physioNotes,#cancel_physioNotes,#edit_physioNotes,#physioNotes_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_physio").attr('data-toggle','collapse');
-            $('#cancel_motorScale').data('oper','add');
-            $("#new_motorScale").attr('disabled',false);
-            $('#save_motorScale,#cancel_motorScale,#edit_motorScale').attr('disabled',true);
+            $('#cancel_physioNotes').data('oper','add');
+            $("#new_physioNotes").attr('disabled',false);
+            $('#save_physioNotes,#cancel_physioNotes,#edit_physioNotes').attr('disabled',true);
             break;
         case 'edit':
             $("#toggle_physio").attr('data-toggle','collapse');
-            $('#cancel_motorScale').data('oper','edit');
-            $("#new_motorScale,#edit_motorScale").attr('disabled',false);
-            $('#save_motorScale,#cancel_motorScale').attr('disabled',true);
+            $('#cancel_physioNotes').data('oper','edit');
+            $("#new_physioNotes,#edit_physioNotes").attr('disabled',false);
+            $('#save_physioNotes,#cancel_physioNotes').attr('disabled',true);
             break;
         case 'wait':
             $("#toggle_physio").attr('data-toggle','collapse');
-            $("#save_motorScale,#cancel_motorScale").attr('disabled',false);
-            $('#edit_motorScale,#new_motorScale,#motorScale_chart').attr('disabled',true);
+            $("#save_physioNotes,#cancel_physioNotes").attr('disabled',false);
+            $('#edit_physioNotes,#new_physioNotes,#physioNotes_chart').attr('disabled',true);
             break;
     }
 }
@@ -238,14 +223,13 @@ function autoinsert_rowdata(form,rowData){
     });
 }
 
-function saveForm_motorScale(callback){
-    let oper = $("#cancel_motorScale").data('oper');
+function saveForm_physioNotes(callback){
+    let oper = $("#cancel_physioNotes").data('oper');
     var saveParam = {
-        action: 'save_table_motorScale',
+        action: 'save_table_physioNotes',
         oper: oper,
-        mrn: $('#mrn_physio').val(),
-        episno: $("#episno_physio").val(),
-        movementScore: $("#movementScore").val(),
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val(),
     }
     
     if(oper == 'add'){
@@ -262,41 +246,41 @@ function saveForm_motorScale(callback){
         // idtype_edit: $('#idtype_edit').val()
     };
     
-    values = $("#formMotorScale").serializeArray();
+    values = $("#formPhysioNotes").serializeArray();
     
     values = values.concat(
-        $('#formMotorScale input[type=checkbox]:not(:checked)').map(
+        $('#formPhysioNotes input[type=checkbox]:not(:checked)').map(
         function (){
             return {"name": this.name, "value": 0}
         }).get()
     );
     
     values = values.concat(
-        $('#formMotorScale input[type=checkbox]:checked').map(
+        $('#formPhysioNotes input[type=checkbox]:checked').map(
         function (){
             return {"name": this.name, "value": 1}
         }).get()
     );
     
     values = values.concat(
-        $('#formMotorScale input[type=radio]:checked').map(
+        $('#formPhysioNotes input[type=radio]:checked').map(
         function (){
             return {"name": this.name, "value": this.value}
         }).get()
     );
     
     values = values.concat(
-        $('#formMotorScale select').map(
+        $('#formPhysioNotes select').map(
         function (){
             return {"name": this.name, "value": this.value}
         }).get()
     );
     
-    $.post("./motorScale/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+    $.post("./physioNotes/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').done(function (data){
         callback(data);
-        button_state_motorScale('edit');
+        button_state_physioNotes('edit');
     }).fail(function (data){
         if(data.responseText !== ''){
             // $('#p_error_intake').text(data.responseText);
@@ -304,12 +288,12 @@ function saveForm_motorScale(callback){
         }
         
         callback(data);
-        button_state_motorScale($(this).data('oper'));
+        button_state_physioNotes($(this).data('oper'));
     });
 }
 
-function textarea_init_motorScale(){
-    $('textarea#motorScale_comments').each(function (){
+function textarea_init_physioNotes(){
+    $('textarea#physioNotes_notes').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{
@@ -325,32 +309,59 @@ function textarea_init_motorScale(){
     });
 }
 
-function getdata_motorScale(){
+function getdata_physioNotes(){
     var urlparam = {
-        action: 'get_table_motorScale',
+        action: 'get_table_physioNotes',
     }
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_physio').val(),
-        episno: $("#episno_physio").val()
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val()
     };
     
-    $.post("./motorScale/form?"+$.param(urlparam), $.param(postobj), function (data){
+    $.post("./physioNotes/form?"+$.param(urlparam), $.param(postobj), function (data){
         
     },'json').fail(function (data){
         alert('there is an error');
     }).done(function (data){
-        if(!$.isEmptyObject(data)){
-            autoinsert_rowdata("#formMotorScale",data.motorscale);
-            button_state_motorScale('edit');
-            $('#motorScale_chart').attr('disabled',false);
+        if(!$.isEmptyObject(data.notes)){
+            autoinsert_rowdata("#formPhysioNotes",data.notes);
+            button_state_physioNotes('edit');
+            $('#physioNotes_chart').attr('disabled',false);
         }else{
-            button_state_motorScale('add');
-            $('#motorScale_chart').attr('disabled',true);
+            button_state_physioNotes('add');
+            $('#physioNotes_chart').attr('disabled',true);
         }
         
-        // textarea_init_motorScale();
+        // textarea_init_physioNotes();
+    });
+}
+
+function get_default_physioNotes(){
+    var urlparam = {
+        action: 'get_table_physioNotes',
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val()
+    };
+    
+    $.post("./physioNotes/form?"+$.param(urlparam), $.param(postobj), function (data){
+        
+    },'json').fail(function (data){
+        alert('there is an error');
+    }).done(function (data){
+        if(!$.isEmptyObject(data.notes)){
+            autoinsert_rowdata("#formPhysioNotes",data.notes);
+            // button_state_physioNotes('edit');
+        }else{
+            // button_state_physioNotes('add');
+        }
+        
+        // textarea_init_physioNotes();
     });
 }
 

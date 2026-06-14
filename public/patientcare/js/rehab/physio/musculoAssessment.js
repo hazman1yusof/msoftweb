@@ -16,7 +16,7 @@ $(document).ready(function (){
         button_state_musculoAssessment('wait');
         enableForm('#formMusculoAssessment');
         rdonly('#formMusculoAssessment');
-        emptyFormdata_div("#formMusculoAssessment",['#mrn_physio','#episno_physio']);
+        emptyFormdata_div("#formMusculoAssessment",['#mrn_rehabMain','#episno_rehabMain']);
         document.getElementById("idno_musculoAssessment").value = "";
         document.getElementById("idno_affectedside").value = "";
         document.getElementById("idno_soundside").value = "";
@@ -36,7 +36,7 @@ $(document).ready(function (){
             saveForm_musculoAssessment(function (data){
                 $("#cancel_musculoAssessment").data('oper','edit');
                 $("#cancel_musculoAssessment").click();
-                // emptyFormdata_div("#formMusculoAssessment",['#mrn_physio','#episno_physio']);
+                // emptyFormdata_div("#formMusculoAssessment",['#mrn_rehabMain','#episno_rehabMain']);
                 disableForm('#formMusculoAssessment');
             });
         }else{
@@ -46,7 +46,7 @@ $(document).ready(function (){
     });
     
     $("#cancel_musculoAssessment").click(function (){
-        // emptyFormdata_div("#formMusculoAssessment",['#mrn_physio','#episno_physio']);
+        // emptyFormdata_div("#formMusculoAssessment",['#mrn_rehabMain','#episno_rehabMain']);
         disableForm('#formMusculoAssessment');
         button_state_musculoAssessment($(this).data('oper'));
         $('#tbl_musculoAssessment_date').DataTable().ajax.reload();
@@ -89,7 +89,7 @@ $(document).ready(function (){
             $(this).addClass('selected');
         }
         
-        emptyFormdata_div("#formMusculoAssessment",['#mrn_physio','#episno_physio']);
+        emptyFormdata_div("#formMusculoAssessment",['#mrn_rehabMain','#episno_rehabMain']);
         $('#tbl_musculoAssessment_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
@@ -142,8 +142,8 @@ $(document).ready(function (){
     
     //////////////////////////////////////body diagram starts//////////////////////////////////////
     $('a.ui.card.bodydia_musculoskeletal').click(function (){
-        let mrn = $('#mrn_physio').val();
-        let episno = $('#episno_physio').val();
+        let mrn = $('#mrn_rehabMain').val();
+        let episno = $('#episno_rehabMain').val();
         let entereddate = $('#musculoAssessment_entereddate').val();
         let type = $(this).data('type');
         let istablet = $(window).width() <= 1024;
@@ -173,7 +173,7 @@ $(document).ready(function (){
     ///////////////////////////////////////body diagram ends///////////////////////////////////////
     
     $("#musculoAssessment_chart").click(function (){
-        window.open('./musculoAssessment/musculoassessment_chart?mrn='+$('#mrn_physio').val()+'&episno='+$("#episno_physio").val()+'&entereddate='+$("#musculoAssessment_entereddate").val()+'&type=DIAG_MUSCULOSKELETAL', '_blank');
+        window.open('./musculoAssessment/musculoassessment_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#musculoAssessment_entereddate").val()+'&type=DIAG_MUSCULOSKELETAL', '_blank');
     });
     
 });
@@ -274,8 +274,8 @@ function saveForm_musculoAssessment(callback){
     var saveParam = {
         action: 'save_table_musculoAssessment',
         oper: oper,
-        mrn: $('#mrn_physio').val(),
-        episno: $("#episno_physio").val(),
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val(),
     }
     
     if(oper == 'add'){
@@ -362,8 +362,8 @@ function getdata_musculoAssessment(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_physio').val(),
-        episno: $("#episno_physio").val()
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val()
     };
     
     $.post("./musculoAssessment/form?"+$.param(urlparam), $.param(postobj), function (data){

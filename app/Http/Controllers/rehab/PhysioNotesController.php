@@ -21,7 +21,7 @@ class PhysioNotesController extends defaultController
     
     public function show(Request $request)
     {
-        return view('rehab.physioNotes');
+        return view('rehab.physio.physioNotes');
     }
     
     public function form(Request $request)
@@ -262,7 +262,7 @@ class PhysioNotesController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->first();
         
-        return view('rehab.physioNotesChart_pdfmake',compact('notes','company'));
+        return view('rehab.physio.physioNotesChart_pdfmake',compact('notes','company'));
         
     }
     

@@ -246,6 +246,7 @@ $(document).ready(function () {
                 // }
                 // empty_userfile();
                 $('button#timer_stop').click();
+                $('#rehabMain_tab .top.menu .item').tab('change tab','rehabilitation');
                 // urlParam_trans.mrn = selrowData('#jqGrid').MRN;
                 // urlParam_trans.episno = selrowData('#jqGrid').Episno;
                 // urlParam_trans_diet.mrn = selrowData('#jqGrid').MRN;
@@ -258,11 +259,12 @@ $(document).ready(function () {
                 // refreshGrid("#jqGrid_trans", urlParam_trans);
                 // refreshGrid("#jqGrid_trans_diet", urlParam_trans_diet);
                 // refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
+                populate_rehabMain(selrowData('#jqGrid'));
                 populate_phys(selrowData('#jqGrid'));
                 // populate_ordcom_currpt(selrowData('#jqGrid'));
                 populate_physio(selrowData('#jqGrid'));
                 populate_occupTherapy(selrowData('#jqGrid'));
-                
+
                 // if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
                 // 	$('#checkbox_completed').prop('disabled',true);
                 // 	$('#checkbox_completed').prop('checked', true);
@@ -270,6 +272,8 @@ $(document).ready(function () {
                 // 	$('#checkbox_completed').prop('disabled',false);
                 // 	$('#checkbox_completed').prop('checked', false);
                 // }
+                getdata_physio();
+
             },
             ondblClickRow: function (rowid, iRow, iCol, e){
             },
@@ -282,6 +286,7 @@ $(document).ready(function () {
                 $('#no_of_pat').text($("#jqGrid").getGridParam("reccount"));
                 // empty_transaction();
                 // empty_transaction_diet();
+                empty_rehabMain();
                 empty_transaction_phys();
                 empty_currphys();
                 empty_physio();
@@ -299,6 +304,49 @@ $(document).ready(function () {
         });
     }
     
+    $('#rehabMain_tab .top.menu .item').tab({'onVisible': function (){
+        let tab = $(this).data('tab');
+        // console.log(tab);
+
+        switch(tab){
+            case 'rehabilitation':
+                getdata_physio();
+                break;
+            case 'physiotherapy':
+                $('#physioTabs .top.menu .item').tab('change tab','sixMinWalking');
+                var urlparam_tbl_sixMinWalking = {
+                    action: 'get_datetime_sixMinWalking',
+                    mrn: $("#mrn_rehabMain").val(),
+                    episno: $("#episno_rehabMain").val()
+                }
+                
+                tbl_sixMinWalking_date.ajax.url("./sixMinWalking/table?"+$.param(urlparam_tbl_sixMinWalking)).load(function (data){
+                    emptyFormdata_div("#formSixMinWalking",['#mrn_rehabMain','#episno_rehabMain']);
+                    $('#tbl_sixMinWalking_date tbody tr:eq(0)').click(); // to select first row
+                });
+                
+                // $('#tbl_sixMinWalking_date').DataTable().ajax.reload();
+                getdata_sixMinWalking();
+                break;
+            case 'occupTherapy':
+                $('#occupTherapy .top.menu .item').tab('change tab','notes');
+
+                var urlparam_datetimeNotes_tbl = {
+                    action: 'get_table_datetimeNotes',
+                    mrn: $("#mrn_rehabMain").val(),
+                    episno: $("#episno_rehabMain").val()
+                }
+                
+                datetimeNotes_tbl.ajax.url("./occupTherapy_notes/table?"+$.param(urlparam_datetimeNotes_tbl)).load(function (data){
+                    emptyFormdata_div("#formOccupTherapyUpperExtremity",['#mrn_rehabMain','#episno_rehabMain','#idno_upperExtremity','#idno_rof','#rof_impressions']);
+                    $('#datetimeNotes_tbl tbody tr:eq(0)').click();  // to select first row
+                });
+                
+                populate_notes_getdata();
+                break;
+        }
+    }});
+
     $("#jqGrid").jqGrid('setGroupHeaders', {
         useColSpanStyle: true, 
         groupHeaders: [

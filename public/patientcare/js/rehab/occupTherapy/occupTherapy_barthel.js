@@ -13,7 +13,7 @@ $(document).ready(function (){
         button_state_barthel('wait');
         enableForm('#formOccupTherapyBarthel');
         rdonly('#formOccupTherapyBarthel');
-        emptyFormdata_div("#formOccupTherapyBarthel",['#mrn_occupTherapy','#episno_occupTherapy']);
+        emptyFormdata_div("#formOccupTherapyBarthel",['#mrn_rehabMain','#episno_rehabMain']);
 
         document.getElementById("idno_barthel").value = "";
     });
@@ -49,7 +49,7 @@ $(document).ready(function (){
 
     /////////////////////////////////////////print button starts/////////////////////////////////////////
     $("#barthel_chart").click(function (){
-        window.open('./occupTherapy_barthel/barthel_chart?mrn='+$('#mrn_occupTherapy').val()+'&episno='+$("#episno_occupTherapy").val()+'&dateofAssessment='+$("#dateofAssessment").val(), '_blank');
+        window.open('./occupTherapy_barthel/barthel_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&dateofAssessment='+$("#dateofAssessment").val(), '_blank');
     });
 
     // to format number input to two decimal places (0.00)
@@ -87,7 +87,7 @@ $(document).ready(function (){
             $(this).addClass('selected');
         }
         
-        emptyFormdata_div("#formOccupTherapyBarthel",['#mrn_occupTherapy','#episno_occupTherapy']);
+        emptyFormdata_div("#formOccupTherapyBarthel",['#mrn_rehabMain','#episno_rehabMain']);
         $('#datetimeBarthel_tbl tbody tr').removeClass('active');
         $(this).addClass('active');
         
@@ -128,15 +128,14 @@ $(document).ready(function (){
 		$(".score:checked").each(function(){
 			score+=parseInt($(this).val(),10);
 		});
-		$("input[name=tot_score]").val(score)
+		$("#formOccupTherapyBarthel input[name=tot_score]").val(score)
 	}
-	$().ready(function(){
-		$(".score").change(function(){
-			calc_tot_score();
-            interpretation();
-            prediction();
-		});
-	});
+	
+    $(".score").change(function(){
+        calc_tot_score();
+        interpretation();
+        prediction();
+    });
 
     function interpretation(){
 		var score = $("input[name=tot_score]").val();
@@ -271,6 +270,7 @@ function saveForm_barthel(callback){
     var saveParam = {
         action: 'save_table_barthel',
         oper: oper,
+        tot_score: $("#tot_score").val(),
     }
     
     if(oper == 'add'){
@@ -283,8 +283,8 @@ function saveForm_barthel(callback){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_occupTherapy').val(),
-        episno: $("#episno_occupTherapy").val(),
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val(),
     };
     
     values = $("#formOccupTherapyBarthel").serializeArray();
@@ -332,7 +332,7 @@ function saveForm_barthel(callback){
 function populate_barthel_getdata(){
     // console.log('populate');
     disableForm('#formOccupTherapyBarthel');
-    emptyFormdata(errorField,"#formOccupTherapyBarthel",["#mrn_occupTherapy","#episno_occupTherapy"]);
+    emptyFormdata(errorField,"#formOccupTherapyBarthel",["#mrn_rehabMain","#episno_rehabMain"]);
 
     var saveParam = {
         action: 'get_table_barthel',
@@ -340,8 +340,8 @@ function populate_barthel_getdata(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_occupTherapy').val(),
-        episno: $("#episno_occupTherapy").val()
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val()
     };
     
     $.post("./occupTherapy_barthel/form?"+$.param(saveParam), $.param(postobj), function (data){
@@ -361,7 +361,7 @@ function populate_barthel_getdata(){
 
 function getdata_barthel(){
     // console.log('populate');
-    emptyFormdata(errorField,"#formOccupTherapyBarthel",["#mrn_occupTherapy","#episno_occupTherapy"]);
+    emptyFormdata(errorField,"#formOccupTherapyBarthel",["#mrn_rehabMain","#episno_rehabMain"]);
 
     var urlparam = {
         action: 'get_table_barthel',
@@ -369,8 +369,8 @@ function getdata_barthel(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $('#mrn_occupTherapy').val(),
-        episno: $("#episno_occupTherapy").val()
+        mrn: $('#mrn_rehabMain').val(),
+        episno: $("#episno_rehabMain").val()
     };
     
     $.post("./occupTherapy_barthel/form?"+$.param(urlparam), $.param(postobj), function (data){

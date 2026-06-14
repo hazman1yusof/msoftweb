@@ -46,12 +46,12 @@ $(document).ready(function () {
 				var dateParam_phys={
 					action:'get_table_date_phys',
 					type:$("input[type=radio][name=pastcurr]:checked").val(),
-					mrn:$('#mrn_phys').val(),
-					episno:$("#episno_phys").val(),
+					mrn:$('#mrn_rehabMain').val(),
+					episno_rehabMain:$("#episno_rehabMain").val(),
 				}
 
 			    phys_date_tbl.ajax.url( "./ptcare_phys/table?"+$.param(dateParam_phys) ).load(function(data){
-					// emptyFormdata_div("#formphys",['#mrn_phys','#episno_phys']);
+					// emptyFormdata_div("#formphys",['#mrn_rehabMain','#episno_rehabMain']);
 					// $('#phys_date_tbl tbody tr:eq(0)').click();	//to select first row
 			    });
 			});
@@ -75,7 +75,7 @@ $(document).ready(function () {
 	button_state_phys_ncase('empty');
 	
 	$('a.ui.card.bodydia_ncase').click(function(){
-		let mrn = $('#mrn_phys').val();
+		let mrn = $('#mrn_rehabMain').val();
 		let type = $(this).data('type');
 		let istablet = $(window).width() <= 1024;
 		
@@ -101,8 +101,8 @@ $(document).ready(function () {
 	});
 	
 	$('a.ui.card.bodydia_perkeso').click(function (){
-		let mrn = $('#mrn_phys').val();
-		let episno = $('#episno_phys').val();
+		let mrn = $('#mrn_rehabMain').val();
+		let episno = $('#episno_rehabMain').val();
 		let type = $(this).data('type');
 		let istablet = $(window).width() <= 1024;
 		
@@ -136,8 +136,8 @@ function saveForm_phys_ncase(callback){
     }
 
     var postobj={
-    	mrn:$('#mrn_phys').val(),
-    	episno:$('#episno_phys').val(),
+    	mrn_rehabMain:$('#mrn_rehabMain').val(),
+    	episno_rehabMain:$('#episno_rehabMain').val(),
     	_token : $('#_token').val(),
     };
 

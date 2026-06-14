@@ -47,12 +47,12 @@ $(document).ready(function (){
             case 'sixMinWalking':
                 var urlparam_tbl_sixMinWalking = {
                     action: 'get_datetime_sixMinWalking',
-                    mrn: $("#mrn_physio").val(),
-                    episno: $("#episno_physio").val()
+                    mrn: $("#mrn_rehabMain").val(),
+                    episno: $("#episno_rehabMain").val()
                 }
                 
                 tbl_sixMinWalking_date.ajax.url("./sixMinWalking/table?"+$.param(urlparam_tbl_sixMinWalking)).load(function (data){
-                    emptyFormdata_div("#formSixMinWalking",['#mrn_physio','#episno_physio']);
+                    emptyFormdata_div("#formSixMinWalking",['#mrn_rehabMain','#episno_rehabMain']);
                     $('#tbl_sixMinWalking_date tbody tr:eq(0)').click(); // to select first row
                 });
                 
@@ -62,12 +62,12 @@ $(document).ready(function (){
             case 'bergBalanceTest':
                 var urlparam_tbl_bergBalanceTest = {
                     action: 'get_datetime_bergBalanceTest',
-                    mrn: $("#mrn_physio").val(),
-                    episno: $("#episno_physio").val()
+                    mrn: $("#mrn_rehabMain").val(),
+                    episno: $("#episno_rehabMain").val()
                 }
                 
                 tbl_bergBalanceTest_date.ajax.url("./bergBalanceTest/table?"+$.param(urlparam_tbl_bergBalanceTest)).load(function (data){
-                    emptyFormdata_div("#formBergBalanceTest",['#mrn_physio','#episno_physio']);
+                    emptyFormdata_div("#formBergBalanceTest",['#mrn_rehabMain','#episno_rehabMain']);
                     $('#tbl_bergBalanceTest_date tbody tr:eq(0)').click(); // to select first row
                 });
                 
@@ -77,12 +77,12 @@ $(document).ready(function (){
             case 'musculoAssessment':
                 var urlparam_tbl_musculoAssessment = {
                     action: 'get_datetime_musculoAssessment',
-                    mrn: $("#mrn_physio").val(),
-                    episno: $("#episno_physio").val()
+                    mrn: $("#mrn_rehabMain").val(),
+                    episno: $("#episno_rehabMain").val()
                 }
                 
                 tbl_musculoAssessment_date.ajax.url("./musculoAssessment/table?"+$.param(urlparam_tbl_musculoAssessment)).load(function (data){
-                    emptyFormdata_div("#formMusculoAssessment",['#mrn_physio','#episno_physio']);
+                    emptyFormdata_div("#formMusculoAssessment",['#mrn_rehabMain','#episno_rehabMain']);
                     $('#tbl_musculoAssessment_date tbody tr:eq(0)').click(); // to select first row
                 });
                 
@@ -92,12 +92,12 @@ $(document).ready(function (){
             case 'posturalAssessment':
                 var urlparam_tbl_posturalAssessment = {
                     action: 'get_datetime_posturalAssessment',
-                    mrn: $("#mrn_physio").val(),
-                    episno: $("#episno_physio").val()
+                    mrn: $("#mrn_rehabMain").val(),
+                    episno: $("#episno_rehabMain").val()
                 }
                 
                 tbl_posturalAssessment_date.ajax.url("./posturalAssessment/table?"+$.param(urlparam_tbl_posturalAssessment)).load(function (data){
-                    emptyFormdata_div("#formPosturalAssessment",['#mrn_physio','#episno_physio']);
+                    emptyFormdata_div("#formPosturalAssessment",['#mrn_rehabMain','#episno_rehabMain']);
                     $('#tbl_posturalAssessment_date tbody tr:eq(0)').click(); // to select first row
                 });
                 
@@ -107,12 +107,12 @@ $(document).ready(function (){
             case 'oswestryQuest':
                 var urlparam_tbl_oswestryQuest = {
                     action: 'get_datetime_oswestryQuest',
-                    mrn: $("#mrn_physio").val(),
-                    episno: $("#episno_physio").val()
+                    mrn: $("#mrn_rehabMain").val(),
+                    episno: $("#episno_rehabMain").val()
                 }
                 
                 tbl_oswestryQuest_date.ajax.url("./oswestryQuest/table?"+$.param(urlparam_tbl_oswestryQuest)).load(function (data){
-                    emptyFormdata_div("#formOswestryQuest",['#mrn_physio','#episno_physio']);
+                    emptyFormdata_div("#formOswestryQuest",['#mrn_rehabMain','#episno_rehabMain']);
                     $('#tbl_oswestryQuest_date tbody tr:eq(0)').click(); // to select first row
                 });
                 
@@ -122,12 +122,12 @@ $(document).ready(function (){
             case 'cardiorespAssessment':
                 var urlparam_tbl_cardiorespAssessment = {
                     action: 'get_datetime_cardiorespAssessment',
-                    mrn: $("#mrn_physio").val(),
-                    episno: $("#episno_physio").val()
+                    mrn: $("#mrn_rehabMain").val(),
+                    episno: $("#episno_rehabMain").val()
                 }
                 
                 tbl_cardiorespAssessment_date.ajax.url("./cardiorespAssessment/table?"+$.param(urlparam_tbl_cardiorespAssessment)).load(function (data){
-                    emptyFormdata_div("#formCardiorespAssessment",['#mrn_physio','#episno_physio']);
+                    emptyFormdata_div("#formCardiorespAssessment",['#mrn_rehabMain','#episno_rehabMain']);
                     $('#tbl_cardiorespAssessment_date tbody tr:eq(0)').click(); // to select first row
                 });
                 
@@ -137,12 +137,12 @@ $(document).ready(function (){
             case 'neuroAssessment':
                 var urlparam_tbl_neuroAssessment = {
                     action: 'get_datetime_neuroAssessment',
-                    mrn: $("#mrn_physio").val(),
-                    episno: $("#episno_physio").val()
+                    mrn: $("#mrn_rehabMain").val(),
+                    episno: $("#episno_rehabMain").val()
                 }
                 
                 tbl_neuroAssessment_date.ajax.url("./neuroAssessment/table?"+$.param(urlparam_tbl_neuroAssessment)).load(function (data){
-                    emptyFormdata_div("#formNeuroAssessment",['#mrn_physio','#episno_physio']);
+                    emptyFormdata_div("#formNeuroAssessment",['#mrn_rehabMain','#episno_rehabMain']);
                     $('#tbl_neuroAssessment_date tbody tr:eq(0)').click(); // to select first row
                 });
                 
@@ -152,12 +152,12 @@ $(document).ready(function (){
             case 'motorScale':
                 var urlparam_tbl_motorScale = {
                     action: 'get_datetime_motorScale',
-                    mrn: $("#mrn_physio").val(),
-                    episno: $("#episno_physio").val()
+                    mrn: $("#mrn_rehabMain").val(),
+                    episno: $("#episno_rehabMain").val()
                 }
                 
                 tbl_motorScale_date.ajax.url("./motorScale/table?"+$.param(urlparam_tbl_motorScale)).load(function (data){
-                    emptyFormdata_div("#formMotorScale",['#mrn_physio','#episno_physio']);
+                    emptyFormdata_div("#formMotorScale",['#mrn_rehabMain','#episno_rehabMain']);
                     $('#tbl_motorScale_date tbody tr:eq(0)').click(); // to select first row
                 });
                 
@@ -167,12 +167,12 @@ $(document).ready(function (){
             case 'spinalCord':
                 var urlparam_tbl_spinalCord = {
                     action: 'get_datetime_spinalCord',
-                    mrn: $("#mrn_physio").val(),
-                    episno: $("#episno_physio").val()
+                    mrn: $("#mrn_rehabMain").val(),
+                    episno: $("#episno_rehabMain").val()
                 }
                 
                 tbl_spinalCord_date.ajax.url("./spinalCord/table?"+$.param(urlparam_tbl_spinalCord)).load(function (data){
-                    emptyFormdata_div("#formSpinalCord",['#mrn_physio','#episno_physio']);
+                    emptyFormdata_div("#formSpinalCord",['#mrn_rehabMain','#episno_rehabMain']);
                     $('#tbl_spinalCord_date tbody tr:eq(0)').click(); // to select first row
                 });
                 
@@ -182,12 +182,12 @@ $(document).ready(function (){
             case 'physioNotes':
                 var urlparam_tbl_physioNotes = {
                     action: 'get_datetime_physioNotes',
-                    mrn: $("#mrn_physio").val(),
-                    episno: $("#episno_physio").val()
+                    mrn: $("#mrn_rehabMain").val(),
+                    episno: $("#episno_rehabMain").val()
                 }
                 
                 tbl_physioNotes_date.ajax.url("./physioNotes/table?"+$.param(urlparam_tbl_physioNotes)).load(function (data){
-                    emptyFormdata_div("#formPhysioNotes",['#mrn_physio','#episno_physio']);
+                    emptyFormdata_div("#formPhysioNotes",['#mrn_rehabMain','#episno_rehabMain']);
                     $('#tbl_physioNotes_date tbody tr:eq(0)').click(); // to select first row
                 });
                 
@@ -239,50 +239,50 @@ function empty_physio(){
     button_state_physioNotes('empty');
     
     // panel header
-    $('#name_show_physio').text('');
-    $('#mrn_show_physio').text('');
-    $('#sex_show_physio').text('');
-    $('#dob_show_physio').text('');
-    $('#age_show_physio').text('');
-    $('#race_show_physio').text('');
-    $('#religion_show_physio').text('');
-    $('#occupation_show_physio').text('');
-    $('#citizenship_show_physio').text('');
-    $('#area_show_physio').text('');
+    // $('#name_show_physio').text('');
+    // $('#mrn_show_physio').text('');
+    // $('#sex_show_physio').text('');
+    // $('#dob_show_physio').text('');
+    // $('#age_show_physio').text('');
+    // $('#race_show_physio').text('');
+    // $('#religion_show_physio').text('');
+    // $('#occupation_show_physio').text('');
+    // $('#citizenship_show_physio').text('');
+    // $('#area_show_physio').text('');
     
     // formPhysiotherapy
-    $('#mrn_physio').val('');
-    $("#episno_physio").val('');
+    $('#mrn_rehabMain').val('');
+    $("#episno_rehabMain").val('');
 }
 
 function populate_physio(obj){
-    emptyFormdata_div("#formSixMinWalking",['#mrn_physio','#episno_physio']);
-    emptyFormdata_div("#formBergBalanceTest",['#mrn_physio','#episno_physio']);
-    emptyFormdata_div("#formMusculoAssessment",['#mrn_physio','#episno_physio']);
-    emptyFormdata_div("#formPosturalAssessment",['#mrn_physio','#episno_physio']);
-    emptyFormdata_div("#formOswestryQuest",['#mrn_physio','#episno_physio']);
-    emptyFormdata_div("#formCardiorespAssessment",['#mrn_physio','#episno_physio']);
-    emptyFormdata_div("#formNeuroAssessment",['#mrn_physio','#episno_physio']);
-    emptyFormdata_div("#formMotorScale",['#mrn_physio','#episno_physio']);
-    emptyFormdata_div("#formSpinalCord",['#mrn_physio','#episno_physio']);
-    emptyFormdata_div("#formPhysioNotes",['#mrn_physio','#episno_physio']);
+    emptyFormdata_div("#formSixMinWalking",['#mrn_rehabMain','#episno_rehabMain']);
+    emptyFormdata_div("#formBergBalanceTest",['#mrn_rehabMain','#episno_rehabMain']);
+    emptyFormdata_div("#formMusculoAssessment",['#mrn_rehabMain','#episno_rehabMain']);
+    emptyFormdata_div("#formPosturalAssessment",['#mrn_rehabMain','#episno_rehabMain']);
+    emptyFormdata_div("#formOswestryQuest",['#mrn_rehabMain','#episno_rehabMain']);
+    emptyFormdata_div("#formCardiorespAssessment",['#mrn_rehabMain','#episno_rehabMain']);
+    emptyFormdata_div("#formNeuroAssessment",['#mrn_rehabMain','#episno_rehabMain']);
+    emptyFormdata_div("#formMotorScale",['#mrn_rehabMain','#episno_rehabMain']);
+    emptyFormdata_div("#formSpinalCord",['#mrn_rehabMain','#episno_rehabMain']);
+    emptyFormdata_div("#formPhysioNotes",['#mrn_rehabMain','#episno_rehabMain']);
     
     // panel header
-    $('#name_show_physio').text(obj.Name);
-    $('#mrn_show_physio').text(("0000000" + obj.MRN).slice(-7));
-    $('#sex_show_physio').text(if_none(obj.Sex).toUpperCase());
-    $('#dob_show_physio').text(dob_chg(obj.DOB));
-    $('#age_show_physio').text(dob_age(obj.DOB)+' (YRS)');
-    $('#race_show_physio').text(if_none(obj.raceDesc).toUpperCase());
-    $('#religion_show_physio').text(if_none(obj.religion).toUpperCase());
-    $('#occupation_show_physio').text(if_none(obj.OccupCode).toUpperCase());
-    $('#citizenship_show_physio').text(if_none(obj.Citizencode).toUpperCase());
-    $('#area_show_physio').text(if_none(obj.AreaCode).toUpperCase());
+    // $('#name_show_physio').text(obj.Name);
+    // $('#mrn_show_physio').text(("0000000" + obj.MRN).slice(-7));
+    // $('#sex_show_physio').text(if_none(obj.Sex).toUpperCase());
+    // $('#dob_show_physio').text(dob_chg(obj.DOB));
+    // $('#age_show_physio').text(dob_age(obj.DOB)+' (YRS)');
+    // $('#race_show_physio').text(if_none(obj.raceDesc).toUpperCase());
+    // $('#religion_show_physio').text(if_none(obj.religion).toUpperCase());
+    // $('#occupation_show_physio').text(if_none(obj.OccupCode).toUpperCase());
+    // $('#citizenship_show_physio').text(if_none(obj.Citizencode).toUpperCase());
+    // $('#area_show_physio').text(if_none(obj.AreaCode).toUpperCase());
     
     // formPhysiotherapy
-    $('#mrn_physio').val(obj.MRN);
-    $("#episno_physio").val(obj.Episno);
-    $("#age_physio").val(dob_age(obj.DOB));
+    $('#mrn_rehabMain').val(obj.MRN);
+    $("#episno_rehabMain").val(obj.Episno);
+    $("#age_rehabMain").val(dob_age(obj.DOB));
     
     $("#tab_physio").collapse('hide');
 }
@@ -314,18 +314,18 @@ $('#tab_physio').on('shown.bs.collapse', function (){
     // to load first tab
     var urlparam_tbl_sixMinWalking = {
         action: 'get_datetime_sixMinWalking',
-        mrn: $("#mrn_physio").val(),
-        episno: $("#episno_physio").val()
+        mrn: $("#mrn_rehabMain").val(),
+        episno: $("#episno_rehabMain").val()
     }
     
     tbl_sixMinWalking_date.ajax.url("./sixMinWalking/table?"+$.param(urlparam_tbl_sixMinWalking)).load(function (data){
-        emptyFormdata_div("#formSixMinWalking",['#mrn_physio','#episno_physio']);
+        emptyFormdata_div("#formSixMinWalking",['#mrn_rehabMain','#episno_rehabMain']);
         $('#tbl_sixMinWalking_date tbody tr:eq(0)').click(); // to select first row
     });
     
     getdata_sixMinWalking();
     
-    // if($('#mrn_physio').val() != ''){
+    // if($('#mrn_rehabMain').val() != ''){
     //     getdata_sixMinWalking();
     //     getdata_bergBalanceTest();
     //     getdata_musculoAssessment();
@@ -340,7 +340,7 @@ $('#tab_physio').on('shown.bs.collapse', function (){
 });
 
 $('#tab_physio').on('hide.bs.collapse', function (){
-    emptyFormdata_div("#formPhysiotherapy",['#mrn_physio','#episno_physio']);
+    emptyFormdata_div("#formPhysiotherapy",['#mrn_rehabMain','#episno_rehabMain']);
     button_state_sixMinWalking('empty');
     button_state_bergBalanceTest('empty');
     button_state_musculoAssessment('empty');
