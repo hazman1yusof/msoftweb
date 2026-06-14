@@ -68,9 +68,11 @@ i.fa {
 			<a class='pull-right pointer text-primary' style="padding-left: 30px" id='reprint__summbill'>
 		    	Summary Bill 
 			</a>
-			 | 
 			<a class='pull-right pointer text-primary' style="padding-left: 30px" id='reprint_bill'>
 		    	Detail Bill 
+			</a>
+			<a class='pull-right pointer text-primary' style="padding-left: 30px" id='generate_txt'>
+		    	Etiqa 
 			</a>
 		    </div>
 		    <div class="panel-body">

@@ -27,7 +27,7 @@ class ClaimBatchController extends defaultController
         $sysparam = DB::table('sysdb.sysparam')
                     ->where('compcode',session('compcode'))
                     ->where('source','AR')
-                    ->where('trantype','remind1');
+                    ->where('trantype','CLAIM');
 
         if($sysparam->exists()){
             $comment_ = $sysparam->first()->comment_;
@@ -35,7 +35,7 @@ class ClaimBatchController extends defaultController
             $comment_ = "";
         }
 
-        return view('finance.AR.reminder.reminder',compact('comment_'));
+        return view('finance.AR.claimBatch.claimBatch',compact('comment_'));
     }
 
     public function table(Request $request)
@@ -70,13 +70,13 @@ class ClaimBatchController extends defaultController
             $sysparam = DB::table('sysdb.sysparam')
                         ->where('compcode',session('compcode'))
                         ->where('source','AR')
-                        ->where('trantype',$request->trantype);
+                        ->where('trantype','CLAIM');
 
             if($sysparam->exists()){
                 DB::table('sysdb.sysparam')
                         ->where('compcode',session('compcode'))
                         ->where('source','AR')
-                        ->where('trantype',$request->trantype)
+                        ->where('trantype','CLAIM')
                         ->update([
                             'comment_' => $request->comment_,
                             'lastuser' => session('username'),
@@ -87,7 +87,7 @@ class ClaimBatchController extends defaultController
                         ->insert([
                             'compcode' => session('compcode'),
                             'source' => 'AR',
-                            'trantype' => $request->trantype,
+                            'trantype' => 'CLAIM',
                             'comment_' => $request->comment_,
                             'lastuser' => session('username'),
                             'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -123,213 +123,123 @@ class ClaimBatchController extends defaultController
     }
 
     public function print(Request $request){
-        $trantype = $request->trantype;
-        if(!$trantype){
-            abort(404);
-        }
-
-        $grouping = [0,30,60,90,120];
-        $grouping_tot = [0,0,0,0,0];
         $debtorcode = $request->debtorcode;
-        $date = $request->date;
-        $days_greater = $request->days;
+        $datefr = $request->datefr;
+        $dateto = $request->dateto;
+        $datesend = $request->datesend;
         $comment_ = '';
         $sysparam = DB::table('sysdb.sysparam')
                     ->where('compcode',session('compcode'))
                     ->where('source','AR')
-                    ->where('trantype',$request->trantype);
+                    ->where('trantype','CLAIM');
 
         if($sysparam->exists()){
             $comment_ = $sysparam->first()->comment_;
         }
 
-        $debtormast = DB::table('debtor.debtormast as dm')
-                        ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.reference as real_reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate','dm.debtortype','dm.debtorcode','dm.name','dm.address1','dm.address2','dm.address3','dm.address4','dm.creditterm','dm.creditlimit','dm.contact','dh.datesend', 'pm.Name as pm_name')
-                        ->join('debtor.dbacthdr as dh', function($join) use ($date){
-                            $join = $join->where('dh.compcode', '=', session('compcode'))
-                                            ->where('dh.recstatus', '=', 'POSTED')
-                                            ->on('dh.debtorcode', '=', 'dm.debtorcode')
-                                            ->whereDate('dh.posteddate', '<=', $date);
-                        })->leftJoin('hisdb.pat_mast as pm', function($join){
+        $comment2_ = '';
+        $sysparam = DB::table('sysdb.sysparam')
+                    ->where('compcode',session('compcode'))
+                    ->where('source','AR')
+                    ->where('trantype','CLAIM2');
+
+        if($sysparam->exists()){
+            $comment2_ = $sysparam->first()->comment_;
+        }
+
+        $dbacthdr = DB::table('debtor.dbacthdr as dh')
+                    ->select('dh.idno','dh.compcode','dh.source','dh.trantype','dh.auditno','dh.lineno_','dh.amount','dh.outamount','dh.recstatus','dh.entrydate','dh.entrytime','dh.entryuser','dh.reference','dh.recptno','dh.paymode','dh.tillcode','dh.tillno','dh.debtortype','dh.debtorcode','dh.payercode','dh.billdebtor','dh.remark','dh.mrn','dh.episno','dh.authno','dh.expdate','dh.adddate','dh.adduser','dh.upddate','dh.upduser','dh.deldate','dh.deluser','dh.epistype','dh.cbflag','dh.conversion','dh.payername','dh.hdrtype','dh.currency','dh.rate','dh.unit','dh.invno','dh.paytype','dh.bankcharges','dh.RCCASHbalance','dh.RCOSbalance','dh.RCFinalbalance','dh.PymtDescription','dh.orderno','dh.ponum','dh.podate','dh.termdays','dh.termmode','dh.deptcode','dh.posteddate','dh.approvedby','dh.approveddate','dh.approved_remark','dh.unallocated','dh.datesend','dh.quoteno','dh.preparedby','dh.prepareddate','dh.cancelby','dh.canceldate','dh.cancelled_remark','dh.pointofsales','dh.doctorcode','dh.LHDNStatus','dh.LHDNSubID','dh.LHDNCodeNo','dh.LHDNDocID','dh.LHDNSubBy','dh.category','dh.categorydept','pm.Name','pm.Staffid','gr.name as gr_name','epayr.refno','eps.reg_date','dm.name as debtorname','dm.address1','dm.address2','dm.address3','dm.address4','dm.creditterm','dm.creditlimit','dm.contact')
+                    ->leftJoin('hisdb.pat_mast as pm', function($join){
                             $join = $join->where('pm.compcode', '=', session('compcode'))
                                         ->on('pm.NewMrn', '=', 'dh.mrn');
                         })
-                        ->where('dm.compcode', '=', session('compcode'))
-                        ->where('dm.debtorcode', $debtorcode);
+                    ->leftJoin('debtor.debtormast as dm', function($join){
+                            $join = $join->where('dm.compcode', '=', session('compcode'))
+                                        ->on('dm.debtorcode', '=', 'dh.payercode');
+                        })
+                    ->leftJoin('hisdb.epispayer as epayr', function($join){
+                            $join = $join->where('epayr.compcode', '=', session('compcode'))
+                                        ->on('epayr.mrn', '=', 'dh.mrn')
+                                        ->on('epayr.episno', '=', 'dh.episno')
+                                        ->on('epayr.payercode', '=', 'dh.payercode');
+                        })
+                    ->leftJoin('hisdb.episode as eps', function($join){
+                            $join = $join->where('eps.compcode', '=', session('compcode'))
+                                        ->on('eps.mrn', '=', 'dh.mrn')
+                                        ->on('eps.episno', '=', 'dh.episno');
+                        })
+                    ->leftJoin('hisdb.guarantee as gr', function($join){
+                            $join = $join->where('gr.compcode', '=', session('compcode'))
+                                        ->on('gr.mrn', '=', 'dh.mrn')
+                                        ->on('gr.episno', '=', 'dh.episno')
+                                        ->where('gr.lineno_', '1');
+                        })
+                    ->where('dh.compcode', '=', session('compcode'))
+                    ->where('dh.recstatus', '=', 'POSTED')
+                    ->where('dh.source', '=', 'PB')
+                    ->where('dh.trantype', '=', 'IN')
+                    ->where('dh.payercode', '=', $debtorcode)
+                    ->whereDate('dh.posteddate', '>=', $datefr)
+                    ->whereDate('dh.posteddate', '<=', $dateto)
+                    ->whereNotNull('dh.mrn')
+                    ->whereNotNull('dh.episno')
+                    ->get();
 
-        if(!$debtormast->exists()){
-            abort(403, 'Debtor doesnt have any activity');
-        }
+        $totamount = 0;
+        foreach ($dbacthdr as $obj_q1) {
+            $totamount = $totamount + $obj_q1->amount;
+            $q2 = DB::table('debtor.billtrack as bt')
+                    ->where('bt.compcode', '=', session('compcode'))
+                    ->where('bt.trxcode', '=', 'STD')
+                    ->where('bt.source', '=', 'PB')
+                    ->where('bt.trantype', '=', 'IN')
+                    ->where('bt.auditno', '=', $obj_q1->auditno);
 
-        $debtormast = $debtormast->get();
-
-        $array_report = [];
-
-        $days_greater_tot = 0;
-        foreach ($debtormast as $key => $value){
-            $value->remark = '';
-            $value->doc_no = '';
-            $value->newamt = 0;
-
-            $hdr_amount = $value->amount;
-            
-            // to calculate interval (days)
-            $datetime1 = new DateTime($date);
-            $datetime2 = new DateTime($value->posteddate);
-            
-            $interval = $datetime1->diff($datetime2);
-            $days = $interval->format('%a');
-            $value->group = $this->assign_grouping($grouping,$days);
-            $value->days = $days;
-            
-            if($value->trantype == 'IN' || $value->trantype =='DN') {
-                $alloc_sum = DB::table('debtor.dballoc as da')
-                        ->where('da.compcode', '=', session('compcode'))
-                        ->where('da.recstatus', '=', "POSTED")
-                        // ->where('da.debtorcode', '=', $value->debtorcode)
-                        ->where('da.refsource', '=', $value->source)
-                        ->where('da.reftrantype', '=', $value->trantype)
-                        ->where('da.refauditno', '=', $value->auditno)
-                        // ->where('da.reflineno', '=', $value->lineno_)
-                        ->whereDate('da.allocdate', '<=', $date)
-
-                // dd($this->getQueries($alloc_sum));
-
-
-                        ->sum('da.amount');
-                
-                $newamt = $hdr_amount - $alloc_sum;
+            if($q2->exists()){
+                DB::table('debtor.billtrack')
+                    ->where('compcode', '=', session('compcode'))
+                    ->where('trxcode', '=', 'STD')
+                    ->where('source', '=', 'PB')
+                    ->where('trantype', '=', 'IN')
+                    ->where('auditno', '=', $obj_q1->auditno)
+                    ->update([
+                        'trxdate' => $datesend,
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recstatus' => 'ACTIVE',
+                        'patientname' => $obj_q1->Name,
+                        'staffno' => $obj_q1->Staffid,
+                        'lastcomputerid' => session('computerid'),
+                    ]);
             }else{
-                $doc_sum = DB::table('debtor.dballoc as da')
-                        ->where('da.compcode', '=', session('compcode'))
-                        ->where('da.recstatus', '=', "POSTED")
-                        // ->where('da.debtorcode', '=', $value->debtorcode)
-                        ->where('da.docsource', '=', $value->source)
-                        ->where('da.doctrantype', '=', $value->trantype)
-                        ->where('da.docauditno', '=', $value->auditno)
-                        ->whereDate('da.allocdate', '<=', $date)
-                        ->sum('da.amount');
-                
-                $ref_sum = DB::table('debtor.dballoc as da')
-                        ->where('da.compcode', '=', session('compcode'))
-                        ->where('da.recstatus', '=', "POSTED")
-                        // ->where('da.debtorcode', '=', $value->debtorcode)
-                        ->where('da.refsource', '=', $value->source)
-                        ->where('da.reftrantype', '=', $value->trantype)
-                        ->where('da.refauditno', '=', $value->auditno)
-                        ->whereDate('da.allocdate', '<=', $date)
-                        ->sum('da.amount');
-                
-                $newamt = -($hdr_amount - $doc_sum - $ref_sum);
-            }
-            
-            switch ($value->trantype) {
-                case 'IN':
-                    if($value->mrn == '0' || $value->mrn == ''){
-                        if(!empty($value->payername)){
-                            $value->reference = $value->payername;
-                        }
-                    }else{
-                        $value->reference = str_replace('`', '', $value->pm_name);
-                    }
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->invno, 7, "0", STR_PAD_LEFT);
-                    $value->amount_dr = $newamt;
-                    $value->newamt = $newamt;
-                    // if(floatval($newamt) != 0.00){
-                    //     array_push($array_report, $value);
-                    // }
-                    break;
-                case 'DN':
-                    $value->reference = $value->reference;
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
-                    $value->amount_dr = $newamt;
-                    $value->newamt = $newamt;
-                    // if(floatval($newamt) != 0.00){
-                    //     array_push($array_report, $value);
-                    // }
-                    break;
-                case 'BC':
-                    // $value->remark
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
-                    $value->amount_dr = $newamt;
-                    $value->newamt = $newamt;
-                    // if(floatval($newamt) != 0.00){
-                    //     array_push($array_report, $value);
-                    // }
-                    break;
-                case 'RF':
-                    if($value->mrn == '0' || $value->mrn == ''){
-                        // $value->reference = $value->remark;
-                        $value->reference = $value->reference;
-                    }else{
-                        $value->reference = str_replace('`', '', $value->pm_name);
-                    }
-                    $value->doc_no = $value->recptno;
-                    $value->amount_dr = $newamt;
-                    $value->newamt = $newamt;
-                    // if(floatval($newamt) != 0.00){
-                    //     array_push($array_report, $value);
-                    // }
-                    break;
-                case 'CN':
-                    $value->remark = $value->remark;
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
-                    $value->amount_cr = $newamt;
-                    $value->newamt = $newamt;
-                    // if(floatval($newamt) != 0.00){
-                    //     array_push($array_report, $value);
-                    // }
-                    break;
-                case 'RC':
-                    $value->remark = $value->remark;
-                    $value->doc_no = $value->recptno;
-                    $value->reference = $value->recptno;
-                    $value->amount_cr = $newamt;
-                    $value->newamt = $newamt;
-                    // if(floatval($newamt) != 0.00){
-                    //     array_push($array_report, $value);
-                    // }
-                    break;
-                case 'RD':
-                    $value->remark = $value->remark;
-                    $value->doc_no = $value->recptno;
-                    $value->reference = $value->recptno;
-                    $value->amount_cr = $newamt;
-                    $value->newamt = $newamt;
-                    // if(floatval($newamt) != 0.00){
-                    //     array_push($array_report, $value);
-                    // }
-                    break;
-                case 'RT':
-                    // $value->remark
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
-                    $value->amount_cr = $newamt;
-                    $value->newamt = $newamt;
-                    // if(floatval($newamt) != 0.00){
-                    //     array_push($array_report, $value);
-                    // }
-                    break;
-                default:
-                    // code...
-                    break;
-            }
-
-
-            if($days > $days_greater){
-                $grouping_tot[$value->group] = $grouping_tot[$value->group] + $newamt;
-                $days_greater_tot = $days_greater_tot + $newamt;
-                if(floatval($newamt) != 0.00){
-                    array_push($array_report, $value);
-                }
+                DB::table('debtor.billtrack')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'source' => $obj_q1->source,
+                        'trantype' => $obj_q1->trantype,
+                        'auditno' => $obj_q1->auditno,
+                        'lineno_' => $obj_q1->lineno_,
+                        'trxcode' => 'STD',
+                        'trxdate' => $datesend,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recstatus' => 'ACTIVE',
+                        'patientname' => $obj_q1->Name,
+                        'staffno' => $obj_q1->Staffid,
+                        'computerid' => session('computerid'),
+                        'lastcomputerid' => session('computerid'),
+                    ]);
             }
         }
+
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
 
         $currentDate = Carbon::now("Asia/Kuala_Lumpur")->format('d F Y');
-        $debtormast = $debtormast->unique('debtorcode')[0];
+        $debtormast = $dbacthdr->unique('debtorcode')[0];
 
-        // dd($array_report);
-
-        return view('finance.AR.reminder.reminder_pdfmake',compact('array_report','debtormast','grouping','days_greater_tot','grouping_tot','currentDate','comment_'));
+        return view('finance.AR.claimBatch.claimBatch_pdfmake',compact('debtormast','dbacthdr','currentDate','comment_','comment2_','datesend','totamount','company'));
     }
 
     public function assign_grouping($grouping,$days){
