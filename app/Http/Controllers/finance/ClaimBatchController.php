@@ -195,6 +195,16 @@ class ClaimBatchController extends defaultController
                     ->where('bt.trantype', '=', 'IN')
                     ->where('bt.auditno', '=', $obj_q1->auditno);
 
+            DB::table('debtor.dbacthdr')
+                    ->where('compcode', '=', session('compcode'))
+                    ->where('source', '=', 'PB')
+                    ->where('trantype', '=', 'IN')
+                    ->where('auditno', '=', $obj_q1->auditno)
+                    ->where('lineno_', '=', $obj_q1->lineno_)
+                    ->update([
+                        'datesend' => $datesend
+                    ]);
+
             if($q2->exists()){
                 DB::table('debtor.billtrack')
                     ->where('compcode', '=', session('compcode'))
