@@ -124,7 +124,7 @@ class SalesOrderDetailController extends defaultController
                         // ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                         ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','pt.generic','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                         ->where('cm.compcode','=',session('compcode'))
-                        ->where('cm.unit', '=', session('unit'))
+                        // ->where('cm.unit', '=', session('unit'))
                         // ->where('cm.active', '1')
                         ->where('cm.recstatus','ACTIVE');
                         // ->where(function ($query) {
@@ -146,7 +146,7 @@ class SalesOrderDetailController extends defaultController
                             $join = $join->on('st.itemcode', '=', 'cm.chgcode');
                             $join = $join->on('st.uomcode', '=', 'cm.uom');
                             $join = $join->where('st.compcode', '=', session('compcode'));
-                            $join = $join->where('st.unit', '=', session('unit'));
+                            // $join = $join->where('st.unit', '=', session('unit'));
                             $join = $join->where('st.deptcode', '=', $deptcode);
                             $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
                         });
@@ -184,7 +184,7 @@ class SalesOrderDetailController extends defaultController
             if($searchCol_array[0] == 'generic'){
                 $pt = DB::table('material.product')
                             ->where('compcode', '=', session('compcode'))
-                            ->where('unit', '=', session('unit'))
+                            // ->where('unit', '=', session('unit'))
                             ->where('generic',$request->wholeword);
                 
                 if($pt->exists()){
@@ -195,7 +195,7 @@ class SalesOrderDetailController extends defaultController
             }else if($searchCol_array[0] == 'description'){
                 $pt = DB::table('hisdb.chgmast')
                             ->where('compcode', '=', session('compcode'))
-                            ->where('unit', '=', session('unit'))
+                            // ->where('unit', '=', session('unit'))
                             ->where('description',$request->wholeword);
                 
                 if($pt->exists()){
@@ -234,7 +234,7 @@ class SalesOrderDetailController extends defaultController
 
             $pt = DB::table('hisdb.chgmast')
                         ->where('compcode', '=', session('compcode'))
-                        ->where('unit', '=', session('unit'))
+                        // ->where('unit', '=', session('unit'))
                         ->where('chgcode',$request->wholeword);
             
             if($pt->exists()){
@@ -244,7 +244,7 @@ class SalesOrderDetailController extends defaultController
 
             $pt = DB::table('hisdb.chgmast')
                         ->where('compcode', '=', session('compcode'))
-                        ->where('unit', '=', session('unit'))
+                        // ->where('unit', '=', session('unit'))
                         ->where('description',$request->wholeword);
             
             if($pt->exists()){
