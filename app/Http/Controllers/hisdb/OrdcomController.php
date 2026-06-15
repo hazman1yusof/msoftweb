@@ -3867,8 +3867,20 @@ class OrdcomController extends defaultController
                         ->where('trx.episno' ,'=', $request->episno)
                         ->where('trx.recstatus','<>','DELETE')
                         ->where('trx.taxflag',0)
-                        ->where('trx.discflag',0)
-                        ->get();
+                        ->where('trx.discflag',0);
+
+        if(!$chargetrx->exists()){
+            $responce = new stdClass();
+            $responce->amount = 0;
+            $responce->discamt = 0;
+            $responce->taxamount = 0;
+            $responce->totamount = 0;
+            $responce->invno = '';
+
+            return json_encode($responce);
+        }
+
+        $chargetrx = $chargetrx->get();
 
         if($chargetrx){
             $invno = $chargetrx->unique('invno')[0]->invno;
