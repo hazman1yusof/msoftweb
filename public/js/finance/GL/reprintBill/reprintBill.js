@@ -30,6 +30,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
 		url:'./reprintBill/table',
+		etiqa:$('#etiqa').val(),
 		action:'maintable',
 	}
 
@@ -42,10 +43,10 @@ $(document).ready(function () {
 			{ label: 'source', name: 'source', hidden:true},
 			{ label: 'TT', name: 'trantype', width: 25, classes: 'wrap'},
 			{ label: 'Invoice No', name: 'invno', width: 50, classes: 'wrap', canSearch: true},
-			{ label: 'Line No', name: 'lineno_', width: 30, classes: 'wrap'},
+			{ label: 'No', name: 'lineno_', width: 20, classes: 'wrap'},
 			{ label: 'MRN', name: 'mrn', width: 30, classes: 'wrap', canSearch: true, checked:true},
 			{ label: 'Episno', name: 'episno', width: 25, classes: 'wrap'},
-			{ label: 'Epistype', name: 'epistype', width: 25, classes: 'wrap'},
+			{ label: 'Type', name: 'epistype', width: 25, classes: 'wrap'},
 			{ label: 'Patient Name', name: 'Name', width: 110, classes: 'wrap', canSearch: true},
 			{ label: 'Debtor Code', name: 'debtorcode', width: 50, classes: 'wrap'},
 			{ label: 'Debtor Name', name: 'dbname', width: 110, classes: 'wrap', canSearch: true},

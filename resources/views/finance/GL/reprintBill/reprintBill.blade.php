@@ -30,6 +30,7 @@ i.fa {
 
 @section('body')
 
+<input id="etiqa" name="etiqa" type="hidden" value="{{Request::get('etiqa')}}">
 <input id="viewonly" name="viewonly" type="hidden" value="{{Request::get('viewonly')}}">
 <input id="phar_invcode" type="hidden" value="{{$phar_invcode->pvalue1}}">
 @if(Request::get('viewonly') == 'viewonly')
@@ -172,5 +173,5 @@ i.fa {
 			
 		});
 	</script>
-	<script src="js/finance/GL/reprintBill/reprintBill.js?v=1.2"></script>
+	<script src="js/finance/GL/reprintBill/reprintBill.js?v=1.3"></script>
 @endsection

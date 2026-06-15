@@ -62,6 +62,8 @@ class ReprintBillController extends defaultController
     }
 
     public function maintable(Request $request){
+        $etiqa = $request->etiqa;
+
         $table = DB::table('debtor.dbacthdr as db')
                         ->select('db.idno','db.compcode','db.source','db.trantype','db.epistype','db.auditno','db.lineno_','db.invno','db.mrn','db.episno','db.debtorcode','db.amount','db.entrydate','pm.Name','dm.name as dbname')
                         ->leftJoin('hisdb.pat_mast as pm', function($join) use ($request){
@@ -78,6 +80,10 @@ class ReprintBillController extends defaultController
                         ->where('db.recstatus','POSTED')
                         ->where('db.mrn','!=','0')
                         ->where('db.episno','!=','0');
+
+        if($etiqa == '1'){
+            $table = $table->where('db.debtorcode','ETIQA MAYBANK');
+        }
 
         if(!empty($request->viewonly)){
             $table = $table->where('auditno',$request->auditno)
