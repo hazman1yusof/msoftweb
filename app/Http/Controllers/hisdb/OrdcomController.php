@@ -317,14 +317,14 @@ class OrdcomController extends defaultController
                             $join = $join->where('pt.compcode', '=', session('compcode'));
                             $join = $join->on('pt.itemcode', '=', 'trx.chgcode');
                             $join = $join->on('pt.uomcode', '=', 'trx.uom_recv');
-                            $join = $join->where('pt.unit', '=', session('unit'));
+                            // $join = $join->where('pt.unit', '=', session('unit'));
                         });
 
         $table_chgtrx = $table_chgtrx->leftjoin('hisdb.chgmast as cm', function($join) use ($request){
                             $join = $join->where('cm.compcode', '=', session('compcode'));
                             $join = $join->on('cm.chgcode', '=', 'trx.chgcode');
                             $join = $join->on('cm.uom', '=', 'trx.uom');
-                            $join = $join->where('cm.unit', '=', session('unit'));
+                            // $join = $join->where('cm.unit', '=', session('unit'));
                         });
 
         $table_chgtrx = $table_chgtrx->leftjoin('hisdb.dose as dos', function($join) use ($request){
@@ -2176,13 +2176,13 @@ class OrdcomController extends defaultController
 
         $product = DB::table('material.product')
             ->where('compcode','=',session('compcode'))
-            ->where('unit','=',session('unit'))
+            // ->where('unit','=',session('unit'))
             ->where('uomcode','=',$chargetrx_obj->uom_recv)
             ->where('itemcode','=',$chargetrx_obj->chgcode);
 
         $stockloc = DB::table('material.stockloc')
             ->where('compcode','=',session('compcode'))
-            ->where('unit','=',session('unit'))
+            // ->where('unit','=',session('unit'))
             ->where('uomcode','=',$chargetrx_obj->uom_recv)
             ->where('itemcode','=',$chargetrx_obj->chgcode)
             ->where('deptcode','=',$chargetrx_obj->reqdept)
@@ -2228,7 +2228,7 @@ class OrdcomController extends defaultController
             $sumqtyonhand = DB::table('material.stockloc')
                                 ->select(DB::raw('SUM(qtyonhand) AS sum_qtyonhand'))
                                 ->where('compcode','=',session('compcode'))
-                                ->where('unit','=',session('unit'))
+                                // ->where('unit','=',session('unit'))
                                 ->where('uomcode','=',$chargetrx_obj->uom_recv)
                                 ->where('itemcode','=',$chargetrx_obj->chgcode)
                                 ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
@@ -2395,13 +2395,13 @@ class OrdcomController extends defaultController
 
         $product = DB::table('material.product')
             ->where('compcode','=',session('compcode'))
-            ->where('unit','=',session('unit'))
+            // ->where('unit','=',session('unit'))
             ->where('uomcode','=',$my_uom)
             ->where('itemcode','=',$my_chgcode);
 
         $stockloc = DB::table('material.stockloc')
             ->where('compcode','=',session('compcode'))
-            ->where('unit','=',session('unit'))
+            // ->where('unit','=',session('unit'))
             ->where('uomcode','=',$my_uom)
             ->where('itemcode','=',$my_chgcode)
             ->where('deptcode','=',$my_deptcode)
@@ -2444,7 +2444,7 @@ class OrdcomController extends defaultController
             $sumqtyonhand = DB::table('material.stockloc')
                                 ->select(DB::raw('SUM(qtyonhand) AS sum_qtyonhand'))
                                 ->where('compcode','=',session('compcode'))
-                                ->where('unit','=',session('unit'))
+                                // ->where('unit','=',session('unit'))
                                 ->where('uomcode','=',$my_uom)
                                 ->where('itemcode','=',$my_chgcode)
                                 ->where('year','=',$my_year)
@@ -2452,7 +2452,7 @@ class OrdcomController extends defaultController
 
             DB::table('material.product')
                 ->where('compcode','=',session('compcode'))
-                ->where('unit','=',session('unit'))
+                // ->where('unit','=',session('unit'))
                 ->where('uomcode','=',$my_uom)
                 ->where('itemcode','=',$my_chgcode)
                 ->update([
@@ -2560,7 +2560,7 @@ class OrdcomController extends defaultController
         //tengok product category
         $product_obj = DB::table('material.product')
             ->where('compcode','=', session('compcode'))
-            ->where('unit','=', session('unit'))
+            // ->where('unit','=', session('unit'))
             ->where('itemcode','=', $my_chgcode)
             ->first();
 
@@ -2679,13 +2679,13 @@ class OrdcomController extends defaultController
 
         $product = DB::table('material.product')
             ->where('compcode','=',session('compcode'))
-            ->where('unit','=',session('unit'))
+            // ->where('unit','=',session('unit'))
             ->where('uomcode','=',$my_uom)
             ->where('itemcode','=',$my_chgcode);
 
         $stockloc = DB::table('material.stockloc')
             ->where('compcode','=',session('compcode'))
-            ->where('unit','=',session('unit'))
+            // ->where('unit','=',session('unit'))
             ->where('uomcode','=',$my_uom)
             ->where('itemcode','=',$my_chgcode)
             ->where('deptcode','=',$my_deptcode)
@@ -2715,7 +2715,7 @@ class OrdcomController extends defaultController
             $sumqtyonhand = DB::table('material.stockloc')
                                 ->select(DB::raw('SUM(qtyonhand) AS sum_qtyonhand'))
                                 ->where('compcode','=',session('compcode'))
-                                ->where('unit','=',session('unit'))
+                                // ->where('unit','=',session('unit'))
                                 ->where('uomcode','=',$my_uom)
                                 ->where('itemcode','=',$my_chgcode)
                                 ->where('year','=',$my_year)
@@ -2723,7 +2723,7 @@ class OrdcomController extends defaultController
 
             DB::table('material.product')
                 ->where('compcode','=',session('compcode'))
-                ->where('unit','=',session('unit'))
+                // ->where('unit','=',session('unit'))
                 ->where('uomcode','=',$my_uom)
                 ->where('itemcode','=',$my_chgcode)
                 ->update([
@@ -2986,7 +2986,7 @@ class OrdcomController extends defaultController
                                 $join = $join->on('st.itemcode', '=', 'cm.chgcode');
                                 $join = $join->on('st.uomcode', '=', 'cm.uom');
                                 $join = $join->where('st.compcode', '=', session('compcode'));
-                                $join = $join->where('st.unit', '=', session('unit'));
+                                // $join = $join->where('st.unit', '=', session('unit'));
                                 $join = $join->where('st.deptcode', '=', $deptcode);
                                 $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
                             });
@@ -2995,7 +2995,7 @@ class OrdcomController extends defaultController
                                 $join = $join->where('pt.compcode', '=', session('compcode'));
                                 $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
                                 $join = $join->on('pt.uomcode', '=', 'cm.uom');
-                                $join = $join->where('pt.unit', '=', session('unit'));
+                                // $join = $join->where('pt.unit', '=', session('unit'));
                             });
         }else{
             $table = $table->join('hisdb.doctor as doc', function($join){
@@ -3190,7 +3190,7 @@ class OrdcomController extends defaultController
                             $join = $join->on('st.itemcode', '=', 'cm.chgcode');
                             $join = $join->on('st.uomcode', '=', 'cm.uom');
                             $join = $join->where('st.compcode', '=', session('compcode'));
-                            $join = $join->where('st.unit', '=', session('unit'));
+                            // $join = $join->where('st.unit', '=', session('unit'));
                             $join = $join->where('st.deptcode', '=', $deptcode);
                             $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
                         });
@@ -3199,7 +3199,7 @@ class OrdcomController extends defaultController
                             $join = $join->where('pt.compcode', '=', session('compcode'));
                             $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
                             $join = $join->on('pt.uomcode', '=', 'cm.uom');
-                            $join = $join->where('pt.unit', '=', session('unit'));
+                            // $join = $join->where('pt.unit', '=', session('unit'));
                         });
 
         $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
@@ -3246,7 +3246,7 @@ class OrdcomController extends defaultController
                                 $join = $join->on('st.itemcode', '=', 'cm.chgcode');
                                 $join = $join->on('st.uomcode', '=', 'cm.uom');
                                 $join = $join->where('st.compcode', '=', session('compcode'));
-                                $join = $join->where('st.unit', '=', session('unit'));
+                                // $join = $join->where('st.unit', '=', session('unit'));
                                 $join = $join->where('st.deptcode', '=', $deptcode);
                                 $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
                             });
@@ -3255,7 +3255,7 @@ class OrdcomController extends defaultController
                             $join = $join->where('pt.compcode', '=', session('compcode'));
                             $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
                             $join = $join->on('pt.uomcode', '=', 'cm.uom');
-                            $join = $join->where('pt.unit', '=', session('unit'));
+                            // $join = $join->where('pt.unit', '=', session('unit'));
                         });
 
             $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
@@ -3362,7 +3362,7 @@ class OrdcomController extends defaultController
                                 $join = $join->on('st.itemcode', '=', 'cm.chgcode');
                                 $join = $join->on('st.uomcode', '=', 'cm.uom');
                                 $join = $join->where('st.compcode', '=', session('compcode'));
-                                $join = $join->where('st.unit', '=', session('unit'));
+                                // $join = $join->where('st.unit', '=', session('unit'));
                                 $join = $join->where('st.deptcode', '=', $deptcode);
                                 $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
                             });
@@ -3371,7 +3371,7 @@ class OrdcomController extends defaultController
                             $join = $join->where('pt.compcode', '=', session('compcode'));
                             $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
                             $join = $join->on('pt.uomcode', '=', 'cm.uom');
-                            $join = $join->where('pt.unit', '=', session('unit'));
+                            // $join = $join->where('pt.unit', '=', session('unit'));
                         });
 
             $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
@@ -3507,7 +3507,7 @@ class OrdcomController extends defaultController
         $invflag = DB::table('hisdb.chgmast as cm')
                         ->select('cm.invflag')
                         ->where('cm.compcode','=',session('compcode'))
-                        ->where('cm.unit', '=', session('unit'))
+                        // ->where('cm.unit', '=', session('unit'))
                         ->where('cm.chgcode','=',$chgcode)
                         ->where('cm.recstatus','<>','DELETE')
                         ->first();
@@ -3529,7 +3529,7 @@ class OrdcomController extends defaultController
                             $join = $join->on('st.itemcode', '=', 'cm.chgcode');
                             $join = $join->on('st.uomcode', '=', 'cm.uom');
                             $join = $join->where('st.compcode', '=', session('compcode'));
-                            $join = $join->where('st.unit', '=', session('unit'));
+                            // $join = $join->where('st.unit', '=', session('unit'));
                             $join = $join->where('st.deptcode', '=', $deptcode);
                             $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
                         });
@@ -3538,7 +3538,7 @@ class OrdcomController extends defaultController
                             $join = $join->on('st.itemcode', '=', 'cm.chgcode');
                             $join = $join->on('st.uomcode', '=', 'cm.uom');
                             $join = $join->where('st.compcode', '=', session('compcode'));
-                            $join = $join->where('st.unit', '=', session('unit'));
+                            // $join = $join->where('st.unit', '=', session('unit'));
                             $join = $join->where('st.deptcode', '=', $deptcode);
                             $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
                         });
@@ -3548,7 +3548,7 @@ class OrdcomController extends defaultController
                         $join = $join->where('pt.compcode', '=', session('compcode'));
                         $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
                         $join = $join->on('pt.uomcode', '=', 'cm.uom');
-                        $join = $join->where('pt.unit', '=', session('unit'));
+                        // $join = $join->where('pt.unit', '=', session('unit'));
                     });
 
         if(!empty($request->searchCol)){
@@ -3661,7 +3661,7 @@ class OrdcomController extends defaultController
                             $join = $join->on('st.itemcode', '=', 'cm.chgcode');
                             $join = $join->on('st.uomcode', '=', 'cm.uom');
                             $join = $join->where('st.compcode', '=', session('compcode'));
-                            $join = $join->where('st.unit', '=', session('unit'));
+                            // $join = $join->where('st.unit', '=', session('unit'));
                             $join = $join->where('st.deptcode', '=', $deptcode);
                             $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
                         });
@@ -3670,7 +3670,7 @@ class OrdcomController extends defaultController
                         $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
                         $join = $join->on('pt.uomcode', '=', 'cm.uom');
                         $join = $join->where('pt.compcode', '=', session('compcode'));
-                        $join = $join->where('pt.unit', '=', session('unit'));
+                        // $join = $join->where('pt.unit', '=', session('unit'));
                     });
 
         if(!empty($request->searchCol)){
