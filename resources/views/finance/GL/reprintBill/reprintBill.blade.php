@@ -72,9 +72,11 @@ i.fa {
 			<a class='pull-right pointer text-primary' style="padding-left: 30px" id='reprint_bill'>
 		    	Detail Bill 
 			</a>
+			@if (request()->has('etiqa'))
 			<a class='pull-right pointer text-primary' style="padding-left: 30px" id='generate_txt'>
-		    	Etiqa 
+		    	Export File 
 			</a>
+			@endif
 		    </div>
 		    <div class="panel-body">
 		    	<div class='col-md-12' style="padding:0 0 15px 0">
@@ -135,6 +137,14 @@ i.fa {
 		</div> 
 
 </div>
+
+<div id="etiqa_dialog" title="Etiqa">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<iframe id='etiqa_iframe' src='' style="height: 100%;width: 100%; border: none;"></iframe>
+			</div>
+		</div>
+	</div>
 
 @endsection
 

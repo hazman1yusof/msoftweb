@@ -137,12 +137,41 @@ $(document).ready(function () {
 		window.open('./ordcom/table?action=showpdf_summ_final&mrn='+mrn+'&episno='+episno+'&lineno_='+lineno_, '_blank');
 	});
 
+	$("#etiqa_dialog").dialog({
+		autoOpen: false,
+		width: 8/10 * $(window).width(),
+		modal: true,
+		open: function (){
+		},
+		close: function (event, ui){
+			$('iframe#etiqa_iframe').attr('src','');
+		},
+		// buttons:
+		// [{
+			// text: "Generate Excel", click: function (){
+
+			// 		// $('button[classes=ARStatementDialog_xls_btn]').hide();
+			// 		// $('button[classes=ARStatementDialog_xls_btn]').parent().prepend(`<i class="fa fa-circle-o-notch fa-spin fa-fw"></i>`);
+
+			// 		window.open('./arenquiry/showExcel?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
+			// 		// window.location='./arenquiry/showExcel?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
+			// 	},classes: "ARStatementDialog_xls_btn"
+			// },{
+			// 	text: "Cancel", click: function (){
+			// 		$(this).dialog('close');
+			// 	}
+		// }],
+	});
+
 	$('#generate_txt').click(function(){
 		var mrn = selrowData('#jqGrid').mrn;
 		var episno = selrowData('#jqGrid').episno;
 		var lineno_ = selrowData('#jqGrid').lineno_;
 		var invno = selrowData('#jqGrid').invno;
-		window.open('./reprintBill/table?action=generate_txt&mrn='+mrn+'&episno='+episno+'&lineno_='+lineno_+'&invno='+invno, '_blank');
+		// window.open('./reprintBill/table?action=generate_txt&mrn='+mrn+'&episno='+episno+'&lineno_='+lineno_+'&invno='+invno, '_blank');
+        $('iframe#etiqa_iframe').attr('src','reprintBill/table?action=generate_txt&mrn='+mrn+'&episno='+episno+'&lineno_='+lineno_+'&invno='+invno);
+
+		$("#etiqa_dialog").dialog("open");
 	});
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
