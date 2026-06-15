@@ -475,6 +475,8 @@
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_diet.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_oth.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_pkg.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/pat_mgmt/epis_payer.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/pat_mgmt/epis_coverage.js') }}"></script>
 @endsection
 
 
