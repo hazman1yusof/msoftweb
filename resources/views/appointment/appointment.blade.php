@@ -459,8 +459,8 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/doctornote.js?v=1.3') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/nursingAppt.js?v=1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/dieteticCareNotes.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/physiotherapy.physioterapy.js?v=1.1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/physiotherapy.physioterapy_ncase.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/physiotherapy/physioterapy.js?v=1.1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/physiotherapy/physioterapy_ncase.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/requestfor.js?v=1.5') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/admhandoverAppt.js?v=1.1') }}"></script>
 
