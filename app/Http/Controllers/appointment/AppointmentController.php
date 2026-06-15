@@ -182,7 +182,7 @@ class AppointmentController extends defaultController
                     $join = $join->on('episode.mrn','=','pat_mast.MRN');
                     $join = $join->where('episode.epistycode','=','OP');
                     $join = $join->whereIn('episode.regdept',['TH2','EYE','BEACON']);
-                    $join = $join->where('episode.admsrccode', '=', 'APPT');
+                    // $join = $join->where('episode.admsrccode', '=', 'APPT');
                     // $join = $join->where(
                     //         function ($query){
                     //             return $query
@@ -1179,7 +1179,7 @@ class AppointmentController extends defaultController
         $emergency = DB::table('hisdb.episode')
                     ->where('compcode','=',session('compcode'))
                     ->whereIn('episode.regdept',['TH2','EYE','BEACON'])
-                    ->where('episode.admsrccode', '=', 'APPT')
+                    // ->where('episode.admsrccode', '=', 'APPT')
                     ->whereRaw(
                         "(reg_date >= ? AND reg_date <= ?)",
                         [
