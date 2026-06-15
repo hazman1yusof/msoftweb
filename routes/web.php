@@ -279,6 +279,7 @@ Route::post('/rsc_maintenance/save_session','hisdb\rscMaintenanceController@save
 Route::post('/rsc_maintenance/save_bgleave','hisdb\rscMaintenanceController@save_bgleave');
 Route::post('/rsc_maintenance/save_colorph','hisdb\rscMaintenanceController@save_colorph');
 
+////////////////////OPERATION THEATRE//////////////////////////////
 //// ot_maintenance setup page ///
 Route::get('/ot_maintenance','hisdb\otMaintenanceController@show');
 Route::get('/ot_maintenance/table','hisdb\otMaintenanceController@table');
@@ -293,7 +294,7 @@ Route::get('/otmanagement/table','hisdb\OTManagementController@table');
 Route::post('/otmanagement/form','hisdb\OTManagementController@form');
 // Route::post('/otmanagement_transaction_save', "hisdb\OTManagementController@transaction_save");
 
-//// OT Management_div page ////
+//// Operation Record page ////
 Route::get('/otmanagement_div','hisdb\OTManagement_divController@show');
 Route::get('/otmanagement_div/table','hisdb\OTManagement_divController@table');
 Route::post('/otmanagement_div/form','hisdb\OTManagement_divController@form');
@@ -1358,143 +1359,6 @@ Route::post('/pat_mast/new_relationship_form','hisdb\PatmastController@new_relat
 Route::post('/pat_mast/auto_save','hisdb\PatmastController@auto_save');
 Route::get('/pat_mast/patlabel','hisdb\PatmastController@patlabel');
 
-////////////////////////////////////MEDICAL RECORDS//////////////////////////////////////////////////
-////////patmast medical record////////////
-Route::get('/pat_mast_MR','hisdb\PatmastMRController@show');
-Route::get('/pat_mast_MR/get_entry','hisdb\PatmastMRController@get_entry');
-Route::get('/pat_mast_MR/table','hisdb\PatmastMRController@table');
-Route::post('/pat_mast_MR/post_entry','hisdb\PatmastMRController@post_entry');
-Route::get('/pat_mast_MR/post_entry','hisdb\PatmastMRController@post_entry');
-Route::post('/pat_mast_MR/save_patient','hisdb\PatmastMRController@save_patient');
-Route::post('/pat_mast_MR/save_episode','hisdb\PatmastMRController@save_episode');
-Route::post('/pat_mast_MR/save_adm','hisdb\PatmastMRController@save_adm');
-Route::post('/pat_mast_MR/save_gl','hisdb\PatmastMRController@save_gl');
-Route::post('/pat_mast_MR/new_occup_form','hisdb\PatmastMRController@new_occup_form');
-Route::post('/pat_mast_MR/new_title_form','hisdb\PatmastMRController@new_title_form');
-Route::post('/pat_mast_MR/new_areacode_form','hisdb\PatmastMRController@new_areacode_form');
-Route::post('/pat_mast_MR/new_relationship_form','hisdb\PatmastMRController@new_relationship_form');
-Route::post('/pat_mast_MR/auto_save','hisdb\PatmastMRController@auto_save');
-Route::get('/pat_mast_MR/patlabel','hisdb\PatmastMRController@patlabel');
-
-//// Nursing ED MR (Triage Info) page ///
-Route::get('/nursingED_MR','hisdb\NursingEDMRController@show');
-Route::get('/nursingED_MR/table','hisdb\NursingEDMRController@table');
-Route::post('/nursingED_MR/form','hisdb\NursingEDMRController@form');
-
-//// Nursing MR (Triage Info) page ///
-Route::get('/nursing_MR','hisdb\NursingMRController@show');
-Route::get('/nursing_MR/table','hisdb\NursingMRController@table');
-Route::post('/nursing_MR/form','hisdb\NursingMRController@form');
-
-//// Nursing Action Plan MR page ///
-Route::get('/nursingActionPlan_MR','hisdb\NursingActionPlanMRController@show');
-Route::get('/nursingActionPlan_MR/table','hisdb\NursingActionPlanMRController@table');
-Route::post('/nursingActionPlan_MR/form','hisdb\NursingActionPlanMRController@form');
-Route::get('/nursingActionPlan_MR/treatment_chart','hisdb\NursingActionPlanMRController@treatment_chart');
-Route::get('/nursingActionPlan_MR/observation_chart','hisdb\NursingActionPlanMRController@observation_chart');
-Route::get('/nursingActionPlan_MR/feeding_chart','hisdb\NursingActionPlanMRController@feeding_chart');
-Route::get('/nursingActionPlan_MR/imgDiag_chart','hisdb\NursingActionPlanMRController@imgDiag_chart');
-Route::get('/nursingActionPlan_MR/bloodTrans_chart','hisdb\NursingActionPlanMRController@bloodTrans_chart');
-Route::get('/nursingActionPlan_MR/exams_chart','hisdb\NursingActionPlanMRController@exams_chart');
-Route::get('/nursingActionPlan_MR/procedure_chart','hisdb\NursingActionPlanMRController@procedure_chart');
-
-//// Nursing Note MR page ///
-Route::get('/nursingnote_MR','hisdb\NursingNoteMRController@show');
-Route::get('/nursingnote_MR/table','hisdb\NursingNoteMRController@table');
-Route::post('/nursingnote_MR/form','hisdb\NursingNoteMRController@form');
-Route::get('/nursingnote_MR/invChart_chart','hisdb\InvChartMRController@invChart_chart');
-Route::get('/nursingnote_MR/fitchart_chart','hisdb\NursingNoteMRController@fitchart_chart');
-Route::get('/nursingnote_MR/circulation_chart','hisdb\NursingNoteMRController@circulation_chart');
-Route::get('/nursingnote_MR/slidingScale_chart','hisdb\NursingNoteMRController@slidingScale_chart');
-Route::get('/nursingnote_MR/othersChart_chart','hisdb\NursingNoteMRController@othersChart_chart');
-Route::get('/nursingnote_MR/bladder_chart','hisdb\NursingNoteMRController@bladder_chart');
-Route::get('/nursingnote_MR/morsefallscale_chart','hisdb\MorseFallScaleMRController@morsefallscale_chart');
-Route::post('/glasgow_MR/form','hisdb\GlasgowMRController@form');
-Route::get('/glasgow_MR/table','hisdb\GlasgowMRController@table');
-Route::get('/glasgow_MR/glasgow_chart','hisdb\GlasgowMRController@glasgow_chart');
-Route::post('/pivc_MR/form','hisdb\PivcMRController@form');
-Route::get('/pivc_MR/table','hisdb\PivcMRController@table');
-Route::get('/pivc_MR/pivc_chart','hisdb\PivcMRController@pivc_chart');
-Route::post('/morsefallscale_MR/form','hisdb\MorseFallScaleMRController@form');
-Route::get('/morsefallscale_MR/table','hisdb\MorseFallScaleMRController@table');
-Route::post('/thrombophlebitis_MR/form','hisdb\ThrombophlebitisMRController@form');
-Route::get('/thrombophlebitis_MR/table','hisdb\ThrombophlebitisMRController@table');
-Route::get('/thrombophlebitis_MR/thrombophlebitis_chart','hisdb\ThrombophlebitisMRController@thrombophlebitis_chart');
-
-//// Antenatal MR page ///
-Route::get('/antenatal_MR','hisdb\AntenatalMRController@show');
-Route::get('/antenatal_MR/table','hisdb\AntenatalMRController@table');
-Route::post('/antenatal_MR/form','hisdb\AntenatalMRController@form');
-Route::get('/antenatal_MR','hisdb\AntenatalMRController@chart');
-
-//// Paediatric MR page ///
-Route::get('/paediatric_MR','hisdb\PaediatricMRController@show');
-Route::get('/paediatric_MR/table','hisdb\PaediatricMRController@table');
-Route::post('/paediatric_MR/form','hisdb\PaediatricMRController@form');
-
-//// Client Progress Note MR (Doctor Note) page ///
-Route::get('/clientprogressnote_MR','hisdb\ClientProgressNoteMRController@show');
-Route::get('/clientprogressnote_MR/table','hisdb\ClientProgressNoteMRController@table');
-Route::post('/clientprogressnote_MR/form','hisdb\ClientProgressNoteMRController@form');
-Route::get('/clientprogressnote_MR/refLetterClientProgNote_chart','hisdb\ClientProgressNoteMRController@refLetterClientProgNote_chart');
-
-//// Client Progress Note MR (Doctor Note (Referral)) page ///
-Route::get('/clientprogressnoteref_MR','hisdb\ClientProgressNoteRefMRController@show');
-Route::get('/clientprogressnoteref_MR/table','hisdb\ClientProgressNoteRefMRController@table');
-Route::post('/clientprogressnoteref_MR/form','hisdb\ClientProgressNoteRefMRController@form');
-
-//// Doctor Note MR page ///
-Route::get('/doctornote_MR','hisdb\DoctorNoteMRController@show');
-Route::get('/bpgraph_MR','hisdb\DoctorNoteMRController@bpgraph');
-Route::get('/iograph_MR','hisdb\DoctorNoteMRController@iograph');
-Route::get('/doctornote_MR/table','hisdb\DoctorNoteMRController@table');
-Route::post('/doctornote_MR/form','hisdb\DoctorNoteMRController@form');
-Route::get('/doctornote_MR/showpdf','hisdb\DoctorNoteMRController@showpdf');
-Route::get('/doctornote_MR/otbook_chart','hisdb\DoctorNoteMRController@otbook_chart');
-Route::get('/doctornote_MR/radClinic_chart','hisdb\DoctorNoteMRController@radClinic_chart');
-Route::get('/doctornote_MR/mri_chart','hisdb\DoctorNoteMRController@mri_chart');
-Route::get('/doctornote_MR/physio_chart','hisdb\DoctorNoteMRController@physio_chart');
-Route::get('/doctornote_MR/dressing_chart','hisdb\DoctorNoteMRController@dressing_chart');
-Route::get('/doctornote_MR/preContrast_chart','hisdb\DoctorNoteMRController@preContrast_chart');
-Route::get('/doctornote_MR/consentForm_chart','hisdb\DoctorNoteMRController@consentForm_chart');
-
-//// Request For MR page ///
-Route::get('/requestfor_MR','hisdb\RequestForMRController@show');
-Route::get('/requestfor_MR/table','hisdb\RequestForMRController@table');
-Route::post('/requestfor_MR/form','hisdb\RequestForMRController@form');
-Route::get('/requestfor_MR/showpdf','hisdb\RequestForMRController@showpdf');
-
-//// Dietetic Care Notes MR page ///
-Route::get('/dieteticCareNotes_MR','hisdb\DieteticCareNotesMRController@show');
-Route::get('/dieteticCareNotes_MR/table','hisdb\DieteticCareNotesMRController@table');
-Route::post('/dieteticCareNotes_MR/form','hisdb\DieteticCareNotesMRController@form');
-
-//// Diet Order MR page ///
-Route::get('/dietorder_MR','hisdb\DietOrderMRController@show');
-Route::get('/dietorder_MR/table','hisdb\DietOrderMRController@table');
-Route::post('/dietorder_MR/form','hisdb\DietOrderMRController@form');
-
-//// Order Communication MR page ///
-Route::get('/ordcom_MR','hisdb\OrdcomMRController@show');
-Route::get('/ordcom_MR/table','hisdb\OrdcomMRController@table');
-Route::post('/ordcom_MR/form','hisdb\OrdcomMRController@form');
-
-//// Discharge page OP MR ///
-Route::get('/discharge_MR','hisdb\DischargeMRController@show');
-Route::get('/discharge_MR/table','hisdb\DischargeMRController@table');
-Route::post('/discharge_MR/form','hisdb\DischargeMRController@form');
-Route::get('/discharge_MR/showpdf','hisdb\DischargeMRController@showpdf');
-
-////////// EMERGENCY MR //////////////////////
-Route::get('/ptcare_doctornote_MR','patientcare\DoctornoteMRController@index');
-Route::get('/ptcare_doctornote_MR/table','patientcare\DoctornoteMRController@table');
-Route::post('/ptcare_doctornote_MR/form','patientcare\DoctornoteMRController@form');
-Route::post('/ptcare_doctornote_MR_transaction_save', "patientcare\DoctornoteMRController@transaction_save");
-
-Route::get('/ptcare_nursing_MR','patientcare\NursingMRController@show');
-Route::get('/ptcare_nursing_MR/table','patientcare\NursingMRController@table');
-Route::post('/ptcare_nursing_MR/form','patientcare\NursingMRController@form');
-
 Route::post('/episode/save_doc','hisdb\PatmastController@save_doc');
 Route::post('/episode/save_bed','hisdb\PatmastController@save_bed');
 Route::post('/episode/save_nok','hisdb\PatmastController@save_nok');
@@ -1995,3 +1859,204 @@ Route::get('/dialysis_enquiry_order/table','dialysis\enquiryController@table');
 
 //UKMSC
 Route::post('/ukmsc_analytic','ukmsc\ukmsc_analyticController@table');
+
+////////////////////////////////////MEDICAL RECORDS//////////////////////////////////////////////////
+////////patmast medical record////////////
+Route::get('/pat_mast_MR','hisdb\PatmastMRController@show');
+Route::get('/pat_mast_MR/get_entry','hisdb\PatmastMRController@get_entry');
+Route::get('/pat_mast_MR/table','hisdb\PatmastMRController@table');
+Route::post('/pat_mast_MR/post_entry','hisdb\PatmastMRController@post_entry');
+Route::get('/pat_mast_MR/post_entry','hisdb\PatmastMRController@post_entry');
+Route::post('/pat_mast_MR/save_patient','hisdb\PatmastMRController@save_patient');
+Route::post('/pat_mast_MR/save_episode','hisdb\PatmastMRController@save_episode');
+Route::post('/pat_mast_MR/save_adm','hisdb\PatmastMRController@save_adm');
+Route::post('/pat_mast_MR/save_gl','hisdb\PatmastMRController@save_gl');
+Route::post('/pat_mast_MR/new_occup_form','hisdb\PatmastMRController@new_occup_form');
+Route::post('/pat_mast_MR/new_title_form','hisdb\PatmastMRController@new_title_form');
+Route::post('/pat_mast_MR/new_areacode_form','hisdb\PatmastMRController@new_areacode_form');
+Route::post('/pat_mast_MR/new_relationship_form','hisdb\PatmastMRController@new_relationship_form');
+Route::post('/pat_mast_MR/auto_save','hisdb\PatmastMRController@auto_save');
+Route::get('/pat_mast_MR/patlabel','hisdb\PatmastMRController@patlabel');
+
+//// Nursing ED MR (Triage Info) page ///
+Route::get('/nursingED_MR','hisdb\NursingEDMRController@show');
+Route::get('/nursingED_MR/table','hisdb\NursingEDMRController@table');
+Route::post('/nursingED_MR/form','hisdb\NursingEDMRController@form');
+
+//// Nursing MR (Triage Info) page ///
+Route::get('/nursing_MR','hisdb\NursingMRController@show');
+Route::get('/nursing_MR/table','hisdb\NursingMRController@table');
+Route::post('/nursing_MR/form','hisdb\NursingMRController@form');
+
+//// Nursing Action Plan MR page ///
+Route::get('/nursingActionPlan_MR','hisdb\NursingActionPlanMRController@show');
+Route::get('/nursingActionPlan_MR/table','hisdb\NursingActionPlanMRController@table');
+Route::post('/nursingActionPlan_MR/form','hisdb\NursingActionPlanMRController@form');
+Route::get('/nursingActionPlan_MR/treatment_chart','hisdb\NursingActionPlanMRController@treatment_chart');
+Route::get('/nursingActionPlan_MR/observation_chart','hisdb\NursingActionPlanMRController@observation_chart');
+Route::get('/nursingActionPlan_MR/feeding_chart','hisdb\NursingActionPlanMRController@feeding_chart');
+Route::get('/nursingActionPlan_MR/imgDiag_chart','hisdb\NursingActionPlanMRController@imgDiag_chart');
+Route::get('/nursingActionPlan_MR/bloodTrans_chart','hisdb\NursingActionPlanMRController@bloodTrans_chart');
+Route::get('/nursingActionPlan_MR/exams_chart','hisdb\NursingActionPlanMRController@exams_chart');
+Route::get('/nursingActionPlan_MR/procedure_chart','hisdb\NursingActionPlanMRController@procedure_chart');
+
+//// Nursing Note MR page ///
+Route::get('/nursingnote_MR','hisdb\NursingNoteMRController@show');
+Route::get('/nursingnote_MR/table','hisdb\NursingNoteMRController@table');
+Route::post('/nursingnote_MR/form','hisdb\NursingNoteMRController@form');
+Route::get('/nursingnote_MR/invChart_chart','hisdb\InvChartMRController@invChart_chart');
+Route::get('/nursingnote_MR/fitchart_chart','hisdb\NursingNoteMRController@fitchart_chart');
+Route::get('/nursingnote_MR/circulation_chart','hisdb\NursingNoteMRController@circulation_chart');
+Route::get('/nursingnote_MR/slidingScale_chart','hisdb\NursingNoteMRController@slidingScale_chart');
+Route::get('/nursingnote_MR/othersChart_chart','hisdb\NursingNoteMRController@othersChart_chart');
+Route::get('/nursingnote_MR/bladder_chart','hisdb\NursingNoteMRController@bladder_chart');
+Route::get('/nursingnote_MR/morsefallscale_chart','hisdb\MorseFallScaleMRController@morsefallscale_chart');
+Route::post('/glasgow_MR/form','hisdb\GlasgowMRController@form');
+Route::get('/glasgow_MR/table','hisdb\GlasgowMRController@table');
+Route::get('/glasgow_MR/glasgow_chart','hisdb\GlasgowMRController@glasgow_chart');
+Route::post('/pivc_MR/form','hisdb\PivcMRController@form');
+Route::get('/pivc_MR/table','hisdb\PivcMRController@table');
+Route::get('/pivc_MR/pivc_chart','hisdb\PivcMRController@pivc_chart');
+Route::post('/morsefallscale_MR/form','hisdb\MorseFallScaleMRController@form');
+Route::get('/morsefallscale_MR/table','hisdb\MorseFallScaleMRController@table');
+Route::post('/thrombophlebitis_MR/form','hisdb\ThrombophlebitisMRController@form');
+Route::get('/thrombophlebitis_MR/table','hisdb\ThrombophlebitisMRController@table');
+Route::get('/thrombophlebitis_MR/thrombophlebitis_chart','hisdb\ThrombophlebitisMRController@thrombophlebitis_chart');
+
+//// Antenatal MR page ///
+Route::get('/antenatal_MR','hisdb\AntenatalMRController@show');
+Route::get('/antenatal_MR/table','hisdb\AntenatalMRController@table');
+Route::post('/antenatal_MR/form','hisdb\AntenatalMRController@form');
+Route::get('/antenatal_MR','hisdb\AntenatalMRController@chart');
+
+//// Paediatric MR page ///
+Route::get('/paediatric_MR','hisdb\PaediatricMRController@show');
+Route::get('/paediatric_MR/table','hisdb\PaediatricMRController@table');
+Route::post('/paediatric_MR/form','hisdb\PaediatricMRController@form');
+
+//// Client Progress Note MR (Doctor Note) page ///
+Route::get('/clientprogressnote_MR','hisdb\ClientProgressNoteMRController@show');
+Route::get('/clientprogressnote_MR/table','hisdb\ClientProgressNoteMRController@table');
+Route::post('/clientprogressnote_MR/form','hisdb\ClientProgressNoteMRController@form');
+Route::get('/clientprogressnote_MR/refLetterClientProgNote_chart','hisdb\ClientProgressNoteMRController@refLetterClientProgNote_chart');
+
+//// Client Progress Note MR (Doctor Note (Referral)) page ///
+Route::get('/clientprogressnoteref_MR','hisdb\ClientProgressNoteRefMRController@show');
+Route::get('/clientprogressnoteref_MR/table','hisdb\ClientProgressNoteRefMRController@table');
+Route::post('/clientprogressnoteref_MR/form','hisdb\ClientProgressNoteRefMRController@form');
+
+//// Doctor Note MR page ///
+Route::get('/doctornote_MR','hisdb\DoctorNoteMRController@show');
+Route::get('/bpgraph_MR','hisdb\DoctorNoteMRController@bpgraph');
+Route::get('/iograph_MR','hisdb\DoctorNoteMRController@iograph');
+Route::get('/doctornote_MR/table','hisdb\DoctorNoteMRController@table');
+Route::post('/doctornote_MR/form','hisdb\DoctorNoteMRController@form');
+Route::get('/doctornote_MR/showpdf','hisdb\DoctorNoteMRController@showpdf');
+Route::get('/doctornote_MR/otbook_chart','hisdb\DoctorNoteMRController@otbook_chart');
+Route::get('/doctornote_MR/radClinic_chart','hisdb\DoctorNoteMRController@radClinic_chart');
+Route::get('/doctornote_MR/mri_chart','hisdb\DoctorNoteMRController@mri_chart');
+Route::get('/doctornote_MR/physio_chart','hisdb\DoctorNoteMRController@physio_chart');
+Route::get('/doctornote_MR/dressing_chart','hisdb\DoctorNoteMRController@dressing_chart');
+Route::get('/doctornote_MR/preContrast_chart','hisdb\DoctorNoteMRController@preContrast_chart');
+Route::get('/doctornote_MR/consentForm_chart','hisdb\DoctorNoteMRController@consentForm_chart');
+
+//// Request For MR page ///
+Route::get('/requestfor_MR','hisdb\RequestForMRController@show');
+Route::get('/requestfor_MR/table','hisdb\RequestForMRController@table');
+Route::post('/requestfor_MR/form','hisdb\RequestForMRController@form');
+Route::get('/requestfor_MR/showpdf','hisdb\RequestForMRController@showpdf');
+
+//// Dietetic Care Notes MR page ///
+Route::get('/dieteticCareNotes_MR','hisdb\DieteticCareNotesMRController@show');
+Route::get('/dieteticCareNotes_MR/table','hisdb\DieteticCareNotesMRController@table');
+Route::post('/dieteticCareNotes_MR/form','hisdb\DieteticCareNotesMRController@form');
+
+//// Diet Order MR page ///
+Route::get('/dietorder_MR','hisdb\DietOrderMRController@show');
+Route::get('/dietorder_MR/table','hisdb\DietOrderMRController@table');
+Route::post('/dietorder_MR/form','hisdb\DietOrderMRController@form');
+
+//// Order Communication MR page ///
+Route::get('/ordcom_MR','hisdb\OrdcomMRController@show');
+Route::get('/ordcom_MR/table','hisdb\OrdcomMRController@table');
+Route::post('/ordcom_MR/form','hisdb\OrdcomMRController@form');
+
+//// Discharge page OP MR ///
+Route::get('/discharge_MR','hisdb\DischargeMRController@show');
+Route::get('/discharge_MR/table','hisdb\DischargeMRController@table');
+Route::post('/discharge_MR/form','hisdb\DischargeMRController@form');
+Route::get('/discharge_MR/showpdf','hisdb\DischargeMRController@showpdf');
+
+////////// EMERGENCY MR //////////////////////
+Route::get('/ptcare_doctornote_MR','patientcare\DoctornoteMRController@index');
+Route::get('/ptcare_doctornote_MR/table','patientcare\DoctornoteMRController@table');
+Route::post('/ptcare_doctornote_MR/form','patientcare\DoctornoteMRController@form');
+Route::post('/ptcare_doctornote_MR_transaction_save', "patientcare\DoctornoteMRController@transaction_save");
+
+Route::get('/ptcare_nursing_MR','patientcare\NursingMRController@show');
+Route::get('/ptcare_nursing_MR/table','patientcare\NursingMRController@table');
+Route::post('/ptcare_nursing_MR/form','patientcare\NursingMRController@form');
+
+//////////////////OT MANAGEMENT IP/////////////////////
+//// OT Management MR IP page ////
+Route::get('/otmanagement_MR_IP','hisdb\OTManagementMRIPController@index');
+Route::get('/otmanagement_MR_IP/table','hisdb\OTManagementMRIPController@table');
+Route::post('/otmanagement_MR_IP/form','hisdb\OTManagementMRIPController@form');
+
+//// Preoperative MR IP page ////
+Route::get('/preoperative_MR_IP','hisdb\PreoperativeMRIPController@show');
+Route::get('/preoperative_MR_IP/table','hisdb\PreoperativeMRIPController@table');
+Route::post('/preoperative_MR_IP/form','hisdb\PreoperativeMRIPController@form');
+Route::get('/preoperative_MR_IP/get_entry','hisdb\PreoperativeMRIPController@get_entry');
+
+// //// Preoperative (daycare)page ////
+// Route::get('/preoperativeDC','hisdb\PreoperativeDCController@show');
+// Route::get('/preoperativeDC/table','hisdb\PreoperativeDCController@table');
+// Route::post('/preoperativeDC/form','hisdb\PreoperativeDCController@form');
+// Route::get('/preoperativeDC/get_entry','hisdb\PreoperativeDCController@get_entry');
+
+// //// Operating Team page ////
+// Route::get('/oper_team','hisdb\OperTeamController@show');
+// Route::get('/oper_team/table','hisdb\OperTeamController@table');
+// Route::post('/oper_team/form','hisdb\OperTeamController@form');
+
+// //// OT Swab page ////
+// Route::get('/otswab','hisdb\OTSwabController@show');
+// Route::get('/otswab/table','hisdb\OTSwabController@table');
+// Route::post('/otswab/form','hisdb\OTSwabController@form');
+
+// //// OT Time page ////
+// Route::get('/ottime','hisdb\OTTimeController@show');
+// Route::get('/ottime/table','hisdb\OTTimeController@table');
+// Route::post('/ottime/form','hisdb\OTTimeController@form');
+
+// //// OT Discharge page ////
+// Route::get('/otdischarge','hisdb\OTDischargeController@show');
+// Route::get('/otdischarge/table','hisdb\OTDischargeController@table');
+// Route::post('/otdischarge/form','hisdb\OTDischargeController@form');
+
+// //// Endoscopy Notes page ////
+// Route::get('/endoscopyNotes','hisdb\EndoscopyNotesController@show');
+// Route::get('/endoscopyNotes/table','hisdb\EndoscopyNotesController@table');
+// Route::post('/endoscopyNotes/form','hisdb\EndoscopyNotesController@form');
+// Route::get('/endoscopyNotes/endoscopystomach_chart','hisdb\EndoscopyNotesController@endoscopystomach_chart');
+// Route::get('/endoscopyNotes/endoscopyintestine_chart','hisdb\EndoscopyNotesController@endoscopyintestine_chart');
+
+// //// OT Status setup page ///
+// Route::get('/ot_status','hisdb\OTStatusController@show');
+// Route::get('/ot_status/table','hisdb\OTStatusController@table');
+// Route::post('/ot_status/form','hisdb\OTStatusController@form');
+// Route::get('/ot_status/form','hisdb\OTStatusController@form');
+// // Route::post('/otstatusdetail/form','hisdb\OTStatusDetailController@form');
+
+// //// OT Type setup page ///
+// Route::get('/ot_type','hisdb\OTTypeController@show');
+// Route::get('/ot_type/table','hisdb\OTTypeController@table');
+// Route::post('/ot_type/form','hisdb\OTTypeController@form');
+// Route::get('/ot_type/form','hisdb\OTTypeController@form');
+// // Route::post('/ot_typedetail/form','hisdb\OTTypeDetailController@form');
+
+//// Operation Record page ////
+// Route::get('/otmanagement_div','hisdb\OTManagement_divController@show');
+// Route::get('/otmanagement_div/table','hisdb\OTManagement_divController@table');
+// Route::post('/otmanagement_div/form','hisdb\OTManagement_divController@form');
