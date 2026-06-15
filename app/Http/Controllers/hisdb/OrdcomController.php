@@ -5455,12 +5455,16 @@ class OrdcomController extends defaultController
                         ->where('source','PB')
                         ->where('trantype','note');
 
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+
         if($footer_->exists()){
             $footer_ = $footer_->first();
             $footer = $footer_->description;
         } 
 
-        return view('hisdb.ordcom.cb_summary_detail',compact('patmast_episode','chargetrx','chgclass','invgroup','username','footer'));
+        return view('hisdb.ordcom.cb_summary_detail',compact('patmast_episode','chargetrx','chgclass','invgroup','username','footer','company'));
     }
 
     public function showpdf_summ(Request $request){
@@ -5554,12 +5558,16 @@ class OrdcomController extends defaultController
                         ->where('source','PB')
                         ->where('trantype','note');
 
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+
         if($footer_->exists()){
             $footer_ = $footer_->first();
             $footer = $footer_->description;
         } 
 
-        return view('hisdb.ordcom.cb_summary_summ',compact('patmast_episode','chargetrx','chgclass','invgroup','username','footer'));
+        return view('hisdb.ordcom.cb_summary_summ',compact('patmast_episode','chargetrx','chgclass','invgroup','username','footer','company'));
     }
 
     public function showpdf_summ_final(Request $request){

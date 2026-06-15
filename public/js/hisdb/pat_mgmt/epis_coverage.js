@@ -103,7 +103,7 @@ $(document).ready(function () {
 	// });
 
 	$("#tabcoverage").on("shown.bs.collapse", function(){
-		var lastrowdata = getrow_bootgrid();
+		var lastrowdata = getrow_bootgrid_();
 		$("#jqGrid_epno_coverage").jqGrid ('setGridWidth', Math.floor($("#jqGrid_epno_coverage_c")[0].offsetWidth-$("#jqGrid_epno_coverage_c")[0].offsetLeft-0));
 		$('#jqGridPager_gletitem_left > table').eq(0).hide();
 		urlParam_epno_coverage.mrn = lastrowdata.MRN;

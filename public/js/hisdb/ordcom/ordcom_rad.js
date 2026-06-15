@@ -726,6 +726,8 @@ var dialog_chgcode_rad = new ordialog(
 				deptcode : $("#raddept_dflt").val(),
 				filterCol : ['cm.chggroup'],
 				filterVal : [$('#ordcomtt_rad').val()],
+				mrn : urlParam_rad.mrn,
+				episno : urlParam_rad.episno,
 			},
 		ondblClickRow:function(event){
 			if(event.type == 'keydown'){
@@ -844,6 +846,8 @@ var dialog_chgcode_rad = new ordialog(
 			dialog_chgcode_rad.urlParam.chgcode = $("#jqGrid_rad input[name='chgcode']").val();
 			dialog_chgcode_rad.urlParam.filterCol = ['cm.chggroup'];
 			dialog_chgcode_rad.urlParam.filterVal = [$('#ordcomtt_rad').val()];
+			dialog_chgcode_rad.urlParam.mrn = urlParam_rad.mrn;
+			dialog_chgcode_rad.urlParam.episno = urlParam_rad.episno;
 		},
 		close: function(obj){
 			$("#jqGrid_rad input[name='quantity']").focus().select();

@@ -724,6 +724,8 @@ var dialog_chgcode_rehab = new ordialog(
 				deptcode : $("#rehabdept_dflt").val(),
 				filterCol : ['cm.chggroup'],
 				filterVal : [$('#ordcomtt_rehab').val()],
+				mrn : urlParam_rehab.mrn,
+				episno : urlParam_rehab.episno,
 			},
 		ondblClickRow:function(event){
 			if(event.type == 'keydown'){
@@ -842,6 +844,8 @@ var dialog_chgcode_rehab = new ordialog(
 			dialog_chgcode_rehab.urlParam.chgcode = $("#jqGrid_rehab input[name='chgcode']").val();
 			dialog_chgcode_rehab.urlParam.filterCol = ['cm.chggroup'];
 			dialog_chgcode_rehab.urlParam.filterVal = [$('#ordcomtt_rehab').val()];
+			dialog_chgcode_rehab.urlParam.mrn = urlParam_rehab.mrn;
+			dialog_chgcode_rehab.urlParam.episno = urlParam_rehab.episno;
 		},
 		close: function(obj){
 			$("#jqGrid_rehab input[name='quantity']").focus().select();

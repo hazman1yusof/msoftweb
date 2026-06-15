@@ -724,6 +724,8 @@ var dialog_chgcode_diet = new ordialog(
 				deptcode : $("#dietdept_dflt").val(),
 				filterCol : ['cm.chggroup'],
 				filterVal : [$('#ordcomtt_diet').val()],
+				mrn : urlParam_diet.mrn,
+				episno : urlParam_diet.episno,
 			},
 		ondblClickRow:function(event){
 			if(event.type == 'keydown'){
@@ -843,6 +845,8 @@ var dialog_chgcode_diet = new ordialog(
 			dialog_chgcode_diet.urlParam.chgcode = $("#jqGrid_diet input[name='chgcode']").val();
 			dialog_chgcode_diet.urlParam.filterCol = ['cm.chggroup'];
 			dialog_chgcode_diet.urlParam.filterVal = [$('#ordcomtt_diet').val()];
+			dialog_chgcode_diet.urlParam.mrn = urlParam_diet.mrn;
+			dialog_chgcode_diet.urlParam.episno = urlParam_diet.episno;
 		},
 		close: function(obj){
 			$("#jqGrid_diet input[name='quantity']").focus().select();

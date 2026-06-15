@@ -587,6 +587,8 @@ var dialog_chgcode_dfee = new ordialog(
 				price : 'PRICE2',
 				filterCol : ['cm.chggroup'],
 				filterVal : [$('#ordcomtt_dfee').val()],
+				mrn : urlParam_dfee.mrn,
+				episno : urlParam_dfee.episno,
 			},
 		ondblClickRow:function(event){
 			if(event.type == 'keydown'){
@@ -689,6 +691,8 @@ var dialog_chgcode_dfee = new ordialog(
 			dialog_chgcode_dfee.urlParam.chgcode = $("#jqGrid_dfee input[name='chgcode']").val();
 			dialog_chgcode_dfee.urlParam.filterCol = ['cm.chggroup'];
 			dialog_chgcode_dfee.urlParam.filterVal = [$('#ordcomtt_dfee').val()];
+			dialog_chgcode_dfee.urlParam.mrn = urlParam_dfee.mrn;
+			dialog_chgcode_dfee.urlParam.episno = urlParam_dfee.episno;
 		},
 		close: function(obj_){
 			let id_optid = obj_.id_optid;

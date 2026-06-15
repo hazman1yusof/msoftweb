@@ -738,6 +738,8 @@ var dialog_chgcode_disp = new ordialog(
 				filterVal : [],
 				whereInCol : ['cm.chggroup'],
 				whereInVal : [$('#ordcomtt_disp').val()],
+				mrn : urlParam_disp.mrn,
+				episno : urlParam_disp.episno,
 			},
 		ondblClickRow:function(event){
 			if(event.type == 'keydown'){
@@ -863,6 +865,8 @@ var dialog_chgcode_disp = new ordialog(
 			dialog_chgcode_disp.urlParam.filterVal = [];
 			dialog_chgcode_disp.urlParam.whereInCol = ['cm.chggroup'];
 			dialog_chgcode_disp.urlParam.whereInVal = [$('#ordcomtt_disp').val()];
+			dialog_chgcode_disp.urlParam.mrn = urlParam_disp.mrn;
+			dialog_chgcode_disp.urlParam.episno = urlParam_disp.episno;
 		},
 		close: function(obj){
 			$("#jqGrid_disp input[name='quantity']").focus().select();

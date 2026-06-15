@@ -736,6 +736,8 @@ var dialog_chgcode_oth = new ordialog(
 				filterVal : [],
 				whereNotInCol : ['cm.chggroup'],
 				whereNotInVal : [[$('#ordcomtt_oth').val()]],
+				mrn : urlParam_oth.mrn,
+				episno : urlParam_oth.episno,
 			},
 		ondblClickRow:function(event){
 			if(event.type == 'keydown'){
@@ -856,6 +858,8 @@ var dialog_chgcode_oth = new ordialog(
 			dialog_chgcode_oth.urlParam.filterVal = [];
 			dialog_chgcode_oth.urlParam.whereNotInCol = ['cm.chggroup'];
 			dialog_chgcode_oth.urlParam.whereNotInVal = [[$('#ordcomtt_oth').val()]];
+			dialog_chgcode_oth.urlParam.mrn = urlParam_oth.mrn;
+			dialog_chgcode_oth.urlParam.episno = urlParam_oth.episno;
 		},
 		close: function(obj){
 			$("#jqGrid_oth input[name='quantity']").focus().select();

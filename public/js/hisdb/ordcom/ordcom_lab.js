@@ -728,6 +728,8 @@ var dialog_chgcode_lab = new ordialog(
 				deptcode : $("#labdept_dflt").val(),
 				filterCol : ['cm.chggroup'],
 				filterVal : [$('#ordcomtt_lab').val()],
+				mrn : urlParam_lab.mrn,
+				episno : urlParam_lab.episno,
 			},
 		ondblClickRow:function(event){
 			if(event.type == 'keydown'){
@@ -846,6 +848,8 @@ var dialog_chgcode_lab = new ordialog(
 			dialog_chgcode_lab.urlParam.chgcode = $("#jqGrid_lab input[name='chgcode']").val();
 			dialog_chgcode_lab.urlParam.filterCol = ['cm.chggroup'];
 			dialog_chgcode_lab.urlParam.filterVal = [$('#ordcomtt_lab').val()];
+			dialog_chgcode_lab.urlParam.mrn = urlParam_lab.mrn;
+			dialog_chgcode_lab.urlParam.episno = urlParam_lab.episno;
 		},
 		close: function(obj){
 			$("#jqGrid_lab input[name='quantity']").focus().select();

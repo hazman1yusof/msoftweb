@@ -768,6 +768,8 @@ var dialog_chgcode_pkg = new ordialog(
 				deptcode : $("#raddept_dflt").val(),
 				filterCol : ['cm.chggroup'],
 				filterVal : [$('#ordcomtt_pkg').val()],
+				mrn : urlParam_pkg.mrn,
+				episno : urlParam_pkg.episno,
 			},
 		ondblClickRow:function(event){
 			if(event.type == 'keydown'){
@@ -886,6 +888,8 @@ var dialog_chgcode_pkg = new ordialog(
 			dialog_chgcode_pkg.urlParam.chgcode = $("#jqGrid_pkg input[name='chgcode']").val();
 			dialog_chgcode_pkg.urlParam.filterCol = ['cm.chggroup'];
 			dialog_chgcode_pkg.urlParam.filterVal = [$('#ordcomtt_pkg').val()];
+			dialog_chgcode_pkg.urlParam.mrn = urlParam_pkg.mrn;
+			dialog_chgcode_pkg.urlParam.episno = urlParam_pkg.episno;
 		},
 		close: function(obj){
 			$("#jqGrid_pkg input[name='quantity']").focus().select();

@@ -723,6 +723,8 @@ var dialog_chgcode_phys = new ordialog(
 				deptcode : $("#physdept_dflt").val(),
 				filterCol : ['cm.chggroup'],
 				filterVal : [$('#ordcomtt_phys').val()],
+				mrn : urlParam_phys.mrn,
+				episno : urlParam_phys.episno,
 			},
 		ondblClickRow:function(event){
 			if(event.type == 'keydown'){
@@ -841,6 +843,8 @@ var dialog_chgcode_phys = new ordialog(
 			dialog_chgcode_phys.urlParam.chgcode = $("#jqGrid_phys input[name='chgcode']").val();
 			dialog_chgcode_phys.urlParam.filterCol = ['cm.chggroup'];
 			dialog_chgcode_phys.urlParam.filterVal = [$('#ordcomtt_phys').val()];
+			dialog_chgcode_phys.urlParam.mrn = urlParam_phys.mrn;
+			dialog_chgcode_phys.urlParam.episno = urlParam_phys.episno;
 		},
 		close: function(obj){
 			$("#jqGrid_phys input[name='quantity']").focus().select();
