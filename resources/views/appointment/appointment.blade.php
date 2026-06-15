@@ -464,7 +464,7 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/requestfor.js?v=1.5') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/admhandoverAppt.js?v=1.1') }}"></script>
 
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_main.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_main.js?v=1.3') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_phar.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_disp.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_lab.js?v=1.2') }}"></script>

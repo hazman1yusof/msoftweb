@@ -346,12 +346,17 @@ function final_bill(grid,param){
 			$('#tabcoverage').collapse('hide');
 			refreshGrid(grid, param);
 		}).done(function (data) {
-			$('#tabcoverage').collapse('hide');
-			$("#grid-command-buttons").bootgrid('reload');
-			window.scrollTo(0,0);
-			$('#jqGrid_ordcom_panel').collapse('hide');
-			// refreshGrid(grid, param);
-			window.open(url, '_blank').focus();
+			if($('#ordcom_phase').val() == '2'){
+				window.open(url, '_blank').focus();
+				get_ordcom_totamount();
+			}else{
+				$('#tabcoverage').collapse('hide');
+				$("#grid-command-buttons").bootgrid('reload');
+				window.scrollTo(0,0);
+				$('#jqGrid_ordcom_panel').collapse('hide');
+				// refreshGrid(grid, param);
+				window.open(url, '_blank').focus();
+			}
 		});	
 	}
 }
