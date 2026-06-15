@@ -323,7 +323,7 @@ var myEditOptions_rad = {
 			return false;
 		}
 
-		let rowdata = getrow_bootgrid();
+		let rowdata = getrow_bootgrid_();
 
 		let editurl = "./ordcom/form?"+
 			$.param({
@@ -505,7 +505,7 @@ var myEditOptions_rad_edit = {
 			return false;
 		}
 
-		let rowdata = getrow_bootgrid();
+		let rowdata = getrow_bootgrid_();
 
 		let editurl = "./ordcom/form?"+
 			$.param({

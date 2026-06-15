@@ -324,7 +324,7 @@ var myEditOptions_disp = {
 			return false;
 		}
 
-		let rowdata = getrow_bootgrid();
+		let rowdata = getrow_bootgrid_();
 
 		let editurl = "./ordcom/form?"+
 			$.param({
@@ -515,7 +515,7 @@ var myEditOptions_disp_edit = {
 			return false;
 		}
 
-		let rowdata = getrow_bootgrid();
+		let rowdata = getrow_bootgrid_();
 
 		let editurl = "./ordcom/form?"+
 			$.param({

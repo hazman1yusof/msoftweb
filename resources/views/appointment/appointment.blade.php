@@ -464,19 +464,19 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/requestfor.js?v=1.5') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/admhandoverAppt.js?v=1.1') }}"></script>
 
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_main.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_phar.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_disp.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_lab.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_rad.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_dfee.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_phys.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_rehab.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_diet.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_oth.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_pkg.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/pat_mgmt/epis_payer.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/pat_mgmt/epis_coverage.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_main.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_phar.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_disp.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_lab.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_rad.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_dfee.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_phys.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_rehab.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_diet.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_oth.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_pkg.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/pat_mgmt/epis_payer.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/pat_mgmt/epis_coverage.js?v=1.2') }}"></script>
 @endsection
 
 
