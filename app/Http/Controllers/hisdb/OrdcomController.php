@@ -5371,13 +5371,17 @@ class OrdcomController extends defaultController
                         ->where('source','PB')
                         ->where('trantype','note');
 
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+
         if($footer_->exists()){
             $footer_ = $footer_->first();
             $footer = $footer_->description;
         }
         // dd($epispayer);
 
-        return view('hisdb.ordcom.final_bill_invoice',compact('billdet','epispayer','invgroup','chgclass','username','footer','pres_','psno'));
+        return view('hisdb.ordcom.final_bill_invoice',compact('billdet','epispayer','invgroup','chgclass','username','footer','pres_','psno','company'));
     }
 
     public function showpdf_detail(Request $request){
