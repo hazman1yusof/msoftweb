@@ -141,7 +141,7 @@ i.fa {
 <div id="etiqa_dialog" title="Etiqa">
 		<div class="panel panel-default">
 			<div class="panel-body">
-				<iframe id='etiqa_iframe' src='' style="height: 100%;width: 100%; border: none;"></iframe>
+				<iframe id='etiqa_iframe' src='' style="height: calc(70vh);width: 100%; border: none;"></iframe>
 			</div>
 		</div>
 	</div>
