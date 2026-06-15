@@ -3737,14 +3737,14 @@ class PatmastController extends defaultController
                             $join = $join->where('pt.compcode', '=', session('compcode'));
                             $join = $join->on('pt.itemcode', '=', 'trx.chgcode');
                             $join = $join->on('pt.uomcode', '=', 'trx.uom_recv');
-                            $join = $join->where('pt.unit', '=', session('unit'));
+                            // $join = $join->where('pt.unit', '=', session('unit'));
                         });
 
         $table_chgtrx = $table_chgtrx->leftjoin('hisdb.chgmast as cm', function($join) use ($request){
                             $join = $join->where('cm.compcode', '=', session('compcode'));
                             $join = $join->on('cm.chgcode', '=', 'trx.chgcode');
                             $join = $join->on('cm.uom', '=', 'trx.uom');
-                            $join = $join->where('cm.unit', '=', session('unit'));
+                            // $join = $join->where('cm.unit', '=', session('unit'));
                         });
 
         $table_chgtrx = $table_chgtrx->leftjoin('hisdb.dose as dos', function($join) use ($request){
