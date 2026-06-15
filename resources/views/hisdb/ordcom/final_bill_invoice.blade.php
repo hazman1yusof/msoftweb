@@ -88,7 +88,7 @@
                 ]
             },
             pageSize: 'A4',
-            pageMargins: [30, 60, 20, 50],
+            pageMargins: [30, 95, 20, 50],
             content: make_content(),
 
             //     [
