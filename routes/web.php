@@ -943,6 +943,11 @@ Route::get('/reminder','finance\ReminderController@show');
 Route::get('/reminder/table','finance\ReminderController@table');
 Route::post('/reminder/form','finance\ReminderController@form');
 
+//// claimBatch ////
+Route::get('/claimBatch','finance\ClaimBatchController@show');
+Route::get('/claimBatch/table','finance\ClaimBatchController@table');
+Route::post('/claimBatch/form','finance\ClaimBatchController@form');
+
 //// Deposit Type setup ///
 Route::get('/depositType','finance\DepositTypeController@show');
 Route::get('/depositType/table','finance\DepositTypeController@table');

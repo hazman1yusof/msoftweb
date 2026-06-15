@@ -136,6 +136,13 @@ $(document).ready(function () {
 		window.open('./ordcom/table?action=showpdf_summ_final&mrn='+mrn+'&episno='+episno+'&lineno_='+lineno_, '_blank');
 	});
 
+	$('#generate_txt').click(function(){
+		var mrn = selrowData('#jqGrid').mrn;
+		var episno = selrowData('#jqGrid').episno;
+		var lineno_ = selrowData('#jqGrid').lineno_;
+		var invno = selrowData('#jqGrid').invno;
+		window.open('./reprintBill/table?action=generate_txt&mrn='+mrn+'&episno='+episno+'&lineno_='+lineno_+'&invno='+invno, '_blank');
+	});
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 

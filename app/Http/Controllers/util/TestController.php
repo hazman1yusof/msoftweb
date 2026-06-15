@@ -118,8 +118,8 @@ class TestController extends defaultController
                 return $this->itemcode_avgcost_ivdspdt($request);
             case 'betulkan_stockexp_semua':
                 return $this->betulkan_stockexp_semua($request);
-            case 'len_len':
-                return $this->len_len($request);
+            case 'etiqa_tukar':
+                return $this->etiqa_tukar($request);
             case 'apalloc_osamt_in':
                 return $this->apalloc_osamt_in($request);
             case 'apalloc_osamt_cn':
@@ -9682,6 +9682,124 @@ class TestController extends defaultController
                 ->update([
                     'description' => $desc
                 ]);
+        }
+    }
+
+    public function etiqa_tukar(Request $request){
+        $dbacthdr = DB::table('debtor.dbacthdr')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','pb')
+                        ->where('trantype','in')
+                        ->where('debtorcode','ETIQA MAYBANK')
+                        ->whereDate('posteddate','2026-03-31')
+                        ->get();
+
+        $mykad = ['930819115609','860808115119','840926115584','861218296065','130912060221','250129060218','040715110454','971018045672','250123060567','691204035113','870614065749'];
+
+        foreach ($dbacthdr as $index => $obj) {
+            $patmast = DB::table('hisdb.pat_mast')
+                        ->where('compcode',session('compcode'))
+                        ->where('newmrn',$obj->mrn)
+                        ->first();
+
+            DB::table('hisdb.pat_mast')
+                        ->where('compcode',session('compcode'))
+                        ->where('newmrn',$obj->mrn)
+                        ->update([
+                            'mrn' => $obj->mrn,
+                            'episno' => $obj->episno,
+                            'newic' => $mykad[$index],
+                            'staffid' => $mykad[$index]
+                        ]);
+
+            $episode = DB::table('hisdb.episode')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn',$obj->mrn)
+                        ->where('episno',$obj->episno);
+
+            if(!$episode->exists()){
+                DB::table('hisdb.episode')
+                    ->insert([
+                        'compcode' => $obj->compcode,
+                        'mrn' => $obj->mrn,
+                        'episno' => $obj->episno,
+                        'admsrccode' => 'APPT',
+                        'epistycode' => 'IP',
+                        'case_code' => 'PSI',
+                        'admdoctor' => 'NHISHAM',
+                        'pay_type' => 'GOV',
+                        'pyrmode' => 'GUARANTEE LETTER',
+                        'depositreq' => 0.00,
+                        'deposit' => 0.00,
+                        'billtype' => 'IP',
+                        'episactive' => '1',
+                        'adddate' => '2026-03-31',
+                        'adduser' => 'SYSTEM',
+                        'reg_by' => 'SYSTEM',
+                        'reg_date' => '2026-03-31',
+                        'reg_time' => '15:07:00',
+                        'lastupdate' => '2026-03-31',
+                        'lastuser' => 'SYSTEM',
+                        'lasttime' => '15:07:00',
+                        'regdept' => 'PHY',
+                        'newcaseP' => 1,
+                        'payer' => 'ETIQA MAYBANK',
+                        'stats_rehab' => 'WAITING',
+                        'stats_physio' => 'WAITING',
+                        'stats_diet' => 'WAITING'
+                    ]);
+            }
+
+            $epispayer = DB::table('hisdb.epispayer')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn',$obj->mrn)
+                        ->where('episno',$obj->episno)
+                        ->where('payercode',$obj->payercode);
+
+            if(!$epispayer->exists()){
+                DB::table('hisdb.epispayer')
+                    ->insert([
+                        'compcode' => $obj->compcode,
+                        'mrn' => $obj->mrn,
+                        'episno' => $obj->episno,
+                        'payercode' => $obj->payercode,
+                        'lineno' => $obj->lineno_,
+                        'epistycode' => 'IP',
+                        'pay_type' => 'GOV',
+                        'refno' => $obj->reference,
+                        'pyrcharge' => '1',
+                        'pyrcrdtlmt' => '1',
+                        'pyrlmtamt' => '9999999.99',
+                        'totbal' => '9999999.99',
+                        'allgroup' => '1',
+                        'alldept' => '1',
+                        'adddate' => '2026-03-31',
+                        'adduser' => 'SYSTEM',
+                        'lastupdate' => '2026-03-31',
+                        'lastuser' => 'SYSTEM',
+                        'chgrate' => '100.00'
+                    ]);
+            }
+
+            $guarantee = DB::table('hisdb.guarantee')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn',$obj->mrn)
+                        ->where('episno',$obj->episno)
+                        ->where('debtorcode',$obj->payercode);
+
+            if(!$guarantee->exists()){
+                DB::table('hisdb.guarantee')
+                    ->insert([
+                        'compcode' => $obj->compcode,
+                        'debtorcode' => $obj->payercode,
+                        'staffid' => $mykad[$index],
+                        'refno' =>  $obj->reference,
+                        'name' => $patmast->Name,
+                        'mrn' => $obj->mrn,
+                        'episno' => $obj->episno,
+                        'lineno_' => $obj->lineno_
+                    ]);
+            }
         }
     }
 }

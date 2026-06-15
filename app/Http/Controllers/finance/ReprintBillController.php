@@ -40,6 +40,8 @@ class ReprintBillController extends defaultController
                 return $this->acctent_sales($request);
             case 'acctent_cost':
                 return $this->acctent_cost($request);
+            case 'generate_txt':
+                return $this->generate_txt($request);
             default:
                 return 'error happen..';
         }
@@ -265,5 +267,126 @@ class ReprintBillController extends defaultController
         $responce->rows = $array_show;
         
         return json_encode($responce);
+    }
+
+    public function generate_txt(Request $request){
+
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        $invno = $request->invno;
+        $lineno_ = $request->lineno_;
+
+        //CL
+        $patmast = DB::table('hisdb.pat_mast')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn',$mrn)
+                        ->first();
+
+        $episode = DB::table('hisdb.episode')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn',$mrn)
+                        ->where('episno',$episno)
+                        ->first();
+
+        $dbacthdr = DB::table('debtor.dbacthdr')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','PB')
+                        ->where('trantype','IN')
+                        ->where('recstatus','POSTED')
+                        ->where('lineno_',$lineno_)
+                        ->where('mrn',$mrn)
+                        ->where('episno',$episno)
+                        ->where('invno',$invno)
+                        ->first();
+
+        $epispayer = DB::table('hisdb.epispayer')
+                        ->where('compcode',session('compcode'))
+                        ->where('lineno',$lineno_)
+                        ->where('mrn',$mrn)
+                        ->where('episno',$episno)
+                        ->first();
+
+        if($episode->epistycode == 'IP' || $episode->epistycode == 'DP'){
+            $pclaimtype = 'IP';
+            $pservicetype = 'SP';
+        }else{
+            $pclaimtype = 'OP';
+            $pservicetype = 'HP';
+        }
+
+        $cl_output = "H0079|NS||".
+            $patmast->Name."|".
+            $patmast->Newic . "|".
+            "|".
+            $epispayer->refno . "|".
+            $dbacthdr->auditno . "|".
+            $dbacthdr->entrydate. "|".
+            $pclaimtype . "|".
+            $pservicetype . "|".
+            $episode->reg_date. "|".
+            $episode->dischargedate. "|".
+            $dbacthdr->amount . "|"."<br>";
+
+        $billdet = DB::table('hisdb.billdet as bd')
+                        ->select('bd.idno','bd.mrn','bd.episno','bd.billno','bd.invno','bd.billdate','bd.trxdate','bd.billtype','bd.chgcode','bd.chgcode','bd.mmacode','bd.doctorcode','chgm.description','bd.uom','bd.quantity','bd.unitprce','bd.amount','bd.taxamount','bd.discamt','bd.lineno_','bd.chg_class','chgm.invgroup','chgm.chgclass','chgm.chggroup','mm.description as mm_desc')
+                        ->join('hisdb.chgmast as chgm', function($join) use ($mrn,$episno){
+                            $join = $join->where('chgm.compcode',session('compcode'));
+                            $join = $join->on('chgm.chgcode', '=', 'bd.chgcode');
+                            $join = $join->on('chgm.uom', '=', 'bd.uom');
+                        })
+                        ->leftJoin('hisdb.mmamaster as mm', function($join) use ($request){
+                            $join = $join->where('mm.compcode',session('compcode'));
+                            $join = $join->on('mm.mmacode', '=', 'bd.mmacode');
+                        })
+                        ->where('bd.compcode',session('compcode'))
+                        ->where('bd.mrn',$mrn)
+                        ->where('bd.episno',$episno)
+                        ->where('bd.invno',$invno)
+                        ->where('bd.lineno_',$lineno_)
+                        ->where('bd.taxflag',0)
+                        ->where('bd.discflag',0)
+                        // ->where('bd.chg_class','H')
+                        ->get();
+
+        $de_output = "";
+        foreach ($billdet as $obj) {
+            if($obj->chg_class == 'H'){
+                $de_output .= "H0079|".
+                    $dbacthdr->auditno . "|".
+                    $obj->chggroup . "|".
+                    $obj->chgcode . "|".
+                    $obj->description . "|".
+                    $obj->trxdate. "|".
+                    $obj->unitprce. "|".
+                    $obj->quantity. "|".
+                    $obj->amount. "|".
+                    "0.00|".
+                    "SR|".
+                    "0.00|".
+                    $obj->mmacode. "|".
+                    $obj->mm_desc. "|"."<br>";
+            }
+        }
+
+        foreach ($billdet as $obj) {
+            if($obj->chg_class == 'C'){
+                $de_output .= "H0079|".
+                    $dbacthdr->auditno . "|".
+                    $obj->chggroup . "|".
+                    $obj->chgcode . "|".
+                    $obj->description . "|".
+                    $obj->trxdate. "|".
+                    $obj->unitprce. "|".
+                    $obj->quantity. "|".
+                    $obj->amount. "|".
+                    "0.00|".
+                    "SR|".
+                    "0.00|".
+                    $obj->mmacode. "|".
+                    $obj->mm_desc. "|"."<br>";
+            }
+        }
+
+        return view('finance.GL.reprintBill.generate_txt',compact('cl_output','de_output'));
     }
 }
