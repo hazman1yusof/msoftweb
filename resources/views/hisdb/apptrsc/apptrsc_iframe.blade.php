@@ -47,7 +47,8 @@
                         <div class="ui fields">
                             <div class="four wide field">
                                 <label>Resource</label>
-                                <input name="resourcecode" id="resourcecode" type="text" readonly value="{{$apptresrc->resourcecode}}">
+                                <input name="resourcecode" id="resourcecode" type="text" readonly value="{{$apptresrc->resourcecode}}" style="display: none;">
+                                <input name="description" id="description" type="text" readonly value="{{$apptresrc->description}}">
                             </div>
                             <div class="two wide field">
                                 <label>MRN</label>

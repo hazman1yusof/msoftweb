@@ -177,6 +177,7 @@ button#btn_icd,button#btn_mma{
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>								
 								</div>
 								<span class='help-block'></span>
+								<input id="resource_desc" name="resource_desc" type="hidden">
 							</div>
 						</div>
 					</div>
@@ -238,10 +239,16 @@ button#btn_icd,button#btn_mma{
 						<input type="hidden" name="idno" id="idno">
 						<input type="hidden" name="computerid" id="computerid">
 						<div class="panel-body" style="position: relative;" >
-							<div class="form-group">
+							<div class="form-group" style="display: none;">
 								<label for="Doctor" class="col-md-2 control-label">Resource</label>
 								<div class="col-md-3">
 									<input type="text" class="form-control input-sm" placeholder="Doctor" id="doctor" name="doctor" maxlength="12" data-validation="required" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="Description" class="col-md-2 control-label">Resource</label>
+								<div class="col-md-3">
+									<input type="text" class="form-control input-sm" placeholder="Description" id="description" name="description" maxlength="12" data-validation="required" readonly>
 								</div>
 							</div>
 							<div class="form-group">
@@ -512,7 +519,7 @@ button#btn_icd,button#btn_mma{
 	<script src="js/hisdb/pat_mgmt/episode.js"></script>
 
 	
-	<script src="js/hisdb/apptrsc/apptrsc2.js"></script>
+	<script src="js/hisdb/apptrsc/apptrsc2.js?v=1.1"></script>
 	<script src="{{ asset('js/myjs/utility.js') }}"></script>
 
 @endsection
