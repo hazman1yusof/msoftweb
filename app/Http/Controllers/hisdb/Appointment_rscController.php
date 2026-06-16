@@ -55,10 +55,12 @@ class Appointment_rscController extends defaultController
         $apptresrc_all = DB::table('hisdb.apptresrc')
                         ->where('compcode',session('compcode'))
                         ->where('TYPE','OT')
+                        ->where('recstatus','ACTIVE')
                         ->get();
 
         $op_unit = DB::table('hisdb.discipline')
                         ->where('compcode',session('compcode'))
+                        ->where('recstatus','ACTIVE')
                         ->get();
 
         $episode = DB::table('hisdb.episode')
@@ -115,7 +117,7 @@ class Appointment_rscController extends defaultController
 
         $table = DB::table('hisdb.apptbook')
                     ->where('loccode','=',$request->loccode)
-                    ->where('recstatus','=',"A")
+                    ->where('recstatus','=','A')
                     ->where('surgery_date','=', $request->date);
                     // ->get();
 

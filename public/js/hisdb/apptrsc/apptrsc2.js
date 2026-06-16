@@ -75,6 +75,8 @@ $(document).ready(function () {
 
 				let data = selrowData('#' + dialog_name.gridname);
 				$('.fc-myCustomButton-button').show();
+				
+				$("#resource_desc").val(data['description']);
 
 				var apptsession=[
 					{days: 'SUNDAY', timefr1: data.start, timeto1: '12:00:00', timefr2: '12:00:00', timeto2: data.end},
@@ -502,6 +504,7 @@ $(document).ready(function () {
 					console.log(diagnosis+procedure);
 
 					$('#dialogForm #doctor').val(temp);
+					$('#dialogForm #description').val($('#resource_desc').val());
 					$('#apptdatefr_day').val(moment(start).format('YYYY-MM-DD'));
 					$('#diagnosis').text('');
 					$('#procedure').text('');
@@ -579,6 +582,7 @@ $(document).ready(function () {
 					oper = 'edit';
 					let cArm = $('input[name = "cArm"]:checked').val();
 					$('#doctor').val(event.loccode);
+					$('#description').val($('#resource_desc').val());
 					$('#mrn').val(event.mrn);
 					$('#icnum').val(event.icnum);
 					$('#patname').val(event.pat_name);
