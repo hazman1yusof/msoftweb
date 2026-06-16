@@ -117,10 +117,10 @@
 				if(currentPage == 1){
 					var header_tbl_bangi ={
 						columns: [
-						    {image: 'letterhead',style:'header_img',width:200,alignment: 'left'},
+						    {image: 'letterhead',style:'header_img',width:150,alignment: 'left'},
 						    {
 								width: '*',alignment: 'right',
-								text: `UKM Medicare Sdn Bhd (No Pendaftaran : 1524978V) \n Tingkat 7, Pusat Pakar UKM, \n Blok Klinikal, HCTM, \n Jln Yaacob Latif, Bdr Tun Razak, \n 56000 Cheras, Kuala Lumpur. \n 03-91457752 (Kewangan)`,
+                                text: '{{$company->name}}\n{{$company->address1}}\n{{$company->address2}}\n{{$company->address3}}\n{{$company->address4}}',
 								fontSize:8,margin: [0, 10, 30, 0]
 							},
 						]
@@ -205,7 +205,7 @@
 			},
 			images: {
 				letterhead: {
-					url: "{{asset('/img/letterheadukm.png')}}",
+                    url: '{{asset("/img/$company->logo1")}}',
 					headers: {
 						myheader: '123',
 						myotherheader: 'abc',
@@ -498,7 +498,7 @@
 			        }
 
 				if(currentPage == 1){
-					var logohdr = {image: 'letterhead',style:'header_img',width:220, alignment: 'center'};
+					var logohdr = {image: 'letterhead',style:'header_img',width:200, alignment: 'center'};
 					var title = {text: '\n{{$CN_obj->title}}',fontSize:14,alignment: 'center',bold: true};
 					var pageno = {text: 'Page: '+currentPage+'/'+pageCount,fontSize:9,alignment: 'right', margin: [0, 0, 50, -8]};
 					retval.push(logohdr);
@@ -574,7 +574,7 @@
 			},
 			images: {
 				letterhead: {
-					url: "{{asset('/img/letterheadukm.png')}}",
+                    url: '{{asset("/img/$company->logo1")}}',
 					headers: {
 						myheader: '123',
 						myotherheader: 'abc',

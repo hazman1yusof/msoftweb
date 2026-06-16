@@ -147,7 +147,7 @@ class ReceiptController extends defaultController
                 'payername' => $request->dbacthdr_payername,
                 'paytype' => $request->dbacthdr_paytype,
                 'paymode' => $paymode_,
-                'bankcharges' => $dbacthdr_bankcharges,  
+                'bankcharges' => $request->dbacthdr_bankcharges,  
                 'amount' => $dbacthdr_amount,  
                 'outamount' => $dbacthdr_outamount,  
                 'remark' => strtoupper($request->dbacthdr_remark),  
