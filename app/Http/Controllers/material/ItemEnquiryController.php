@@ -28,8 +28,12 @@ class ItemEnquiryController extends defaultController
                         ->where('compcode',session('compcode'))
                         ->orderBy('idno','desc')
                         ->first();
+
+        $Sunit = DB::table('sysdb.sector')
+                        ->where('compcode',session('compcode'))
+                        ->get();
         // $this->detailMovement($request);
-        return view('material.itemInquiry.itemInquiry',compact('lastperiod'));
+        return view('material.itemInquiry.itemInquiry',compact('lastperiod','Sunit'));
     }
 
     public function form(Request $request)
@@ -81,8 +85,11 @@ class ItemEnquiryController extends defaultController
                                          ->on('u.uomcode','p.uomcode');
                     })
                     ->where('p.compcode',session('compcode'))
-                    ->where('p.unit',session('unit'))
                     ->where('p.Class',$request->Class);
+
+        if($request->Sunit != 'ALL'){
+             $table = $table->where('p.unit',$request->Sunit);
+        }
 
         if(!empty($request->searchCol)){
             if($request->searchCol[0] == 'p_description'){

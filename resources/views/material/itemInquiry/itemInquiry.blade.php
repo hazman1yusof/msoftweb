@@ -37,6 +37,9 @@
 	#detailMovement{
 		margin: 0.2%;position: absolute;right: 50px; bottom:5px;
 	}
+	.StextClass{
+		padding-right: 5%;
+	}
 	
 @endsection
 
@@ -52,34 +55,44 @@
 
 		<form id="searchForm" class="formclass" style='width:99%' onkeydown="return event.key != 'Enter';">
 			<fieldset>
-					<div class="ScolClass"  style="padding:0 0 0 15px">
-						<div name='Scol' style='font-weight:bold'>Search By : </div>
-					</div>
-					<div class="StextClass" >
-					  <div class='col-md-12' style="padding:0 0 15px 0;">
-						<div class="col-md-8">
-							<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="1">
-		              	</div>
+				<div class="ScolClass"  style="padding:0 0 0 15px">
+					<div name='Scol' style='font-weight:bold'>Search By : </div>
+				</div>
+				<div class="StextClass" >
+				  <div class='col-md-12' style="padding:0 0 15px 0;">
+					<div class="col-md-6">
+						<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="1">
+	              	</div>
 
-						<div class="col-md-2">
-					  		<select id='Syear' name='Syear' class="form-control input-sm" tabindex="1"></select>
-		              	</div>
+					<div class="col-md-2">
+				  		<select id='Syear' name='Syear' class="form-control input-sm" tabindex="1"></select>
+	              	</div>
 
-						<div class="col-md-2">
-					  		<select id='Class2_' name='Class2_' class="form-control input-sm" tabindex="1">
-					  			<option @if(strtolower(Request::get('Class')) == 'pharmacy')selected @endif >Pharmacy</option>
-					  			<option @if(strtolower(Request::get('Class')) == 'non-pharmacy')selected @endif >Non-Pharmacy</option>
-					  			<option @if(strtolower(Request::get('Class')) == 'asset')selected @endif >Asset</option>
-					  			<option @if(strtolower(Request::get('Class')) == 'consignment')selected @endif >Consignment</option>
-					  			<option @if(strtolower(Request::get('Class')) == 'others')selected @endif >Others</option>
-					  		</select>
-		              	</div>
+					<div class="col-md-2">
+				  		<select id='Class2_' name='Class2_' class="form-control input-sm" tabindex="1">
+				  			<option @if(strtolower(Request::get('Class')) == 'pharmacy')selected @endif >Pharmacy</option>
+				  			<option @if(strtolower(Request::get('Class')) == 'non-pharmacy')selected @endif >Non-Pharmacy</option>
+				  			<option @if(strtolower(Request::get('Class')) == 'asset')selected @endif >Asset</option>
+				  			<option @if(strtolower(Request::get('Class')) == 'consignment')selected @endif >Consignment</option>
+				  			<option @if(strtolower(Request::get('Class')) == 'others')selected @endif >Others</option>
+				  		</select>
+	              	</div>
 
-	              	  </div>
-					</div>
-
+					<div class="col-md-2">
+				  		<select id='Sunit' name='Sunit' class="form-control input-sm">
+							<option value="ALL">ALL</option>
+							@foreach($Sunit as $unit_)
+								@if($unit_->sectorcode == session('unit'))
+								<option value="{{$unit_->sectorcode}}" selected>{{$unit_->sectorcode}}</option>
+								@else
+								<option value="{{$unit_->sectorcode}}">{{$unit_->sectorcode}}</option>
+								@endif
+							@endforeach
+				  		</select>
+	              	</div>
+              	  </div>
+				</div>
 			 </fieldset> 
-
 		</form>
 
 		<div class="panel panel-default">
