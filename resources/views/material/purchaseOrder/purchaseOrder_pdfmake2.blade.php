@@ -141,7 +141,7 @@
 				// var addr3_unit = {text: `{!!$deldept->addr4!!}`,fontSize:8,alignment: 'center',margin: [0, 1, 0, 1]};
 		        var header_tbl_bangi ={
 					columns: [
-					    {image: 'logohdr',style:'header_img',width:200,alignment: 'left'},
+					    {image: 'logohdr',style:'header_img',width:150,alignment: 'left'},
 					    {
 							width: '*',alignment: 'right',
 							text: `{!!$company->address1!!} \n {!!$company->address2!!} \n {!!$company->address3!!} \n {!!$company->address4!!}`,
@@ -346,7 +346,7 @@
 
 			},
 			images: {
-				logohdr: "{{asset('/img/letterheadukm.png')}}",
+                logohdr: '{{asset("/img/$company->logo1")}}',
 			}
 		};
 
@@ -379,7 +379,7 @@
 				pageSize: 'A4',
 				content: [
 					{
-						image: 'letterhead',width:250, style: 'tableHeader', colSpan: 5, alignment: 'center'
+						image: 'letterhead',width:150, style: 'tableHeader', colSpan: 5, alignment: 'center'
 					},
 					{
 						text: '\n{{$SO_obj->title}}\n',
@@ -552,7 +552,7 @@
 				},
 				images: {
 					letterhead: {
-						url: "{{asset('/img/letterheadukm.png')}}",
+						url: '{{asset("/img/$company->logo1")}}',
 						headers: {
 							myheader: '123',
 							myotherheader: 'abc',

@@ -69,11 +69,17 @@ $(document).ready(function () {
 		url:'./itemEnquiry/table',
 		year:$('#getYear').val(),
 		Class:$('#Class2').val(),
+		Sunit:$('#Sunit').val(),
 	}
 	
 	$('#Class2_').change(function(){
 		$('#Class2').val($(this).val());
 		urlParam.Class = $(this).val()
+		refreshGrid("#jqGrid",urlParam);
+	});
+	
+	$('#Sunit').change(function(){
+		urlParam.Sunit = $(this).val()
 		refreshGrid("#jqGrid",urlParam);
 	});
 
