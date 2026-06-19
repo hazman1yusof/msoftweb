@@ -1,5 +1,4 @@
 $(document).ready(function () {
-	$('.menu .item').tab();
 	$('.ui.radio.checkbox.pastcurr').checkbox({
 		onChange: function() {
 			var type = $(this).val();
