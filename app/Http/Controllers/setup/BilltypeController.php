@@ -19,7 +19,8 @@ class BilltypeController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('setup.billtype.billtype');
+        $billtype_ = 'outpatient';
+        return view('setup.billtype.billtype',compact('billtype_'));
     }
 
     public function form(Request $request)

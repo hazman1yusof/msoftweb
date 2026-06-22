@@ -198,6 +198,8 @@ abstract class defaultController extends Controller{
                     $table = $table->whereNotNull($request->filterCol[$key]);
                 }else if($pieces[0] == 'raw'){
                     $table = $table->where($request->filterCol[$key],'=',DB::raw($pieces[1]));
+                }else if($pieces[0] == ''){
+                    
                 }else{
                     $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
                 }

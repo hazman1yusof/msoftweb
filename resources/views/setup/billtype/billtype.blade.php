@@ -37,6 +37,17 @@ span.input-group-addon > strong, span.input-group-addon > label{
 .input-group-addon {
     color: grey !important;
 }
+.button_field_title{
+	margin-top: -4px;
+    padding: 4px 15px;
+    border-right: 1px #c1c1c1 solid;
+}
+.button_field_title_last{
+	margin-top: -4px;
+    padding: 4px 15px;
+    border-right: 1px #c1c1c1 solid;
+    border-left: 1px #c1c1c1 solid;
+}
 
 
 @endsection
@@ -44,6 +55,8 @@ span.input-group-addon > strong, span.input-group-addon > label{
 @section('body') 
 
 	<!-------------------------------- Search + table ---------------------->
+
+	<input id="billtype_" name="billtype_" type="hidden" value="{{ $billtype_ }}">
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%; position:relative' onkeydown="return event.key != 'Enter';">
 			<fieldset>
@@ -66,7 +79,14 @@ span.input-group-addon > strong, span.input-group-addon > label{
 		</form>
     	
     	<div class="panel panel-default">
-			<div class="panel-heading">Bill Type Header</div>
+			<div class="panel-heading">Bill Type Header for <b><span id="span_billtype_header"></span></b>
+				<a class='pull-right pointer text-primary button_field_title btn' id='inpat_btn'>
+					In-Patient
+				</a>
+				<a class='pull-right pointer text-primary button_field_title_last btn' id='otpat_btn'>
+					Out-Patient
+				</a>
+			</div>
 		    <div class="panel-body">
 		    	<div class='col-md-12' style="padding:0 0 15px 0">
             		<table id="jqGrid" class="table table-striped"></table>
@@ -167,6 +187,7 @@ span.input-group-addon > strong, span.input-group-addon > label{
 		<form class='form-horizontal' style='width:99%' id='formdata'>
 			{{ csrf_field() }}
 			<input type="hidden" name="idno">
+			<input id="opprice" name="opprice" type="hidden">
 
 			<div class="prevnext btn-group pull-right"></div>
 
@@ -187,9 +208,9 @@ span.input-group-addon > strong, span.input-group-addon > label{
 				<div class="col-md-3">
 					<table>
 						<tr>
-							<td><label class="radio-inline"><input type="radio" name="price" value='PRICE1' data-validation="required">Price 1</label></td>
-							<td><label class="radio-inline"><input type="radio" name="price" value='PRICE2' data-validation="">Price 2</label></td>
-							<td><label class="radio-inline"><input type="radio" name="price" value='PRICE3' data-validation="">Price 3</label></td>
+							<td><label class="radio-inline"><input type="radio" name="price" value='PRICE1' data-validation="required">In-Patient</label></td>
+							<td><label class="radio-inline"><input type="radio" name="price" value='PRICE2' data-validation="">Out-Patient</label></td>
+							<!-- <td><label class="radio-inline"><input type="radio" name="price" value='PRICE3' data-validation="">Price 3</label></td> -->
 							<td><label class="radio-inline"><input type="radio" name="price" value='COST PRICE' data-validation="">Cost Price</label></td>
 						</tr>
 					</table> 
@@ -203,11 +224,6 @@ span.input-group-addon > strong, span.input-group-addon > label{
 			</div> 
 
 			<div class="form-group">
-				<label class="col-md-2 control-label" for="opprice">OP Price</label>  
-				<div class="col-md-3">
-					<label class="radio-inline"><input type="radio" name="opprice" value='1' data-validation="required">Yes</label>
-					<label class="radio-inline"><input type="radio" name="opprice" value='0' data-validation="">No</label>
-				</div>
 
 				<label class="col-md-2 control-label" for="percent_">Percentage</label>  
 				<div class="col-md-3">
@@ -318,9 +334,9 @@ span.input-group-addon > strong, span.input-group-addon > label{
 				<div class="col-md-3">
 					<table>
 						<tr>
-							<td><label class="radio-inline"><input type="radio" name="svc_price" value='PRICE1' data-validation="required">Price 1</label></td>
-							<td><label class="radio-inline"><input type="radio" name="svc_price" value='PRICE2' data-validation="">Price 2</label></td>
-							<td><label class="radio-inline"><input type="radio" name="svc_price" value='PRICE3' data-validation="">Price 3</label></td>
+							<td><label class="radio-inline"><input type="radio" name="svc_price" value='PRICE1' data-validation="required">In-Patient</label></td>
+							<td><label class="radio-inline"><input type="radio" name="svc_price" value='PRICE2' data-validation="">Out-Patient</label></td>
+							<!-- <td><label class="radio-inline"><input type="radio" name="svc_price" value='PRICE3' data-validation="">Price 3</label></td> -->
 							<td><label class="radio-inline"><input type="radio" name="svc_price" value='COST PRICE' data-validation="">Cost Price</label></td>
 						</tr>
 					</table> 
@@ -446,9 +462,9 @@ span.input-group-addon > strong, span.input-group-addon > label{
 				<div class="col-md-3">
 					<table>
 						<tr>
-							<td><label class="radio-inline"><input type="radio" name="i_price" value='PRICE1' data-validation="required">Price 1</label></td>
-							<td><label class="radio-inline"><input type="radio" name="i_price" value='PRICE2' data-validation="">Price 2</label></td>
-							<td><label class="radio-inline"><input type="radio" name="i_price" value='PRICE3' data-validation="">Price 3</label></td>
+							<td><label class="radio-inline"><input type="radio" name="i_price" value='PRICE1' data-validation="required">In-Patient</label></td>
+							<td><label class="radio-inline"><input type="radio" name="i_price" value='PRICE2' data-validation="">Out-Patient</label></td>
+							<!-- <td><label class="radio-inline"><input type="radio" name="i_price" value='PRICE3' data-validation="">Price 3</label></td> -->
 							<td><label class="radio-inline"><input type="radio" name="i_price" value='COST PRICE' data-validation="">Cost Price</label></td>
 						</tr>
 					</table> 
@@ -552,9 +568,9 @@ span.input-group-addon > strong, span.input-group-addon > label{
 				<div class="col-md-3">
 					<table>
 						<tr>
-							<td><label class="radio-inline"><input type="radio" name="t_price" value='PRICE1' data-validation="required">Price 1</label></td>
-							<td><label class="radio-inline"><input type="radio" name="t_price" value='PRICE2' data-validation="">Price 2</label></td>
-							<td><label class="radio-inline"><input type="radio" name="t_price" value='PRICE3' data-validation="">Price 3</label></td>
+							<td><label class="radio-inline"><input type="radio" name="t_price" value='PRICE1' data-validation="required">In-Patient</label></td>
+							<td><label class="radio-inline"><input type="radio" name="t_price" value='PRICE2' data-validation="">Out-Patient</label></td>
+							<!-- <td><label class="radio-inline"><input type="radio" name="t_price" value='PRICE3' data-validation="">Price 3</label></td> -->
 							<td><label class="radio-inline"><input type="radio" name="t_price" value='COST PRICE' data-validation="">Cost Price</label></td>
 						</tr>
 					</table> 

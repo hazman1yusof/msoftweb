@@ -79,7 +79,14 @@ $(document).ready(function () {
 	});
 	
 	$('#Sunit').change(function(){
-		urlParam.Sunit = $(this).val()
+		urlParam.Sunit = $(this).val();
+		if($(this).val() == 'ALL'){
+			urlParam2.filterVal[4] = '';
+			urlParam3.filterVal[4] = '';
+		}else{
+			urlParam2.filterVal[4] = $(this).val();
+			urlParam3.filterVal[4] = $(this).val();
+		}
 		refreshGrid("#jqGrid",urlParam);
 	});
 

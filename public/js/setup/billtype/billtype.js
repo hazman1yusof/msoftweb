@@ -23,9 +23,10 @@ $(document).ready(function () {
 			}
 		},
 	};
+
 	//////////////////////////////////////////////////////////////
 	var mycurrency = new currencymode(['#percent_', '#amount', '#svc_amount', '#svc_percent_', '#i_amount', '#i_percent_']);
-	var radbuts = new checkradiobutton(['price','service','opprice']);
+	var radbuts = new checkradiobutton(['price','service']);
 	var radbuts_svc = new checkradiobutton(['svc_price','svc_allitem','svc_alltype']);
 	var radbuts_item = new checkradiobutton(['i_price']);
 	var radbuts_type = new checkradiobutton(['t_price']);
@@ -159,8 +160,8 @@ $(document).ready(function () {
 			{ label: 'Description', name: 'description', width: 90, classes: 'wrap', canSearch: true, checked: true},
 			{ label: 'Effective Date<br>From', name: 'effdatefrom', width: 30, classes: 'wrap text-uppercase', formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Effective Date<br>To', name: 'effdateto', width: 30, classes: 'wrap text-uppercase', formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Price', name: 'price', width: 40, classes: 'wrap' },
-			{ label: 'OP Price', name: 'opprice', width: 40 ,formatter: formatter, unformat: unformat},
+			{ label: 'Price', name: 'price', width: 40, classes: 'wrap' ,formatter: formatterPrice, unformat: unformatPrice},
+			{ label: 'Price Type', name: 'opprice', width: 40 ,formatter: formatteropprice, unformat: unformatopprice},
 			{ label: 'Amount', name: 'amount', width: 40, classes: 'wrap', align: 'right', formatter: 'currency'  },
 			{ label: 'Percentage', name: 'percent_', width: 40, classes: 'wrap', align: 'right', formatter: formatter1, unformat: unformat1 },
 			{ label: 'All Service', name: 'service', width: 40, classes: 'wrap', formatter: formatter, unformat: unformat },
@@ -255,6 +256,54 @@ $(document).ready(function () {
 		return cellvalue.replace("%", "");
 	}
 
+	function formatterPrice(cellvalue, option, rowObject) {
+		if(cellvalue.toUpperCase() == 'PRICE1'){
+			return 'In-Patient';
+		}else if(cellvalue.toUpperCase() == 'PRICE2'){
+			return 'Out-Patient';
+		}else if(cellvalue.toUpperCase() == 'PRICE3'){
+			return 'VIP Price';
+		}else if(cellvalue.toUpperCase() == 'COSTPRICE'){
+			return 'Cost Price';
+		}else{
+			return cellvalue;
+		}
+	}
+
+	function unformatPrice(cellvalue, options) {
+		if(cellvalue == 'In-Patient'){
+			return 'PRICE1';
+		}else if(cellvalue == 'Out-Patient'){
+			return 'PRICE2';
+		}else if(cellvalue == 'VIP Price'){
+			return 'PRICE3';
+		}else if(cellvalue == 'Cost Price'){
+			return 'COSTPRICE';
+		}else{
+			return cellvalue;
+		}
+	}
+
+	function formatteropprice(cellvalue, option, rowObject) {
+		if(cellvalue == 0){
+			return 'In-Patient';
+		}else if(cellvalue == 1){
+			return 'Out-Patient';
+		}else{
+			return cellvalue;
+		}
+	}
+
+	function unformatopprice(cellvalue, options) {
+		if(cellvalue == 'In-Patient'){
+			return 0;
+		}else if(cellvalue == 'Out-Patient'){
+			return 1;
+		}else{
+			return cellvalue;
+		}
+	}
+
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
 		view: false, edit: false, add: false, del: false, search: false,
@@ -313,8 +362,39 @@ $(document).ready(function () {
 	searchClick2('#jqGrid', '#searchForm', urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid', true, urlParam);
+	addParamField('#jqGrid', false, urlParam);
 	addParamField('#jqGrid', false, saveParam, ['idno','recstatus','adduser','adddate','upduser','upddate', 'computerid']);
+
+	init_field_top();
+	function init_field_top(){
+		let opprice = 1
+		if($('#billtype_').val() == 'outpatient'){
+			$('#span_billtype_header').text('Out-Patient');
+			$('#inpat_btn').attr('disabled',false)
+			$('#otpat_btn').attr('disabled',true)
+		}else if($('#billtype_').val() == 'inpatient'){
+			$('#span_billtype_header').text('In-Patient');
+			$('#otpat_btn').attr('disabled',false)
+			$('#inpat_btn').attr('disabled',true)
+			opprice = 0;
+		}
+
+		$('#opprice').val(opprice);
+		urlParam.filterCol[1] = 'opprice';
+		urlParam.filterVal[1] = opprice;
+
+		refreshGrid("#jqGrid",urlParam);
+	}
+
+	$('#inpat_btn').click(function(){
+		$('#billtype_').val('inpatient');
+		init_field_top();
+	});
+
+	$('#otpat_btn').click(function(){
+		$('#billtype_').val('outpatient');
+		init_field_top();
+	});
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////// billtysvc //////////////////////////////////////////////////////////////////////////////////////
@@ -545,7 +625,7 @@ $(document).ready(function () {
 			{ label: 'Description', name: 'm_description', width: 90, hidden: true },
 			{ label: 'Chg. Group', name: 'svc_chggroup', width: 50, classes: 'wrap', canSearch: true },
 			{ label: 'Description', name: 'cc_description', width: 90, classes: 'wrap', canSearch: true , checked: true},
-			{ label: 'Price', name: 'svc_price', width: 90, classes: 'wrap', checked: true },
+			{ label: 'Price', name: 'svc_price', width: 90, classes: 'wrap' ,formatter: formatterPrice, unformat: unformatPrice },
 			{ label: 'Amount', name: 'svc_amount', width: 90, classes: 'wrap', align: 'right', formatter: 'currency' },
 			{ label: 'Percentage', name: 'svc_percent_', width: 50, classes: 'wrap', align: 'right', formatter: formatter1, unformat: unformat1 },
 			{ label: 'All Item', name: 'svc_allitem', width: 50, classes: 'wrap', formatter: formatter, unformat: unformat },
@@ -874,7 +954,7 @@ $(document).ready(function () {
 			{ label: 'Description', name: 'c_description', width: 90, hidden: true },
 			{ label: 'Chg Code', name: 'i_chgcode', width: 90, classes: 'wrap', canSearch: true },
 			{ label: 'Description', name: 'm_description', width: 90, classes: 'wrap', canSearch: true, checked: true },
-			{ label: 'Price', name: 'i_price', width: 50, classes: 'wrap', },
+			{ label: 'Price', name: 'i_price', width: 50, classes: 'wrap' ,formatter: formatterPrice, unformat: unformatPrice },
 			{ label: 'Amount', name: 'i_amount', width: 50, classes: 'wrap', align: 'right', formatter: 'currency' },
 			{ label: 'discrate', name: 'i_discrate', width: 50, hidden: true },
 			{ label: 'Percentage', name: 'i_percent_', width: 50, classes: 'wrap', align: 'right', formatter: formatter1, unformat: unformat1 },
