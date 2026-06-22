@@ -144,7 +144,9 @@ $(document).ready(function (){
                 break;
             case 'admHandover':
                 populate_admhandover_getdata();
+                disableOtherField();
                 rdonly('#formAdmHandover');
+                textarea_init_admhandover();
                 break;
 			case 'diet':
                 $("#jqGrid_trans_diet").jqGrid ('setGridWidth', Math.floor($("#jqGrid_trans_diet_c")[0].offsetWidth-$("#jqGrid_trans_diet_c")[0].offsetLeft-14));

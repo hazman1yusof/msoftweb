@@ -44,12 +44,20 @@
                                 </div> -->
                                 <div class="ui grid">
                                     <label>Type</label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="type" value="INPATIENT" readonly=''>Inpatient
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="type" value="DAYCARE" readonly=''>Daycare
-                                    </label> 
+                                    <div class="inline fields disabled">
+                                        <div class="field">
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" name="type" value="INPATIENT" id="type_ip">
+                                                <label for="type_ip">Inpatient</label>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" name="type" value="DAYCARE" id="type_dc">
+                                                <label for="type_dc">Daycare</label>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -90,7 +98,7 @@
                 <div class="eight wide column">
                     <div class="ui segments">
                             <div class="ui secondary segment">ALLERGIES</div>
-                            <div class="ui segment" style="height: 700px;">
+                            <div class="ui segment" style="height: 800px;">
                                 <table class="table table-sm table-hover">
                                     <tbody>
                                         <tr>
@@ -151,16 +159,16 @@
                                         <tr>
                                             <th scope="row">1</th>
                                             <td>RTK/PCR <br>
-                                                <div class="inline fields">
+                                                <div class="inline fields disabled">
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" name="rtkpcr" value="1" id="rtkpcr_yes" rdonly>
+                                                            <input type="radio" name="rtkpcr" value="1" id="rtkpcr_yes">
                                                             <label for="rtkpcr_yes">Yes</label>
                                                         </div>
                                                     </div>
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" name="rtkpcr" value="0" id="rtkpcr_no" rdonly>
+                                                            <input type="radio" name="rtkpcr" value="0" id="rtkpcr_no">
                                                             <label for="rtkpcr_no">No</label>
                                                         </div>
                                                     </div>
@@ -173,16 +181,16 @@
                                         <tr>
                                             <th scope="row">2</th>
                                             <td>Blood Investigation <br>
-                                                <div class="inline fields">
+                                                <div class="inline fields disabled">
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" name="bloodinv" value="1" id="bloodinv_yes" rdonly>
+                                                            <input type="radio" name="bloodinv" value="1" id="bloodinv_yes">
                                                             <label for="bloodinv_yes">Yes</label>
                                                         </div>
                                                     </div>
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" name="bloodinv" value="0" id="bloodinv_no" rdonly>
+                                                            <input type="radio" name="bloodinv" value="0" id="bloodinv_no">
                                                             <label for="bloodinv_no">No</label>
                                                         </div>
                                                     </div>
@@ -195,16 +203,16 @@
                                         <tr>
                                             <th scope="row">3</th>
                                             <td>Branula <br>
-                                                <div class="inline fields">
+                                                <div class="inline fields disabled">
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" name="branula" value="1" id="branula_yes" rdonly>
+                                                            <input type="radio" name="branula" value="1" id="branula_yes">
                                                             <label for="branula_yes">Yes</label>
                                                         </div>
                                                     </div>
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" name="branula" value="0" id="branula_no" rdonly>
+                                                            <input type="radio" name="branula" value="0" id="branula_no">
                                                             <label for="branula_no">No</label>
                                                         </div>
                                                     </div>
@@ -217,16 +225,16 @@
                                         <tr>
                                             <th scope="row">4</th>
                                             <td>CXR/MRI/CT Scan <br>
-                                                <div class="inline fields">
+                                                <div class="inline fields disabled">
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" name="scan" value="1" id="scan_yes" rdonly>
+                                                            <input type="radio" name="scan" value="1" id="scan_yes">
                                                             <label for="scan_yes">Yes</label>
                                                         </div>
                                                     </div>
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" name="scan" value="0" id="scan_no" rdonly>
+                                                            <input type="radio" name="scan" value="0" id="scan_no">
                                                             <label for="scan_no">No</label>
                                                         </div>
                                                     </div>
@@ -239,16 +247,16 @@
                                         <tr>
                                             <th scope="row">5</th>
                                             <td>Insurance <br>
-                                                <div class="inline fields">
+                                                <div class="inline fields disabled">
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" name="insurance" value="1" id="insurance_yes" rdonly>
+                                                            <input type="radio" name="insurance" value="1" id="insurance_yes">
                                                             <label for="insurance_yes">Yes</label>
                                                         </div>
                                                     </div>
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" name="insurance" value="0" id="insurance_no" rdonly>
+                                                            <input type="radio" name="insurance" value="0" id="insurance_no">
                                                             <label for="insurance_no">No</label>
                                                         </div>
                                                     </div>
@@ -261,16 +269,16 @@
                                         <tr>
                                             <th scope="row">6</th>
                                             <td>Medication (Antiplatlet) <br>
-                                                <div class="inline fields">
+                                                <div class="inline fields disabled">
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" name="medication" value="1" id="medication_yes" rdonly>
+                                                            <input type="radio" name="medication" value="1" id="medication_yes">
                                                             <label for="medication_yes">Yes</label>
                                                         </div>
                                                     </div>
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" name="medication" value="0" id="medication_no" rdonly>
+                                                            <input type="radio" name="medication" value="0" id="medication_no">
                                                             <label for="medication_no">No</label>
                                                         </div>
                                                     </div>
@@ -283,16 +291,16 @@
                                         <tr>
                                             <th scope="row">7</th>
                                             <td>Consent <br>
-                                                <div class="inline fields">
+                                                <div class="inline fields disabled">
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" name="consent" value="1" id="consent_yes" rdonly>
+                                                            <input type="radio" name="consent" value="1" id="consent_yes">
                                                             <label for="consent_yes">Yes</label>
                                                         </div>
                                                     </div>
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" name="consent" value="0" id="consent_no" rdonly>
+                                                            <input type="radio" name="consent" value="0" id="consent_no">
                                                             <label for="consent_no">No</label>
                                                         </div>
                                                     </div>
@@ -305,16 +313,16 @@
                                         <tr>
                                             <th scope="row">8</th>
                                             <td>Smoking <br>
-                                                <div class="inline fields">
+                                                <div class="inline fields disabled">
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" name="smoking" value="1" id="smoking_yes" rdonly>
+                                                            <input type="radio" name="smoking" value="1" id="smoking_yes">
                                                             <label for="smoking_yes">Yes</label>
                                                         </div>
                                                     </div>
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" name="smoking" value="0" id="smoking_no" rdonly>
+                                                            <input type="radio" name="smoking" value="0" id="smoking_no">
                                                             <label for="smoking_no">No</label>
                                                         </div>
                                                     </div>
@@ -328,16 +336,16 @@
                                         <tr>
                                             <th scope="row">9</th>
                                             <td>NBM <br>
-                                                <div class="inline fields">
+                                                <div class="inline fields disabled">
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" name="nbm" value="1" id="nbm_yes" rdonly>
+                                                            <input type="radio" name="nbm" value="1" id="nbm_yes">
                                                             <label for="nbm_yes">Yes</label>
                                                         </div>
                                                     </div>
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" name="nbm" value="0" id="nbm_no" rdonly>
+                                                            <input type="radio" name="nbm" value="0" id="nbm_no">
                                                             <label for="nbm_no">No</label>
                                                         </div>
                                                     </div>

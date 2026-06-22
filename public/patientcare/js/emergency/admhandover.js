@@ -41,6 +41,40 @@ $(document).ready(function (){
 		button_state_admHandover($(this).data('oper'));
 	});
 
+	// to format number input to two decimal places (0.00)
+	$(".floatNumberField").change(function() {
+		$(this).val(parseFloat($(this).val()).toFixed(2));
+	});	
+
+	// to autocheck the checkbox bila fill in textarea
+	$("#drugs_remarks").on("keyup blur", function () {
+		$("#allergydrugs").prop("checked", this.value !== "");
+	});
+
+	$("#food_remarks").on("keyup blur", function () {
+		$("#allergyfood").prop("checked", this.value !== "");
+	});
+
+	$("#others_remarks").on("keyup blur", function () {
+		$("#allergyothers").prop("checked", this.value !== "");
+	});
+
+	$("#environment_remarks").on("keyup blur", function () {
+		$("#allergyenvironment").prop("checked", this.value !== "");
+	});
+
+	$("#plaster_remarks").on("keyup blur", function () {
+		$("#allergyplaster").prop("checked", this.value !== "");
+	});
+
+	$("#unknown_remarks").on("keyup blur", function () {
+		$("#allergyunknown").prop("checked", this.value !== "");
+	});
+
+	$("#none_remarks").on("keyup blur", function () {
+		$("#allergynone").prop("checked", this.value !== "");
+	});
+
 	/////////////////////////////////print button starts////////////////////////////////////////////
 
 	$("#admhandover_report").click(function() {
@@ -157,7 +191,8 @@ function populate_admhandover_getdata(){
             button_state_admHandover('edit');      
         }else{
         }
-        
+		textarea_init_admhandover();
+
     });
 }
 
@@ -248,38 +283,27 @@ $("#tab_admHandover").on("hide.bs.collapse", function (){
     disableForm('#formAdmHandover');
 });
 
-// to format number input to two decimal places (0.00)
-$(".floatNumberField").change(function() {
-	$(this).val(parseFloat($(this).val()).toFixed(2));
-});	
+function textarea_init_admhandover(){
+	$('textarea#reasonadm,textarea#diagnosis,textarea#medicalhistory,textarea#surgicalhistory,textarea#drugs_remarks,textarea#plaster_remarks,textarea#food_remarks,textarea#environment_remarks,textarea#others_remarks,textarea#unknown_remarks,textarea#none_remarks,textarea#rtkpcr_remark,textarea#branula_remark,textarea#scan_remark,textarea#insurance_remark','textarea#medication_remark,textarea#consent_remark,textarea#smoking_remark,textarea#nbm_remark,textarea#report').each(function (){
+		if(this.value.trim() == ''){
+			this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+		}else{
+			this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+		}
+	}).off().on('input', function (){
+		if(this.scrollHeight > 40){
+			this.style.height = 'auto';
+			this.style.height = (this.scrollHeight) + 'px';
+		}else{
+			this.style.height = (40) + 'px';
+		}
+	});
+}
 
-// to autocheck the checkbox bila fill in textarea
-$("#drugs_remarks").on("keyup blur", function () {
-	$("#allergydrugs").prop("checked", this.value !== "");
-});
+// to disable all input fields except takeoverby
+function disableOtherField(){
+	
+	$('#dateofadm, #reasonadm, #diagnosis, #weights, #medicalhistory, #surgicalhistory, #allergydrugs, #drugs_remarks, #allergyplaster, #plaster_remarks, #allergyfood, #food_remarks, #allergyenvironment, #environment_remarks, #allergyothers, #others_remarks, #allergyunknown, #unknown_remarks, #allergynone, #none_remarks, #rtkpcr_remark, #bloodinv_remark, #branula_remark, #scan_remark, #insurance_remark, #medication_remark, #consent_remark, #smoking_remark, #nbm_remark, #report, #allergynone, #passoverby').prop('disabled',true);
 
-$("#food_remarks").on("keyup blur", function () {
-	$("#allergyfood").prop("checked", this.value !== "");
-});
-
-$("#others_remarks").on("keyup blur", function () {
-	$("#allergyothers").prop("checked", this.value !== "");
-});
-
-$("#environment_remarks").on("keyup blur", function () {
-	$("#allergyenvironment").prop("checked", this.value !== "");
-});
-
-$("#plaster_remarks").on("keyup blur", function () {
-	$("#allergyplaster").prop("checked", this.value !== "");
-});
-
-$("#unknown_remarks").on("keyup blur", function () {
-	$("#allergyunknown").prop("checked", this.value !== "");
-});
-
-$("#none_remarks").on("keyup blur", function () {
-	$("#allergynone").prop("checked", this.value !== "");
-});
-
+}
 
