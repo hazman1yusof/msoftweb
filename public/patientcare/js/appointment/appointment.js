@@ -100,9 +100,9 @@ $(document).ready(function () {
 		$("#jqGrid").jqGrid({
 			datatype: "local",
 			colModel: [
-				{ label: 'MRN', name: 'MRN', width: 12, formatter: padzero, unformat: unpadzero, checked: true },
+				{ label: 'MRN', name: 'MRN', width: 10, formatter: padzero, unformat: unpadzero, checked: true },
 				{ label: ' ', name: 'Episno', width: 8, align: 'right', hidden: true },
-				{ label: 'Time', name: 'reg_time', width: 12, formatter: timeFormatter, unformat: timeUNFormatter },
+				{ label: 'Time', name: 'reg_time', width: 10, formatter: timeFormatter, unformat: timeUNFormatter },
 				{ label: 'Name', name: 'Name', width: 24, classes: 'wrap' },
 				{ label: 'Payer', name: 'payer', width: 24, classes: 'wrap' },
 				{ label: 'Dept', name: 'regdept', width: 8 },
@@ -213,15 +213,15 @@ $(document).ready(function () {
 		$("#jqGrid").jqGrid({
 			datatype: "local",
 			colModel: [
-				{ label: 'MRN', name: 'MRN', width: 85, formatter: padzero, unformat: unpadzero, checked: true },
+				{ label: 'MRN', name: 'MRN', width: 70, formatter: padzero, unformat: unpadzero, checked: true },
 				{ label: 'Epis. No', name: 'Episno', align: 'right', hidden: true },
-				{ label: 'Time', name: 'reg_time', width: 85, formatter: timeFormatter, unformat: timeUNFormatter },
-				{ label: 'Name', name: 'Name', width: 170, classes: 'wrap' },
-				{ label: 'Doctor Name', name: 'doctorname', width: 150},
+				{ label: 'Time', name: 'reg_time', width: 70, formatter: timeFormatter, unformat: timeUNFormatter },
+				{ label: 'Name', name: 'Name', width: 150, classes: 'wrap' },
+				{ label: 'Doctor Name', name: 'doctorname',classes: 'wrap', width: 190},
 				{ label: 'Payer', name: 'payer', width: 150, classes: 'wrap', formatter: formatterpayer, hidden:true },
 				{ label: 'Dept', name: 'regdept', width: 60 },
 				{ label: 'I/C', name: 'Newic', width: 90 },
-				{ label: 'Reg Source', name: 'admsrccode', width: 90},
+				{ label: 'Source', name: 'admsrccode', width: 70},
 				{ label: 'Rehab', name: 'reff_rehab', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true },
 				{ label: 'Physio', name: 'reff_physio', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true },
 				{ label: 'Diet', name: 'reff_diet', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true },
@@ -229,7 +229,7 @@ $(document).ready(function () {
 				{ label: 'RAD', name: 'reff_rad', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true },
 				{ label: 'HP', name: 'telhp', width: 80 },
 				{ label: 'Sex', name: 'Sex', width: 40 },
-				{ label: 'Mode', name: 'pyrmode', classes: 'wrap', width: 100 },
+				{ label: 'Mode', name: 'pyrmode', classes: 'wrap', width: 80 },
 				{ label: 'Discharge', name: 'episstatus', width: 60, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'Seen', name: 'doctorstatus', formatter: formatterstatus_tick, hidden: true },
 				{ label: 'idno', name: 'idno', hidden: true, key: true },
@@ -244,6 +244,7 @@ $(document).ready(function () {
 				{ label: 'stats_rehab', name: 'stats_rehab', hidden: true },
 				{ label: 'stats_physio', name: 'stats_physio', hidden: true },
 				{ label: 'stats_diet', name: 'stats_diet', hidden: true },
+				{ label: ' ', name: ' ' ,formatter: formatter_btn, width: 70},
 
 			],
 			autowidth: false,
@@ -359,6 +360,30 @@ $(document).ready(function () {
 		}else{
 			return "0";
 		}
+	}
+
+	function formatter_btn(cellvalue, option, rowObject) {
+		console.log(rowObject);
+		let retval = `
+			<span>
+				<button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' 
+					style=''
+					data-idno="`+rowObject.idno+`" 
+					data-mrn="`+rowObject.MRN+`" 
+					data-episno="`+rowObject.Episno+`" 
+					>
+					<span class='glyphicon glyphicon-edit' aria-hidden='true'></span>
+				</button>
+				<button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode'
+					data-idno="`+rowObject.idno+`" 
+					data-mrn="`+rowObject.MRN+`" 
+					data-episno="`+rowObject.Episno+`" 
+					>
+					<b>`+rowObject.epistycode+`</b>
+				</button>
+			</span>`
+
+        return retval.replace(/[\t\n\r]/g, "");
 	}
 
 	function ordercompleteFormatter(cellvalue, option, rowObject) {

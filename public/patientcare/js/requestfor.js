@@ -1952,6 +1952,9 @@ function toggle_reqfor_reqtype(){
         if(newurl != cururl){
             $('iframe#otbook_iframe').attr('src',newurl);
         }
+    }else{
+        $('#ReqFor_Bed_div,#ReqFor_OT_div').hide();
+        $('iframe#otbook_iframe').attr('src','');
     }
 }
 

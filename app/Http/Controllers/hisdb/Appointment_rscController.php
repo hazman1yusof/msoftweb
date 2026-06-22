@@ -76,6 +76,18 @@ class Appointment_rscController extends defaultController
                     ->where('mrn',$request->mrn)
                     ->where('episno',$request->episno)
                     ->first();
+
+        if($pat_otbook == null){
+            $pat_otbook = new stdClass();
+
+            $pat_otbook->oper_type = '';
+            $pat_otbook->oper_type2 = '';
+            $pat_otbook->oper_type3 = '';
+            $pat_otbook->oper_type4 = '';
+            $pat_otbook->oper_type5 = ''; 
+        }
+
+        // dd($pat_otbook);
         
         return view('hisdb.apptrsc.apptrsc_iframe',compact('apptresrc','apptresrc_all','op_unit','episode','patmast','pat_otbook'));
     }
