@@ -28,12 +28,13 @@ $(document).ready(function (){
 	});
 	
 	$("#new_doctorNote").click(function (){
-		// $('#docnote_date_tbl tbody tr').removeClass('active');
+		get_default_patdata();
+		$('#docnote_date_tbl tbody tr').removeClass('active');
 		$('#cancel_doctorNote').data('oper','add');
 		button_state_doctorNote('wait');
 		enableForm('#formDoctorNote');
 		rdonly('#formDoctorNote');
-		// emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
+		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
 		// dialog_mrn_edit.on();
 	});
 	
@@ -64,7 +65,7 @@ $(document).ready(function (){
 		disableForm('#formDoctorNote',['toggle_type']);
 		button_state_doctorNote($(this).data('oper'));
 		// dialog_mrn_edit.off();
-		// $('#docnote_date_tbl tbody tr:eq(0)').click(); // to select first row
+		$('#docnote_date_tbl tbody tr:eq(0)').click(); // to select first row
 	});
 	
 	////////////////////////////////////////////otbook starts////////////////////////////////////////////
@@ -2459,4 +2460,24 @@ function toggle_reqtype(){
 		$('#Bed_div').hide();
 		$('#OT_div').show();
 	}
+}
+
+function get_default_patdata(){
+	doctornote_docnote.recorddate = '';
+	
+	$.get("./ptcare_doctornote/table?"+$.param(doctornote_docnote), function (data){
+		
+	},'json').done(function (data){
+		if(!$.isEmptyObject(data)){
+			// autoinsert_rowdata_doctorNote("#formDoctorNote",data.episode);
+			// autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathealth);
+			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathistory);
+			$("#adduser").val('');
+			// autoinsert_rowdata_doctorNote("#formDoctorNote",data.patexam);
+			// autoinsert_rowdata_doctorNote("#formDoctorNote",data.episdiag);
+			// autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathealthadd);
+			// refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add_notes');
+			// getBMI();
+		}
+	});
 }

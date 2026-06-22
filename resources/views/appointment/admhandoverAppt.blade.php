@@ -1,24 +1,24 @@
 <div class="ui segments" style="position: relative;">
     <div class="ui secondary segment bluecloudsegment">
         ADMISSION HANDOVER
-        <div class="ui small blue icon buttons" id="btn_grp_edit_admHandoverAppt" style="position: absolute;
-                    padding: 0 0 0 0;
-                    right: 40px;
-                    top: 9px;
+        <div class="ui small blue icon buttons" id="btn_grp_edit_admHandoverAppt" style="position: absolute; 
+                    padding: 0 0 0 0; 
+                    right: 40px; 
+                    top: 9px; 
                     z-index: 2;">
-          <button class="ui button" id="new_admHandoverAppt"><span class="fa fa-plus-square-o"></span> New</button>
-          <button class="ui button" id="edit_admHandoverAppt"><span class="fa fa-edit fa-lg"></span> Edit</button>
-          <button class="ui button" id="save_admHandoverAppt"><span class="fa fa-save fa-lg"></span> Save</button>
-          <button class="ui button" id="cancel_admHandoverAppt"><span class="fa fa-ban fa-lg"></span> Cancel</button>
-          <button class="ui button" id="admhandoverAppt_report"><span class="fa fa-print fa-lg"></span>Print</button>
+            <button class="ui button" id="new_admHandoverAppt"><span class="fa fa-plus-square-o"></span> New</button>
+            <button class="ui button" id="edit_admHandoverAppt"><span class="fa fa-edit fa-lg"></span> Edit</button>
+            <button class="ui button" id="save_admHandoverAppt"><span class="fa fa-save fa-lg"></span> Save</button>
+            <button class="ui button" id="cancel_admHandoverAppt"><span class="fa fa-ban fa-lg"></span> Cancel</button>
+            <button class="ui button" id="admhandoverAppt_report"><span class="fa fa-print fa-lg"></span>Print</button>
         </div>
     </div>
-
+    
     <div class="ui segment">
         <form id="formAdmHandoverAppt" class="ui form">
             <input id="mrn_admHandover" name="mrn_admHandover" type="hidden">
             <input id="episno_admHandover" name="episno_admHandover" type="hidden">
-
+            
             <div class="ui grid">
                 <div class="eight wide column">
                     <div class="ui segments">
@@ -39,17 +39,17 @@
                                     </label> 
                                 </div>
                             </div>
-
+                            
                             <div class="field">
                                 <label>Reason Admission</label>
                                 <textarea id="reasonadmAppt" name="reasonadm" type="text" rows="4"></textarea>
                             </div>
-
+                            
                             <div class="field">
                                 <label>Diagnosis</label>
                                 <textarea id="diagnosisAppt" name="diagnosis" type="text" rows="4"></textarea>
                             </div>
-
+                            
                             <div class="field eight wide column">
                                 <label>Weight</label>
                                 <div class="ui right labeled input">
@@ -57,70 +57,67 @@
                                     <div class="ui basic label">kg</div>
                                 </div>
                             </div>
-
+                            
                             <div class="field">
                                 <label>Medical History</label>
                                 <textarea id="medicalhistoryAppt" name="medicalhistory" type="text" rows="4"></textarea>
                             </div>
-
+                            
                             <div class="field">
                                 <label>Surgical History</label>
                                 <textarea id="surgicalhistoryAppt" name="surgicalhistory" type="text" rows="4"></textarea>
                             </div>
-                            
                         </div>
-
-                        
                     </div>
                 </div>
-
+                
                 <div class="eight wide column">
                     <div class="ui segments">
-                            <div class="ui secondary segment">ALLERGIES</div>
-                            <div class="ui segment" style="height: 700px;">
-                                <table class="table table-sm table-hover">
-                                    <tbody>
-                                        <tr>
-                                            <td><input type="checkbox" id="allergydrugsAppt" name="allergydrugs" value="1" class="ui checkbox" class="hidden" tabindex="0"></td>
-                                            <td><label for="allergydrugs">Meds</label></td>
-                                            <td><textarea id="drugs_remarksAppt" name="drugs_remarks" type="text" rows="3"></textarea></td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="checkbox" id="allergyplasterAppt" name="allergyplaster" value="1"  class="ui checkbox" class="hidden" tabindex="0"></td>
-                                            <td><label for="allergyplaster">Plaster</label></td>
-                                            <td><textarea id="plaster_remarksAppt" name="plaster_remarks" type="text" rows="3"></textarea></td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="checkbox" id="allergyfoodAppt" name="allergyfood" value="1"  class="ui checkbox" class="hidden" tabindex="0"></td>
-                                            <td><label for="allergyfood">Food</label></td>
-                                            <td><textarea id="food_remarksAppt" name="food_remarks" type="text" rows="3"></textarea></td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="checkbox" id="allergyenvironmentAppt" name="allergyenvironment" value="1"  class="ui checkbox" class="hidden" tabindex="0"></td>
-                                            <td><label for="allergyenvironment">Environment</label></td>
-                                            <td><textarea id="environment_remarksAppt" name="environment_remarks" type="text" rows="3"></textarea></td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="checkbox" id="allergyothersAppt" name="allergyothers" value="1"  class="ui checkbox" class="hidden" tabindex="0"></td>
-                                            <td><label for="allergyothers">Others</label></td>
-                                            <td><textarea id="others_remarksAppt" name="others_remarks" type="text" rows="3"></textarea></td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="checkbox" id="allergyunknownAppt" name="allergyunknown" value="1"  class="ui checkbox" class="hidden" tabindex="0"></td>
-                                            <td><label for="allergyunknown">Unknown</label></td>
-                                            <td><textarea id="unknown_remarksAppt" name="unknown_remarks" type="text" rows="3"></textarea></td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="checkbox" id="allergynoneAppt" name="allergynone" value="1"  class="ui checkbox" class="hidden" tabindex="0"></td>
-                                            <td><label for="allergynone">None</label></td>
-                                            <td><textarea id="none_remarksAppt" name="none_remarks" type="text" rows="3"></textarea></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div class="ui secondary segment">ALLERGIES</div>
+                        <div class="ui segment" style="height: 700px;">
+                            <table class="table table-sm table-hover">
+                                <tbody>
+                                    <tr>
+                                        <td><input type="checkbox" id="allergydrugsAppt" name="allergydrugs" value="1" class="ui checkbox" class="hidden" tabindex="0"></td>
+                                        <td><label for="allergydrugs">Meds</label></td>
+                                        <td><textarea id="drugs_remarksAppt" name="drugs_remarks" type="text" rows="3"></textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" id="allergyplasterAppt" name="allergyplaster" value="1"  class="ui checkbox" class="hidden" tabindex="0"></td>
+                                        <td><label for="allergyplaster">Plaster</label></td>
+                                        <td><textarea id="plaster_remarksAppt" name="plaster_remarks" type="text" rows="3"></textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" id="allergyfoodAppt" name="allergyfood" value="1"  class="ui checkbox" class="hidden" tabindex="0"></td>
+                                        <td><label for="allergyfood">Food</label></td>
+                                        <td><textarea id="food_remarksAppt" name="food_remarks" type="text" rows="3"></textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" id="allergyenvironmentAppt" name="allergyenvironment" value="1"  class="ui checkbox" class="hidden" tabindex="0"></td>
+                                        <td><label for="allergyenvironment">Environment</label></td>
+                                        <td><textarea id="environment_remarksAppt" name="environment_remarks" type="text" rows="3"></textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" id="allergyothersAppt" name="allergyothers" value="1"  class="ui checkbox" class="hidden" tabindex="0"></td>
+                                        <td><label for="allergyothers">Others</label></td>
+                                        <td><textarea id="others_remarksAppt" name="others_remarks" type="text" rows="3"></textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" id="allergyunknownAppt" name="allergyunknown" value="1"  class="ui checkbox" class="hidden" tabindex="0"></td>
+                                        <td><label for="allergyunknown">Unknown</label></td>
+                                        <td><textarea id="unknown_remarksAppt" name="unknown_remarks" type="text" rows="3"></textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" id="allergynoneAppt" name="allergynone" value="1"  class="ui checkbox" class="hidden" tabindex="0"></td>
+                                        <td><label for="allergynone">None</label></td>
+                                        <td><textarea id="none_remarksAppt" name="none_remarks" type="text" rows="3"></textarea></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
+                    </div>
                 </div>
-
+                
                 <div class="sixteen wide column">
                     <div class="ui segments">
                         <div class="ui secondary segment">REQUIRED</div>
@@ -287,7 +284,7 @@
                         </div>
                     </div>
                 </div>
-
+                
                 <div class="sixteen wide column">
                     <div class="ui segments">
                         <div class="ui secondary segment">REPORT</div>
@@ -298,9 +295,9 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="four wide column">
-                </div>
+                
+                <div class="four wide column"></div>
+                
                 <div class="four wide column">
                     <div class="ui form">
                         <div class="inline field">
@@ -309,6 +306,7 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="four wide column">
                     <div class="ui form">
                         <div class="inline field">
@@ -317,8 +315,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="four wide column">
-                </div>
+                
+                <div class="four wide column"></div>
             </div>
         </form>
     </div>
