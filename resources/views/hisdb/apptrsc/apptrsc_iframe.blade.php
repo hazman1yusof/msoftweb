@@ -118,7 +118,7 @@
                             </div>
                         </div>
 
-                        <div class="ui two fields">
+                        <div class="ui two fields" style="display: none;">
                             <div class="field">
                                 <label>ICD</label>
                                 <button class="ui button small blue" type="button" id="btn_icd">ICD</button>
@@ -128,6 +128,32 @@
                                 <label>MMA</label>
                                 <button class="ui button small blue" type="button" id="btn_mma">MMA</button>
                                 <textarea rows="4" id="procedure" name="procedure"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="ui fields">
+                            <div class="twelve wide field">
+                                <label>Type of Operation / Procedure</label>
+                                <div class="inline field">
+                                    <label>1.</label>
+                                    <input name="oper_type" id="oper_type" type="text" readonly value="{{$pat_otbook->oper_type}}" size="80">
+                                </div>
+                                <div class="inline field" style="padding-top: 10px;">
+                                    <label>2.</label>
+                                    <input name="oper_type2" id="oper_type2" type="text" readonly value="{{$pat_otbook->oper_type2}}" size="80">
+                                </div>
+                                <div class="inline field" style="padding-top: 10px;">
+                                    <label>3.</label>
+                                    <input name="oper_type3" id="oper_type3" type="text" readonly value="{{$pat_otbook->oper_type3}}" size="80">
+                                </div>
+                                <div class="inline field" style="padding-top: 10px;">
+                                    <label>4.</label>
+                                    <input name="oper_type4" id="oper_type4" type="text" readonly value="{{$pat_otbook->oper_type4}}" size="80">
+                                </div>
+                                <div class="inline field" style="padding-top: 10px;">
+                                    <label>5.</label>
+                                    <input name="oper_type5" id="oper_type5" type="text" readonly value="{{$pat_otbook->oper_type5}}" size="80">
+                                </div>
                             </div>
                         </div>
                     </div>

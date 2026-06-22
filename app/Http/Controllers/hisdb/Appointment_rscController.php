@@ -44,43 +44,48 @@ class Appointment_rscController extends defaultController
 
         return view('hisdb.apptrsc.apptrsc2',compact('ALCOLOR','otstatus'));
     }
-
-    public function apptrsc_rsc_iframe(Request $request){   
-
+    
+    public function apptrsc_rsc_iframe(Request $request){
+        
         $apptresrc = DB::table('hisdb.apptresrc')
-                        ->where('compcode',session('compcode'))
-                        ->where('TYPE','OT')
-                        ->first();
-
+                    ->where('compcode',session('compcode'))
+                    ->where('TYPE','OT')
+                    ->first();
+        
         $apptresrc_all = DB::table('hisdb.apptresrc')
                         ->where('compcode',session('compcode'))
                         ->where('TYPE','OT')
                         ->where('recstatus','ACTIVE')
                         ->get();
-
+        
         $op_unit = DB::table('hisdb.discipline')
-                        ->where('compcode',session('compcode'))
-                        ->where('recstatus','ACTIVE')
-                        ->get();
-
+                    ->where('compcode',session('compcode'))
+                    ->where('recstatus','ACTIVE')
+                    ->get();
+        
         $episode = DB::table('hisdb.episode')
-                        ->where('mrn',$request->mrn)
-                        ->where('episno',$request->episno)
-                        ->first();
-
+                    ->where('mrn',$request->mrn)
+                    ->where('episno',$request->episno)
+                    ->first();
+        
         $patmast = DB::table('hisdb.pat_mast')
-                        ->where('mrn',$request->mrn)
-                        ->first();
-
-        return view('hisdb.apptrsc.apptrsc_iframe',compact('apptresrc','apptresrc_all','op_unit','episode','patmast'));
+                    ->where('mrn',$request->mrn)
+                    ->first();
+        
+        $pat_otbook = DB::table('hisdb.pat_otbook')
+                    ->where('mrn',$request->mrn)
+                    ->where('episno',$request->episno)
+                    ->first();
+        
+        return view('hisdb.apptrsc.apptrsc_iframe',compact('apptresrc','apptresrc_all','op_unit','episode','patmast','pat_otbook'));
     }
-
+    
     public function wardbook_iframe(Request $request){
         return view('hisdb.apptrsc.wardbook_iframe');
     }
-
+    
     public function table(Request $request)
-    {   
+    {
         switch($request->action){
             case 'populate_new_episode_by_mrn_apptrsc':
                 return $this->populate_new_episode_by_mrn_apptrsc($request);
