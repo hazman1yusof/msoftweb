@@ -21,7 +21,7 @@ class AdmHandoverController extends defaultController
     
     public function show(Request $request)
     {
-        return view('patientcare.admhandover');
+        return view('patientcare.emergency.admhandover');
     }
     
     public function table(Request $request)
@@ -148,8 +148,8 @@ class AdmHandoverController extends defaultController
     
     public function showpdf(Request $request){
 
-        $mrn = $request->mrn_admHandover;
-        $episno = $request->episno_admHandover;
+        $mrn = $request->mrn_emergencyMain;
+        $episno = $request->episno_emergencyMain;
 
         $admhandover = DB::table('nursing.admhandover as adm')
                     ->select('adm.mrn','adm.episno','adm.dateofadm','adm.reasonadm','adm.type','adm.rtkpcr','adm.rtkpcr_remark','adm.bloodinv','adm.bloodinv_remark','adm.branula','adm.branula_remark','adm.scan','adm.scan_remark','adm.insurance','adm.insurance_remark','adm.medication','adm.medication_remark','adm.consent','adm.consent_remark','adm.smoking','adm.smoking_remark','adm.nbm','adm.nbm_remark','adm.report','adm.adduser','adm.adddate','nh.medicalhistory','nh.surgicalhistory','nh.familymedicalhist','nh.allergydrugs','nh.drugs_remarks','nh.allergyplaster','nh.plaster_remarks','nh.allergyfood','nh.food_remarks','nh.allergyenvironment','nh.environment_remarks','nh.allergyothers','nh.others_remarks','nh.allergyunknown','nh.unknown_remarks','nh.allergynone','nh.none_remarks','na.vs_weight','na.diagnosis','pm.Name','pm.Newic','e.admdoctor','d.doctorname')

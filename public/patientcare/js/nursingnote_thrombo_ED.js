@@ -1,4 +1,3 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
@@ -28,7 +27,7 @@ $(document).ready(function (){
         button_state_thrombo_ED('wait');
         enableForm('#formThrombo_ED');
         rdonly('#formThrombo_ED');
-        emptyFormdata_div("#formThrombo_ED",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+        emptyFormdata_div("#formThrombo_ED",['#mrn_emergencyMain','#episno_emergencyMain','#doctor_nursNote','#ordcomtt_phar']);
         document.getElementById("idno_thrombo").value = "";
     });
     
@@ -68,7 +67,7 @@ $(document).ready(function (){
     ////////////////////////////////////print button starts////////////////////////////////////
     
     $("#thrombo_ED_chart").click(function (){
-        window.open('./thrombophlebitis/thrombophlebitis_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&dateInsert='+$("#dateInsert_ED").val(), '_blank');
+        window.open('./thrombophlebitis/thrombophlebitis_chart?mrn='+$('#mrn_emergencyMain').val()+'&episno='+$("#episno_emergencyMain").val()+'&dateInsert='+$("#dateInsert_ED").val(), '_blank');
     });
     
     ////////////////////////////////////////thrombo starts////////////////////////////////////////
@@ -87,7 +86,7 @@ $(document).ready(function (){
             $(this).addClass('selected');
         }
         
-        emptyFormdata_div("#formThrombo_ED",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+        emptyFormdata_div("#formThrombo_ED",['#mrn_emergencyMain','#episno_emergencyMain','#doctor_nursNote','#ordcomtt_phar']);
         $('#datetimethrombo_ED_tbl tbody tr').removeClass('active');
         $(this).addClass('active');
         
@@ -263,8 +262,8 @@ $(document).ready(function (){
             let editurl = "./ptcare_nursingnote/form?"+
                 $.param({
                     action: 'thrombo_ED_save',
-                    mrn: $('#mrn_nursNote').val(),
-                    episno: $('#episno_nursNote').val(),
+                    mrn: $('#mrn_emergencyMain').val(),
+                    episno: $('#episno_emergencyMain').val(),
                     cannulationNo: $("#formThrombo_ED :input[name='idno_thrombo']").val()
                 });
             $("#jqGridThrombo_ED").jqGrid('setGridParam', { editurl: editurl });
@@ -313,8 +312,8 @@ $(document).ready(function (){
             let editurl = "./ptcare_nursingnote/form?"+
                 $.param({
                     action: 'thrombo_ED_edit',
-                    mrn: $('#mrn_nursNote').val(),
-                    episno: $('#episno_nursNote').val(),
+                    mrn: $('#mrn_emergencyMain').val(),
+                    episno: $('#episno_emergencyMain').val(),
                     idno: selrowData('#jqGridThrombo_ED').idno,
                 });
             $("#jqGridThrombo_ED").jqGrid('setGridParam', { editurl: editurl });
@@ -481,8 +480,8 @@ function saveForm_thrombo_ED(callback){
 
     var postobj = {
         _token: $('#_token').val(),
-        mrn_nursNote: $('#mrn_nursNote').val(),
-        episno_nursNote: $('#episno_nursNote').val(),
+        mrn_emergencyMain: $('#mrn_emergencyMain').val(),
+        episno_emergencyMain: $('#episno_emergencyMain').val(),
     };
     
     values = $("#formThrombo_ED").serializeArray();
@@ -536,7 +535,7 @@ function saveForm_thrombo_ED(callback){
 
 function populate_thrombo_ED_getdata(){
     disableForm('#formThrombo_ED');
-    emptyFormdata(errorField,"#formThrombo_ED",["#mrn_nursNote","#episno_nursNote","#doctor_nursNote","#ordcomtt_phar"]);
+    emptyFormdata(errorField,"#formThrombo_ED",["#mrn_emergencyMain","#episno_emergencyMain","#doctor_nursNote","#ordcomtt_phar"]);
     
     var saveParam = {
         action: 'get_table_thrombo_ED',
@@ -544,8 +543,8 @@ function populate_thrombo_ED_getdata(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $("#mrn_nursNote").val(),
-        episno: $("#episno_nursNote").val()
+        mrn: $("#mrn_emergencyMain").val(),
+        episno: $("#episno_emergencyMain").val()
     };
     
     $.post("./ptcare_nursingnote/form?"+$.param(saveParam), $.param(postobj), function (data){

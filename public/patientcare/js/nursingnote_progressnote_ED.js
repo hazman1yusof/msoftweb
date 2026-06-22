@@ -13,8 +13,8 @@ $(document).ready(function (){
         button_state_progress_ED('wait');
         enableForm('#formProgress_ED');
         rdonly('#formProgress_ED');
-        emptyFormdata_div("#formProgress_ED",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
-        document.getElementById("idno_progress").value = "";
+        emptyFormdata_div("#formProgress_ED",['#mrn_emergencyMain','#episno_emergencyMain','#doctor_nursNote','#ordcomtt_phar']);
+        document.getElementById("idno_progress_ED").value = "";
     });
     
     $("#edit_progress_ED").click(function (){
@@ -81,11 +81,11 @@ $(document).ready(function (){
             $(this).addClass('selected');
         }
         
-        emptyFormdata_div("#formProgress_ED",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+        emptyFormdata_div("#formProgress_ED",['#mrn_emergencyMain','#episno_emergencyMain','#doctor_nursNote','#ordcomtt_phar']);
         $('#datetime_ED_tbl tbody tr').removeClass('active');
         $(this).addClass('active');
         
-        $("#formProgress_ED :input[name='idno_progress']").val(data.idno);
+        $("#formProgress_ED :input[name='idno_progress_ED']").val(data.idno);
 
         var saveParam={
             action: 'get_table_progress_ED',
@@ -227,8 +227,8 @@ function saveForm_progress_ED(callback){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn_nursNote: $('#mrn_nursNote').val(),
-        episno_nursNote: $("#episno_nursNote").val(),
+        mrn_emergencyMain: $('#mrn_emergencyMain').val(),
+        episno_emergencyMain: $("#episno_emergencyMain").val(),
         epistycode: 'OP'
     };
     
@@ -273,7 +273,7 @@ function saveForm_progress_ED(callback){
 
 function populate_progressnote_ED_getdata(){
     disableForm('#formProgress_ED');
-    emptyFormdata(errorField,"#formProgress_ED",["#mrn_nursNote","#episno_nursNote","#doctor_nursNote","#ordcomtt_phar"]);
+    emptyFormdata(errorField,"#formProgress_ED",["#mrn_emergencyMain","#episno_emergencyMain","#doctor_nursNote","#ordcomtt_phar"]);
 
     var saveParam = {
         action: 'get_table_progress_ED',
@@ -281,9 +281,9 @@ function populate_progressnote_ED_getdata(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $("#mrn_nursNote").val(),
-        episno: $("#episno_nursNote").val(),
-        // idno: $("#idno_progress").val(),
+        mrn: $("#mrn_emergencyMain").val(),
+        episno: $("#episno_emergencyMain").val(),
+        // idno: $("#idno_progress_ED").val(),
 
     };
     
@@ -305,12 +305,12 @@ function populate_progressnote_ED_getdata(){
 
     // var urlparam_datetime_ED_tbl = {
     //     action: 'get_table_datetime_ED',
-    //     mrn: $("#mrn_nursNote").val(),
-    //     episno: $("#episno_nursNote").val()
+    //     mrn: $("#mrn_emergencyMain").val(),
+    //     episno: $("#episno_emergencyMain").val()
     // }
     
     // datetime_ED_tbl.ajax.url("./ptcare_nursingnote/table?"+$.param(urlparam_datetime_ED_tbl)).load(function (data){
-    //     emptyFormdata_div("#formProgress_ED",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+    //     emptyFormdata_div("#formProgress_ED",['#mrn_emergencyMain','#episno_emergencyMain','#doctor_nursNote','#ordcomtt_phar']);
     //     $('#datetime_ED_tbl tbody tr:eq(0)').click();  // to select first row
     // });
 }

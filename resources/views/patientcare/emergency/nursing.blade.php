@@ -13,12 +13,12 @@
         </div>
     </div>
 
-    <div class="ui segment">
+    <!-- <div class="ui segment"> -->
         <form id="formTriageInfo" class="ui form">
-            <input id="mrn_ti" name="mrn_ti" type="hidden">
-            <input id="episno_ti" name="episno_ti" type="hidden">
+            <!-- <input id="mrn_ti" name="mrn_ti" type="hidden">
+            <input id="episno_ti" name="episno_ti" type="hidden"> -->
 
-            <div class="ui grid">
+            <div class="ui grid" style="padding-top: 10px; margin: 0px 5px 0px 5px;">
                 <div class="eight wide column">
                     <div class="ui segments">
                         <div class="ui secondary segment">INFORMATION</div>
@@ -1221,28 +1221,8 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- <div class="sixteen wide column">
-                    <div class="ui segments">
-                        <div class="ui secondary segment">EXAMINATION</div>
-                        <div class="ui segment" id="jqGridExamTriage_c">
-                            <table id="jqGridExamTriage" class="table table-striped"></table>
-                            <div id="jqGridPagerExamTriage"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="sixteen wide column">
-                    <div class="ui segments">
-                        <div class="ui secondary segment">ADDITIONAL NOTES</div>
-                        <div class="ui segment" id="jqGridAddNotesTriage_c">
-                            <table id="jqGridAddNotesTriage" class="table table-striped"></table>
-                            <div id="jqGridPagerAddNotesTriage"></div>
-                        </div>
-                    </div>
-                </div> -->
             </div>
 
         </form>
-    </div>
+    <!-- </div> -->
 </div>

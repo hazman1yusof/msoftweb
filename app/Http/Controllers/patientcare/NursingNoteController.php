@@ -309,8 +309,8 @@ class NursingNoteController extends defaultController
             DB::table('nursing.nurshandover')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn_nursNote,
-                    'episno' => $request->episno_nursNote,
+                    'mrn' => $request->mrn_emergencyMain,
+                    'episno' => $request->episno_emergencyMain,
                     'datetaken' => $request->datetaken,
                     'timetaken' => $request->timetaken,
                     'bpsys_stand' => $request->bpsys_stand,
@@ -371,11 +371,11 @@ class NursingNoteController extends defaultController
         
         try {
             
-            if(!empty($request->idno_progress)){
+            if(!empty($request->idno_progress_ED)){
                 DB::table('nursing.nurshandover')
-                    ->where('idno','=',$request->idno_progress)
-                    // ->where('mrn','=',$request->mrn_nursNote)
-                    // ->where('episno','=',$request->episno_nursNote)
+                    ->where('idno','=',$request->idno_progress_ED)
+                    // ->where('mrn','=',$request->mrn_emergencyMain)
+                    // ->where('episno','=',$request->episno_emergencyMain)
                     ->update([
                         'bpsys_stand' => $request->bpsys_stand,
                         'bpdias_stand' => $request->bpdias_stand,
@@ -418,8 +418,8 @@ class NursingNoteController extends defaultController
                 DB::table('nursing.nurshandover')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_nursNote,
-                        'episno' => $request->episno_nursNote,
+                        'mrn' => $request->mrn_emergencyMain,
+                        'episno' => $request->episno_emergencyMain,
                         'datetaken' => $request->datetaken,
                         'timetaken' => $request->timetaken,
                         'bpsys_stand' => $request->bpsys_stand,
@@ -521,8 +521,8 @@ class NursingNoteController extends defaultController
             DB::table('nursing.pivc')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn_nursNote,
-                    'episno' => $request->episno_nursNote,
+                    'mrn' => $request->mrn_emergencyMain,
+                    'episno' => $request->episno_emergencyMain,
                     'practiceDate' => $request->practiceDate,
                     'consultant' => $request->consultant,
                     'hygiene_M' => $request->hygiene_M,
@@ -598,8 +598,8 @@ class NursingNoteController extends defaultController
 
             $pivc = DB::table('nursing.pivc')
                             ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn_nursNote)
-                            ->where('episno','=',$request->episno_nursNote)
+                            ->where('mrn','=',$request->mrn_emergencyMain)
+                            ->where('episno','=',$request->episno_emergencyMain)
                             ->where('practiceDate','=',$request->practiceDate);
             
             if(!empty($request->idno_pivc)){
@@ -667,8 +667,8 @@ class NursingNoteController extends defaultController
                 DB::table('nursing.pivc')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_nursNote,
-                        'episno' => $request->episno_nursNote,
+                        'mrn' => $request->mrn_emergencyMain,
+                        'episno' => $request->episno_emergencyMain,
                         'practiceDate' => $request->practiceDate,
                         'consultant' => $request->consultant,
                         'hygiene_M' => $request->hygiene_M,
@@ -749,8 +749,8 @@ class NursingNoteController extends defaultController
             DB::table('nursing.thrombophlebitis')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn_nursNote,
-                    'episno' => $request->episno_nursNote,
+                    'mrn' => $request->mrn_emergencyMain,
+                    'episno' => $request->episno_emergencyMain,
                     'dateInsert' => $request->dateInsert,
                     'timeInsert' => $request->timeInsert,
                     'gauge' => $request->gauge,
@@ -788,8 +788,8 @@ class NursingNoteController extends defaultController
 
             $thrombo = DB::table('nursing.thrombophlebitis')
                             ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn_nursNote)
-                            ->where('episno','=',$request->episno_nursNote)
+                            ->where('mrn','=',$request->mrn_emergencyMain)
+                            ->where('episno','=',$request->episno_emergencyMain)
                             ->where('dateInsert','=',$request->dateInsert);
             
             if(!empty($request->idno_thrombo)){
@@ -820,8 +820,8 @@ class NursingNoteController extends defaultController
                 DB::table('nursing.thrombophlebitis')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_nursNote,
-                        'episno' => $request->episno_nursNote,
+                        'mrn' => $request->mrn_emergencyMain,
+                        'episno' => $request->episno_emergencyMain,
                         'dateInsert' => $request->dateInsert,
                         'timeInsert' => $request->timeInsert,
                         'gauge' => $request->gauge,
@@ -1061,4 +1061,6 @@ class NursingNoteController extends defaultController
         return json_encode($responce);
         
     }
+
 }
+
