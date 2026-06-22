@@ -305,7 +305,9 @@ function empty_formNursing(){
 function saveForm_ti(callback){
 	var saveParam={
         action:'save_table_ti',
-        oper:$("#cancel_ti").data('oper')
+        oper:$("#cancel_ti").data('oper'),
+		mrn_emergencyMain:$("#mrn_emergencyMain").val(),
+		episno_emergencyMain:$("#episno_emergencyMain").val()
     }
     var postobj={
     	_token : $('#_token').val(),
