@@ -1309,6 +1309,8 @@ function saveForm_radClinicReqFor(callback){
             return {"name": this.name, "value": this.value}
         }).get()
     );
+
+    console.log($('#formRadClinicReqFor input[type=radio]:checked'));
     
     values = values.concat(
         $('#formRadClinicReqFor select').map(
