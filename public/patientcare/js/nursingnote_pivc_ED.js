@@ -13,7 +13,7 @@ $(document).ready(function (){
         button_state_pivc_ED('wait');
         enableForm('#formPivc_ED');
         rdonly('#formPivc_ED');
-        emptyFormdata_div("#formPivc_ED",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+        emptyFormdata_div("#formPivc_ED",['#mrn_emergencyMain','#episno_emergencyMain','#doctor_nursNote','#ordcomtt_phar']);
         document.getElementById("idno_pivc").value = "";
     });
     
@@ -65,7 +65,8 @@ $(document).ready(function (){
         },
         buttons: [{
             text: "Print", click: function (){
-                window.open('./pivc/pivc_chart?mrn='+$('#mrn_nursNote').val()+'&episno='+$("#episno_nursNote").val()+'&datefr='+$("#datefr_pivc").val()+'&dateto='+$("#dateto_pivc").val(), '_blank');
+                console.log('dd');
+                window.open('./pivc/pivc_chart?mrn='+$('#mrn_emergencyMain').val()+'&episno='+$("#episno_emergencyMain").val()+'&datefr='+$("#datefr_pivc").val()+'&dateto='+$("#dateto_pivc").val(), '_blank');
             }
         },{
             text: "Cancel", click: function (){
@@ -96,7 +97,7 @@ $(document).ready(function (){
             $(this).addClass('selected');
         }
         
-        emptyFormdata_div("#formPivc_ED",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+        emptyFormdata_div("#formPivc_ED",['#mrn_emergencyMain','#episno_emergencyMain','#doctor_nursNote','#ordcomtt_phar']);
         $('#datetimepivc_ED_tbl tbody tr').removeClass('active');
         $(this).addClass('active');
         
@@ -232,8 +233,8 @@ function saveForm_pivc_ED(callback){
 
     var postobj = {
         _token: $('#_token').val(),
-        mrn_nursNote: $('#mrn_nursNote').val(),
-        episno_nursNote: $('#episno_nursNote').val(),
+        mrn_emergencyMain: $('#mrn_emergencyMain').val(),
+        episno_emergencyMain: $('#episno_emergencyMain').val(),
     };
     
     values = $("#formPivc_ED").serializeArray();
@@ -287,7 +288,7 @@ function saveForm_pivc_ED(callback){
 
 function populate_pivc_ED_getdata(){
     disableForm('#formPivc_ED');
-    emptyFormdata(errorField,"#formPivc_ED",["#mrn_nursNote","#episno_nursNote","#doctor_nursNote","#ordcomtt_phar"]);
+    emptyFormdata(errorField,"#formPivc_ED",["#mrn_emergencyMain","#episno_emergencyMain","#doctor_nursNote","#ordcomtt_phar"]);
     
     var saveParam = {
         action: 'get_table_pivc_ED',
@@ -295,8 +296,8 @@ function populate_pivc_ED_getdata(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $("#mrn_nursNote").val(),
-        episno: $("#episno_nursNote").val()
+        mrn: $("#mrn_emergencyMain").val(),
+        episno: $("#episno_emergencyMain").val()
     };
     
     $.post("./ptcare_nursingnote/form?"+$.param(saveParam), $.param(postobj), function (data){

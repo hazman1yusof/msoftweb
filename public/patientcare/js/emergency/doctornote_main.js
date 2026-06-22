@@ -1,4 +1,3 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
@@ -48,7 +47,7 @@ $(document).ready(function () {
 		eventSources: [
 			{	
 				id: 'doctornote_event',
-				url: './ptcare_doctornote/table',
+				url: './ptcare_doctornoteED/table',
 				type: 'GET',
 				data: {
 					type: 'apptbook',
@@ -65,7 +64,7 @@ $(document).ready(function () {
 
 	var urlParam = {
 		action: 'get_table_doctornote',
-		url: './ptcare_doctornote/table',
+		url: './ptcare_doctornoteED/table',
 		filterVal : [moment().format("YYYY-MM-DD")]
 	}
 
@@ -153,15 +152,16 @@ $(document).ready(function () {
 				// refreshGrid("#jqGrid_trans", urlParam_trans);
 				// refreshGrid("#jqGrid_trans_diet", urlParam_trans_diet);
 				// refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
-				populate_currDoctorNote(selrowData('#jqGrid'));
-				populate_nursingnote_ptcare(selrowData('#jqGrid'));
-				populate_requestFor_ptcare(selrowData('#jqGrid'));
-				populate_admhandover_currpt(selrowData('#jqGrid'));
-				populate_triage_currpt(selrowData('#jqGrid'));
-				populate_dieteticCareNotes_currpt(selrowData('#jqGrid'));
-				populate_userfile(selrowData('#jqGrid'));
-				populate_phys(selrowData('#jqGrid'));
-				populate_ordcom_currpt(selrowData('#jqGrid'));
+				populate_emergencyMain(selrowData('#jqGrid'));
+				// populate_currDoctorNote(selrowData('#jqGrid'));
+				// populate_nursingnote_ptcare(selrowData('#jqGrid'));
+				// populate_requestFor_ptcare(selrowData('#jqGrid'));
+				// populate_admhandover_currpt(selrowData('#jqGrid'));
+				// populate_triage_currpt(selrowData('#jqGrid'));
+				// populate_dieteticCareNotes_currpt(selrowData('#jqGrid'));
+				// populate_userfile(selrowData('#jqGrid'));
+				// populate_phys(selrowData('#jqGrid'));
+				// populate_ordcom_currpt(selrowData('#jqGrid'));
 				
 				// if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
 				// 	$('#checkbox_completed').prop('disabled',true);
@@ -186,15 +186,16 @@ $(document).ready(function () {
 				hide_tran_button_diet(true);
 				hide_tran_button_phys(true);
 				$('#no_of_pat').text($("#jqGrid").getGridParam("reccount"));
-				empty_currDoctorNote();
-				empty_nursingnote_ptcare();
-				empty_requestFor_ptcare();
+				empty_emergencyMain();
+				// empty_currDoctorNote();
+				// empty_nursingnote_ptcare();
+				// empty_requestFor_ptcare();
 				empty_transaction();
 				empty_transaction_diet();
 				empty_transaction_phys();
-				empty_dietcarenote();
-				empty_userfile();
-				empty_currphys();
+				// empty_dietcarenote();
+				// empty_userfile();
+				// empty_currphys();
 				empty_formNursing();
 				
 				let discharge_btn_data = $('#discharge_btn').data('idno');
@@ -256,6 +257,7 @@ $(document).ready(function () {
 				// }
 				// empty_userfile();
 				$('button#timer_stop').click();
+    			$('#emergencyMain_tab .menu .item').tab('change tab','nursing_ed');
 				urlParam_trans.mrn = selrowData('#jqGrid').MRN;
 				urlParam_trans.episno = selrowData('#jqGrid').Episno;
 				urlParam_trans_diet.mrn = selrowData('#jqGrid').MRN;
@@ -268,15 +270,16 @@ $(document).ready(function () {
 				// refreshGrid("#jqGrid_trans", urlParam_trans);
 				// refreshGrid("#jqGrid_trans_diet", urlParam_trans_diet);
 				// refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
-				populate_currDoctorNote(selrowData('#jqGrid'));
-				populate_nursingnote_ptcare(selrowData('#jqGrid'));
-				populate_requestFor_ptcare(selrowData('#jqGrid'));
-				populate_admhandover_currpt(selrowData('#jqGrid'));
-				populate_triage_currpt(selrowData('#jqGrid'));
-				populate_dieteticCareNotes_currpt(selrowData('#jqGrid'));
-				populate_userfile(selrowData('#jqGrid'));
-				populate_phys(selrowData('#jqGrid'));
-				populate_ordcom_currpt(selrowData('#jqGrid'));
+				populate_emergencyMain(selrowData('#jqGrid'));
+				// populate_currDoctorNote(selrowData('#jqGrid'));
+				// populate_nursingnote_ptcare(selrowData('#jqGrid'));
+				// populate_requestFor_ptcare(selrowData('#jqGrid'));
+				// populate_admhandover_currpt(selrowData('#jqGrid'));
+				// populate_triage_currpt(selrowData('#jqGrid'));
+				// populate_dieteticCareNotes_currpt(selrowData('#jqGrid'));
+				// populate_userfile(selrowData('#jqGrid'));
+				// populate_phys(selrowData('#jqGrid'));
+				// populate_ordcom_currpt(selrowData('#jqGrid'));
 				
 				// if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
 				// 	$('#checkbox_completed').prop('disabled',true);
@@ -296,15 +299,16 @@ $(document).ready(function () {
 				hide_tran_button_diet(true);
 				hide_tran_button_phys(true);
 				$('#no_of_pat').text($("#jqGrid").getGridParam("reccount"));
-				empty_currDoctorNote();
-				empty_requestFor_ptcare();
-				empty_admhandover_ptcare();
-				empty_transaction();
+				empty_emergencyMain();
+				// empty_currDoctorNote();
+				// empty_requestFor_ptcare();
+				// empty_admhandover_ptcare();
+				// empty_transaction();
 				empty_transaction_diet();
-				empty_transaction_phys();
-				empty_dietcarenote();
-				empty_userfile();
-				empty_currphys();
+				// empty_transaction_phys();
+				// empty_dietcarenote();
+				// empty_userfile();
+				// empty_currphys();
 				empty_formNursing();
 				
 				let discharge_btn_data = $('#discharge_btn').data('idno');
@@ -319,6 +323,58 @@ $(document).ready(function () {
 			},
 		});
 	}
+
+	// $('#emergencyMain_tab .top.menu .item').tab({'onVisible': function (){
+ //        let tab = $(this).data('tab');
+ //        console.log(tab);
+
+    //     switch(tab){
+    //         case 'userfile':
+	// 			DataTable_preview.columns.adjust();
+	// 			SmoothScrollTo("#tab_userfile", 300);
+	// 			preview_load_data();
+    //             break;
+    //         case 'nursing':
+	// 			var saveParam={
+	// 				action:'get_table_triage',
+	// 			}
+	// 			var postobj={
+	// 				_token : $('#_token').val(),
+	// 				mrn:$('#mrn_emergencyMain').val(),
+	// 				episno:$("#age_emergencyMain").val()
+	// 			};
+
+	// 			$.post( "./nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+					
+	// 			},'json').fail(function(data) {
+	// 				alert('there is an error');
+	// 			}).done(function(data){
+	// 				if(!$.isEmptyObject(data)){
+	// 					if(!emptyobj_(data.triage))autoinsert_rowdata("#formTriageInfo",data.triage);
+	// 					if(!emptyobj_(data.triage_gen))autoinsert_rowdata("#formTriageInfo",data.triage_gen);
+	// 					if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
+	// 					if(!emptyobj_(data.triage_nurshistory))autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
+	// 					if(!emptyobj_(data.triage_gen))$('#formTriageInfo span#adduser').text(data.triage_gen.adduser);
+	// 					button_state_ti('edit');
+	// 				}else{
+	// 					button_state_ti('add');
+	// 					if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
+	// 				}
+
+	// 			});
+    //             break;
+    //         case 'nursNote':
+    //             break;
+	// 		case 'doctornote':
+    //             break;
+    //         case 'requestFor':
+    //             break;
+    //         case 'admHandover':
+    //             break;
+	// 		case 'diet':
+    //             break;
+    //     }
+    // }});
 	
 	$("#jqGrid").jqGrid('setGroupHeaders', {
 		useColSpanStyle: true, 

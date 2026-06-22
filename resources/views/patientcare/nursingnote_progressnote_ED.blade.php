@@ -13,7 +13,7 @@
     </div>
     <div class="ui segment">
         <form class="ui form sixteen wide column" id="formProgress_ED">
-            <input id="idno_progress_ED" name="idno_progress" type="hidden">
+            <input id="idno_progress_ED" name="idno_progress_ED" type="hidden">
             <div class="sixteen wide column">
                 <div class="ui grid">
                     <div class="five wide column" style="padding: 3px 3px 3px 3px;">

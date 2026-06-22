@@ -1685,9 +1685,18 @@ Route::get('/ptcare_doctornote/table','patientcare\DoctornoteController@table');
 Route::post('/ptcare_doctornote/form','patientcare\DoctornoteController@form');
 Route::post('/ptcare_doctornote_transaction_save', "patientcare\DoctornoteController@transaction_save");
 
+Route::get('/ptcare_doctornoteED','patientcare\DoctornoteEDController@index');
+Route::get('/ptcare_doctornoteED/table','patientcare\DoctornoteEDController@table');
+Route::post('/ptcare_doctornoteED/form','patientcare\DoctornoteEDController@form');
+Route::post('/ptcare_doctornoteED_transaction_save', "patientcare\DoctornoteEDController@transaction_save");
+
 Route::get('/ptcare_requestfor','patientcare\RequestForController@show');
 Route::get('/ptcare_requestfor/table','patientcare\RequestForController@table');
 Route::post('/ptcare_requestfor/form','patientcare\RequestForController@form');
+
+Route::get('/ptcare_requestforED','patientcare\RequestForEDController@show');
+Route::get('/ptcare_requestforED/table','patientcare\RequestForEDController@table');
+Route::post('/ptcare_requestforED/form','patientcare\RequestForEDController@form');
 
 Route::get('/ptcare_admhandover','patientcare\AdmHandoverController@show');
 Route::get('/ptcare_admhandover/table','patientcare\AdmHandoverController@table');
@@ -1696,6 +1705,10 @@ Route::post('/ptcare_admhandover/form','patientcare\AdmHandoverController@form')
 Route::get('/ptcare_dieteticCareNotes','patientcare\DieteticCareNotesController@show');
 Route::get('/ptcare_dieteticCareNotes/table','patientcare\DieteticCareNotesController@table');
 Route::post('/ptcare_dieteticCareNotes/form','patientcare\DieteticCareNotesController@form');
+
+Route::get('/ptcare_dieteticCareNotesED','patientcare\DieteticCareNotesEDController@show');
+Route::get('/ptcare_dieteticCareNotesED/table','patientcare\DieteticCareNotesEDController@table');
+Route::post('/ptcare_dieteticCareNotesED/form','patientcare\DieteticCareNotesEDController@form');
 
 Route::get('/ptcare_phys','patientcare\physioController@show');
 Route::get('/ptcare_phys/table','patientcare\physioController@table');
