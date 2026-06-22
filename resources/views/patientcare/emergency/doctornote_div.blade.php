@@ -30,7 +30,7 @@
                         <label style="color: rgba(0,0,0,.6);">DOCTOR NOTES</label>
                         <div class="field">
                             <div class="ui radio checkbox checked pastcurr">
-                                <input type="radio" name="toggle_type" checked="" tabindex="0" class="hidden" id="current" value="current" checked>
+                                <input type="radio" name="toggle_type" tabindex="0" class="hidden" id="current" value="current" checked>
                                 <label>Current</label>
                             </div>
                         </div>

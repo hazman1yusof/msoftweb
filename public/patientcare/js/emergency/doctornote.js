@@ -673,7 +673,7 @@ function disableOtherFields(){
 	// 	return fieldsNotToBeDisabled.indexOf($(this).attr("name"))<0;
 	// }).prop("disabled", true);
 	
-	$('#remarks, #clinicnote, #pmh, #drugh, #allergyh, #socialh, #fmh, #followuptime, #followupdate, #examination, #diagfinal, #icdcode, #plan_, #height, #weight, #bp_sys1, #bp_dias2, #pulse, #temperature, #respiration,').prop('disabled',true);
+	$('#remarks, #clinicnote, #pmh, #drugh, #allergyh, #socialh, #fmh, #followuptime, #followupdate, #examination, #diagfinal, #icdcode, #plan_, #height, #weight, #bp_sys1, #bp_dias2, #pulse, #temperature, #respiration').prop('disabled',true);
 }
 
 // to enable fields when choose current
@@ -1493,7 +1493,7 @@ function on_toggling_curr_past(obj = curr_obj){
 	}else if($('.pastcurr').find('[name="toggle_type"]:checked').val() == 'past'){
 		dateParam_docnote = {
 			action: 'get_table_date_past',
-			mrn: obj.MRN,
+			mrn: $("#mrn_emergencyMain").val(),
 		}
 		$('#primary_icd_form,#followup_form').hide();
 		
@@ -1501,6 +1501,20 @@ function on_toggling_curr_past(obj = curr_obj){
 		disableOtherFields();
 		button_state_doctorNote('disableAll'); // disable all buttons
 		$('#jqGridPagerRefresh_addnotes').click();
+	}else{
+		$('.pastcurr').find('[name="toggle_type"][value="current"]').prop('checked', true);
+
+		dateParam_docnote = {
+			action: 'get_table_date_curr',
+			mrn: $("#mrn_emergencyMain").val(),
+			episno:$("#episno_emergencyMain").val(),
+			date: $('#sel_date').val()
+		}
+		$('#primary_icd_form,#followup_form').show();
+		
+		addnotes.style.display = "none";
+		enableFields();
+		button_state_doctorNote('add');
 	}
 }
 

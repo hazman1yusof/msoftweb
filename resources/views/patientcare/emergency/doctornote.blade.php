@@ -504,6 +504,27 @@
 @include('patientcare.itemselector')
 @endsection
 
+<div id="PIVCDialog_ED" title="PIVC">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form class='form-horizontal' style='width: 99%;' id='formdata_PIVC_ED'>
+                <input type="hidden" name="action">
+                
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label class="control-label" for="Scol">Date From</label>
+                        <input id="datefr_pivc" name="datefr" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label" for="Scol">Date To</label>
+                        <input id="dateto_pivc" name="dateto" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @section('css')
     <link rel="stylesheet" href="{{asset('patientcare/css/doctornote.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" crossorigin="anonymous">

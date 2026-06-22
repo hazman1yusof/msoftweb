@@ -121,6 +121,7 @@ $(document).ready(function (){
                 $('div#docnote_date_tbl_sticky').show();
                 $("#jqGrid_trans").jqGrid('setGridWidth', Math.floor($("#jqGrid_trans_c")[0].offsetWidth-$("#jqGrid_trans_c")[0].offsetLeft-14));
                 
+                on_toggling_curr_past(null);
                 docnote_date_tbl.ajax.url("./ptcare_doctornoteED/table?"+$.param(dateParam_docnote)).load(function (data){
                     emptyFormdata_div("#formDoctorNote",['#mrn_emergencyMain','#episno_emergencyMain']);
                     // $('#docnote_date_tbl tbody tr:eq(0)').click(); // to select first row
