@@ -1,49 +1,49 @@
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
-var editedRow=0;
+var editedRow = 0;
 
-$(document).ready(function () {
-
-	$('#tab_admHandoverAppt').on('show.bs.collapse', function () {
+$(document).ready(function (){
+	
+	$('#tab_admHandoverAppt').on('show.bs.collapse', function (){
 		return check_if_user_selected();
 	});
-
-	$('#tab_admHandoverAppt').on('shown.bs.collapse', function () {
+	
+	$('#tab_admHandoverAppt').on('shown.bs.collapse', function (){
 		SmoothScrollTo('#tab_admHandoverAppt', 300);
-
-	var saveParam={
-		action:'get_table_admhandoverAppt',
-	}
-
-    var postobj={
-    	_token : $('#_token').val(),
-    	mrn:$("#mrn_admHandover").val(),
-    	episno:$("#episno_admHandover").val()
-    };
-
-    $.post( "./ptcare_admhandoverAppt/form?"+$.param(saveParam), $.param(postobj), function( data ) {
-        
-    },'json').fail(function(data) {
-        alert('there is an error');
-    }).done(function(data){
-    	if(!$.isEmptyObject(data.admhandover)){
-			if(!emptyobj_(data.admhandover))autoinsert_rowdata("#formAdmHandoverAppt",data.admhandover);
-			if(!emptyobj_(data.episode))autoinsert_rowdata("#formAdmHandoverAppt",data.episode);
-			if(!emptyobj_(data.nurshistory))autoinsert_rowdata("#formAdmHandoverAppt",data.nurshistory);
-			if(!emptyobj_(data.pathealth))autoinsert_rowdata("#formAdmHandoverAppt",data.pathealth);
-			if(!emptyobj_(data.nursassessment))autoinsert_rowdata("#formAdmHandoverAppt",data.nursassessment);
-			button_state_admHandoverAppt('edit');
-        }else{
-			if(!emptyobj_(data.nurshistory))autoinsert_rowdata("#formAdmHandoverAppt",data.nurshistory);
-			if(!emptyobj_(data.nursassessment))autoinsert_rowdata("#formAdmHandoverAppt",data.nursassessment);
-			button_state_admHandoverAppt('add');
-        }
-		textarea_init_admhandoverAppt();
-    });
+		
+		var urlparam = {
+			action: 'get_table_admhandoverAppt',
+		}
+		
+		var postobj = {
+			_token: $('#_token').val(),
+			mrn: $("#mrn_admHandover").val(),
+			episno: $("#episno_admHandover").val()
+		};
+		
+		$.post("./ptcare_admhandoverAppt/form?"+$.param(urlparam), $.param(postobj), function (data){
+			
+		},'json').fail(function (data){
+			alert('there is an error');
+		}).done(function (data){
+			if(!$.isEmptyObject(data.admhandover)){
+				if(!emptyobj_(data.admhandover))autoinsert_rowdata("#formAdmHandoverAppt",data.admhandover);
+				if(!emptyobj_(data.episode))autoinsert_rowdata("#formAdmHandoverAppt",data.episode);
+				if(!emptyobj_(data.nurshistory))autoinsert_rowdata("#formAdmHandoverAppt",data.nurshistory);
+				if(!emptyobj_(data.pathealth))autoinsert_rowdata("#formAdmHandoverAppt",data.pathealth);
+				if(!emptyobj_(data.nursassessment))autoinsert_rowdata("#formAdmHandoverAppt",data.nursassessment);
+				button_state_admHandoverAppt('edit');
+			}else{
+				if(!emptyobj_(data.nurshistory))autoinsert_rowdata("#formAdmHandoverAppt",data.nurshistory);
+				if(!emptyobj_(data.nursassessment))autoinsert_rowdata("#formAdmHandoverAppt",data.nursassessment);
+				button_state_admHandoverAppt('add');
+			}
+			textarea_init_admhandoverAppt();
+		});
 	});
-
+	
 	disableForm('#formAdmHandoverAppt');
-
+	
 	$("#new_admHandoverAppt").click(function(){
 		button_state_admHandoverAppt('wait');
 		enableForm('#formAdmHandoverAppt');
@@ -294,3 +294,34 @@ function textarea_init_admhandoverAppt(){
 	});
 }
 
+function getdata_admHandoverAppt(){
+	var urlparam = {
+		action: 'get_table_admhandoverAppt',
+	}
+	
+	var postobj = {
+		_token: $('#_token').val(),
+		mrn: $("#mrn_admHandover").val(),
+		episno: $("#episno_admHandover").val()
+	};
+	
+	$.post("./ptcare_admhandoverAppt/form?"+$.param(urlparam), $.param(postobj), function (data){
+		
+	},'json').fail(function (data){
+		alert('there is an error');
+	}).done(function (data){
+		if(!$.isEmptyObject(data.admhandover)){
+			if(!emptyobj_(data.admhandover))autoinsert_rowdata("#formAdmHandoverAppt",data.admhandover);
+			if(!emptyobj_(data.episode))autoinsert_rowdata("#formAdmHandoverAppt",data.episode);
+			if(!emptyobj_(data.nurshistory))autoinsert_rowdata("#formAdmHandoverAppt",data.nurshistory);
+			if(!emptyobj_(data.pathealth))autoinsert_rowdata("#formAdmHandoverAppt",data.pathealth);
+			if(!emptyobj_(data.nursassessment))autoinsert_rowdata("#formAdmHandoverAppt",data.nursassessment);
+			button_state_admHandoverAppt('edit');
+		}else{
+			if(!emptyobj_(data.nurshistory))autoinsert_rowdata("#formAdmHandoverAppt",data.nurshistory);
+			if(!emptyobj_(data.nursassessment))autoinsert_rowdata("#formAdmHandoverAppt",data.nursassessment);
+			button_state_admHandoverAppt('add');
+		}
+		textarea_init_admhandoverAppt();
+	});
+}

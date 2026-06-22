@@ -22,7 +22,7 @@ class NursingApptController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('patientcare.nursingAppt');
+        return view('appointment.nursingAppt');
     }
 
     public function form(Request $request)

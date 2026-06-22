@@ -247,13 +247,13 @@
                                         <div class="field">
                                             <label>
                                                 <input type="radio" id="loc_semiconscious" name="lvl_conscious" value="SemiConscious" data-validation="">
-                                                SemiConscious 
+                                                Semi Conscious 
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label>
                                                 <input type="radio" id="loc_unconscious" name="lvl_conscious" value="UnConscious" data-validation="">
-                                                UnConscious 
+                                                Unconscious 
                                             </label>
                                         </div>
                                     </div>
