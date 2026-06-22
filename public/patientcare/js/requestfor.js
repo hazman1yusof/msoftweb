@@ -1165,7 +1165,12 @@ function autoinsert_rowdata(form,rowData){
 }
 
 function saveForm_otbookReqFor(callback){
-    var result = confirm("This patient will be transfer to ward : "+$('#ReqFor_bed').val()+"");
+    if(document.getElementById("req_type_ward").checked){
+        var result = confirm("This patient will be transfer to ward : "+$('#ReqFor_bed').val()+"");
+    }else if(document.getElementById("req_type_ot").checked){
+        var result = confirm("This patient will be transfer to OT selected below");
+    }
+
     if(result != true){
         return 0;
     }
