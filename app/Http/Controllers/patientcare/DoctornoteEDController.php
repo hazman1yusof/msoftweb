@@ -837,7 +837,7 @@ class DoctornoteEDController extends defaultController
         
         $episode_obj = DB::table('hisdb.episode as e')
                         ->select('e.mrn','e.episno','p.recordtime','p.recorddate','p.adddate','p.adduser','e.admdoctor','d.doctorname')
-                        ->join('hisdb.pathealth as p', function ($join) use ($request){
+                        ->leftJoin('hisdb.pathealth as p', function ($join) use ($request){
                             $join = $join->on('p.mrn', '=', 'e.mrn');
                             $join = $join->on('p.episno', '=', 'e.episno');
                             $join = $join->on('p.compcode', '=', 'e.compcode');
@@ -862,8 +862,8 @@ class DoctornoteEDController extends defaultController
             $data = [];
             
             foreach($episode_obj as $key => $value){
-                if(!empty($value->recorddate)){
-                    $date['date'] =  Carbon::createFromFormat('Y-m-d', $value->recorddate)->format('d-m-Y').' '.$value->recordtime;
+                if(!empty($value->adddate)){
+                    $date['date'] =  Carbon::createFromFormat('Y-m-d', $value->adddate)->format('d-m-Y').' '.$value->recordtime;
                 }else{
                     $date['date'] =  '-';
                 }

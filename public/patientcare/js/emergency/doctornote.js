@@ -32,6 +32,7 @@ $(document).ready(function (){
 		button_state_doctorNote('wait');
 		enableForm('#formDoctorNote');
 		rdonly('#formDoctorNote');
+		$('#recordtime').val(moment().format('HH:mm'));
 		// emptyFormdata_div("#formDoctorNote",['#mrn_emergencyMain','#episno_emergencyMain']);
 		// dialog_mrn_edit.on();
 	});
@@ -1035,12 +1036,12 @@ function populate_currDoctorNote(obj){
 	urlParam_AddNotes.filterVal[0] = obj.MRN;
 	urlParam_AddNotes.filterVal[1] = obj.Episno;
 	
-	doctornote_docnote = {
-		action: 'get_table_doctornote_div',
-		mrn: $("#mrn_emergencyMain").val(),
-		episno: $("#episno_emergencyMain").val(),
-		recorddate: ''
-	};
+	// doctornote_docnote = {
+	// 	action: 'get_table_doctornote_div',
+	// 	mrn: $("#mrn_emergencyMain").val(),
+	// 	episno: $("#episno_emergencyMain").val(),
+	// 	recorddate: ''
+	// };
 	
 	// $("#tab_doctornote").collapse('hide');
 	button_state_doctorNote('disableAll');
@@ -2285,6 +2286,12 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function (){
 	emptyFormdata_div("#formDoctorNote",['#mrn_emergencyMain','#episno_emergencyMain']);
 	$('#docnote_date_tbl tbody tr').removeClass('active');
 	$(this).addClass('active');
+
+	let doctornote_docnote = {
+		action: 'get_table_doctornote_div',
+		mrn: $("#mrn_emergencyMain").val(),
+		episno: $("#episno_emergencyMain").val(),
+	};
 	
 	doctornote_docnote.adddate = data.adddate;
 	doctornote_docnote.recordtime = data.recordtime;
