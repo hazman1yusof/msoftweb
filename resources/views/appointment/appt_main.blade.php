@@ -25,19 +25,19 @@
         
         <div id="apptMainTabs" class="ui segment">
             <div class="ui top attached tabular menu">
-                <a class="item apptMainItem active" data-tab="docImaging" id="navtab_docImaging">Document Imaging</a>
-                <a class="item apptMainItem" data-tab="triageInfo" id="navtab_triageInfo">Triage Information</a>
+                <a class="item apptMainItem" data-tab="docImaging" id="navtab_docImaging">Document Imaging</a>
+                <a class="item apptMainItem active" data-tab="triageInfo" id="navtab_triageInfo">Triage Information</a>
                 <a class="item apptMainItem" data-tab="doctorNote" id="navtab_doctorNote">Doctor Note</a>
                 <a class="item apptMainItem" data-tab="reqFor" id="navtab_reqFor">Request For</a>
                 <a class="item apptMainItem" data-tab="admHandover" id="navtab_admHandover">Admission Handover</a>
                 <a class="item apptMainItem" data-tab="dietNotes" id="navtab_dietNotes">Dietetic Care Notes</a>
             </div>
             
-            <div class="ui bottom attached tab raised segment active" data-tab="docImaging">
+            <div class="ui bottom attached tab raised segment" data-tab="docImaging">
                 @include('patientcare.userfile_div')
             </div>
             
-            <div class="ui bottom attached tab raised segment" data-tab="triageInfo">
+            <div class="ui bottom attached tab raised segment active" data-tab="triageInfo">
                 @include('appointment.nursingAppt')
             </div>
             

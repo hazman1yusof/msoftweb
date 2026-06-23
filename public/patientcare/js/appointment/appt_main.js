@@ -8,7 +8,7 @@ $(document).ready(function (){
     $('.menu .item').tab();
     
     var fdl = new faster_detail_load();
-    var radbuts = new checkradiobutton(['lvl_conscious','mental_stat','emotional_stat']);
+    // var radbuts = new checkradiobutton(['lvl_conscious','mental_stat','emotional_stat']);
     
     disableForm('#formTriageInfo');
     
@@ -178,6 +178,8 @@ $(document).ready(function (){
     
 });
 
+var radbuts = new checkradiobutton(['lvl_conscious','mental_stat','emotional_stat']);
+
 var errorField = [];
 conf = {
     modules: 'logic',
@@ -261,16 +263,21 @@ function autoinsert_rowdata(form,rowData){
 
 $('#tab_apptMain').on('shown.bs.collapse', function (){
     SmoothScrollTo('#tab_apptMain', 300, 114);
-    $('#apptMainTabs .top.menu .item').tab('change tab','docImaging');
-    // $('#apptMainTabs .ui.menu').find('.item').tab('change tab', 'docImaging');
+    $('#apptMainTabs .top.menu .item').tab('change tab','triageInfo');
+    // $('#apptMainTabs .ui.menu').find('.item').tab('change tab', 'triageInfo');
     
     // $('#apptMainTabs .ui.menu').find('.apptMainItem').removeClass('active');
     // $('#apptMainTabs .ui.menu .item, .ui.tab.segment').removeClass('active');
-    // $('[data-tab="docImaging"]').addClass('active');
+    // $('[data-tab="triageInfo"]').addClass('active');
     
     // to load first tab
-    DataTable_preview.columns.adjust();
-    preview_load_data();
+    // DataTable_preview.columns.adjust();
+    // preview_load_data();
+    
+    $("#jqGridExamTriage").jqGrid('setGridWidth', Math.floor($("#jqGridExamTriage_c")[0].offsetWidth-$("#jqGridExamTriage_c")[0].offsetLeft-14));
+    $("#jqGridAddNotesTriage").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesTriage_c")[0].offsetWidth-$("#jqGridAddNotesTriage_c")[0].offsetLeft-14));
+    radbuts.reset();
+    getdata_triageAppt();
     
     // if($('#mrn_apptMain').val() != ''){
     //     getdata_triageAppt();
@@ -283,7 +290,7 @@ $('#tab_apptMain').on('hide.bs.collapse', function (){
 });
 
 $('#tab_apptMain').on('hidden.bs.collapse', function (){
-    $('#apptMainTabs .top.menu .item').tab('change tab','docImaging');
+    $('#apptMainTabs .top.menu .item').tab('change tab','triageInfo');
 });
 
 function check_same_usr_edit(data){
