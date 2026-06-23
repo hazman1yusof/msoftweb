@@ -102,15 +102,15 @@ function preview_load_data(){
     },'json').done(function(data) {
         if(!$.isEmptyObject(data.rows)){
             data.rows.forEach(function(obj,i){
-                obj.auditno = obj.auditno; 
-                obj.trxdate = formatDate_mom(obj.trxdate,'YYYY-MM-DD HH:mm:ss');
-                obj.filename = obj.resulttext;
-                obj.preview = make_preview_image(i,obj.attachmentfile,obj.type,obj.auditno);
+                obj.auditno = obj.idno; 
+                obj.trxdate = formatDate_mom(obj.adddate,'YYYY-MM-DD HH:mm:ss');
+                obj.filename = obj.filename;
+                obj.preview = make_preview_image(i,obj.path);
                 obj.mrn = obj.mrn;
-                obj.type = obj.type;
+                obj.type = obj.computerid;
                 obj.adduser = obj.adduser;
                 obj.adddate = formatDate_mom(obj.adddate,'YYYY-MM-DD HH:mm:ss');
-                obj.download = make_download_butt(i,obj.attachmentfile,obj.type,obj.resulttext);
+                obj.download = make_download_butt(i,obj.path,obj.filename);
             });
 
             DataTable_preview.rows.add(data.rows).draw();
@@ -119,91 +119,137 @@ function preview_load_data(){
     });
 }
 
-function make_preview_image(i,filepath,type,auditno){
-    let filetype = type.split('/')[0];
-    let fileextension = type.split('/')[1];
-    console.log(fileextension)
+function make_preview_image(i,filepath){
+    var ext = filepath.split('.').pop().toLowerCase();
+    console.log(ext);
+    var imageExtensions = [
+        'jpg', 'jpeg', 'jpe', 'jif', 'jfif', 'jfi', // JPEG formats
+        'png',                                      // PNG
+        'gif',                                      // GIF
+        'webp',                                     // WebP
+        'tiff', 'tif',                              // TIFF
+        'bmp', 'dib',                               // Bitmap
+        'svg', 'svgz',                              // SVG Vector
+        'heic', 'heif'                              // Apple HEIF
+    ];
+
+    var msWordExtensions = [
+      "docx", // Office Open XML Document
+      "doc",  // Binary Word Document
+      "docm", // Macro-Enabled Document
+      "dotx", // XML Template
+      "dot",  // Binary Template
+      "dotm", // Macro-Enabled Template
+      "rtf",  // Rich Text Format
+      "odt"   // OpenDocument Text
+    ];
+    var msExcelExtensions = [
+      "xlsx", // Office Open XML Spreadsheet
+      "xls",  // Binary Excel Spreadsheet
+      "xlsm", // Macro-Enabled Spreadsheet
+      "xltx", // XML Template
+      "xlt",  // Binary Template
+      "xltm", // Macro-Enabled Template
+      "xlsb", // Excel Binary Spreadsheet
+      "csv",  // Comma-Separated Values
+      "ods"   // OpenDocument Spreadsheet
+    ];
+    var msPowerPointExtensions = [
+      "pptx", // Office Open XML Presentation
+      "ppt",  // Binary PowerPoint Presentation
+      "pptm", // Macro-Enabled Presentation
+      "potx", // XML Template
+      "pot",  // Binary Template
+      "potm", // Macro-Enabled Template
+      "ppsx", // XML Slide Show
+      "pps",  // Binary Slide Show
+      "ppsm", // Macro-Enabled Slide Show
+      "odp"   // OpenDocument Presentation
+    ];
+    var textFileExtensions = [
+      "txt",  // Plain Text File
+      "log",  // Log File
+      "md",   // Markdown Documentation
+      "rst",  // ReStructuredText
+      "cfg",  // Configuration File
+      "ini",  // Initialization File
+      "tsv"   // Tab-Separated Values
+    ];
+
     let return_value='';
 
-    if(filetype=='image'){
+    if($.inArray(ext, imageExtensions) !== -1){
         return_value = `
-            <div class="imgcontainer">
-                <img src="./ptcare_thumbnail/`+filepath+`" >
-                  <a class="small circular orange ui icon button btn" target="_blank" href="./uploads/`+filepath+`">
+            <div class="imgcontainer" style="position:relative;width:fit-content" >
+                <img src="./attachment_upload/thumbnail/`+filepath+`" >
+                  <a class="small circular orange ui icon button btn" target="_blank" href="./uploads/`+filepath+`" syle="position: absolute;top: 20%;left: 20%;">
                       <i class='search icon' ></i>
                   </a>
             </div>`;
 
-    }else if(filetype=='application'){
-        switch(fileextension){
-            case 'pdf': return_value =  `
-                                <div class="imgcontainer">
-                                    <img src="./ptcare_thumbnail/application/pdf">
-                                      <a class="small circular orange ui icon button btn" target="_blank" href="./uploads/`+filepath+`" >
-                                          <i class='search icon' ></i>
-                                      </a>
-                                </div>`; 
-
-                        break;
-            case 'vnd.openxmlformats-officedocument.wordprocessingml.document':
-            case 'msword': return_value =  `
-                                <div class="imgcontainer">
-                                    <img src="./ptcare_thumbnail/application/msword">
-                                      <a class="small circular orange ui icon button btn" target="_blank" href="./uploads/`+filepath+`" >
-                                          <i class='search icon' ></i>
-                                      </a>
-                                </div>`; 
-
-                        break;
-            case 'vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-            case 'vnd.ms-excel':
-                         return_value =  `
-                                <div class="imgcontainer">
-                                    <img src="./ptcare_thumbnail/application/excel">
-                                      <a class="small circular orange ui icon button btn" target="_blank" href="./uploads/`+filepath+`" >
-                                          <i class='search icon' ></i>
-                                      </a>
-                                </div>`; 
-
-                        break;
-            case 'vnd.openxmlformats-officedocument.presentationml.presentation':
-                         return_value =  `
-                                <div class="imgcontainer">
-                                    <img src="./ptcare_thumbnail/application/powerpoint">
-                                      <a class="small circular orange ui icon button btn" target="_blank" href="./uploads/`+filepath+`" >
-                                          <i class='search icon' ></i>
-                                      </a>
-                                </div>`; 
-
-                        break;
-
-        }
-
-    }else if(filetype=='video'){
+    }else if ($.inArray(ext, msWordExtensions) !== -1){
         return_value =  `
-                        <div class="imgcontainer">
-                            <img src="./ptcare_thumbnail/video/video">
-                              <a class="small circular orange ui icon button btn" target="_blank" href="./ptcare_previewvideo/`+auditno+`" >
-                                  <i class='search icon' ></i>
-                              </a>
-                        </div>`; 
-                                
+            <div class="imgcontainer" style="position:relative;width:fit-content" >
+                <img src="./attachment_upload/thumbnail/application/msword">
+                  <a class="small circular orange ui icon button btn" target="_blank" href="./uploads/`+filepath+`" syle="position: absolute;top: 20%;left: 20%;">
+                      <i class='search icon' ></i>
+                  </a>
+            </div>`; 
+
+
+    }else if ($.inArray(ext, msExcelExtensions) !== -1){
+        return_value =  `
+            <div class="imgcontainer" style="position:relative;width:fit-content" >
+                <img src="./attachment_upload/thumbnail/application/excel">
+                  <a class="small circular orange ui icon button btn" target="_blank" href="./uploads/`+filepath+`" syle="position: absolute;top: 20%;left: 20%;">
+                      <i class='search icon' ></i>
+                  </a>
+            </div>`; 
+
+
+    }else if ($.inArray(ext, msPowerPointExtensions) !== -1){
+        return_value =  `
+            <div class="imgcontainer" style="position:relative;width:fit-content" >
+                <img src="./attachment_upload/thumbnail/application/powerpoint">
+                  <a class="small circular orange ui icon button btn" target="_blank" href="./uploads/`+filepath+`" syle="position: absolute;top: 20%;left: 20%;">
+                      <i class='search icon' ></i>
+                  </a>
+            </div>`; 
+
+
+    }else if ($.inArray(ext, textFileExtensions) !== -1){
+        return_value =  `
+            <div class="imgcontainer" style="position:relative;width:fit-content" >
+                <img src="./attachment_upload/thumbnail/text/notepad">
+                  <a class="small circular orange ui icon button btn" target="_blank" href="./uploads/`+filepath+`" syle="position: absolute;top: 20%;left: 20%;">
+                      <i class='search icon' ></i>
+                  </a>
+            </div>`; 
+
+
+    }else if (ext == 'pdf'){
+        return_value =  `
+                <div class="imgcontainer" style="position:relative;width:fit-content" >
+                    <img src="./attachment_upload/thumbnail/application/pdf">
+                      <a class="small circular orange ui icon button btn" target="_blank" href="./uploads/`+filepath+`" syle="position: absolute;top: 20%;left: 20%;">
+                          <i class='search icon' ></i>
+                      </a>
+                </div>`; 
+
 
     }else{
         return_value = 'download';
-
     }
 
     return return_value;
 }
 
-function make_download_butt(i,filepath,type,filename){
-    let filetype = type.split('/')[0];
-    filename = filename+'.'+filepath.split('.')[1];
-    let fileextension = type.split('/')[1];
+function make_download_butt(i,filepath,filename){
+    var ext = filepath.split('.').pop().toLowerCase();
+    var filename2 = filename+'.'+ext;
 
-
-    return `<a class='small circular orange basic ui icon button' href="./download/`+filepath+`?filename=`+filename+`" data-index="`+i+`"><i class="download icon"></i></a>`        
+    return `<a class='small circular orange basic ui icon button' href="./attachment_download/`+filepath+`?filename=`+filename2+`" data-index="`+i+`"><i class="download icon"></i></a>`
+    
 }
 
 function empty_userfile(){
