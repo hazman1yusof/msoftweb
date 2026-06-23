@@ -14,6 +14,49 @@ $(document).ready(function () {
 		SmoothScrollTo("#tab_userfile", 300);
 		preview_load_data();
 	});
+
+    $("#refresh_userfile_btn").click(function(){
+        preview_load_data();
+    });
+
+    $("#upload_userfile_btn").click(function(){
+        $('#upload_userfile_fld').click();
+    });
+    
+    $('#upload_userfile_fld').on("change", function (){
+        let filename = $(this).val();
+        uploadfile_userfile();
+    });
+
+    function uploadfile_userfile(){
+        var formData = new FormData();
+        formData.append('file', $('#upload_userfile_fld')[0].files[0]);
+        formData.append('_token', $("#csrf_token").val());
+        
+        if($('#mrn_nursNote').val() != ''){
+            formData.append('mrn', $("#mrn_apptMain").val());
+        }
+        
+        if($('#episno_nursNote').val() != ''){
+            formData.append('episno', $("#episno_apptMain").val());
+        }
+        
+        $.ajax({
+            url: './ptcare_preview/form?action=uploadfile_userfile',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            async: false,
+            cache: false,
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+        }).done(function (msg){
+            // make_all_attachment(msg.invChart_allAttach);
+            // $('#idno_mmse').val(msg.idno);
+            preview_load_data();
+        });
+    }
 });
 
 var DataTable_preview = $('#tablePreview').DataTable({
@@ -40,7 +83,8 @@ var DataTable_preview = $('#tablePreview').DataTable({
 });
 
 function preview_load_data(){
-    let mrn = $('#userfile_mrn').val();
+    // let mrn = $('#userfile_mrn').val();
+    let mrn = $('#mrn_apptMain').val();
     DataTable_preview.clear().draw();
     
     if(mrn.trim().length == 0){

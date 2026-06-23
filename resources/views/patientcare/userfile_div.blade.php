@@ -1,6 +1,23 @@
 <div class="ui teal segment" style="padding: 10px 10px 30px 30px;">
-	<h4 class="ui header">This user uploaded Files</h4>
-	<input type='hidden' id="userfile_mrn" name="userfile_mrn">
+	<h4 class="ui header">This user uploaded Files </h4>
+	<button class="tiny ui icon button" type="button" id="refresh_userfile_btn" style="
+		position: absolute;
+	    top: 5px;
+	    right: 20px;
+	    z-index: 5;
+	 ">
+	  <i class="redo icon"></i>
+	</button>
+	<button class="tiny ui orange icon button" type="button" id="upload_userfile_btn" style="
+		position: absolute;
+	    top: 5px;
+	    right: 60px;
+	    z-index: 5;
+	 "> Upload
+	  <i class="cloud upload icon"></i>
+	</button>
+	<input type="file" id="upload_userfile_fld" name="upload_userfile_fld" style="display: none;">
+	<!-- <input type='hidden' id="userfile_mrn" name="userfile_mrn"> -->
 	<table class="ui celled table" id='tablePreview'>
 		<thead>
 			<tr>
