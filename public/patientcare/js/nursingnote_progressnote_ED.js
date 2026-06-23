@@ -107,8 +107,8 @@ $(document).ready(function (){
         }).done(function (data){
             if(!$.isEmptyObject(data)){
                 autoinsert_rowdata("#formProgress_ED",data.nurshandover);
-                $("#formProgress_ED :input[name='datetaken']").val(data.date);
-                $("#formProgress_ED :input[name='timetaken']").val(data.time);
+                // $("#formProgress_ED :input[name='datetaken']").val(data.date);
+                // $("#formProgress_ED :input[name='timetaken']").val(data.time);
                 
                 button_state_progress_ED('edit');
                 textarea_init_nursingnote();
@@ -291,8 +291,8 @@ function populate_progressnote_ED_getdata(){
     },'json').done(function (data){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formProgress_ED",data.nurshandover);
-            $("#formProgress_ED :input[name='datetaken']").val(data.date);
-            $("#formProgress_ED :input[name='timetaken']").val(data.time);
+            // $("#formProgress_ED :input[name='datetaken']").val(data.date);
+            // $("#formProgress_ED :input[name='timetaken']").val(data.time);
             
             button_state_progress_ED('edit');
             textarea_init_nursingnote();

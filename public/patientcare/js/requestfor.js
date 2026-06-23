@@ -1940,18 +1940,18 @@ function toggle_reqfor_reqtype(){
         let newurl = './wardbook_iframe';
         let cururl = $('iframe#wardbook_iframe').attr('src');
 
-        if(newurl != cururl){
+        // if(newurl != cururl){
             $('iframe#wardbook_iframe').attr('src',newurl);
-        }
+        // }
     }else if(document.getElementById("req_type_ot").checked){
         $('#ReqFor_Bed_div').hide();
         $('#ReqFor_OT_div').show();
         let newurl = './apptrsc_rsc_iframe?mrn='+$('#mrn_requestFor').val()+'&episno='+$('#episno_requestFor').val();
         let cururl = $('iframe#otbook_iframe').attr('src');
 
-        if(newurl != cururl){
+        // if(newurl != cururl){
             $('iframe#otbook_iframe').attr('src',newurl);
-        }
+        // }
     }else{
         $('#ReqFor_Bed_div,#ReqFor_OT_div').hide();
         $('iframe#otbook_iframe').attr('src','');

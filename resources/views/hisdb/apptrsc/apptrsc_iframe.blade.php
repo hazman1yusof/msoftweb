@@ -324,7 +324,7 @@
                     closable: false,
                     closeIcon: true,
                     onHidden : function(){
-                        emptyFormdata_div("#modalform",['#mrn','#episno','#resourcecode','#pat_name','#oper_type','#oper_type2','#oper_type3','#oper_type4','#oper_type5']);
+                        emptyFormdata_div("#modalform",['#mrn','#episno','#resourcecode','#pat_name','#description','#oper_type','#oper_type2','#oper_type3','#oper_type4','#oper_type5']);
                         $('#fail_msg').html('');
                     },
                     onApprove : function() {

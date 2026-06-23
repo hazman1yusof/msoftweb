@@ -152,7 +152,6 @@
         @include('hisdb.ordcom.ordcom',['phase' => '2'])
     </div>
 
-<div id="PIVCDialog_ED" title="PIVC">
     <div class="panel panel-default">
         <div class="panel-body">
             <form class='form-horizontal' style='width: 99%;' id='formdata_PIVC_ED'>
