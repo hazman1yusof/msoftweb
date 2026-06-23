@@ -1730,6 +1730,7 @@ Route::post('/ptcare_admhandoverAppt/form','patientcare\AdmHandoverApptControlle
 Route::get('/ptcare_preview','patientcare\PreviewController@preview');
 Route::get('/ptcare_preview/data','patientcare\PreviewController@previewdata');
 Route::get('/ptcare_localpreview','patientcare\WebserviceController@localpreview');
+Route::post('/ptcare_preview/form','patientcare\PreviewController@form');
 
 Route::get('/ptcare_nursingnote','patientcare\NursingNoteController@show');
 Route::get('/ptcare_nursingnote/table','patientcare\NursingNoteController@table');

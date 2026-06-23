@@ -152,9 +152,6 @@
         @include('hisdb.ordcom.ordcom',['phase' => '2'])
     </div>
 
-@include('patientcare.itemselector')
-@endsection
-
 <div id="PIVCDialog_ED" title="PIVC">
     <div class="panel panel-default">
         <div class="panel-body">
@@ -175,6 +172,9 @@
         </div>
     </div>
 </div>
+
+@include('patientcare.itemselector')
+@endsection
 
 @section('css')
     <link rel="stylesheet" href="{{asset('patientcare/css/doctornote.css') }}">

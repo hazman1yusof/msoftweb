@@ -19,6 +19,18 @@ class PreviewController extends defaultController
         $this->middleware('auth');
     }
 
+    public function form(Request $request)
+    {
+        switch($request->action){
+            case 'uploadfile_userfile':
+                return $this->uploadfile_userfile($request);
+            
+            default:
+                return 'error happen..';
+        }
+    }
+    
+
     public function preview(Request $request)
     {   
         if(!empty($request->mrn)){
@@ -36,7 +48,8 @@ class PreviewController extends defaultController
 
     public function previewdata(Request $request)
     {
-        $table = DB::table('hisdb.patresult')->where('mrn','=',$request->mrn);
+        $table = DB::table('nursing.nurs_invest_file')
+            ->where('mrn','=',$request->mrn);
 
         $responce = new stdClass();
         $responce->rows = $table->get();
@@ -51,8 +64,6 @@ class PreviewController extends defaultController
         $video = DB::table('hisdb.patresult')->where('auditno','=',$auditno)->first();
         return view('patientcare.previewvideo',compact('video'));
     }
-
-    
 
     public function uploaddata(Request $request)
     {
@@ -142,28 +153,51 @@ class PreviewController extends defaultController
     }
 
 
-    public function form(Request $request)
-    {   
-        $type = $request->file('file')->getClientMimeType();
-        if(!empty($request->rename)){
-            $filename = $request->rename;
-        }else{
-            $filename = $request->file('file')->getClientOriginalName();
-        }
-        $file_path = $request->file('file')->store('pat_enq', 'ptcare_uploads');
-        DB::table('hisdb.patresult')
-            ->insert([
-                'compcode' => '-',
-                'resulttext' => $filename,
-                'attachmentfile' => $file_path,
-                'adduser' => 'system',
-                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'mrn' => $request->mrn,
-                'type' => $type,
-                'trxdate' => $request->trxdate
-            ]);
+    // public function form(Request $request)
+    // {   
+    //     $type = $request->file('file')->getClientMimeType();
+    //     if(!empty($request->rename)){
+    //         $filename = $request->rename;
+    //     }else{
+    //         $filename = $request->file('file')->getClientOriginalName();
+    //     }
+    //     $file_path = $request->file('file')->store('pat_enq', 'ptcare_uploads');
+    //     DB::table('hisdb.patresult')
+    //         ->insert([
+    //             'compcode' => '-',
+    //             'resulttext' => $filename,
+    //             'attachmentfile' => $file_path,
+    //             'adduser' => 'system',
+    //             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+    //             'mrn' => $request->mrn,
+    //             'type' => $type,
+    //             'trxdate' => $request->trxdate
+    //         ]);
 
-        return redirect()->back();
+    //     return redirect()->back();
+    // }
+
+    public function uploadfile_userfile(Request $request){
+
+        $type = $request->file('file')->getClientMimeType();
+        $filename = $request->file('file')->getClientOriginalName();
+        $file_path = $request->file('file')->store('invChart', 'public_uploads');
+        
+        DB::table('nursing.nurs_invest_file')
+            ->insert([
+                'compcode' => session('compcode'),
+                'mrn' => $request->mrn,
+                'episno' => $request->episno,
+                'filename' => $filename,
+                'path' => $file_path,
+                'adduser'  => session('username'),
+                'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => session('computerid'),
+            ]);
+        
+        $responce = new stdClass();
+        $responce->file_path = $file_path;
+        return json_encode($responce);
     }
 
 }

@@ -75,6 +75,9 @@ class DoctornoteEDController extends defaultController
             case 'submit_patient':
                 return $this->submit_patient($request);
             
+            case 'uploadfile_userfile':
+                return $this->uploadfile_userfile($request);
+            
             default:
                 return 'error happen..';
         }

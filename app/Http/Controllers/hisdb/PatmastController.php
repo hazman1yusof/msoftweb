@@ -27,6 +27,8 @@ class PatmastController extends defaultController
                 return $this->preepisode_epis($request);
             case 'dosage_table':
                 return $this->dosage_table($request);
+            case 'pat_mast_iframe':
+                return $this->pat_mast_iframe($request);
         }
     }
 
@@ -114,18 +116,21 @@ class PatmastController extends defaultController
             $data_send['dfeedept_dflt'] = $ordcomtt_dfee->pvalue2;
             $data_send['dietdept_dflt'] = $ordcomtt_diet->pvalue2;
             $data_send['pkgdept_dflt'] = $dept->deptcode;
-            $data_send['othdept_dflt'] = $ordcomtt_disp->pvalue2;
-       
+            $data_send['othdept_dflt'] = $ordcomtt_disp->pvalue2;       
         }
         
-        
-
         // untuk tabs nursing note
         $invest_type = DB::table('nursing.nurs_invest_type')
                     ->where('compcode','=',session('compcode'))
                     ->get();
 
         return view('hisdb.pat_mgmt.landing',$data_send,compact('invest_type'));
+    }
+
+    public function pat_mast_iframe(Request $request){
+        $mrn = $request->mrn;
+
+        return view('hisdb.pat_mgmt.patmast_iframe',compact('mrn'));
     }
 
     public function save_patient(Request $request){

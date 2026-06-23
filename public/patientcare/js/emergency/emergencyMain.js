@@ -28,41 +28,41 @@ $(document).ready(function (){
         $(this).val(parseFloat($(this).val()).toFixed(2));
     });
 
-    function preview_load_data(){
-    	let mrn = $('#mrn_emergencyMain').val();
-        DataTable_preview.clear().draw();
+    // function preview_load_data(){
+    // 	let mrn = $('#mrn_emergencyMain').val();
+    //     DataTable_preview.clear().draw();
         
-        if(mrn.trim().length == 0){
-            return false;
-        }
+    //     if(mrn.trim().length == 0){
+    //         return false;
+    //     }
 
-        var urlParam={
-            action:'preview value',
-            url:'./ptcare_preview/data',
-            mrn:parseInt(mrn)
-        }
+    //     var urlParam={
+    //         action:'preview value',
+    //         url:'./ptcare_preview/data',
+    //         mrn:parseInt(mrn)
+    //     }
 
-        $.get( urlParam.url+"?"+$.param(urlParam), function( data ) {
+    //     $.get( urlParam.url+"?"+$.param(urlParam), function( data ) {
                     
-        },'json').done(function(data) {
-            if(!$.isEmptyObject(data.rows)){
-                data.rows.forEach(function(obj,i){
-                    obj.auditno = obj.auditno; 
-                    obj.trxdate = formatDate_mom(obj.trxdate,'YYYY-MM-DD HH:mm:ss');
-                    obj.filename = obj.resulttext;
-                    obj.preview = make_preview_image(i,obj.attachmentfile,obj.type,obj.auditno);
-                    obj.mrn = obj.mrn;
-                    obj.type = obj.type;
-                    obj.adduser = obj.adduser;
-                    obj.adddate = formatDate_mom(obj.adddate,'YYYY-MM-DD HH:mm:ss');
-                    obj.download = make_download_butt(i,obj.attachmentfile,obj.type,obj.resulttext);
-                });
+    //     },'json').done(function(data) {
+    //         if(!$.isEmptyObject(data.rows)){
+    //             data.rows.forEach(function(obj,i){
+    //                 obj.auditno = obj.auditno; 
+    //                 obj.trxdate = formatDate_mom(obj.trxdate,'YYYY-MM-DD HH:mm:ss');
+    //                 obj.filename = obj.resulttext;
+    //                 obj.preview = make_preview_image(i,obj.attachmentfile,obj.type,obj.auditno);
+    //                 obj.mrn = obj.mrn;
+    //                 obj.type = obj.type;
+    //                 obj.adduser = obj.adduser;
+    //                 obj.adddate = formatDate_mom(obj.adddate,'YYYY-MM-DD HH:mm:ss');
+    //                 obj.download = make_download_butt(i,obj.attachmentfile,obj.type,obj.resulttext);
+    //             });
 
-                DataTable_preview.rows.add(data.rows).draw();
-                DataTable_preview.columns.adjust().draw();
-            }
-        });
-    }
+    //             DataTable_preview.rows.add(data.rows).draw();
+    //             DataTable_preview.columns.adjust().draw();
+    //         }
+    //     });
+    // }
     
     // to limit to two decimal places (onkeypress)
     $(document).on('keydown', 'input[pattern]', function (e){
