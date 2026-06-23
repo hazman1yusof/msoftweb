@@ -152,11 +152,18 @@
         @include('hisdb.ordcom.ordcom',['phase' => '2'])
     </div>
 
+   
+</div>
+
+@include('patientcare.itemselector')
+@endsection
+
+<div id="PIVCDialog_ED" title="PIVC" style="display:none;">
     <div class="panel panel-default">
         <div class="panel-body">
             <form class='form-horizontal' style='width: 99%;' id='formdata_PIVC_ED'>
                 <input type="hidden" name="action">
-                
+
                 <div class="form-group">
                     <div class="col-md-6">
                         <label class="control-label" for="Scol">Date From</label>
@@ -171,9 +178,6 @@
         </div>
     </div>
 </div>
-
-@include('patientcare.itemselector')
-@endsection
 
 @section('css')
     <link rel="stylesheet" href="{{asset('patientcare/css/doctornote.css') }}">
