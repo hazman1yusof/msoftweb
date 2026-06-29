@@ -25,7 +25,7 @@ function get_default_value(mrn){
            userdeptcode:$('#userdeptcode').val()
        };
 
-    $.get( "/pat_mast/get_entry?"+$.param(obj_param), function( data ) {
+    $.get( "./pat_mast/get_entry?"+$.param(obj_param), function( data ) {
         
     },'json').done(function(data) {
         if(!$.isEmptyObject(data)){
@@ -106,7 +106,7 @@ function get_epis_other_data(episno){
            episno:episno,
        };
 
-    $.get( "/pat_mast/get_entry?"+$.param(obj_param), function( data ) {
+    $.get( "./pat_mast/get_entry?"+$.param(obj_param), function( data ) {
         
     },'json').done(function(data) {
         if(data.episode != null){
@@ -139,7 +139,7 @@ function get_billtype_default(mrn){
            action:'get_billtype_default',
        };
 
-    $.get( "/pat_mast/get_entry?"+$.param(obj_param), function( data ) {
+    $.get( "./pat_mast/get_entry?"+$.param(obj_param), function( data ) {
         
     },'json').done(function(data) {
         if(!$.isEmptyObject(data)){
@@ -548,7 +548,7 @@ function populate_episode_by_mrn_episno(mrn,episno,form){
         episno:episno
     };
 
-    $.get( "/episode/get_episode_by_mrn?"+$.param(param), function( data ) {
+    $.get( "./episode/get_episode_by_mrn?"+$.param(param), function( data ) {
 
     },'json').done(function(data) {
 
@@ -676,19 +676,19 @@ function loading_desc_epis(obj){ //loading description dia sebab save code dia j
     this.newgl_relatecode={code:'code',desc:'description'};//data simpan dekat dalam ni
     this.newgl_corpcomp={code:'debtorcode',desc:'name'};//data simpan dekat dalam ni
     this.load_desc = function(){
-        load_for_desc(this,'regdept','/pat_mast/get_entry?action=get_reg_dept');
-        load_for_desc(this,'regsource','/pat_mast/get_entry?action=get_reg_source');
-        load_for_desc(this,'case','/pat_mast/get_entry?action=get_reg_case');
-        load_for_desc(this,'doctor','/pat_mast/get_entry?action=get_reg_doctor');
-        load_for_desc(this,'epis_bed','/pat_mast/get_entry?action=get_reg_bed');
-        load_for_desc(this,'epis_fin','/pat_mast/get_entry?action=get_reg_fin');
-        load_for_desc(this,'epis_payer','/pat_mast/get_entry?action=get_debtor_list');
-        load_for_desc(this,'bill_type','/pat_mast/get_entry?action=get_billtype_list');
-        load_for_desc(this,'bed_dept','/pat_mast/get_entry?action=get_bed_type');
-        load_for_desc(this,'bed_ward','/pat_mast/get_entry?action=get_bed_ward');
-        load_for_desc(this,'newgl_occupcode','/pat_mast/get_entry?action=get_patient_occupation');
-        load_for_desc(this,'newgl_relatecode','/pat_mast/get_entry?action=get_patient_relationship');
-        load_for_desc(this,'newgl_corpcomp','/pat_mast/get_entry?action=get_debtor_list&type=newgl');
+        load_for_desc(this,'regdept','./pat_mast/get_entry?action=get_reg_dept');
+        load_for_desc(this,'regsource','./pat_mast/get_entry?action=get_reg_source');
+        load_for_desc(this,'case','./pat_mast/get_entry?action=get_reg_case');
+        load_for_desc(this,'doctor','./pat_mast/get_entry?action=get_reg_doctor');
+        load_for_desc(this,'epis_bed','./pat_mast/get_entry?action=get_reg_bed');
+        load_for_desc(this,'epis_fin','./pat_mast/get_entry?action=get_reg_fin');
+        load_for_desc(this,'epis_payer','./pat_mast/get_entry?action=get_debtor_list');
+        load_for_desc(this,'bill_type','./pat_mast/get_entry?action=get_billtype_list');
+        load_for_desc(this,'bed_dept','./pat_mast/get_entry?action=get_bed_type');
+        load_for_desc(this,'bed_ward','./pat_mast/get_entry?action=get_bed_ward');
+        load_for_desc(this,'newgl_occupcode','./pat_mast/get_entry?action=get_patient_occupation');
+        load_for_desc(this,'newgl_relatecode','./pat_mast/get_entry?action=get_patient_relationship');
+        load_for_desc(this,'newgl_corpcomp','./pat_mast/get_entry?action=get_debtor_list&type=newgl');
     }
 
     function load_for_desc(selobj,id,url){
@@ -1153,7 +1153,7 @@ function loadcorpstaff_gl(panel=false){
            panel:panel,
        };
 
-    $.get( "/pat_mast/get_entry?"+$.param(obj_param), function( data ) {
+    $.get( "./pat_mast/get_entry?"+$.param(obj_param), function( data ) {
         
     },'json').done(function(data) {
         if(data.data != null){
