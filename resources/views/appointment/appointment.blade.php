@@ -148,6 +148,7 @@
         @include('hisdb.ordcom.ordcom',['phase' => '2'])
     </div>
     
+@include('hisdb.pat_mgmt.pat_mgmt_iframe')
 @include('patientcare.itemselector')
 @endsection
 
@@ -197,6 +198,7 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/appointment/admhandoverAppt.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/appointment/appt_main.js?v=1.1') }}"></script>
     
+    <script type="text/javascript" src="{{ asset('js/hisdb/pat_mgmt/pat_mgmt_main_iframe.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_main.js?v=1.3') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_phar.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_disp.js?v=1.2') }}"></script>

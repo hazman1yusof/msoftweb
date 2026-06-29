@@ -22,7 +22,7 @@ $(document).ready(function () {
 
 	var urlParam_nok_pat = {
 		action:'get_table_default',
-		url:'util/get_table_default',
+		url:'/util/get_table_default',
 		field: ['n.idno','n.mrn','n.episno','n.name','n.relationshipcode','r.Description','n.address1','n.address2','n.address3','n.postcode','n.tel_h','n.tel_hp','n.tel_o','n.tel_o_ext'],
 		table_name: ['hisdb.nok_ec AS n','hisdb.relationship AS r'],
 		join_onCol : ['r.relationshipcode'],
@@ -185,7 +185,7 @@ $(document).ready(function () {
 			tel_o_ext : $("#nok_ext_pat").val()
 	    };
 
-	    $.post( "episode/save_nok", $.param(postobj) , function( data ) {
+	    $.post( "/episode/save_nok", $.param(postobj) , function( data ) {
 	        
 	    },'json').fail(function(data) {
 	        // alert('there is an error');

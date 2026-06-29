@@ -22,7 +22,7 @@ $(document).ready(function () {
 
 	var urlParam_nok_emr = {
 		action:'get_table_default',
-		url:'util/get_table_default',
+		url:'/util/get_table_default',
 		field: '',
 		table_name: 'hisdb.pat_emergency',
 		filterCol:['compcode','mrn'],
@@ -179,7 +179,7 @@ $(document).ready(function () {
 			email : $("#emr_email").val()
 	    };
 
-	    $.post( "episode/save_emr", $.param(postobj) , function( data ) {
+	    $.post( "/episode/save_emr", $.param(postobj) , function( data ) {
 	        
 	    },'json').fail(function(data) {
 	        // alert('there is an error');

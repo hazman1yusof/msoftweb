@@ -178,9 +178,14 @@ table#medication_tbl th {
 }
 
 .paneldiv{
-    padding-top: 0px !important;
+    padding: 0px !important;
     overflow-y: auto;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 60px);
+}
+
+div.paneldiv div.ui.bottom.attached.tab.raised.segment.active{
+    padding: 0px !important;
+    border: none;
 }
 
 .input-sm{

@@ -29,6 +29,8 @@ class PatmastController extends defaultController
                 return $this->dosage_table($request);
             case 'pat_mast_iframe':
                 return $this->pat_mast_iframe($request);
+            case 'episode_iframe':
+                return $this->episode_iframe($request);
         }
     }
 
@@ -130,7 +132,53 @@ class PatmastController extends defaultController
     public function pat_mast_iframe(Request $request){
         $mrn = $request->mrn;
 
-        return view('hisdb.pat_mgmt.patmast_iframe',compact('mrn'));
+        if(empty($mrn)){
+           abort(403,'No MRN'); 
+        }
+
+        $pat_mast = DB::table('hisdb.pat_mast')
+                        ->where('compcode',session('compcode'))
+                        ->where('MRN',$mrn);
+
+        if(!$pat_mast->exists()){
+           abort(403,'MRN doest Exists'); 
+        }
+
+        $pat_mast_data = $pat_mast->first();
+
+        return view('hisdb.pat_mgmt.patmast_iframe',compact('mrn','pat_mast_data'));
+    }
+
+    public function episode_iframe(Request $request){
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+
+        if(empty($mrn) || empty($episno)){
+           abort(403,'No MRN or Episno'); 
+        }
+
+        $pat_mast = DB::table('hisdb.pat_mast')
+                        ->where('compcode',session('compcode'))
+                        ->where('MRN',$mrn);
+
+        if(!$pat_mast->exists()){
+           abort(403,'MRN does not Exists'); 
+        }
+
+        $pat_mast = $pat_mast->first();
+
+        $episode = DB::table('hisdb.episode')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn',$mrn)
+                        ->where('episno',$episno);
+
+        if(!$episode->exists()){
+           abort(403,'Episode does not Exists'); 
+        }
+
+        $episode = $episode->first();
+
+        return view('hisdb.pat_mgmt.episode_iframe',compact('mrn','episno','pat_mast','episode'));
     }
 
     public function save_patient(Request $request){

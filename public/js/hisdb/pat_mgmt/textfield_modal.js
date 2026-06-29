@@ -249,7 +249,7 @@ function textfield_modal(){
 
             var act = get_url(id_use);
             if(search.trim() != ""){
-                $.get( "./pat_mast/get_entry?action="+act+"&search="+search, function( data ) {
+                $.get( "/pat_mast/get_entry?action="+act+"&search="+search, function( data ) {
                             
                 },'json').done(function(data) {
                     if(!$.isEmptyObject(data) && data.data!=null){
@@ -276,7 +276,7 @@ function textfield_modal(){
         mdl = get_mdl(type);
 
         selecter.ajax.async = false;
-        selecter.ajax.url( "pat_mast/get_entry?action=" + act).load();
+        selecter.ajax.url( "/pat_mast/get_entry?action=" + act).load();
         
         // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
         $('#tbl_item_select tbody').on('dblclick', 'tr', function () {
@@ -312,7 +312,7 @@ function textfield_modal(){
                     _token: _token
             }
             
-            $.post( 'pat_mast/save_adm', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+            $.post( '/pat_mast/save_adm', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
                 $("#adm_form").trigger('reset');
                 selecter.ajax.reload()
                 $('#mdl_add_new_adm').modal('hide');
@@ -331,7 +331,7 @@ function textfield_modal(){
                     _token: _token
             }
             
-            $.post( 'pat_mast/new_occup_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+            $.post( '/pat_mast/new_occup_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
                 $("#new_occup_form").trigger('reset');
                 selecter.ajax.reload()
                 $('#mdl_add_new_occ').modal('hide');
@@ -350,7 +350,7 @@ function textfield_modal(){
                     _token: _token
             }
             
-            $.post( 'pat_mast/new_title_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+            $.post( '/pat_mast/new_title_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
                 $("#new_title_form").trigger('reset');
                 selecter.ajax.reload()
                 $('#mdl_add_new_title').modal('hide');
@@ -369,7 +369,7 @@ function textfield_modal(){
                     _token: _token
             }
             
-            $.post( 'pat_mast/new_areacode_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+            $.post( '/pat_mast/new_areacode_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
                 $("#new_areacode_form").trigger('reset');
                 selecter.ajax.reload()
                 $('#mdl_add_new_title').modal('hide');

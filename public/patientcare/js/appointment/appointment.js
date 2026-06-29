@@ -247,8 +247,8 @@ $(document).ready(function () {
 				{ label: ' ', name: ' ' ,formatter: formatter_btn, width: 70},
 
 			],
-			autowidth: false,
-			shrinkToFit: false,
+			autowidth: true,
+			shrinkToFit: true,
 			viewrecords: true,
 			sortorder: "episode.reg_time",
 			sortorder: "desc",
@@ -360,30 +360,6 @@ $(document).ready(function () {
 		}else{
 			return "0";
 		}
-	}
-
-	function formatter_btn(cellvalue, option, rowObject) {
-		console.log(rowObject);
-		let retval = `
-			<span>
-				<button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' 
-					style=''
-					data-idno="`+rowObject.idno+`" 
-					data-mrn="`+rowObject.MRN+`" 
-					data-episno="`+rowObject.Episno+`" 
-					>
-					<span class='glyphicon glyphicon-edit' aria-hidden='true'></span>
-				</button>
-				<button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode'
-					data-idno="`+rowObject.idno+`" 
-					data-mrn="`+rowObject.MRN+`" 
-					data-episno="`+rowObject.Episno+`" 
-					>
-					<b>`+rowObject.epistycode+`</b>
-				</button>
-			</span>`
-
-        return retval.replace(/[\t\n\r]/g, "");
 	}
 
 	function ordercompleteFormatter(cellvalue, option, rowObject) {

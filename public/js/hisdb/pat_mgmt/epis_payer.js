@@ -1,20 +1,20 @@
 var urlParam_epno_payer = {
 	action:'pat_enq_payer',
-	url:'./pat_enq/table',
+	url:'/pat_enq/table',
 	mrn:null,
 	episno:null,
 }
 
 var urlParam_gletdept = {
 	action:'gletdept',
-	url:'./pat_enq/table',
+	url:'/pat_enq/table',
 	mrn:null,
 	episno:null,
 }
 
 var urlParam_gletitem = {
 	action:'gletitem',
-	url:'./pat_enq/table',
+	url:'/pat_enq/table',
 	mrn:null,
 	episno:null,
 }
@@ -402,7 +402,7 @@ $(document).ready(function () {
 		    			action: 'save_gletdept',
 						idno: selRowId,
 		    		}
-		    		$.post( "./pat_enq/form?"+$.param(param),{oper:'del'}, function( data ){
+		    		$.post( "/pat_enq/form?"+$.param(param),{oper:'del'}, function( data ){
 					}).fail(function(data) {
 						//////////////////errorText(dialog,data.responseText);
 					}).done(function(data){
@@ -567,7 +567,7 @@ $(document).ready(function () {
 		    			action: 'save_gletitem',
 						idno: selRowId,
 		    		}
-		    		$.post( "./pat_enq/form?"+$.param(param),{oper:'del'}, function( data ){
+		    		$.post( "/pat_enq/form?"+$.param(param),{oper:'del'}, function( data ){
 					}).fail(function(data) {
 						//////////////////errorText(dialog,data.responseText);
 					}).done(function(data){
@@ -629,7 +629,7 @@ $(document).ready(function () {
 				{ label: 'debtortype', name: 'debtortype', width: 2, hidden:true },
 			],
 			urlParam: {
-				url:'./pat_enq/table?action2=getpayercode&epistycode='+$('#epistycode_epno_payer').val()
+				url:'/pat_enq/table?action2=getpayercode&epistycode='+$('#epistycode_epno_payer').val()
 			},
 			ondblClickRow: function () {
 				let selrow = selrowData('#'+epno_payer_payercode.gridname);
@@ -705,7 +705,7 @@ $(document).ready(function () {
 	    	_token : $('#csrf_token').val()
 	    };
 
-	    $.post( "./pat_enq/form", $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+	    $.post( "/pat_enq/form", $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
 	        
 	    },'json').fail(function(data) {
 	        // alert('there is an error');

@@ -1,6 +1,6 @@
 var urlParam_epno_coverage = {
 	action:'pat_enq_payer',
-	url:'./pat_enq/table',
+	url:'/pat_enq/table',
 	mrn:null,
 	episno:null,
 }
@@ -133,7 +133,7 @@ $(document).ready(function () {
 				{ label: 'debtortype', name: 'debtortype', width: 2, hidden:true },
 			],
 			urlParam: {
-				url:'./pat_enq/table?action2=getpayercode&epistycode='+$('#epistycode_epno_coverage').val(),
+				url:'/pat_enq/table?action2=getpayercode&epistycode='+$('#epistycode_epno_coverage').val(),
 				filterCol:['compcode','recstatus'],
 				filterVal:['session.compcode','ACTIVE']
 			},
@@ -147,7 +147,7 @@ $(document).ready(function () {
 		},{
 			title: "Select Payer Code",
 			open: function () {
-				epno_coverage_payercode.urlParam.url='./pat_enq/table?action2=getpayercode&epistycode='+$('#epistycode_epno_coverage').val();
+				epno_coverage_payercode.urlParam.url='/pat_enq/table?action2=getpayercode&epistycode='+$('#epistycode_epno_coverage').val();
 				epno_coverage_payercode.urlParam.filterCol=['compcode','recstatus'];
 				epno_coverage_payercode.urlParam.filterVal=['session.compcode','ACTIVE'];
 
@@ -213,7 +213,7 @@ $(document).ready(function () {
 	    	_token : $('#csrf_token').val()
 	    };
 
-	    $.post( "./pat_enq/form", $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+	    $.post( "/pat_enq/form", $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
 	        
 	    },'json').fail(function(data) {
 	        // alert('there is an error');

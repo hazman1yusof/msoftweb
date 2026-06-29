@@ -102,7 +102,16 @@ $(document).ready(function() {
 
     $('#btn_reg_proceed').on('click',default_click_proceed);
 
+    $('#close_iframe').click(function(){
+        window.parent.open_iframe_close();
+    });
+
 });
+
+var textfield_modal = new textfield_modal();
+textfield_modal.ontabbing();
+textfield_modal.checking();
+textfield_modal.clicking();
 
 function turntoappropriatetime(moments){
     let year = moments.substring(0,2);
@@ -184,9 +193,9 @@ function gettheage(dob){
 function default_click_register(){
     if($('#frm_patient_info').valid()){
         if($(this).data('oper') == 'add'){
-            save_patient('add');
+            // save_patient('add');
         }else{
-            save_patient($(this).data('oper'),$(this).data('idno'));
+            save_patient('edit',$(this).data('idno'));
         }
     }
 }
@@ -204,21 +213,19 @@ function default_click_proceed(){
     }
 }
 
-function save_patient(oper,idno,mrn="nothing"){
+function save_patient(oper,idno){
     var saveParam={
         action:'save_patient',
         oper:oper,
         table_name:'hisdb.pat_mast',
         table_id:'idno',
         sysparam:null
-    },_token = $('#csrf_token').val();
+    },_token = $('#_token').val();
 
     if(oper=='add'){
         saveParam.sysparam = {source:$('#PatClass').val(),trantype:'MRN',useOn:'MRN'};
     }
-    var postobj = (mrn!="nothing")?
-                {_token:_token,func_after_pat:$('#func_after_pat').val(),idno:idno,MRN:mrn}:
-                {_token:_token,func_after_pat:$('#func_after_pat').val(),idno:idno};
+    var postobj = {_token:_token,func_after_pat:$('#func_after_pat').val()};
                 //kalu ada mrn, maksudnya dia dari merging duplicate
 
     // var image = ($("img#photobase64").attr('src').startsWith('data'))?
@@ -227,7 +234,7 @@ function save_patient(oper,idno,mrn="nothing"){
 
     var image = {PatientImage:null,field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Staffid','OccupCode','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date','loginid','pat_category','MRFolder','bloodgrp','NewMrn','iPesakit'],};
 
-    $.post( "./pat_mast/save_patient?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj)+'&'+$.param(image) , function( data ) {
+    $.post( "/pat_mast/save_patient?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj)+'&'+$.param(image) , function( data ) {
         
     },'json').fail(function(data) {
         alert('there is an error');
@@ -364,6 +371,7 @@ function loading_desc_bio(obj){
     }
 }
 
+populate_patient(pat_mast_data);
 function populate_patient(rowdata) {
 
     $('#hid_pat_title').val(rowdata.TitleCode);
@@ -379,7 +387,7 @@ function populate_patient(rowdata) {
     $('#txt_pat_newic').val(rowdata.Newic);
     $('#txt_pat_oldic').val(rowdata.Oldic);
     $('#cmb_pat_idtype').val(rowdata['ID_Type']);
-    $('#txt_pat_idno').val(rowdata.idnumber);
+    $('#txt_pat_idno').val(rowdata.idno);
 
     //corporate info
     $('#hid_payer_company').val(rowdata.CorpComp);
@@ -448,4 +456,5 @@ function populate_patient(rowdata) {
     }
 
     $("#toggle_tabNok_emr").parent().show();
+    desc_show.write_desc();
 }

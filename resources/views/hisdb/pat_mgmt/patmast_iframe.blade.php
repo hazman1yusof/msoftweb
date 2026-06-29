@@ -2,18 +2,39 @@
 
 @section('title', 'Patmast Iframe')
 
+@section('css')
+<style>
+    #allmodal{
+        padding: 0px !important;
+        height: 100vh;
+        width: 100vw;
+        overflow-x: hidden;
+        margin: 0px !important;
+    }
+</style>
+
+<script>
+    var pat_mast_data = {
+        @foreach($pat_mast_data as $key => $val) 
+            '{{$key}}' : `{!!str_replace('`', '', $val)!!}`,
+        @endforeach 
+    };
+</script>
+@endsection
+
 @section('body')
-<div class="modal-dialog half modal-lg">
+<div class="modal-dialog half modal-lg" id="allmodal">
     <form id="frm_patient_info" class="form-horizontal" autocomplete="off">
+        <input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 		<input type="hidden" name="idno" id="txt_pat_idno">
-        <input name="pat_mrn" id="pat_mrn" type="hidden">
+        <input name="pat_mrn" id="pat_mrn" type="hidden" value="{{request()->get('mrn')}}">
         <input name="PatClass" id="PatClass" type="hidden" value="{{request()->get('PatClass')}}">
         <input name="func_after" id="func_after_pat" type="hidden">
         <input name="apptidno" id="apptidno_pat" type="hidden">
 
         <div class="modal-content">
             <div id="mdl_patient_header" class="modal-header label-info" style="position: sticky;top: 0px;z-index: 3;">
-                <button type="button" class="" data-dismiss="modal" aria-label="Close" style="float: right;
+                <button type="button" class="" data-dismiss="modal" aria-label="Close" id="close_iframe" style="float: right;
                         color: white;
                         background: #d34242;
                         border-radius: 5px;">
@@ -696,13 +717,19 @@
 
             <div class="modal-footer">
                 <button id="btn_register_close" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button id="btn_register_patient" type="button" class="btn btn-success" data-oper="add">Save changes</button>
+                <button id="btn_register_patient" type="button" class="btn btn-success" data-oper="edit">Save changes</button>
             </div>
         </div>
     </form>
 </div>
+
+@include('hisdb.pat_mgmt.itemselector')
+
 @endsection
 
 @section('js')
+<script type="text/javascript" src="{{asset('js/hisdb/pat_mgmt/pat_nok.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/hisdb/pat_mgmt/pat_emr.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/hisdb/pat_mgmt/textfield_modal.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/hisdb/pat_mgmt/biodata_iframe.js?v=1.1')}}"></script>
 @endsection

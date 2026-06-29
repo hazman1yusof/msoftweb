@@ -1,6 +1,6 @@
 var saveParam_dep={	
 	action:'receipt_save',
-	url: 'receipt/form',
+	url: '/receipt/form',
 	oper:'add',
 	field:'',
 	table_name:'debtor.dbacthdr',
@@ -10,7 +10,7 @@ var saveParam_dep={
 
 var urlParam_dep={
 	action:'maintable',
-	url: './receipt/table',
+	url: '/receipt/table',
 	field:'',
 	mrn:'',
 	episno:'',
@@ -74,7 +74,7 @@ $(document).ready(function () {
 	function updateTillUsage(){
 		var param={
 				action:'use_till',
-				url:'till/form',
+				url:'/till/form',
 			};
 
 		var obj = {
@@ -127,7 +127,7 @@ $(document).ready(function () {
 	///////////////////////////////////////////trantype//////////////////////
 	var urlParam_sys={
 		action:'get_table_default',
-		url: 'util/get_table_default',
+		url: '/util/get_table_default',
 		field:['source','trantype','description','hdrtype','updpayername','depccode','depglacc','updepisode','manualalloc'],
 		table_name:'debtor.hdrtypmst',
 		table_id:'hdrtype',
@@ -197,7 +197,7 @@ $(document).ready(function () {
 	///////////////////////////////////////////Bank Paytype/////////////////////////////////
 	var urlParam_bank={
 		action: 'get_table_default',
-		url: 'util/get_table_default',
+		url: '/util/get_table_default',
 		field: '',
 		table_name: 'debtor.paymode',
 		table_id: 'paymode',
@@ -242,7 +242,7 @@ $(document).ready(function () {
 	///////////////////////////////////////////Card paytype//////////////////////////////////////////////
 	var urlParam_card={
 		action: 'get_table_default',
-		url: 'util/get_table_default',
+		url: '/util/get_table_default',
 		field: '',
 		table_name: 'debtor.paymode',
 		table_id: 'paymode',
@@ -676,7 +676,7 @@ function showdetail_deposit(cellvalue, options, rowObject){
 		case 'dbacthdr_paymode':field=['paymode','description'];table="debtor.paymode";case_='dbacthdr_paymode';break;
 		case 'dbacthdr_trantype':field=['trantype','description'];table="sysdb.sysparam";case_='dbacthdr_trantype';break;
 	}
-	var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+	var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	fdl_dep.get_array('receipt',options,param,case_,cellvalue);
 	
 	if(cellvalue == null)cellvalue = " ";
@@ -702,7 +702,7 @@ function enabledPill(){
 
 function get_debtorcode_outamount(payercode){
 	var param={
-		url: './receipt/table',
+		url: '/receipt/table',
 		action:'get_debtorcode_outamount',
 		payercode:payercode
 	}
@@ -723,7 +723,7 @@ function getcr(paytype){
 	var param={
 		action:'get_value_default',
 		field:['glaccno','ccode'],
-		url: 'util/get_value_default',
+		url: '/util/get_value_default',
 		table_name:'debtor.paymode',
 		table_id:'paymode',
 		filterCol:['paytype','source','compcode'],

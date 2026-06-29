@@ -20,10 +20,11 @@
     <link rel="stylesheet" href="{{asset('plugins/css/trirand/ui.jqgrid-bootstrap.css')}}">
     <link rel="stylesheet" href="{{asset('css/landing.css?v=1')}}">
     
+    @yield('css')
+
     <title>@yield('title')</title>
 
 </head>
-
 
 <body>
     @yield('body')

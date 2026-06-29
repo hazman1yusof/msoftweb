@@ -1592,9 +1592,9 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	}
 
 	function geturl(urlParam){
-		let returl = 'util/get_table_default';
+		let returl = '/util/get_table_default';
 		if(urlParam.url === undefined){
-			returl = 'util/get_table_default';
+			returl = '/util/get_table_default';
 		}else{
 			returl = urlParam.url;
 		}
@@ -2501,7 +2501,11 @@ function fail_msg_func(fail_msg_div=null){
 
 function noIdlingHere() {
     function resetTimer() {
-    	parent.idle_resetTimer();
+    	if(typeof parent.idle_resetTimer === 'function'){
+    		parent.idle_resetTimer();
+    	}else{
+    		return 0;
+    	}
     } 
 
     window.addEventListener('load', resetTimer, true);

@@ -22,7 +22,7 @@ $(document).ready(function () {
 
 	var urlParam_bed = {
 		action:'get_table_default',
-		url:'util/get_table_default',
+		url:'/util/get_table_default',
 		field: '',
 		table_name: 'hisdb.bedalloc',
 		filterCol:['compcode','mrn','episno'],
