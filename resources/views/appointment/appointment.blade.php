@@ -170,7 +170,7 @@
 @endsection
 
 @section('js')
-    <script type="text/javascript" src="{{ asset('js/myjs/utility.js') }}?v=1.2"></script>
+    <script type="text/javascript" src="{{ asset('js/myjs/utility.js') }}?v=1.3"></script>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
     <script type="text/ecmascript" src="{{ asset('patientcare/assets/trirand/i18n/grid.locale-en.js') }}"></script>
@@ -196,9 +196,9 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/physiotherapy/physioterapy_ncase.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/requestfor.js?v=1.5') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/appointment/admhandoverAppt.js?v=1.1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/appointment/appt_main.js?v=1.1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/appointment/appt_main.js?v=1.2') }}"></script>
     
-    <script type="text/javascript" src="{{ asset('js/hisdb/pat_mgmt/pat_mgmt_main_iframe.js?v=1.1') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/pat_mgmt/pat_mgmt_main_iframe.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_main.js?v=1.3') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_phar.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_disp.js?v=1.2') }}"></script>

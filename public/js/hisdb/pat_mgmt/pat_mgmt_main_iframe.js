@@ -31,7 +31,7 @@ function formatter_btn(cellvalue, option, rowObject) {
 }
 
 function open_iframe_patmast(mrn,episno){
-    $("#mdl_patient_iframe").attr('src','./pat_mast/table?action=pat_mast_iframe&mrn='+mrn+'&episno='+episno);
+    $("#mdl_patient_iframe").attr('src','./pat_mast_iframe?mrn='+mrn+'&episno='+episno);
     $('#mdl_patient_info').modal({
     	closable  : false,
 	    centered: true
@@ -39,7 +39,7 @@ function open_iframe_patmast(mrn,episno){
 }
 
 function open_iframe_episode(mrn,episno){
-    $("#mdl_episode_iframe").attr('src','./pat_mast/table?action=episode_iframe&mrn='+mrn+'&episno='+episno);
+    $("#mdl_episode_iframe").attr('src','./episode_iframe?mrn='+mrn+'&episno='+episno);
     $('#mdl_episode_info').modal({
     	closable  : false,
 	    centered: true

@@ -1364,6 +1364,9 @@ Route::post('/pat_mast/new_relationship_form','hisdb\PatmastController@new_relat
 Route::post('/pat_mast/auto_save','hisdb\PatmastController@auto_save');
 Route::get('/pat_mast/patlabel','hisdb\PatmastController@patlabel');
 
+Route::get('/episode_iframe','hisdb\PatmastController@episode_iframe');
+Route::get('/pat_mast_iframe','hisdb\PatmastController@pat_mast_iframe');
+
 Route::post('/episode/save_doc','hisdb\PatmastController@save_doc');
 Route::post('/episode/save_bed','hisdb\PatmastController@save_bed');
 Route::post('/episode/save_nok','hisdb\PatmastController@save_nok');
