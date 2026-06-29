@@ -249,7 +249,7 @@ function textfield_modal(){
 
             var act = get_url(id_use);
             if(search.trim() != ""){
-                $.get( "/pat_mast/get_entry?action="+act+"&search="+search, function( data ) {
+                $.get( "./pat_mast/get_entry?action="+act+"&search="+search, function( data ) {
                             
                 },'json').done(function(data) {
                     if(!$.isEmptyObject(data) && data.data!=null){

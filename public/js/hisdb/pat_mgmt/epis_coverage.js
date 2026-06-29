@@ -1,6 +1,6 @@
 var urlParam_epno_coverage = {
 	action:'pat_enq_payer',
-	url:'/pat_enq/table',
+	url:'./pat_enq/table',
 	mrn:null,
 	episno:null,
 }
@@ -213,7 +213,7 @@ $(document).ready(function () {
 	    	_token : $('#csrf_token').val()
 	    };
 
-	    $.post( "/pat_enq/form", $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+	    $.post( "./pat_enq/form", $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
 	        
 	    },'json').fail(function(data) {
 	        // alert('there is an error');
