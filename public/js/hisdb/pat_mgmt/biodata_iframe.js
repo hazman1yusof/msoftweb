@@ -292,7 +292,7 @@ function save_patient(oper,idno){
 
     var image = {PatientImage:null,field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Staffid','OccupCode','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date','loginid','pat_category','MRFolder','bloodgrp','NewMrn','iPesakit'],};
 
-    $.post( "/pat_mast/save_patient?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj)+'&'+$.param(image) , function( data ) {
+    $.post( "./pat_mast/save_patient?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj)+'&'+$.param(image) , function( data ) {
         
     },'json').fail(function(data) {
 
@@ -342,15 +342,15 @@ function loading_desc_bio(obj){
     this.occupation={code:'code',desc:'description'};//data simpan dekat dalam ni
     this.company={code:'code',desc:'description'};//data simpan dekat dalam ni
     this.load_desc = function(){
-        load_for_desc(this,'titlecode','pat_mast/get_entry?action=get_patient_title');
-        load_for_desc(this,'citizencode','pat_mast/get_entry?action=get_patient_citizen');
-        load_for_desc(this,'areacode','pat_mast/get_entry?action=get_patient_areacode');
-        load_for_desc(this,'idtype','pat_mast/get_entry?action=get_patient_idtype');
-        load_for_desc(this,'language','pat_mast/get_entry?action=get_patient_language');
-        load_for_desc(this,'race','pat_mast/get_entry?action=get_patient_race');
-        load_for_desc(this,'religioncode','pat_mast/get_entry?action=get_patient_religioncode');
-        load_for_desc(this,'occupation','pat_mast/get_entry?action=get_patient_occupation');
-        load_for_desc(this,'company','pat_mast/get_entry?action=get_all_company');
+        load_for_desc(this,'titlecode','./pat_mast/get_entry?action=get_patient_title');
+        load_for_desc(this,'citizencode','./pat_mast/get_entry?action=get_patient_citizen');
+        load_for_desc(this,'areacode','./pat_mast/get_entry?action=get_patient_areacode');
+        load_for_desc(this,'idtype','./pat_mast/get_entry?action=get_patient_idtype');
+        load_for_desc(this,'language','./pat_mast/get_entry?action=get_patient_language');
+        load_for_desc(this,'race','./pat_mast/get_entry?action=get_patient_race');
+        load_for_desc(this,'religioncode','./pat_mast/get_entry?action=get_patient_religioncode');
+        load_for_desc(this,'occupation','./pat_mast/get_entry?action=get_patient_occupation');
+        load_for_desc(this,'company','./pat_mast/get_entry?action=get_all_company');
     }
 
     this.load_sp_desc = function(code,url){
