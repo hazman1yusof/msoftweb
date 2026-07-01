@@ -128,24 +128,26 @@ $(document).ready(function() {
                 $("#txt_pat_name").val(data.name);
                 $("#txt_pat_newic").val(data.ic);
                 $("#cmb_pat_sex").val(data.sex);
-                $("#txt_pat_dob").val(data.dob);
-                $('#txt_pat_age').val(gettheage(data.dob));
+                $("#txt_pat_dob").val(moment(data.dob, "MM-DD-YYYY").format("YYYY-MM-DD"));
+                $('#txt_pat_age').val(gettheage(moment(data.dob, "MM-DD-YYYY").format("YYYY-MM-DD")));
                 // $("input[name='birthplace']").val(data.birthplace);
                 $("#hid_RaceCode").val(data.race);
+                $("#txt_RaceCode").val(data.race);
                 $('#hid_pat_citizen').val(data.citizenship);
+                $('#txt_pat_citizen').val(data.citizenship);
                 $('#hid_Religion').val(data.religion);
-                $('#txt_pat_curradd1').val(rowdata.addr1);
-                $('#txt_pat_curradd2').val(rowdata.addr2);
-                $('#txt_pat_curradd3').val(rowdata.addr4);
-                $('#hid_pat_area').val(rowdata.city);
+                $('#txt_Religion').val(data.religion);
+                $('#txt_pat_curradd1').val(data.addr1);
+                $('#txt_pat_curradd2').val(data.addr2);
+                $('#txt_pat_curradd3').val(data.addr3);
+                $('#hid_pat_area').val(data.city);
+                $('#txt_pat_area').val(data.city);
                 $('#txt_pat_currpostcode').val(data.postcode);
                 $("img#photobase64").attr('src','data:image/png;base64,'+data.photo);
 
                 chg_msg("Success");
                 $('#pageDimmer').removeClass('active');
             }
-            
-
         }).fail(function() {
             chg_msg("Service not installed");
             
