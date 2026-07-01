@@ -11,18 +11,52 @@
         overflow-x: hidden;
         margin: 0px !important;
     }
+    .dimmer-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.7); /* Slightly darker for better text contrast */
+        z-index: 1060; /* Higher than default navbars and modals */
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        
+        /* Flexbox to center the text and spinner */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #ffffff; /* White text */
+    }
+
+    .dimmer-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
 </style>
 
 <script>
-    var pat_mast_data = {
-        @foreach($pat_mast_data as $key => $val) 
-            '{{$key}}' : `{!!str_replace('`', '', $val)!!}`,
-        @endforeach 
-    };
+    @if(empty($pat_mast_data))
+        var pat_mast_data = null;
+    @else
+        var pat_mast_data = {
+            @foreach($pat_mast_data as $key => $val) 
+                '{{$key}}' : `{!!str_replace('`', '', $val)!!}`,
+            @endforeach 
+        };
+    @endif
 </script>
 @endsection
 
 @section('body')
+<div id="pageDimmer" class="dimmer-overlay">
+    <div class="text-center">
+        <!-- Your Custom Loading Text -->
+        <h3 class="fw-normal" id="textDimmer">Reading Mykad, please wait...</h3>
+    </div>
+</div>
 <div class="modal-dialog half modal-lg" id="allmodal">
     <form id="frm_patient_info" class="form-horizontal" autocomplete="off">
         <input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
@@ -34,13 +68,25 @@
 
         <div class="modal-content">
             <div id="mdl_patient_header" class="modal-header label-info" style="position: sticky;top: 0px;z-index: 3;">
+                <button id="btn_mykad" type="button" class="btn btn-default btn-md" style="
+                        float: left;
+                        border-radius: 5px;
+                        font-size: 11px;
+                        float: left;
+                        margin: 0px;
+                        border-radius: 5px;
+                        padding: 1px 15px;
+                        @if(!empty($pat_mast_data))display: none;@endif
+                        ">
+                    <img src="img/mykad.png" width="35"> My Kad
+                </button>
                 <button type="button" class="" data-dismiss="modal" aria-label="Close" id="close_iframe" style="float: right;
                         color: white;
                         background: #d34242;
                         border-radius: 5px;">
                   <span class="glyphicon glyphicon-remove" aria-hidden="true" style="top: 3px;"></span>
                 </button>
-                <div class="form-group ">
+                <div class="form-group" style="margin: 0px">
                 </div>
                 <div class="form-group">
                     <div class="col-sm-3">

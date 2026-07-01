@@ -34,7 +34,7 @@ function open_iframe_patmast(mrn,episno){
     $("#mdl_patient_iframe").attr('src','./pat_mast_iframe?mrn='+mrn+'&episno='+episno);
     $('#mdl_patient_info').modal({
     	closable  : false,
-	    centered: true
+	    centered: false
 	}).modal('show');
 }
 
@@ -42,7 +42,7 @@ function open_iframe_episode(mrn,episno){
     $("#mdl_episode_iframe").attr('src','./episode_iframe?mrn='+mrn+'&episno='+episno);
     $('#mdl_episode_info').modal({
     	closable  : false,
-	    centered: true
+	    centered: false
 	}).modal('show');
 }
 

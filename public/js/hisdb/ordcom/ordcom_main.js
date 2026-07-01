@@ -38,6 +38,8 @@ $(document).ready(function(){
 		$("#cyclebill_summ").attr('href',"./ordcom/table?action=showpdf_summ&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno);
 		$("#phar_label_link").attr('href',"./pat_mast/patlabel?action=pharlabel&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno);
 
+        $('#ordcom_panel_title').show();
+
 		// if($('#isdoctor').val() != '1'){
         // 	let bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
 		// 	let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
@@ -49,6 +51,7 @@ $(document).ready(function(){
 
 	$("#jqGrid_ordcom_panel").on("hide.bs.collapse", function(){
 		$('span#cyclebill_invno').html('');
+        $('#ordcom_panel_title').hide();
 	});
 
 	$('.nav-tabs a').on('shown.bs.tab', function(e){

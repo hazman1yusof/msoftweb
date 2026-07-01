@@ -103,10 +103,61 @@ $(document).ready(function() {
     $('#btn_reg_proceed').on('click',default_click_proceed);
 
     $('#close_iframe').click(function(){
-        window.parent.open_iframe_close();
+        if(typeof parent.open_iframe_close === 'function'){
+            window.parent.open_iframe_close(pat_mast_data);
+        }else{
+            console.log(pat_mast_data);
+        }
+    });
+
+    $('#btn_mykad').click(function(){
+        chg_msg("Reading Mykad, please wait...");
+        $('#pageDimmer').addClass('active');
+
+        $.ajaxSetup({async: true,crossDomain:true});
+        $.get( "http://localhost/mycard/public/read_mykad", function( data ) {
+            
+        },'json')
+          .done(function( data ) {
+            if(data.status == 'failed'){
+                chg_msg("Error reading Mycard");
+
+                $('#pageDimmer').removeClass('active');
+            }else{
+            
+                $("#txt_pat_name").val(data.name);
+                $("#txt_pat_newic").val(data.ic);
+                $("#cmb_pat_sex").val(data.sex);
+                $("#txt_pat_dob").val(data.dob);
+                $('#txt_pat_age').val(gettheage(data.dob));
+                // $("input[name='birthplace']").val(data.birthplace);
+                $("#hid_RaceCode").val(data.race);
+                $('#hid_pat_citizen').val(data.citizenship);
+                $('#hid_Religion').val(data.religion);
+                $('#txt_pat_curradd1').val(rowdata.addr1);
+                $('#txt_pat_curradd2').val(rowdata.addr2);
+                $('#txt_pat_curradd3').val(rowdata.addr4);
+                $('#hid_pat_area').val(rowdata.city);
+                $('#txt_pat_currpostcode').val(data.postcode);
+                $("img#photobase64").attr('src','data:image/png;base64,'+data.photo);
+
+                chg_msg("Success");
+                $('#pageDimmer').removeClass('active');
+            }
+            
+
+        }).fail(function() {
+            chg_msg("Service not installed");
+            
+            $('#pageDimmer').removeClass('active');
+        });
     });
 
 });
+
+function chg_msg(text){
+    $('#textDimmer').text(text);
+}
 
 var textfield_modal = new textfield_modal();
 textfield_modal.ontabbing();
@@ -192,8 +243,8 @@ function gettheage(dob){
 
 function default_click_register(){
     if($('#frm_patient_info').valid()){
-        if($(this).data('oper') == 'add'){
-            // save_patient('add');
+        if($('#txt_pat_mrn').val() == ''){
+            save_patient('add');
         }else{
             save_patient('edit',$(this).data('idno'));
         }
@@ -214,6 +265,8 @@ function default_click_proceed(){
 }
 
 function save_patient(oper,idno){
+    chg_msg("Saving biodata, please wait...");
+    $('#pageDimmer').addClass('active');
     var saveParam={
         action:'save_patient',
         oper:oper,
@@ -228,7 +281,7 @@ function save_patient(oper,idno){
     var postobj = {_token:_token,func_after_pat:$('#func_after_pat').val()};
                 //kalu ada mrn, maksudnya dia dari merging duplicate
 
-    // var image = ($("img#photobase64").attr('src').startsWith('data'))?
+    // var PatientImage_ = ($("img#photobase64").attr('src').startsWith('data'))?
     //             {PatientImage:$("img#photobase64").attr('src')}:
     //             {PatientImage:null}
 
@@ -237,27 +290,25 @@ function save_patient(oper,idno){
     $.post( "/pat_mast/save_patient?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj)+'&'+$.param(image) , function( data ) {
         
     },'json').fail(function(data) {
-        alert('there is an error');
+
+        chg_msg("There is an error");
+        $('#pageDimmer').removeClass('active');
     }).success(function(data){
         
-        $("#load_from_addupd").data('info','true');
-        $("#load_from_addupd").data('oper',oper);
-        $("#lastMrn").val(data.lastMrn);
-        $("#lastidno").val(data.lastidno);
+        // $("#load_from_addupd").data('info','true');
+        // $("#load_from_addupd").data('oper',oper);
+        // $("#lastMrn").val(data.lastMrn);
+        // $("#lastidno").val(data.lastidno);
 
-        if($('#func_after_pat').val() != ''){
-            preepisode.refreshGrid();
-        }
-
-        $('#mdl_patient_info').modal('hide');
-        $('#mdl_existing_record').modal('hide');
-        $("#grid-command-buttons").bootgrid('reload');
-        // if(oper == 'edit'){
-
-        //     $("#grid-command-buttons tr").removeClass( "justbc" );
-        //     $("#grid-command-buttons tr[data-row-id='"+$('#lastrowid').val()+"']").addClass( "justbc" );
-        //     // $("#grid-command-buttons").bootgrid('select',[]);
+        // if($('#func_after_pat').val() != ''){
+        //     preepisode.refreshGrid();
         // }
+
+        chg_msg("Save Successfull");
+        $('#pageDimmer').removeClass('active');
+        populate_patient(data.pat_mast_data);
+        pat_mast_data = data.pat_mast_data
+
     });
 }
 
@@ -371,7 +422,9 @@ function loading_desc_bio(obj){
     }
 }
 
-populate_patient(pat_mast_data);
+if(pat_mast_data != null){
+    populate_patient(pat_mast_data);
+}
 function populate_patient(rowdata) {
 
     $('#hid_pat_title').val(rowdata.TitleCode);

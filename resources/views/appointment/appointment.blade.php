@@ -73,7 +73,9 @@
                     </div>
                 </div>
                 
-                <h2 class="h2">Patient List</h2>
+                <h2 class="h2">
+                    Patient List
+                </h2>
                 <table id="jqGrid" class="table table-striped"></table>
                 <div id="jqGridPager"></div>
                 <a class="ui grey label left floated" style="margin-top: 8px;" id="refresh_main">
@@ -148,7 +150,7 @@
         @include('hisdb.ordcom.ordcom',['phase' => '2'])
     </div>
     
-@include('hisdb.pat_mgmt.pat_mgmt_iframe')
+@include('hisdb.pat_mgmt.pat_mgmt_iframe',['phase' => 'semantic'])
 @include('patientcare.itemselector')
 @endsection
 

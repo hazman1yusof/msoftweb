@@ -14,20 +14,22 @@
     </div>
 </div>
 
-<div class="panel panel-default" style="position: relative;" id="jqGridWardMain_c">
+<div class="panel panel-default" style="position: relative;margin-bottom: 0px;" id="jqGridWardMain_c">
     <input type="hidden" name="curr_user" id="curr_user" value="{{ Auth::user()->username }}">
     
     <div class="panel-heading clearfix collapsed position" id="toggle_wardMain" style="position: sticky; top: 0px; z-index: 3; height: 65px;">
-        <!-- <b>NAME: <span id="name_show_wardMain"></span></b><br>
-        MRN: <span id="mrn_show_wardMain"></span>
-        SEX: <span id="sex_show_wardMain"></span>
-        DOB: <span id="dob_show_wardMain"></span>
-        AGE: <span id="age_show_wardMain"></span>
-        RACE: <span id="race_show_wardMain"></span>
-        RELIGION: <span id="religion_show_wardMain"></span><br>
-        OCCUPATION: <span id="occupation_show_wardMain"></span>
-        CITIZENSHIP: <span id="citizenship_show_wardMain"></span>
-        AREA: <span id="area_show_wardMain"></span> -->
+        <span id="wardMain_panel_title" style="display: none;">
+            <b>NAME: <span id="name_show_wardMain_2"></span></b><br>
+            MRN: <span id="mrn_show_wardMain_2"></span>
+            SEX: <span id="sex_show_wardMain_2"></span>
+            DOB: <span id="dob_show_wardMain_2"></span>
+            AGE: <span id="age_show_wardMain_2"></span>
+            RACE: <span id="race_show_wardMain_2"></span>
+            RELIGION: <span id="religion_show_wardMain_2"></span><br>
+            OCCUPATION: <span id="occupation_show_wardMain_2"></span>
+            CITIZENSHIP: <span id="citizenship_show_wardMain_2"></span>
+            AREA: <span id="area_show_wardMain_2"></span>
+        </span>
         
         <i class="arrow fa fa-angle-double-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#jqGridWardMain_panel"></i>
         <i class="arrow fa fa-angle-double-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#jqGridWardMain_panel"></i>

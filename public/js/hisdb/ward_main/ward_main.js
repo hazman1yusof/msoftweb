@@ -13,6 +13,8 @@ $(document).ready(function (){
         $('#jqGridWardMain_panel_tabs.nav-tabs a#'+curtype).tab('show');
         
         $('#jqGridWardMain_panel').find('.nav a:first').tab('show');
+
+        $('#wardMain_panel_title').show();
     });
     
     $("#jqGridWardMain_panel").on("hidden.bs.collapse", function (){
@@ -22,6 +24,8 @@ $(document).ready(function (){
         
         $("#jqGridWardMain_panel > div").scrollTop(0);
         $("#jqGridWardMain_panel #jqGridWardMain_panel_tabs li").removeClass('active');
+
+        $('#wardMain_panel_title').hide();
     });
     
     $("#jqGridWardMain_panel").on("show.bs.collapse", function (){
@@ -348,6 +352,17 @@ function populate_wardMain(obj){
     $('#occupation_show_wardMain').text(if_none(obj.occupDesc).toUpperCase());
     $('#citizenship_show_wardMain').text(if_none(obj.cityDesc).toUpperCase());
     $('#area_show_wardMain').text(if_none(obj.areaDesc).toUpperCase());
+
+    $('#name_show_wardMain_2').text(obj.Name);
+    $('#mrn_show_wardMain_2').text(("0000000" + obj.MRN).slice(-7));
+    $('#sex_show_wardMain_2').text(if_none(obj.Sex).toUpperCase());
+    $('#dob_show_wardMain_2').text(dob_chg(obj.DOB));
+    $('#age_show_wardMain_2').text(dob_age(obj.DOB)+' (YRS)');
+    $('#race_show_wardMain_2').text(if_none(obj.raceDesc).toUpperCase());
+    $('#religion_show_wardMain_2').text(if_none(obj.religionDesc).toUpperCase());
+    $('#occupation_show_wardMain_2').text(if_none(obj.occupDesc).toUpperCase());
+    $('#citizenship_show_wardMain_2').text(if_none(obj.cityDesc).toUpperCase());
+    $('#area_show_wardMain_2').text(if_none(obj.areaDesc).toUpperCase());
     
     $("#mrn_wardMain").val(obj.MRN);
     $("#episno_wardMain").val(obj.Episno);

@@ -329,6 +329,7 @@ i.fa {
 							<button type="button" class="btn btn-primary" id="submit">Save changes</button>
 							<button type="button" class="btn btn-danger" id="delete_but" style="display: none;">Delete Appointment</button>
 							<button type="button" class="btn btn-primary" id="new_episode" style="display: none;">New Episode</button>
+							<button type="button" class="btn btn-success" id="biodata_pat" style=""><span id="biodata_pat_span">New MRN</span></button>
 						</div>
 					</form>
 			</div>
@@ -420,12 +421,9 @@ i.fa {
         </button>
 	</div>
 
+	@include('hisdb.pat_mgmt.pat_mgmt_iframe',['phase' => 'bootstrap'])
 
-	@include('hisdb.pat_mgmt.mdl_patient')
-	@include('hisdb.pat_mgmt.mdl_episode')
-	@include('hisdb.pat_mgmt.itemselector')
-
-	@endsection
+@endsection
 
 @section('scripts')
 

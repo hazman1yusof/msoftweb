@@ -133,18 +133,19 @@ class PatmastController extends defaultController
         $mrn = $request->mrn;
 
         if(empty($mrn)){
-           abort(403,'No MRN'); 
+           $pat_mast_data = null; 
+        }else{
+
+            $pat_mast = DB::table('hisdb.pat_mast')
+                            ->where('compcode',session('compcode'))
+                            ->where('MRN',$mrn);
+
+            if(!$pat_mast->exists()){
+               abort(403,'MRN doest Exists'); 
+            }
+
+            $pat_mast_data = $pat_mast->first();
         }
-
-        $pat_mast = DB::table('hisdb.pat_mast')
-                        ->where('compcode',session('compcode'))
-                        ->where('MRN',$mrn);
-
-        if(!$pat_mast->exists()){
-           abort(403,'MRN doest Exists'); 
-        }
-
-        $pat_mast_data = $pat_mast->first();
 
         return view('hisdb.pat_mgmt.patmast_iframe',compact('mrn','pat_mast_data'));
     }
@@ -1149,9 +1150,15 @@ class PatmastController extends defaultController
             //     }
             // }
 
+            $pat_mast_data = DB::table('hisdb.pat_mast')
+                                ->where('compcode',session('compcode'))
+                                ->where('MRN',$mrn)
+                                ->first();
+
             $responce = new stdClass();
             $responce->lastMrn = $mrn;
             $responce->lastidno = $lastidno;
+            $responce->pat_mast_data = $pat_mast_data;
             echo json_encode($responce);
 
             DB::commit();
@@ -1222,12 +1229,17 @@ class PatmastController extends defaultController
                             'name' => strtoupper($request->Name)
                         ]);
 
-            $queries = DB::getQueryLog();
+            // $queries = DB::getQueryLog();
+            $pat_mast_data = DB::table('hisdb.pat_mast')
+                                ->where('compcode',session('compcode'))
+                                ->where('MRN',$request->MRN)
+                                ->first();
 
             $responce = new stdClass();
-            $responce->sql = $queries;
+            // $responce->sql = $queries;
             $responce->lastMrn = $request->MRN;
             $responce->lastidno = $request->idno;
+            $responce->pat_mast_data = $pat_mast_data;
             echo json_encode($responce);
 
             DB::commit();

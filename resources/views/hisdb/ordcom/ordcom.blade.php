@@ -12,17 +12,19 @@
 		</button> -->
 	</div>
 	<div class="panel-heading clearfix collapsed position" id="toggle_ordcom" style="height: 65px;" @if($phase != '2') data-toggle="collapse" data-target="#jqGrid_ordcom_panel" @endif>
-		<!-- <b>NAME: <span id="name_show_ordcom"></span></b><br>
-		MRN: <span id="mrn_show_ordcom"></span>
-		BILL TYPE: <span id="billtype_show_ordcom"></span>
-		SEX: <span id="sex_show_ordcom"></span>
-		DOB: <span id="dob_show_ordcom"></span>
-		AGE: <span id="age_show_ordcom"></span>
-		RACE: <span id="race_show_ordcom"></span>
-		RELIGION: <span id="religion_show_ordcom"></span><br>
-		OCCUPATION: <span id="occupation_show_ordcom"></span>
-		CITIZENSHIP: <span id="citizenship_show_ordcom"></span>
-		AREA: <span id="area_show_ordcom"></span> -->
+		<span id="ordcom_panel_title" style="display: none;">
+			<b>NAME: <span id="name_show_ordcom"></span></b><br>
+			MRN: <span id="mrn_show_ordcom"></span>
+			BILL TYPE: <span id="billtype_show_ordcom"></span>
+			SEX: <span id="sex_show_ordcom"></span>
+			DOB: <span id="dob_show_ordcom"></span>
+			AGE: <span id="age_show_ordcom"></span>
+			RACE: <span id="race_show_ordcom"></span>
+			RELIGION: <span id="religion_show_ordcom"></span><br>
+			OCCUPATION: <span id="occupation_show_ordcom"></span>
+			CITIZENSHIP: <span id="citizenship_show_ordcom"></span>
+			AREA: <span id="area_show_ordcom"></span>
+		</span>
 		
 		@if($phase == '2')
 			<input type="hidden" id="ordcom_phase" value="2">
