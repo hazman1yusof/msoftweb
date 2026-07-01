@@ -125,6 +125,9 @@ $(document).ready(function() {
                 $('#pageDimmer').removeClass('active');
             }else{
             
+                $("#hid_ID_Type").val('O');
+                $("#txt_ID_Type").val('Own IC');
+                $("#txt_pat_newic").val(data.ic);
                 $("#txt_pat_name").val(data.name);
                 $("#txt_pat_newic").val(data.ic);
                 $("#cmb_pat_sex").val(data.sex);

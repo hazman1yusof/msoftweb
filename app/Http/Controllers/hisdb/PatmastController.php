@@ -1120,6 +1120,8 @@ class PatmastController extends defaultController
                 $PatientImage = null;
             }
 
+            $request = $this->auto_save_missing_data($request);
+
             $array_insert = [
                 'Episno' => 0,
                 'loginid' => $loginid,
@@ -3867,6 +3869,87 @@ class PatmastController extends defaultController
 
         return $totamount;
 
+    }
+
+    public function auto_save_missing_data($request){
+        $RaceCode = $request->RaceCode;
+        $Citizencode = $request->Citizencode;
+        $Religion = $request->Religion;
+        $AreaCode = $request->AreaCode;
+
+        $racecode_ = DB::table('hisdb.racecode')
+                        ->where('compcode',session('compcode'))
+                        ->where('description',$request->RaceCode)
+                        ->orWhere('code',$request->RaceCode);
+
+        if($racecode_->exists()){
+            $racecode_ = $racecode_->first();
+            $request->RaceCode = $racecode_->Code;
+        }else{
+            DB::table('hisdb.racecode')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'Code' => $request->RaceCode,
+                    'Description' => $request->RaceCode,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+
+        $citizen_ = DB::table('hisdb.citizen')
+                        ->where('compcode',session('compcode'))
+                        ->where('description',$request->Citizencode)
+                        ->orWhere('code',$request->Citizencode);
+
+        if($citizen_->exists()){
+            $citizen_ = $citizen_->first();
+            $request->Citizencode = $citizen_->Code;
+        }else{
+            DB::table('hisdb.citizen')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'Code' => $request->Citizencode,
+                    'Description' => $request->Citizencode,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+
+        $religion_ = DB::table('hisdb.religion')
+                        ->where('compcode',session('compcode'))
+                        ->where('description',$request->Religion)
+                        ->orWhere('code',$request->Religion);
+
+        if($religion_->exists()){
+            $religion_ = $religion_->first();
+            $request->Religion = $religion_->Code;
+        }else{
+            DB::table('hisdb.religion')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'Code' => $request->Religion,
+                    'Description' => $request->Religion,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+
+        $areacode_ = DB::table('hisdb.areacode')
+                        ->where('compcode',session('compcode'))
+                        ->where('description',$request->AreaCode)
+                        ->orWhere('areacode',$request->AreaCode);
+
+        if($areacode_->exists()){
+            $areacode_ = $areacode_->first();
+            $request->AreaCode = $areacode_->areacode;
+        }else{
+            DB::table('hisdb.areacode')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'areacode' => $request->AreaCode,
+                    'Description' => $request->AreaCode,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+
+        return $request;
     }
 
 
