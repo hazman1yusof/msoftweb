@@ -58,8 +58,8 @@ $(document).ready(function () {
 		'resourcecode', ['hisdb.apptresrc AS a', 'hisdb.doctor AS d'], "input[name='resourcecode']", errorField,
         {
             colModel: [
-                { label: 'Resource Code', name: 'a_resourcecode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+                { label: 'Resource Code', name: 'a_resourcecode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, or_search: true, checked: true },
 				{ label: 'Interval Time', name: 'a_intervaltime', width: 400, classes: 'pointer', hidden:false},
             ],
             urlParam: {
