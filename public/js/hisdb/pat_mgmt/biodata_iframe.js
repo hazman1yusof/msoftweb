@@ -100,7 +100,10 @@ $(document).ready(function() {
     
     $('#btn_register_patient').on('click',default_click_register);
 
-    $('#btn_reg_proceed').on('click',default_click_proceed);
+    $('#btn_duplicate_proceed').on('click',default_click_proceed);
+    $('#btn_duplicate_cancel').click(function(){
+        $("#btn_register_patient").data('chk_duplicate','false');
+    });
 
     $('#close_iframe').click(function(){
         if(typeof parent.open_iframe_close === 'function'){
@@ -256,14 +259,51 @@ function default_click_register(){
     }
 }
 
+var tbl_exist_rec = $('#tbl_existing_record').DataTable( {
+    "lengthChange": false,"info": false,"pagingType" : "numbers", "ordering": false,
+    "search": {"smart": true, },
+    "columns": [
+                {'data' : 'merge'},
+                {'data' : 'MRN'}, 
+                {'data' : 'Name' },
+                {'data' : 'Newic'}, 
+                {'data' : 'Oldic' },
+                {'data' : 'idnumber'}, 
+                {'data' : 'DOB' },
+                {'data' : "idno"},
+               ],
+    columnDefs: [{
+        targets:   0,
+        'render': function (data, type, full, meta){
+            if(data==null){
+                return "<small>Merge this</br>with?</small>"
+            }else{
+                return '<input type="checkbox" name="chk_' + data + '" id="chk_' + data + '" data-mrn="' + data + '" data-idno="' + full.idno + '">';
+            }
+         }
+    }],
+    select: {
+        style:    'os',
+        selector: 'td:first-child'
+    },
+});
+
 function default_click_proceed(){
     var checkedbox = $("#tbl_existing_record input[type='checkbox']:checked");
     if(checkedbox.closest("td").next().length>0){
         let mrn = checkedbox.data("mrn");
         let idno = checkedbox.data("idno");
-        $("#btn_register_patient").data('oper','edit');
-        $("#btn_register_patient").data('idno',idno);
-        populate_data_from_mrn(mrn,"#frm_patient_info");
+        console.log(idno);
+        tbl_exist_rec.rows().every(function (rowIdx, tableLoop, rowLoop) {
+            var data = this.data(); // Access data for individual row
+            if(data.idno == idno){
+                populate_patient(data);
+                $("#btn_register_patient").data('chk_duplicate','false');
+                $('#mdl_existing_record').modal('hide');
+            }
+        });
+        // $("#btn_register_patient").data('idno',idno);
+        // populate_data_from_mrn(mrn,"#frm_patient_info");
     }else{
         $('#mdl_existing_record').modal('hide');
     }
@@ -277,28 +317,39 @@ function save_patient(oper,idno){
         oper:oper,
         table_name:'hisdb.pat_mast',
         table_id:'idno',
-        sysparam:null
+        sysparam:null,
     },_token = $('#_token').val();
 
     if(oper=='add'){
         saveParam.sysparam = {source:$('#PatClass').val(),trantype:'MRN',useOn:'MRN'};
     }
-    var postobj = {_token:_token,func_after_pat:$('#func_after_pat').val()};
+    console.log($("#btn_register_patient").data('chk_duplicate'));
+    var postobj = {_token:_token,func_after_pat:$('#func_after_pat').val(),chk_duplicate:$("#btn_register_patient").data('chk_duplicate')};
                 //kalu ada mrn, maksudnya dia dari merging duplicate
 
-    // var PatientImage_ = ($("img#photobase64").attr('src').startsWith('data'))?
-    //             {PatientImage:$("img#photobase64").attr('src')}:
-    //             {PatientImage:null}
+    var PatientImage_ = ($("img#photobase64").attr('src').startsWith('data'))?
+                {PatientImage:$("img#photobase64").attr('src')}:
+                {PatientImage:null}
 
-    var image = {PatientImage:null,field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Staffid','OccupCode','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date','loginid','pat_category','MRFolder','bloodgrp','NewMrn','iPesakit'],};
+    var image = {PatientImage:PatientImage_,field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Staffid','OccupCode','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date','loginid','pat_category','MRFolder','bloodgrp','NewMrn','iPesakit'],};
 
     $.post( "./pat_mast/save_patient?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj)+'&'+$.param(image) , function( data ) {
         
     },'json').fail(function(data) {
-
         chg_msg("There is an error");
         $('#pageDimmer').removeClass('active');
     }).success(function(data){
+
+        if(data.duplicate !== undefined){
+            chg_msg("I/C Duplicate");
+            $('#pageDimmer').removeClass('active');
+            pick_duplicate_data(data);
+        }else{
+            chg_msg("Save Successfull");
+            $('#pageDimmer').removeClass('active');
+            populate_patient(data.pat_mast_data);
+            pat_mast_data = data.pat_mast_data
+        }
         
         // $("#load_from_addupd").data('info','true');
         // $("#load_from_addupd").data('oper',oper);
@@ -308,11 +359,6 @@ function save_patient(oper,idno){
         // if($('#func_after_pat').val() != ''){
         //     preepisode.refreshGrid();
         // }
-
-        chg_msg("Save Successfull");
-        $('#pageDimmer').removeClass('active');
-        populate_patient(data.pat_mast_data);
-        pat_mast_data = data.pat_mast_data
 
     });
 }
@@ -512,7 +558,25 @@ function populate_patient(rowdata) {
     }else{
         $("#toggle_tabNok_pat").parent().show();
     }
+    $("#btn_register_patient").data('chk_duplicate','true');
 
     $("#toggle_tabNok_emr").parent().show();
     desc_show.write_desc();
+}
+
+function pick_duplicate_data(data){
+    let current_pat = {
+        merge: null,
+        MRN: "N/A",
+        Name: $("#txt_pat_name").val(),
+        Newic: $("#txt_pat_newic").val(),
+        Oldic: $("#txt_pat_oldic").val(),
+        idnumber: $("#txt_pat_idno").val(),
+        DOB: $("#txt_pat_dob").val(),
+        idno: "N/A"
+    };
+    data.rows.unshift(current_pat);
+    tbl_exist_rec.clear();
+    tbl_exist_rec.rows.add(data.rows).draw();
+    $('#mdl_existing_record').modal('show');
 }

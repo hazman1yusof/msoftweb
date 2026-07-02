@@ -1120,6 +1120,16 @@ class PatmastController extends defaultController
                 $PatientImage = null;
             }
 
+            if($request->chk_duplicate != "false"){
+                $check_duplicate = $this->check_duplicate_ic($request);
+
+                if($check_duplicate->duplicate == true){
+                    echo json_encode($check_duplicate, JSON_INVALID_UTF8_SUBSTITUTE);
+
+                    return 0;
+                }
+            }
+
             $request = $this->auto_save_missing_data($request);
 
             $array_insert = [
@@ -3950,6 +3960,29 @@ class PatmastController extends defaultController
         }
 
         return $request;
+    }
+
+    public function check_duplicate_ic($request){
+        $responce = new stdClass();
+        $responce->duplicate = false;
+
+        $pat_mast = DB::table('hisdb.pat_mast')
+                        ->where('compcode',session('compcode'))
+                        ->where('active',1)
+                        ->where('newic',$request->Newic);
+
+        if($pat_mast->exists()){
+            $pat_mast = $pat_mast->get();
+
+            foreach ($pat_mast as $obj) {
+                $obj->merge = $obj->MRN;
+            }
+
+            $responce->duplicate = true;
+            $responce->rows = $pat_mast;
+        }
+
+        return $responce;
     }
 
 
