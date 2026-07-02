@@ -133,7 +133,12 @@ class PatmastController extends defaultController
         $mrn = $request->mrn;
 
         if(empty($mrn)){
-           $pat_mast_data = null; 
+           $pat_mast_data = [
+                'Newic' => $request->Newic,
+                'Name' => $request->Name,
+                'telh' => $request->telh,
+                'telhp' => $request->telhp,
+           ]; 
         }else{
 
             $pat_mast = DB::table('hisdb.pat_mast')

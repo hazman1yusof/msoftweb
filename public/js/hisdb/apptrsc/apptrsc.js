@@ -353,7 +353,14 @@ $(document).ready(function () {
 
 	$('#biodata_pat').click(function(){
 		if($('#mrn').val() == ''){
-    		$("#mdl_patient_iframe").attr('src','./pat_mast_iframe');
+			let param = {
+				Newic: $("#addForm input[name='icnum']").val(),
+				Name: $("#addForm input[name='patname']").val(),
+				telh: $("#addForm input[name='telh']").val(),
+				telhp: $("#addForm input[name='telhp']").val(),
+			}
+
+    		$("#mdl_patient_iframe").attr('src','./pat_mast_iframe'+"?"+$.param(param));
     		$('#mdl_patient_info').modal({backdrop: "static"});
 		}else{
     		$("#mdl_patient_iframe").attr('src','./pat_mast_iframe?mrn='+$('#mrn').val());
@@ -645,7 +652,9 @@ $(document).ready(function () {
 					lastelement = element;
 					oper = 'edit';
 					$('#doctor').val(event.loccode);
-					$('#mrn').val(event.mrn);
+					if(event.mrn){
+						$('#mrn').val(('0000000' + event.mrn).slice(-7));
+				    }
 					$('#icnum').val(event.icnum);
 					$('#patname').val(event.pat_name);
 					$('#apptdatefr_day').val(event.start.format('YYYY-MM-DD'));

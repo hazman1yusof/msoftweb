@@ -31,7 +31,6 @@ $(document).ready(function() {
     }); // patient form validation
 
     $('#txt_pat_newic').blur(function(){
-
         if($(this).val() != ''){
             let newrplc = $(this).val().replace(/-/g, "");
             $(this).val(newrplc);//untuk buang hyphen lepas tulis i/c
@@ -160,6 +159,10 @@ $(document).ready(function() {
             $('#pageDimmer').removeClass('active');
         });
     });
+    
+    if(pat_mast_data != null){
+        populate_patient(pat_mast_data);
+    }
 
 });
 
@@ -470,9 +473,6 @@ function loading_desc_bio(obj){
     }
 }
 
-if(pat_mast_data != null){
-    populate_patient(pat_mast_data);
-}
 function populate_patient(rowdata) {
 
     $('#hid_pat_title').val(rowdata.TitleCode);
@@ -485,7 +485,11 @@ function populate_patient(rowdata) {
     $('#episno').val(rowdata.Episno); // dlm modal Patient   
     
     $('#txt_pat_name').val(rowdata.Name);
+    $('#cmb_pat_sex').val(rowdata.Sex); // dlm modal Patient             
+    $('#txt_pat_dob').val(moment(rowdata.DOB).format('Y-MM-DD'));
+    $('#txt_pat_age').val(gettheage(rowdata.DOB));
     $('#txt_pat_newic').val(rowdata.Newic);
+    $('#txt_pat_newic').trigger("blur");
     $('#txt_pat_oldic').val(rowdata.Oldic);
     $('#cmb_pat_idtype').val(rowdata['ID_Type']);
     $('#txt_pat_idno').val(rowdata.idno);
@@ -496,20 +500,19 @@ function populate_patient(rowdata) {
     $('#hid_pat_occupation').val(rowdata.OccupCode);
     $('#txt_payer_email_official').val(rowdata.Email_official);
     
-    $('#txt_pat_mrn').val(('0000000' + rowdata.MRN).slice(-7));
+    if(rowdata.MRN){
+        $('#txt_pat_mrn').val(('0000000' + rowdata.MRN).slice(-7));
+    }
     $('#txt_pat_episno').val(rowdata.Episno);
     $('#pat_mrn').val(rowdata.MRN);
     $('#hid_LanguageCode').val(rowdata.LanguageCode);
     $('#hid_RaceCode').val(rowdata.RaceCode);
     $('#hid_Religion').val(rowdata.Religion);
     $('#hid_ID_Type').val(rowdata.ID_Type);
-    $('#txt_pat_dob').val(moment(rowdata.DOB).format('Y-MM-DD'));
-    $('#txt_pat_age').val(gettheage(rowdata.DOB));
     $('#txt_pat_telh').val(rowdata.telh);
     $('#txt_pat_telhp').val(rowdata.telhp);
     $('#txt_pat_email').val(rowdata.Email);
-    $('#hid_pat_area').val(rowdata.AreaCode);
-    $('#cmb_pat_sex').val(rowdata.Sex); // dlm modal Patient                    
+    $('#hid_pat_area').val(rowdata.AreaCode);       
     $('#hid_pat_citizen').val(rowdata.Citizencode);
     $('#cmb_pat_racecode').val(rowdata.RaceCode);
     $('#cmb_pat_religion').val(rowdata.Religion);
