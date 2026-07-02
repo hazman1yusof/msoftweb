@@ -62,6 +62,10 @@ td.fc-event-container a.selected{
     text-transform: uppercase;
 }
 
+#dialogForm textarea {
+    text-transform: uppercase;
+}
+
 #mdl_accomodation,#mdl_reference,#mdl_bill_type,#mdl_epis_pay_mode,#bs-guarantor,#mdl_new_gl{
 	display: none; z-index: 110;background-color: rgba(0, 0, 0, 0.3);
 }
@@ -328,7 +332,7 @@ i.fa {
 						<div class="panel-footer">
 							<button type="button" class="btn btn-primary" id="submit">Save changes</button>
 							<button type="button" class="btn btn-danger" id="delete_but" style="display: none;">Delete Appointment</button>
-							<button type="button" class="btn btn-primary" id="new_episode" style="display: none;">New Episode</button>
+							<!-- <button type="button" class="btn btn-primary" id="new_episode" style="display: none;">New Episode</button> -->
 							<button type="button" class="btn btn-success" id="biodata_pat" style=""><span id="biodata_pat_span">New MRN</span></button>
 						</div>
 					</form>
