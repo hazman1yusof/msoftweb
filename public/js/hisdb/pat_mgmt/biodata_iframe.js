@@ -323,7 +323,6 @@ function save_patient(oper,idno){
     if(oper=='add'){
         saveParam.sysparam = {source:$('#PatClass').val(),trantype:'MRN',useOn:'MRN'};
     }
-    console.log($("#btn_register_patient").data('chk_duplicate'));
     var postobj = {_token:_token,func_after_pat:$('#func_after_pat').val(),chk_duplicate:$("#btn_register_patient").data('chk_duplicate')};
                 //kalu ada mrn, maksudnya dia dari merging duplicate
 

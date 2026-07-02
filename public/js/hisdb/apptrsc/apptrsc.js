@@ -1128,7 +1128,7 @@ $(document).ready(function () {
         	}
 		}
 	}
-	
+
 	//////////////////////end pasal biodata/////////////////////////
 
 	/////////////////start pasal episode//////////////////
@@ -1285,8 +1285,8 @@ function ret_if_null(str){
 }
 
 window.open_iframe_close = function (data){ // inside the iframe
-    $("#mdl_episode_iframe").attr('src','');
-    $("#mdl_patient_iframe").attr('src','');
-    $('#mdl_patient_info').modal('hide');
-    $('#mdl_episode_info').modal('hide');
+	$("#addForm input[name='patname']").val(data.Name);
+	$("#addForm input[name='icnum']").val(data.Newic);
+	$("#addForm input[name='telh']").val(data.telh);
+	$("#addForm input[name='telhp']").val(data.telhp);
 };
