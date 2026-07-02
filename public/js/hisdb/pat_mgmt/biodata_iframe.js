@@ -327,9 +327,7 @@ function save_patient(oper,idno){
     var postobj = {_token:_token,func_after_pat:$('#func_after_pat').val(),chk_duplicate:$("#btn_register_patient").data('chk_duplicate')};
                 //kalu ada mrn, maksudnya dia dari merging duplicate
 
-    var PatientImage_ = ($("img#photobase64").attr('src').startsWith('data'))?
-                {PatientImage:$("img#photobase64").attr('src')}:
-                {PatientImage:null}
+    var PatientImage_ = ($("img#photobase64").attr('src').startsWith('data'))?$("img#photobase64").attr('src'):null;
 
     var image = {PatientImage:PatientImage_,field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Staffid','OccupCode','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date','loginid','pat_category','MRFolder','bloodgrp','NewMrn','iPesakit'],};
 
