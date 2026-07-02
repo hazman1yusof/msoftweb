@@ -105,7 +105,7 @@ $(document).ready(function() {
         $("#btn_register_patient").data('chk_duplicate','false');
     });
 
-    $('#close_iframe').click(function(){
+    $('#close_iframe,#btn_register_close').click(function(){
         if(typeof parent.open_iframe_close === 'function'){
             window.parent.open_iframe_close(pat_mast_data);
         }else{
