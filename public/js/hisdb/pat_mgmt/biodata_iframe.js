@@ -106,7 +106,7 @@ $(document).ready(function() {
 
     $('#close_iframe,#btn_register_close').click(function(){
         if(typeof parent.open_iframe_close === 'function'){
-            window.parent.open_iframe_close(pat_mast_data);
+            window.parent.open_iframe_close(pat_mast_data,'patmast');
         }else{
             console.log(pat_mast_data);
         }
@@ -159,7 +159,7 @@ $(document).ready(function() {
             $('#pageDimmer').removeClass('active');
         });
     });
-    
+
     if(pat_mast_data != null){
         populate_patient(pat_mast_data);
     }
@@ -320,6 +320,8 @@ function save_patient(oper,idno){
         oper:oper,
         table_name:'hisdb.pat_mast',
         table_id:'idno',
+        src_from: src_from,
+        src_idno: src_idno,
         sysparam:null,
     },_token = $('#_token').val();
 

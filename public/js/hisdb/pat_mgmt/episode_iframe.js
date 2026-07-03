@@ -5,10 +5,11 @@ $(document).ready(function() {
             $('#mdl_accomodation').modal('show')
         }
     });
-    populate_episode_by_mrn_episno($('#mrn_episode').val(),$('#episno_episode').val());
+
+    populate_episode(pat_mast_data);
 
     $('#close_iframe').click(function(){
-        window.parent.open_iframe_close();
+        window.parent.open_iframe_close(null,'episode');
     });
 
 });
@@ -68,13 +69,13 @@ function get_default_value(mrn){
 
 function check_debtormast_exists(rowid,kosong){
 
-    if(!kosong){
-        $('#txt_epis_payer').val($("#txt_epis_name").text());
-        $('#hid_epis_payer').val($('input[type="hidden"]#mrn_episode').val());
-    }else{
-        $('#txt_epis_payer').val('');
-        $('#hid_epis_payer').val('');
-    }
+    // if(!kosong){
+    $('#txt_epis_payer').val($("#txt_epis_name").text());
+    $('#hid_epis_payer').val($('input[type="hidden"]#mrn_episode').val());
+    // }else{
+    //     $('#txt_epis_payer').val('');
+    //     $('#hid_epis_payer').val('');
+    // }
 
     //check debtormast, kalau ada sama dgn mrn, paste
     // let obj_param = {
@@ -154,62 +155,62 @@ function get_billtype_default(mrn){
     });
 }
 
-// function populate_episode(rowid,rowdata){
-//     disableEpisode(true);
+function populate_episode(pat_mast_data){
+    disableEpisode(true);
 
-//     $('#mrn_episode').val(rowdata.MRN);
-//     $('#epis_rowid').val(rowid);
-//     $('#txt_epis_name').text(rowdata.Name);
-//     $('#txt_epis_mrn').val(('0000000' + rowdata.MRN).slice(-7));
-//     $('#txt_epis_type').val($("#epistycode").val());
-//     $('#txt_epis_date').val(moment().format('DD/MM/YYYY'));
-//     $('#txt_epis_time').val(moment().format('hh:mm:ss'));
-//     $('#btn_epis_payer').data('mrn',$(this).data("mrn"));
-//     $('#txt_epis_iPesakit').val(rowdata.iPesakit);
+    $('#mrn_episode').val(pat_mast_data.MRN);
+    $('#epis_rowid').val('');
+    $('#txt_epis_name').text(pat_mast_data.Name);
+    $('#txt_epis_mrn').val(('0000000' + pat_mast_data.MRN).slice(-7));
+    $('#txt_epis_type').val($("#epistycode").val());
+    $('#txt_epis_date').val(moment().format('DD/MM/YYYY'));
+    $('#txt_epis_time').val(moment().format('hh:mm:ss'));
+    $('#btn_epis_payer').data('mrn',$(this).data("mrn"));
+    $('#txt_epis_iPesakit').val(pat_mast_data.iPesakit);
 
-//     $('#cmb_epis_pregnancy').prop("disabled", false);
-//     if(rowdata.Sex == "M"){
-//         $('#cmb_epis_pregnancy').val('Non-Pregnant');
-//         $('#cmb_epis_pregnancy').prop("disabled", true);
-//     }else if(rowdata.Sex == null){
-//         if(rowdata.Newic != null && rowdata.Newic.length>11){
-//             var lastchar = rowdata.Newic.at(-1);
-//             if(parseInt(lastchar)%2 != 0){
-//                 $('#cmb_epis_pregnancy').val('Non-Pregnant');
-//                 $('#cmb_epis_pregnancy').prop("disabled", true);
-//             }
-//         }
-//     }
+    $('#cmb_epis_pregnancy').prop("disabled", false);
+    if(pat_mast_data.Sex == "M"){
+        $('#cmb_epis_pregnancy').val('Non-Pregnant');
+        $('#cmb_epis_pregnancy').prop("disabled", true);
+    }else if(pat_mast_data.Sex == null){
+        if(pat_mast_data.Newic != null && pat_mast_data.Newic.length>11){
+            var lastchar = pat_mast_data.Newic.at(-1);
+            if(parseInt(lastchar)%2 != 0){
+                $('#cmb_epis_pregnancy').val('Non-Pregnant');
+                $('#cmb_epis_pregnancy').prop("disabled", true);
+            }
+        }
+    }
 
-//     var episno_ = parseInt(rowdata.Episno);
-//     if(isNaN(episno_)){
-//         episno_ = 0;
-//     }
+    var episno_ = parseInt(pat_mast_data.Episno);
+    if(isNaN(episno_)){
+        episno_ = 0;
+    }
     
-//     $('#txt_epis_bed').prop('disabled',false);
-//     if(rowdata.PatStatus == 1){
-//         $('#episode_title_text').text('EDIT CURRENT');
-//         $("#episode_oper").val('edit');
-//         $('#txt_epis_no').val(parseInt(episno_));
-//         populate_episode_by_mrn_episno(rowdata.MRN,rowdata.Episno);
-//         $("#toggle_tabDoctor,#toggle_tabBed,#toggle_tabNok,#toggle_tabPayer,#toggle_tabDeposit").parent().show();
-//     }else{
-//         $('#episode_title_text').text('ADD NEW');
-//         $("#episode_oper").val('add');
-//         $('#txt_epis_no').val(parseInt(episno_) + 1);
-//         $("#toggle_tabDoctor,#toggle_tabBed,#toggle_tabNok,#toggle_tabPayer,#toggle_tabDeposit").parent().hide();
+    $('#txt_epis_bed').prop('disabled',false);
+    if(pat_mast_data.PatStatus == 1){
+        $('#episode_title_text').text('EDIT CURRENT');
+        $("#episode_oper").val('edit');
+        $('#txt_epis_no').val(parseInt(episno_));
+        populate_episode_by_mrn_episno(pat_mast_data.MRN,pat_mast_data.Episno);
+        $("#toggle_tabDoctor,#toggle_tabBed,#toggle_tabNok,#toggle_tabPayer,#toggle_tabDeposit").parent().show();
+    }else{
+        $('#episode_title_text').text('ADD NEW');
+        $("#episode_oper").val('add');
+        $('#txt_epis_no').val(parseInt(episno_) + 1);
+        $("#toggle_tabDoctor,#toggle_tabBed,#toggle_tabNok,#toggle_tabPayer,#toggle_tabDeposit").parent().hide();
 
-//         $('#hid_epis_dept').val($('#userdeptcode').val());
-//         $('#txt_epis_dept').val($('#userdeptdesc').val());
+        $('#hid_epis_dept').val($('#userdeptcode').val());
+        $('#txt_epis_dept').val($('#userdeptdesc').val());
 
-//         get_epis_other_data(episno_);
+        get_epis_other_data(episno_);
 
-//         // $('#txt_epis_dept').blur();
+        // $('#txt_epis_dept').blur();
 
-//         // get_billtype_default(rowdata.MRN);
-//         // get_default_value(rowdata.MRN);
-//     }
-// }
+        // get_billtype_default(pat_mast_data.MRN);
+        // get_default_value(pat_mast_data.MRN);
+    }
+}
 
  // *************************** episode ******************************
 
@@ -464,6 +465,9 @@ function disableEpisode(status) {
 
 function add_episode()
 {    
+    chg_msg("Saving Episode");
+    $('#pageDimmer').addClass('active');
+
     var episoper = $("#episode_oper").val();
     var epismrn = $('#mrn_episode').val();
     var episno = $("#txt_epis_no").val();
@@ -511,7 +515,9 @@ function add_episode()
                 epis_bed : episbed,
                 apptidno : apptidno,
                 preepisidno : preepisidno,
-                _token: _token
+                _token: _token,
+                src_from : src_from,
+                src_idno : src_idno
               }
 
     if($('#cmb_epis_pay_mode').val() == 'PANEL'){
@@ -526,21 +532,34 @@ function add_episode()
 
     $.post( "/pat_mast/save_episode", obj , function( data ) {
         
-    }).fail(function(data) {
+    },'json').fail(function(data) {
+
+        chg_msg("Data Error Loaded");
+        $('#pageDimmer').removeClass('active');
+
         if(data.responseJSON.message=='dept_wrong'){
             $('#txt_epis_dept').focus();
             myerrorIt_only('#txt_epis_dept',true);
         }
     }).success(function(data){
-        $('#editEpisode').modal('hide');
-        $("#load_from_addupd").data('info','true');
-        $("#load_from_addupd").data('oper','edit');
-        $("#grid-command-buttons").bootgrid('reload');
-        $("#tabpreepis").collapse("hide");
+
+        chg_msg("Episode Save");
+        $('#pageDimmer').removeClass('active');
+
+        window.parent.open_iframe_close(data.episode_data,'episode');
+
+        // $('#editEpisode').modal('hide');
+        // $("#load_from_addupd").data('info','true');
+        // $("#load_from_addupd").data('oper','edit');
+        // $("#grid-command-buttons").bootgrid('reload');
+        // $("#tabpreepis").collapse("hide");
     });
 }
 
 function populate_episode_by_mrn_episno(mrn,episno,form){
+    chg_msg("Load Data");
+    $('#pageDimmer').addClass('active');
+
     var param={
         action:'get_episode_by_mrn',
         field:"*",
@@ -644,8 +663,12 @@ function populate_episode_by_mrn_episno(mrn,episno,form){
             alert('MRN not found')
         }
 
+        chg_msg("Data Loaded");
+        $('#pageDimmer').removeClass('active');
     }).error(function(data){
 
+        chg_msg("Data Error Loaded");
+        $('#pageDimmer').removeClass('active');
     });
 
 }
@@ -1182,4 +1205,6 @@ function loadcorpstaff_gl(panel=false){
     });
 }
 
-
+function chg_msg(text){
+    $('#textDimmer').text(text);
+}

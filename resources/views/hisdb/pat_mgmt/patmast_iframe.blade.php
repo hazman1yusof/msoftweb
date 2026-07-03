@@ -38,6 +38,9 @@
 </style>
 
 <script>
+    var src_from = "{{$src_from}}";
+    var src_idno = "{{$src_idno}}";
+
     @if(empty($pat_mast_data))
         var pat_mast_data = null;
     @else

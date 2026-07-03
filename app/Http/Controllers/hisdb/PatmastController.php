@@ -131,6 +131,8 @@ class PatmastController extends defaultController
 
     public function pat_mast_iframe(Request $request){
         $mrn = $request->mrn;
+        $src_from = $request->src_from;
+        $src_idno = $request->src_idno;
 
         if(empty($mrn)){
            $pat_mast_data = [
@@ -152,15 +154,17 @@ class PatmastController extends defaultController
             $pat_mast_data = $pat_mast->first();
         }
 
-        return view('hisdb.pat_mgmt.patmast_iframe',compact('mrn','pat_mast_data'));
+        return view('hisdb.pat_mgmt.patmast_iframe',compact('mrn','pat_mast_data','src_from','src_idno'));
     }
 
     public function episode_iframe(Request $request){
         $mrn = $request->mrn;
         $episno = $request->episno;
+        $src_from = $request->src_from;
+        $src_idno = $request->src_idno;
 
-        if(empty($mrn) || empty($episno)){
-           abort(403,'No MRN or Episno'); 
+        if(empty($mrn)){
+           abort(403,'No MRN'); 
         }
 
         $pat_mast = DB::table('hisdb.pat_mast')
@@ -171,20 +175,23 @@ class PatmastController extends defaultController
            abort(403,'MRN does not Exists'); 
         }
 
-        $pat_mast = $pat_mast->first();
+        $pat_mast_data = $pat_mast->first();
 
         $episode = DB::table('hisdb.episode')
                         ->where('compcode',session('compcode'))
                         ->where('mrn',$mrn)
-                        ->where('episno',$episno);
+                        ->where('episno',$episno)
+                        ->first();
 
-        if(!$episode->exists()){
-           abort(403,'Episode does not Exists'); 
-        }
+        // dd($episode);
 
-        $episode = $episode->first();
+        // if(!$episode->exists()){
+        //    abort(403,'Episode does not Exists'); 
+        // }
 
-        return view('hisdb.pat_mgmt.episode_iframe',compact('mrn','episno','pat_mast','episode'));
+        // $episode = $episode->first();
+
+        return view('hisdb.pat_mgmt.episode_iframe',compact('mrn','episno','pat_mast_data','episode','src_from','src_idno'));
     }
 
     public function save_patient(Request $request){
@@ -1167,6 +1174,28 @@ class PatmastController extends defaultController
             //     }
             // }
 
+            if(isset($request->src_from) && !empty($request->src_from)){
+                if($request->src_from == 'apptbook'){
+
+                    $old_apptbook = DB::table('hisdb.apptbook')
+                        ->where('idno','=',$request->src_idno)
+                        ->first();
+
+                    $title = strtoupper(str_pad($mrn, 7, "0", STR_PAD_LEFT).' - '.$request->Name.' - '.$request->telhp.' - '.$old_apptbook->case_code.' - '.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30));
+
+                    DB::table('hisdb.apptbook')
+                        ->where('idno','=',$request->src_idno)
+                        ->update([
+                            'mrn' => $mrn,
+                            'pat_name' => $request->Name,
+                            'icnum' => $request->Newic,
+                            'telhp' => $request->telhp,
+                            'title' => $title
+                        ]);
+                }
+
+            }
+
             $pat_mast_data = DB::table('hisdb.pat_mast')
                                 ->where('compcode',session('compcode'))
                                 ->where('MRN',$mrn)
@@ -1342,7 +1371,7 @@ class PatmastController extends defaultController
 
     public function add_episode(Request $request){
 
-        DB::enableQueryLog();
+        // DB::enableQueryLog();
 
         $epis_mrn = $request->epis_mrn;
         $epis_no = $request->epis_no;
@@ -1966,9 +1995,35 @@ class PatmastController extends defaultController
                         ]);
             }
 
-            $queries = DB::getQueryLog();
+            // $queries = DB::getQueryLog();
 
             // dump($queries);
+
+            if(isset($request->src_from) && !empty($request->src_from)){
+                if($request->src_from == 'apptbook'){
+
+                    $old_apptbook = DB::table('hisdb.apptbook')
+                        ->where('idno','=',$request->src_idno)
+                        ->first();
+
+                    DB::table('hisdb.apptbook')
+                        ->where('idno','=',$request->src_idno)
+                        ->update([
+                            'episno' => $epis_no
+                        ]);
+                }
+
+            }
+
+            $episode_data = DB::table("hisdb.episode")
+                                ->where("compcode",session('compcode'))
+                                ->where("mrn",'=',$epis_mrn)
+                                ->where("episno",'=',$epis_no)
+                                ->first();
+
+            $responce = new stdClass();
+            $responce->episode_data = $episode_data;
+            echo json_encode($responce);
 
             DB::commit();
 
@@ -1982,7 +2037,7 @@ class PatmastController extends defaultController
 
     public function edit_episode(Request $request){
 
-        DB::enableQueryLog();
+        // DB::enableQueryLog();
 
         $epis_mrn = $request->epis_mrn;
         $epis_mrn_pad = str_pad($request->epis_mrn, 7, "0", STR_PAD_LEFT);
@@ -2616,9 +2671,35 @@ class PatmastController extends defaultController
                     ]);
             }
 
-            $queries = DB::getQueryLog();
+            if(isset($request->src_from) && !empty($request->src_from)){
+                if($request->src_from == 'apptbook'){
 
-            dump($queries);
+                    $old_apptbook = DB::table('hisdb.apptbook')
+                        ->where('idno','=',$request->src_idno)
+                        ->first();
+
+                    DB::table('hisdb.apptbook')
+                        ->where('idno','=',$request->src_idno)
+                        ->update([
+                            'episno' => $epis_no
+                        ]);
+                }
+
+            }
+
+            $episode_data = DB::table("hisdb.episode")
+                                ->where("compcode",session('compcode'))
+                                ->where("mrn",'=',$epis_mrn)
+                                ->where("episno",'=',$epis_no)
+                                ->first();
+
+            $responce = new stdClass();
+            $responce->episode_data = $episode_data;
+            echo json_encode($responce);
+
+            // $queries = DB::getQueryLog();
+
+            // dump($queries);
 
             DB::commit();
 

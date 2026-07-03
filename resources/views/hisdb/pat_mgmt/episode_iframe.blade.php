@@ -11,16 +11,59 @@
         overflow-x: hidden;
         margin: 0px !important;
     }
+    .dimmer-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.7); /* Slightly darker for better text contrast */
+        z-index: 1060; /* Higher than default navbars and modals */
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        
+        /* Flexbox to center the text and spinner */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #ffffff; /* White text */
+    }
+
+    .dimmer-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
 </style>
 
 <script>
+    var src_from = "{{$src_from}}";
+    var src_idno = "{{$src_idno}}";
 
+    @if(empty($pat_mast_data))
+        var pat_mast_data = null;
+    @else
+        var pat_mast_data = {
+            @foreach($pat_mast_data as $key => $val) 
+                '{{$key}}' : `{!!str_replace('`', '', $val)!!}`,
+            @endforeach 
+        };
+    @endif
 </script>
 @endsection
 
 @section('body')
 
+<div id="pageDimmer" class="dimmer-overlay">
+    <div class="text-center">
+        <!-- Your Custom Loading Text -->
+        <h3 class="fw-normal" id="textDimmer">Reading Mykad, please wait...</h3>
+    </div>
+</div>
+
 <div class="modal-dialog modal-lg" id="allmodal">
+    <input type="hidden" name="epistycode" id="epistycode" value="OP">
     <input type="hidden" name="rowid" id="epis_rowid">
     <input type="hidden" name="idno" id="epis_idno">
     <input type="hidden" name="mrn_episode" id="mrn_episode" value="{{$mrn}}">
@@ -64,7 +107,7 @@
                     </div>
                     <div class="col-sm-6">
                         <small for="txt_epis_type">NAME: </small>
-                        <br/><big id="txt_epis_name" class="epis_name_big">{{$pat_mast->Name}}</big></b>
+                        <br/><big id="txt_epis_name" class="epis_name_big">{{$pat_mast_data->Name}}</big></b>
                     </div>
                     <div class="col-sm-1">
                         <small for="txt_epis_date">DATE: </small>
@@ -140,7 +183,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        @if($episode->epistycode == 'IP')
+                                        @if(!empty($episode) && $episode->epistycode == 'IP')
                                         <div class="col-md-offset-1 col-md-4">
                                             <small for="txt_epis_bed">ACCOMODATION : BED</small>
                                             <div class="input-group">
@@ -372,7 +415,7 @@
                     </div>
                     
                     <!-- bed -->
-                    @if($episode->epistycode == 'IP')
+                    @if(!empty($episode) && $episode->epistycode == 'IP')
                     <div class="panel panel-default" style="position: relative;" id="div_bed">
                         <div class="panel-heading clearfix collapsed" id="toggle_tabBed" data-toggle="collapse" data-target="#tabBed">
                             <i class="fa fa-angle-double-up" style="font-size: 24px; margin: 0 0 0 12px;"></i>
