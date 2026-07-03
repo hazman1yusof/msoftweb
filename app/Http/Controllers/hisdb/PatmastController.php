@@ -1428,6 +1428,15 @@ class PatmastController extends defaultController
         $epis_bednum = $request->epis_bed;
         $epis_apptidno = $request->apptidno;
         $epis_preepisidno = $request->preepisidno;
+        $epis_date = Carbon::now("Asia/Kuala_Lumpur");
+        $epis_time = Carbon::now("Asia/Kuala_Lumpur");
+
+        if(isset($request->src_from) && !empty($request->src_from)){
+            if($request->src_from == 'apptbook'){
+                $epis_date = $request->epis_date;
+                $epis_time = $request->epis_time;
+            }
+        }
 
         $epis_typeepis;
         if ($epis_maturity == "1"){
@@ -1477,8 +1486,8 @@ class PatmastController extends defaultController
                     "mrn" => $epis_mrn,
                     "episno" => $epis_no,
                     "epistycode" => $epis_type,
-                    "reg_date" => Carbon::now("Asia/Kuala_Lumpur"),
-                    "reg_time" => Carbon::now("Asia/Kuala_Lumpur"),
+                    "reg_date" => $epis_date,
+                    "reg_time" => $epis_time,
                     "regdept" => $epis_dept,
                     "admsrccode" => $epis_src,
                     "case_code" => $epis_case,

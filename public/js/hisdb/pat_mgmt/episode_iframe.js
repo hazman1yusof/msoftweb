@@ -518,8 +518,8 @@ function add_episode()
     var episno = $("#txt_epis_no").val();
     var epistype = $("#txt_epis_type").val();
     var epismaturity = $("#cmb_epis_case_maturity").val();
-    var episdate = moment($("#txt_epis_date").val(), 'DD/MM/Y').format('Y-MM-DD');
-    var epistime = moment($("#txt_epis_time").val(), 'hh:mm:ss').format('hh:mm');
+    var episdate = $("#txt_epis_date").val();
+    var epistime = $("#txt_epis_time").val();
     var episdept = $("#hid_epis_dept").val();
     var epissrc = $("#hid_epis_source").val();
     var episcase = $("#hid_epis_case").val();
