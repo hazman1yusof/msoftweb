@@ -1190,10 +1190,10 @@ class PatmastController extends defaultController
                             'pat_name' => $request->Name,
                             'icnum' => $request->Newic,
                             'telhp' => $request->telhp,
+                            'telno' => $request->telh,
                             'title' => $title
                         ]);
                 }
-
             }
 
             $pat_mast_data = DB::table('hisdb.pat_mast')
@@ -1274,6 +1274,28 @@ class PatmastController extends defaultController
                         ->update([
                             'name' => strtoupper($request->Name)
                         ]);
+
+            if(isset($request->src_from) && !empty($request->src_from)){
+                if($request->src_from == 'apptbook'){
+
+                    $old_apptbook = DB::table('hisdb.apptbook')
+                        ->where('idno','=',$request->src_idno)
+                        ->first();
+
+                    $title = strtoupper(str_pad($mrn, 7, "0", STR_PAD_LEFT).' - '.$request->Name.' - '.$request->telhp.' - '.$old_apptbook->case_code.' - '.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30));
+
+                    DB::table('hisdb.apptbook')
+                        ->where('idno','=',$request->src_idno)
+                        ->update([
+                            'mrn' => $mrn,
+                            'pat_name' => $request->Name,
+                            'icnum' => $request->Newic,
+                            'telhp' => $request->telhp,
+                            'telno' => $request->telh,
+                            'title' => $title
+                        ]);
+                }
+            }
 
             // $queries = DB::getQueryLog();
             $pat_mast_data = DB::table('hisdb.pat_mast')
@@ -2684,7 +2706,6 @@ class PatmastController extends defaultController
                             'episno' => $epis_no
                         ]);
                 }
-
             }
 
             $episode_data = DB::table("hisdb.episode")

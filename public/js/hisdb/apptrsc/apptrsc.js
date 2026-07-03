@@ -1336,6 +1336,18 @@ window.open_iframe_close = function (data,type){ // inside the iframe
 		}
 	}
 
+	if($('#mrn').val() == ''){
+		$('#new_episode').hide();
+	}else{
+		$('#new_episode').show();
+	}
+
+	if($('#episno').val() == ''){
+		$('#episode_pat_span').text('New Episode');
+	}else{
+		$('#episode_pat_span').text('Episode');
+	}
+
     $("#mdl_episode_iframe").attr('src','');
     $("#mdl_patient_iframe").attr('src','');
     $('#mdl_patient_info').modal('hide');
