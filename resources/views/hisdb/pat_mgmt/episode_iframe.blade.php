@@ -1702,5 +1702,5 @@
 <script type="text/javascript" src="{{asset('js/hisdb/pat_mgmt/epis_coverage.js?v=1.1')}}"></script>
 <script type="text/javascript" src="{{asset('js/hisdb/pat_mgmt/epis_deposit.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/hisdb/pat_mgmt/textfield_modal.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/hisdb/pat_mgmt/episode_iframe.js?v=1.5')}}"></script>
+<script type="text/javascript" src="{{asset('js/hisdb/pat_mgmt/episode_iframe.js?v=1.6')}}"></script>
 @endsection

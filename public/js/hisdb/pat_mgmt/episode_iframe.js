@@ -360,17 +360,17 @@ function epis_payer_onclick(event){
         $('#tbl_epis_debtor').data('search',true);
 
         if($('#hid_epis_fin').val() == 'PT'  || $('#hid_epis_fin').val() == 'PR'){
-            debtor_table.ajax.url( '/pat_mast/get_entry?action=get_debtor_list&type=1&epistycode='+$('#epistycode').val() ).load();
+            debtor_table.ajax.url( './pat_mast/get_entry?action=get_debtor_list&type=1&epistycode='+$('#epistycode').val() ).load();
         }else{
-            debtor_table.ajax.url( '/pat_mast/get_entry?action=get_debtor_list&type=2&epistycode='+$('#epistycode').val() ).load();
+            debtor_table.ajax.url( './pat_mast/get_entry?action=get_debtor_list&type=2&epistycode='+$('#epistycode').val() ).load();
         }
 
     }else if(oper == 'click'){
         $('#mdl_epis_pay_mode').modal('show');
         if($('#hid_epis_fin').val() == 'PT'  || $('#hid_epis_fin').val() == 'PR'){
-            debtor_table.ajax.url( '/pat_mast/get_entry?action=get_debtor_list&type=1&epistycode='+$('#epistycode').val() ).load();
+            debtor_table.ajax.url( './pat_mast/get_entry?action=get_debtor_list&type=1&epistycode='+$('#epistycode').val() ).load();
         }else{
-            debtor_table.ajax.url( '/pat_mast/get_entry?action=get_debtor_list&type=2&epistycode='+$('#epistycode').val() ).load();
+            debtor_table.ajax.url( './pat_mast/get_entry?action=get_debtor_list&type=2&epistycode='+$('#epistycode').val() ).load();
         }
 
     }
@@ -431,11 +431,11 @@ function bill_type_info_onclick(event){
     if(oper == 'tab' && event.key == "Tab"){
         $('#tbl_epis_billtype').data('search',true);
         $('#mdl_bill_type').modal('show');
-        billtype_table.ajax.url( '/pat_mast/get_entry?action=get_billtype_list&type=' + $('#txt_epis_type').val() ).load();
+        billtype_table.ajax.url( './pat_mast/get_entry?action=get_billtype_list&type=' + $('#txt_epis_type').val() ).load();
 
     }else if(oper == 'click'){
         $('#mdl_bill_type').modal('show');
-        billtype_table.ajax.url( '/pat_mast/get_entry?action=get_billtype_list&type=' + $('#txt_epis_type').val() ).load();
+        billtype_table.ajax.url( './pat_mast/get_entry?action=get_billtype_list&type=' + $('#txt_epis_type').val() ).load();
 
     }
 }
@@ -709,10 +709,10 @@ function populate_episode_by_mrn_episno(mrn,episno,form){
 // populatecombo_gl();
 function populatecombo_gl(){
 
-    var urloccupation = '/pat_mast/get_entry?action=get_patient_occupation';
+    var urloccupation = './pat_mast/get_entry?action=get_patient_occupation';
     loadlist($('select#newgl-occupcode').get(0),urloccupation,'occupcode','description');
 
-    var urlRel = '/pat_mast/get_entry?action=get_patient_relationship';
+    var urlRel = './pat_mast/get_entry?action=get_patient_relationship';
     loadlist($('select#newgl-relatecode').get(0),urlRel,'relationshipcode','description');
 }
 
@@ -829,7 +829,7 @@ function accomodation_selecter(){
     var accomodation_table = null;
 
     accomodation_table = $('#accomodation_table').DataTable( {
-        "ajax": "/pat_mast/get_entry?action=accomodation_table",
+        "ajax": "./pat_mast/get_entry?action=accomodation_table",
         "paging":false,
         "columns": [
             {'data': 'desc_bt'},
@@ -1008,7 +1008,7 @@ function refno_class(){
     this.show_mdl = function(first = false){
         $('#mdl_reference').modal('show');
         $('#btn_epis_view_gl').prop('disabled',true);
-        this.refno_table.ajax.url("/pat_mast/get_entry?action=get_refno_list&debtorcode=" + $('#payercode_epno_payer').val() + "&mrn=" + $('input[type="hidden"]#mrn_episode').val()).load();
+        this.refno_table.ajax.url("./pat_mast/get_entry?action=get_refno_list&debtorcode=" + $('#payercode_epno_payer').val() + "&mrn=" + $('input[type="hidden"]#mrn_episode').val()).load();
     }
 
     $('#tbl_epis_reference').on('dblclick', 'tr', function () {
