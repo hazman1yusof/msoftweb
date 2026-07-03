@@ -818,5 +818,5 @@
 <script type="text/javascript" src="{{asset('js/hisdb/pat_mgmt/pat_nok.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/hisdb/pat_mgmt/pat_emr.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/hisdb/pat_mgmt/textfield_modal.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/hisdb/pat_mgmt/biodata_iframe.js?v=1.2')}}"></script>
+<script type="text/javascript" src="{{asset('js/hisdb/pat_mgmt/biodata_iframe.js?v=1.3')}}"></script>
 @endsection

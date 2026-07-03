@@ -349,8 +349,9 @@ function save_patient(oper,idno){
         }else{
             chg_msg("Save Successfull");
             $('#pageDimmer').removeClass('active');
-            populate_patient(data.pat_mast_data);
-            pat_mast_data = data.pat_mast_data
+            window.parent.open_iframe_close(data.pat_mast_data,'patmast');
+            // populate_patient(data.pat_mast_data);
+            // pat_mast_data = data.pat_mast_data
         }
         
         // $("#load_from_addupd").data('info','true');
