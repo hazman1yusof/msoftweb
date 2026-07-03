@@ -340,7 +340,7 @@ var debtor_table =
 
             if($('#tbl_epis_debtor').data('iscomplete') == true){
                 if(debtor_table.page.info().recordsDisplay == 1){
-                    $('#tbl_epis_debtor tbody tr:eq(0)').dblclick();
+                    // $('#tbl_epis_debtor tbody tr:eq(0)').dblclick();
                 }
             }
         },
@@ -409,7 +409,7 @@ var billtype_table =
 
                 if($('#tbl_epis_billtype').data('iscomplete') == true){
                     if(billtype_table.page.info().recordsDisplay == 1){
-                        $('#tbl_epis_billtype tbody tr:eq(0)').dblclick();
+                        // $('#tbl_epis_billtype tbody tr:eq(0)').dblclick();
                     }
                 }
             },
