@@ -270,7 +270,7 @@
         </div>
     </div>
     
-    @include('hisdb.pat_mgmt.pat_mgmt_iframe')
+    @include('hisdb.pat_mgmt.pat_mgmt_iframe',['phase' => 'semantic'])
     @include('patientcare.itemselector')
 @endsection
 
