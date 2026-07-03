@@ -165,7 +165,8 @@ class AppointmentController extends defaultController
                 'adddate'     => Carbon::now("Asia/Kuala_Lumpur"),
                 'lastuser'    => session('username'),
                 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
-                'type'        => 'DOC'
+                'type'        => 'DOC',
+                'compcode'    => session('compcode')
             ]);
 
             if($request->mrn != ''){

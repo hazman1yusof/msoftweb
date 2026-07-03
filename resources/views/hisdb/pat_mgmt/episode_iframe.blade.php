@@ -50,6 +50,16 @@
             @endforeach 
         };
     @endif
+
+    @if(empty($apptbook))
+        var apptbook_data = null;
+    @else
+        var apptbook_data = {
+            @foreach($apptbook as $key => $val) 
+                '{{$key}}' : `{!!str_replace('`', '', $val)!!}`,
+            @endforeach 
+        };
+    @endif
 </script>
 @endsection
 
@@ -109,13 +119,13 @@
                         <small for="txt_epis_type">NAME: </small>
                         <br/><big id="txt_epis_name" class="epis_name_big">{{$pat_mast_data->Name}}</big></b>
                     </div>
-                    <div class="col-sm-1">
+                    <div class="col-sm-1" style="padding: 0px 5px;">
                         <small for="txt_epis_date">DATE: </small>
-                        <input class="form-control" name="txt_epis_date" id="txt_epis_date" placeholder="" type="text" readonly>
+                        <input class="form-control" name="txt_epis_date" id="txt_epis_date" placeholder="" type="date" readonly>
                     </div>
-                    <div class="col-sm-1">
+                    <div class="col-sm-1" style="padding: 0px 20px 0px 5px;">
                         <small for="txt_epis_time">TIME: </small>
-                        <input class="form-control" name="txt_epis_time" id="txt_epis_time" placeholder="" type="text" readonly>
+                        <input class="form-control" name="txt_epis_time" id="txt_epis_time" placeholder="" type="time" readonly>
                     </div>
                 </div>
                 

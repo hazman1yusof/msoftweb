@@ -3,7 +3,6 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
 $(document).ready(function () {
-	console.log(document.documentElement.clientHeight);
 	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({

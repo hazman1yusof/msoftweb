@@ -1,3 +1,4 @@
+var epis_desc_show = null;
 $(document).ready(function() {
     $('#btn_epis_bed').click(function(){
         if(!$('#txt_epis_bed').is(':disabled')){
@@ -194,6 +195,7 @@ function populate_episode(pat_mast_data){
         $('#txt_epis_no').val(parseInt(episno_));
         populate_episode_by_mrn_episno(pat_mast_data.MRN,pat_mast_data.Episno);
         $("#toggle_tabDoctor,#toggle_tabBed,#toggle_tabNok,#toggle_tabPayer,#toggle_tabDeposit").parent().show();
+
     }else{
         $('#episode_title_text').text('ADD NEW');
         $("#episode_oper").val('add');
@@ -204,6 +206,38 @@ function populate_episode(pat_mast_data){
         $('#txt_epis_dept').val($('#userdeptdesc').val());
 
         get_epis_other_data(episno_);
+
+        if($('#epistycode').val() == 'OP'){
+            epis_desc_show = new loading_desc_epis([
+                {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
+                {code:'#hid_epis_source',desc:'#txt_epis_source',id:'regsource'},
+                {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
+                {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
+                {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
+                {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
+                {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'},
+                {code:'#hid_newgl_occupcode',desc:'#txt_newgl_occupcode',id:'newgl_occupcode'},
+                {code:'#hid_newgl_relatecode',desc:'#txt_newgl_relatecode',id:'newgl_relatecode'}
+            ]);
+        }else if($('#epistycode').val() == 'IP' || $('#epistycode').val() == 'DP'){
+            epis_desc_show = new loading_desc_epis([
+                {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
+                {code:'#hid_epis_source',desc:'#txt_epis_source',id:'regsource'},
+                {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
+                {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
+                {code:'#hid_epis_bed',desc:'#txt_epis_bed',id:'epis_bed'},//ada bed pada IP
+                {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
+                {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
+                {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'},
+                {code:'#hid_newgl_occupcode',desc:'#txt_newgl_occupcode',id:'newgl_occupcode'},
+                {code:'#hid_newgl_relatecode',desc:'#txt_newgl_relatecode',id:'newgl_relatecode'},
+                {code:'#hid_newgl_corpcomp',desc:'#txt_newgl_corpcomp',id:'newgl_corpcomp'}
+                // {code:'',desc:'',id:'bed_dept'},
+                // {code:'',desc:'',id:'bed_ward'}
+            ]);
+        }
+
+        init_from_apptbook();
 
         // $('#txt_epis_dept').blur();
 
@@ -630,7 +664,7 @@ function populate_episode_by_mrn_episno(mrn,episno,form){
             // epis_desc_show.write_desc();
 
             if($('#epistycode').val() == 'OP'){
-                var epis_desc_show = new loading_desc_epis([
+                epis_desc_show = new loading_desc_epis([
                     {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
                     {code:'#hid_epis_source',desc:'#txt_epis_source',id:'regsource'},
                     {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
@@ -642,7 +676,7 @@ function populate_episode_by_mrn_episno(mrn,episno,form){
                     {code:'#hid_newgl_relatecode',desc:'#txt_newgl_relatecode',id:'newgl_relatecode'}
                 ]);
             }else if($('#epistycode').val() == 'IP' || $('#epistycode').val() == 'DP'){
-                var epis_desc_show = new loading_desc_epis([
+                epis_desc_show = new loading_desc_epis([
                     {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
                     {code:'#hid_epis_source',desc:'#txt_epis_source',id:'regsource'},
                     {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
@@ -1207,4 +1241,17 @@ function loadcorpstaff_gl(panel=false){
 
 function chg_msg(text){
     $('#textDimmer').text(text);
+}
+
+function init_from_apptbook(){
+    if(apptbook_data != null){
+        $("#hid_epis_source").val('APPT');
+        $("#txt_epis_source").val('APPOINTMENT');
+        $("#hid_epis_case").val(apptbook_data.case_code);
+        $("#txt_epis_case").val(apptbook_data.case_desc);
+        $("#hid_epis_doctor").val(apptbook_data.loccode);
+        $("#txt_epis_doctor").val(apptbook_data.loccode_name);
+        $("#txt_epis_date").val(moment(apptbook_data.start).format('YYYY-MM-DD'));
+        $("#txt_epis_time").val(moment(apptbook_data.start).format('HH:mm:ss'));
+    }
 }

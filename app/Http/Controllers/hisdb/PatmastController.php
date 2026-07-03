@@ -183,7 +183,21 @@ class PatmastController extends defaultController
                         ->where('episno',$episno)
                         ->first();
 
-        // dd($episode);
+        $apptbook = null;
+        if(isset($request->src_from) && !empty($request->src_from)){
+            if($request->src_from == 'apptbook'){
+                $apptbook = DB::table('hisdb.apptbook as abk')
+                            ->select('abk.idno','abk.compcode','abk.memberno','abk.icnum','abk.apptdatefr','abk.apptdateto','abk.mrn','abk.episno','abk.pat_name','abk.location','abk.loccode','abk.apptstatus','abk.apptno','abk.prov_id','abk.fac_id','abk.remarks','abk.adduser','abk.adddate','abk.lastuser','abk.lastupdate','abk.deluser','abk.deldate','abk.timereq','abk.timeupdate','abk.srctype','abk.telno','abk.faxno','abk.telhp','abk.email','abk.admsrccode','abk.case_code','abk.case_desc','abk.time24hr','abk.fees','abk.title','abk.start','abk.end','abk.recstatus','abk.Type','abk.episstatus','abk.ot_room','abk.surgery_date','abk.op_unit','abk.oper_type','abk.oper_status','abk.procedure','abk.diagnosis','abk.computerid','abk.height','abk.weight','abk.doctorname','abk.anaesthetist','abk.surgeon','abk.admdoctor','abk.iPesakit','abk.cArm','doc.doctorname as loccode_name')
+                            ->leftJoin('hisdb.doctor as doc', function($join){
+                                $join = $join->where('doc.compcode','=',session('compcode'))
+                                                ->on('doc.doctorcode', '=', 'abk.loccode');
+                            })
+                            ->where('abk.compcode',session('compcode'))
+                            ->where('abk.mrn',$mrn)
+                            ->where('abk.idno',$src_idno)
+                            ->first();
+            }
+        }
 
         // if(!$episode->exists()){
         //    abort(403,'Episode does not Exists'); 
@@ -191,7 +205,7 @@ class PatmastController extends defaultController
 
         // $episode = $episode->first();
 
-        return view('hisdb.pat_mgmt.episode_iframe',compact('mrn','episno','pat_mast_data','episode','src_from','src_idno'));
+        return view('hisdb.pat_mgmt.episode_iframe',compact('mrn','episno','pat_mast_data','episode','src_from','src_idno','apptbook'));
     }
 
     public function save_patient(Request $request){
