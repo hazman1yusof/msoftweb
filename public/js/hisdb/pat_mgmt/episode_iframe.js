@@ -318,6 +318,16 @@ $('#txt_epis_fin').change(function (e){
 
 var debtor_table =
     $('#tbl_epis_debtor').DataTable( {
+        "ajax": "",
+        "ordering": false,
+        "lengthChange": false,
+        "search": {
+                    "smart": true,
+                  },
+        "columns": [
+                    {'data': 'code'}, 
+                    {'data': 'description' },
+                   ],
         "columns": [
                     {'data': 'debtortype'}, 
                     {'data': 'debtorcode' }, 
@@ -353,6 +363,7 @@ var debtor_table =
 function epis_payer_onclick(event){
     $('#btngurantor').show();
 
+    debtor_table.search('');
     let oper = event.data.data;
 
     if(oper == 'tab' && event.key == "Tab"){
@@ -373,8 +384,7 @@ function epis_payer_onclick(event){
             debtor_table.ajax.url( './pat_mast/get_entry?action=get_debtor_list&type=2&epistycode='+$('#epistycode').val() ).load();
         }
 
-    }
-        
+    }     
 }
 
 $('#tbl_epis_debtor').on('dblclick', 'tr', function () {
@@ -428,6 +438,7 @@ $('#tbl_epis_billtype').on('dblclick', 'tr', function (){
 
 function bill_type_info_onclick(event){
     let oper = event.data.data;
+    billtype_table.search('');
     if(oper == 'tab' && event.key == "Tab"){
         $('#tbl_epis_billtype').data('search',true);
         $('#mdl_bill_type').modal('show');
