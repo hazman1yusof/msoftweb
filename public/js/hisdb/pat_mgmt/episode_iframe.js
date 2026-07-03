@@ -575,7 +575,7 @@ function add_episode()
         obj.newpanel_deptcode = $('#newpanel-deptcode').val(); 
     }
 
-    $.post( "/pat_mast/save_episode", obj , function( data ) {
+    $.post( "./pat_mast/save_episode", obj , function( data ) {
         
     },'json').fail(function(data) {
 
@@ -1134,7 +1134,7 @@ function refno_class(){
                 'episno': $('#txt_epis_no').val(),
             };
             
-            $.post('/pat_mast/save_gl', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+            $.post('./pat_mast/save_gl', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
                 
             },'json').fail(function(data) {
                 alert(data.responseText);
