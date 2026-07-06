@@ -224,7 +224,7 @@ function save_patient(oper,idno,mrn="nothing"){
     // var image = ($("img#photobase64").attr('src').startsWith('data'))?
     //             {PatientImage:$("img#photobase64").attr('src')}:
     //             {PatientImage:null}
-                
+
     var PatientImage_ = ($("img#photobase64").attr('src').startsWith('data'))?$("img#photobase64").attr('src'):null;
 
     var image = {PatientImage:PatientImage_,field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Staffid','OccupCode','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date','loginid','pat_category','MRFolder','bloodgrp','NewMrn','iPesakit'],};
@@ -658,6 +658,7 @@ function checkfpdata(){
             populate_patient(patfpdata);
             $("#btn_register_patient").data("oper","edit");
             $("#btn_register_patient").data("idno",patfpdata.idno);
+            desc_show.write_desc();
         }else{
             $("#btn_register_patient").data("oper","add");
             initfpdata(patfpdata);
