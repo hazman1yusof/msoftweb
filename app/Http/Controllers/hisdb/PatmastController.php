@@ -248,7 +248,7 @@ class PatmastController extends defaultController
             }
 
             $table_patm = DB::table('hisdb.queue') //ambil dari patmast balik
-            ->select($select_array)
+                                ->select($select_array)
                                 ->where('queue.compcode','=',session('compcode'))
                                 ->where('queue.billflag','=',0)
                                 ->where('queue.deptcode','=',"ALL")
@@ -425,7 +425,8 @@ class PatmastController extends defaultController
             // $lastrow = DB::table('hisdb.pat_mast')
             //                 ->where('idno','<=','62863');
 
-            $table_patm = DB::table('hisdb.pat_mast');
+            $table_patm = DB::table('hisdb.pat_mast')
+                                ->where('pat_mast.compcode','=',session('compcode'));
             // dd($table_patm->limit(10)->offset(intval($count_) - 10)->get());
 
             if(!empty($request->searchCol)){

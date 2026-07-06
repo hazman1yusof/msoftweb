@@ -412,6 +412,7 @@ $(document).ready(function() {
 
         if(gotpat == true){
             $("#patientBox").data('gotpat',false);
+            checkfpdata();
         }
 
         if(oper_mykad == 'edit'){

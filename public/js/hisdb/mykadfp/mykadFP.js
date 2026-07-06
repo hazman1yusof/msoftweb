@@ -103,7 +103,7 @@ $(document).ready(function () {
 				if (window.frameElement) {
 	            	parent.populatefromfp(objdata);
 				}
-				save_mykad_to_local(objdata);
+				// save_mykad_to_local(objdata);
 
 	           	chg_msg('success',"Success");
 
@@ -182,7 +182,7 @@ $(document).ready(function () {
 				if (window.frameElement) {
 	            	parent.populatefromfp(objdata);
 				}
-				save_mykad_to_local(objdata);
+				// save_mykad_to_local(objdata);
 
 	           	chg_msg('success',"Success");
 
