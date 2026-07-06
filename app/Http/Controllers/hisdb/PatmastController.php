@@ -4028,6 +4028,7 @@ class PatmastController extends defaultController
         if($racecode_->exists()){
             $racecode_ = $racecode_->first();
             $request->RaceCode = $racecode_->Code;
+            $request['RaceCode'] = $racecode_->Code;
         }else{
             DB::table('hisdb.racecode')
                 ->insert([
@@ -4043,11 +4044,10 @@ class PatmastController extends defaultController
                         ->where('description',$request->Citizencode)
                         ->orWhere('code',$request->Citizencode);
 
-        dd($citizen_->exists());
-
         if($citizen_->exists()){
             $citizen_ = $citizen_->first();
             $request->Citizencode = $citizen_->Code;
+            $request['Citizencode'] = $citizen_->Code;
         }else{
             DB::table('hisdb.citizen')
                 ->insert([
@@ -4066,6 +4066,7 @@ class PatmastController extends defaultController
         if($religion_->exists()){
             $religion_ = $religion_->first();
             $request->Religion = $religion_->Code;
+            $request['Religion'] = $religion_->Code;
         }else{
             DB::table('hisdb.religion')
                 ->insert([
@@ -4084,6 +4085,7 @@ class PatmastController extends defaultController
         if($areacode_->exists()){
             $areacode_ = $areacode_->first();
             $request->AreaCode = $areacode_->areacode;
+            $request['AreaCode'] = $areacode_->areacode;
         }else{
             DB::table('hisdb.areacode')
                 ->insert([
