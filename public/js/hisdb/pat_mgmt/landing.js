@@ -407,13 +407,14 @@ $(document).ready(function() {
     // }
 
     $( "#patientBox").click(function() { // register new patient
-        let gotpat = $("#patientBox").data('gotpat');
+        // let gotpat = $("#patientBox").data('gotpat');
         let oper_mykad = $("#btn_register_patient").data("oper_mykad");
+        checkfpdata();
 
-        if(gotpat == true){
-            $("#patientBox").data('gotpat',false);
-            checkfpdata();
-        }
+        // if(gotpat == true){
+        //     $("#patientBox").data('gotpat',false);
+        //     checkfpdata();
+        // }
 
         if(oper_mykad == 'edit'){
             $("#toggle_tabNok_emr,#toggle_tabNok_pat").parent().show();

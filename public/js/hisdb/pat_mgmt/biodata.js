@@ -622,16 +622,14 @@ function populatefromfp(data){
 }
 
 function closemodalfp(){
-   $('#mdl_biometric').modal('hide');
-   if($("#patientBox").data('gotpat') == true){
-         $("#patientBox").click();
-   }
-
     console.log(patfpdata);
+    $('#mdl_biometric').modal('hide');
+    if(patfpdata != null){
+        $("#patientBox").click();
+    }
 }
 
 function checkfpdata(){
-    
     console.log(patfpdata);
     if(patfpdata != null){
         initfpdata(patfpdata);
@@ -661,8 +659,6 @@ function initfpdata(data){
     $('#txt_pat_area').val(data.city);
     $('#txt_pat_currpostcode').val(data.postcode);
     $("img#photobase64").attr('src','data:image/png;base64,'+data.photo);
-}
 
-function nullfpdata(){
     patfpdata = null;
 }
