@@ -618,8 +618,11 @@ var patfpdata = null;
 function populatefromfp(data){
     patfpdata = data;
     $("#patientBox").data('gotpat',true);
-    console.log(patfpdata);
 }
+
+$('#mykadclosemodalv2').click(function(){
+    closemodalfp();
+})
 
 function closemodalfp(){
     console.log(patfpdata);
