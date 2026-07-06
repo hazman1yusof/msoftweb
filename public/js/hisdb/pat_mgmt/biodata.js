@@ -623,7 +623,7 @@ function populatefromfp(data){
         Newic:data.icnum
     };
 
-    $.get( "./hisdb/PatmastController?"+$.param(param), function( data ) {
+    $.get( "./pat_mast/table?"+$.param(param), function( data ) {
 
     },'json').done(function(data) {
         if(data.rows.length > 0){
