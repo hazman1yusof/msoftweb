@@ -626,7 +626,9 @@ function populatefromfp(data){
     $.get( "./pat_mast/table?"+$.param(param), function( data ) {
 
     },'json').done(function(data) {
-        if(data.rows.length > 0){
+        console.log(data);
+        console.log(data.rows);
+        if(data.duplicate == true ){
             patfpdata = data.rows;
             console.log(patfpdata);
         }

@@ -4131,6 +4131,9 @@ class PatmastController extends defaultController
 
             $responce->duplicate = true;
             $responce->rows = $pat_mast;
+        }else{
+            $responce->duplicate = false;
+            $responce->rows = null;
         }
         
         echo json_encode($responce, JSON_INVALID_UTF8_SUBSTITUTE);
