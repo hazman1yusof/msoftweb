@@ -4043,6 +4043,8 @@ class PatmastController extends defaultController
                         ->where('description',$request->Citizencode)
                         ->orWhere('code',$request->Citizencode);
 
+        dd($citizen_->exists());
+
         if($citizen_->exists()){
             $citizen_ = $citizen_->first();
             $request->Citizencode = $citizen_->Code;
