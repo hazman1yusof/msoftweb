@@ -31,6 +31,8 @@ class PatmastController extends defaultController
                 return $this->pat_mast_iframe($request);
             case 'episode_iframe':
                 return $this->episode_iframe($request);
+            case 'chk_mykad_exist':
+                return $this->chk_mykad_exist($request);
         }
     }
 
@@ -4114,6 +4116,24 @@ class PatmastController extends defaultController
         }
 
         return $responce;
+    }
+
+    public function chk_mykad_exist($request){
+        $responce = new stdClass();
+
+        $pat_mast = DB::table('hisdb.pat_mast')
+                        ->where('compcode',session('compcode'))
+                        ->where('active',1)
+                        ->where('newic',$request->Newic);
+
+        if($pat_mast->exists()){
+            $pat_mast = $pat_mast->first();
+
+            $responce->duplicate = true;
+            $responce->rows = $pat_mast;
+        }
+        
+        echo json_encode($responce, JSON_INVALID_UTF8_SUBSTITUTE);
     }
 
 

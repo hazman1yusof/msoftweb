@@ -617,7 +617,22 @@ function mykad_check_existing_patient(callback){
 var patfpdata = null;
 function populatefromfp(data){
     patfpdata = data;
-    $("#patientBox").data('gotpat',true);
+
+    var param={
+        action:'chk_mykad_exist',
+        Newic:data.icnum
+    };
+
+    $.get( "./hisdb/PatmastController?"+$.param(param), function( data ) {
+
+    },'json').done(function(data) {
+        if(data.rows.length > 0){
+            patfpdata = data.rows;
+            console.log(patfpdata);
+        }
+    }).fail(function(data){
+
+    });
 }
 
 $('#mykadclosemodalv2').click(function(){
@@ -625,7 +640,6 @@ $('#mykadclosemodalv2').click(function(){
 })
 
 function closemodalfp(){
-    console.log(patfpdata);
     $('#mdl_biometric').modal('hide');
     if(patfpdata != null){
         $("#patientBox").click();
@@ -635,7 +649,14 @@ function closemodalfp(){
 function checkfpdata(){
     console.log(patfpdata);
     if(patfpdata != null){
-        initfpdata(patfpdata);
+        if(patfpdata.MRN != null){
+            populate_patient(patfpdata);
+            $("#btn_register_patient").data("oper","edit");
+            $("#btn_register_patient").data("idno",patfpdata.idno);
+        }else{
+            $("#btn_register_patient").data("oper","add");
+            initfpdata(patfpdata);
+        }
     }
 }
 
@@ -655,9 +676,9 @@ function initfpdata(data){
     $('#txt_pat_citizen').val(data.citizenship);
     $('#hid_Religion').val(data.religion);
     $('#txt_Religion').val(data.religion);
-    $('#txt_pat_curradd1').val(data.addr1);
-    $('#txt_pat_curradd2').val(data.addr2);
-    $('#txt_pat_curradd3').val(data.addr3);
+    $('#txt_pat_curradd1').val(data.address1);
+    $('#txt_pat_curradd2').val(data.address2);
+    $('#txt_pat_curradd3').val(data.address3);
     $('#hid_pat_area').val(data.city);
     $('#txt_pat_area').val(data.city);
     $('#txt_pat_currpostcode').val(data.postcode);
