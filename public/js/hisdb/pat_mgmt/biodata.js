@@ -642,12 +642,12 @@ function checkfpdata(){
 function initfpdata(data){
     $("#hid_ID_Type").val('O');
     $("#txt_ID_Type").val('Own IC');
-    $("#txt_pat_newic").val(data.ic);
     $("#txt_pat_name").val(data.name);
-    $("#txt_pat_newic").val(data.ic);
+    $("#txt_pat_newic").val(data.icnum);
     $("#cmb_pat_sex").val(data.sex);
     $("#txt_pat_dob").val(moment(data.dob, "MM-DD-YYYY").format("YYYY-MM-DD"));
     $('#txt_pat_age').val(gettheage(moment(data.dob, "MM-DD-YYYY").format("YYYY-MM-DD")));
+    $('#txt_pat_newic').blur();
     // $("input[name='birthplace']").val(data.birthplace);
     $("#hid_RaceCode").val(data.race);
     $("#txt_RaceCode").val(data.race);
@@ -661,7 +661,7 @@ function initfpdata(data){
     $('#hid_pat_area').val(data.city);
     $('#txt_pat_area').val(data.city);
     $('#txt_pat_currpostcode').val(data.postcode);
-    $("img#photobase64").attr('src','data:image/png;base64,'+data.photo);
+    $("img#photobase64").attr('src','data:image/png;base64,'+data.base64);
 
     patfpdata = null;
 }
