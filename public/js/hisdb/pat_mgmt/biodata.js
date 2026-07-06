@@ -633,6 +633,8 @@ function populatefromfp(data){
     }).fail(function(data){
 
     });
+
+    console.log(patfpdata);
 }
 
 $('#mykadclosemodalv2').click(function(){
@@ -647,7 +649,6 @@ function closemodalfp(){
 }
 
 function checkfpdata(){
-    console.log(patfpdata);
     if(patfpdata != null){
         if(patfpdata.MRN != null){
             populate_patient(patfpdata);
