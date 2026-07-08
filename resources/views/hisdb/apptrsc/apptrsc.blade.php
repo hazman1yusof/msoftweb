@@ -334,7 +334,7 @@ i.fa {
 						</div>
 						<div class="panel-footer">
 							<button type="button" class="btn btn-primary" id="submit">Save changes</button>
-							<button type="button" class="btn btn-danger" id="delete_but" style="display: none;">Delete Appointment</button>
+							<!-- <button type="button" class="btn btn-danger" id="delete_but" style="display: none;">Delete Appointment</button> -->
 							<button type="button" class="btn btn-primary" id="new_episode" style="display: none;"><span id="episode_pat_span">New Episode</span></button>
 							<button type="button" class="btn btn-success" id="biodata_pat" style=""><span id="biodata_pat_span">New MRN</span></button>
 						</div>
