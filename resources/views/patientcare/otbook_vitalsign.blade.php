@@ -83,7 +83,7 @@
     <div class="ui segments">
         <div class="ui secondary segment">ALLERGIES</div>
         <div class="ui segment">
-            <table class="table table-sm table-hover">
+            <table class="table table-sm table-hover" style="width: 100%;">
                 <tbody>
                     <tr>
                         <td><input type="checkbox" id="ReqFor_allergydrugs" name="allergydrugs" value="1" class="ui read-only checkbox" class="hidden" readonly="" tabindex="0"></td>

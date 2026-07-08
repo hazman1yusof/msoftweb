@@ -345,12 +345,19 @@
                         </tbody>
                     </table>
 
-                    <div class="sixteen wide column centered grid" style="padding: 14px 14px 0px 400px;">
+                    <div class="sixteen wide column centered grid" style="padding: 14px">
                         <div class="inline fields">
                             <label>Requesting Doctor</label>
                             <div class="field">
                                 <input id="req_docName" name="docName" type="text" style="width: 320px; text-transform: uppercase;">
                             </div>
+                        </div>
+                        <div class="inline field" style="padding-top: 15px;
+                            position: absolute;
+                            right: 0px;
+                            bottom: 26px;">
+                            <label>Entered By</label>
+                            <input id="req_enterby" name="req_enterby" type="text" style="width: 300px; text-transform: uppercase;" value="{{ session('username') }}">
                         </div>
                     </div>
                     

@@ -37,8 +37,14 @@ $(document).ready(function (){
         
         switch(tab){
             case 'docImaging':
-                DataTable_preview.columns.adjust();
-                preview_load_data();
+                // DataTable_preview.columns.adjust();
+                // preview_load_data();
+
+                let param = {
+                    mrn: $("#mrn_apptMain").val(),
+                    episno: $("#episno_apptMain").val(),
+                }
+                $("#userfile_iframe").attr('src','./userfile_iframe'+"?"+$.param(param));
                 break;
             case 'triageInfo':
                 $("#jqGridExamTriage").jqGrid('setGridWidth', Math.floor($("#jqGridExamTriage_c")[0].offsetWidth-$("#jqGridExamTriage_c")[0].offsetLeft-14));

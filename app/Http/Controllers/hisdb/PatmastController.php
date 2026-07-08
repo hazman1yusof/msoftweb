@@ -31,6 +31,8 @@ class PatmastController extends defaultController
                 return $this->pat_mast_iframe($request);
             case 'episode_iframe':
                 return $this->episode_iframe($request);
+            case 'userfile_iframe':
+                return $this->userfile_iframe($request);
             case 'chk_mykad_exist':
                 return $this->chk_mykad_exist($request);
         }
@@ -4141,6 +4143,17 @@ class PatmastController extends defaultController
         }
         
         echo json_encode($responce, JSON_INVALID_UTF8_SUBSTITUTE);
+    }
+
+    public function userfile_iframe(Request $request){
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+
+        if(empty($mrn) || empty($episno)){
+           abort(403,'No MRN or Episno'); 
+        }
+
+        return view('hisdb.pat_mgmt.userfile_iframe',compact('mrn','episno'));
     }
 
 

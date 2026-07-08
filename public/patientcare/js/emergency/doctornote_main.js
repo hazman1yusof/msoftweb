@@ -215,19 +215,19 @@ $(document).ready(function () {
 				{ label: 'MRN', name: 'MRN', width: 85, formatter: padzero, unformat: unpadzero, checked: true },
 				{ label: 'Epis. No', name: 'Episno', align: 'right', hidden: true },
 				{ label: 'Time', name: 'reg_time', width: 85, formatter: timeFormatter, unformat: timeUNFormatter },
-				{ label: 'Name', name: 'Name', width: 170, classes: 'wrap' },
+				{ label: 'Name', name: 'Name', width: 150, classes: 'wrap' },
 				{ label: 'Payer', name: 'payer', width: 150, classes: 'wrap', formatter: formatterpayer },
 				{ label: 'Dept', name: 'regdept', width: 60 },
 				{ label: 'I/C', name: 'Newic', width: 90 },
 				{ label: 'Rehab', name: 'reff_rehab', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true },
 				{ label: 'Physio', name: 'reff_physio', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true },
-				{ label: 'Diet', name: 'reff_diet', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
-				{ label: 'ED', name: 'reff_ed', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
-				{ label: 'RAD', name: 'reff_rad', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
+				{ label: 'Diet', name: 'reff_diet', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true},
+				{ label: 'ED', name: 'reff_ed', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true},
+				{ label: 'RAD', name: 'reff_rad', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true},
 				{ label: 'HP', name: 'telhp', width: 80 },
 				{ label: 'Sex', name: 'Sex', width: 40 },
 				{ label: 'Mode', name: 'pyrmode', classes: 'wrap', width: 100 },
-				{ label: 'Discharge', name: 'episstatus', width: 60, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
+				{ label: 'Discharge', name: 'episstatus', width: 80, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'Seen', name: 'doctorstatus', formatter: formatterstatus_tick, hidden: true },
 				{ label: 'idno', name: 'idno', hidden: true, key: true },
 				{ label: 'DOB', name: 'DOB', hidden: true },
@@ -242,9 +242,10 @@ $(document).ready(function () {
 				{ label: 'stats_physio', name: 'stats_physio', hidden: true },
 				{ label: 'stats_diet', name: 'stats_diet', hidden: true },
 				{ label: 'doctorname', name: 'doctorname', hidden: true },
+				{ label: ' ', name: ' ' ,formatter: formatter_btn, width: 70},
 			],
-			autowidth: false,
-			shrinkToFit: false,
+			autowidth: true,
+			shrinkToFit: true,
 			viewrecords: true,
 			sortorder: "episode.reg_time",
 			sortorder: "desc",
@@ -376,12 +377,12 @@ $(document).ready(function () {
     //     }
     // }});
 	
-	$("#jqGrid").jqGrid('setGroupHeaders', {
-		useColSpanStyle: true, 
-		groupHeaders:[
-			{startColumnName: 'reff_diet', numberOfColumns: 3, titleText: '<em>Register Dept</em>'},
-		]
-	});
+	// $("#jqGrid").jqGrid('setGroupHeaders', {
+	// 	useColSpanStyle: true, 
+	// 	groupHeaders:[
+	// 		{startColumnName: 'reff_diet', numberOfColumns: 3, titleText: '<em>Register Dept</em>'},
+	// 	]
+	// });
 	addParamField('#jqGrid',true,urlParam,['action']);
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {

@@ -3,6 +3,15 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
 
+disableForm('#formConsentFormReqFor');
+disableForm('#formPreContrastReqFor');
+disableForm('#formDressingReqFor');
+disableForm('#formPhysioReqFor');
+disableForm('#formMRIReqFor');
+disableForm('#formRadClinicReqFor');
+disableForm('#formOTBookReqFor');
+disableForm('#formRequestFor');
+
 $(document).ready(function (){
     
     // $("button.refreshbtn_requestFor").click(function (){
@@ -13,34 +22,45 @@ $(document).ready(function (){
     // $('.menu .item').tab();
     
     var fdl = new faster_detail_load();
-    
-    disableForm('#formRequestFor');
+    var radbuts_otbookReqFor = new checkradiobutton(['req_type']);
+
+    $('#requestFor .top.menu .item').tab('change tab','otbookReqFor');
+    populate_otbookReqFor_getdata();
+    populate_radClinicReqFor_getdata();
+    textarea_init_otbookReqFor();
     
     ////////////////////////////////////////////otbook starts////////////////////////////////////////////
-    disableForm('#formOTBookReqFor');
     
     $("#new_otbookReqFor").click(function (){
+        radbuts_otbookReqFor.reset();
         get_default_otbookReqFor();
         $('#cancel_otbookReqFor').data('oper','add');
         button_state_otbookReqFor('wait');
         enableForm('#formOTBookReqFor');
         rdonly('#formOTBookReqFor');
-        emptyFormdata_div("#formOTBookReqFor",['#mrn_requestFor','#episno_requestFor','#otReqFor_doctorname']);
-        $('#otReqFor_diagnosedby').val($('#curr_user').val());
-        $('#otReqFor_lastuser').val($('#curr_user').val());
+
+        emptyFormdata_div("#formOTBookReqFor",['#mrn_requestFor','#episno_requestFor','#otReqFor_doctorname','#op_date','#otReqFor_diagnosedby','#otReqFor_lastuser']);
 
         document.getElementById('req_type_ward').checked = true;
         toggle_reqfor_reqtype();
+
+        emptyFormdata_div("#formOTBookReqFor",['#mrn_requestFor','#episno_requestFor','#otReqFor_doctorname','#op_date','#otReqFor_diagnosedby','#otReqFor_lastuser']);
+        $('#ReqFor_allergydrugs,#ReqFor_drugs_remarks,#ReqFor_allergyplaster,#ReqFor_plaster_remarks,#ReqFor_allergyfood,#ReqFor_food_remarks,#ReqFor_allergyenvironment,#ReqFor_environment_remarks,#ReqFor_allergyothers,#ReqFor_others_remarks,#ReqFor_allergyunknown,#ReqFor_unknown_remarks,#ReqFor_allergynone,#ReqFor_none_remarks').prop('disabled',true);
     });
     
     $("#edit_otbookReqFor").click(function (){
+        radbuts_otbookReqFor.reset();
         button_state_otbookReqFor('wait');
         enableForm('#formOTBookReqFor');
         rdonly('#formOTBookReqFor');
+
+        emptyFormdata_div("#formOTBookReqFor",['#mrn_requestFor','#episno_requestFor','#otReqFor_doctorname','#op_date','#otReqFor_diagnosedby','#otReqFor_lastuser']);
+        $('#ReqFor_allergydrugs,#ReqFor_drugs_remarks,#ReqFor_allergyplaster,#ReqFor_plaster_remarks,#ReqFor_allergyfood,#ReqFor_food_remarks,#ReqFor_allergyenvironment,#ReqFor_environment_remarks,#ReqFor_allergyothers,#ReqFor_others_remarks,#ReqFor_allergyunknown,#ReqFor_unknown_remarks,#ReqFor_allergynone,#ReqFor_none_remarks').prop('disabled',true);
     });
     
     $("#save_otbookReqFor").click(function (){
-        disableForm('#formOTBookReqFor');
+        // disableForm('#formOTBookReqFor');
+        radbuts_otbookReqFor.check();
         if($('#formOTBookReqFor').isValid({requiredFields: ''}, conf, true)){
             saveForm_otbookReqFor(function (data){
                 // emptyFormdata_div("#formOTBookReqFor",['#mrn_requestFor','#episno_requestFor']);
@@ -52,13 +72,12 @@ $(document).ready(function (){
                 SmoothScrollToTop();
             });
         }else{
-            enableForm('#formOTBookReqFor');
-            rdonly('#formOTBookReqFor');
-            $("#cancel_otbookReqFor").click();
+            // $("#cancel_otbookReqFor").click();
         }
     });
     
     $("#cancel_otbookReqFor").click(function (){
+        radbuts_otbookReqFor.reset();
         // emptyFormdata_div("#formOTBookReqFor",['#mrn_requestFor','#episno_requestFor']);
         disableForm('#formOTBookReqFor');
         button_state_otbookReqFor($(this).data('oper'));
@@ -66,7 +85,6 @@ $(document).ready(function (){
     //////////////////////////////////////////////otbook ends//////////////////////////////////////////////
     
     ///////////////////////////////////////////radClinic starts///////////////////////////////////////////
-    disableForm('#formRadClinicReqFor');
     
     $("#new_radClinicReqFor").click(function (){
         get_default_radClinicReqFor();
@@ -109,7 +127,6 @@ $(document).ready(function (){
     ////////////////////////////////////////////radClinic ends////////////////////////////////////////////
     
     //////////////////////////////////////////////mri starts//////////////////////////////////////////////
-    disableForm('#formMRIReqFor');
     
     $("#new_mriReqFor").click(function (){
         get_default_mriReqFor();
@@ -154,7 +171,6 @@ $(document).ready(function (){
     ///////////////////////////////////////////////mri ends///////////////////////////////////////////////
     
     ////////////////////////////////////////////physio starts////////////////////////////////////////////
-    disableForm('#formPhysioReqFor');
     
     $("#new_physioReqFor").click(function (){
         $('#cancel_physioReqFor').data('oper','add');
@@ -204,7 +220,6 @@ $(document).ready(function (){
     /////////////////////////////////////////////physio ends/////////////////////////////////////////////
     
     ///////////////////////////////////////////dressing starts///////////////////////////////////////////
-    disableForm('#formDressingReqFor');
     
     $("#new_dressingReqFor").click(function (){
         $('#cancel_dressingReqFor').data('oper','add');
@@ -244,14 +259,13 @@ $(document).ready(function (){
     ////////////////////////////////////////////dressing ends////////////////////////////////////////////
     
     ///////////////////////////////////////////preContrast starts///////////////////////////////////////////
-    disableForm('#formPreContrastReqFor');
     
     $("#new_preContrastReqFor").click(function (){
         $('#cancel_preContrastReqFor').data('oper','add');
         button_state_preContrastReqFor('wait');
         enableForm('#formPreContrastReqFor');
         rdonly('#formPreContrastReqFor');
-        emptyFormdata_div("#formPreContrastReqFor",['#mrn_requestFor','#episno_requestFor']);
+        emptyFormdata_div("#formPreContrastReqFor",['#mrn_requestFor','#episno_requestFor','#req_enterby']);
     });
     
     $("#edit_preContrastReqFor").click(function (){
@@ -284,7 +298,6 @@ $(document).ready(function (){
     ////////////////////////////////////////////preContrast ends////////////////////////////////////////////
     
     ///////////////////////////////////////////consentForm starts///////////////////////////////////////////
-    disableForm('#formConsentFormReqFor');
     
     $("#new_consentFormReqFor").click(function (){
         $('#cancel_consentFormReqFor').data('oper','add');
@@ -1817,7 +1830,7 @@ $("#tab_requestFor").on("hide.bs.collapse", function (){
 });
 
 function textarea_init_otbookReqFor(){
-    $('textarea#otReqFor_remarks').each(function (){
+    $('textarea#otReqFor_diagnosis,textarea#otReqFor_remarks').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{

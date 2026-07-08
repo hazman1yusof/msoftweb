@@ -1,15 +1,147 @@
+@extends('hisdb.pat_mgmt.semantic_iframe_main')
+
+@section('title', 'Request for Iframe')
+
+@section('css')
+
+<link rel="stylesheet" type="text/css" href="{{ asset('patientcare/css/main.css') }}">
+<link rel="stylesheet" href="{{asset('patientcare/css/doctornote.css') }}">
+<style>
+    #allmodal{
+        padding: 10px ;
+        height: 100vh;
+        width: 100vw;
+        overflow-x: hidden;
+        margin: 0px ;
+    }
+    .dimmer-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.7); /* Slightly darker for better text contrast */
+        z-index: 1060; /* Higher than default navbars and modals */
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        
+        /* Flexbox to center the text and spinner */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #ffffff; /* White text */
+    }
+
+    .dimmer-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .red.ui.right.labeled.input input{
+        color: white !important;
+        border-color: red !important;
+        background-color: red !important;
+    }
+    
+    .red.ui.table tr{
+        color: white;
+        background-color: red !important;
+    }
+    
+    .red.ui.action.input input{
+        color: white !important;
+        border-color: red !important;
+        background-color: red !important;
+    }
+    
+    .yellow.ui.right.labeled.input input{
+        color: black !important;
+        border-color: #9e9e00 !important;
+        background-color: yellow !important;
+    }
+    
+    .yellow.ui.table tr{
+        background-color: yellow !important;
+    }
+    
+    .yellow.ui.action.input input{
+        color: black !important;
+        border-color: #9e9e00 !important;
+        background-color: yellow !important;
+    }
+    
+    .green.ui.right.labeled.input input{
+        color: white !important;
+        border-color: green !important;
+        background-color: green !important;
+    }
+    
+    .green.ui.table tr{
+        color: white;
+        background-color: green !important;
+    }
+    
+    .green.ui.action.input input{
+        color: white !important;
+        border-color: green !important;
+        background-color: green !important;
+    }
+</style>
+
+<script>
+
+
+    @if(empty($pat_mast_data))
+        var pat_mast_data = null;
+    @else
+        var pat_mast_data = {
+            @foreach($pat_mast_data as $key => $val) 
+                '{{$key}}' : `{!!str_replace('`', '', $val)!!}`,
+            @endforeach 
+        };
+    @endif
+
+
+    @if(empty($episode_data))
+        var episode_data = null;
+    @else
+        var episode_data = {
+            @foreach($episode_data as $key => $val) 
+                '{{$key}}' : `{!!str_replace('`', '', $val)!!}`,
+            @endforeach 
+        };
+    @endif
+</script>
+@endsection
+
+@section('body')
+
+<div id="pageDimmer" class="dimmer-overlay">
+    <div class="text-center">
+        <!-- Your Custom Loading Text -->
+        <h3 class="fw-normal" id="textDimmer">Loading...</h3>
+    </div>
+</div>
+
+<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
+<input type="hidden" id="_mrn" value="{{$mrn}}">
+<input type="hidden" id="_episno" value="{{$episno}}">
+<input type="hidden" id="_phase" value="{{$phase}}">
+<input id="age_requestFor" name="age_requestFor" type="hidden" value="{{$pat_mast_data->age}}">
+<input id="ptname_requestFor" name="ptname_requestFor" type="hidden" value="{{$pat_mast_data->Name}}">
+<input id="preg_requestFor" name="preg_requestFor" type="hidden" value="{{$episode_data->pregnant}}">
+<input id="ic_requestFor" name="ic_requestFor" type="hidden" value="{{$pat_mast_data->Newic}}">
+<input id="doctorname_requestFor" name="doctorname_requestFor" type="hidden" value="{{$episode_data->doctorname}}">
+
 <div class="ui column">
     <form id="formRequestFor">
-        <input id="mrn_requestFor" name="mrn_requestFor" type="hidden">
-        <input id="episno_requestFor" name="episno_requestFor" type="hidden">
-        <input id="age_requestFor" name="age_requestFor" type="hidden">
-        <input id="ptname_requestFor" name="ptname_requestFor" type="hidden">
-        <input id="preg_requestFor" name="preg_requestFor" type="hidden">
-        <input id="ic_requestFor" name="ic_requestFor" type="hidden">
-        <input id="doctorname_requestFor" name="doctorname_requestFor" type="hidden">
+        <input id="mrn_requestFor" name="mrn_requestFor" type="hidden" value="{{$mrn}}">
+        <input id="episno_requestFor" name="episno_requestFor" type="hidden" value="{{$episno}}">
     </form>
     
-    <div id="requestFor" class="ui segments">
+    <div id="requestFor" class="ui segments" style="margin:0px;border: none;">
         <!-- <div class="ui secondary segment">REQUEST FOR</div> -->
         <div class="ui top attached tabular menu">
             <a class="item active" data-tab="otbookReqFor" id="navtab_otbookReqFor">Ward / OT</a>
@@ -73,12 +205,12 @@
                                                                             <label for="req_type_ward">Ward</label>
                                                                         </div>
                                                                     </div>
-                                                                    <!-- <div class="field">
+                                                                    <div class="field">
                                                                         <div class="ui radio checkbox">
                                                                             <input type="radio" id="req_type_ot" name="req_type" value="OT" data-validation="required">
                                                                             <label for="req_type_ot">OT</label>
                                                                         </div>
-                                                                    </div> -->
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -111,7 +243,7 @@
                                                         </div>
                                                         <div class="twelve wide column">
                                                             <div class="inline field">
-                                                                <input id="op_date" name="op_date" type="date">
+                                                                <input id="op_date" name="op_date" type="date" value="{{$episode_data->reg_date}}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -205,7 +337,7 @@
                                                                 
                                                                 <div class="inline field" style="padding-top: 15px;">
                                                                     <label>Diagnosed By</label>
-                                                                    <input id="otReqFor_diagnosedby" name="ot_diagnosedby" type="text" style="width: 320px; text-transform: uppercase;">
+                                                                    <input id="otReqFor_diagnosedby" name="ot_diagnosedby" type="text" style="width: 320px; text-transform: uppercase;" value="{{ session('username') }}" rdonly>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -233,7 +365,7 @@
                                                             <div class="column">
                                                                 <div class="inline field" style="padding-bottom:8px">
                                                                     <label>Entered By</label>
-                                                                    <input id="otReqFor_lastuser" name="ot_lastuser" type="text" style="width: 350px; text-transform: uppercase;">
+                                                                    <input id="otReqFor_lastuser" name="ot_lastuser" type="text" style="width: 350px; text-transform: uppercase;" value="{{ session('username') }}" rdonly>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -443,19 +575,30 @@
                                         </div>
                                     </div>
                                     
-                                    <div class="four wide column" style="padding: 0px 0px 14px 150px;">
+                                    <div class="four wide column" style="padding: 0px 14px 14px 150px;">
                                         <div class="field">
                                             <label>Radiology Note</label>
                                         </div>
                                     </div>
                                     
-                                    <div class="twelve wide column" style="padding: 0px 14px 14px 30px;">
+                                    <div class="twelve wide column" style="padding-top: 0px;">
                                         <div class="field nine wide column">
                                             <textarea id="ReqFor_rad_note" name="rad_note" type="text" rows="5"></textarea>
                                             
                                             <div class="inline field" style="padding-top: 15px;">
                                                 <label>Radiologist's Name</label>
                                                 <input id="radClinicReqFor_radiologist" name="radClinic_radiologist" type="text" style="width: 300px; text-transform: uppercase;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="sixteen wide column" style="padding-top: 0px;">
+                                        <div class="field three wide column">
+                                            <div class="inline field" style="padding-top: 15px;
+                                                position: absolute;
+                                                right: 0px;
+                                                bottom: 26px;">
+                                                <label>Entered By</label>
+                                                <input id="radClinicReqFor_enterby" name="radClinic_enterby" type="text" style="width: 300px; text-transform: uppercase;" value="{{ session('username') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -1210,3 +1353,9 @@
         </div>
     </div>
 </div>
+
+@endsection
+
+@section('js')
+<script type="text/javascript" src="{{asset('patientcare/js/requestfor_iframe.js')}}"></script>
+@endsection

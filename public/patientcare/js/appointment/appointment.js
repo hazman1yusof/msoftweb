@@ -230,7 +230,7 @@ $(document).ready(function () {
 				{ label: 'HP', name: 'telhp', width: 80 },
 				{ label: 'Sex', name: 'Sex', width: 40 },
 				{ label: 'Mode', name: 'pyrmode', classes: 'wrap', width: 80 },
-				{ label: 'Discharge', name: 'episstatus', width: 60, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
+				{ label: 'Discharge', name: 'episstatus', width: 80, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'Seen', name: 'doctorstatus', formatter: formatterstatus_tick, hidden: true },
 				{ label: 'idno', name: 'idno', hidden: true, key: true },
 				{ label: 'DOB', name: 'DOB', hidden: true },

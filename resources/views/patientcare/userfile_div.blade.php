@@ -1,4 +1,4 @@
-<div class="ui teal segment" style="padding: 10px 10px 30px 30px;">
+<!-- <div class="ui teal segment" style="padding: 10px 10px 30px 30px;">
 	<h4 class="ui header">This user uploaded Files </h4>
 	<button class="tiny ui icon button" type="button" id="refresh_userfile_btn" style="
 		position: absolute;
@@ -17,7 +17,6 @@
 	  <i class="cloud upload icon"></i>
 	</button>
 	<input type="file" id="upload_userfile_fld" name="upload_userfile_fld" style="display: none;">
-	<!-- <input type='hidden' id="userfile_mrn" name="userfile_mrn"> -->
 	<table class="ui celled table" id='tablePreview'>
 		<thead>
 			<tr>
@@ -33,4 +32,8 @@
 			</tr>
 		</thead>
 	</table>
+</div> -->
+
+<div id=""  style="">
+    <iframe style="display:block; border:none; height:95vh; width:95vw;" id="userfile_iframe"></iframe>
 </div>
