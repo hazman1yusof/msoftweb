@@ -338,9 +338,11 @@ $(document).ready(function () {
 
 			$("#addForm input[name='icnum']").prop('readonly',true);
 
+			$('#biodata_pat').show();
 			if($('#mrn').val() == ''){
 				$('#biodata_pat_span').text('New MRN');
 				$('#new_episode').hide();
+				$('#biodata_pat').hide();
 			}else{
 				$('#biodata_pat_span').text('Biodata');
 				$('#new_episode').show();
