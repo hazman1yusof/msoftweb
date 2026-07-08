@@ -342,7 +342,7 @@ $(document).ready(function () {
 			if($('#mrn').val() == ''){
 				$('#biodata_pat_span').text('New MRN');
 				$('#new_episode').hide();
-				if($('#patname').val() != ''){
+				if($('#patname').val().trim() == ''){
 					$('#biodata_pat').hide();
 				}
 			}else{
