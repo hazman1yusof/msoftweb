@@ -1,5 +1,5 @@
 <!-- Large modal -->
-<div id="mdl_patient_info" data-keyboard="false" class="modal fade ba" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" style="display: none; padding-left: 0px !important;">
+<div id="mdl_patient_info" data-keyboard="false" class="modal fade ba" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" style="display: none; padding-left: 0px !important;z-index: 109;">
     <div class="modal-dialog half modal-lg">
         <form id="frm_patient_info" class="form-horizontal" autocomplete="off">
 			<input type="hidden" name="idno" id="txt_pat_idno">
@@ -883,7 +883,7 @@
 	</div>
 </div>
 
-<div id="mdl_biometric" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mymdl_biometric" aria-hidden="true" style="display: none;">
+<div id="mdl_biometric" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mymdl_biometric" aria-hidden="true" style="display: none;z-index: 101;">
     <div class="modal-dialog" style="width: 100%; height: 100%; margin: auto;">
             
         <!-- Modal content-->
