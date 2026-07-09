@@ -666,7 +666,6 @@ $(document).ready(function() {
                 }).error(function(data){
 
                 });
-
             }
 
             function preepis_bio_click(event){

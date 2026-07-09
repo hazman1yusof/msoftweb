@@ -735,7 +735,7 @@
     </div>
 </div>
 
-<div id="mdl_existing_record" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;background-color: rgba(0, 0, 0, 0.3);">
+<div id="mdl_existing_record" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;background-color: rgba(0, 0, 0, 0.3);;z-index: 110;">
     <div class="modal-dialog modal-lg" style="width: 70%; height: 70%; margin: auto;">
 		<div class="modal-content">
 			<div class="modal-header label-primary">
@@ -773,7 +773,7 @@
 	</div>
 </div>
 
-<div id="mdl_mykad" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+<div id="mdl_mykad" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;z-index: 109;">
     <div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header label-success">

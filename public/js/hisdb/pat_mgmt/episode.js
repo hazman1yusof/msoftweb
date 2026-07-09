@@ -551,6 +551,7 @@ function add_episode()
         $("#load_from_addupd").data('oper','edit');
         $("#grid-command-buttons").bootgrid('reload');
         $("#tabpreepis").collapse("hide");
+        closemodalfp();
     });
 }
 

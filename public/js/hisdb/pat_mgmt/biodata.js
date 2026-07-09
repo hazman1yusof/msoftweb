@@ -655,7 +655,6 @@ $('#mykadclosemodalv2').click(function(){
 
 $('#mykad_open_bio').click(function(){
     checkfpdata();
-    // closemodalfp();
 });
 
 $('#mykad_open_epis').click(function(){
@@ -665,7 +664,6 @@ $('#mykad_open_epis').click(function(){
             $('#editEpisode').modal({backdrop: "static"});
         }
     }
-    closemodalfp();
 });
 
 function closemodalfp(){
