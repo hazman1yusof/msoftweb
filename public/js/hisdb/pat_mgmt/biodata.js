@@ -640,16 +640,16 @@ function populatefromfp(data){
 }
 
 $('#mykadclosemodalv2').click(function(){
-    if(patfpdata != null){
-        if(patfpdata.MRN != null){
-            populate_episode(patfpdata.idno,patfpdata);
-            $('#editEpisode').modal({backdrop: "static"});
-        }else{
-            $("#btn_register_patient").data("oper","add");
-            initfpdata(patfpdata);
-            $('#mdl_patient_info').modal({backdrop: "static"});
-        }
-    }
+    // if(patfpdata != null){
+    //     if(patfpdata.MRN != null){
+    //         populate_episode(patfpdata.idno,patfpdata);
+    //         $('#editEpisode').modal({backdrop: "static"});
+    //     }else{
+    //         $("#btn_register_patient").data("oper","add");
+    //         initfpdata(patfpdata);
+    //         $('#mdl_patient_info').modal({backdrop: "static"});
+    //     }
+    // }
     closemodalfp();
 });
 
