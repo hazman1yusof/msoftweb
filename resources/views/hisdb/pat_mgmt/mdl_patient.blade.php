@@ -901,7 +901,7 @@
 
                 <button id="mykad_open_epis" type="button" class="" aria-label="Close" style="
                         float: right;
-                        /*display: none;*/
+                        display: none;
                         color: white;
                         background: #004a97cf;
                         border-radius: 5px;
@@ -912,7 +912,7 @@
 
                 <button id="mykad_open_bio" type="button" class="" aria-label="Close" style="
                         float: right;
-                        /*display: none;*/
+                        display: none;
                         color: white;
                         background: #278551;
                         border-radius: 5px;
