@@ -431,16 +431,6 @@ $(document).ready(function() {
 
     /////////////////mykad///////////////
 
-    $('#btn_mykad').click(function(){
-        var rng = $('#userdeptcode').val()+'_'+randomString(32,'#aA');
-        $("#patientBox").data('scantype','mykad');
-        $("#rng").val(rng);
-        // $("#mykadFPiframe").attr('src','http://mycard.test/mykad?rng='+rng);
-        $("#mykadFPiframe").attr('src','./mykadFP');
-        // $("#mykadFPiframe").get(0).contentWindow.setscantype('mykad');
-        $('#mdl_biometric').modal('show');
-    });
-
     $('#btn_biometric').click(function(){
         $("#patientBox").data('scantype','biometric');
         $("#mykadFPiframe").get(0).contentWindow.setscantype('biometric');
