@@ -102,21 +102,21 @@
     <input id="_token" name="_token" value="{{ csrf_token() }}" type="hidden">
     <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
     
-    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;" id="rehabMain_panel">
-        <div class="panel-heading clearfix collapsed" role="tab" id="toggle_rehabMain">
-            <b>NAME: <span id="name_show_rehabMain"></span></b><br>
-            MRN: <span id="mrn_show_rehabMain"></span>
-            SEX: <span id="sex_show_rehabMain"></span>
-            DOB: <span id="dob_show_rehabMain"></span>
-            AGE: <span id="age_show_rehabMain"></span>
-            RACE: <span id="race_show_rehabMain"></span>
-            RELIGION: <span id="religion_show_rehabMain"></span><br>
-            OCCUPATION: <span id="occupation_show_rehabMain"></span>
-            CITIZENSHIP: <span id="citizenship_show_rehabMain"></span>
-            AREA: <span id="area_show_rehabMain"></span>
+    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;" id="radMain_panel">
+        <div class="panel-heading clearfix collapsed" role="tab" id="toggle_radMain">
+            <b>NAME: <span id="name_show_radMain"></span></b><br>
+            MRN: <span id="mrn_show_radMain"></span>
+            SEX: <span id="sex_show_radMain"></span>
+            DOB: <span id="dob_show_radMain"></span>
+            AGE: <span id="age_show_radMain"></span>
+            RACE: <span id="race_show_radMain"></span>
+            RELIGION: <span id="religion_show_radMain"></span><br>
+            OCCUPATION: <span id="occupation_show_radMain"></span>
+            CITIZENSHIP: <span id="citizenship_show_radMain"></span>
+            AREA: <span id="area_show_radMain"></span>
             
-            <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_rehabMain"></i>
-            <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_rehabMain"></i>
+            <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_radMain"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_radMain"></i>
             
             <!-- <div style="position: absolute; 
                         padding: 0 0 0 0; 
@@ -137,9 +137,9 @@
             </div> -->
         </div>
         
-        <div id="tab_rehabMain" class="panel-collapse">
+        <div id="tab_radMain" class="panel-collapse collapse" >
             <div class="panel-body paneldiv">
-                @include('rehab.rehabMain.rehabMain')
+
             </div>
         </div>
     </div>
@@ -183,25 +183,5 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- <script type="text/javascript" src="{{ asset('patientcare/js/transaction.js') }}"></script> -->
     <!-- <script type="text/javascript" src="{{ asset('patientcare/js/transaction_diet.js') }}"></script> -->
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/rehabMain/rehabMain.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/transaction_phys.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/physiotherapy/physioterapy.js?v=1.4') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/physiotherapy/physioterapy_ncase.js?v=1.1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/rehab_main.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/physio.js?v=1.5') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/sixMinWalking.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/bergBalanceTest.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/musculoAssessment.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/posturalAssessment.js?v=1.3') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/oswestryQuest.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/cardiorespAssessment.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/neuroAssessment.js?v=1.4') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/motorScale.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/spinalCord.js?v=1.3') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/physioNotes.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy.js?v=1.1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_cognitive.js?v=1.1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_barthel.js?v=1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_upperExtremity.js?v=1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_notes.js?v=1') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/radiology/radMain.js') }}"></script>
 @endsection

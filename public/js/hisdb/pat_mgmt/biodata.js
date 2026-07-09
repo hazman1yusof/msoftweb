@@ -655,7 +655,7 @@ $('#mykadclosemodalv2').click(function(){
 
 $('#mykad_open_bio').click(function(){
     checkfpdata();
-    closemodalfp();
+    // closemodalfp();
 });
 
 $('#mykad_open_epis').click(function(){
@@ -717,6 +717,4 @@ function initfpdata(data){
     $('#txt_pat_area').val(data.city);
     $('#txt_pat_currpostcode').val(data.postcode);
     $("img#photobase64").attr('src','data:image/png;base64,'+data.base64);
-
-    patfpdata = null;
 }

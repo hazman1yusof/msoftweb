@@ -59,6 +59,17 @@ class radiologyController extends defaultController
         }
     }
     
+    public function iframe(Request $request)
+    {
+        switch($request->action){
+            case 'radiology_iframe':
+                return $this->radiology_iframe($request);
+            
+            default:
+                return 'error happen..';
+        }
+    }
+    
     public function index(Request $request){
         // dd(Auth::user());
         
@@ -150,7 +161,7 @@ class radiologyController extends defaultController
         $data_send['pkgdept_dflt'] = session('deptcode');
         $data_send['othdept_dflt'] = session('deptcode');
         
-        return view('rehab.radiology',$data_send);
+        return view('radiology.radiology',$data_send);
     }
     
     public function get_table_doctornote($request){
@@ -499,7 +510,7 @@ class radiologyController extends defaultController
         $emergency = DB::table('hisdb.episode')
                     ->where('episode.compcode','=',session('compcode'))
                     // ->whereIn('episode.regdept',['A&E','PHY','XRAY','DIET'])
-                    ->whereIn('episode.regdept',['PHY'])
+                    ->whereIn('episode.regdept',['RAD'])
                     ->whereRaw(
                         "(episode.reg_date >= ? AND episode.reg_date <= ?)",
                         [
@@ -526,6 +537,9 @@ class radiologyController extends defaultController
                     ->get();
         
         return $events = $this->getEvent($emergency);
+    }
+
+    public function radiology_iframe(Request $request){
         
     }
     

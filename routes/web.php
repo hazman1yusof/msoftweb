@@ -1756,10 +1756,10 @@ Route::get('/rehab','rehab\RehabController@index');
 Route::get('/rehab/table','rehab\RehabController@table');
 Route::post('/rehab/form','rehab\RehabController@form');
 
-
 Route::get('/radiology','rehab\radiologyController@index');
 Route::get('/radiology/table','rehab\radiologyController@table');
 Route::post('/radiology/form','rehab\radiologyController@form');
+Route::get('/radiology_iframe','rehab\radiologyController@iframe');
 
 // Route::post('/ptcare_doctornote_transaction_save', "rehab\RehabController@transaction_save");
 
