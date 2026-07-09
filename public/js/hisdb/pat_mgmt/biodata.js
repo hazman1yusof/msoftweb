@@ -617,6 +617,7 @@ function mykad_check_existing_patient(callback){
 }
 
 var patfpdata = null;
+
 function populatefromfp(data){
     patfpdata = data;
 
@@ -637,17 +638,6 @@ function populatefromfp(data){
 
     });
 }
-
-$('#btn_mykad').click(function(){
-    // var rng = $('#userdeptcode').val()+'_'+randomString(32,'#aA');
-    // $("#patientBox").data('scantype','mykad');
-    // $("#rng").val(rng);
-    // // $("#mykadFPiframe").attr('src','http://mycard.test/mykad?rng='+rng);
-    // $("#mykadFPiframe").attr('src','./mykadFP');
-    // // $("#mykadFPiframe").get(0).contentWindow.setscantype('mykad');
-    $('#mdl_biometric').modal('show');
-    patfpdata = null;
-});
 
 $('#mykadclosemodalv2').click(function(){
     if(patfpdata != null){
@@ -682,6 +672,7 @@ function closemodalfp(){
     $('#mdl_biometric').modal('hide');
     $('#mykad_open_bio').hide();
     $('#mykad_open_epis').hide();
+    patfpdata = null;
     // if(patfpdata != null){
     //     $("#patientBox").click();
     // }

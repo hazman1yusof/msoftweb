@@ -890,7 +890,8 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header" style="padding:5px 15px;min-height: 40px;">
-                <button id="mykadclosemodalv2" type="button" class="" data-dismiss="modal" aria-label="Close" style="float: right;
+                <button id="mykadclosemodalv2" type="button" class="" data-dismiss="modal" aria-label="Close" style="
+                        float: right;
                         color: white;
                         background: #d34242;
                         border-radius: 5px;
@@ -898,22 +899,26 @@
                   <span class="glyphicon glyphicon-remove" aria-hidden="true" style="top: 3px;"></span><b> Close</b>
                 </button>
 
-                <button id="mykad_open_bio" type="button" class="" aria-label="Close" style="
-                        display: none;
-                        color: white;
-                        background: #278551;
-                        border-radius: 5px;
-                        padding: 5px 10px;">
-                  <b>Biodata</b>
-                </button>
-
                 <button id="mykad_open_epis" type="button" class="" aria-label="Close" style="
-                        display: none;
+                        float: right;
+                        /*display: none;*/
                         color: white;
                         background: #004a97cf;
                         border-radius: 5px;
-                        padding: 5px 10px;">
+                        padding: 5px 10px;
+                        margin-right: 10px;">
                 <b>Episode</b>
+                </button>
+
+                <button id="mykad_open_bio" type="button" class="" aria-label="Close" style="
+                        float: right;
+                        /*display: none;*/
+                        color: white;
+                        background: #278551;
+                        border-radius: 5px;
+                        padding: 5px 10px;
+                        margin-right: 10px;">
+                  <b>Biodata</b>
                 </button>
             </div>
             <div class="modal-body" style="padding:0px">
