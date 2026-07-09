@@ -632,8 +632,6 @@ function populatefromfp(data){
             patfpdata = data.rows;
             $('#mykad_open_bio').show();
             $('#mykad_open_epis').show();
-        }else{
-            patfpdata = null;
         }
     }).fail(function(data){
 
@@ -641,6 +639,16 @@ function populatefromfp(data){
 }
 
 $('#mykadclosemodalv2').click(function(){
+    if(patfpdata != null){
+        if(patfpdata.MRN != null){
+            populate_episode(patfpdata.idno,patfpdata);
+            $('#editEpisode').modal({backdrop: "static"});
+        }else{
+            $("#btn_register_patient").data("oper","add");
+            initfpdata(patfpdata);
+            $('#mdl_patient_info').modal({backdrop: "static"});
+        }
+    }
     closemodalfp();
 });
 
@@ -675,9 +683,11 @@ function checkfpdata(){
             $("#btn_register_patient").data("oper","edit");
             $("#btn_register_patient").data("idno",patfpdata.idno);
             desc_show.write_desc();
+            $('#mdl_patient_info').modal({backdrop: "static"});
         }else{
             $("#btn_register_patient").data("oper","add");
             initfpdata(patfpdata);
+            $('#mdl_patient_info').modal({backdrop: "static"});
         }
     }
 }
