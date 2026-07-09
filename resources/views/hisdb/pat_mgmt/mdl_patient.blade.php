@@ -889,7 +889,7 @@
             
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header" style="padding:5px 15px">
+            <div class="modal-header" style="padding:5px 15px;min-height: 40px;">
                 <button id="mykadclosemodalv2" type="button" class="" data-dismiss="modal" aria-label="Close" style="float: right;
                         color: white;
                         background: #d34242;
