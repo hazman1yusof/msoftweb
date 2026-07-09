@@ -889,7 +889,7 @@
             
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="padding:5px 15px">
                 <button id="mykadclosemodalv2" type="button" class="" data-dismiss="modal" aria-label="Close" style="float: right;
                         color: white;
                         background: #d34242;
@@ -897,10 +897,27 @@
                         padding: 5px 10px;">
                   <span class="glyphicon glyphicon-remove" aria-hidden="true" style="top: 3px;"></span><b> Close</b>
                 </button>
-                <h2 class="modal-title" id="txt_item_selector">&nbsp;</h2>
+
+                <button id="mykad_open_bio" type="button" class="" aria-label="Close" style="
+                        display: none;
+                        color: white;
+                        background: #278551;
+                        border-radius: 5px;
+                        padding: 5px 10px;">
+                  <b>Biodata</b>
+                </button>
+
+                <button id="mykad_open_epis" type="button" class="" aria-label="Close" style="
+                        display: none;
+                        color: white;
+                        background: #004a97cf;
+                        border-radius: 5px;
+                        padding: 5px 10px;">
+                <b>Episode</b>
+                </button>
             </div>
-            <div class="modal-body">
-                <iframe style="display:block; border:none; height:90vh; width:100%;" id="mykadFPiframe"></iframe>
+            <div class="modal-body" style="padding:0px">
+                <iframe style="display:block; border:none; height:92vh; width:100%;" id="mykadFPiframe"></iframe>
             </div>
         </div>
         

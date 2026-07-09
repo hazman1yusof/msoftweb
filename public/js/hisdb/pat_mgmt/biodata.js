@@ -628,28 +628,44 @@ function populatefromfp(data){
     $.get( "./pat_mast/table?"+$.param(param), function( data ) {
 
     },'json').done(function(data) {
-        console.log(data);
-        console.log(data.rows);
         if(data.duplicate == true ){
             patfpdata = data.rows;
-            console.log(patfpdata);
+            $('#mykad_open_bio').show();
+            $('#mykad_open_epis').show();
+        }else{
+            patfpdata = null;
         }
     }).fail(function(data){
 
     });
-
-    console.log(patfpdata);
 }
 
 $('#mykadclosemodalv2').click(function(){
     closemodalfp();
-})
+});
+
+$('#mykad_open_bio').click(function(){
+    checkfpdata();
+    closemodalfp();
+});
+
+$('#mykad_open_epis').click(function(){
+    if(patfpdata != null){
+        if(patfpdata.MRN != null){
+            populate_episode(patfpdata.idno,patfpdata);
+            $('#editEpisode').modal({backdrop: "static"});
+        }
+    }
+    closemodalfp();
+});
 
 function closemodalfp(){
     $('#mdl_biometric').modal('hide');
-    if(patfpdata != null){
-        $("#patientBox").click();
-    }
+    $('#mykad_open_bio').hide();
+    $('#mykad_open_epis').hide();
+    // if(patfpdata != null){
+    //     $("#patientBox").click();
+    // }
 }
 
 function checkfpdata(){
