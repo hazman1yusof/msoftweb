@@ -17,6 +17,7 @@
         <form id="formApptMain" class="ui form">
             <div class="ui grid">
                 <!-- <input type="hidden" name="curr_user" id="curr_user_apptMain" value="{{ Auth::user()->username }}"> -->
+                <input name="isdoctor" id="isdoctor" type="hidden" value="{{Auth::user()->doctor}}">
                 <input id="mrn_apptMain" name="mrn_apptMain" type="hidden">
                 <input id="episno_apptMain" name="episno_apptMain" type="hidden">
                 <input id="age_apptMain" name="age_apptMain" type="hidden">
@@ -28,9 +29,10 @@
                 <a class="item apptMainItem" data-tab="docImaging" id="navtab_docImaging">Document Imaging</a>
                 <a class="item apptMainItem active" data-tab="triageInfo" id="navtab_triageInfo">Triage Information</a>
                 <a class="item apptMainItem" data-tab="doctorNote" id="navtab_doctorNote">Doctor Note</a>
+                <a class="item apptMainItem" data-tab="doctorNotePsy" id="navtab_doctorNotePsy">Doctor Note (Psychiatry)</a>
                 <a class="item apptMainItem" data-tab="reqFor" id="navtab_reqFor">Request For</a>
                 <a class="item apptMainItem" data-tab="admHandover" id="navtab_admHandover">Admission Handover</a>
-                <a class="item apptMainItem" data-tab="dietNotes" id="navtab_dietNotes">Dietetic Care Notes</a>
+                <a class="item apptMainItem" data-tab="dietNotes" id="navtab_dietNotes" style="display: none;">Dietetic Care Notes</a>
             </div>
             
             <div class="ui bottom attached tab raised segment" data-tab="docImaging">
@@ -42,6 +44,10 @@
             </div>
             
             <div class="ui bottom attached tab raised segment" data-tab="doctorNote">
+                @include('appointment.doctorNoteAppt')
+            </div>
+            
+            <div class="ui bottom attached tab raised segment" data-tab="doctorNotePsy">
                 @include('patientcare.doctornote_div')
             </div>
             
@@ -54,7 +60,7 @@
                 @include('appointment.admhandoverAppt')
             </div>
             
-            <div class="ui bottom attached tab raised segment" data-tab="dietNotes" style="height: 2510px;">
+            <div class="ui bottom attached tab raised segment" data-tab="dietNotes" style="height: 2510px; display: none;">
                 @include('patientcare.dieteticCareNotes')
             </div>
         </div>
