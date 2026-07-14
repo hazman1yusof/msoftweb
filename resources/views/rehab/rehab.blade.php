@@ -115,8 +115,8 @@
             CITIZENSHIP: <span id="citizenship_show_rehabMain"></span>
             AREA: <span id="area_show_rehabMain"></span>
             
-            <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_phys"></i>
-            <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_phys"></i>
+           <!--  <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_phys"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_phys"></i> -->
             
             <!-- <div style="position: absolute; 
                         padding: 0 0 0 0; 
@@ -137,7 +137,7 @@
             </div> -->
         </div>
         
-        <div id="tab_rehabMain" class="panel-collapse collapse">
+        <div id="tab_rehabMain" class="panel-collapse">
             <div class="panel-body paneldiv">
                 @include('rehab.rehabMain.rehabMain')
             </div>
