@@ -16,9 +16,9 @@
 
             <div id="nursNote" class="ui segment">
                 <div class="ui top attached tabular menu">
-                    <a class="item active" data-tab="progress" id="navtab_progress">Progress Note</a>
+                    <a class="item" data-tab="progress" id="navtab_progress">Progress Note</a>
                     <a class="item" data-tab="drug" id="navtab_drug">Drug Administration</a>
-                    <a class="item" data-tab="pivc" id="navtab_pivc">PIVC</a>
+                    <!-- <a class="item" data-tab="pivc" id="navtab_pivc">PIVC</a> -->
                     <a class="item" data-tab="thrombo" id="navtab_thrombo">Thrombophlebitis</a>
                 </div>
 
@@ -159,6 +159,15 @@
                                             </div>
                                         <!-- </div> -->
 
+                                        <div class="sixteen wide column" id="addnotes_drugAdminED">
+                                            <div class="ui segments">
+                                                <div class="ui secondary segment">Additional Notes</div>
+                                                <div class="ui segment" id="jqGridAddNotesDrugAdminED_c">
+                                                    <table id="jqGridAddNotesDrugAdminED" class="table table-striped"></table>
+                                                    <div id="jqGridPagerAddNotesDrugAdminED"></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -166,11 +175,11 @@
                     </form>
                 </div>
 
-                <div class="ui bottom attached tab raised segment active" data-tab="pivc">
+                <!-- <div class="ui bottom attached tab raised segment" data-tab="pivc">
                     @include('patientcare.nursingnote_pivc_ED')
-                </div>
+                </div> -->
 
-                <div class="ui bottom attached tab raised segment" data-tab="thrombo">
+                <div class="ui bottom attached tab raised segment active" data-tab="thrombo">
                     @include('patientcare.nursingnote_thrombo_ED')
                 </div>
             </div>

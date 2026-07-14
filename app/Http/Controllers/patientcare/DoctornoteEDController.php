@@ -430,32 +430,21 @@ class DoctornoteEDController extends defaultController
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn_emergencyMain,
                     'episno' => $request->episno_emergencyMain,
-                    'complain' => $request->complain,
+                    'referredFrom' => session('username'),
                     'clinicnote' => $request->clinicnote,
-                    'drugh' => $request->drugh,
-                    'allergyh' => $request->allergyh,
-                    'genappear' => $request->genappear,
-                    'speech' => $request->speech,
-                    'moodaffect' => $request->moodaffect,
-                    'perception' => $request->perception,
-                    'thinking' => $request->thinking,
-                    'cognitivefunc' => $request->cognitivefunc,
-                    'followuptime' => $request->followuptime,
-                    'followupdate' => $request->followupdate,
-                    'aetiology' => $request->aetiology,
                     'investigate' => $request->investigate,
                     'treatment' => $request->treatment,
-                    'prognosis' => $request->prognosis,
-                    'plan_' => $request->plan_,
-                    'bp_sys1' => $request->bp_sys1,
-                    'bp_dias2' => $request->bp_dias2,
-                    'spo2' => $request->spo2,
-                    'pulse' => $request->pulse,
-                    'gxt' => $request->gxt,
-                    'temperature' => $request->temperature,
-                    'height' => $request->height,
-                    'weight' => $request->weight,
-                    'respiration' => $request->respiration,
+                    'ecg' => $request->ecg,
+                    'diagImg' => $request->diagImg,
+                    'bp_sys1' => $request->vs_bp_sys1,
+                    'bp_dias2' => $request->vs_bp_dias2,
+                    'spo2' => $request->vs_spo,
+                    'pulse' => $request->vs_pulse,
+                    'gxt' => $request->vs_gxt,
+                    'temperature' => $request->vs_temperature,
+                    'height' => $request->vs_height,
+                    'weight' => $request->vs_weight,
+                    'respiration' => $request->vs_respiration,
                     // 'pain_score' => $request->pain_score,
                     'doctorcode'  => $doctorcode,
                     'adduser'  => session('username'),
@@ -465,6 +454,8 @@ class DoctornoteEDController extends defaultController
                     'recorddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     // 'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recordtime' => $request->recordtime,
+                    'computerid' => session('computerid'),
+
                 ]);
             // DB::table('hisdb.pathistory')
             //     ->insert([
@@ -486,28 +477,28 @@ class DoctornoteEDController extends defaultController
             if($pathistory->exists()){
                 $pathistory
                     ->update([
-                        'psychiatryh' => $request->psychiatryh,
                         'pmh' => $request->pmh,
-                        'fmh' => $request->fmh,
-                        'personalh' => $request->personalh,
-                        'drugh' => $request->drugh,
-                        'allergyh' => $request->allergyh,
-                        'socialh' => $request->socialh,
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'allergydrugs' => $request->allergydrugs,
+                        'drugs_remarks' => $request->drugs_remarks,
+                        'allergyfood' => $request->allergyfood,
+                        'food_remarks' => $request->food_remarks,
+                        'allergyothers' => $request->allergyothers,
+                        'others_remarks' => $request->others_remarks,
+                        'dn_discharge' => $request->dn_discharge,
+                        'dn_referCons' => $request->dn_referCons,
+                        'dn_admission' => $request->dn_admission,
+                        'dn_aor' => $request->dn_aor,
+                        'dn_transferOut' => $request->dn_transferOut,
+                        'computerid' => session('computerid'),
                     ]);
             }else{
                 DB::table('hisdb.pathistory')
                     ->insert([
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn_emergencyMain,
-                        'psychiatryh' => $request->psychiatryh,
                         'pmh' => $request->pmh,
-                        'fmh' => $request->fmh,
-                        'personalh' => $request->personalh,
-                        'drugh' => $request->drugh,
-                        'allergyh' => $request->allergyh,
-                        'socialh' => $request->socialh,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
@@ -515,18 +506,30 @@ class DoctornoteEDController extends defaultController
                         'recorddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         // 'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
                         'recordtime' => $request->recordtime,
+                        'allergydrugs' => $request->allergydrugs,
+                        'drugs_remarks' => $request->drugs_remarks,
+                        'allergyfood' => $request->allergyfood,
+                        'food_remarks' => $request->food_remarks,
+                        'allergyothers' => $request->allergyothers,
+                        'others_remarks' => $request->others_remarks,
+                        'dn_discharge' => $request->dn_discharge,
+                        'dn_referCons' => $request->dn_referCons,
+                        'dn_admission' => $request->dn_admission,
+                        'dn_aor' => $request->dn_aor,
+                        'dn_transferOut' => $request->dn_transferOut,
+                        'computerid' => session('computerid'),
                     ]);
             }
             
-            DB::table('hisdb.episdiag')
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'mrn' => $request->mrn_emergencyMain,
-                    'episno' => $request->episno_emergencyMain,
-                    'icdcode' => $request->icdcode,
-                    'adduser'  => session('username'),
-                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                ]);
+            // DB::table('hisdb.episdiag')
+            //     ->insert([
+            //         'compcode' => session('compcode'),
+            //         'mrn' => $request->mrn_emergencyMain,
+            //         'episno' => $request->episno_emergencyMain,
+            //         'icdcode' => $request->icdcode,
+            //         'adduser'  => session('username'),
+            //         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //     ]);
             
             DB::commit();
             
@@ -584,10 +587,10 @@ class DoctornoteEDController extends defaultController
                         // ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote))
                         ->where('compcode','=',session('compcode'));
             
-            $episdiag = DB::table('hisdb.episdiag')
-                        ->where('mrn','=',$request->mrn_emergencyMain)
-                        ->where('episno','=',$request->episno_emergencyMain)
-                        ->where('compcode','=',session('compcode'));
+            // $episdiag = DB::table('hisdb.episdiag')
+            //             ->where('mrn','=',$request->mrn_emergencyMain)
+            //             ->where('episno','=',$request->episno_emergencyMain)
+            //             ->where('compcode','=',session('compcode'));
             
             // if($patexam->exists()){
             //     $patexam->update([
@@ -625,7 +628,7 @@ class DoctornoteEDController extends defaultController
             if($pathealth->exists()){
                 $pathealth
                     ->update([
-                        'complain' => $request->complain,
+                        'referredFrom' => session('username'),
                         'clinicnote' => $request->clinicnote,
                         'drugh' => $request->drugh,
                         'allergyh' => $request->allergyh,
@@ -662,7 +665,7 @@ class DoctornoteEDController extends defaultController
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn_emergencyMain,
                         'episno' => $request->episno_emergencyMain,
-                        'complain' => $request->complain,
+                        'referredFrom' => session('username'),
                         'clinicnote' => $request->clinicnote,
                         'drugh' => $request->drugh,
                         'allergyh' => $request->allergyh,
@@ -735,22 +738,22 @@ class DoctornoteEDController extends defaultController
                     ]);
             }
             
-            if($episdiag->exists()){
-                $episdiag
-                    ->update([
-                        'icdcode' => $request->icdcode,
-                    ]);
-            }else{
-                DB::table('hisdb.episdiag')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_emergencyMain,
-                        'episno' => $request->episno_emergencyMain,
-                        'icdcode' => $request->icdcode,
-                        'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    ]);
-            }
+            // if($episdiag->exists()){
+            //     $episdiag
+            //         ->update([
+            //             'icdcode' => $request->icdcode,
+            //         ]);
+            // }else{
+            //     DB::table('hisdb.episdiag')
+            //         ->insert([
+            //             'compcode' => session('compcode'),
+            //             'mrn' => $request->mrn_emergencyMain,
+            //             'episno' => $request->episno_emergencyMain,
+            //             'icdcode' => $request->icdcode,
+            //             'adduser'  => session('username'),
+            //             'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //         ]);
+            // }
             
             $queries = DB::getQueryLog();
             // dump($queries);
@@ -798,6 +801,13 @@ class DoctornoteEDController extends defaultController
                     })->leftJoin('hisdb.doctor as d', function ($join) use ($request){
                         $join = $join->on('d.doctorcode', '=', 'e.admdoctor');
                         $join = $join->on('d.compcode', '=', 'e.compcode');
+                    // })->leftJoin('nursing.nursassessment as na', function ($join) use ($request){
+                    //     $join = $join->on('na.compcode', '=', 'e.compcode');
+                    //     $join = $join->on('na.mrn', '=', 'e.mrn');
+                    //     $join = $join->on('na.episno', '=', 'e.episno');
+                    // })->leftJoin('nursing.nurshistory as dc', function ($join) use ($request){
+                    //     $join = $join->on('dc.compcode', '=', 'e.compcode');
+                    //     $join = $join->on('dc.mrn', '=', 'e.mrn');
                     })
                     ->where('e.compcode','=',session('compcode'))
                     ->where('e.mrn','=',$request->mrn)
@@ -806,7 +816,6 @@ class DoctornoteEDController extends defaultController
         
         if($episode_obj->exists()){
             $episode_obj = $episode_obj->get();
-            
             $data = [];
             
             foreach($episode_obj as $key => $value){
@@ -905,14 +914,14 @@ class DoctornoteEDController extends defaultController
                         ->where('episno','=',$request->episno);
         
         $pathealth_obj = DB::table('hisdb.pathealth')
-                        ->select('idno','compcode','mrn','episno','height','weight','temperature','pulse','bp_sys1','bp_dias2','respiration','gxt','pain_score','spo2','clinicnote','adduser','adddate','upduser','upddate','complain','recorddate','recordtime','visionl','visionr','colorblind','recstatus','plan_','allergyh','fmh','pmh','socialh','drugh','vas','aggr','easing','pain','behaviour','irritability','severity','lastuser','lastupdate','followupdate','followuptime','anr_rhesus','anr_rubella','anr_vdrl','anr_hiv','anr_hepaB_Ag','anr_hepaB_AB','anr_bloodTrans','anr_drugAllergies','doctorcode','newic','arrival_date','nursing_complete','doctor_complete','computerid','genappear','speech','moodaffect','perception','thinking','cognitivefunc','aetiology','investigate','treatment','prognosis')
+                        ->select('idno','compcode','mrn','episno','height','weight','temperature','pulse','bp_sys1','bp_dias2','respiration','gxt','spo2','clinicnote','adduser','adddate','referredFrom','recorddate','recordtime','doctorcode','newic','arrival_date','nursing_complete','doctor_complete','computerid','investigate','treatment','ecg','diagImg')
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno)
                         ->where('recordtime','=',$request->recordtime);
         
         $pathistory_obj = DB::table('hisdb.pathistory')
-                        ->select('idno','compcode','mrn','recorddate','adduser','lastuser','lastupdate','recstatus','pathname','filename','drugh','pmh','fmh','allergyh','socialh','pgh_myomectomy','pgh_laparoscopy','pgh_endometriosis','lastpapsmear','pgh_others','pmh_renaldisease','pmh_hypertension','pmh_diabetes','pmh_heartdisease','pmh_others','psh_appendicectomy','psh_hypertension','psh_laparotomy','psh_thyroidsurgery','psh_others','fh_hypertension','fh_diabetes','fh_epilepsy','fh_multipregnancy','fh_congenital','anr_bloodgroup','anr_attInject_1st','anr_attInject_2nd','anr_attInject_boost','psychiatryh','personalh')
+                        ->select('idno','compcode','mrn','recorddate','adduser','lastuser','lastupdate','recstatus','allergydrugs','drugs_remarks','allergyfood','food_remarks','allergyothers','others_remarks','computerid','pmh','dn_discharge','dn_referCons','dn_admission','dn_aor','dn_transferOut')
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn);
         
@@ -921,16 +930,29 @@ class DoctornoteEDController extends defaultController
         //                 ->where('mrn','=',$request->mrn)
         //                 ->where('episno','=',$request->episno);
         
-        $episdiag_obj = DB::table('hisdb.episdiag')
-                        ->select('compcode','mrn','episno','seq','icdcode','diagstatus','lastuser','lastupdate','icdcodeno','adduser','type','suppcode','ripdate','f1','f2','f3','f4','f5')
+        // $episdiag_obj = DB::table('hisdb.episdiag')
+        //                 ->select('compcode','mrn','episno','seq','icdcode','diagstatus','lastuser','lastupdate','icdcodeno','adduser','type','suppcode','ripdate','f1','f2','f3','f4','f5')
+        //                 ->where('compcode','=',session('compcode'))
+        //                 ->where('mrn','=',$request->mrn)
+        //                 ->where('episno','=',$request->episno);
+        
+        $nursaddnote_obj = DB::table('nursing.nursaddnote')
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->where('type','=','DOCTORNOTE_ED');
+
+        $nursassessment_obj = DB::table('nursing.nursassessment')
+                        ->select('vs_bp_sys1 as vs_bp_sys1','vs_bp_dias2 as vs_bp_dias2','vs_spo as vs_spo','vs_pulse as vs_pulse','vs_gxt as vs_gxt','vs_temperature as vs_temperature','vs_weight as vs_weight','vs_height as vs_height','vs_respiration as vs_respiration')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('location','=','ED')
+                        ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno);
-        
-        $pathealthadd_obj = DB::table('hisdb.pathealthadd')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno);
+
+        $nurshistory_obj = DB::table('nursing.nurshistory')
+                        ->select('allergydrugs as allergydrugs','drugs_remarks as drugs_remarks','allergyfood as allergyfood','food_remarks as food_remarks','allergyothers as allergyothers','others_remarks as others_remarks')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$request->mrn);
         
         if($episode_obj->exists()){
             $episode_obj = $episode_obj->first();
@@ -952,14 +974,24 @@ class DoctornoteEDController extends defaultController
         //     $responce->patexam = $patexam_obj;
         // }
         
-        if($episdiag_obj->exists()){
-            $episdiag_obj = $episdiag_obj->first();
-            $responce->episdiag = $episdiag_obj;
-        }
+        // if($episdiag_obj->exists()){
+        //     $episdiag_obj = $episdiag_obj->first();
+        //     $responce->episdiag = $episdiag_obj;
+        // }
         
-        if($pathealthadd_obj->exists()){
-            $pathealthadd_obj = $pathealthadd_obj->first();
-            $responce->pathealthadd = $pathealthadd_obj;
+        if($nursaddnote_obj->exists()){
+            $nursaddnote_obj = $nursaddnote_obj->first();
+            $responce->nursaddnote = $nursaddnote_obj;
+        }
+
+        if($nursassessment_obj->exists()){
+            $nursassessment_obj = $nursassessment_obj->first();
+            $responce->nursassessment = $nursassessment_obj;
+        }
+
+        if($nurshistory_obj->exists()){
+            $nurshistory_obj = $nurshistory_obj->first();
+            $responce->nurshistory = $nurshistory_obj;
         }
         
         $responce->transaction = json_decode($this->get_transaction_table($request));
@@ -1016,19 +1048,32 @@ class DoctornoteEDController extends defaultController
     }
     
     public function add_notes(Request $request){
-        
         DB::beginTransaction();
-        
+       
         try {
+
+            $doctorcode_obj = DB::table('hisdb.doctor')
+                            ->select('doctorcode')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('loginid','=',session('username'));
             
-            DB::table('hisdb.pathealthadd')
+            $doctorcode = null;
+            if($doctorcode_obj->exists()){
+                $doctorcode = $doctorcode_obj->first()->doctorcode;
+            }
+            
+            DB::table('nursing.nursaddnote')
                 ->insert([
-                    // 'compcode' => session('compcode'),
+                    'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
-                    'additionalnote' => $request->additionalnote,
-                    'adduser'  => session('username'),
-                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")
+                    'type' => 'DOCTORNOTE_ED',
+                    'note' => $request->note,
+                    'adduser'  => $doctorcode,
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => $doctorcode,
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
                 ]);
              
             DB::commit();

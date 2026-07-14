@@ -2215,7 +2215,7 @@ function saveForm_refLetter(callback){
 		oper: $("#cancel_refLetter").data('oper'),
 		mrn: $('#mrn_doctorNote').val(),
 		episno: $("#episno_doctorNote").val(),
-		// reftype: 'Psychiatrist'
+		reftype: 'Psychiatrist'
 	}
 	
 	var postobj = {

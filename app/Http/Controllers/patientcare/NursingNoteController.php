@@ -62,8 +62,14 @@ class NursingNoteController extends defaultController
                         return 'error happen..';
                 }
 
+            case 'add_ProgressED_save':
+                return $this->add_ProgressED($request);
+
             case 'patMedic_save':
                 return $this->add_patMedic($request);
+
+            case 'add_DrugAdminED_save':
+                return $this->add_DrugAdminED($request);
 
             case 'save_table_pivc_ED':
                 switch($request->oper){
@@ -84,6 +90,9 @@ class NursingNoteController extends defaultController
                     default:
                         return 'error happen..';
                 }
+
+            case 'add_ThromboED_save':
+                return $this->add_ThromboED($request);
 
             case 'get_table_progress_ED':
                 return $this->get_table_progress_ED($request);
@@ -477,6 +486,37 @@ class NursingNoteController extends defaultController
         
     }
 
+    public function add_ProgressED(Request $request){
+        DB::beginTransaction();
+       
+        try {
+            
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'PROGRESSNOTE_ED',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+
     public function add_patMedic(Request $request){
         
         DB::beginTransaction();
@@ -500,6 +540,37 @@ class NursingNoteController extends defaultController
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+
+    public function add_DrugAdminED(Request $request){
+        DB::beginTransaction();
+       
+        try {
+            
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'DRUGADMIN_ED',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
             DB::commit();
             
         } catch (\Exception $e) {
@@ -970,6 +1041,37 @@ class NursingNoteController extends defaultController
             
         }
     
+    }
+
+    public function add_ThromboED(Request $request){
+        DB::beginTransaction();
+       
+        try {
+            
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'THROMBO',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
     }
 
     public function get_table_progress_ED(Request $request){

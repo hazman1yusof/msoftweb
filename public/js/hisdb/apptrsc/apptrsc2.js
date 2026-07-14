@@ -326,6 +326,14 @@ $(document).ready(function () {
 		modal: true,
 		open: function(event,ui){
 			$("#addForm input[name='icnum']").prop('readonly',true);
+			
+			let status  = $("#status option:selected" ).val();
+			// console.log(status);
+			if(status == 'postponed') {
+				$('#postponedDate').show();
+			}else{
+				$('#postponedDate').hide();
+			}
 		},
 		close: function( event, ui ){
 			emptyFormdata(errorField,'#addForm',['#computerid']);
@@ -501,14 +509,12 @@ $(document).ready(function () {
 					var start = $(".fc-myCustomButton-button").data("start");
 					var diagnosis = $('#diagnosis').val();
 					var procedure = $('#procedure').val();
-					console.log(diagnosis+procedure);
 
 					$('#dialogForm #doctor').val(temp);
 					$('#dialogForm #description').val($('#resource_desc').val());
 					$('#apptdatefr_day').val(moment(start).format('YYYY-MM-DD'));
 					$('#diagnosis').text('');
 					$('#procedure').text('');
-					
 					$("#dialogForm").dialog("open");
             	}
         	}
@@ -601,7 +607,12 @@ $(document).ready(function () {
 					$('#idno').val(event.idno);
 					$('#lastuser').val(event.lastuser);
 					$('#op_unit').val(event.op_unit);
-					$('#oper_type').val(event.oper_type);
+					$('#op_type_OT').val(event.op_type);
+					$('#oper_type_OT').val(event.oper_type);
+					$('#oper_type2_OT').val(event.oper_type2);
+					$('#oper_type3_OT').val(event.oper_type3);
+					$('#oper_type4_OT').val(event.oper_type4);
+					$('#oper_type5_OT').val(event.oper_type5);
 					$('#oper_status').val(event.oper_status);
 					$('#diagnosis').text(event.diagnosis);
 					$('#procedure').text(event.procedure);
@@ -610,6 +621,7 @@ $(document).ready(function () {
 					$('#surgeon').val(event.surgeon);
 					$('#lastupdate').val(event.lastupdate);
 					$('#iPesakit').val(event.iPesakit);
+					$('#postponed_date').val(event.postponed_date);
 					if(event.cArm == '1'){
 						$("input[name=cArm][value='1']").prop("checked",true);
 					}else{
@@ -1211,6 +1223,16 @@ $(document).ready(function () {
 
 	init_icd_but();
 	init_mma_but();
+
+	$('#status').on('change', function() {
+		let status  = $("#status option:selected" ).val();
+		// console.log(status);
+		if(status == 'postponed') {
+			$('#postponedDate').show();
+		}else{
+			$('#postponedDate').hide();
+		}
+	})
 
 });
 

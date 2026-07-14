@@ -217,7 +217,7 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/emergency/transaction.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/emergency/transaction_diet.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/emergency/transaction_phys.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/emergency/doctornote.js?v=1.6') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/emergency/doctornote_ED.js?v=1.6') }}"></script>
 
     <script type="text/javascript" src="{{ asset('patientcare/js/emergency/nursing/nursing.js?v=1.3') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/nursingnote.js?v=1.3') }}"></script>

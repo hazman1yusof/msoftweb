@@ -146,6 +146,7 @@ class OTDischargeController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
+                    'enteredby'  => session('username'),
                 ]);
             
             DB::commit();
@@ -256,6 +257,7 @@ class OTDischargeController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
+                    'enteredby'  => session('username'),
                 ]);
             
             // $queries = DB::getQueryLog();
@@ -348,6 +350,7 @@ class OTDischargeController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
+                    'enteredby'  => session('username'),
                 ]);
 
             if(!empty($request->iPesakit)){
@@ -452,6 +455,7 @@ class OTDischargeController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
+                    'enteredby'  => session('username'),
                 ]);
             
             if(!empty($request->iPesakit)){
@@ -492,7 +496,7 @@ class OTDischargeController extends defaultController
     public function get_table_otdischarge(Request $request){
         
         $otdischarge_obj = DB::table('nursing.otdischarge')
-                            ->select('idno','compcode','mrn','episno','iPesakit as i_Pesakit','patName','identitytag','patID','use2iden','pat_ot','pat_ward','pat_checked','pat_remark','consciousAlert','consciousDrowsy','consciousIntubated','consciouslvl_ot','consciouslvl_ward','consciouslvl_checked','consciouslvl_remark','vitalsign_ot','vitalsign_ward','vitalsign_checked','bpsys1','bpdias','painscore','vitalsign_remark','checksite_ot','checksite_ward','checksite_checked','checksite_remark','checkdrains_ot','checkdrains_ward','checkdrains_checked','checkdrains_remark','checkiv_ot','checkiv_ward','checkiv_checked','checkiv_remark','blood_ot','blood_ward','blood_checked','blood_remark','specimen_ot','specimen_ward','specimen_checked','specimen_remark','casenotes','otherdocs','gaform','oldnotes','opernotes','xrays','docs_ward','docs_ot','docs_checked','docs_remark','imgstudies_ot','imgstudies_ward','imgstudies_remark','painrelief_ot','painrelief_ward','painrelief_checked','painrelief_remark','others_ot','others_ward','others_remark','arterial_ot','arterial_ward','arterial_remark','pcapump_ot','pcapump_ward','pcapump_remark','addmore1','addmore1_ot','addmore1_ward','addmore1_checked','addmore1_remark','addmore2','addmore2_ot','addmore2_ward','addmore2_checked','addmore2_remark','addmore3','addmore3_ot','addmore3_ward','addmore3_checked','addmore3_remark','addmore4','addmore4_ot','addmore4_ward','addmore4_checked','addmore4_remark','addmore5','addmore5_ot','addmore5_ward','addmore5_checked','addmore5_remark','addmore6','addmore6_ot','addmore6_ward','addmore6_checked','addmore6_remark','otNurse','wardNurse','entereddate','enteredtime','adduser','adddate','upduser','upddate','lastuser','lastupdate','computerid')
+                            ->select('idno','compcode','mrn','episno','iPesakit as i_Pesakit','patName','identitytag','patID','use2iden','pat_ot','pat_ward','pat_checked','pat_remark','consciousAlert','consciousDrowsy','consciousIntubated','consciouslvl_ot','consciouslvl_ward','consciouslvl_checked','consciouslvl_remark','vitalsign_ot','vitalsign_ward','vitalsign_checked','bpsys1','bpdias','painscore','vitalsign_remark','checksite_ot','checksite_ward','checksite_checked','checksite_remark','checkdrains_ot','checkdrains_ward','checkdrains_checked','checkdrains_remark','checkiv_ot','checkiv_ward','checkiv_checked','checkiv_remark','blood_ot','blood_ward','blood_checked','blood_remark','specimen_ot','specimen_ward','specimen_checked','specimen_remark','casenotes','otherdocs','gaform','oldnotes','opernotes','xrays','docs_ward','docs_ot','docs_checked','docs_remark','imgstudies_ot','imgstudies_ward','imgstudies_remark','painrelief_ot','painrelief_ward','painrelief_checked','painrelief_remark','others_ot','others_ward','others_remark','arterial_ot','arterial_ward','arterial_remark','pcapump_ot','pcapump_ward','pcapump_remark','addmore1','addmore1_ot','addmore1_ward','addmore1_checked','addmore1_remark','addmore2','addmore2_ot','addmore2_ward','addmore2_checked','addmore2_remark','addmore3','addmore3_ot','addmore3_ward','addmore3_checked','addmore3_remark','addmore4','addmore4_ot','addmore4_ward','addmore4_checked','addmore4_remark','addmore5','addmore5_ot','addmore5_ward','addmore5_checked','addmore5_remark','addmore6','addmore6_ot','addmore6_ward','addmore6_checked','addmore6_remark','otNurse','wardNurse','entereddate','enteredtime','adduser','adddate','upduser','upddate','lastuser','lastupdate','computerid','enteredby')
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
                             ->where('episno','=',$request->episno);

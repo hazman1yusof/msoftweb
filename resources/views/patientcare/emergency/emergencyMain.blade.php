@@ -22,7 +22,7 @@
             <a class="item" data-tab="doctornote" id="navtab_doctornote">Doctor Note</a>
             <a class="item" data-tab="requestFor" id="navtab_requestFor">Request For</a>
             <a class="item" data-tab="admHandover" id="navtab_admHandover">Admission Handover</a>
-            <a class="item" data-tab="diet" id="navtab_diet">Dietetic Care Notes</a>
+            <!-- <a class="item" data-tab="diet" id="navtab_diet">Dietetic Care Notes</a> -->
 
         </div>
 
@@ -39,7 +39,7 @@
         </div>
 
         <div class="ui bottom attached tab raised segment" data-tab="doctornote">
-            @include('patientcare.emergency.doctornote_div')
+            @include('patientcare.emergency.doctornote_ED')
         </div>
 
         <div class="ui bottom attached tab raised segment" data-tab="requestFor">
@@ -50,7 +50,7 @@
             @include('patientcare.emergency.admhandover')
         </div>
 
-        <div class="ui bottom attached tab raised segment" data-tab="diet">
+        <div class="ui bottom attached tab raised segment" data-tab="diet" style="display:none">
             @include('patientcare.emergency.dieteticCareNotes')
         </div>
     </div>

@@ -286,10 +286,9 @@ $(document).ready(function () {
 		});
 	}
 
+	
 	$('#otMain_tab .top.menu .item').tab({'onVisible': function (){
         let tab = $(this).data('tab');
-        // console.log(tab);
-        
         switch(tab){
             case 'preoperative':
                 if($('#mrn_otMain').val() != ''){
@@ -308,10 +307,12 @@ $(document).ready(function () {
                 break;
             case 'otswab':
                 $("#jqGrid_otswab").jqGrid('setGridWidth', Math.floor($("#jqGrid_otswab_c")[0].offsetWidth-$("#jqGrid_otswab_c")[0].offsetLeft-14));
-    
+				$("#jqGrid_specimen").jqGrid('setGridWidth', Math.floor($("#jqGrid_specimen_c")[0].offsetWidth-$("#jqGrid_specimen_c")[0].offsetLeft-14));
+
                 if($('#mrn_otMain').val() != ''){
                     getdata_otswab();
                 }
+				
                 break;
             case 'ottime':
                 if($('#mrn_otMain').val() != ''){
@@ -333,7 +334,41 @@ $(document).ready(function () {
                 }
                 break;
         }
+
+		
     }});
+
+	// var unsaved = false;
+
+		// 	$(":input").change(function(){ //triggers change in all input fields including text type
+		// 		unsaved = true;
+		// 	});
+					
+		// 	function unloadPage(){ 
+		// 		if(unsaved){
+		// 			return "You have unsaved changes on this page. Do you want to leave this page and discard your changes or stay on this page?";
+		// 		}
+		// 	}
+					
+		// 	window.onbeforeunload = unloadPage;
+	
+	// function alertSave(event, ui){
+	// 	if(button_state_otswab($(this).data('oper','add'))){
+	// 		event.preventDefault();
+	// 		bootbox.confirm({
+	// 			message: "Total Detail Amount is not equal with Invoice Amount. <br> Do you want to proceed?",
+	// 			buttons: { confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
+	// 			},
+	// 			callback: function (result) {
+	// 				if(result == true){
+	// 					alert('true')
+	// 				}else{
+	// 					alert('false')
+	// 				}
+	// 			}
+	// 		});
+	// 	}
+	// }
 	
 	// $("#jqGrid").jqGrid('setGroupHeaders', {
 	// 	useColSpanStyle: true,

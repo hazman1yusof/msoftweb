@@ -321,6 +321,16 @@ button#btn_icd,button#btn_mma{
 									</select>	
 								</div>
 							</div>
+							<div class="form-group" style="display:none;" id="postponedDate">
+								<label class="col-md-2 control-label"></label>
+								<div class="col-md-3">
+								</div>
+
+								<label for="postponed_date" class="col-md-2 control-label">Postponed Date</label>
+								<div class="col-md-3">
+									<input type="date" class="form-control input-sm" id="postponed_date" name="postponed_date">	
+								</div>
+							</div>
 							<div class="form-group">
 								<label for="telhp" class="col-md-2 control-label">Tel Hp</label>
 								<div class="col-md-3">
@@ -368,15 +378,56 @@ button#btn_icd,button#btn_mma{
 									</div>
 									<span class='help-block'></span>
 								</div>
-								<label for="oper_type" class="col-md-2 control-label">Operation Type</label>
+								<label for="op_type_OT" class="col-md-2 control-label">Operation Type</label>
 								<div class="col-md-3">
-									<select name="oper_type" id="oper_type" class="form-control input-sm">
+									<select name="op_type" id="op_type_OT" class="form-control input-sm">
 										<option value=""></option>
 										<option value="MAJOR">MAJOR</option>	
 										<option value="MINOR">MINOR</option>
 									</select>
 								</div>
 							</div>
+
+							<div class="form-group">
+								<label class="col-md-3 control-label">Type of Operation / Procedure</label>
+								<label class="col-md-1 control-label" for="oper_type_OT">1.</label>
+								<div class="col-md-6">
+									<input id="oper_type_OT" name="oper_type" type="text" class="form-control input-sm" style="text-transform: none;">
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="col-md-3 control-label"></label>
+								<label class="col-md-1 control-label" for="oper_type2_OT">2.</label>
+								<div class="col-md-6">
+									<input id="oper_type2_OT" name="oper_type2" type="text" class="form-control input-sm" style="text-transform: none;">
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="col-md-3 control-label"></label>
+								<label class="col-md-1 control-label" for="oper_type3_OT">3.</label>
+								<div class="col-md-6">
+									<input id="oper_type3_OT" name="oper_type3" type="text" class="form-control input-sm" style="text-transform: none;">
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="col-md-3 control-label"></label>
+								<label class="col-md-1 control-label" for="oper_type4_OT">4.</label>
+								<div class="col-md-6">
+									<input id="oper_type4_OT" name="oper_type4" type="text" class="form-control input-sm" style="text-transform: none;">
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="col-md-3 control-label"></label>
+								<label class="col-md-1 control-label" for="oper_type5_OT">5.</label>
+								<div class="col-md-6">
+									<input id="oper_type5_OT" name="oper_type5" type="text" class="form-control input-sm" style="text-transform: none;">
+								</div>
+							</div>
+
 							<div class="form-group" style="display: none;">
 								<label for="oper_status" class="col-md-2 control-label">Operation Status</label>
 								<div class="col-md-3">
@@ -389,7 +440,7 @@ button#btn_icd,button#btn_mma{
 								</div>
 							</div>
 
-							<div class="form-group">
+							<div class="form-group" style="display:none;">
 								<label for="procedure" class="col-md-2 control-label" style="position: relative;">Procedure
 									<button class="btn btn-primary" type="button" id="btn_mma"><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span> MMA</button>
 								</label>

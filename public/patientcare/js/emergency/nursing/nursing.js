@@ -1,12 +1,23 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
+///////////////////////////////////parameter for jqGridAddNotesNursingED url///////////////////////////////////
+var urlParam_AddNotesNursingED = {
+	action: 'get_table_default',
+	url: './util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','NURSING_ED'],
+}
 
 $(document).ready(function () {
 	
 	var fdl = new faster_detail_load();
+	var radbuts = new checkradiobutton(['gsc_eye','gsc_verbal','gsc_motor','painscore']);
+	refreshGrid('#jqGridAddNotesNursingED',urlParam_AddNotesNursingED,'add_notes');
 
 	$('#tab_triage').on('show.bs.collapse', function () {
 		return check_if_user_selected();
@@ -43,6 +54,7 @@ $(document).ready(function () {
 	});
 
 	$("#save_ti").click(function(){
+		radbuts.check();
 		if( $('#formTriageInfo').isValid({requiredFields: ''}, conf, true) ) {
 			readonlyForm('#formTriageInfo');
 			saveForm_ti(function(){
@@ -58,8 +70,7 @@ $(document).ready(function () {
 	$("#cancel_ti").click(function(){
 		disableForm('#formTriageInfo');
 		button_state_ti($(this).data('oper'));
-		// dialog_mrn_edit.off();
-
+		radbuts.reset();
 	});
 
 	// to format number input to two decimal places (0.00)
@@ -141,6 +152,150 @@ $(document).ready(function () {
 			}
 		}
 	});
+
+	//////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridNursingED = {more:false,state:false,edit:false}
+	
+	///////////////////////////////////////////jqGridAddNotesNursingED///////////////////////////////////////////
+	$("#jqGridAddNotesNursingED").jqGrid({
+		datatype: "local",
+		editurl: "/ptcare_nursing/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		scroll: true,
+		width: 700,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesNursingED",
+		loadComplete: function (){
+			if(addmore_jqgridNursingED.more == true){$('#jqGridAddNotesNursingED_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid ('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridNursingED.edit = addmore_jqgridNursingED.more = false; // reset
+		},
+		ondblClickRow: function (rowid, iRow, iCol, e){
+			$("#jqGridAddNotesNursingED_iledit").click();
+		},
+	});
+	
+	////////////////////////////////////////////myEditOptions////////////////////////////////////////////
+	var myEditOptions_addNursingED = {
+		keys: true,
+		extraparam: {
+			"_token": $("#_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesNursingED_ilsave').click();
+				// addmore_jqgridNursingED.state = true;
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridNursingED.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesNursingED',urlParam_AddNotesNursingED,'add_notes');
+			errorField.length = 0;
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesNursingED',urlParam_AddNotesNursingED,'add_notes');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			if(errorField.length > 0)return false;
+			
+			let data = $('#jqGridAddNotesNursingED').jqGrid('getRowData', rowid);
+			
+			let editurl = "/ptcare_nursing/form?"+
+				$.param({
+					_token: $('#_token').val(),
+					episno: $('#episno_emergencyMain').val(),
+					mrn: $('#mrn_emergencyMain').val(),
+					action: 'addNotes_save',
+				});
+			$("#jqGridAddNotesNursingED").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc : function (response){
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////////jqGridPagerAddNotesNursingED/////////////////////////////////////////
+	$("#jqGridAddNotesNursingED").inlineNav('#jqGridPagerAddNotesNursingED', {
+		add: true,
+		edit: false,
+		cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addNursingED
+		},
+		// editParams: myEditOptions_edit
+	})
+	// .jqGrid('navButtonAdd', "#jqGridPagerAddNotesNursingED", {
+	// 	id: "jqGridPagerDelete",
+	// 	caption: "", cursor: "pointer", position: "last",
+	// 	buttonicon: "glyphicon glyphicon-trash",
+	// 	title: "Delete Selected Row",
+	// 	onClickButton: function (){
+	// 		selRowId = $("#jqGridAddNotesNursingED").jqGrid('getGridParam', 'selrow');
+	// 		if(!selRowId){
+	// 			alert('Please select row');
+	// 		}else{
+	// 			var result = confirm("Are you sure you want to delete this row?");
+	// 			if(result == true){
+	// 				param = {
+	// 					_token: $("#csrf_token").val(),
+	// 					action: 'addNotes_save',
+	// 					idno: selrowData('#jqGridAddNotesNursingED').idno,
+	// 				}
+					
+	// 				$.post("/doctornote/form?"+$.param(param), {oper:'del'}, function (data){
+						
+	// 				}).fail(function (data){
+	// 					//////////////////errorText(dialog,data.responseText);
+	// 				}).done(function (data){
+	// 					refreshGrid("#jqGridAddNotesNursingED", urlParam_AddNotesNursingED);
+	// 				});
+	// 			}else{
+	// 				$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+	// 			}
+	// 		}
+	// 	},
+	// })
+	.jqGrid('navButtonAdd', "#jqGridPagerAddNotesNursingED", {
+		id: "jqGridPagerRefresh_addnotes",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesNursingED", urlParam_AddNotesNursingED);
+		},
+	});
+	///////////////////////////////////////////////end grid///////////////////////////////////////////////
 });
 
 function changeTextInputColor(empty){
@@ -260,7 +415,12 @@ function populate_triage_currpt(obj){
 	$("#mrn_emergencyMain").val(obj.MRN);
 	$("#episno_emergencyMain").val(obj.Episno);
 	$("#age_emergencyMain").val(dob_age(obj.DOB));
-	
+
+	urlParam_AddNotesNursingED.filterVal[0] = obj.MRN;
+	urlParam_AddNotesNursingED.filterVal[1] = obj.Episno;
+	urlParam_AddNotesNursingED.filterVal[2] = 'NURSING_ED';
+	refreshGrid('#jqGridAddNotesNursingED',urlParam_AddNotesNursingED,'add_notes');
+
 	$("#tab_triage").collapse('hide');
 }
 
@@ -383,6 +543,7 @@ function getdata_nursing(){
 			if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
 			if(!emptyobj_(data.triage_nurshistory))autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
 			if(!emptyobj_(data.triage_gen))$('#formTriageInfo span#adduser').text(data.triage_gen.adduser);
+			refreshGrid('#jqGridAddNotesNursingED',urlParam_AddNotesNursingED,'add_notes');
 			button_state_ti('edit');
 			tri_color_set();
 			changeTextInputColor();
@@ -392,6 +553,11 @@ function getdata_nursing(){
 			changeTextInputColor('empty');
 			if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
 		}
+
+		urlParam_AddNotesNursingED.filterVal[0] = data.mrn;
+		urlParam_AddNotesNursingED.filterVal[1] = data.episno;
+		urlParam_AddNotesNursingED.filterVal[2] = 'NURSING_ED';
+		refreshGrid('#jqGridAddNotesNursingED',urlParam_AddNotesNursingED,'add_notes');
 
 	});
 }

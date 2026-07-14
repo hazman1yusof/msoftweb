@@ -95,6 +95,7 @@ class OTTimeController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                     'computerid' => session('computerid'),
+                    'enteredby'  => session('username'),
                 ]);
             
             if(!empty($request->iPesakit)){
@@ -170,6 +171,7 @@ class OTTimeController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                     'computerid' => session('computerid'),
+                    'enteredby'  => session('username'),
                 ]);
             
             if(!empty($request->iPesakit)){
@@ -329,7 +331,7 @@ class OTTimeController extends defaultController
     public function get_table_ottime(Request $request){
         
         $ottime_obj = DB::table('nursing.ottime')
-                    ->select('idno','compcode','mrn','episno','iPesakit as i_Pesakit','pcrResult','pcrDate','callPtTime','callPtDate','ppkWardTime','ppkWardDate','receptionTime','receptionDate','patientOTtime','patientOTdate','incisionstart','incisionend','ptOutTime','ptOutDate','wardCallTime','wardCallDate','ptWardTime','ptWardDate','scrubperson','gaNurse','circulateperson','hlthcareAsst','otCleanedBy','remarks','adduser','adddate','upduser','upddate','lastuser','lastupdate','computerid','ipaddress','lastcomputerid','lastipaddress','ottimeDate','case','dept','vendor','arrive_time','arrive_date','in_time','in_date','start_time','start_date','end_time','end_date','recovery_time','recovery_date','depart_time','depart_date','type_anaesth','anaesth','diagnosis','procedure')
+                    ->select('idno','compcode','mrn','episno','iPesakit as i_Pesakit','pcrResult','pcrDate','callPtTime','callPtDate','ppkWardTime','ppkWardDate','receptionTime','receptionDate','patientOTtime','patientOTdate','incisionstart','incisionend','ptOutTime','ptOutDate','wardCallTime','wardCallDate','ptWardTime','ptWardDate','scrubperson','gaNurse','circulateperson','hlthcareAsst','otCleanedBy','remarks','adduser','adddate','upduser','upddate','lastuser','lastupdate','computerid','ipaddress','lastcomputerid','lastipaddress','ottimeDate','case','dept','vendor','arrive_time','arrive_date','in_time','in_date','start_time','start_date','end_time','end_date','recovery_time','recovery_date','depart_time','depart_date','type_anaesth','anaesth','diagnosis','procedure','enteredby')
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);

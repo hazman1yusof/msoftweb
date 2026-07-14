@@ -27,42 +27,6 @@ $(document).ready(function (){
     $(".floatNumberField").change(function (){
         $(this).val(parseFloat($(this).val()).toFixed(2));
     });
-
-    // function preview_load_data(){
-    // 	let mrn = $('#mrn_emergencyMain').val();
-    //     DataTable_preview.clear().draw();
-        
-    //     if(mrn.trim().length == 0){
-    //         return false;
-    //     }
-
-    //     var urlParam={
-    //         action:'preview value',
-    //         url:'./ptcare_preview/data',
-    //         mrn:parseInt(mrn)
-    //     }
-
-    //     $.get( urlParam.url+"?"+$.param(urlParam), function( data ) {
-                    
-    //     },'json').done(function(data) {
-    //         if(!$.isEmptyObject(data.rows)){
-    //             data.rows.forEach(function(obj,i){
-    //                 obj.auditno = obj.auditno; 
-    //                 obj.trxdate = formatDate_mom(obj.trxdate,'YYYY-MM-DD HH:mm:ss');
-    //                 obj.filename = obj.resulttext;
-    //                 obj.preview = make_preview_image(i,obj.attachmentfile,obj.type,obj.auditno);
-    //                 obj.mrn = obj.mrn;
-    //                 obj.type = obj.type;
-    //                 obj.adduser = obj.adduser;
-    //                 obj.adddate = formatDate_mom(obj.adddate,'YYYY-MM-DD HH:mm:ss');
-    //                 obj.download = make_download_butt(i,obj.attachmentfile,obj.type,obj.resulttext);
-    //             });
-
-    //             DataTable_preview.rows.add(data.rows).draw();
-    //             DataTable_preview.columns.adjust().draw();
-    //         }
-    //     });
-    // }
     
     // to limit to two decimal places (onkeypress)
     $(document).on('keydown', 'input[pattern]', function (e){
@@ -80,44 +44,49 @@ $(document).ready(function (){
 
     $('#emergencyMain_tab .menu .item').tab({'onVisible': function (){
         let tab = $(this).data('tab');
-        console.log(tab);
+        // console.log(tab);
 
         switch(tab){
             case 'userfile':
 				DataTable_preview.columns.adjust();
-				// SmoothScrollTo("#tab_userfile", 300);
 				preview_load_data();
                 break;
             case 'nursing_ed':
 				getdata_nursing();
                 tri_color_set();
 	            changeTextInputColor();
+                radbuts.reset();
+
+                $("#jqGridAddNotesNursingED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesNursingED_c")[0].offsetWidth-$("#jqGridAddNotesNursingED_c")[0].offsetLeft));
+			    refreshGrid('#jqGridAddNotesNursingED',urlParam_AddNotesNursingED);
                 break;
             case 'nursNote':
-                $('#nursNote .top.menu .item').tab('change tab','pivc');
-                var urlparam_datetimepivc_ED_tbl = {
-                    action: 'get_table_datetimepivc_ED',
+                $('#nursNote .menu .item').tab('change tab','thrombo');
+
+                 var urlparam_datetimethrombo_ED_tbl = {
+                    action: 'get_table_datetimethrombo_ED',
                     mrn: $("#mrn_emergencyMain").val(),
                     episno: $("#episno_emergencyMain").val()
                 }
                 
-                datetimepivc_ED_tbl.ajax.url("./ptcare_nursingnote/table?"+$.param(urlparam_datetimepivc_ED_tbl)).load(function (data){
-                    emptyFormdata_div("#formPivc_ED",['#mrn_emergencyMain','#episno_emergencyMain','#doctor_nursNote','#ordcomtt_phar']);
-                    $('#datetimepivc_ED_tbl tbody tr:eq(0)').click(); // to select first row
+                datetimethrombo_ED_tbl.ajax.url("./ptcare_nursingnote/table?"+$.param(urlparam_datetimethrombo_ED_tbl)).load(function (data){
+                    emptyFormdata_div("#formThrombo_ED",['#mrn_emergencyMain','#episno_emergencyMain','#doctor_nursNote','#ordcomtt_phar']);
+                    $('#datetimethrombo_ED_tbl tbody tr:eq(0)').click(); // to select first row
                 });
-                
-                populate_pivc_ED_getdata();
 
                 $("#jqGridPatMedic").jqGrid('setGridWidth', Math.floor($("#jqGridPatMedic_c")[0].offsetWidth-$("#jqGridPatMedic_c")[0].offsetLeft-30));
                 $("#jqGridThrombo_ED").jqGrid('setGridWidth', Math.floor($("#jqGridThrombo_ED_c")[0].offsetWidth-$("#jqGridThrombo_ED_c")[0].offsetLeft));
+                $("#jqGridAddNotesThromboED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesThromboED_c")[0].offsetWidth-$("#jqGridAddNotesThromboED_c")[0].offsetLeft));
+
                 if($('#mrn_emergencyMain').val() != ''){
                     populate_progressnote_ED_getdata();
                     populate_drugadmin_getdata();
-                    populate_pivc_ED_getdata();
+                    // populate_pivc_ED_getdata();
                     populate_thrombo_ED_getdata();
                 }
                 break;
 			case 'doctornote':
+                populate_doctornote_getdata();
                 $('div#docnote_date_tbl_sticky').show();
                 $("#jqGrid_trans").jqGrid('setGridWidth', Math.floor($("#jqGrid_trans_c")[0].offsetWidth-$("#jqGrid_trans_c")[0].offsetLeft-14));
                 
@@ -126,16 +95,10 @@ $(document).ready(function (){
                     emptyFormdata_div("#formDoctorNote",['#mrn_emergencyMain','#episno_emergencyMain']);
                     // $('#docnote_date_tbl tbody tr:eq(0)').click(); // to select first row
                 });
+                $("#jqGridAddNotes").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotes_c")[0].offsetWidth-$("#jqGridAddNotes_c")[0].offsetLeft));
+			    refreshGrid('#jqGridAddNotes',urlParam_AddNotes);
+
                 refreshGrid("#jqGrid_trans", urlParam_trans);
-                
-                $('#doctor_requestFor .menu .item').tab('change tab','otbook');
-                populate_otbook_getdata();
-                populate_radClinic_getdata();
-                populate_mri_getdata();
-                populate_physio_getdata();
-                populate_dressing_getdata();
-                populate_preContrast_getdata();
-                populate_consentForm_getdata();
                 break;
             case 'requestFor':
                 $('#requestFor .menu .item').tab('change tab','otbookReqFor');
@@ -147,6 +110,10 @@ $(document).ready(function (){
                 disableOtherField();
                 rdonly('#formAdmHandover');
                 textarea_init_admhandover();
+
+                $("#jqGridAddNotesAdmHandoverED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesAdmHandoverED_c")[0].offsetWidth-$("#jqGridAddNotesAdmHandoverED_c")[0].offsetLeft));
+		        refreshGrid('#jqGridAddNotesAdmHandoverED',urlParam_AddNotesAdmHandoverED);
+
                 break;
 			case 'diet':
                 $("#jqGrid_trans_diet").jqGrid ('setGridWidth', Math.floor($("#jqGrid_trans_diet_c")[0].offsetWidth-$("#jqGrid_trans_diet_c")[0].offsetLeft-14));
@@ -189,8 +156,9 @@ $(document).ready(function (){
         }
     }});
     
-    
 });
+
+var radbuts = new checkradiobutton(['gsc_eye','gsc_verbal','gsc_motor','painscore']);
 
 var errorField = [];
 conf = {
@@ -299,6 +267,30 @@ function populate_emergencyMain(obj){
     $('#episno_emergencyMain_past').val(obj.Episno);
     $('#recorddate_emergencyMain').val(obj.date);
 
+    ////jqGridAddNotesNursingED
+    urlParam_AddNotesNursingED.filterVal[0] = obj.MRN;
+	urlParam_AddNotesNursingED.filterVal[1] = obj.Episno;
+	urlParam_AddNotesNursingED.filterVal[2] = 'NURSING_ED';
+	refreshGrid('#jqGridAddNotesNursingED',urlParam_AddNotesNursingED,'add_notes');
+
+    ////jqGridAddNotesDrugAdminED
+    urlParam_AddNotesDrugAdminED.filterVal[0] = obj.MRN;
+	urlParam_AddNotesDrugAdminED.filterVal[1] = obj.Episno;
+	urlParam_AddNotesDrugAdminED.filterVal[2] = 'DRUGADMIN_ED';
+    refreshGrid('#jqGridAddNotesDrugAdminED',urlParam_AddNotesDrugAdminED,'add_DrugAdminED');
+
+    ////jqGridAddNotes
+    urlParam_AddNotes.filterVal[0] = obj.MRN;
+	urlParam_AddNotes.filterVal[1] = obj.Episno;
+	urlParam_AddNotes.filterVal[2] = 'DOCTORNOTE_ED';
+	refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add_notes');
+
+    ////jqGridAddNotesAdmHandoverED
+    urlParam_AddNotesAdmHandoverED.filterVal[0] = obj.MRN;
+	urlParam_AddNotesAdmHandoverED.filterVal[1] = obj.Episno;
+	urlParam_AddNotesAdmHandoverED.filterVal[2] = 'ADMISSION HANDOVER';
+    refreshGrid('#jqGridAddNotesAdmHandoverED',urlParam_AddNotesAdmHandoverED,'add_AdmHandoverED_save');
+    
     $("#tab_emergencyMain").collapse('hide');
 
 }
@@ -329,6 +321,8 @@ $('#tab_emergencyMain').on('shown.bs.collapse', function (){
     getdata_nursing();
     tri_color_set();
 	changeTextInputColor();
+    $("#jqGridAddNotesNursingED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesNursingED_c")[0].offsetWidth-$("#jqGridAddNotesNursingED_c")[0].offsetLeft));
+    refreshGrid('#jqGridAddNotesNursingED',urlParam_AddNotesNursingED,'add_notes');
 });
 
 $('#tab_emergencyMain').on('hide.bs.collapse', function (){

@@ -6,7 +6,7 @@
             top: 9px;
             z-index: 2;">
             <button class="ui button" id="new_progress_ED"><span class="fa fa-plus-square-o"></span>New</button>
-            <button class="ui button" id="edit_progress_ED"><span class="fa fa-edit fa-lg"></span>Edit</button>
+            <!-- <button class="ui button" id="edit_progress_ED"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
             <button class="ui button" id="save_progress_ED"><span class="fa fa-save fa-lg"></span>Save</button>
             <button class="ui button" id="cancel_progress_ED"><span class="fa fa-ban fa-lg"></span>Cancel</button>
         </div>
@@ -304,7 +304,17 @@
                                     <div class="ui segments">
                                         <div class="ui secondary segment">PLAN AND PROGRESS NOTE</div>
                                         <div class="ui segment">
-                                            <textarea id="plannotes" name="plannotes" type="text" rows="4" ></textarea>
+                                            <textarea id="plannotes" name="plannotes" type="text" rows="6" ></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="sixteen wide column" id="addnotes_progressED">
+                                    <div class="ui segments">
+                                        <div class="ui secondary segment">Additional Notes</div>
+                                        <div class="ui segment" id="jqGridAddNotesProgressED_c">
+                                            <table id="jqGridAddNotesProgressED" class="table table-striped"></table>
+                                            <div id="jqGridPagerAddNotesProgressED"></div>
                                         </div>
                                     </div>
                                 </div>

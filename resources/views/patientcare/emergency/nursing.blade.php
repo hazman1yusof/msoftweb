@@ -7,7 +7,7 @@
                     top: 9px;
                     z-index: 2;">
           <button class="ui button" id="new_ti"><span class="fa fa-plus-square-o"></span> New</button>
-          <button class="ui button" id="edit_ti"><span class="fa fa-edit fa-lg"></span> Edit</button>
+          <!-- <button class="ui button" id="edit_ti"><span class="fa fa-edit fa-lg"></span> Edit</button> -->
           <button class="ui button" id="save_ti"><span class="fa fa-save fa-lg"></span> Save</button>
           <button class="ui button" id="cancel_ti"><span class="fa fa-ban fa-lg"></span> Cancel</button>
         </div>
@@ -26,7 +26,7 @@
                             <div class="inline fields">
                                 <div class="field">
                                     <label>Time</label>
-                                    <input id="admwardtime" name="admwardtime" type="time">
+                                    <input id="admwardtime" name="admwardtime" type="time" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                 </div>
                                 <div class="field">
                                     <label>Date</label>
@@ -187,8 +187,8 @@
                                             <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                 <label>Blood Pressure</label>
                                                 <div class="ui right labeled input">
-                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_bp_sys1" name="vs_bp_sys1" style="width:25%">
-                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_bp_dias2" name="vs_bp_dias2" style="width:25%">
+                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_bp_sys1" name="vs_bp_sys1" style="width:25%" data-validation="required" data-validation-error-msg-required="Please enter information.">
+                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_bp_dias2" name="vs_bp_dias2" style="width:25%" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                                   <div class="ui basic label">mmHg</div>
                                                 </div>
                                             </div>
@@ -196,7 +196,7 @@
                                             <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0 14px;">
                                                 <label>SpO2</label>
                                                 <div class="ui right labeled input">
-                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_spo" name="vs_spo">
+                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_spo" name="vs_spo" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                                   <div class="ui basic label">%</div>
                                                 </div>
                                             </div>
@@ -206,7 +206,7 @@
                                             <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                 <label>Pulse</label>
                                                 <div class="ui right labeled input">
-                                                    <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_pulse" name="vs_pulse">
+                                                    <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_pulse" name="vs_pulse" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                                     <div class="ui basic label">bpm</div>
                                                 </div>
                                             </div>
@@ -214,7 +214,7 @@
                                             <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                 <label>Glucometer</label>
                                                 <div class="ui right labeled input">
-                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_gxt" name="vs_gxt">
+                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_gxt" name="vs_gxt" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                                   <div class="ui basic label">mmOL/L</div>
                                                 </div>
                                             </div>
@@ -224,7 +224,7 @@
                                             <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                 <label>Temperature</label>
                                                 <div class="ui right labeled input">
-                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_temperature" name="vs_temperature">
+                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_temperature" name="vs_temperature" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                                   <div class="ui basic label">°C</div>
                                                 </div>
                                             </div>
@@ -232,7 +232,7 @@
                                             <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                 <label>Weight</label>
                                                 <div class="ui right labeled input">
-                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_weight" name="vs_weight">
+                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_weight" name="vs_weight" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                                   <div class="ui basic label">kg</div>
                                                 </div>
                                             </div>
@@ -242,7 +242,7 @@
                                             <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
                                                 <label>RR</label>
                                                 <div class="ui right labeled input">
-                                                    <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_respiration" name="vs_respiration">
+                                                    <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_respiration" name="vs_respiration" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                                     <div class="ui basic label">min</div>
                                                 </div>
                                             </div>
@@ -250,7 +250,7 @@
                                             <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
                                                 <label>Height</label>
                                                 <div class="ui right labeled input">
-                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_height" name="vs_height">
+                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_height" name="vs_height" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                                   <div class="ui basic label">cm</div>
                                                 </div>
                                             </div>
@@ -1197,6 +1197,15 @@
                                     </div>
                                 </div>
 
+                                <div class="sixteen wide column" style="padding: 5px 10px 3px 10px;">
+                                    <div class="ui segments">
+                                        <div class="ui secondary segment">NOTES</div>
+                                        <div class="ui segment">
+                                            <textarea id="ed_notes" name="ed_notes" type="text" rows="10" ></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="four wide column">
                                 </div>
                                 <div class="four wide column">
@@ -1217,12 +1226,21 @@
                                 </div>
                                 <div class="four wide column">
                                 </div>
+
+                                <div class="sixteen wide column" id="addnotes_nursingED">
+                                    <div class="ui segments">
+                                        <div class="ui secondary segment">Additional Notes</div>
+                                        <div class="ui segment" id="jqGridAddNotesNursingED_c">
+                                            <table id="jqGridAddNotesNursingED" class="table table-striped"></table>
+                                            <div id="jqGridPagerAddNotesNursingED"></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </form>
     <!-- </div> -->
 </div>

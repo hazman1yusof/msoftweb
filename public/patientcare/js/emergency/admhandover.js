@@ -2,6 +2,17 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
 
+///////////////////////////////////parameter for jqGridAddNotesAdmHandoverED url///////////////////////////////////
+var urlParam_AddNotesAdmHandoverED = {
+	action: 'get_table_default',
+	url: './util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','ADMISSION HANDOVER'],
+}
+
 $(document).ready(function (){
     
     // $("button.refreshbtn_admhandover").click(function (){
@@ -80,6 +91,150 @@ $(document).ready(function (){
 	$("#admhandover_report").click(function() {
 		window.open('./admhandover/showpdf?mrn_emergencyMain='+$('#mrn_emergencyMain').val()+'&episno_emergencyMain='+$('#episno_emergencyMain').val(), '_blank');
 	});
+
+	//////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridAdmHandoverED = {more:false,state:false,edit:false}
+	
+	///////////////////////////////////////////jqGridAddNotesAdmHandoverED///////////////////////////////////////////
+	$("#jqGridAddNotesAdmHandoverED").jqGrid({
+		datatype: "local",
+		editurl: "/ptcare_admhandover/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		scroll: true,
+		width: 700,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesAdmHandoverED",
+		loadComplete: function (){
+			if(addmore_jqgridAdmHandoverED.more == true){$('#jqGridAddNotesAdmHandoverED_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid ('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridAdmHandoverED.edit = addmore_jqgridAdmHandoverED.more = false; // reset
+		},
+		ondblClickRow: function (rowid, iRow, iCol, e){
+			$("#jqGridAddNotesAdmHandoverED_iledit").click();
+		},
+	});
+	
+	////////////////////////////////////////////myEditOptions////////////////////////////////////////////
+	var myEditOptions_addAdmHandoverED = {
+		keys: true,
+		extraparam: {
+			"_token": $("#_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesAdmHandoverED_ilsave').click();
+				// addmore_jqgridAdmHandoverED.state = true;
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridAdmHandoverED.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesAdmHandoverED',urlParam_AddNotesAdmHandoverED,'add_AdmHandoverED_save');
+			errorField.length = 0;
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesAdmHandoverED',urlParam_AddNotesAdmHandoverED,'add_AdmHandoverED_save');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			if(errorField.length > 0)return false;
+			
+			let data = $('#jqGridAddNotesAdmHandoverED').jqGrid('getRowData', rowid);
+			
+			let editurl = "/ptcare_admhandover/form?"+
+				$.param({
+					_token: $('#_token').val(),
+					episno: $('#episno_emergencyMain').val(),
+					mrn: $('#mrn_emergencyMain').val(),
+					action: 'add_AdmHandoverED_save',
+				});
+			$("#jqGridAddNotesAdmHandoverED").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc : function (response){
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////////jqGridPagerAddNotesAdmHandoverED/////////////////////////////////////////
+	$("#jqGridAddNotesAdmHandoverED").inlineNav('#jqGridPagerAddNotesAdmHandoverED', {
+		add: true,
+		edit: false,
+		cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addAdmHandoverED
+		},
+		// editParams: myEditOptions_edit
+	})
+	// .jqGrid('navButtonAdd', "#jqGridPagerAddNotesAdmHandoverED", {
+	// 	id: "jqGridPagerDelete",
+	// 	caption: "", cursor: "pointer", position: "last",
+	// 	buttonicon: "glyphicon glyphicon-trash",
+	// 	title: "Delete Selected Row",
+	// 	onClickButton: function (){
+	// 		selRowId = $("#jqGridAddNotesAdmHandoverED").jqGrid('getGridParam', 'selrow');
+	// 		if(!selRowId){
+	// 			alert('Please select row');
+	// 		}else{
+	// 			var result = confirm("Are you sure you want to delete this row?");
+	// 			if(result == true){
+	// 				param = {
+	// 					_token: $("#csrf_token").val(),
+	// 					action: 'addNotes_save',
+	// 					idno: selrowData('#jqGridAddNotesAdmHandoverED').idno,
+	// 				}
+					
+	// 				$.post("/ptcare_admhandover/form?"+$.param(param), {oper:'del'}, function (data){
+						
+	// 				}).fail(function (data){
+	// 					//////////////////errorText(dialog,data.responseText);
+	// 				}).done(function (data){
+	// 					refreshGrid("#jqGridAddNotesAdmHandoverED", urlParam_AddNotesAdmHandoverED);
+	// 				});
+	// 			}else{
+	// 				$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+	// 			}
+	// 		}
+	// 	},
+	// })
+	.jqGrid('navButtonAdd', "#jqGridPagerAddNotesAdmHandoverED", {
+		id: "jqGridPagerRefresh_addnotes",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesAdmHandoverED", urlParam_AddNotesAdmHandoverED);
+		},
+	});
+	///////////////////////////////////////////////end grid///////////////////////////////////////////////
 });
 
 var errorField = [];
@@ -188,6 +343,7 @@ function populate_admhandover_getdata(){
 			autoinsert_rowdata("#formAdmHandover",data.episode);
 			autoinsert_rowdata("#formAdmHandover",data.nurshistory);
 			autoinsert_rowdata("#formAdmHandover",data.pathealth);      
+			refreshGrid('#jqGridAddNotesAdmHandoverED',urlParam_AddNotesAdmHandoverED,'add_AdmHandoverED_save');
             button_state_admHandover('edit');      
         }else{
         }

@@ -1,6 +1,16 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
+
+///////////////////////////////////parameter for jqGridAddNotesProgressED url///////////////////////////////////
+var urlParam_AddNotesProgressED = {
+	action: 'get_table_default',
+	url: './util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','PROGRESSNOTE_ED'],
+}
 
 $(document).ready(function (){
     
@@ -64,6 +74,150 @@ $(document).ready(function (){
             }
         }, 0);
     });
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridProgressED = {more:false,state:false,edit:false}
+	
+	///////////////////////////////////////////jqGridAddNotesProgressED///////////////////////////////////////////
+	$("#jqGridAddNotesProgressED").jqGrid({
+		datatype: "local",
+		editurl: "/ptcare_nursingnote/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 120, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		scroll: true,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesProgressED",
+		loadComplete: function (){
+			if(addmore_jqgridProgressED.more == true){$('#jqGridAddNotesProgressED_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid ('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridProgressED.edit = addmore_jqgridProgressED.more = false; // reset
+		},
+		ondblClickRow: function (rowid, iRow, iCol, e){
+			$("#jqGridAddNotesProgressED_iledit").click();
+		},
+	});
+	
+	////////////////////////////////////////////myEditOptions////////////////////////////////////////////
+	var myEditOptions_addProgressED = {
+		keys: true,
+		extraparam: {
+			"_token": $("#_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotes_ilsave').click();
+				// addmore_jqgridProgressED.state = true;
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridProgressED.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesProgressED',urlParam_AddNotesProgressED,'add_ProgressED');
+			errorField.length = 0;
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesProgressED',urlParam_AddNotesProgressED,'add_ProgressED');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			if(errorField.length > 0)return false;
+			
+			let data = $('#jqGridAddNotesProgressED').jqGrid('getRowData', rowid);
+			
+			let editurl = "/ptcare_nursingnote/form?"+
+				$.param({
+					_token: $('#_token').val(),
+					episno: $('#episno_emergencyMain').val(),
+					mrn: $('#mrn_emergencyMain').val(),
+					action: 'add_ProgressED_save',
+				});
+			$("#jqGridAddNotesProgressED").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc : function (response){
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////////jqGridPagerAddNotesProgressED/////////////////////////////////////////
+	$("#jqGridAddNotesProgressED").inlineNav('#jqGridPagerAddNotesProgressED', {
+		add: true,
+		edit: false,
+		cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addProgressED
+		},
+		// editParams: myEditOptions_edit
+	})
+	// .jqGrid('navButtonAdd', "#jqGridPagerAddNotesProgressED", {
+	// 	id: "jqGridPagerDelete",
+	// 	caption: "", cursor: "pointer", position: "last",
+	// 	buttonicon: "glyphicon glyphicon-trash",
+	// 	title: "Delete Selected Row",
+	// 	onClickButton: function (){
+	// 		selRowId = $("#jqGridAddNotesProgressED").jqGrid('getGridParam', 'selrow');
+	// 		if(!selRowId){
+	// 			alert('Please select row');
+	// 		}else{
+	// 			var result = confirm("Are you sure you want to delete this row?");
+	// 			if(result == true){
+	// 				param = {
+	// 					_token: $("#csrf_token").val(),
+	// 					action: 'doctornote_save',
+	// 					idno: selrowData('#jqGridAddNotesProgressED').idno,
+	// 				}
+					
+	// 				$.post("/doctornote/form?"+$.param(param), {oper:'del'}, function (data){
+						
+	// 				}).fail(function (data){
+	// 					//////////////////errorText(dialog,data.responseText);
+	// 				}).done(function (data){
+	// 					refreshGrid("#jqGridAddNotesProgressED", urlParam_AddNotesProgressED);
+	// 				});
+	// 			}else{
+	// 				$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+	// 			}
+	// 		}
+	// 	},
+	// })
+	.jqGrid('navButtonAdd', "#jqGridPagerAddNotesProgressED", {
+		id: "jqGridPagerRefresh_addnotes",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesProgressED", urlParam_AddNotesProgressED);
+		},
+	});
+	///////////////////////////////////////////////end grid///////////////////////////////////////////////
     
     ////////////////////////////////////////progressnote starts////////////////////////////////////////
     $('#datetime_ED_tbl tbody').on('click', 'tr', function (){
@@ -86,6 +240,11 @@ $(document).ready(function (){
         $(this).addClass('active');
         
         $("#formProgress_ED :input[name='idno_progress_ED']").val(data.idno);
+
+        urlParam_AddNotesProgressED.filterVal[0] = data.mrn;
+        urlParam_AddNotesProgressED.filterVal[1] = data.episno;
+        urlParam_AddNotesProgressED.filterVal[2] = 'PROGRESSNOTE_ED';
+        refreshGrid('#jqGridAddNotesProgressED',urlParam_AddNotesProgressED,'add_ProgressED');
 
         var saveParam={
             action: 'get_table_progress_ED',

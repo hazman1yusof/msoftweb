@@ -7,7 +7,7 @@
             top: 9px;
             z-index: 2;">
             <button class="ui button" id="new_thrombo_ED"><span class="fa fa-plus-square-o"></span>New</button>
-            <button class="ui button" id="edit_thrombo_ED"><span class="fa fa-edit fa-lg"></span>Edit</button>
+            <!-- <button class="ui button" id="edit_thrombo_ED"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
             <button class="ui button" id="save_thrombo_ED"><span class="fa fa-save fa-lg"></span>Save</button>
             <button class="ui button" id="cancel_thrombo_ED"><span class="fa fa-ban fa-lg"></span>Cancel</button>
             <button class="ui button" id="thrombo_ED_chart"><span class="fa fa-print fa-lg"></span>Print</button>
@@ -161,7 +161,7 @@
                                         Grade 5: All of the following sign are evidence and extensive: pain along the catheter, erythema, induration, palpable venous cord and pyrexia.<br>
                                     </p>
                                     <div class="sixteen wide column">
-                                        <div id="jqGridThrombo_ED_c" style="padding: 3px 3px 3px 3px;">
+                                        <div id="jqGridThrombo_ED_c" style="padding: 3px 3px 0px 3px;">
                                             <table id="jqGridThrombo_ED" class="table table-striped"></table>
                                             <div id="jqGridPagerThrombo_ED"></div>
                                         </div>
@@ -187,6 +187,16 @@
                                     <label>Remarks</label>
                                     <textarea id="remarksThrombo_ED" name="remarksThrombo" type="text" rows="4"></textarea>
                                     
+                                </div>
+                            </div>
+
+                            <div class="sixteen wide column" id="addnotes_thromboED">
+                                <div class="ui segments">
+                                    <div class="ui secondary segment">Additional Notes</div>
+                                    <div class="ui segment" id="jqGridAddNotesThromboED_c">
+                                        <table id="jqGridAddNotesThromboED" class="table table-striped"></table>
+                                        <div id="jqGridPagerAddNotesThromboED"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

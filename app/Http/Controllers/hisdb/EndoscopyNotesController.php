@@ -94,6 +94,7 @@ class EndoscopyNotesController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
+                    'enteredby'  => session('username'),
                 ]);
             
             if(!empty($request->iPesakit)){
@@ -154,6 +155,7 @@ class EndoscopyNotesController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
+                    'enteredby'  => session('username'),
                 ]);
             
             if(!empty($request->iPesakit)){
@@ -227,6 +229,7 @@ class EndoscopyNotesController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
+                    'enteredby'  => session('username'),
                 ]);
             
             if(!empty($request->iPesakit)){
@@ -297,6 +300,7 @@ class EndoscopyNotesController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
+                    'enteredby'  => session('username'),
                 ]);
             
             if(!empty($request->iPesakit)){
@@ -337,7 +341,7 @@ class EndoscopyNotesController extends defaultController
     public function get_table_endoscopyStomach(Request $request){
         
         $endoscopyStomach_obj = DB::table('nursing.endoscopystomach')
-                                ->select('idno','compcode','mrn','episno','iPesakit as i_Pesakit','referredBy','endoscopist','previousScopy','complaints','oesophagus','stomach','duodenum','remarks','treatment','adduser','adddate','upduser','upddate','lastuser','lastupdate','computerid')
+                                ->select('idno','compcode','mrn','episno','iPesakit as i_Pesakit','referredBy','endoscopist','previousScopy','complaints','oesophagus','stomach','duodenum','remarks','treatment','adduser','adddate','upduser','upddate','lastuser','lastupdate','computerid','enteredby')
                                 ->where('compcode','=',session('compcode'))
                                 ->where('mrn','=',$request->mrn)
                                 ->where('episno','=',$request->episno);
@@ -368,7 +372,7 @@ class EndoscopyNotesController extends defaultController
     public function get_table_endoscopyIntestine(Request $request){
         
         $endoscopyintestine_obj = DB::table('nursing.endoscopyintestine')
-                                ->select('idno','compcode','mrn','episno','iPesakit as i_Pesakit','indication','perRectum','otherIllness','HBsAG','HBsAGpositive','HBsAGnegative','HBsAGnotknow','refDoctor','refDoctorDate','instruments','serialNo','medication','endosFindings','biopsy','otherProcedure','endosImpression','remarks','endoscopistName','endoscopistDate','adduser','adddate','upduser','upddate','lastuser','lastupdate','computerid')
+                                ->select('idno','compcode','mrn','episno','iPesakit as i_Pesakit','indication','perRectum','otherIllness','HBsAG','HBsAGpositive','HBsAGnegative','HBsAGnotknow','refDoctor','refDoctorDate','instruments','serialNo','medication','endosFindings','biopsy','otherProcedure','endosImpression','remarks','endoscopistName','endoscopistDate','adduser','adddate','upduser','upddate','lastuser','lastupdate','computerid','enteredby')
                                 ->where('compcode','=',session('compcode'))
                                 ->where('mrn','=',$request->mrn)
                                 ->where('episno','=',$request->episno);

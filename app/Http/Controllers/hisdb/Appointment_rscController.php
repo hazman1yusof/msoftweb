@@ -227,7 +227,12 @@ class Appointment_rscController extends defaultController
                     'ot_room'     => $request->resourcecode,
                     'surgery_date'=> $request->date,
                     'op_unit'     => strtoupper($request->op_unit),
+                    'op_type'     => strtoupper($request->op_type),
                     'oper_type'   => strtoupper($request->oper_type),
+                    'oper_type2'   => strtoupper($request->oper_type2),
+                    'oper_type3'   => strtoupper($request->oper_type3),
+                    'oper_type4'   => strtoupper($request->oper_type4),
+                    'oper_type5'   => strtoupper($request->oper_type5),
                     // 'oper_status' => strtoupper($request->oper_status),
                     'diagnosis' => $request->diagnosis,
                     'procedure' => $request->procedure,
@@ -365,7 +370,12 @@ class Appointment_rscController extends defaultController
                     'ot_room'     => $request->doctor,
                     'surgery_date'=> $request->apptdatefr_day,
                     'op_unit'     => strtoupper($request->op_unit),
+                    'op_type'     => strtoupper($request->op_type),
                     'oper_type'   => strtoupper($request->oper_type),
+                    'oper_type2'   => strtoupper($request->oper_type2),
+                    'oper_type3'   => strtoupper($request->oper_type3),
+                    'oper_type4'   => strtoupper($request->oper_type4),
+                    'oper_type5'   => strtoupper($request->oper_type5),
                     // 'oper_status' => strtoupper($request->oper_status),
                     'diagnosis' => $request->diagnosis,
                     'procedure' => $request->procedure,
@@ -381,7 +391,7 @@ class Appointment_rscController extends defaultController
                     'type'        => $request->Class2,
                     'iPesakit'    => $request->iPesakit,
                     'cArm'        => $request->cArm,
-
+                    'postponed_date'  => $request->postponed_date,
                 ]);
 
             }else{
@@ -410,6 +420,7 @@ class Appointment_rscController extends defaultController
                     'type'        => $request->Class2,
                     'iPesakit'    => $request->iPesakit,
                     'cArm'        => $request->cArm,
+                    'postponed_date'  => $request->postponed_date,
                 ]);
             }
 
@@ -497,7 +508,12 @@ class Appointment_rscController extends defaultController
                             'remarks'     => $request->remarks,
                             'ot_room'     => strtoupper($request->doctor),
                             'op_unit'     => strtoupper($request->op_unit),
+                            'op_type'     => strtoupper($request->op_type),
                             'oper_type'   => strtoupper($request->oper_type),
+                            'oper_type2'   => strtoupper($request->oper_type2),
+                            'oper_type3'   => strtoupper($request->oper_type3),
+                            'oper_type4'   => strtoupper($request->oper_type4),
+                            'oper_type5'   => strtoupper($request->oper_type5),
                             // 'oper_status' => strtoupper($request->oper_status),
                             'diagnosis' => $request->diagnosis,
                             'procedure' => $request->procedure,
@@ -509,6 +525,7 @@ class Appointment_rscController extends defaultController
                             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                             'iPesakit'    => $request->iPesakit,
                             'cArm'        => $request->cArm,
+                            'postponed_date'  => $request->postponed_date,
                         ]);
                 }else{
                     DB::table('hisdb.apptbook')
@@ -534,6 +551,7 @@ class Appointment_rscController extends defaultController
                             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                             'iPesakit'    => $request->iPesakit,
                             'cArm'        => $request->cArm,
+                            'postponed_date'  => $request->postponed_date,
                         ]);
                 }
 

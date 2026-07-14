@@ -218,10 +218,23 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>
+                                            <td style="padding-left: 25px;">
+                                                <b>Anaesthesis team review: &nbsp;</b>Any patient-specific concerns?<br>
+                                                <label class="radio-inline" style="padding-left: 30px;">
+                                                    <input type="radio" name="anaesthReview" value="1" data-validation="required" data-validation-error-msg-required="Please check this box." data-validation-error-msg-container="#error-anaesthReview">Yes
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="anaesthReview" value="0">No
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="anaesthReview" value="NA">Not applicable
+                                                </label>
+                                                <div class="error-msg" id="error-anaesthReview"></div>
+                                            </td>
+                                            <!-- <td>
                                                 <input type="checkbox" name="anaesthReview" id="operteam_anaesthReview" value="1" style="margin-right: 10px;" data-validation="required" data-validation-error-msg-required="Please check this box.">
                                                 <label for="operteam_anaesthReview">Anaesthesis team review: &nbsp;</label>Any patient-specific concerns?
-                                            </td>
+                                            </td> -->
                                         </tr>
                                         <tr>
                                             <td>
@@ -395,6 +408,21 @@
                                         <label>Checklist co-ordinator (Name)</label>
                                         <input id="operteam_coordinator" name="coordinator" type="text" style="width: 350px; text-transform: uppercase;" data-validation="required" data-validation-error-msg-required="Please enter information." data-validation-error-msg-container="#error-coordinator">
                                         <div class="error-msg" id="error-coordinator"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eight wide column">
+                    <div class="ui segments">
+                        <div class="ui segment">
+                            <div class="ui grid">
+                                <div class="ui form">
+                                    <div class="inline field" style="margin: 10px 0;">
+                                        <label>Entered By</label>
+                                        <input id="enteredby" name="enteredby" type="text" style="width: 350px; text-transform: uppercase;" rdonly>
                                     </div>
                                 </div>
                             </div>
