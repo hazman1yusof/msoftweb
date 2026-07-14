@@ -27,7 +27,7 @@
             <div class="ui form">
                 <div class="six wide column">
                     <div class="inline fields" style="margin-bottom: 0px;">
-                        <label style="color: rgba(0,0,0,.6);">DOCTOR NOTES</label>
+                        <label style="color: rgba(0,0,0,.6);">DOCTOR NOTES (PSYCHIATRY)</label>
                         <div class="field">
                             <div class="ui radio checkbox checked pastcurr">
                                 <input type="radio" name="toggle_type" checked="" tabindex="0" class="hidden" id="current" value="current" checked>
@@ -50,7 +50,7 @@
                         top: 9px;
                         z-index: 2;">
                 <button class="ui button" id="new_doctorNote"><span class="fa fa-plus-square-o"></span>New</button>
-                <button class="ui button" id="edit_doctorNote"><span class="fa fa-edit fa-lg"></span>Edit</button>
+                <!-- <button class="ui button" id="edit_doctorNote"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
                 <button class="ui button" id="save_doctorNote"><span class="fa fa-save fa-lg"></span>Save</button>
                 <button class="ui button" id="cancel_doctorNote"><span class="fa fa-ban fa-lg"></span>Cancel</button>
             </div>
@@ -59,7 +59,7 @@
             <div class="three wide column" style="position: absolute;
                         left: 10px;
                         top: 30px;">
-                <table id="docnote_date_tbl" class="ui celled table" style="min-width: 200px;">
+                <table id="docnote_date_tbl" class="ui celled table" style="min-width: 330px;">
                     <thead>
                         <tr>
                             <th class="scope">mrn</th>
@@ -68,13 +68,13 @@
                             <th class="scope">adduser</th>
                             <th class="scope">adddate</th>
                             <th class="scope">recordtime</th>
-                            <th class="scope">type</th>
+                            <th class="scope">Doctor</th>
                         </tr>
                     </thead>
                 </table>
             </div>
             <div class="ui grid">
-                <form id="formDoctorNote" class="right floated ui form thirteen wide column">
+                <form id="formDoctorNote" class="right floated ui form twelve wide column">
                     <input id="mrn_doctorNote" name="mrn_doctorNote" type="hidden">
                     <input id="episno_doctorNote" name="episno_doctorNote" type="hidden">
                     <input id="age_doctorNote" name="age_doctorNote" type="hidden">
@@ -399,7 +399,7 @@
                             </div>
                         </div>
                         
-                        <div class="sixteen wide column">
+                        <div class="sixteen wide column" style="display: none;">
                             <div class="ui segments">
                                 <div class="ui secondary segment">Order Entry</div>
                                 <div class="ui segment" id="jqGrid_trans_c">
@@ -412,7 +412,7 @@
                 </form>
             </div>
         </div>
-        <div class="ui segments">
+        <div class="ui segments" style="display: none;">
             <div class="ui secondary segment">REQUEST FOR</div>
             <div id="doctor_requestFor" class="ui segment">
                 <div class="ui top attached tabular menu">

@@ -1019,16 +1019,41 @@ class DoctornoteController extends defaultController
         
         try {
             
-            DB::table('hisdb.pathealthadd')
+            $doctorcode_obj = DB::table('hisdb.doctor')
+                            ->select('doctorcode')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('loginid','=',session('username'));
+            
+            $doctorcode = null;
+            if($doctorcode_obj->exists()){
+                $doctorcode = $doctorcode_obj->first()->doctorcode;
+            }
+            
+            // DB::table('hisdb.pathealthadd')
+            //     ->insert([
+            //         'compcode' => session('compcode'),
+            //         'mrn' => $request->mrn,
+            //         'episno' => $request->episno,
+            //         'additionalnote' => $request->additionalnote,
+            //         'doctorcode'  => $doctorcode,
+            //         'adduser'  => session('username'),
+            //         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")
+            //     ]);
+            
+            DB::table('nursing.nursaddnote')
                 ->insert([
-                    // 'compcode' => session('compcode'),
+                    'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
-                    'additionalnote' => $request->additionalnote,
-                    'adduser'  => session('username'),
-                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")
+                    'type' => 'DOCTOR NOTE PSY APPT',
+                    'note' => $request->note,
+                    'adduser'  => $doctorcode,
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser'  => $doctorcode,
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
                 ]);
-             
+            
             DB::commit();
             
         } catch (\Exception $e) {
