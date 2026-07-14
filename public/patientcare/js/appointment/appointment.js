@@ -2,6 +2,12 @@
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
+var urlParam = {
+	action: 'get_table_doctornote',
+	url: './appointment/table',
+	filterVal : [moment().format("YYYY-MM-DD")]
+}
+
 $(document).ready(function () {
     stop_scroll_on();
 
@@ -62,12 +68,6 @@ $(document).ready(function () {
 		$('#calendar').fullCalendar( 'refetchEventSources', 'doctornote_event' );
 		refreshGrid("#jqGrid", urlParam);
 	});
-
-	var urlParam = {
-		action: 'get_table_doctornote',
-		url: './appointment/table',
-		filterVal : [moment().format("YYYY-MM-DD")]
-	}
 
 	var istablet = $(window).width() <= 1024;
 	// istablet =  true;

@@ -1185,12 +1185,20 @@ class AppointmentController extends defaultController
     public function doctornote_event(Request $request){
         
         $emergency = DB::table('hisdb.episode')
-                    ->where('compcode','=',session('compcode'))
+                    ->select('episode.reg_date')
+                    ->where('episode.compcode','=',session('compcode'))
                     ->whereNotIn('episode.regdept',['A&E','PHY','REHAB'])
                     // ->whereIn('episode.regdept',['TH2','EYE','BEACON']),'XRAY','DIET'
                     // ->where('episode.admsrccode', '=', 'APPT')
+                    ->join('hisdb.queue', function ($join){
+                        // $join = $join->on('queue.deptcode','=','episode.regdept');
+                        $join = $join->on('queue.mrn','=','episode.mrn');
+                        $join = $join->on('queue.episno','=','episode.episno');
+                        $join = $join->where('queue.deptcode','=','ALL');
+                        $join = $join->where('queue.compcode','=',session('compcode'));
+                    })
                     ->whereRaw(
-                        "(reg_date >= ? AND reg_date <= ?)",
+                        "(episode.reg_date >= ? AND episode.reg_date <= ?)",
                         [
                             $request->start,
                             $request->end
@@ -1207,6 +1215,7 @@ class AppointmentController extends defaultController
                             }
                         )
                         ->get();
+            // dd($emergency);
         
         return $events = $this->getEvent($emergency);
         

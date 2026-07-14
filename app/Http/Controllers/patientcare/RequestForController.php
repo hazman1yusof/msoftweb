@@ -592,6 +592,15 @@ class RequestForController extends defaultController
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
+            }else{
+                DB::table('hisdb.pathistory')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'allergyh' => $request->rad_allergy
+                    ]);
             }
             
             $pat_radiology = DB::table('hisdb.pat_radiology')
@@ -836,6 +845,15 @@ class RequestForController extends defaultController
                         'allergyh' => $request->rad_allergy,
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
+            }else{
+                DB::table('hisdb.pathistory')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'allergyh' => $request->rad_allergy
                     ]);
             }
             

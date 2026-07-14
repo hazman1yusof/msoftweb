@@ -27,8 +27,8 @@ $(document).ready(function (){
     var radbuts_otbookReqFor = new checkradiobutton(['req_type']);
     var radbuts_consentFormReqFor = new checkradiobutton(['guardianType','guardianSignType','guardianSignTypeDoc']);
     var radbuts_preContrastReqFor = new checkradiobutton(['hisAllergy','feverAllergic','prevReactContrast','prevReactDrug','asthma','heartDisease','veryOldYoung','poorCondition','dehydrated','seriousMedCondition','prevContrastExam','consentProcedure']);
-    var  radbuts_mriReqFor = new checkradiobutton(['cardiacpacemaker','pros_valve','intraocular','cochlear_imp','neurotransm','bonegrowth','druginfuse','surg_clips','jointlimb_pros','shrapnel','oper_3mth','prev_mri','claustrophobia','dental_imp','frmgnetic_imp','pregnancy','allergy_drug']);
-    var radbuts_radClinicReqFor = new checkradiobutton(['req_ptcon_walking','pregnantReqFor']);
+    var radbuts_mriReqFor = new checkradiobutton(['cardiacpacemaker','pros_valve','intraocular','cochlear_imp','neurotransm','bonegrowth','druginfuse','surg_clips','jointlimb_pros','shrapnel','oper_3mth','prev_mri','claustrophobia','dental_imp','frmgnetic_imp','pregnancy','allergy_drug']);
+    var radbuts_radClinicReqFor = new checkradiobutton(['pt_condition','rad_pregnant']);
     var radbuts_referralLetterReqfor = new checkradiobutton(['refto','refprio','reffro']);
     var radbuts_card_noninv = new checkradiobutton(['card_chkty','card_type']);
 

@@ -417,7 +417,7 @@
         </div>
         
         <div id="radiology" class="ui bottom attached tab raised segment" data-tab="radReqFor">
-            @include('hisdb.radiology.radiology_inside_iframe')
+            @include('hisdb.radiology.radiology_inside_iframe',['radiology_inside_iframe_phase'=>'requestfor'])
         </div>
         
         <div class="ui bottom attached tab raised segment" data-tab="physioReqFor">

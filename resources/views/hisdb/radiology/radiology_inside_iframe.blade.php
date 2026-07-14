@@ -6,6 +6,7 @@
 </div>
 
 <div class="ui bottom attached tab raised segment active" data-tab="radClinicReqFor">
+    <input type="hidden" id="radiology_inside_iframe_phase" value="{{$radiology_inside_iframe_phase}}">
     <div class="ui segments" style="position: relative;">
         <div class="ui secondary segment bluecloudsegment" style="height: 50px;">
             <div class="ui small blue icon buttons" id="btn_grp_edit_radClinicReqFor" style="position: absolute;
@@ -180,7 +181,7 @@
                         
                         <div class="twelve wide column" style="padding-top: 0px;">
                             <div class="field nine wide column">
-                                <textarea id="ReqFor_rad_note" name="rad_note" type="text" rows="5" rdonly></textarea>
+                                <textarea id="ReqFor_rad_note" name="rad_note" type="text" rows="5"  @if($radiology_inside_iframe_phase !='radiology'){{"rdonly"}}@endif></textarea>
                                 
                                 <div class="inline field" style="padding-top: 15px;">
                                     <label>Radiologist's Name</label>

@@ -161,7 +161,7 @@ class RehabController extends defaultController
                     $join = $join->on('episode.mrn','=','pat_mast.MRN');
                     $join = $join->where('episode.epistycode','=','OP');
                     // $join = $join->whereIn('episode.regdept',['A&E','PHY','XRAY','DIET']);
-                    $join = $join->whereIn('episode.regdept',['ALL']);
+                    // $join = $join->whereIn('episode.regdept',['ALL']);
                     // $join = $join->where(
                     //         function ($query){
                     //             return $query
@@ -499,7 +499,7 @@ class RehabController extends defaultController
         $emergency = DB::table('hisdb.episode')
                     ->where('episode.compcode','=',session('compcode'))
                     // ->whereIn('episode.regdept',['A&E','PHY','XRAY','DIET'])
-                    ->whereIn('episode.regdept',['PHY'])
+                    // ->whereIn('episode.regdept',['PHY'])
                     ->whereRaw(
                         "(episode.reg_date >= ? AND episode.reg_date <= ?)",
                         [
@@ -518,7 +518,7 @@ class RehabController extends defaultController
                             }
                         )
                     ->join('hisdb.queue', function ($join) use ($request){
-                        $join = $join->on('queue.deptcode','=','episode.regdept');
+                        $join = $join->where('queue.deptcode','=','PHY');
                         $join = $join->on('queue.mrn','=','episode.mrn');
                         $join = $join->on('queue.episno','=','episode.episno');
                         $join = $join->where('queue.compcode','=',session('compcode'));

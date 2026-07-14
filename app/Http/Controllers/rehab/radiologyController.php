@@ -509,9 +509,17 @@ class radiologyController extends defaultController
     public function doctornote_event(Request $request){
         
         $emergency = DB::table('hisdb.episode')
+                    ->select('episode.reg_date')
                     ->where('episode.compcode','=',session('compcode'))
                     // ->whereIn('episode.regdept',['A&E','PHY','XRAY','DIET'])
-                    ->whereIn('episode.regdept',['RAD'])
+                    // ->whereIn('episode.regdept',['RAD'])
+                    ->join('hisdb.queue', function ($join){
+                        // $join = $join->on('queue.deptcode','=','episode.regdept');
+                        $join = $join->on('queue.mrn','=','episode.mrn');
+                        $join = $join->on('queue.episno','=','episode.episno');
+                        $join = $join->where('queue.deptcode','=','RAD');
+                        $join = $join->where('queue.compcode','=',session('compcode'));
+                    })
                     ->whereRaw(
                         "(episode.reg_date >= ? AND episode.reg_date <= ?)",
                         [
@@ -529,12 +537,6 @@ class radiologyController extends defaultController
                                         ->orWhere('episode.episstatus','!=','C');
                             }
                         )
-                    ->join('hisdb.queue', function ($join) use ($request){
-                        $join = $join->on('queue.deptcode','=','episode.regdept');
-                        $join = $join->on('queue.mrn','=','episode.mrn');
-                        $join = $join->on('queue.episno','=','episode.episno');
-                        $join = $join->where('queue.compcode','=',session('compcode'));
-                    })
                     ->get();
         
         return $events = $this->getEvent($emergency);

@@ -325,6 +325,7 @@ $('#tab_apptMain').on('hide.bs.collapse', function (){
 
 $('#tab_apptMain').on('hidden.bs.collapse', function (){
     $('#apptMainTabs .top.menu .item').tab('change tab','triageInfo');
+    refreshGrid("#jqGrid", urlParam);
 });
 
 function check_same_usr_edit(data){

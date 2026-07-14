@@ -138,8 +138,10 @@
         </div>
         
         <div id="tab_radMain" class="panel-collapse collapse" >
-            <div class="panel-body paneldiv"  id="radiology">
-                @include('hisdb.radiology.radiology_inside_iframe')
+            <div class="panel-body paneldiv" id="radiology">
+                <input type="hidden" id="mrn_requestFor">
+                <input type="hidden" id="episno_requestFor">
+                @include('hisdb.radiology.radiology_inside_iframe',['radiology_inside_iframe_phase'=>'radiology'])
             </div>
         </div>
     </div>

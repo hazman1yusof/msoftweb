@@ -144,7 +144,7 @@
         </div>
     </div>
 
-    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;display:none" id="phys_panel">
+    <!-- <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;display:none" id="phys_panel">
         <div class="panel-heading clearfix collapsed" role="tab" id="toggle_phys">
             <b>NAME: <span id="name_show_phys"></span></b><br>
             MRN: <span id="mrn_show_phys"></span>
@@ -268,7 +268,7 @@
                 @include('rehab.occupTherapy.occupTherapy')
             </div>
         </div>
-    </div>
+    </div> -->
     
     @include('hisdb.pat_mgmt.pat_mgmt_iframe',['phase' => 'semantic'])
     @include('patientcare.itemselector')

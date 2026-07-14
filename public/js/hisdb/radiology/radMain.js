@@ -240,11 +240,11 @@ $(document).ready(function () {
                 // urlParam_trans.episno = selrowData('#jqGrid').Episno;
                 // urlParam_trans_diet.mrn = selrowData('#jqGrid').MRN;
                 // urlParam_trans_diet.episno = selrowData('#jqGrid').Episno;
-                urlParam_trans_phys.mrn = selrowData('#jqGrid').MRN;
-                urlParam_trans_phys.episno = selrowData('#jqGrid').Episno;
-                addmore_onadd = false;
-                addmore_onadd_phys = false;
-                addmore_onadd_diet = false;
+                // urlParam_trans_phys.mrn = selrowData('#jqGrid').MRN;
+                // urlParam_trans_phys.episno = selrowData('#jqGrid').Episno;
+                // addmore_onadd = false;
+                // addmore_onadd_phys = false;
+                // addmore_onadd_diet = false;
                 // refreshGrid("#jqGrid_trans", urlParam_trans);
                 // refreshGrid("#jqGrid_trans_diet", urlParam_trans_diet);
                 // refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
@@ -261,7 +261,7 @@ $(document).ready(function () {
                 //  $('#checkbox_completed').prop('disabled',false);
                 //  $('#checkbox_completed').prop('checked', false);
                 // }
-                getdata_physio();
+                // getdata_physio();
 
             },
             ondblClickRow: function (rowid, iRow, iCol, e){
@@ -469,6 +469,8 @@ function populate_radMain(obj){
     $('#mrn_radMain').val(obj.MRN);
     $("#episno_radMain").val(obj.Episno);
     $("#age_radMain").val(dob_age(obj.DOB));
+    $('#mrn_requestFor').val(obj.MRN);
+    $("#episno_requestFor").val(obj.Episno);
 
     // $("#tab_occupTherapy").collapse('hide');
 
@@ -504,4 +506,6 @@ function formatterpayer(cellvalue, option, rowObject){
 
 $('#tab_radMain').on('shown.bs.collapse', function (){
     SmoothScrollTo('#radMain_panel', 300,50);
+    $('#radiology .top.menu .item').tab('change tab','radClinicReqFor');
+    populate_radClinicReqFor_getdata();
 });
