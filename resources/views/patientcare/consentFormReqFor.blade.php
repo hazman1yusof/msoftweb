@@ -23,9 +23,9 @@
                             </div>
                         </div>
 
-                        <p>Saya <input type="text" name="guardianName" id="req_guardianName" class="form-control input-sm" style="text-transform: none;"></p>
-                        <p>beralamat <textarea id="req_address" name="address" rows="4" class="form-control input-sm"></textarea></p>
-                        <p>dengan ini memberi keizinan <b>untuk menjalani prosedur</b> <input type="text" name="procedureName" id="req_procedureName" class="form-control input-sm" style="text-transform: none;"></p>
+                        <p>Saya <input type="text" name="guardianName" id="req_guardianName" class="form-control input-sm" style="text-transform: none;" data-validation="required"></p>
+                        <p>beralamat <textarea id="req_address" name="address" rows="4" class="form-control input-sm" data-validation="required"></textarea></p>
+                        <p>dengan ini memberi keizinan <b>untuk menjalani prosedur</b> <input type="text" name="procedureName" id="req_procedureName" class="form-control input-sm" style="text-transform: none;" data-validation="required"></p>
                         <p><b>menyerahkan</b> 
                             <label class="radio-inline" style="padding-left: 30px;padding-bottom:5px;">
                                 <input type="radio" name="guardianType" id="req_guardianType_a" value="anak"><b>anak</b>
@@ -33,9 +33,9 @@
                             <label class="radio-inline" style="padding-bottom:5px;">
                                 <input type="radio" name="guardianType" id="req_guardianType_aj" value="anak jagaan"><b>anak jagaan</b> &nbsp;
                             </label>
-                        <b>saya</b> <input type="text" name="patientName" id="req_patientName" class="form-control input-sm" style="text-transform: none;"></p>
-                        <p>Untuk menjalani prosedur radiologi <input type="text" name="procedureRadName" id="req_procedureRadName" class="form-control input-sm" style="text-transform: none;"></p>
-                        <p>Yang keadaan dan tujuan telah diterangkan kepada saya oleh Dr. <input type="text" name="doctorName" id="req_doctorName" class="form-control input-sm" style="text-transform: none;"></p>
+                        <b>saya</b> <input type="text" name="patientName" id="req_patientName" class="form-control input-sm" style="text-transform: none;" data-validation="required"></p>
+                        <p>Untuk menjalani prosedur radiologi <input type="text" name="procedureRadName" id="req_procedureRadName" class="form-control input-sm" style="text-transform: none;" data-validation="required"></p>
+                        <p>Yang keadaan dan tujuan telah diterangkan kepada saya oleh Dr. <input type="text" name="doctorName" id="req_doctorName" class="form-control input-sm" style="text-transform: none;" data-validation="required"></p>
 
                         <table class="ui table" style="border-style:none;">
                             <tbody>
@@ -43,13 +43,13 @@
                                     <td class="eight wide">
                                         <div class="inline field">
                                             <label>Tarikh: </label>
-                                            <input type="date" id="req_dateConsentGuardian" name="dateConsentGuardian">
+                                            <input type="date" id="req_dateConsentGuardian" name="dateConsentGuardian" data-validation="required">
                                         </div>
                                     </td>
                                     <td class="eight wide">
                                         <div class="ui field">
                                             <label>
-                                                Ditandatangani: <input type="text" name="guardianSign" id="req_guardianSign" class="form-control input-sm" style="text-transform: none;">
+                                                Ditandatangani: <input type="text" name="guardianSign" id="req_guardianSign" class="form-control input-sm" style="text-transform: none;" data-validation="required">
                                             </label>
                                         </div>
                                         <div class="inline field">
@@ -65,10 +65,10 @@
                                         </div>
                                         <div class="ui field">
                                             <label>
-                                                Tali persaudaraan: <input type="text" name="relationship" id="req_relationship" class="form-control input-sm" style="text-transform: none;">
+                                                Tali persaudaraan: <input type="text" name="relationship" id="req_relationship" class="form-control input-sm" style="text-transform: none;" data-validation="required">
                                             </label><br>
                                             <label>
-                                                No. Kad Pengenalan: <input type="text" name="guardianICNum" id="req_guardianICNum" class="form-control input-sm">
+                                                No. Kad Pengenalan: <input type="text" name="guardianICNum" id="req_guardianICNum" class="form-control input-sm" data-validation="required">
                                             </label>
                                         </div>
                                     </td>
@@ -95,13 +95,13 @@
                                     <td class="eight wide">
                                         <div class="inline field">
                                             <label>Tarikh: </label>
-                                            <input type="date" id="req_dateConsentDoc" name="dateConsentDoc">
+                                            <input type="date" id="req_dateConsentDoc" name="dateConsentDoc" data-validation="required">
                                         </div>
                                     </td>
                                     <td class="eight wide">
                                         <div class="ui field">
                                             <label>
-                                                Ditandatangani: <input type="text" name="doctorSign" id="req_doctorSign" class="form-control input-sm" style="text-transform: none;">
+                                                Ditandatangani: <input type="text" name="doctorSign" id="req_doctorSign" class="form-control input-sm" style="text-transform: none;" data-validation="required">
                                             </label>
                                             <label><center>(Pengamal Perubatan)</center></label>
                                         </div>

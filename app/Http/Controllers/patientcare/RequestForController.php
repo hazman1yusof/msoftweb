@@ -41,6 +41,14 @@ class RequestForController extends defaultController
                 return $this->get_table_preContrast($request);
             case 'get_table_consentForm':
                 return $this->get_table_consentForm($request);
+            case 'get_table_referralLetterReqfor':
+                return $this->get_table_referralLetterReqfor($request);
+            case 'get_table_card_noninv':
+                return $this->get_table_card_noninv($request);
+            case 'referralLetter_print':
+                return $this->referralLetter_print($request);
+            case 'card_noninv_print':
+                return $this->card_noninv_print($request);
             default:
                 return 'error happen..';
         }
@@ -120,6 +128,26 @@ class RequestForController extends defaultController
                         return $this->add_consentForm($request);
                     case 'edit':
                         return $this->edit_consentForm($request);
+                    default:
+                        return 'error happen..';
+                }
+            
+            case 'save_referralLetter':
+                switch($request->oper){
+                    case 'add':
+                        return $this->edit_referralLetter($request);
+                    case 'edit':
+                        return $this->edit_referralLetter($request);
+                    default:
+                        return 'error happen..';
+                }
+            
+            case 'save_card_noninv':
+                switch($request->oper){
+                    case 'add':
+                        return $this->edit_card_noninv($request);
+                    case 'edit':
+                        return $this->edit_card_noninv($request);
                     default:
                         return 'error happen..';
                 }
@@ -695,6 +723,8 @@ class RequestForController extends defaultController
             //             'radiologist' => session('username'),
             //         ]);
             // }
+
+            $this->transfer_to_radiology($request);
             
             DB::commit();
             
@@ -705,7 +735,6 @@ class RequestForController extends defaultController
             return response('Error DB rollback!'.$e, 500);
             
         }
-        
     }
     
     public function edit_radClinic(Request $request){
@@ -939,8 +968,9 @@ class RequestForController extends defaultController
             //             'radiologist' => session('username'),
             //         ]);
             // }
+            $this->transfer_to_radiology($request);
             
-            $queries = DB::getQueryLog();
+            // $queries = DB::getQueryLog();
             // dump($queries);
             
             DB::commit();
@@ -955,8 +985,33 @@ class RequestForController extends defaultController
             
             return response('Error DB rollback!'.$e, 500);
             
-        }
+        } 
+    }
+
+    public function transfer_to_radiology(Request $request){
+        // DB::table('hisdb.episode')
+        //     ->where('mrn','=',$request->mrn)
+        //     ->where('episno','=',$request->episno)
+        //     ->where('compcode','=',session('compcode'))
+        //     ->update([
+        //         'regdept' => 'RAD',
+        //         'epistycode' => 'OP',
+        //         'lastuser'  => session('username'),
+        //         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+        //     ]);
         
+        DB::table('hisdb.queue') 
+            ->where('mrn','=',$request->mrn)
+            ->where('episno','=',$request->episno)
+            ->where('deptcode','!=','SPEC')
+            ->where('compcode','=',session('compcode'))
+            ->update([
+                'deptcode' =>'RAD',
+                'epistycode' => 'OP',
+                'chggroup' => 'OP',
+                'lastuser'  => session('username'),
+                'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            ]);
     }
     
     public function get_table_radClinic(Request $request){
@@ -1507,6 +1562,8 @@ class RequestForController extends defaultController
                     'lastuser'  => strtoupper($request->phy_lastuser),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
+
+            $this->transfer_to_rehab($request);
             
             DB::commit();
             
@@ -1517,7 +1574,6 @@ class RequestForController extends defaultController
             return response('Error DB rollback!'.$e, 500);
             
         }
-        
     }
     
     public function edit_physio(Request $request){
@@ -1587,8 +1643,10 @@ class RequestForController extends defaultController
                     'lastuser'  => strtoupper($request->phy_lastuser),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
+
+            $this->transfer_to_rehab($request);
             
-            $queries = DB::getQueryLog();
+            // $queries = DB::getQueryLog();
             // dump($queries);
             
             DB::commit();
@@ -1604,7 +1662,32 @@ class RequestForController extends defaultController
             return response('Error DB rollback!'.$e, 500);
             
         }
+    }
+
+    public function transfer_to_rehab(Request $request){
+        // DB::table('hisdb.episode')
+        //     ->where('mrn','=',$request->mrn)
+        //     ->where('episno','=',$request->episno)
+        //     ->where('compcode','=',session('compcode'))
+        //     ->update([
+        //         'regdept' => 'RAD',
+        //         'epistycode' => 'OP',
+        //         'lastuser'  => session('username'),
+        //         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+        //     ]);
         
+        DB::table('hisdb.queue') 
+            ->where('mrn','=',$request->mrn)
+            ->where('episno','=',$request->episno)
+            ->where('deptcode','!=','SPEC')
+            ->where('compcode','=',session('compcode'))
+            ->update([
+                'deptcode' =>'PHY',
+                'epistycode' => 'OP',
+                'chggroup' => 'OP',
+                'lastuser'  => session('username'),
+                'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            ]);
     }
     
     public function get_table_physio(Request $request){
@@ -1959,8 +2042,7 @@ class RequestForController extends defaultController
             
             return response('Error DB rollback!'.$e, 500);
             
-        }
-        
+        }    
     }
     
     public function edit_consentForm(Request $request){
@@ -2043,7 +2125,6 @@ class RequestForController extends defaultController
             return response('Error DB rollback!'.$e, 500);
             
         }
-        
     }
     
     public function get_table_consentForm(Request $request){
@@ -2061,7 +2142,6 @@ class RequestForController extends defaultController
         }
         
         return json_encode($responce);
-        
     }
 
     public function requestfor_iframe(Request $request){
@@ -2113,6 +2193,459 @@ class RequestForController extends defaultController
         }
 
         return view('patientcare.requestfor_iframe',compact('mrn','episno','phase','pat_mast_data','episode_data'));
+    }
+
+    public function get_table_referralLetterReqfor(Request $request){
+        
+        $pat_patreferral_obj = DB::table('hisdb.patreferral')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno);
+        
+        $responce = new stdClass();
+        
+        if($pat_patreferral_obj->exists()){
+            $pat_patreferral_obj = $pat_patreferral_obj->first();
+            $responce->referralLetterReqfor = $pat_patreferral_obj;
+        }else{
+
+            $pat_mast = DB::table('hisdb.pat_mast')
+                            ->select('Newic','Name','DOB','Sex')
+                            ->where('compcode',session('compcode'))
+                            ->where('mrn',$request->mrn)
+                            ->first();
+
+            if(!empty($pat_mast->DOB)){
+                $refage = Carbon::parse($pat_mast->DOB)->age;
+            }else{
+                $refage = '';
+            }
+
+            $pat_mast->refnewic = $pat_mast->Newic;
+            $pat_mast->refpatname = $pat_mast->Name;
+            $pat_mast->refage = $refage;
+            $pat_mast->refsex = $pat_mast->Sex;
+            $pat_mast->refdate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d');
+            $pat_mast->reftime = Carbon::now("Asia/Kuala_Lumpur")->format('H:i:s');
+            $pat_mast->refpathist = '';
+            $pat_mast->refdiag = '';
+            $pat_mast->refname = '';
+            $pat_mast->refdept = '';
+
+            $pathistory_obj = DB::table('hisdb.pathistory')
+                            ->select('personalh')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn);
+
+            if($pathistory_obj->exists()){
+                $pathistory_obj = $pathistory_obj->first(); 
+                $pat_mast->refpathist = $pathistory_obj->personalh;
+            }
+
+            $episode_obj = DB::table('hisdb.episode')
+                        ->select('diagfinal')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno);
+
+            if($episode_obj->exists()){
+                $episode_obj = $episode_obj->first(); 
+                $pat_mast->refdiag = $episode_obj->diagfinal;
+            }
+
+            $user_obj = DB::table('sysdb.users as u')
+                            ->select('u.name')
+                            ->where('u.compcode','=',session('compcode'))
+                            ->where('u.username','=',session('username'));
+
+            if($user_obj->exists()){
+                $user_obj = $user_obj->first(); 
+                $pat_mast->refname = $user_obj->name;
+            }
+
+            $dept_obj = DB::table('sysdb.department as u')
+                            ->select('u.description')
+                            ->where('u.compcode','=',session('compcode'))
+                            ->where('u.deptcode','=',session('deptcode'));
+
+            if($dept_obj->exists()){
+                $dept_obj = $dept_obj->first(); 
+                $pat_mast->refdept = $dept_obj->description;
+            }
+
+            $responce->referralLetterReqfor_default = $pat_mast;
+        }
+        
+        return json_encode($responce);
+    }
+
+    public function add_referralLetter(Request $request){
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('hisdb.patreferral')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'adduser' => $request->adduser,
+                    'adddate' => $request->adddate,
+                    'computerid' => $request->computerid,
+                    'refdate' => $request->refdate,
+                    'reftime' => $request->reftime,
+                    'refaddress' => $request->refaddress,
+                    'refdoc' => $request->refdoc,
+                    'reftitle' => $request->reftitle,
+                    'refdiag' => $request->refdiag,
+                    'refplan' => $request->refplan,
+                    'refprescription' => $request->refprescription,
+                    'refto' => $request->refto,
+                    'reffro' => $request->reffro,
+                    'refprio' => $request->refprio,
+                    'refpathist' => $request->refpathist,
+                    'refphyfin' => $request->refphyfin,
+                    'refinvres' => $request->refinvres,
+                    'reftreat' => $request->reftreat,
+                    'refpurpose' => $request->refpurpose,
+                    'refname' => $request->refname,
+                    'refdept' => $request->refdept,
+                    'refphone' => $request->refphone,
+                    'reffreetxt' => $request->reffreetxt,
+                    'reffno' => $request->reffno,
+                    'refnewic' => $request->refnewic,
+                    'refpatname' => $request->refpatname,
+                    'refdocname' => $request->refdocname,
+                    'refdocdept' => $request->refdocdept,
+                    'refage' => $request->refage,
+                    'refsex' => $request->refsex
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+    }
+    
+    public function edit_referralLetter(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            $patreferral = DB::table('hisdb.patreferral')
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno)
+                            ->where('compcode','=',session('compcode'));
+            
+            if($patreferral->exists()){
+                $patreferral
+                    ->update([
+                        'upduser' => $request->upduser,
+                        'upddate' => $request->upddate,
+                        'computerid' => $request->computerid,
+                        'refdate' => $request->refdate,
+                        'reftime' => $request->reftime,
+                        'refaddress' => $request->refaddress,
+                        'refdoc' => $request->refdoc,
+                        'reftitle' => $request->reftitle,
+                        'refdiag' => $request->refdiag,
+                        'refplan' => $request->refplan,
+                        'refprescription' => $request->refprescription,
+                        'refto' => $request->refto,
+                        'reffro' => $request->reffro,
+                        'refprio' => $request->refprio,
+                        'refpathist' => $request->refpathist,
+                        'refphyfin' => $request->refphyfin,
+                        'refinvres' => $request->refinvres,
+                        'reftreat' => $request->reftreat,
+                        'refpurpose' => $request->refpurpose,
+                        'refname' => $request->refname,
+                        'refdept' => $request->refdept,
+                        'refphone' => $request->refphone,
+                        'reffreetxt' => $request->reffreetxt,
+                        'reffno' => $request->reffno,
+                        'refnewic' => $request->refnewic,
+                        'refpatname' => $request->refpatname,
+                        'refdocname' => $request->refdocname,
+                        'refdocdept' => $request->refdocdept,
+                        'refage' => $request->refage,
+                        'refsex' => $request->refsex
+                    ]);
+            }else{
+                DB::table('hisdb.patreferral')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'upduser' => $request->upduser,
+                        'upddate' => $request->upddate,
+                        'computerid' => $request->computerid,
+                        'refdate' => $request->refdate,
+                        'reftime' => $request->reftime,
+                        'refaddress' => $request->refaddress,
+                        'refdoc' => $request->refdoc,
+                        'reftitle' => $request->reftitle,
+                        'refdiag' => $request->refdiag,
+                        'refplan' => $request->refplan,
+                        'refprescription' => $request->refprescription,
+                        'refto' => $request->refto,
+                        'reffro' => $request->reffro,
+                        'refprio' => $request->refprio,
+                        'refpathist' => $request->refpathist,
+                        'refphyfin' => $request->refphyfin,
+                        'refinvres' => $request->refinvres,
+                        'reftreat' => $request->reftreat,
+                        'refpurpose' => $request->refpurpose,
+                        'refname' => $request->refname,
+                        'refdept' => $request->refdept,
+                        'refphone' => $request->refphone,
+                        'reffreetxt' => $request->reffreetxt,
+                        'reffno' => $request->reffno,
+                        'refnewic' => $request->refnewic,
+                        'refpatname' => $request->refpatname,
+                        'refdocname' => $request->refdocname,
+                        'refdocdept' => $request->refdocdept,
+                        'refage' => $request->refage,
+                        'refsex' => $request->refsex
+                    ]);
+            }
+            
+            // dump($queries);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        } 
+    }
+
+    public function get_table_card_noninv(Request $request){
+        
+        $card_noninv_obj = DB::table('hisdb.card_noninv')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno);
+        
+        $responce = new stdClass();
+        
+        if($card_noninv_obj->exists()){
+            $card_noninv_obj = $card_noninv_obj->first();
+            $responce->card_noninv_obj = $card_noninv_obj;
+        }else{
+
+            $pat_mast = DB::table('hisdb.pat_mast')
+                            ->select('Newic','Name','DOB','Sex','telhp','address1','address2','address3')
+                            ->where('compcode',session('compcode'))
+                            ->where('mrn',$request->mrn)
+                            ->first();
+
+            if(!empty($pat_mast->DOB)){
+                $age = Carbon::parse($pat_mast->DOB)->age;
+            }else{
+                $age = '';
+            }
+
+            $pat_mast->card_newic = $pat_mast->Newic;
+            $pat_mast->card_patname = $pat_mast->Name;
+            $pat_mast->card_telhp = $pat_mast->telhp;
+            $pat_mast->card_age = $age;
+            $pat_mast->card_sex = $pat_mast->Sex;
+            $pat_mast->card_date = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d');
+            $pat_mast->card_apptdate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d');
+            $pat_mast->card_adduser = session('username');
+            $pat_mast->card_addr = $pat_mast->address1.`
+            `.$pat_mast->address2.`
+            `.$pat_mast->address3.`
+            `;
+            $pat_mast->card_docname = '';
+            $pat_mast->card_wardclinic = '';
+
+            $user_obj = DB::table('sysdb.users as u')
+                            ->select('u.name')
+                            ->where('u.compcode','=',session('compcode'))
+                            ->where('u.username','=',session('username'));
+
+            if($user_obj->exists()){
+                $user_obj = $user_obj->first(); 
+                $pat_mast->card_docname = $user_obj->name;
+            }
+
+            $dept_obj = DB::table('sysdb.department as u')
+                            ->select('u.description')
+                            ->where('u.compcode','=',session('compcode'))
+                            ->where('u.deptcode','=',session('deptcode'));
+
+            if($dept_obj->exists()){
+                $dept_obj = $dept_obj->first(); 
+                $pat_mast->card_wardclinic = $dept_obj->description;
+            }
+
+            $responce->card_noninv_obj_default = $pat_mast;
+        }
+        
+        return json_encode($responce);
+    }
+
+    public function add_card_noninv(Request $request){
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('hisdb.card_noninv')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'card_type' => $request->card_type,
+                    'card_patname' => $request->card_patname,
+                    'card_newic' => $request->card_newic,
+                    'card_telhp' => $request->card_telhp,
+                    'card_age' => $request->card_age,
+                    'card_sex' => $request->card_sex,
+                    'card_addr' => $request->card_addr,
+                    'card_ind' => $request->card_ind,
+                    'card_clindet' => $request->card_clindet,
+                    'card_docname' => $request->card_docname,
+                    'card_wardclinic' => $request->card_wardclinic,
+                    'card_apptdate' => $request->card_apptdate,
+                    'card_date' => $request->card_date,
+                    'card_adduser' => $request->card_adduser,
+                    'card_chkty' => $request->card_chkty,
+                    'card_chkby' => $request->card_chkby,
+                    'card_testapptdate' => $request->card_testapptdate,
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+    }
+    
+    public function edit_card_noninv(Request $request){
+        DB::beginTransaction();
+        
+        try {
+            
+            $card_noninv = DB::table('hisdb.card_noninv')
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno)
+                            ->where('compcode','=',session('compcode'));
+            
+            if($card_noninv->exists()){
+                $card_noninv
+                    ->update([
+                        'card_type' => $request->card_type,
+                        'card_patname' => $request->card_patname,
+                        'card_newic' => $request->card_newic,
+                        'card_telhp' => $request->card_telhp,
+                        'card_age' => $request->card_age,
+                        'card_sex' => $request->card_sex,
+                        'card_addr' => $request->card_addr,
+                        'card_ind' => $request->card_ind,
+                        'card_clindet' => $request->card_clindet,
+                        'card_docname' => $request->card_docname,
+                        'card_wardclinic' => $request->card_wardclinic,
+                        'card_apptdate' => $request->card_apptdate,
+                        'card_date' => $request->card_date,
+                        'card_adduser' => $request->card_adduser,
+                        'card_chkty' => $request->card_chkty,
+                        'card_chkby' => $request->card_chkby,
+                        'card_testapptdate' => $request->card_testapptdate,
+                    ]);
+            }else{
+                DB::table('hisdb.card_noninv')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'card_type' => $request->card_type,
+                        'card_patname' => $request->card_patname,
+                        'card_newic' => $request->card_newic,
+                        'card_telhp' => $request->card_telhp,
+                        'card_age' => $request->card_age,
+                        'card_sex' => $request->card_sex,
+                        'card_addr' => $request->card_addr,
+                        'card_ind' => $request->card_ind,
+                        'card_clindet' => $request->card_clindet,
+                        'card_docname' => $request->card_docname,
+                        'card_wardclinic' => $request->card_wardclinic,
+                        'card_apptdate' => $request->card_apptdate,
+                        'card_date' => $request->card_date,
+                        'card_adduser' => $request->card_adduser,
+                        'card_chkty' => $request->card_chkty,
+                        'card_chkby' => $request->card_chkby,
+                        'card_testapptdate' => $request->card_testapptdate,
+                    ]);
+            }
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        } 
+    }
+
+    public function referralLetter_print(Request $request){
+        $patreferral = DB::table('hisdb.patreferral')
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->where('compcode','=',session('compcode'));
+
+        if(!$patreferral->exists()){
+            abort(403,'Data doesnt exists'); 
+        }else{
+            $patreferral = $patreferral->first();
+            $company = DB::table('sysdb.company')
+                        ->where('compcode','=',session('compcode'))
+                        ->first();
+            
+            return view('hisdb.radiology.referral_letter_pdfmake',compact('patreferral','company'));
+        }
+    }
+
+    public function card_noninv_print(Request $request){
+        $card_noninv = DB::table('hisdb.card_noninv')
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->where('compcode','=',session('compcode'));
+
+        if(!$card_noninv->exists()){
+            abort(403,'Data doesnt exists'); 
+        }else{
+            $card_noninv = $card_noninv->first();
+            $company = DB::table('sysdb.company')
+                        ->where('compcode','=',session('compcode'))
+                        ->first();
+            
+            return view('hisdb.radiology.card_noninv_pdfmake',compact('card_noninv','company'));
+        }
     }
     
 }

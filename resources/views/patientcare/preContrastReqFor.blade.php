@@ -25,7 +25,7 @@
                     <div class="sixteen wide column">
                         <div class="field">
                             <label>Examination:</label>
-                            <textarea id="req_examination" name="examination" type="text" rows="5"></textarea>
+                            <textarea id="req_examination" name="examination" type="text" rows="5" data-validation="required"></textarea>
                         </div>
                     </div>
 
@@ -327,7 +327,7 @@
                                 </td>
                                 <td style="margin: 0px; padding: 3px 14px 14px 14px;">
                                     <div class="field">
-                                        <input id="req_LMP" name="LMP" type="date">
+                                        <input id="req_LMP" name="LMP" type="date" data-validation="required">
                                     </div>
                                 </td>
                             </tr>
@@ -338,7 +338,7 @@
                                 </td>
                                 <td style="margin: 0px; padding: 3px 14px 14px 14px;">
                                     <div class="field">
-                                        <input type="text" id="req_renalFunction" name="renalFunction">
+                                        <input type="text" id="req_renalFunction" name="renalFunction" data-validation="required">
                                     </div>
                                 </td>
                             </tr>
@@ -349,7 +349,7 @@
                         <div class="inline fields">
                             <label>Requesting Doctor</label>
                             <div class="field">
-                                <input id="req_docName" name="docName" type="text" style="width: 320px; text-transform: uppercase;">
+                                <input id="req_docName" name="docName" type="text" style="width: 320px; text-transform: uppercase;" data-validation="required">
                             </div>
                         </div>
                         <div class="inline field" style="padding-top: 15px;

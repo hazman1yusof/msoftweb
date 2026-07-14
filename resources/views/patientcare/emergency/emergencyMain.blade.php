@@ -43,7 +43,8 @@
         </div>
 
         <div class="ui bottom attached tab raised segment" data-tab="requestFor">
-            @include('patientcare.emergency.requestfor')
+            <!-- #include('patientcare.emergency.requestfor') -->
+            @include('patientcare.requestfor',['phase' => 'ED'])
         </div>
 
         <div class="ui bottom attached tab raised segment" data-tab="admHandover">

@@ -192,6 +192,14 @@ class AppointmentController extends defaultController
                     // );
         });
         
+        $table_patm = $table_patm->join('hisdb.queue', function ($join) use ($request){
+                    // $join = $join->on('queue.deptcode','=','episode.regdept');
+                    $join = $join->on('queue.mrn','=','episode.mrn');
+                    $join = $join->on('queue.episno','=','episode.episno');
+                    $join = $join->where('queue.deptcode','=','ALL');
+                    $join = $join->where('queue.compcode','=',session('compcode'));
+        });
+        
         $table_patm = $table_patm->leftJoin('hisdb.doctor', function ($join) use ($request){
                     $join = $join->on('doctor.doctorcode','=','episode.admdoctor');
                     $join = $join->where('doctor.compcode','=',session('compcode'));

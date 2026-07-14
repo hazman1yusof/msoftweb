@@ -257,6 +257,7 @@ function frozeOnEdit(form){
 
 function rdonly(form){
 	$(form+' input[rdonly]').prop("readonly",true);
+	$(form+' textarea[rdonly]').prop("readonly",true);
 	$(form+' input[dsabled]').prop("disabled",true);
 }
 
@@ -1950,16 +1951,22 @@ function unpadzero(cellvalue, options, rowObject){
 function checkradiobutton(radiobuttons){
 	this.radiobuttons=radiobuttons;
 	this.check = function(){
+		let error = false;
 		$.each(this.radiobuttons, function( index, value ) {
 			var checked = $("input[name="+value+"]:checked").val();
-		    if(!checked){
-		     	$("label[for="+value+"]").css('color', '#fb0400ff');
-		     	$(":radio[name='"+value+"']").parent('label').css('color', '#fb0400ff');
+		  if(!checked){
+	     	$("label[for="+value+"]").css('color', '#b94a48');
+	     	$(":radio[name='"+value+"']").parent('label').css('color', '#b94a48');
+	     	$(":radio[name='"+value+"']").siblings('label').css('color', '#b94a48');
+	     	error = true;
 			}else{
 				$("label[for="+value+"]").css('color', '#000000ff');
 				$(":radio[name='"+value+"']").parent('label').css('color', '#000000ff');
+	     	$(":radio[name='"+value+"']").siblings('label').css('color', '#000000ff');
 			}
 		});
+
+		return error;
 	}
 	this.reset = function(){
 		$.each(this.radiobuttons, function( index, value ) {

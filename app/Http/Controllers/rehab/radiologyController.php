@@ -161,7 +161,7 @@ class radiologyController extends defaultController
         $data_send['pkgdept_dflt'] = session('deptcode');
         $data_send['othdept_dflt'] = session('deptcode');
         
-        return view('radiology.radiology',$data_send);
+        return view('hisdb.radiology.radiology',$data_send);
     }
     
     public function get_table_doctornote($request){
@@ -172,7 +172,7 @@ class radiologyController extends defaultController
                     $join = $join->on('episode.mrn','=','pat_mast.MRN');
                     $join = $join->where('episode.epistycode','=','OP');
                     // $join = $join->whereIn('episode.regdept',['A&E','PHY','XRAY','DIET']);
-                    $join = $join->whereIn('episode.regdept',['RAD']);
+                    // $join = $join->whereIn('episode.regdept',['RAD']);
                     // $join = $join->where(
                     //         function ($query){
                     //             return $query
@@ -183,9 +183,10 @@ class radiologyController extends defaultController
         });
         
         $table_patm = $table_patm->join('hisdb.queue', function ($join) use ($request){
-                    $join = $join->on('queue.deptcode','=','episode.regdept');
+                    // $join = $join->on('queue.deptcode','=','episode.regdept');
                     $join = $join->on('queue.mrn','=','episode.mrn');
                     $join = $join->on('queue.episno','=','episode.episno');
+                    $join = $join->where('queue.deptcode','=','RAD');
                     $join = $join->where('queue.compcode','=',session('compcode'));
         });
         
@@ -540,7 +541,53 @@ class radiologyController extends defaultController
     }
 
     public function radiology_iframe(Request $request){
-        
+        $mrn = ltrim($request->mrn, '0');
+        $episno = $request->episno;
+        $phase = $request->phase;
+
+        if(empty($mrn) || empty($episno)){
+           abort(403,'No MRN or Episno'); 
+        }
+
+        $pat_mast = DB::table('hisdb.pat_mast')
+                        ->where('compcode',session('compcode'))
+                        ->where('MRN',$mrn);
+
+        if(!$pat_mast->exists()){
+           abort(403,'MRN does not Exists'); 
+        }
+
+        $pat_mast_data = $pat_mast->first();
+
+        $dob = $pat_mast_data->DOB;
+        $age = Carbon::parse($dob)->age;
+        $pat_mast_data->age = $age;
+
+        $episode = DB::table('hisdb.episode as epi')
+                        ->select('epi.idno','epi.compcode','epi.mrn','epi.episno','epi.admsrccode','epi.epistycode','epi.case_code','epi.ward','epi.bedtype','epi.room','epi.bed','epi.admdoctor','epi.attndoctor','epi.refdoctor','epi.prescribedays','epi.pay_type','epi.pyrmode','epi.climitauthid','epi.crnumber','epi.depositreq','epi.deposit','epi.pkgcode','epi.billtype','epi.remarks','epi.episstatus','epi.episactive','epi.adddate','epi.adduser','epi.reg_by','epi.reg_date','epi.reg_time','epi.dischargedate','epi.dischargeuser','epi.dischargetime','epi.dischargedest','epi.allocdoc','epi.allocbed','epi.allocnok','epi.allocpayer','epi.allocicd','epi.lastupdate','epi.lastuser','epi.lasttime','epi.procedure','epi.dischargediag','epi.lodgerno','epi.regdept','epi.diet1','epi.diet2','epi.diet3','epi.diet4','epi.diet5','epi.glauthid','epi.treatment','epi.diagcode','epi.complain','epi.diagfinal','epi.clinicalnote','epi.conversion','epi.newcaseP','epi.newcaseNP','epi.followupP','epi.followupNP','epi.bed2','epi.bed3','epi.bed4','epi.bed5','epi.bed6','epi.bed7','epi.bed8','epi.bed9','epi.bed10','epi.diagprov','epi.visitcase','epi.PkgAutoNo','epi.AgreementID','epi.AdminFees','epi.EDDept','epi.dischargestatus','epi.procode','epi.treatcode','epi.payer','epi.doctorstatus','epi.reff_rehab','epi.reff_physio','epi.reff_diet','epi.reff_ed','epi.reff_rad','epi.stats_rehab','epi.stats_physio','epi.stats_diet','epi.dry_weight','epi.duration_hd','epi.lastarrivaldate','epi.lastarrivaltime','epi.lastarrivalno','epi.picdoctor','epi.nurse_stat','epi.computerid','epi.patologist','epi.phyexam','epi.summary','epi.followup','epi.status_discWell','epi.status_discImproved','epi.status_discAOR','epi.status_discExpired','epi.status_discAbsconded','epi.status_discTransferred','epi.medondischg','epi.medcert','doc.doctorname')
+                        ->leftJoin('hisdb.doctor as doc', function($join){
+                                $join = $join->where('doc.compcode','=',session('compcode'))
+                                                ->on('doc.doctorcode', '=', 'epi.admdoctor');
+                            })
+                        ->where('epi.compcode',session('compcode'))
+                        ->where('epi.mrn',$mrn)
+                        ->where('epi.episno',$episno);
+
+        if(!$episode->exists()){
+           abort(403,'Episode does not Exists'); 
+        }
+
+        $episode_data = $episode->first();
+        if($episode_data->newcaseP == 1 || $episode_data->followupP == 1){
+            $episode_data->pregnant = 1;
+        }else{
+            $episode_data->pregnant = 0;
+        }
+
+        if(empty($phase)){
+           $phase = 'CLINICAL';
+        }
+
+        return view('hisdb.radiology.radiology_iframe',compact('mrn','episno','phase','pat_mast_data','episode_data'));
     }
-    
 }

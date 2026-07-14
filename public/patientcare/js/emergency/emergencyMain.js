@@ -298,6 +298,8 @@ function populate_emergencyMain(obj){
     $('#mrn_emergencyMain_past').val(obj.MRN);
     $('#episno_emergencyMain_past').val(obj.Episno);
     $('#recorddate_emergencyMain').val(obj.date);
+    $('#mrn_requestFor').val(obj.MRN);
+    $("#episno_requestFor").val(obj.Episno);
 
     $("#tab_emergencyMain").collapse('hide');
 

@@ -40,11 +40,18 @@ $(document).ready(function (){
                 // DataTable_preview.columns.adjust();
                 // preview_load_data();
 
-                let param = {
+                let param_docImaging = {
                     mrn: $("#mrn_apptMain").val(),
                     episno: $("#episno_apptMain").val(),
                 }
-                $("#userfile_iframe").attr('src','./userfile_iframe'+"?"+$.param(param));
+
+                let newurl_docImaging = './userfile_iframe'+"?"+$.param(param_docImaging);
+                let cururl_docImaging = $('iframe#userfile_iframe').attr('src');
+
+                if(newurl_docImaging != cururl_docImaging){
+                    $("iframe#userfile_iframe").attr('src',newurl_docImaging);
+                }
+
                 break;
             case 'triageInfo':
                 $("#jqGridExamTriage").jqGrid('setGridWidth', Math.floor($("#jqGridExamTriage_c")[0].offsetWidth-$("#jqGridExamTriage_c")[0].offsetLeft-14));
@@ -78,12 +85,25 @@ $(document).ready(function (){
                 
                 $('#requestFor .top.menu .item').tab('change tab','otbookReqFor');
                 populate_otbookReqFor_getdata();
-                populate_radClinicReqFor_getdata();
+                // populate_radClinicReqFor_getdata();
                 // populate_mriReqFor_getdata();
                 // populate_physioReqFor_getdata();
                 // populate_dressingReqFor_getdata();
                 // populate_preContrastReqFor_getdata();
                 // populate_consentFormReqFor_getdata();
+
+                // let param_reqFor = {
+                //     mrn: $("#mrn_apptMain").val(),
+                //     episno: $("#episno_apptMain").val(),
+                // }
+
+                // let newurl_reqFor = './requestfor_iframe'+"?"+$.param(param_reqFor);
+                // let cururl_reqFor = $('iframe#wardbook_iframe').attr('src');
+
+                // if(newurl_reqFor != cururl_reqFor){
+                //     $("iframe#requestfor_iframe").attr('src',newurl_reqFor);
+                // }
+
                 break;
             case 'admHandover':
                 getdata_admHandoverAppt();
@@ -148,6 +168,8 @@ $(document).ready(function (){
                 // textarea_init_otbookReqFor();
                 break;
             case 'radReqFor':
+                $('#radiology .top.menu .item').tab('change tab','radClinicReqFor');
+                populate_radClinicReqFor_getdata();
                 break;
             case 'physioReqFor':
                 populate_physioReqFor_getdata();
@@ -156,6 +178,12 @@ $(document).ready(function (){
             case 'dressingReqFor':
                 populate_dressingReqFor_getdata();
                 // textarea_init_dressingReqFor();
+                break;
+            case 'referral_letter_reqfor':
+                populate_referralLetterReqfor_getdata();
+                break;
+            case 'card_noninv_reqfor':
+                populate_card_noninv_getdata();
                 break;
         }
     }});
