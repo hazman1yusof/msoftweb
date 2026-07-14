@@ -1842,6 +1842,10 @@ Route::get('/appointment','appointment\AppointmentController@index');
 Route::get('/appointment/table','appointment\AppointmentController@table');
 Route::post('/appointment/form','appointment\AppointmentController@form');
 
+Route::get('/doctorNoteAppt','appointment\DoctorNoteApptController@index');
+Route::get('/doctorNoteAppt/table','appointment\DoctorNoteApptController@table');
+Route::post('/doctorNoteAppt/form','appointment\DoctorNoteApptController@form');
+
 //dari dialysis
 
 Route::get('/dialysis_pat_mast','dialysis\PatmastController@show');
