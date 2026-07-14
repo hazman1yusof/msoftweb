@@ -15,14 +15,24 @@ var urlParam_ExamTriage = {
 }
 
 /////////////////////parameter for jqGridAddNotesTriage url/////////////////////////////////////////////////
+// var urlParam_AddNotesTriage = {
+// 	action: 'get_table_default',
+// 	url: 'util/get_table_default',
+// 	field: '',
+// 	table_name: 'nursing.triage_addnotes',
+// 	table_id: 'idno',
+// 	filterCol: ['mrn','episno','location'],
+// 	filterVal: ['','','TRIAGE'],
+// }
+
 var urlParam_AddNotesTriage = {
 	action: 'get_table_default',
 	url: 'util/get_table_default',
 	field: '',
-	table_name: 'nursing.triage_addnotes',
+	table_name: 'nursing.nursaddnote',
 	table_id: 'idno',
-	filterCol:['mrn','episno','location'],
-	filterVal:['','','TRIAGE'],
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','TRIAGE INFO APPT'],
 }
 
 $(document).ready(function () {
@@ -44,37 +54,38 @@ $(document).ready(function () {
 		radbuts.reset();
 
 		var saveParam={
-      	action:'get_table_triage',
-    }
+			action:'get_table_triage',
+		}
 
-    var postobj={
-    	_token : $('#_token').val(),
-    	mrn:$("#mrn_ti").val(),
-    	episno:$("#episno_ti").val()
-    };
+		var postobj={
+			_token : $('#_token').val(),
+			mrn:$("#mrn_ti").val(),
+			episno:$("#episno_ti").val()
+		};
 
-    $.post( "./ptcare_nursingAppt/form?"+$.param(saveParam), $.param(postobj), function( data ) {
-        
-    },'json').fail(function(data) {
-        alert('there is an error');
-    }).done(function(data){
-    	if(!$.isEmptyObject(data.triage)){
-			if(!emptyobj_(data.triage))autoinsert_rowdata("#formTriageInfo",data.triage);
-			if(!emptyobj_(data.triage_gen))autoinsert_rowdata("#formTriageInfo",data.triage_gen);
-			if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
-			if(!emptyobj_(data.triage_nurshistory))autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
-			if(!emptyobj_(data.triage_gen))$('#formTriageInfo span#adduser').text(data.triage_gen.adduser);
-			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
-			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
-			button_state_ti('edit');
-        }else{
-			button_state_ti('add');
-			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
-			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'kosongkan');
-			if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
-        }
-
-    });
+		$.post( "./ptcare_nursingAppt/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+			
+		},'json').fail(function(data) {
+			alert('there is an error');
+		}).done(function(data){
+			if(!$.isEmptyObject(data.triage)){
+				if(!emptyobj_(data.triage))autoinsert_rowdata("#formTriageInfo",data.triage);
+				if(!emptyobj_(data.triage_gen))autoinsert_rowdata("#formTriageInfo",data.triage_gen);
+				if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
+				if(!emptyobj_(data.triage_nurshistory))autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
+				if(!emptyobj_(data.triage_gen))$('#formTriageInfo span#adduser').text(data.triage_gen.adduser);
+				refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
+				refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
+				// button_state_ti('edit');
+				button_state_ti('empty');
+			}else{
+				button_state_ti('add');
+				refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
+				refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'kosongkan');
+				if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
+			}
+		
+		});
 	});
 
 	disableForm('#formTriageInfo');
@@ -356,7 +367,7 @@ $(document).ready(function () {
 	//////////////////////////////////////////jqGridPagerExamTriage////////////////////////////////////////////////
 	$("#jqGridExamTriage").inlineNav('#jqGridPagerExamTriage', {
 		add: true,
-		edit: true,
+		edit: false,
 		cancel: true,
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
@@ -413,7 +424,7 @@ $(document).ready(function () {
 			{ label: 'mrn', name: 'mrn', hidden: true },
 			{ label: 'episno', name: 'episno', hidden: true },
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
-			{ label: 'Note', name: 'additionalnote', classes: 'wrap', width: 120, editable: true, edittype: "textarea", editoptions: {style: "width: -webkit-fill-available;" ,rows: 5}},
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 120, editable: true, edittype: "textarea", editoptions: {style: "width: -webkit-fill-available;" ,rows: 5}},
 			{ label: 'Entered by', name: 'adduser', width: 50, hidden:false},
 			{ label: 'Date', name: 'adddate', width: 50, hidden:false},
 		],
@@ -450,7 +461,7 @@ $(document).ready(function () {
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete_addnotestriage,#jqGridPagerRefresh_addnotestriage").hide();
 
-			$("input[name='additionalnote']").keydown(function(e) {//when click tab at last column in header, auto save
+			$("textarea[name='note']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGridAddNotesTriage_ilsave').click();
 				/*addmore_jqgrid.state = true;
@@ -475,7 +486,7 @@ $(document).ready(function () {
 			let data = $('#jqGridAddNotesTriage').jqGrid ('getRowData', rowid);
 			console.log(data);
 
-			let editurl = "./nursing/form?"+
+			let editurl = "./ptcare_nursingAppt/form?"+
 				$.param({
 					_token: $("#_token").val(),
 					episno:$('#episno_ti').val(),
@@ -814,7 +825,7 @@ function populate_triage_currpt(obj){
 	//table additional info
 	urlParam_AddNotesTriage.filterVal[0] = obj.MRN;
 	urlParam_AddNotesTriage.filterVal[1] = obj.Episno;
-	urlParam_AddNotesTriage.filterVal[2] = 'TRIAGE';
+	urlParam_AddNotesTriage.filterVal[2] = 'TRIAGE INFO APPT';
 	
 }
 
@@ -1205,7 +1216,8 @@ function getdata_triageAppt(){
 			if(!emptyobj_(data.triage_gen))$('#formTriageInfo span#adduser').text(data.triage_gen.adduser);
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
-			button_state_ti('edit');
+			// button_state_ti('edit');
+			button_state_ti('empty');
 		}else{
 			button_state_ti('add');
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
