@@ -3,52 +3,52 @@
 @section('style')
     .red.ui.right.labeled.input input{
         color: white !important;
-        border-color: red !important;
-        background-color: red !important;
+        border-color:red !important;
+        background-color:red !important;
     }
     
     .red.ui.table tr{
-        color: white;
-        background-color: red !important;
+        color:white;
+        background-color:red !important;
     }
     
     .red.ui.action.input input{
         color: white !important;
-        border-color: red !important;
-        background-color: red !important;
+        border-color:red !important;
+        background-color:red !important;
     }
     
     .yellow.ui.right.labeled.input input{
         color: black !important;
-        border-color: #9e9e00 !important;
-        background-color: yellow !important;
+        border-color:#9e9e00 !important;
+        background-color:yellow !important;
     }
     
     .yellow.ui.table tr{
-        background-color: yellow !important;
+        background-color:yellow !important;
     }
     
     .yellow.ui.action.input input{
         color: black !important;
-        border-color: #9e9e00 !important;
-        background-color: yellow !important;
+        border-color:#9e9e00 !important;
+        background-color:yellow !important;
     }
     
     .green.ui.right.labeled.input input{
         color: white !important;
-        border-color: green !important;
-        background-color: green !important;
+        border-color:green !important;
+        background-color:green !important;
     }
     
     .green.ui.table tr{
-        color: white;
-        background-color: green !important;
+        color:white;
+        background-color:green !important;
     }
     
     .green.ui.action.input input{
         color: white !important;
-        border-color: green !important;
-        background-color: green !important;
+        border-color:green !important;
+        background-color:green !important;
     }
 @endsection
 
@@ -73,9 +73,7 @@
                     </div>
                 </div>
                 
-                <h2 class="h2">
-                    Patient List
-                </h2>
+                <h2 class="h2">Patient List</h2>
                 <table id="jqGrid" class="table table-striped"></table>
                 <div id="jqGridPager"></div>
                 <a class="ui grey label left floated" style="margin-top: 8px;" id="refresh_main">
@@ -104,28 +102,28 @@
     <input id="_token" name="_token" value="{{ csrf_token() }}" type="hidden">
     <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
     
-    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;" id="apptMain_panel">
-        <div class="panel-heading clearfix collapsed" id="toggle_apptMain">
-            <b>NAME: <span id="name_show_apptMain"></span></b><br>
-            MRN: <span id="mrn_show_apptMain"></span>
-            SEX: <span id="sex_show_apptMain"></span>
-            DOB: <span id="dob_show_apptMain"></span>
-            AGE: <span id="age_show_apptMain"></span>
-            RACE: <span id="race_show_apptMain"></span>
-            RELIGION: <span id="religion_show_apptMain"></span><br>
-            OCCUPATION: <span id="occupation_show_apptMain"></span>
-            CITIZENSHIP: <span id="citizenship_show_apptMain"></span>
-            AREA: <span id="area_show_apptMain"></span>
+    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;" id="radMain_panel">
+        <div class="panel-heading clearfix collapsed" role="tab" id="toggle_radMain">
+            <b>NAME: <span id="name_show_radMain"></span></b><br>
+            MRN: <span id="mrn_show_radMain"></span>
+            SEX: <span id="sex_show_radMain"></span>
+            DOB: <span id="dob_show_radMain"></span>
+            AGE: <span id="age_show_radMain"></span>
+            RACE: <span id="race_show_radMain"></span>
+            RELIGION: <span id="religion_show_radMain"></span><br>
+            OCCUPATION: <span id="occupation_show_radMain"></span>
+            CITIZENSHIP: <span id="citizenship_show_radMain"></span>
+            AREA: <span id="area_show_radMain"></span>
             
-            <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_apptMain"></i>
-            <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_apptMain"></i>
+            <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_radMain"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_radMain"></i>
             
-            <div style="position: absolute; 
+            <!-- <div style="position: absolute; 
                         padding: 0 0 0 0; 
                         right: 0px; 
                         top: 0px; 
                         z-index: 1000;">
-                <button class="ui icon tertiary button refreshbtn_apptMain">
+                <button class="ui icon tertiary button refreshbtn_phys">
                     <i class="sync alternate icon"></i>
                 </button>
             </div>
@@ -134,24 +132,22 @@
                         padding: 0 0 0 0; 
                         right: 50px; 
                         top: 48px;">
-                <h5><strong>Clinical</strong>&nbsp;&nbsp;
+                <h5><strong>Rehabilitation</strong>&nbsp;&nbsp;
                     <span class="metal"></span></h5>
-            </div>
+            </div> -->
         </div>
         
-        <div id="tab_apptMain" class="panel-collapse collapse">
-            <div class="panel-body paneldiv" style="overflow-x: hidden;">
-                @include('appointment.appt_main')
+        <div id="tab_radMain" class="panel-collapse collapse" >
+            <div class="panel-body paneldiv" id="radiology">
+                <input type="hidden" id="mrn_requestFor">
+                <input type="hidden" id="episno_requestFor">
+                @include('hisdb.radiology.radiology_inside_iframe',['radiology_inside_iframe_phase'=>'radiology'])
             </div>
         </div>
     </div>
     
-    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;" id="ordcom_panel">
-        @include('hisdb.ordcom.ordcom',['phase' => '2'])
-    </div>
-    
-@include('hisdb.pat_mgmt.pat_mgmt_iframe',['phase' => 'semantic'])
-@include('patientcare.itemselector')
+    @include('hisdb.pat_mgmt.pat_mgmt_iframe',['phase' => 'semantic'])
+    @include('patientcare.itemselector')
 @endsection
 
 @section('css')
@@ -172,8 +168,9 @@
 @endsection
 
 @section('js')
-    <script type="text/javascript" src="{{ asset('js/myjs/utility.js') }}?v=1.3"></script>
+    <script type="text/javascript" src="{{ asset('js/myjs/utility.js') }}?v=1.2"></script>
     
+    <script type="text/javascript" src="{{ asset('js/hisdb/pat_mgmt/pat_mgmt_main_iframe.js?v=1.1') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
     <script type="text/ecmascript" src="{{ asset('patientcare/assets/trirand/i18n/grid.locale-en.js') }}"></script>
     <script type="text/ecmascript" src="{{ asset('patientcare/assets/trirand/jquery.jqGrid.min.js') }}"></script>
@@ -186,33 +183,8 @@
     <script type="text/ecmascript" src="{{ asset('patientcare/assets/form-validator/jquery.form-validator.min.js') }}/"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/appointment/appointment.js?v=1.1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/userfile.js?v=1.1') }}"></script>
-    <script type="text/javascript" src="{{asset('patientcare/js/requestfor_iframe.js')}}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/transaction.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/transaction_diet.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/transaction_phys.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/doctornote.js?v=1.3') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/appointment/nursingAppt.js?v=1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/dieteticCareNotes.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/physiotherapy/physioterapy.js?v=1.1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/physiotherapy/physioterapy_ncase.js') }}"></script>
-    <!-- <script type="text/javascript" src="{{ asset('patientcare/js/requestfor.js?v=1.5') }}"></script> -->
-    <script type="text/javascript" src="{{ asset('patientcare/js/appointment/admhandoverAppt.js?v=1.1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/appointment/appt_main.js?v=1.2') }}"></script>
-    
-    <script type="text/javascript" src="{{ asset('js/hisdb/pat_mgmt/pat_mgmt_main_iframe.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_main.js?v=1.3') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_phar.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_disp.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_lab.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_rad.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_dfee.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_phys.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_rehab.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_diet.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_oth.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_pkg.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/pat_mgmt/epis_payer.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/hisdb/pat_mgmt/epis_coverage.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/requestfor_iframe.js') }}"></script>
+    <!-- <script type="text/javascript" src="{{ asset('patientcare/js/transaction.js') }}"></script> -->
+    <!-- <script type="text/javascript" src="{{ asset('patientcare/js/transaction_diet.js') }}"></script> -->
+    <script type="text/javascript" src="{{ asset('js/hisdb/radiology/radMain.js') }}"></script>
 @endsection

@@ -1366,6 +1366,7 @@ Route::get('/pat_mast/patlabel','hisdb\PatmastController@patlabel');
 
 Route::get('/episode_iframe','hisdb\PatmastController@episode_iframe');
 Route::get('/pat_mast_iframe','hisdb\PatmastController@pat_mast_iframe');
+Route::get('/userfile_iframe','hisdb\PatmastController@userfile_iframe');
 
 Route::post('/episode/save_doc','hisdb\PatmastController@save_doc');
 Route::post('/episode/save_bed','hisdb\PatmastController@save_bed');
@@ -1701,6 +1702,8 @@ Route::get('/ptcare_requestforED','patientcare\RequestForEDController@show');
 Route::get('/ptcare_requestforED/table','patientcare\RequestForEDController@table');
 Route::post('/ptcare_requestforED/form','patientcare\RequestForEDController@form');
 
+Route::get('/requestfor_iframe','patientcare\RequestForController@requestfor_iframe');
+
 Route::get('/ptcare_admhandover','patientcare\AdmHandoverController@show');
 Route::get('/ptcare_admhandover/table','patientcare\AdmHandoverController@table');
 Route::post('/ptcare_admhandover/form','patientcare\AdmHandoverController@form');
@@ -1734,6 +1737,7 @@ Route::get('/ptcare_preview','patientcare\PreviewController@preview');
 Route::get('/ptcare_preview/data','patientcare\PreviewController@previewdata');
 Route::get('/ptcare_localpreview','patientcare\WebserviceController@localpreview');
 Route::post('/ptcare_preview/form','patientcare\PreviewController@form');
+Route::get('/ptcare_preview/table','patientcare\PreviewController@table');
 
 Route::get('/ptcare_nursingnote','patientcare\NursingNoteController@show');
 Route::get('/ptcare_nursingnote/table','patientcare\NursingNoteController@table');
@@ -1751,6 +1755,12 @@ Route::post('/ptcare_upload','patientcare\PreviewController@form');
 Route::get('/rehab','rehab\RehabController@index');
 Route::get('/rehab/table','rehab\RehabController@table');
 Route::post('/rehab/form','rehab\RehabController@form');
+
+Route::get('/radiology','rehab\radiologyController@index');
+Route::get('/radiology/table','rehab\radiologyController@table');
+Route::post('/radiology/form','rehab\radiologyController@form');
+Route::get('/radiology_iframe','rehab\radiologyController@iframe');
+
 // Route::post('/ptcare_doctornote_transaction_save', "rehab\RehabController@transaction_save");
 
 //// Physiotherapy page ////

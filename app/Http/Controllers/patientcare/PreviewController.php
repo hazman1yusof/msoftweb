@@ -29,6 +29,15 @@ class PreviewController extends defaultController
                 return 'error happen..';
         }
     }
+
+
+    public function table(Request $request)
+    {   
+        switch($request->action){
+            case 'delete_userfile':
+                return $this->delete_userfile($request);
+        }
+    }
     
 
     public function preview(Request $request)
@@ -49,7 +58,9 @@ class PreviewController extends defaultController
     public function previewdata(Request $request)
     {
         $table = DB::table('nursing.nurs_invest_file')
-            ->where('mrn','=',$request->mrn);
+                    ->where('compcode',session('compcode'))
+                    ->where('mrn','=',$request->mrn)
+                    ->where('type','=',$request->type);
 
         $responce = new stdClass();
         $responce->rows = $table->get();
@@ -189,6 +200,7 @@ class PreviewController extends defaultController
                 'mrn' => $request->mrn,
                 'episno' => $request->episno,
                 'filename' => $filename,
+                'type' => $request->type,
                 'path' => $file_path,
                 'adduser'  => session('username'),
                 'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
@@ -198,6 +210,26 @@ class PreviewController extends defaultController
         $responce = new stdClass();
         $responce->file_path = $file_path;
         return json_encode($responce);
+    }
+
+    public function delete_userfile(Request $request){
+        DB::beginTransaction();
+
+        try {
+            DB::table('nursing.nurs_invest_file')
+                ->where('idno',$request->idno)
+                ->update([
+                    'compcode' => 'XX',
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
     }
 
 }

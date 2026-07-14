@@ -2,6 +2,12 @@
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
+var urlParam = {
+	action: 'get_table_doctornote',
+	url: './appointment/table',
+	filterVal : [moment().format("YYYY-MM-DD")]
+}
+
 $(document).ready(function () {
     stop_scroll_on();
 
@@ -62,12 +68,6 @@ $(document).ready(function () {
 		$('#calendar').fullCalendar( 'refetchEventSources', 'doctornote_event' );
 		refreshGrid("#jqGrid", urlParam);
 	});
-
-	var urlParam = {
-		action: 'get_table_doctornote',
-		url: './appointment/table',
-		filterVal : [moment().format("YYYY-MM-DD")]
-	}
 
 	var istablet = $(window).width() <= 1024;
 	// istablet =  true;
@@ -217,7 +217,7 @@ $(document).ready(function () {
 				{ label: 'Epis. No', name: 'Episno', align: 'right', hidden: true },
 				{ label: 'Time', name: 'reg_time', width: 70, formatter: timeFormatter, unformat: timeUNFormatter },
 				{ label: 'Name', name: 'Name', width: 150, classes: 'wrap' },
-				{ label: 'Doctor Name', name: 'doctorname',classes: 'wrap', width: 190},
+				{ label: 'Doctor Name', name: 'doctorname',classes: 'wrap', width: 150},
 				{ label: 'Payer', name: 'payer', width: 150, classes: 'wrap', formatter: formatterpayer, hidden:true },
 				{ label: 'Dept', name: 'regdept', width: 60 },
 				{ label: 'I/C', name: 'Newic', width: 90 },
@@ -230,7 +230,7 @@ $(document).ready(function () {
 				{ label: 'HP', name: 'telhp', width: 80 },
 				{ label: 'Sex', name: 'Sex', width: 40 },
 				{ label: 'Mode', name: 'pyrmode', classes: 'wrap', width: 80 },
-				{ label: 'Discharge', name: 'episstatus', width: 60, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
+				{ label: 'Discharge', name: 'episstatus', width: 100, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'Seen', name: 'doctorstatus', formatter: formatterstatus_tick, hidden: true },
 				{ label: 'idno', name: 'idno', hidden: true, key: true },
 				{ label: 'DOB', name: 'DOB', hidden: true },

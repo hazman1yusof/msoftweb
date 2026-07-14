@@ -46,7 +46,8 @@
             </div>
             
             <div class="ui bottom attached tab raised segment" data-tab="reqFor">
-                @include('patientcare.requestfor')
+                @include('patientcare.requestfor',['phase' => 'CLINIC'])
+                <!-- <iframe style="display:block; border:none; height:95vh; width:95vw;" id="requestfor_iframe"></iframe> -->
             </div>
             
             <div class="ui bottom attached tab raised segment" data-tab="admHandover">

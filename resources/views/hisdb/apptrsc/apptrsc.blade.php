@@ -62,6 +62,10 @@ td.fc-event-container a.selected{
     text-transform: uppercase;
 }
 
+#dialogForm textarea {
+    text-transform: uppercase;
+}
+
 #mdl_accomodation,#mdl_reference,#mdl_bill_type,#mdl_epis_pay_mode,#bs-guarantor,#mdl_new_gl{
 	display: none; z-index: 110;background-color: rgba(0, 0, 0, 0.3);
 }
@@ -236,12 +240,15 @@ i.fa {
 							</div>
 							<div class="form-group">
 								<label for="title" class="col-md-2 control-label">MRN</label>
-								<div class="col-md-4">
+								<div class="col-md-3">
 									<div class="input-group">
 										<input type="text" class="form-control input-sm" placeholder="MRN No" id="mrn" name="mrn" maxlength="12" readonly value="@if(!empty($pat_info)){{$pat_info->MRN}} @endif">
 										<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class='help-block'></span>
+								</div>
+								<div class="col-md-1">
+									<input type="text" class="form-control input-sm" placeholder="Episno" id="episno" name="episno" maxlength="12" readonly value="@if(!empty($pat_info)){{$pat_info->episno}} @endif">
 								</div>
 								<div class="col-md-4">
 									<input type="text" class="form-control input-sm" data-validation="required" placeholder="Name" id="patname" name="patname" value="@if(!empty($pat_info)){{$pat_info->Name}} @endif" @if(!empty($pat_info)){{'readonly'}} @endif>
@@ -327,8 +334,8 @@ i.fa {
 						</div>
 						<div class="panel-footer">
 							<button type="button" class="btn btn-primary" id="submit">Save changes</button>
-							<button type="button" class="btn btn-danger" id="delete_but" style="display: none;">Delete Appointment</button>
-							<button type="button" class="btn btn-primary" id="new_episode" style="display: none;">New Episode</button>
+							<!-- <button type="button" class="btn btn-danger" id="delete_but" style="display: none;">Delete Appointment</button> -->
+							<button type="button" class="btn btn-primary" id="new_episode" style="display: none;"><span id="episode_pat_span">New Episode</span></button>
 							<button type="button" class="btn btn-success" id="biodata_pat" style=""><span id="biodata_pat_span">New MRN</span></button>
 						</div>
 					</form>
@@ -437,6 +444,6 @@ i.fa {
 	<script src="js/hisdb/pat_mgmt/episode.js"></script>
 
 	
-	<script src="js/hisdb/apptrsc/apptrsc.js?v=1.3"></script>
+	<script src="js/hisdb/apptrsc/apptrsc.js?v=1.4"></script>
 
 @endsection

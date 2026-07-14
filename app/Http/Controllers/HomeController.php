@@ -95,7 +95,7 @@ class HomeController extends Controller
         $unit_user = '';
         $company = DB::table('sysdb.company')->where('compcode',session('compcode'))->first();
         $logo1 = $company->logo1;
-        $title="Clinic";
+        $title="Out-Patient";
         if($user->dept != ''){
             $unit_user_ = DB::table('sysdb.department')
                 ->where('compcode','=',$user->compcode)
@@ -359,24 +359,29 @@ class HomeController extends Controller
         $company = $user->compcode;
         $ISDEMO = \config('get_config.ISDEMO');
 
-        if($ISDEMO != null ){
+        // if($ISDEMO != null ){
         
-            $menu="<li><a style='padding-left:9px;' title='Patient List' class='clickable' programid='pat_list' targetURL='pat_mast?epistycode=OP&curpat=false&PatClass=HIS' >Patient List</a></li>";
-            $menu.="<li><a style='padding-left:9px;' title='GP List' class='clickable' programid='gp_list' targetURL='pat_mast?epistycode=OTC&curpat=false&PatClass=OTC' >GP List</a></li>";
-            $menu.="<li><a style='padding-left:9px;' title='Case Note' class='clickable' programid='casenote' targetURL='ptcare_doctornoteED' >Emergency</a></li>";
-            $menu.="<li><a style='padding-left:9px;' title='Appointment' class='clickable' programid='appointment' targetURL='./appointment' >Appointment</a></li>";
-            $menu.="<li><a style='padding-left:9px;' title='Rehabilitation' class='clickable' programid='rehab' targetURL='rehab' >Rehabilitation</a></li>";
+        //     $menu="<li><a style='padding-left:9px;' title='Patient List' class='clickable' programid='pat_list' targetURL='pat_mast?epistycode=OP&curpat=false&PatClass=HIS' >Patient List</a></li>";
+        //     $menu.="<li><a style='padding-left:9px;' title='GP List' class='clickable' programid='gp_list' targetURL='pat_mast?epistycode=OP&curpat=false&PatClass=OTC' >GP List</a></li>";
+        //     $menu.="<li><a style='padding-left:9px;' title='Appointment' class='clickable' programid='appointment' targetURL='./apptrsc?TYPE=DOC' >Appointment</a></li>";
+        //     $menu.="<li><a style='padding-left:9px' title='Current Patient' class='clickable' programid='curr_pat' targeturl='pat_mast?epistycode=OP&curpat=true&PatClass=HIS'>Current Patient</a></li>";
+        //     $menu.="<li><a style='padding-left:9px;' title='Emergency' class='clickable' programid='casenote' targetURL='ptcare_doctornoteED' >Emergency</a></li>";
+        //     $menu.="<li><a style='padding-left:9px;' title='Clinic' class='clickable' programid='clinic' targetURL='./appointment' >Clinic</a></li>";
+        //     $menu.="<li><a style='padding-left:9px;' title='Rehabilitation' class='clickable' programid='rehab' targetURL='rehab' >Rehabilitation</a></li>";
+        //     $menu.="<li><a style='padding-left:9px;' title='Radiology' class='clickable' programid='radiology' targetURL='./radiology' >Radiology</a></li>";
             
-        }else{
+        // }else{
         
             $menu="<li><a style='padding-left:9px;' title='Patient List' class='clickable' programid='pat_list' targetURL='pat_mast?epistycode=OP&curpat=false&PatClass=HIS' >Patient List</a></li>";
             $menu.="<li><a style='padding-left:9px;' title='GP List' class='clickable' programid='gp_list' targetURL='pat_mast?epistycode=OP&curpat=false&PatClass=OTC' >GP List</a></li>";
             $menu.="<li><a style='padding-left:9px' title='Current Patient' class='clickable' programid='curr_pat' targeturl='pat_mast?epistycode=OP&curpat=true&PatClass=HIS'>Current Patient</a></li>";
+            $menu.="<li><a style='padding-left:9px;' title='Appointment' class='clickable' programid='appointment' targetURL='./apptrsc?TYPE=DOC' >Appointment</a></li>";            
             $menu.="<li><a style='padding-left:9px;' title='Emergency' class='clickable' programid='casenote' targetURL='ptcare_doctornoteED' >Emergency</a></li>";
-            $menu.="<li><a style='padding-left:9px;' title='Appointment' class='clickable' programid='appointment' targetURL='./appointment' >Appointment</a></li>";
+            $menu.="<li><a style='padding-left:9px;' title='Clinic' class='clickable' programid='clinic' targetURL='./appointment' >Clinic</a></li>";
             $menu.="<li><a style='padding-left:9px;' title='Rehabilitation' class='clickable' programid='rehab' targetURL='rehab' >Rehabilitation</a></li>";
+            $menu.="<li><a style='padding-left:9px;' title='Radiology' class='clickable' programid='radiology' targetURL='./radiology' >Radiology</a></li>";
 
-        }
+        // }
         return $menu;
     }
 

@@ -407,12 +407,14 @@ $(document).ready(function() {
     // }
 
     $( "#patientBox").click(function() { // register new patient
-        let gotpat = $("#patientBox").data('gotpat');
+        // let gotpat = $("#patientBox").data('gotpat');
         let oper_mykad = $("#btn_register_patient").data("oper_mykad");
+        checkfpdata();
 
-        if(gotpat == true){
-            $("#patientBox").data('gotpat',false);
-        }
+        // if(gotpat == true){
+        //     $("#patientBox").data('gotpat',false);
+        //     checkfpdata();
+        // }
 
         if(oper_mykad == 'edit'){
             $("#toggle_tabNok_emr,#toggle_tabNok_pat").parent().show();
@@ -433,7 +435,8 @@ $(document).ready(function() {
         var rng = $('#userdeptcode').val()+'_'+randomString(32,'#aA');
         $("#patientBox").data('scantype','mykad');
         $("#rng").val(rng);
-        $("#mykadFPiframe").attr('src','http://mycard.test/mykad?rng='+rng);
+        // $("#mykadFPiframe").attr('src','http://mycard.test/mykad?rng='+rng);
+        $("#mykadFPiframe").attr('src','./mykadFP');
         // $("#mykadFPiframe").get(0).contentWindow.setscantype('mykad');
         $('#mdl_biometric').modal('show');
     });
@@ -663,7 +666,6 @@ $(document).ready(function() {
                 }).error(function(data){
 
                 });
-
             }
 
             function preepis_bio_click(event){

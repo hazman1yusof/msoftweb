@@ -45,9 +45,9 @@ $(document).ready(function () {
             }
         },
         eventSources: [
-            {	
+            {   
                 id: 'doctornote_event',
-                url: './rehab/table',
+                url: './radiology/table',
                 type: 'GET',
                 data: {
                     type: 'apptbook',
@@ -64,7 +64,7 @@ $(document).ready(function () {
     
     var urlParam = {
         action: 'get_table_doctornote',
-        url: './rehab/table',
+        url: './radiology/table',
         filterVal: [moment().format("YYYY-MM-DD")]
     }
     
@@ -136,41 +136,28 @@ $(document).ready(function () {
             rowNum: 30,
             onSelectRow: function (rowid, selected){
                 // if(checkifedited()){
-                // 	return false;
+                //  return false;
                 // }
                 $('button#timer_stop').click();
                 // urlParam_trans.mrn = selrowData('#jqGrid').MRN;
                 // urlParam_trans.episno = selrowData('#jqGrid').Episno;
                 // urlParam_trans_diet.mrn = selrowData('#jqGrid').MRN;
                 // urlParam_trans_diet.episno = selrowData('#jqGrid').Episno;
-                urlParam_trans_phys.mrn = selrowData('#jqGrid').MRN;
-                urlParam_trans_phys.episno = selrowData('#jqGrid').Episno;
-                urlParam_rof.mrn = selrowData('#jqGrid').MRN;
-                urlParam_rof.episno = selrowData('#jqGrid').Episno;
-                addmore_onadd = false;
-                addmore_onadd_phys = false;
-                addmore_onadd_diet = false;
-                // refreshGrid("#jqGrid_trans", urlParam_trans);
-                // refreshGrid("#jqGrid_trans_diet", urlParam_trans_diet);
-                // refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
-                refreshGrid("#jqGrid_rof", urlParam_rof);
-                populate_phys(selrowData('#jqGrid'));
-                // populate_ordcom_currpt(selrowData('#jqGrid'));
-                populate_physio(selrowData('#jqGrid'));
-                populate_occupTherapy(selrowData('#jqGrid'));
+                
+                populate_radMain(selrowData('#jqGrid'));
                 
                 // if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
-                // 	$('#checkbox_completed').prop('disabled',true);
-                // 	$('#checkbox_completed').prop('checked', true);
-                // 	hide_tran_button(true);
-                // 	hide_tran_button_diet(true);
-                // 	hide_tran_button_phys(true);
+                //  $('#checkbox_completed').prop('disabled',true);
+                //  $('#checkbox_completed').prop('checked', true);
+                //  hide_tran_button(true);
+                //  hide_tran_button_diet(true);
+                //  hide_tran_button_phys(true);
                 // }else{//kalau belum completed
-                // 	$('#checkbox_completed').prop('disabled',false);
-                // 	$('#checkbox_completed').prop('checked', false);
-                // 	hide_tran_button(false);
-                // 	hide_tran_button_diet(false);
-                // 	hide_tran_button_phys(false);
+                //  $('#checkbox_completed').prop('disabled',false);
+                //  $('#checkbox_completed').prop('checked', false);
+                //  hide_tran_button(false);
+                //  hide_tran_button_diet(false);
+                //  hide_tran_button_phys(false);
                 // }
             },
             ondblClickRow: function (rowid, iRow, iCol, e){
@@ -244,37 +231,37 @@ $(document).ready(function () {
             rowNum: 30,
             onSelectRow: function (rowid, selected){
                 // if(checkifedited()){
-                // 	return false;
+                //  return false;
                 // }
                 // empty_userfile();
                 $('button#timer_stop').click();
-                $('#rehabMain_tab .top.menu .item').tab('change tab','rehabilitation');
+                $('#radMain_tab .top.menu .item').tab('change tab','rehabilitation');
                 // urlParam_trans.mrn = selrowData('#jqGrid').MRN;
                 // urlParam_trans.episno = selrowData('#jqGrid').Episno;
                 // urlParam_trans_diet.mrn = selrowData('#jqGrid').MRN;
                 // urlParam_trans_diet.episno = selrowData('#jqGrid').Episno;
-                urlParam_trans_phys.mrn = selrowData('#jqGrid').MRN;
-                urlParam_trans_phys.episno = selrowData('#jqGrid').Episno;
-                addmore_onadd = false;
-                addmore_onadd_phys = false;
-                addmore_onadd_diet = false;
+                // urlParam_trans_phys.mrn = selrowData('#jqGrid').MRN;
+                // urlParam_trans_phys.episno = selrowData('#jqGrid').Episno;
+                // addmore_onadd = false;
+                // addmore_onadd_phys = false;
+                // addmore_onadd_diet = false;
                 // refreshGrid("#jqGrid_trans", urlParam_trans);
                 // refreshGrid("#jqGrid_trans_diet", urlParam_trans_diet);
                 // refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
-                populate_rehabMain(selrowData('#jqGrid'));
-                populate_phys(selrowData('#jqGrid'));
+                populate_radMain(selrowData('#jqGrid'));
+                // populate_phys(selrowData('#jqGrid'));
                 // populate_ordcom_currpt(selrowData('#jqGrid'));
-                populate_physio(selrowData('#jqGrid'));
-                populate_occupTherapy(selrowData('#jqGrid'));
+                // populate_physio(selrowData('#jqGrid'));
+                // populate_occupTherapy(selrowData('#jqGrid'));
 
                 // if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
-                // 	$('#checkbox_completed').prop('disabled',true);
-                // 	$('#checkbox_completed').prop('checked', true);
+                //  $('#checkbox_completed').prop('disabled',true);
+                //  $('#checkbox_completed').prop('checked', true);
                 // }else{//kalau belum completed
-                // 	$('#checkbox_completed').prop('disabled',false);
-                // 	$('#checkbox_completed').prop('checked', false);
+                //  $('#checkbox_completed').prop('disabled',false);
+                //  $('#checkbox_completed').prop('checked', false);
                 // }
-                getdata_physio();
+                // getdata_physio();
 
             },
             ondblClickRow: function (rowid, iRow, iCol, e){
@@ -284,15 +271,15 @@ $(document).ready(function () {
                 $('.jqgridsegment').removeClass('loading');
                 // hide_tran_button(true);
                 // hide_tran_button_diet(true);
-                hide_tran_button_phys(true);
+                // hide_tran_button_phys(true);
                 $('#no_of_pat').text($("#jqGrid").getGridParam("reccount"));
                 // empty_transaction();
                 // empty_transaction_diet();
-                empty_rehabMain();
-                empty_transaction_phys();
-                empty_currphys();
-                empty_physio();
-                empty_occupTherapy();
+                // empty_radMain();
+                // empty_transaction_phys();
+                // empty_currphys();
+                // empty_physio();
+                // empty_occupTherapy();
                 
                 let discharge_btn_data = $('#discharge_btn').data('idno');
                 if(discharge_btn_data == undefined || discharge_btn_data == 'none'){
@@ -305,49 +292,6 @@ $(document).ready(function () {
             },
         });
     }
-    
-    $('#rehabMain_tab .top.menu .item').tab({'onVisible': function (){
-        let tab = $(this).data('tab');
-        // console.log(tab);
-
-        switch(tab){
-            case 'rehabilitation':
-                getdata_physio();
-                break;
-            case 'physiotherapy':
-                $('#physioTabs .top.menu .item').tab('change tab','sixMinWalking');
-                var urlparam_tbl_sixMinWalking = {
-                    action: 'get_datetime_sixMinWalking',
-                    mrn: $("#mrn_rehabMain").val(),
-                    episno: $("#episno_rehabMain").val()
-                }
-                
-                tbl_sixMinWalking_date.ajax.url("./sixMinWalking/table?"+$.param(urlparam_tbl_sixMinWalking)).load(function (data){
-                    emptyFormdata_div("#formSixMinWalking",['#mrn_rehabMain','#episno_rehabMain']);
-                    $('#tbl_sixMinWalking_date tbody tr:eq(0)').click(); // to select first row
-                });
-                
-                // $('#tbl_sixMinWalking_date').DataTable().ajax.reload();
-                getdata_sixMinWalking();
-                break;
-            case 'occupTherapy':
-                $('#occupTherapy .top.menu .item').tab('change tab','notes');
-
-                var urlparam_datetimeNotes_tbl = {
-                    action: 'get_table_datetimeNotes',
-                    mrn: $("#mrn_rehabMain").val(),
-                    episno: $("#episno_rehabMain").val()
-                }
-                
-                datetimeNotes_tbl.ajax.url("./occupTherapy_notes/table?"+$.param(urlparam_datetimeNotes_tbl)).load(function (data){
-                    emptyFormdata_div("#formOccupTherapyUpperExtremity",['#mrn_rehabMain','#episno_rehabMain','#idno_upperExtremity','#idno_rof','#rof_impressions']);
-                    $('#datetimeNotes_tbl tbody tr:eq(0)').click();  // to select first row
-                });
-                
-                populate_notes_getdata();
-                break;
-        }
-    }});
 
     $("#jqGrid").jqGrid('setGroupHeaders', {
         useColSpanStyle: true, 
@@ -505,76 +449,32 @@ $(document).ready(function () {
             }
         });
     }
-    
-    function checkifedited(){
-        if(!$('#save_doctorNote').is(':disabled')){
-            if(!$('#tab_doctornote').hasClass('in')){
-                $('#toggle_doctornote').click();
-            }
-            gotobtm("#tab_doctornote",'#save_doctorNote','#cancel_doctorNote');
-        }else if(!$('#save_dieteticCareNotes').is(':disabled')){
-            if(!$('#tab_diet').hasClass('in')){
-                $('#toggle_diet').click();
-            }
-            gotobtm("#tab_diet",'#save_diet','#cancel_diet');
-        }else if(!$('#save_phys_ncase').is(':disabled')){
-            if(!$('#tab_phys').hasClass('in')){
-                $('#toggle_phys').click();
-            }
-            gotobtm("#save_phys_ncase",'#save_phys_ncase','#cancel_phys_ncase');
-        }else{
-            return false;
-        }
-        return true;
-    }
-    
-    function gotobtm(tab,save,cancel){
-        SmoothScrollTo(tab, 300, function (){
-            $.confirm({
-                closeIcon: true,
-                title: 'Confirm',
-                content: 'Do you wish to save or cancel your changes?',
-                buttons: {
-                    Save: {
-                        btnClass: 'btn-green',
-                        action: function (){
-                            $(save).click();
-                        }
-                    },
-                    Cancel: {
-                        action: function (){
-                            $(cancel).click();
-                        },
-                    },
-                }
-            });
-        });
-    }
-    
-    // user_groupid();
-    function user_groupid(){
-        var groupid = $('#user_groupid').val().toUpperCase();
-        
-        $('#btn_grp_edit_doctorNote, #btn_grp_edit_phys, #btn_grp_edit_phys_ncase, #btn_grp_edit_dieteticCareNotes, #btn_grp_edit_dieteticCareNotes_fup').hide();
-        switch(groupid){
-            case 'DOCTOR':
-                $('#btn_grp_edit_doctorNote').show();
-                break;
-            case 'PHYSIOTERAPHY':
-                // $('#btn_grp_edit_phys').show();
-                $('#btn_grp_edit_phys_ncase').show();
-                break;
-            case 'REHABILITATION':
-                $('#btn_grp_edit_phys_ncase').show();
-                break;
-            case 'DIETICIAN':
-                $('#btn_grp_edit_dieteticCareNotes, #btn_grp_edit_dieteticCareNotes_fup').show();
-                break;
-            default:
-                // code block
-        }
-    }
 });
+
+
+function populate_radMain(obj){
+    // panel header
+    $('#name_show_radMain').text(obj.Name);
+    $('#mrn_show_radMain').text(("0000000" + obj.MRN).slice(-7));
+    $('#sex_show_radMain').text(if_none(obj.Sex).toUpperCase());
+    $('#dob_show_radMain').text(dob_chg(obj.DOB));
+    $('#age_show_radMain').text(dob_age(obj.DOB)+' (YRS)');
+    $('#race_show_radMain').text(if_none(obj.raceDesc).toUpperCase());
+    $('#religion_show_radMain').text(if_none(obj.religion).toUpperCase());
+    $('#occupation_show_radMain').text(if_none(obj.OccupCode).toUpperCase());
+    $('#citizenship_show_radMain').text(if_none(obj.Citizencode).toUpperCase());
+    $('#area_show_radMain').text(if_none(obj.AreaCode).toUpperCase());
+   
+    // formOccupTherapy
+    $('#mrn_radMain').val(obj.MRN);
+    $("#episno_radMain").val(obj.Episno);
+    $("#age_radMain").val(dob_age(obj.DOB));
+    $('#mrn_requestFor').val(obj.MRN);
+    $("#episno_requestFor").val(obj.Episno);
+
+    // $("#tab_occupTherapy").collapse('hide');
+
+}
 
 function check_if_user_selected(){
     let selrow = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
@@ -589,7 +489,7 @@ function stop_scroll_on(){
         let parentdiv = $(this).parent('div.panel-collapse').attr('id');
         switch(parentdiv){
             case 'jqGrid_ordcom_panel': SmoothScrollTo('#'+parentdiv, 300,70);break;
-            default : SmoothScrollTo('#'+parentdiv, 300);break;
+            default : SmoothScrollTo('#'+parentdiv, 300,50);break;
         }
         
         $('body').addClass('stop-scrolling');
@@ -603,3 +503,9 @@ function stop_scroll_on(){
 function formatterpayer(cellvalue, option, rowObject){
     return cellvalue.replace(/'/g,'');
 }
+
+$('#tab_radMain').on('shown.bs.collapse', function (){
+    SmoothScrollTo('#radMain_panel', 300,50);
+    $('#radiology .top.menu .item').tab('change tab','radClinicReqFor');
+    populate_radClinicReqFor_getdata();
+});

@@ -31,6 +31,10 @@ class PatmastController extends defaultController
                 return $this->pat_mast_iframe($request);
             case 'episode_iframe':
                 return $this->episode_iframe($request);
+            case 'userfile_iframe':
+                return $this->userfile_iframe($request);
+            case 'chk_mykad_exist':
+                return $this->chk_mykad_exist($request);
         }
     }
 
@@ -131,9 +135,16 @@ class PatmastController extends defaultController
 
     public function pat_mast_iframe(Request $request){
         $mrn = $request->mrn;
+        $src_from = $request->src_from;
+        $src_idno = $request->src_idno;
 
         if(empty($mrn)){
-           $pat_mast_data = null; 
+           $pat_mast_data = [
+                'Newic' => $request->Newic,
+                'Name' => $request->Name,
+                'telh' => $request->telh,
+                'telhp' => $request->telhp,
+           ]; 
         }else{
 
             $pat_mast = DB::table('hisdb.pat_mast')
@@ -147,15 +158,17 @@ class PatmastController extends defaultController
             $pat_mast_data = $pat_mast->first();
         }
 
-        return view('hisdb.pat_mgmt.patmast_iframe',compact('mrn','pat_mast_data'));
+        return view('hisdb.pat_mgmt.patmast_iframe',compact('mrn','pat_mast_data','src_from','src_idno'));
     }
 
     public function episode_iframe(Request $request){
         $mrn = $request->mrn;
         $episno = $request->episno;
+        $src_from = $request->src_from;
+        $src_idno = $request->src_idno;
 
-        if(empty($mrn) || empty($episno)){
-           abort(403,'No MRN or Episno'); 
+        if(empty($mrn)){
+           abort(403,'No MRN'); 
         }
 
         $pat_mast = DB::table('hisdb.pat_mast')
@@ -166,20 +179,37 @@ class PatmastController extends defaultController
            abort(403,'MRN does not Exists'); 
         }
 
-        $pat_mast = $pat_mast->first();
+        $pat_mast_data = $pat_mast->first();
 
         $episode = DB::table('hisdb.episode')
                         ->where('compcode',session('compcode'))
                         ->where('mrn',$mrn)
-                        ->where('episno',$episno);
+                        ->where('episno',$episno)
+                        ->first();
 
-        if(!$episode->exists()){
-           abort(403,'Episode does not Exists'); 
+        $apptbook = null;
+        if(isset($request->src_from) && !empty($request->src_from)){
+            if($request->src_from == 'apptbook'){
+                $apptbook = DB::table('hisdb.apptbook as abk')
+                            ->select('abk.idno','abk.compcode','abk.memberno','abk.icnum','abk.apptdatefr','abk.apptdateto','abk.mrn','abk.episno','abk.pat_name','abk.location','abk.loccode','abk.apptstatus','abk.apptno','abk.prov_id','abk.fac_id','abk.remarks','abk.adduser','abk.adddate','abk.lastuser','abk.lastupdate','abk.deluser','abk.deldate','abk.timereq','abk.timeupdate','abk.srctype','abk.telno','abk.faxno','abk.telhp','abk.email','abk.admsrccode','abk.case_code','abk.case_desc','abk.time24hr','abk.fees','abk.title','abk.start','abk.end','abk.recstatus','abk.Type','abk.episstatus','abk.ot_room','abk.surgery_date','abk.op_unit','abk.oper_type','abk.oper_status','abk.procedure','abk.diagnosis','abk.computerid','abk.height','abk.weight','abk.doctorname','abk.anaesthetist','abk.surgeon','abk.admdoctor','abk.iPesakit','abk.cArm','doc.doctorname as loccode_name')
+                            ->leftJoin('hisdb.doctor as doc', function($join){
+                                $join = $join->where('doc.compcode','=',session('compcode'))
+                                                ->on('doc.doctorcode', '=', 'abk.loccode');
+                            })
+                            ->where('abk.compcode',session('compcode'))
+                            ->where('abk.mrn',$mrn)
+                            ->where('abk.idno',$src_idno)
+                            ->first();
+            }
         }
 
-        $episode = $episode->first();
+        // if(!$episode->exists()){
+        //    abort(403,'Episode does not Exists'); 
+        // }
 
-        return view('hisdb.pat_mgmt.episode_iframe',compact('mrn','episno','pat_mast','episode'));
+        // $episode = $episode->first();
+
+        return view('hisdb.pat_mgmt.episode_iframe',compact('mrn','episno','pat_mast_data','episode','src_from','src_idno','apptbook'));
     }
 
     public function save_patient(Request $request){
@@ -222,7 +252,7 @@ class PatmastController extends defaultController
             }
 
             $table_patm = DB::table('hisdb.queue') //ambil dari patmast balik
-            ->select($select_array)
+                                ->select($select_array)
                                 ->where('queue.compcode','=',session('compcode'))
                                 ->where('queue.billflag','=',0)
                                 ->where('queue.deptcode','=',"ALL")
@@ -399,7 +429,8 @@ class PatmastController extends defaultController
             // $lastrow = DB::table('hisdb.pat_mast')
             //                 ->where('idno','<=','62863');
 
-            $table_patm = DB::table('hisdb.pat_mast');
+            $table_patm = DB::table('hisdb.pat_mast')
+                                ->where('pat_mast.compcode','=',session('compcode'));
             // dd($table_patm->limit(10)->offset(intval($count_) - 10)->get());
 
             if(!empty($request->searchCol)){
@@ -1120,6 +1151,18 @@ class PatmastController extends defaultController
                 $PatientImage = null;
             }
 
+            if($request->chk_duplicate != "false"){
+                $check_duplicate = $this->check_duplicate_ic($request);
+
+                if($check_duplicate->duplicate == true){
+                    echo json_encode($check_duplicate, JSON_INVALID_UTF8_SUBSTITUTE);
+
+                    return 0;
+                }
+            }
+
+            $request = $this->auto_save_missing_data($request);
+
             $array_insert = [
                 'Episno' => 0,
                 'loginid' => $loginid,
@@ -1149,6 +1192,28 @@ class PatmastController extends defaultController
             //         $this->save_preepis($request,$mrn);
             //     }
             // }
+
+            if(isset($request->src_from) && !empty($request->src_from)){
+                if($request->src_from == 'apptbook'){
+
+                    $old_apptbook = DB::table('hisdb.apptbook')
+                        ->where('idno','=',$request->src_idno)
+                        ->first();
+
+                    $title = strtoupper(str_pad($mrn, 7, "0", STR_PAD_LEFT).' - '.$request->Name.' - '.$request->telhp.' - '.$old_apptbook->case_code.' - '.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30));
+
+                    DB::table('hisdb.apptbook')
+                        ->where('idno','=',$request->src_idno)
+                        ->update([
+                            'mrn' => $mrn,
+                            'pat_name' => $request->Name,
+                            'icnum' => $request->Newic,
+                            'telhp' => $request->telhp,
+                            'telno' => $request->telh,
+                            'title' => $title
+                        ]);
+                }
+            }
 
             $pat_mast_data = DB::table('hisdb.pat_mast')
                                 ->where('compcode',session('compcode'))
@@ -1228,6 +1293,28 @@ class PatmastController extends defaultController
                         ->update([
                             'name' => strtoupper($request->Name)
                         ]);
+
+            if(isset($request->src_from) && !empty($request->src_from)){
+                if($request->src_from == 'apptbook'){
+
+                    $old_apptbook = DB::table('hisdb.apptbook')
+                        ->where('idno','=',$request->src_idno)
+                        ->first();
+
+                    $title = strtoupper(str_pad($mrn, 7, "0", STR_PAD_LEFT).' - '.$request->Name.' - '.$request->telhp.' - '.$old_apptbook->case_code.' - '.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30));
+
+                    DB::table('hisdb.apptbook')
+                        ->where('idno','=',$request->src_idno)
+                        ->update([
+                            'mrn' => $mrn,
+                            'pat_name' => $request->Name,
+                            'icnum' => $request->Newic,
+                            'telhp' => $request->telhp,
+                            'telno' => $request->telh,
+                            'title' => $title
+                        ]);
+                }
+            }
 
             // $queries = DB::getQueryLog();
             $pat_mast_data = DB::table('hisdb.pat_mast')
@@ -1325,7 +1412,7 @@ class PatmastController extends defaultController
 
     public function add_episode(Request $request){
 
-        DB::enableQueryLog();
+        // DB::enableQueryLog();
 
         $epis_mrn = $request->epis_mrn;
         $epis_no = $request->epis_no;
@@ -1346,6 +1433,15 @@ class PatmastController extends defaultController
         $epis_bednum = $request->epis_bed;
         $epis_apptidno = $request->apptidno;
         $epis_preepisidno = $request->preepisidno;
+        $epis_date = Carbon::now("Asia/Kuala_Lumpur");
+        $epis_time = Carbon::now("Asia/Kuala_Lumpur");
+
+        if(isset($request->src_from) && !empty($request->src_from)){
+            if($request->src_from == 'apptbook'){
+                $epis_date = $request->epis_date;
+                $epis_time = $request->epis_time;
+            }
+        }
 
         $epis_typeepis;
         if ($epis_maturity == "1"){
@@ -1395,8 +1491,8 @@ class PatmastController extends defaultController
                     "mrn" => $epis_mrn,
                     "episno" => $epis_no,
                     "epistycode" => $epis_type,
-                    "reg_date" => Carbon::now("Asia/Kuala_Lumpur"),
-                    "reg_time" => Carbon::now("Asia/Kuala_Lumpur"),
+                    "reg_date" => $epis_date,
+                    "reg_time" => $epis_time,
                     "regdept" => $epis_dept,
                     "admsrccode" => $epis_src,
                     "case_code" => $epis_case,
@@ -1949,9 +2045,35 @@ class PatmastController extends defaultController
                         ]);
             }
 
-            $queries = DB::getQueryLog();
+            // $queries = DB::getQueryLog();
 
             // dump($queries);
+
+            if(isset($request->src_from) && !empty($request->src_from)){
+                if($request->src_from == 'apptbook'){
+
+                    $old_apptbook = DB::table('hisdb.apptbook')
+                        ->where('idno','=',$request->src_idno)
+                        ->first();
+
+                    DB::table('hisdb.apptbook')
+                        ->where('idno','=',$request->src_idno)
+                        ->update([
+                            'episno' => $epis_no
+                        ]);
+                }
+
+            }
+
+            $episode_data = DB::table("hisdb.episode")
+                                ->where("compcode",session('compcode'))
+                                ->where("mrn",'=',$epis_mrn)
+                                ->where("episno",'=',$epis_no)
+                                ->first();
+
+            $responce = new stdClass();
+            $responce->episode_data = $episode_data;
+            echo json_encode($responce);
 
             DB::commit();
 
@@ -1965,7 +2087,7 @@ class PatmastController extends defaultController
 
     public function edit_episode(Request $request){
 
-        DB::enableQueryLog();
+        // DB::enableQueryLog();
 
         $epis_mrn = $request->epis_mrn;
         $epis_mrn_pad = str_pad($request->epis_mrn, 7, "0", STR_PAD_LEFT);
@@ -2599,9 +2721,34 @@ class PatmastController extends defaultController
                     ]);
             }
 
-            $queries = DB::getQueryLog();
+            if(isset($request->src_from) && !empty($request->src_from)){
+                if($request->src_from == 'apptbook'){
 
-            dump($queries);
+                    $old_apptbook = DB::table('hisdb.apptbook')
+                        ->where('idno','=',$request->src_idno)
+                        ->first();
+
+                    DB::table('hisdb.apptbook')
+                        ->where('idno','=',$request->src_idno)
+                        ->update([
+                            'episno' => $epis_no
+                        ]);
+                }
+            }
+
+            $episode_data = DB::table("hisdb.episode")
+                                ->where("compcode",session('compcode'))
+                                ->where("mrn",'=',$epis_mrn)
+                                ->where("episno",'=',$epis_no)
+                                ->first();
+
+            $responce = new stdClass();
+            $responce->episode_data = $episode_data;
+            echo json_encode($responce);
+
+            // $queries = DB::getQueryLog();
+
+            // dump($queries);
 
             DB::commit();
 
@@ -3867,6 +4014,146 @@ class PatmastController extends defaultController
 
         return $totamount;
 
+    }
+
+    public function auto_save_missing_data($request){
+        $RaceCode = $request->RaceCode;
+        $Citizencode = $request->Citizencode;
+        $Religion = $request->Religion;
+        $AreaCode = $request->AreaCode;
+
+        $racecode_ = DB::table('hisdb.racecode')
+                        ->where('compcode',session('compcode'))
+                        ->where('description',$request->RaceCode)
+                        ->orWhere('code',$request->RaceCode);
+
+        if($racecode_->exists()){
+            $racecode_ = $racecode_->first();
+            $request->RaceCode = $racecode_->Code;
+            $request['RaceCode'] = $racecode_->Code;
+        }else{
+            DB::table('hisdb.racecode')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'Code' => $request->RaceCode,
+                    'Description' => $request->RaceCode,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+
+        $citizen_ = DB::table('hisdb.citizen')
+                        ->where('compcode',session('compcode'))
+                        ->where('description',$request->Citizencode)
+                        ->orWhere('code',$request->Citizencode);
+
+        if($citizen_->exists()){
+            $citizen_ = $citizen_->first();
+            $request->Citizencode = $citizen_->Code;
+            $request['Citizencode'] = $citizen_->Code;
+        }else{
+            DB::table('hisdb.citizen')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'Code' => $request->Citizencode,
+                    'Description' => $request->Citizencode,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+
+        $religion_ = DB::table('hisdb.religion')
+                        ->where('compcode',session('compcode'))
+                        ->where('description',$request->Religion)
+                        ->orWhere('code',$request->Religion);
+
+        if($religion_->exists()){
+            $religion_ = $religion_->first();
+            $request->Religion = $religion_->Code;
+            $request['Religion'] = $religion_->Code;
+        }else{
+            DB::table('hisdb.religion')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'Code' => $request->Religion,
+                    'Description' => $request->Religion,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+
+        $areacode_ = DB::table('hisdb.areacode')
+                        ->where('compcode',session('compcode'))
+                        ->where('description',$request->AreaCode)
+                        ->orWhere('areacode',$request->AreaCode);
+
+        if($areacode_->exists()){
+            $areacode_ = $areacode_->first();
+            $request->AreaCode = $areacode_->areacode;
+            $request['AreaCode'] = $areacode_->areacode;
+        }else{
+            DB::table('hisdb.areacode')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'areacode' => $request->AreaCode,
+                    'Description' => $request->AreaCode,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+
+        return $request;
+    }
+
+    public function check_duplicate_ic($request){
+        $responce = new stdClass();
+        $responce->duplicate = false;
+
+        $pat_mast = DB::table('hisdb.pat_mast')
+                        ->where('compcode',session('compcode'))
+                        ->where('active',1)
+                        ->where('newic',$request->Newic);
+
+        if($pat_mast->exists()){
+            $pat_mast = $pat_mast->get();
+
+            foreach ($pat_mast as $obj) {
+                $obj->merge = $obj->MRN;
+            }
+
+            $responce->duplicate = true;
+            $responce->rows = $pat_mast;
+        }
+
+        return $responce;
+    }
+
+    public function chk_mykad_exist($request){
+        $responce = new stdClass();
+
+        $pat_mast = DB::table('hisdb.pat_mast')
+                        ->where('compcode',session('compcode'))
+                        ->where('active',1)
+                        ->where('newic',$request->Newic);
+
+        if($pat_mast->exists()){
+            $pat_mast = $pat_mast->first();
+
+            $responce->duplicate = true;
+            $responce->rows = $pat_mast;
+        }else{
+            $responce->duplicate = false;
+            $responce->rows = null;
+        }
+        
+        echo json_encode($responce, JSON_INVALID_UTF8_SUBSTITUTE);
+    }
+
+    public function userfile_iframe(Request $request){
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+
+        if(empty($mrn) || empty($episno)){
+           abort(403,'No MRN or Episno'); 
+        }
+
+        return view('hisdb.pat_mgmt.userfile_iframe',compact('mrn','episno'));
     }
 
 

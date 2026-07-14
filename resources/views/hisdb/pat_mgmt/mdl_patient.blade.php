@@ -1,5 +1,5 @@
 <!-- Large modal -->
-<div id="mdl_patient_info" data-keyboard="false" class="modal fade ba" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" style="display: none; z-index: 100; padding-left: 0px !important;">
+<div id="mdl_patient_info" data-keyboard="false" class="modal fade ba" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" style="display: none; padding-left: 0px !important;z-index: 109;">
     <div class="modal-dialog half modal-lg">
         <form id="frm_patient_info" class="form-horizontal" autocomplete="off">
 			<input type="hidden" name="idno" id="txt_pat_idno">
@@ -735,7 +735,7 @@
     </div>
 </div>
 
-<div id="mdl_existing_record" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;background-color: rgba(0, 0, 0, 0.3);">
+<div id="mdl_existing_record" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;background-color: rgba(0, 0, 0, 0.3);;z-index: 110;">
     <div class="modal-dialog modal-lg" style="width: 70%; height: 70%; margin: auto;">
 		<div class="modal-content">
 			<div class="modal-header label-primary">
@@ -773,7 +773,7 @@
 	</div>
 </div>
 
-<div id="mdl_mykad" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+<div id="mdl_mykad" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;z-index: 109;">
     <div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header label-success">
@@ -883,27 +883,47 @@
 	</div>
 </div>
 
-
-<div id="mdl_biometric" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mymdl_biometric" aria-hidden="true" style="display: none;">
+<div id="mdl_biometric" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mymdl_biometric" aria-hidden="true" style="display: none;z-index: 101;">
     <div class="modal-dialog" style="width: 100%; height: 100%; margin: auto;">
             
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header">
-                <button onclick="mykadclosemodal()" id="mykadclosemodal" type="button" class="" data-dismiss="modal" aria-label="Close" style="float: right;
+            <div class="modal-header" style="padding:5px 15px;min-height: 40px;">
+                <button id="mykadclosemodalv2" type="button" class="" data-dismiss="modal" aria-label="Close" style="
+                        float: right;
                         color: white;
                         background: #d34242;
                         border-radius: 5px;
                         padding: 5px 10px;">
                   <span class="glyphicon glyphicon-remove" aria-hidden="true" style="top: 3px;"></span><b> Close</b>
                 </button>
-                <h2 class="modal-title" id="txt_item_selector">&nbsp;</h2>
+
+                <button id="mykad_open_epis" type="button" class="" aria-label="Close" style="
+                        float: right;
+                        display: none;
+                        color: white;
+                        background: #004a97cf;
+                        border-radius: 5px;
+                        padding: 5px 10px;
+                        margin-right: 10px;">
+                <b>Episode</b>
+                </button>
+
+                <button id="mykad_open_bio" type="button" class="" aria-label="Close" style="
+                        float: right;
+                        display: none;
+                        color: white;
+                        background: #278551;
+                        border-radius: 5px;
+                        padding: 5px 10px;
+                        margin-right: 10px;">
+                  <b>Biodata</b>
+                </button>
             </div>
-            <div class="modal-body">
-                <iframe style="display:block; border:none; height:90vh; width:100%;" id="mykadFPiframe"></iframe>
+            <div class="modal-body" style="padding:0px">
+                <iframe style="display:block; border:none; height:92vh; width:100%;" id="mykadFPiframe"></iframe>
             </div>
         </div>
         
     </div>
-    
 </div>

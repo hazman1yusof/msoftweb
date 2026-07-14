@@ -38,6 +38,9 @@
 </style>
 
 <script>
+    var src_from = "{{$src_from}}";
+    var src_idno = "{{$src_idno}}";
+
     @if(empty($pat_mast_data))
         var pat_mast_data = null;
     @else
@@ -763,10 +766,48 @@
 
             <div class="modal-footer">
                 <button id="btn_register_close" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button id="btn_register_patient" type="button" class="btn btn-success" data-oper="edit">Save changes</button>
+                <button id="btn_register_patient" type="button" class="btn btn-success" data-oper="edit" data-chk_duplicate="true">Save changes</button>
             </div>
         </div>
     </form>
+</div>
+
+<div id="mdl_existing_record" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;background-color: rgba(0, 0, 0, 0.3);">
+    <div class="modal-dialog modal-lg" style="width: 70%; height: 70%; margin: auto;">
+        <div class="modal-content">
+            <div class="modal-header label-primary">
+                <p align="center"><b>EXISTING PATIENT RECORD</b></p>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        These are existing records that has similar (or almost similar) data with the one you're trying to register.<br />
+                        Should any of these records matched exactly (after confirmation with the patient), you may decide to merge the existing data with the new ones.<br /><br />
+                    </div>
+                </div>
+                <div class="table-responsive table-no-bordered content">
+                    <table id="tbl_existing_record" class="table-hover cell-border" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Merge?</th>
+                                <th>MRN</th>
+                                <th>Name</th>
+                                <th>New IC</th>
+                                <th>Old IC</th>
+                                <th>Other ID</th>
+                                <th>DOB</th>
+                                <th>IDno</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="btn_duplicate_cancel">Cancel</button>
+                <button type="button" class="btn btn-success" id="btn_duplicate_proceed">Proceed</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 @include('hisdb.pat_mgmt.itemselector')
@@ -777,5 +818,5 @@
 <script type="text/javascript" src="{{asset('js/hisdb/pat_mgmt/pat_nok.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/hisdb/pat_mgmt/pat_emr.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/hisdb/pat_mgmt/textfield_modal.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/hisdb/pat_mgmt/biodata_iframe.js?v=1.2')}}"></script>
+<script type="text/javascript" src="{{asset('js/hisdb/pat_mgmt/biodata_iframe.js?v=1.3')}}"></script>
 @endsection

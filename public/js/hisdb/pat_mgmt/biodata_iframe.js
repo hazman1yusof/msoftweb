@@ -31,7 +31,6 @@ $(document).ready(function() {
     }); // patient form validation
 
     $('#txt_pat_newic').blur(function(){
-
         if($(this).val() != ''){
             let newrplc = $(this).val().replace(/-/g, "");
             $(this).val(newrplc);//untuk buang hyphen lepas tulis i/c
@@ -100,11 +99,14 @@ $(document).ready(function() {
     
     $('#btn_register_patient').on('click',default_click_register);
 
-    $('#btn_reg_proceed').on('click',default_click_proceed);
+    $('#btn_duplicate_proceed').on('click',default_click_proceed);
+    $('#btn_duplicate_cancel').click(function(){
+        $("#btn_register_patient").data('chk_duplicate','false');
+    });
 
-    $('#close_iframe').click(function(){
+    $('#close_iframe,#btn_register_close').click(function(){
         if(typeof parent.open_iframe_close === 'function'){
-            window.parent.open_iframe_close(pat_mast_data);
+            window.parent.open_iframe_close(pat_mast_data,'patmast');
         }else{
             console.log(pat_mast_data);
         }
@@ -125,6 +127,9 @@ $(document).ready(function() {
                 $('#pageDimmer').removeClass('active');
             }else{
             
+                $("#hid_ID_Type").val('O');
+                $("#txt_ID_Type").val('Own IC');
+                $("#txt_pat_newic").val(data.ic);
                 $("#txt_pat_name").val(data.name);
                 $("#txt_pat_newic").val(data.ic);
                 $("#cmb_pat_sex").val(data.sex);
@@ -154,6 +159,10 @@ $(document).ready(function() {
             $('#pageDimmer').removeClass('active');
         });
     });
+
+    if(pat_mast_data != null){
+        populate_patient(pat_mast_data);
+    }
 
 });
 
@@ -253,14 +262,51 @@ function default_click_register(){
     }
 }
 
+var tbl_exist_rec = $('#tbl_existing_record').DataTable( {
+    "lengthChange": false,"info": false,"pagingType" : "numbers", "ordering": false,
+    "search": {"smart": true, },
+    "columns": [
+                {'data' : 'merge'},
+                {'data' : 'MRN'}, 
+                {'data' : 'Name' },
+                {'data' : 'Newic'}, 
+                {'data' : 'Oldic' },
+                {'data' : 'idnumber'}, 
+                {'data' : 'DOB' },
+                {'data' : "idno"},
+               ],
+    columnDefs: [{
+        targets:   0,
+        'render': function (data, type, full, meta){
+            if(data==null){
+                return "<small>Merge this</br>with?</small>"
+            }else{
+                return '<input type="checkbox" name="chk_' + data + '" id="chk_' + data + '" data-mrn="' + data + '" data-idno="' + full.idno + '">';
+            }
+         }
+    }],
+    select: {
+        style:    'os',
+        selector: 'td:first-child'
+    },
+});
+
 function default_click_proceed(){
     var checkedbox = $("#tbl_existing_record input[type='checkbox']:checked");
     if(checkedbox.closest("td").next().length>0){
         let mrn = checkedbox.data("mrn");
         let idno = checkedbox.data("idno");
-        $("#btn_register_patient").data('oper','edit');
-        $("#btn_register_patient").data('idno',idno);
-        populate_data_from_mrn(mrn,"#frm_patient_info");
+        console.log(idno);
+        tbl_exist_rec.rows().every(function (rowIdx, tableLoop, rowLoop) {
+            var data = this.data(); // Access data for individual row
+            if(data.idno == idno){
+                populate_patient(data);
+                $("#btn_register_patient").data('chk_duplicate','false');
+                $('#mdl_existing_record').modal('hide');
+            }
+        });
+        // $("#btn_register_patient").data('idno',idno);
+        // populate_data_from_mrn(mrn,"#frm_patient_info");
     }else{
         $('#mdl_existing_record').modal('hide');
     }
@@ -274,28 +320,39 @@ function save_patient(oper,idno){
         oper:oper,
         table_name:'hisdb.pat_mast',
         table_id:'idno',
-        sysparam:null
+        src_from: src_from,
+        src_idno: src_idno,
+        sysparam:null,
     },_token = $('#_token').val();
 
     if(oper=='add'){
         saveParam.sysparam = {source:$('#PatClass').val(),trantype:'MRN',useOn:'MRN'};
     }
-    var postobj = {_token:_token,func_after_pat:$('#func_after_pat').val()};
+    var postobj = {_token:_token,func_after_pat:$('#func_after_pat').val(),chk_duplicate:$("#btn_register_patient").data('chk_duplicate')};
                 //kalu ada mrn, maksudnya dia dari merging duplicate
 
-    // var PatientImage_ = ($("img#photobase64").attr('src').startsWith('data'))?
-    //             {PatientImage:$("img#photobase64").attr('src')}:
-    //             {PatientImage:null}
+    var PatientImage_ = ($("img#photobase64").attr('src').startsWith('data'))?$("img#photobase64").attr('src'):null;
 
-    var image = {PatientImage:null,field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Staffid','OccupCode','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date','loginid','pat_category','MRFolder','bloodgrp','NewMrn','iPesakit'],};
+    var image = {PatientImage:PatientImage_,field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Staffid','OccupCode','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date','loginid','pat_category','MRFolder','bloodgrp','NewMrn','iPesakit'],};
 
-    $.post( "/pat_mast/save_patient?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj)+'&'+$.param(image) , function( data ) {
+    $.post( "./pat_mast/save_patient?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj)+'&'+$.param(image) , function( data ) {
         
     },'json').fail(function(data) {
-
         chg_msg("There is an error");
         $('#pageDimmer').removeClass('active');
     }).success(function(data){
+
+        if(data.duplicate !== undefined){
+            chg_msg("I/C Duplicate");
+            $('#pageDimmer').removeClass('active');
+            pick_duplicate_data(data);
+        }else{
+            chg_msg("Save Successfull");
+            $('#pageDimmer').removeClass('active');
+            window.parent.open_iframe_close(data.pat_mast_data,'patmast');
+            // populate_patient(data.pat_mast_data);
+            // pat_mast_data = data.pat_mast_data
+        }
         
         // $("#load_from_addupd").data('info','true');
         // $("#load_from_addupd").data('oper',oper);
@@ -305,11 +362,6 @@ function save_patient(oper,idno){
         // if($('#func_after_pat').val() != ''){
         //     preepisode.refreshGrid();
         // }
-
-        chg_msg("Save Successfull");
-        $('#pageDimmer').removeClass('active');
-        populate_patient(data.pat_mast_data);
-        pat_mast_data = data.pat_mast_data
 
     });
 }
@@ -339,15 +391,15 @@ function loading_desc_bio(obj){
     this.occupation={code:'code',desc:'description'};//data simpan dekat dalam ni
     this.company={code:'code',desc:'description'};//data simpan dekat dalam ni
     this.load_desc = function(){
-        load_for_desc(this,'titlecode','pat_mast/get_entry?action=get_patient_title');
-        load_for_desc(this,'citizencode','pat_mast/get_entry?action=get_patient_citizen');
-        load_for_desc(this,'areacode','pat_mast/get_entry?action=get_patient_areacode');
-        load_for_desc(this,'idtype','pat_mast/get_entry?action=get_patient_idtype');
-        load_for_desc(this,'language','pat_mast/get_entry?action=get_patient_language');
-        load_for_desc(this,'race','pat_mast/get_entry?action=get_patient_race');
-        load_for_desc(this,'religioncode','pat_mast/get_entry?action=get_patient_religioncode');
-        load_for_desc(this,'occupation','pat_mast/get_entry?action=get_patient_occupation');
-        load_for_desc(this,'company','pat_mast/get_entry?action=get_all_company');
+        load_for_desc(this,'titlecode','./pat_mast/get_entry?action=get_patient_title');
+        load_for_desc(this,'citizencode','./pat_mast/get_entry?action=get_patient_citizen');
+        load_for_desc(this,'areacode','./pat_mast/get_entry?action=get_patient_areacode');
+        load_for_desc(this,'idtype','./pat_mast/get_entry?action=get_patient_idtype');
+        load_for_desc(this,'language','./pat_mast/get_entry?action=get_patient_language');
+        load_for_desc(this,'race','./pat_mast/get_entry?action=get_patient_race');
+        load_for_desc(this,'religioncode','./pat_mast/get_entry?action=get_patient_religioncode');
+        load_for_desc(this,'occupation','./pat_mast/get_entry?action=get_patient_occupation');
+        load_for_desc(this,'company','./pat_mast/get_entry?action=get_all_company');
     }
 
     this.load_sp_desc = function(code,url){
@@ -424,9 +476,6 @@ function loading_desc_bio(obj){
     }
 }
 
-if(pat_mast_data != null){
-    populate_patient(pat_mast_data);
-}
 function populate_patient(rowdata) {
 
     $('#hid_pat_title').val(rowdata.TitleCode);
@@ -439,7 +488,11 @@ function populate_patient(rowdata) {
     $('#episno').val(rowdata.Episno); // dlm modal Patient   
     
     $('#txt_pat_name').val(rowdata.Name);
+    $('#cmb_pat_sex').val(rowdata.Sex); // dlm modal Patient             
+    $('#txt_pat_dob').val(moment(rowdata.DOB).format('Y-MM-DD'));
+    $('#txt_pat_age').val(gettheage(rowdata.DOB));
     $('#txt_pat_newic').val(rowdata.Newic);
+    $('#txt_pat_newic').trigger("blur");
     $('#txt_pat_oldic').val(rowdata.Oldic);
     $('#cmb_pat_idtype').val(rowdata['ID_Type']);
     $('#txt_pat_idno').val(rowdata.idno);
@@ -450,20 +503,19 @@ function populate_patient(rowdata) {
     $('#hid_pat_occupation').val(rowdata.OccupCode);
     $('#txt_payer_email_official').val(rowdata.Email_official);
     
-    $('#txt_pat_mrn').val(('0000000' + rowdata.MRN).slice(-7));
+    if(rowdata.MRN){
+        $('#txt_pat_mrn').val(('0000000' + rowdata.MRN).slice(-7));
+    }
     $('#txt_pat_episno').val(rowdata.Episno);
     $('#pat_mrn').val(rowdata.MRN);
     $('#hid_LanguageCode').val(rowdata.LanguageCode);
     $('#hid_RaceCode').val(rowdata.RaceCode);
     $('#hid_Religion').val(rowdata.Religion);
     $('#hid_ID_Type').val(rowdata.ID_Type);
-    $('#txt_pat_dob').val(moment(rowdata.DOB).format('Y-MM-DD'));
-    $('#txt_pat_age').val(gettheage(rowdata.DOB));
     $('#txt_pat_telh').val(rowdata.telh);
     $('#txt_pat_telhp').val(rowdata.telhp);
     $('#txt_pat_email').val(rowdata.Email);
-    $('#hid_pat_area').val(rowdata.AreaCode);
-    $('#cmb_pat_sex').val(rowdata.Sex); // dlm modal Patient                    
+    $('#hid_pat_area').val(rowdata.AreaCode);       
     $('#hid_pat_citizen').val(rowdata.Citizencode);
     $('#cmb_pat_racecode').val(rowdata.RaceCode);
     $('#cmb_pat_religion').val(rowdata.Religion);
@@ -509,7 +561,25 @@ function populate_patient(rowdata) {
     }else{
         $("#toggle_tabNok_pat").parent().show();
     }
+    $("#btn_register_patient").data('chk_duplicate','true');
 
     $("#toggle_tabNok_emr").parent().show();
     desc_show.write_desc();
+}
+
+function pick_duplicate_data(data){
+    let current_pat = {
+        merge: null,
+        MRN: "N/A",
+        Name: $("#txt_pat_name").val(),
+        Newic: $("#txt_pat_newic").val(),
+        Oldic: $("#txt_pat_oldic").val(),
+        idnumber: $("#txt_pat_idno").val(),
+        DOB: $("#txt_pat_dob").val(),
+        idno: "N/A"
+    };
+    data.rows.unshift(current_pat);
+    tbl_exist_rec.clear();
+    tbl_exist_rec.rows.add(data.rows).draw();
+    $('#mdl_existing_record').modal('show');
 }

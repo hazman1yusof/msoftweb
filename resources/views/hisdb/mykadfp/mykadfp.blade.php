@@ -43,19 +43,16 @@
 		    </div>
 		</div>
 
-		<div class="ui menu" id="mykad_menu" style="display:none;">
+		<div class="ui menu" id="mykad_menu">
 		  <div class="right menu">
 		    <a class="header item" id="readmykad">
 		      Scan Mykad
 		    </a>
-		    <a class="header item" id="readmykid">
+		    <a class="header item" id="readmykid" style="display:none">
 		      Scan Mykid
 		    </a>
 		    <a class="header item" name="download">
 		      Download PDF
-		    </a>
-		    <a class="header item" name="closemodalfp">
-		      <i class="times icon"></i>Close
 		    </a>
 		    </div>
 		</div>

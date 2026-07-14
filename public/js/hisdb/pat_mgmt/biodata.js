@@ -225,7 +225,9 @@ function save_patient(oper,idno,mrn="nothing"){
     //             {PatientImage:$("img#photobase64").attr('src')}:
     //             {PatientImage:null}
 
-    var image = {PatientImage:null,field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Staffid','OccupCode','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date','loginid','pat_category','MRFolder','bloodgrp','NewMrn','iPesakit'],};
+    var PatientImage_ = ($("img#photobase64").attr('src').startsWith('data'))?$("img#photobase64").attr('src'):null;
+
+    var image = {PatientImage:PatientImage_,field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Staffid','OccupCode','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date','loginid','pat_category','MRFolder','bloodgrp','NewMrn','iPesakit'],};
 
     $.post( "./pat_mast/save_patient?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj)+'&'+$.param(image) , function( data ) {
         
@@ -612,4 +614,105 @@ function mykad_check_existing_patient(callback){
     }).fail(function(data){
 
     });
+}
+
+var patfpdata = null;
+
+function populatefromfp(data){
+    patfpdata = data;
+
+    var param={
+        action:'chk_mykad_exist',
+        Newic:data.icnum
+    };
+
+    $.get( "./pat_mast/table?"+$.param(param), function( data ) {
+
+    },'json').done(function(data) {
+        if(data.duplicate == true ){
+            patfpdata = data.rows;
+            $('#mykad_open_bio').show();
+            $('#mykad_open_epis').show();
+        }
+    }).fail(function(data){
+
+    });
+}
+
+$('#mykadclosemodalv2').click(function(){
+    // if(patfpdata != null){
+    //     if(patfpdata.MRN != null){
+    //         populate_episode(patfpdata.idno,patfpdata);
+    //         $('#editEpisode').modal({backdrop: "static"});
+    //     }else{
+    //         $("#btn_register_patient").data("oper","add");
+    //         initfpdata(patfpdata);
+    //         $('#mdl_patient_info').modal({backdrop: "static"});
+    //     }
+    // }
+    closemodalfp();
+});
+
+$('#mykad_open_bio').click(function(){
+    checkfpdata();
+});
+
+$('#mykad_open_epis').click(function(){
+    if(patfpdata != null){
+        if(patfpdata.MRN != null){
+            populate_episode(patfpdata.idno,patfpdata);
+            $('#editEpisode').modal({backdrop: "static"});
+        }
+    }
+});
+
+function closemodalfp(){
+    $('#mdl_biometric').modal('hide');
+    $('#mykad_open_bio').hide();
+    $('#mykad_open_epis').hide();
+    patfpdata = null;
+    // if(patfpdata != null){
+    //     $("#patientBox").click();
+    // }
+}
+
+function checkfpdata(){
+    if(patfpdata != null){
+        if(patfpdata.MRN != null){
+            populate_patient(patfpdata);
+            $("#btn_register_patient").data("oper","edit");
+            $("#btn_register_patient").data("idno",patfpdata.idno);
+            desc_show.write_desc();
+            $('#mdl_patient_info').modal({backdrop: "static"});
+        }else{
+            $("#btn_register_patient").data("oper","add");
+            initfpdata(patfpdata);
+            $('#mdl_patient_info').modal({backdrop: "static"});
+        }
+    }
+}
+
+function initfpdata(data){
+    $("#hid_ID_Type").val('O');
+    $("#txt_ID_Type").val('Own IC');
+    $("#txt_pat_name").val(data.name);
+    $("#txt_pat_newic").val(data.icnum);
+    $("#cmb_pat_sex").val(data.sex);
+    $("#txt_pat_dob").val(moment(data.dob, "MM-DD-YYYY").format("YYYY-MM-DD"));
+    $('#txt_pat_age').val(gettheage(moment(data.dob, "MM-DD-YYYY").format("YYYY-MM-DD")));
+    $('#txt_pat_newic').blur();
+    // $("input[name='birthplace']").val(data.birthplace);
+    $("#hid_RaceCode").val(data.race);
+    $("#txt_RaceCode").val(data.race);
+    $('#hid_pat_citizen').val(data.citizenship);
+    $('#txt_pat_citizen').val(data.citizenship);
+    $('#hid_Religion').val(data.religion);
+    $('#txt_Religion').val(data.religion);
+    $('#txt_pat_curradd1').val(data.address1);
+    $('#txt_pat_curradd2').val(data.address2);
+    $('#txt_pat_curradd3').val(data.address3);
+    $('#hid_pat_area').val(data.city);
+    $('#txt_pat_area').val(data.city);
+    $('#txt_pat_currpostcode').val(data.postcode);
+    $("img#photobase64").attr('src','data:image/png;base64,'+data.base64);
 }

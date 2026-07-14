@@ -115,7 +115,7 @@
             CITIZENSHIP: <span id="citizenship_show_rehabMain"></span>
             AREA: <span id="area_show_rehabMain"></span>
             
-            <!-- <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_phys"></i>
+           <!--  <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_phys"></i>
             <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_phys"></i> -->
             
             <!-- <div style="position: absolute; 
@@ -144,7 +144,7 @@
         </div>
     </div>
 
-    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;display:none" id="phys_panel">
+    <!-- <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;display:none" id="phys_panel">
         <div class="panel-heading clearfix collapsed" role="tab" id="toggle_phys">
             <b>NAME: <span id="name_show_phys"></span></b><br>
             MRN: <span id="mrn_show_phys"></span>
@@ -268,9 +268,9 @@
                 @include('rehab.occupTherapy.occupTherapy')
             </div>
         </div>
-    </div>
+    </div> -->
     
-    @include('hisdb.pat_mgmt.pat_mgmt_iframe')
+    @include('hisdb.pat_mgmt.pat_mgmt_iframe',['phase' => 'semantic'])
     @include('patientcare.itemselector')
 @endsection
 

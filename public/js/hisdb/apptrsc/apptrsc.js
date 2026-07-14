@@ -3,7 +3,6 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
 $(document).ready(function () {
-	console.log(document.documentElement.clientHeight);
 	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
@@ -58,8 +57,8 @@ $(document).ready(function () {
 		'resourcecode', ['hisdb.apptresrc AS a', 'hisdb.doctor AS d'], "input[name='resourcecode']", errorField,
         {
             colModel: [
-                { label: 'Resource Code', name: 'a_resourcecode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+                { label: 'Resource Code', name: 'a_resourcecode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, or_search: true, checked: true },
 				{ label: 'Interval Time', name: 'a_intervaltime', width: 400, classes: 'pointer', hidden:false},
             ],
             urlParam: {
@@ -339,10 +338,21 @@ $(document).ready(function () {
 
 			$("#addForm input[name='icnum']").prop('readonly',true);
 
+			$('#biodata_pat').show();
 			if($('#mrn').val() == ''){
 				$('#biodata_pat_span').text('New MRN');
+				$('#new_episode').hide();
+				if($('#patname').val().trim() == ''){
+					$('#biodata_pat').hide();
+				}
 			}else{
 				$('#biodata_pat_span').text('Biodata');
+				$('#new_episode').show();
+				if($('#episno').val() == ''){
+					$('#episode_pat_span').text('New Episode');
+				}else{
+					$('#episode_pat_span').text('Episode');
+				}
 			}
 		},
 		close: function( event, ui ){
@@ -353,12 +363,37 @@ $(document).ready(function () {
 
 	$('#biodata_pat').click(function(){
 		if($('#mrn').val() == ''){
-    		$("#mdl_patient_iframe").attr('src','./pat_mast_iframe');
+			let param = {
+				Newic: $("#addForm input[name='icnum']").val(),
+				Name: $("#addForm input[name='patname']").val(),
+				telh: $("#addForm input[name='telh']").val(),
+				telhp: $("#addForm input[name='telhp']").val(),
+				src_from: 'apptbook',
+				src_idno: $('#idno').val(),
+			}
+
+    		$("#mdl_patient_iframe").attr('src','./pat_mast_iframe'+"?"+$.param(param));
     		$('#mdl_patient_info').modal({backdrop: "static"});
 		}else{
     		$("#mdl_patient_iframe").attr('src','./pat_mast_iframe?mrn='+$('#mrn').val());
     		$('#mdl_patient_info').modal({backdrop: "static"});
 		}
+	});
+
+	$('#new_episode').click(function(){
+		let param = {
+			Newic: $("#addForm input[name='icnum']").val(),
+			Name: $("#addForm input[name='patname']").val(),
+			telh: $("#addForm input[name='telh']").val(),
+			telhp: $("#addForm input[name='telhp']").val(),
+			mrn: $("#addForm input[name='mrn']").val(),
+			episno: $("#addForm input[name='episno']").val(),
+			src_from: 'apptbook',
+			src_idno: $('#idno').val(),
+		}
+
+		$("#mdl_episode_iframe").attr('src','./episode_iframe'+"?"+$.param(param));
+		$('#mdl_episode_info').modal({backdrop: "static"});
 	});
 
 	$("#dialogForm_reminder").dialog({
@@ -645,7 +680,14 @@ $(document).ready(function () {
 					lastelement = element;
 					oper = 'edit';
 					$('#doctor').val(event.loccode);
-					$('#mrn').val(event.mrn);
+					if(event.mrn){
+						$('#mrn').val(('0000000' + event.mrn).slice(-7));
+				    }
+
+					if(event.episno){
+						$('#episno').val(event.episno);
+				    }
+
 					$('#icnum').val(event.icnum);
 					$('#patname').val(event.pat_name);
 					$('#apptdatefr_day').val(event.start.format('YYYY-MM-DD'));
@@ -1128,7 +1170,7 @@ $(document).ready(function () {
         	}
 		}
 	}
-	
+
 	//////////////////////end pasal biodata/////////////////////////
 
 	/////////////////start pasal episode//////////////////
@@ -1150,12 +1192,6 @@ $(document).ready(function () {
 
   //       disableEpisode(true);
 
-	});
-
-	$('#new_episode').click(function(){
-		populate_new_episode_by_mrn_apptrsc($('form#addForm input[name="mrn"]').val());
-		$("#dialogForm").dialog('close');
-        $('#editEpisode').modal({backdrop: "static"});
 	});
 
 	$("#editEpisode").on('hidden.bs.modal', function () {
@@ -1284,7 +1320,37 @@ function ret_if_null(str){
 	}
 }
 
-window.open_iframe_close = function (data){ // inside the iframe
+window.open_iframe_close = function (data,type){ // inside the iframe
+	if(type == 'patmast'){
+		if(data != null ){
+			$("#addForm input[name='mrn']").val(data.MRN);
+			$("#addForm input[name='patname']").val(data.Name);
+			$("#addForm input[name='icnum']").val(data.Newic);
+			$("#addForm input[name='telh']").val(data.telh);
+			$("#addForm input[name='telhp']").val(data.telhp);
+			$('#calendar').fullCalendar( 'refetchEventSources', 'apptbook' );
+			$('#biodata_pat_span').text('Biodata');
+		}
+	}else if(type == 'episode'){
+		if(data != null ){
+			$("#addForm input[name='episno']").val(data.episno);
+			$('#calendar').fullCalendar( 'refetchEventSources', 'apptbook' );
+			$('#episode_pat_span').text('Episode');
+		}
+	}
+
+	if($('#mrn').val() == ''){
+		$('#new_episode').hide();
+	}else{
+		$('#new_episode').show();
+	}
+
+	if($('#episno').val() == ''){
+		$('#episode_pat_span').text('New Episode');
+	}else{
+		$('#episode_pat_span').text('Episode');
+	}
+
     $("#mdl_episode_iframe").attr('src','');
     $("#mdl_patient_iframe").attr('src','');
     $('#mdl_patient_info').modal('hide');

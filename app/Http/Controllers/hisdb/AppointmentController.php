@@ -147,11 +147,11 @@ class AppointmentController extends defaultController
 
             $mrn_ = ($request->mrn == '')? '00000': $request->mrn;
             $apptidno = DB::table('hisdb.apptbook')->insertGetId([
-                'title'       => str_pad($mrn_, 7, "0", STR_PAD_LEFT).' - '.$request->patname.' - '.$request->telhp.' - '.$case->description.' - '.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30),
+                'title'       => strtoupper(str_pad($mrn_, 7, "0", STR_PAD_LEFT).' - '.$request->patname.' - '.$request->telhp.' - '.$case->description.' - '.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30)),
                 'loccode'     => $request->doctor,
                 'icnum'       => $request->icnum,
                 'mrn'         => $request->mrn,
-                'pat_name'    => $request->patname,
+                'pat_name'    => strtoupper($request->patname),
                 'start'       => $request->apptdatefr_day.' '.$request->start_time,
                 'end'         => $request->apptdatefr_day.' '.$request->end_time,
                 'telno'       => $request->telh,
@@ -159,13 +159,14 @@ class AppointmentController extends defaultController
                 'telhp'       => $request->telhp,
                 'case_code'   => $request->case,
                 'case_desc'   => $case->description,
-                'remarks'     => $request->remarks,
+                'remarks'     => strtoupper($request->remarks),
                 'recstatus'   => 'A',
                 'adduser'     => session('username'),
                 'adddate'     => Carbon::now("Asia/Kuala_Lumpur"),
                 'lastuser'    => session('username'),
                 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
-                'type'        => 'DOC'
+                'type'        => 'DOC',
+                'compcode'    => session('compcode')
             ]);
 
             if($request->mrn != ''){
@@ -215,9 +216,6 @@ class AppointmentController extends defaultController
 
             return response('Error'.$e, 500);
         }
-
-        
-        
     }
 
     public function editEvent(Request $request){
@@ -272,11 +270,11 @@ class AppointmentController extends defaultController
                 DB::table('hisdb.apptbook')
                     ->where('idno','=',$request->idno)
                     ->update([
-                        'title'       => str_pad($mrn_, 7, "0", STR_PAD_LEFT).' - '.$request->patname.' - '.$request->telhp.' - '.$case->description.' - '.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30),
+                        'title'       => strtoupper(str_pad($mrn_, 7, "0", STR_PAD_LEFT).' - '.$request->patname.' - '.$request->telhp.' - '.$case->description.' - '.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30)),
                         'loccode'     => $request->doctor,
                         'mrn'         => $request->mrn,
                         'icnum'       => $request->icnum,
-                        'pat_name'    => $request->patname,
+                        'pat_name'    => strtoupper($request->patname),
                         'start'       => $request->apptdatefr_day.' '.$request->start_time,
                         'end'         => $request->apptdatefr_day.' '.$request->end_time,
                         'telno'       => $request->telh,
@@ -285,7 +283,7 @@ class AppointmentController extends defaultController
                         'telhp'       => $request->telhp,
                         'case_code'   => $request->case,
                         'case_desc'   => $case->description,
-                        'remarks'     => $request->remarks,
+                        'remarks'     => strtoupper($request->remarks),
                         'lastuser'    => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
