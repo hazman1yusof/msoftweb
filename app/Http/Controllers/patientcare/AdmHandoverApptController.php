@@ -28,9 +28,7 @@ class AdmHandoverApptController extends defaultController
     {
         DB::enableQueryLog();
         switch($request->action){
-            
             case 'save_table_admHandoverAppt':
-            
                 switch($request->oper){
                     case 'add':
                         return $this->add($request);
@@ -39,12 +37,15 @@ class AdmHandoverApptController extends defaultController
                     default:
                         return 'error happen..';
                 }
-
+            
             case 'get_table_admhandoverAppt':
                 return $this->get_table_admhandoverAppt($request);
+            
+            case 'admHandoverAppt_save':
+                return $this->addNotes_admHandoverAppt($request);
         }
     }
-
+    
     public function add(Request $request){
         
         DB::beginTransaction();
@@ -368,8 +369,41 @@ class AdmHandoverApptController extends defaultController
         $company = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
             ->first();
-
+        
         return view('hisdb.admhandover.admhandover_pdfmake',compact('admhandover'));
         
     }
+    
+    public function addNotes_admHandoverAppt(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'ADMISSION HANDOVER',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+    
 }
