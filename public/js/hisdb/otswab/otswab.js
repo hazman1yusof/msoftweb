@@ -919,6 +919,7 @@ function populate_otswab(obj){
     // table jqGrid_specimen
     urlParam_otspecimen.filterVal[1] = obj.mrn;
 	urlParam_otspecimen.filterVal[2] = obj.latest_episno;
+    refreshGrid('#jqGrid_specimen',urlParam_otspecimen);
 
     ////jqGridAddNotesOtSwab
     urlParam_AddNotesOtSwab.filterVal[0] = obj.mrn;
