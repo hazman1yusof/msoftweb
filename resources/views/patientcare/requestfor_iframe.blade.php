@@ -162,6 +162,7 @@
             <a class="item" data-tab="radReqFor" id="navtab_radReqFor">Radiology</a>
             <a class="item" data-tab="physioReqFor" id="navtab_physioReqFor">Rehab</a>
             <a class="item" data-tab="dressingReqFor" id="navtab_dressingReqFor">Dressing</a>
+            <a class="item" data-tab="followup_reqfor" id="navtab_followup_reqfor">Follow Up</a>
             <a class="item" data-tab="referral_letter_reqfor" id="navtab_referral_letter_reqfor">Referral Letter</a>
             <a class="item" data-tab="card_noninv_reqfor" id="navtab_card_noninv_reqfor">Cardiology<br>Non-Invasive</a>
         </div>
@@ -648,6 +649,10 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="ui bottom attached tab raised segment" data-tab="followup_reqfor">
+            @include('hisdb.radiology.followup_reqfor_iframe')
         </div>
 
         <div class="ui bottom attached tab raised segment" data-tab="referral_letter_reqfor">
