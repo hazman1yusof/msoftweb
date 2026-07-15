@@ -270,52 +270,52 @@ function saveForm_phys(callback){
 
 function getdata_physio(){
 	var postobj = {
-			_token: $('#_token').val(),
-			mrn: $('#mrn_rehabMain').val(),
-			episno: $("#episno_rehabMain").val()
-		};
+		_token: $('#_token').val(),
+		mrn: $('#mrn_rehabMain').val(),
+		episno: $("#episno_rehabMain").val()
+	};
+	
+	var dateParam_phys = {
+		action: 'get_table_date_phys',
+		type: 'Current',
+		mrn: $('#mrn_rehabMain').val(),
+		episno: $("#episno_rehabMain").val(),
+		date: $('#sel_date').val()
+	}
+	
+	phys_date_tbl.ajax.url("./ptcare_phys/table?"+$.param(dateParam_phys)).load();
+	
+	var phys_ncase_urlparam = {
+		action: 'get_table_phys_ncase'
+	};
+	
+	var postobj = {
+		_token: $('#_token').val(),
+		mrn_rehabMain: $('#mrn_rehabMain').val(),
+		episno_rehabMain: $("#episno_rehabMain").val(),
+	};
+	
+	$.post("./ptcare_phys/form?"+$.param(phys_ncase_urlparam), $.param(postobj), function (data){
 		
-		var dateParam_phys = {
-			action: 'get_table_date_phys',
-			type: 'Current',
-			mrn: $('#mrn_rehabMain').val(),
-			episno: $("#episno_rehabMain").val(),
-			date: $('#sel_date').val()
+	},'json').fail(function (data){
+		alert('there is an error');
+	}).done(function (data){
+		if(!$.isEmptyObject(data.patrehab_ncase)){
+			autoinsert_rowdata_phys_ncase("#formphys_ncase",data.patrehab_ncase);
+			autoinsert_rowdata_phys_ncase("#formphys_ncase",data.pat_physio);
+			autoinsert_rowdata_phys_ncase("#formphys_ncase",data.neuroassessment);
+			autoinsert_rowdata_phys_ncase("#formphys_ncase",data.romaffectedside);
+			autoinsert_rowdata_phys_ncase("#formphys_ncase",data.romsoundside);
+			autoinsert_rowdata_phys_ncase("#formphys_ncase",data.musclepower);
+			autoinsert_rowdata_phys_ncase("#formphys_ncase",data.patrehabperkeso);
+			button_state_phys_ncase('edit');
+			$('#perkeso_chart').attr('disabled',false);
+		}else{
+			autoinsert_rowdata_phys_ncase("#formphys_ncase",data.pat_physio);
+			button_state_phys_ncase('add');
+			$('#perkeso_chart').attr('disabled',true);
 		}
-		
-		phys_date_tbl.ajax.url("./ptcare_phys/table?"+$.param(dateParam_phys)).load();
-		
-		var phys_ncase_urlparam = {
-			action: 'get_table_phys_ncase'
-		};
-		
-		var postobj = {
-			_token: $('#_token').val(),
-			mrn: $('#mrn_rehabMain').val(),
-			episno: $("#episno_rehabMain").val(),
-		};
-		
-		$.post("./ptcare_phys/form?"+$.param(phys_ncase_urlparam), $.param(postobj), function (data){
-			
-		},'json').fail(function (data){
-			alert('there is an error');
-		}).done(function (data){
-			if(!$.isEmptyObject(data.patrehab_ncase)){
-				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.patrehab_ncase);
-				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.pat_physio);
-				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.neuroassessment);
-				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.romaffectedside);
-				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.romsoundside);
-				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.musclepower);
-				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.patrehabperkeso);
-				button_state_phys_ncase('edit');
-				$('#perkeso_chart').attr('disabled',false);
-			}else{
-				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.pat_physio);
-				button_state_phys_ncase('add');
-				$('#perkeso_chart').attr('disabled',true);
-			}
-		});
+	});
 }
 
 // function button_state_phys(state){
