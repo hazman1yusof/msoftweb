@@ -7,7 +7,7 @@
     <div id="requestFor" class="ui segments" style="margin:0px;border: none;padding-bottom: 0px;">
         <!-- <div class="ui secondary segment">REQUEST FOR</div> -->
         <div class="ui top attached tabular menu">
-            <a class="item active" data-tab="otbookReqFor" id="navtab_otbookReqFor">Ward</a>
+            <a class="item active" data-tab="otbookReqFor" id="navtab_otbookReqFor">Ward @if($phase != "ED"){{"/ OT"}}@endif</a>
             <a class="item" data-tab="radReqFor" id="navtab_radReqFor">Radiology</a>
             <a class="item" data-tab="physioReqFor" id="navtab_physioReqFor">Rehab</a>
             <a class="item" data-tab="dressingReqFor" id="navtab_dressingReqFor">Dressing</a>

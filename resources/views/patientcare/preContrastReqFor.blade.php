@@ -15,6 +15,7 @@
     <div class="ui segment">
         <div class="ui grid">
             <form id="formPreContrastReqFor" class="floated ui form sixteen wide column">
+                <input type="hidden" name="sex_precon" id="sex_precon">
                 <div class='ui grid' style="padding: 15px 30px;">
                     <div class="sixteen wide column">
                         <div class="field">
