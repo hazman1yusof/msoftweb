@@ -91,7 +91,8 @@
                         @include('hisdb.doctornote.doctornote_tab')
                     </div>
                     <div id="tab-reqForIP" class="tab-pane fade">
-                        @include('hisdb.requestfor.requestfor_tab')
+                        <!-- #include('hisdb.requestfor.requestfor_tab') -->
+                        <iframe id='requestfor_main_iframe' src='' style="height: calc(90vh);width: 100%; border: none;overflow-x: hidden;"></iframe>
                     </div>
                     <div id="tab-dietNoteIP" class="tab-pane fade">
                         @include('hisdb.dieteticCareNotes.dieteticCareNotes_tab')

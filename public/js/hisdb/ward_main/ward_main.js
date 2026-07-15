@@ -239,17 +239,26 @@ $(document).ready(function (){
                 // populate_consentForm_getdata();
                 break;
             case 'reqForIP':
-                let curtype_reqForIP = $('#jqGridRequestFor_paneltab').data('curtype');
-                $('#jqGridRequestFor_panel_tabs.nav-tabs a#'+curtype_reqForIP).tab('show');
+                // let curtype_reqForIP = $('#jqGridRequestFor_paneltab').data('curtype');
+                // $('#jqGridRequestFor_panel_tabs.nav-tabs a#'+curtype_reqForIP).tab('show');
                 
-                $('#jqGridRequestFor_paneltab').find('.nav a:first').tab('show');
-                populate_otbookReqFor_getdata();
-                populate_radClinicReqFor_getdata();
+                // $('#jqGridRequestFor_paneltab').find('.nav a:first').tab('show');
+                // populate_otbookReqFor_getdata();
+                // populate_radClinicReqFor_getdata();
                 // populate_mriReqFor_getdata();
                 // populate_physioReqFor_getdata();
                 // populate_dressingReqFor_getdata();
                 // populate_preContrastReqFor_getdata();
                 // populate_consentFormReqFor_getdata();
+                var lastrowdata = getrow_bootgrid();
+
+                var reqForIP_newurl = "./requestfor_iframe?mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno+"&phase=CLINICAL";
+                var reqForIP_cururl = $('iframe#requestfor_main_iframe').attr('src');
+
+                if(reqForIP_cururl != reqForIP_newurl){
+                    $('iframe#requestfor_main_iframe').attr('src',reqForIP_newurl);
+                }
+
                 break;
             case 'dietNoteIP':
                 $.post("./dieteticCareNotes/form?"+$.param(saveParam_dietaticCareNotes), $.param(postobj_dietaticCareNotes), function (data){

@@ -33,10 +33,14 @@ $(document).ready(function (){
     var radbuts_referralLetterReqfor = new checkradiobutton(['refto','refprio','reffro']);
     var radbuts_card_noninv = new checkradiobutton(['card_chkty','card_type']);
 
-    $('#requestFor .top.menu .item').tab('change tab','otbookReqFor');
-    populate_otbookReqFor_getdata();
-    populate_radClinicReqFor_getdata();
-    textarea_init_otbookReqFor();
+    if($('#_mrn').val() != undefined){
+        $('#requestFor .top.menu .item').tab('change tab','otbookReqFor');
+        populate_otbookReqFor_getdata();
+        populate_radClinicReqFor_getdata();
+        textarea_init_otbookReqFor();
+        $('#mrn_requestFor').val($('#_mrn').val());
+        $('#episno_requestFor').val($('#_episno').val());
+    }
     
     ////////////////////////////////////////////otbook starts////////////////////////////////////////////
     
