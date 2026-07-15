@@ -1053,6 +1053,7 @@ class RequestForController extends defaultController
         if(!$queue->exists()){
             DB::table('hisdb.queue') 
                 ->insert([
+                    'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
                     'deptcode' =>'RAD',
@@ -1739,6 +1740,7 @@ class RequestForController extends defaultController
         if(!$queue->exists()){
             DB::table('hisdb.queue') 
                 ->insert([
+                    'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
                     'deptcode' =>'PHY',
