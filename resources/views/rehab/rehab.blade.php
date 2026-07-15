@@ -106,16 +106,17 @@
         <div class="panel-heading clearfix collapsed" role="tab" id="toggle_rehabMain">
             <b>NAME: <span id="name_show_rehabMain"></span></b><br>
             MRN: <span id="mrn_show_rehabMain"></span>
+            IC: <span id="ic_show_rehabMain"></span>
             SEX: <span id="sex_show_rehabMain"></span>
             DOB: <span id="dob_show_rehabMain"></span>
             AGE: <span id="age_show_rehabMain"></span>
-            RACE: <span id="race_show_rehabMain"></span>
-            RELIGION: <span id="religion_show_rehabMain"></span><br>
+            RACE: <span id="race_show_rehabMain"></span><br>
+            RELIGION: <span id="religion_show_rehabMain"></span>
             OCCUPATION: <span id="occupation_show_rehabMain"></span>
             CITIZENSHIP: <span id="citizenship_show_rehabMain"></span>
             AREA: <span id="area_show_rehabMain"></span>
             
-           <!--  <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_phys"></i>
+            <!-- <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_phys"></i>
             <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_phys"></i> -->
             
             <!-- <div style="position: absolute; 
@@ -309,7 +310,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- <script type="text/javascript" src="{{ asset('patientcare/js/transaction.js') }}"></script> -->
     <!-- <script type="text/javascript" src="{{ asset('patientcare/js/transaction_diet.js') }}"></script> -->
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/rehabMain/rehabMain.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/rehabMain/rehabMain.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/transaction_phys.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/physiotherapy/physioterapy.js?v=1.4') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/physiotherapy/physioterapy_ncase.js?v=1.1') }}"></script>
