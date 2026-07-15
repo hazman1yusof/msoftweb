@@ -1135,9 +1135,31 @@ function populate_radClinicReqFor_getdata(){
         if(!$.isEmptyObject(data)){
             if(!$.isEmptyObject(data.pat_radiology)){
                 autoinsert_rowdata("#formRadClinicReqFor",data.pat_radiology);
+
+                if(data.pat_radiology.sex_radClinic == 'F'){
+                    $('#formRadClinicReqFor input[name=LMP]').attr('data-validation',true);
+                    $('#formRadClinicReqFor input[name=LMP]').parent('div.inline.field').show();
+                }else{
+                    $('#formRadClinicReqFor input[name=LMP]').attr('data-validation',false);
+                    $('#formRadClinicReqFor input[name=LMP]').parent('div.inline.field').hide();
+                }
                 
                 button_state_radClinicReqFor('edit');
-            }else{
+            }else if(!$.isEmptyObject(data.pat_radiology_default)){
+                autoinsert_rowdata("#formRadClinicReqFor",data.pat_radiology_default);
+
+
+                if(data.pat_radiology_default.sex_radClinic == 'F'){
+                    $('#formRadClinicReqFor input[name=LMP]').attr('data-validation',true);
+                    $('#formRadClinicReqFor input[name=LMP]').parent('div.inline.field').show();
+                }else{
+                    $('#formRadClinicReqFor input[name=LMP]').attr('data-validation',false);
+                    $('#formRadClinicReqFor input[name=LMP]').parent('div.inline.field').hide();
+                }
+
+                console.log($('#formRadClinicReqFor input[name=LMP]'))
+                console.log($('#formRadClinicReqFor input[name=LMP]').parent('div.inline.field'))
+
                 button_state_radClinicReqFor('add');
             }
             

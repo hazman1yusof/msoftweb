@@ -1091,7 +1091,7 @@ class RequestForController extends defaultController
         //                     ->where('episno','=',$request->episno);
         
         $patmast_obj = DB::table('hisdb.pat_mast')
-                        ->select('iPesakit')
+                        ->select('iPesakit','Sex')
                         ->where('compcode',session('compcode'))
                         ->where('mrn','=',$request->mrn);
         
@@ -1100,6 +1100,11 @@ class RequestForController extends defaultController
         if($pat_radiology_obj->exists()){
             $pat_radiology_obj = $pat_radiology_obj->first();
             $responce->pat_radiology = $pat_radiology_obj;
+        }else{
+            $pat_mast = $patmast_obj->first();
+
+            $pat_mast->sex_radClinic = $pat_mast->Sex;
+            $responce->pat_radiology_default = $pat_mast;
         }
         
         if($episode->exists()){

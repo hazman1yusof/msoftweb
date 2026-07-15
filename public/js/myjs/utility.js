@@ -1972,6 +1972,7 @@ function checkradiobutton(radiobuttons){
 		$.each(this.radiobuttons, function( index, value ) {
 			$("label[for="+value+"]").css('color', '#000000ff');
 			$(":radio[name="+value+"]").parent('label').css('color', '#000000ff');
+	    $(":radio[name='"+value+"']").siblings('label').css('color', '#000000ff');
 		});
 	}
 }

@@ -24,6 +24,7 @@
         <div class="ui segment">
             <div class="ui grid">
                 <form id="formRadClinicReqFor" class="floated ui form sixteen wide column">
+                    <input type="hidden" name="sex_radClinic" id="sex_radClinic">
                     <div class='ui grid' style="padding: 15px 30px;">
                         <div class="sixteen wide column centered grid" style="padding: 14px 14px 0px 150px;">
                             <div class="inline field">
