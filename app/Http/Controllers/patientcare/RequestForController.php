@@ -2021,12 +2021,24 @@ class RequestForController extends defaultController
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
                             ->where('episno','=',$request->episno);
+
+        $pat_mast = DB::table('hisdb.pat_mast')
+                            ->select('Newic','Name','DOB','Sex')
+                            ->where('compcode',session('compcode'))
+                            ->where('mrn',$request->mrn)
+                            ->first();
         
         $responce = new stdClass();
         
         if($pat_preContrast_obj->exists()){
+
             $pat_preContrast_obj = $pat_preContrast_obj->first();
+            $pat_preContrast_obj->sex_precon = $pat_mast->Sex;
             $responce->pat_preContrast = $pat_preContrast_obj;
+        }else{
+
+            $pat_mast->sex_precon = $pat_mast->Sex;
+            $responce->pat_preContrast_default = $pat_mast;
         }
         
         return json_encode($responce);

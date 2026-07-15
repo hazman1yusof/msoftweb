@@ -1415,11 +1415,24 @@ function populate_preContrastReqFor_getdata(){
     $.get("./ptcare_requestfor/table?"+$.param(saveParam), $.param(postobj), function (data){
         
     },'json').done(function (data){
-        if(!$.isEmptyObject(data)){
+        if(!$.isEmptyObject(data.pat_preContrast)){
             autoinsert_rowdata("#formPreContrastReqFor",data.pat_preContrast);
             
+            if(data.pat_preContrast_default.sex_precon == 'F'){
+                $('#formPreContrastReqFor input[name=LMP]').attr('data-validation',true);
+            }else{
+                $('#formPreContrastReqFor input[name=LMP]').attr('data-validation',false);
+            }
             button_state_preContrastReqFor('edit');
-        }else{
+            
+        }else if(!$.isEmptyObject(data.pat_preContrast_default)){
+            autoinsert_rowdata("#formPreContrastReqFor",data.pat_preContrast_default);
+
+            if(data.pat_preContrast_default.sex_precon == 'F'){
+                $('#formPreContrastReqFor input[name=LMP]').attr('data-validation',true);
+            }else{
+                $('#formPreContrastReqFor input[name=LMP]').attr('data-validation',false);
+            }
             button_state_preContrastReqFor('add');
         }
         
