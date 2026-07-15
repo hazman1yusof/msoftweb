@@ -563,6 +563,10 @@ $(document).ready(function (){
     $("#card_noninv_chart").click(function (){
         window.open('./ptcare_requestfor/table?action=card_noninv_print&mrn='+$('#mrn_requestFor').val()+'&episno='+$("#episno_requestFor").val(), '_blank');
     });
+
+    $("#referralLetter_freetextReqfor_chart").click(function (){
+        window.open('./ptcare_requestfor/table?action=referralLetter_freetext_print&mrn='+$('#mrn_requestFor').val()+'&episno='+$("#episno_requestFor").val(), '_blank');
+    });
     //////////////////////////////////////////print button ends//////////////////////////////////////////
     
     $('#requestFor .top.menu .item').tab({'onVisible': function (){

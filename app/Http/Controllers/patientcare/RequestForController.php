@@ -53,6 +53,8 @@ class RequestForController extends defaultController
                 return $this->referralLetter_print($request);
             case 'card_noninv_print':
                 return $this->card_noninv_print($request);
+            case 'referralLetter_freetext_print':
+                return $this->referralLetter_freetext_print($request);
             default:
                 return 'error happen..';
         }
@@ -2516,8 +2518,6 @@ class RequestForController extends defaultController
             if($patreferral_freetext->exists()){
                 $patreferral_freetext
                     ->update([
-                        'mrn' => $request->mrn,
-                        'episno' => $request->episno,
                         'freetext_patref' => $request->freetext_patref,
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'upduser' => session('username'),
@@ -2525,6 +2525,7 @@ class RequestForController extends defaultController
             }else{
                 DB::table('hisdb.patreferral_freetext')
                     ->insert([
+                        'compcode' => session('compcode'),
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'freetext_patref' => $request->freetext_patref,
@@ -2764,6 +2765,24 @@ class RequestForController extends defaultController
                         ->first();
             
             return view('hisdb.radiology.card_noninv_pdfmake',compact('card_noninv','company'));
+        }
+    }
+
+    public function referralLetter_freetext_print(Request $request){
+        $patreferral_freetext = DB::table('hisdb.patreferral_freetext')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno);
+
+        if(!$patreferral_freetext->exists()){
+            abort(403,'Data doesnt exists'); 
+        }else{
+            $patreferral_freetext = $patreferral_freetext->first();
+            $company = DB::table('sysdb.company')
+                        ->where('compcode','=',session('compcode'))
+                        ->first();
+            
+            return view('hisdb.radiology.referral_letter_freetext_pdfmake',compact('patreferral_freetext','company'));
         }
     }
 

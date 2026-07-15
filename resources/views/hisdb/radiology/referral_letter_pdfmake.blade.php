@@ -439,7 +439,7 @@
                             },
                         ]
                     },
-                    { text: `{{$patreferral->reffreetxt}}`, style: 'normal' , pageBreak:'before'}
+                    // { text: `{{$patreferral->reffreetxt}}`, style: 'normal' , pageBreak:'before'}
                 ],
                 styles: {
                     header: {

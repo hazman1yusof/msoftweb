@@ -229,7 +229,7 @@
                         <div class="eight wide column">
                             <div class="field">
                                 <label>Free Text Form</label>
-                                <textarea rows="5" id="freetext_refl" name="reffreetxt" style="height:100vh" data-validation='required'></textarea>
+                                <textarea rows="5" id="freetext_patref" name="freetext_patref" style="height:100vh" data-validation='required'></textarea>
                             </div>
                         </div>
                     </form>
