@@ -3,7 +3,7 @@
 
 	@include('patientcare.physiotherapy.physioterapy_ncaseform')
 
-	<div class="ui grid" style="position: relative; padding-top: 30px; margin: 0px 5px 0px 5px;">
+	<div class="ui grid" style="position: relative; padding-top: 30px; margin: 0px 5px 0px 5px; display: none;">
 
 		<!-- <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
 			id="btn_grp_edit_phys"

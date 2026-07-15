@@ -1,12 +1,12 @@
 <div class="ui secondary segment bluecloudsegment" id="rehab_segment" style="padding: 30px !important;">
-	<div class="inline field" style="position: absolute; top: 10px; left: 10px;">
+	<div class="inline field" style="position: absolute; top: 10px; left: 10px; display: none;">
 		<div class="ui checkbox rehab box">
 			<input type="checkbox" class="hidden" name="Rehabilitation" value="Rehabilitation">
 			<label>Occupational Therapy</label>
 		</div>
 		<div class="ui checkbox phys box">
 			<input type="checkbox" class="hidden" name="Physioteraphy" value="Physioteraphy">
-			<label>Physioteraphy</label>
+			<label>Physiotherapy</label>
 		</div>
 		
 		<div class="ui checkbox toggle right aligned referdiet box" style="padding-left: 80px;">
@@ -58,16 +58,16 @@
 		
 		<div id="physioNcaseTabs" class="ui segment">
 			<div class="ui top attached tabular menu">
-				<a class="item active" data-tab="physMedCond" id="navtab_physMedCond">MEDICAL CONDITION</a>
-				<a class="item" data-tab="physHistory" id="navtab_physHistory">HISTORY</a>
-				<a class="item" data-tab="physPainBehaviour" id="navtab_physPainBehaviour">PAIN BEHAVIOUR</a>
-				<a class="item" data-tab="physRelFind" id="navtab_physRelFind">RELEVANT FINDING(S)</a>
-				<a class="item" data-tab="physTreatment" id="navtab_physTreatment">TREATMENT</a>
-				<a class="item" data-tab="physPerkeso" id="navtab_physPerkeso">PERKESO</a>
+				<a class="item" data-tab="physMedCond" id="navtab_physMedCond" style="display: none;">MEDICAL CONDITION</a>
+				<a class="item" data-tab="physHistory" id="navtab_physHistory" style="display: none;">HISTORY</a>
+				<a class="item" data-tab="physPainBehaviour" id="navtab_physPainBehaviour" style="display: none;">PAIN BEHAVIOUR</a>
+				<a class="item" data-tab="physRelFind" id="navtab_physRelFind" style="display: none;">RELEVANT FINDING(S)</a>
+				<a class="item" data-tab="physTreatment" id="navtab_physTreatment" style="display: none;">TREATMENT</a>
+				<a class="item active" data-tab="physPerkeso" id="navtab_physPerkeso">PERKESO</a>
 				<a class="item" data-tab="physNotes" id="navtab_physNotes">NOTES</a>
 			</div>
 			
-			<div class="ui bottom attached tab raised segment active" data-tab="physMedCond">
+			<div class="ui bottom attached tab raised segment" data-tab="physMedCond" style="display: none;">
 				<div class="ui form">
 					<table class="ui celled table">
 						<thead>
@@ -691,13 +691,13 @@
 				</div>
 			</div>
 			
-			<div class="ui bottom attached tab raised segment" data-tab="physHistory">
+			<div class="ui bottom attached tab raised segment" data-tab="physHistory" style="display: none;">
 				<div class="ui form">
 					<div class="field"><textarea rows="6" cols="50" name="history"></textarea></div>
 				</div>
 			</div>
 			
-			<div class="ui bottom attached tab raised segment" data-tab="physPainBehaviour">
+			<div class="ui bottom attached tab raised segment" data-tab="physPainBehaviour" style="display: none;">
 				<div class="ui grid">
 					<div class="thirteen wide column">
 						<div class="ui four cards">
@@ -759,13 +759,13 @@
 				</div>
 			</div>
 			
-			<div class="ui bottom attached tab raised segment" data-tab="physRelFind">
+			<div class="ui bottom attached tab raised segment" data-tab="physRelFind" style="display: none;">
 				<div class="ui form">
 					<div class="field"><textarea rows="6" cols="50" name="findings"></textarea></div>
 				</div>
 			</div>
 			
-			<div class="ui bottom attached tab raised segment" data-tab="physTreatment">
+			<div class="ui bottom attached tab raised segment" data-tab="physTreatment" style="display: none;">
 				<div class="ui form ui grid">
 					<div class='ui grid' style="padding: 15px 30px;">
 						<div class="four wide column" style="padding: 14px 14px 0px 150px;">
@@ -883,7 +883,7 @@
 				</div>
 			</div>
 			
-			<div class="ui bottom attached tab raised segment" data-tab="physPerkeso">
+			<div class="ui bottom attached tab raised segment active" data-tab="physPerkeso">
 				<div class="ui form">
 					@include('patientcare.physiotherapy.physioterapy_perkeso')
 				</div>

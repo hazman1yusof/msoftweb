@@ -50,6 +50,7 @@ function empty_rehabMain(){
     // panel header
     $('#name_show_rehabMain').text('');
     $('#mrn_show_rehabMain').text('');
+    $('#ic_show_rehabMain').text('');
     $('#sex_show_rehabMain').text('');
     $('#dob_show_rehabMain').text('');
     $('#age_show_rehabMain').text('');
@@ -70,8 +71,9 @@ function populate_rehabMain(obj){
 
     // panel header
     $('#name_show_rehabMain').text(obj.Name);
-	$('#mrn_show_rehabMain').text(("0000000" + obj.MRN).slice(-7));
-	$('#sex_show_rehabMain').text(if_none(obj.Sex).toUpperCase());
+    $('#mrn_show_rehabMain').text(("0000000" + obj.MRN).slice(-7));
+    $('#ic_show_rehabMain').text(obj.Newic);
+    $('#sex_show_rehabMain').text(if_none(obj.Sex).toUpperCase());
 	$('#dob_show_rehabMain').text(dob_chg(obj.DOB));
 	$('#age_show_rehabMain').text(dob_age(obj.DOB)+' (YRS)');
 	$('#race_show_rehabMain').text(if_none(obj.raceDesc).toUpperCase());

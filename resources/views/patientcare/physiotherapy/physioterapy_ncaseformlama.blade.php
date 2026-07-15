@@ -6,7 +6,7 @@
 		</div>
 		<div class="ui checkbox phys box">
 			<input type="checkbox" class="hidden" name="Physioteraphy" value="Physioteraphy">
-			<label>Physioteraphy</label>
+			<label>Physiotherapy</label>
 		</div>
 		
 		<div class="ui checkbox toggle right aligned referdiet box" style="padding-left: 80px;">

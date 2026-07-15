@@ -1,4 +1,4 @@
-<div class="ui segments" style="position: relative;padding: 10px"">    
+<div class="ui segments" style="position: relative; padding: 10px">
     <form id="formRehabMain" class="ui form">
         <div class="ui grid">
             <input id="mrn_rehabMain" name="mrn_rehabMain" type="hidden">
@@ -9,9 +9,9 @@
     
     <div id="rehabMain_tab" class="ui segment">
         <div class="ui top attached tabular menu">
-            <a class="item active" data-tab="rehabilitation" id="navtab_rehabilitation">Rehabilitation</a>
-            <a class="item" data-tab="physiotherapy" id="navtab_physiotherapy">Physiotherapy</a>
-            <a class="item" data-tab="occupTherapy" id="navtab_occupTherapy">Occupational Therapy</a>
+            <a class="item active" data-tab="rehabilitation" id="navtab_rehabilitation">PERKESO AX NOTES</a>
+            <a class="item" data-tab="physiotherapy" id="navtab_physiotherapy">PHYSIOTHERAPY</a>
+            <a class="item" data-tab="occupTherapy" id="navtab_occupTherapy">OCCUPATIONAL THERAPY</a>
         </div>
 
         <div class="ui bottom attached tab raised segment active" data-tab="rehabilitation">
