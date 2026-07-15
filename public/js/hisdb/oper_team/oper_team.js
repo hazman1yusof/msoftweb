@@ -2,6 +2,17 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
 
+///////////////////////////////////parameter for jqGridAddNotesOperTeam url///////////////////////////////////
+var urlParam_AddNotesOperTeam = {
+	action: 'get_table_default',
+	url: './util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','OPER_TEAM'],
+}
+
 $(document).ready(function (){
     
     // textarea_init_oper_team();
@@ -208,6 +219,118 @@ $(document).ready(function (){
             }
         }, 0);
     });
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridOperTeam = {more:false,state:false,edit:false}
+	
+	///////////////////////////////////////////jqGridAddNotesOperTeam///////////////////////////////////////////
+	$("#jqGridAddNotesOperTeam").jqGrid({
+		datatype: "local",
+		editurl: "/oper_team/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		scroll: true,
+		width: 700,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesOperTeam",
+		loadComplete: function (){
+			if(addmore_jqgridOperTeam.more == true){$('#jqGridAddNotesOperTeam_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid ('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridOperTeam.edit = addmore_jqgridOperTeam.more = false; // reset
+		},
+		ondblClickRow: function (rowid, iRow, iCol, e){
+			$("#jqGridAddNotesOperTeam_iledit").click();
+		},
+	});
+	
+	////////////////////////////////////////////myEditOptions////////////////////////////////////////////
+	var myEditOptions_addOperTeam = {
+		keys: true,
+		extraparam: {
+			"_token": $("#_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesOperTeam_ilsave').click();
+				// addmore_jqgridOperTeam.state = true;
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridOperTeam.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesOperTeam',urlParam_AddNotesOperTeam,'add_operTeam_save');
+			errorField.length = 0;
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesOperTeam',urlParam_AddNotesOperTeam,'add_operTeam_save');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			if(errorField.length > 0)return false;
+			
+			let data = $('#jqGridAddNotesOperTeam').jqGrid('getRowData', rowid);
+			
+			let editurl = "/oper_team/form?"+
+				$.param({
+					_token: $('#_token').val(),
+					episno: $('#episno_otMain').val(),
+					mrn: $('#mrn_otMain').val(),
+					action: 'add_operTeam_save',
+				});
+			$("#jqGridAddNotesOperTeam").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc : function (response){
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////////jqGridPagerAddNotesOperTeam/////////////////////////////////////////
+	$("#jqGridAddNotesOperTeam").inlineNav('#jqGridPagerAddNotesOperTeam', {
+		add: true,
+		edit: false,
+		cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addOperTeam
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesOperTeam", {
+		id: "jqGridPagerRefresh_addnotes",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesOperTeam", urlParam_AddNotesOperTeam);
+		},
+	});
+	///////////////////////////////////////////////end grid///////////////////////////////////////////////
     
 });
 
@@ -317,6 +440,12 @@ function populate_oper_team(obj){
     // form_oper_team
     $('#mrn_otMain').val(obj.mrn);
     $("#episno_otMain").val(obj.latest_episno);
+
+    ////jqGridAddNotesOperTeam
+    urlParam_AddNotesOperTeam.filterVal[0] = obj.mrn;
+	urlParam_AddNotesOperTeam.filterVal[1] = obj.latest_episno;
+	urlParam_AddNotesOperTeam.filterVal[2] = 'OPER_TEAM';
+	refreshGrid('#jqGridAddNotesOperTeam',urlParam_AddNotesOperTeam,'add_operTeam_save');
     
     // $("#tab_oper_team").collapse('hide');
 }
@@ -452,8 +581,11 @@ function getdata_oper_team(){
         if(!$.isEmptyObject(data.otteam)){
             button_state_oper_team('edit');
             autoinsert_rowdata("#form_oper_team",data.otteam);
+            refreshGrid('#jqGridAddNotesOperTeam',urlParam_AddNotesOperTeam,'add_operTeam_save');
+
         }else{
             button_state_oper_team('add');
+            refreshGrid('#jqGridAddNotesOperTeam',urlParam_AddNotesOperTeam,'kosongkan');
         }
         
         if(!emptyobj_(data.iPesakit))$("#operteam_iPesakit").val(data.iPesakit);

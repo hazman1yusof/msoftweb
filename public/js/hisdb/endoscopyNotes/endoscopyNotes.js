@@ -32,14 +32,18 @@ $(document).ready(function (){
     
     $('#endoscopyNotes .top.menu .item').tab({'onVisible': function (){
         let tab = $(this).data('tab');
-        console.log(tab);
+        // console.log(tab);
         
         switch(tab){
             case 'endoscopyStomach':
                 getdata_endoscopyStomach();
+                $("#jqGridAddNotesEndoStomach").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesEndoStomach_c")[0].offsetWidth-$("#jqGridAddNotesEndoStomach_c")[0].offsetLeft));
+		        refreshGrid('#jqGridAddNotesEndoStomach',urlParam_AddNotesEndoStomach);
                 break;
             case 'endoscopyIntestine':
                 getdata_endoscopyIntestine();
+                $("#jqGridAddNotesEndoIntestine").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesEndoIntestine_c")[0].offsetWidth-$("#jqGridAddNotesEndoIntestine_c")[0].offsetLeft));
+		        refreshGrid('#jqGridAddNotesEndoIntestine',urlParam_AddNotesEndoIntestine);
                 break;
         }
     }});
@@ -126,6 +130,18 @@ function populate_endoscopyNotes(obj){
     $('#mrn_otMain').val(obj.mrn);
     $("#episno_otMain").val(obj.latest_episno);
     $("#age_otMain").val(dob_age(obj.DOB));
+
+    ////jqGridAddNotesEndoStomach
+    urlParam_AddNotesEndoStomach.filterVal[0] = obj.mrn;
+	urlParam_AddNotesEndoStomach.filterVal[1] = obj.latest_episno;
+	urlParam_AddNotesEndoStomach.filterVal[2] = 'ENDO_STOMACH';
+	refreshGrid('#jqGridAddNotesEndoStomach',urlParam_AddNotesEndoStomach,'add_endoStomach_save');
+
+    ////jqGridAddNotesEndoIntestine
+    urlParam_AddNotesEndoIntestine.filterVal[0] = obj.mrn;
+	urlParam_AddNotesEndoIntestine.filterVal[1] = obj.latest_episno;
+	urlParam_AddNotesEndoIntestine.filterVal[2] = 'ENDO_INTESTINE';
+	refreshGrid('#jqGridAddNotesEndoIntestine',urlParam_AddNotesEndoIntestine,'add_endoIntestine_save');
     
     $("#tab_endoscopyNotes").collapse('hide');
 }

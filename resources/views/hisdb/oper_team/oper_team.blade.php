@@ -7,7 +7,7 @@
                     top: 9px;
                     z-index: 2;">
             <button class="ui button" id="new_oper_team"><span class="fa fa-plus-square-o"></span>New</button>
-            <button class="ui button" id="edit_oper_team"><span class="fa fa-edit fa-lg"></span>Edit</button>
+            <!-- <button class="ui button" id="edit_oper_team"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
             <button class="ui button" id="save_oper_team"><span class="fa fa-save fa-lg"></span>Save</button>
             <button class="ui button" id="cancel_oper_team"><span class="fa fa-ban fa-lg"></span>Cancel</button>
         </div>
@@ -426,6 +426,16 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sixteen wide column" id="addnotes_operTeam">
+                    <div class="ui segments">
+                        <div class="ui secondary segment">Additional Notes</div>
+                        <div class="ui segment" id="jqGridAddNotesOperTeam_c">
+                            <table id="jqGridAddNotesOperTeam" class="table table-striped"></table>
+                            <div id="jqGridPagerAddNotesOperTeam"></div>
                         </div>
                     </div>
                 </div>

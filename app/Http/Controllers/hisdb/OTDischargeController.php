@@ -48,6 +48,9 @@ class OTDischargeController extends defaultController
                 
             case 'get_table_otdischarge':
                 return $this->get_table_otdischarge($request);
+
+            case 'add_otDischarge_save':
+                return $this->add_otDischarge($request);
             
             default:
                 return 'error happen..';
@@ -524,4 +527,34 @@ class OTDischargeController extends defaultController
         
     }
     
+    public function add_otDischarge(Request $request){
+        DB::beginTransaction();
+       
+        try {
+            
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'OTDISCHARGE',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
 }

@@ -2,6 +2,17 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
 
+///////////////////////////////////parameter for jqGridAddNotesOtTime url///////////////////////////////////
+var urlParam_AddNotesOtTime = {
+	action: 'get_table_default',
+	url: './util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','OTTIME'],
+}
+
 $(document).ready(function (){
     
     // textarea_init_ottime();
@@ -73,6 +84,119 @@ $(document).ready(function (){
             }
         }, 0);
     });
+
+     //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridOtTime = {more:false,state:false,edit:false}
+	
+	///////////////////////////////////////////jqGridAddNotesOtTime///////////////////////////////////////////
+	$("#jqGridAddNotesOtTime").jqGrid({
+		datatype: "local",
+		editurl: "/ottime/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		scroll: true,
+		width: 700,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesOtTime",
+		loadComplete: function (){
+			if(addmore_jqgridOtTime.more == true){$('#jqGridAddNotesOtTime_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid ('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridOtTime.edit = addmore_jqgridOtTime.more = false; // reset
+		},
+		ondblClickRow: function (rowid, iRow, iCol, e){
+			$("#jqGridAddNotesOtTime_iledit").click();
+		},
+	});
+	
+	////////////////////////////////////////////myEditOptions////////////////////////////////////////////
+	var myEditOptions_addOtTime = {
+		keys: true,
+		extraparam: {
+			"_token": $("#_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesOtTime_ilsave').click();
+				// addmore_jqgridOtTime.state = true;
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridOtTime.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesOtTime',urlParam_AddNotesOtTime,'add_otTime_save');
+			errorField.length = 0;
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesOtTime',urlParam_AddNotesOtTime,'add_otTime_save');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			if(errorField.length > 0)return false;
+			
+			let data = $('#jqGridAddNotesOtTime').jqGrid('getRowData', rowid);
+			
+			let editurl = "/ottime/form?"+
+				$.param({
+					_token: $('#_token').val(),
+					episno: $('#episno_otMain').val(),
+					mrn: $('#mrn_otMain').val(),
+					action: 'add_otTime_save',
+				});
+			$("#jqGridAddNotesOtTime").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc : function (response){
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////////jqGridPagerAddNotesOtTime/////////////////////////////////////////
+	$("#jqGridAddNotesOtTime").inlineNav('#jqGridPagerAddNotesOtTime', {
+		add: true,
+		edit: false,
+		cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addOtTime
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesOtTime", {
+		id: "jqGridPagerRefresh_addnotes",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesOtTime", urlParam_AddNotesOtTime);
+		},
+	});
+	///////////////////////////////////////////////end grid///////////////////////////////////////////////
+    
     
 });
 
@@ -182,6 +306,12 @@ function populate_ottime(obj){
     // form_ottime
     $('#mrn_otMain').val(obj.mrn);
     $("#episno_otMain").val(obj.latest_episno);
+
+    ////jqGridAddNotesOtTime
+    urlParam_AddNotesOtTime.filterVal[0] = obj.mrn;
+	urlParam_AddNotesOtTime.filterVal[1] = obj.latest_episno;
+	urlParam_AddNotesOtTime.filterVal[2] = 'OTTIME';
+	refreshGrid('#jqGridAddNotesOtTime',urlParam_AddNotesOtTime,'add_otTime_save');
     
     // $("#tab_ottime").collapse('hide');
 }
@@ -317,8 +447,10 @@ function getdata_ottime(){
         if(!$.isEmptyObject(data.ottime)){
             button_state_ottime('edit');
             autoinsert_rowdata("#form_ottime",data.ottime);
+            refreshGrid('#jqGridAddNotesOtTime',urlParam_AddNotesOtTime,'add_otTime_save');
         }else{
             button_state_ottime('add');
+            refreshGrid('#jqGridAddNotesOtTime',urlParam_AddNotesOtTime,'kosongkan');
         }
         
         if(!emptyobj_(data.iPesakit))$("#ottime_iPesakit").val(data.iPesakit);

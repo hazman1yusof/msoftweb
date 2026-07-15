@@ -2,6 +2,17 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
 
+///////////////////////////////////parameter for jqGridAddNotesPreopDC url///////////////////////////////////
+var urlParam_AddNotesPreopDC = {
+	action: 'get_table_default',
+	url: './util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','PREOPERATIVEDC'],
+}
+
 $(document).ready(function (){
     
     textarea_init_preoperativeDC();
@@ -70,6 +81,118 @@ $(document).ready(function (){
         let duration = endTime.diff(startTime,'hours');
         $("#fasted_hours").val(duration);
     });
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridPreopDC = {more:false,state:false,edit:false}
+	
+	///////////////////////////////////////////jqGridAddNotesPreopDC///////////////////////////////////////////
+	$("#jqGridAddNotesPreopDC").jqGrid({
+		datatype: "local",
+		editurl: "/preoperativeDC/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		scroll: true,
+		width: 700,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesPreopDC",
+		loadComplete: function (){
+			if(addmore_jqgridPreopDC.more == true){$('#jqGridAddNotesPreopDC_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid ('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridPreopDC.edit = addmore_jqgridPreopDC.more = false; // reset
+		},
+		ondblClickRow: function (rowid, iRow, iCol, e){
+			$("#jqGridAddNotesPreopDC_iledit").click();
+		},
+	});
+	
+	////////////////////////////////////////////myEditOptions////////////////////////////////////////////
+	var myEditOptions_addPreopDC = {
+		keys: true,
+		extraparam: {
+			"_token": $("#_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesPreopDC_ilsave').click();
+				// addmore_jqgridPreopDC.state = true;
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridPreopDC.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesPreopDC',urlParam_AddNotesPreopDC,'add_preopDC_save');
+			errorField.length = 0;
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesPreopDC',urlParam_AddNotesPreopDC,'add_preopDC_save');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			if(errorField.length > 0)return false;
+			
+			let data = $('#jqGridAddNotesPreopDC').jqGrid('getRowData', rowid);
+			
+			let editurl = "/preoperativeDC/form?"+
+				$.param({
+					_token: $('#_token').val(),
+					episno: $('#episno_otMain').val(),
+					mrn: $('#mrn_otMain').val(),
+					action: 'add_preopDC_save',
+				});
+			$("#jqGridAddNotesPreopDC").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc : function (response){
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////////jqGridPagerAddNotesPreopDC/////////////////////////////////////////
+	$("#jqGridAddNotesPreopDC").inlineNav('#jqGridPagerAddNotesPreopDC', {
+		add: true,
+		edit: false,
+		cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addPreopDC
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesPreopDC", {
+		id: "jqGridPagerRefresh_addnotes",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesPreopDC", urlParam_AddNotesPreopDC);
+		},
+	});
+	///////////////////////////////////////////////end grid///////////////////////////////////////////////
     
 });
 
@@ -178,6 +301,12 @@ function populate_preoperativeDC(obj){
     // form_preoperativeDC
     $('#mrn_otMain').val(obj.mrn);
     $("#episno_otMain").val(obj.latest_episno);
+
+    ////jqGridAddNotesPreopDC
+    urlParam_AddNotesPreopDC.filterVal[0] = obj.mrn;
+	urlParam_AddNotesPreopDC.filterVal[1] = obj.latest_episno;
+	urlParam_AddNotesPreopDC.filterVal[2] = 'PREOPERATIVEDC';
+	refreshGrid('#jqGridAddNotesPreopDC',urlParam_AddNotesPreopDC,'add_preopDC_save');
     
     // $("#tab_preoperativeDC").collapse('hide');
 }
@@ -312,8 +441,10 @@ function getdata_preoperativeDC(){
             button_state_preoperativeDC('edit');
             // autoinsert_rowdata("#form_preoperativeDC",data.otmanage);
             autoinsert_rowdata("#form_preoperativeDC",data.preopdc);
+            refreshGrid('#jqGridAddNotesPreopDC',urlParam_AddNotesPreopDC,'add_preopDC_save');
         }else{
             button_state_preoperativeDC('add');
+            refreshGrid('#jqGridAddNotesPreopDC',urlParam_AddNotesPreopDC,'kosongkan');
         }
         
         if(!emptyobj_(data.iPesakit))$("#preopDC_iPesakit").val(data.iPesakit);

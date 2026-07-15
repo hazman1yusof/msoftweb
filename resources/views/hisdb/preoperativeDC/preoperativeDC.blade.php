@@ -434,6 +434,15 @@
                     </div>
                 </div>
                 
+                <div class="sixteen wide column" id="addnotes_preoperativeDC">
+                    <div class="ui segments">
+                        <div class="ui secondary segment">Additional Notes</div>
+                        <div class="ui segment" id="jqGridAddNotesPreopDC_c">
+                            <table id="jqGridAddNotesPreopDC" class="table table-striped"></table>
+                            <div id="jqGridPagerAddNotesPreopDC"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </form>
     </div>

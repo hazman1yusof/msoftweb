@@ -68,6 +68,9 @@ class OTSwabController extends defaultController
             
             case 'addSpecimen_delete':
                 return $this->del_specimen($request);
+
+            case 'add_otSwab_save':
+                return $this->add_otSwab($request);
             
             default:
                 return 'error happen..';
@@ -408,6 +411,7 @@ class OTSwabController extends defaultController
                     'add11' => $request->add11,
                     'add12' => $request->add12,
                     'countFinal' => $request->countFinal,
+                    'signOutCount' => $request->signOutCount,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'lastuser'  => session('username'),
@@ -455,6 +459,7 @@ class OTSwabController extends defaultController
                     'add11' => $request->add11,
                     'add12' => $request->add12,
                     'countFinal' => $request->countFinal,
+                    'signOutCount' => $request->signOutCount,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'lastuser'  => session('username'),
@@ -585,6 +590,37 @@ class OTSwabController extends defaultController
             
         }
     
+    }
+
+    public function add_otSwab(Request $request){
+        DB::beginTransaction();
+       
+        try {
+            
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'OTSWAB',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
     }
     
 }

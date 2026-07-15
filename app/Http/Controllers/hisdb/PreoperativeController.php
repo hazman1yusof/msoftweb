@@ -48,6 +48,9 @@ class PreoperativeController extends defaultController
                 
             case 'get_table_preoperative':
                 return $this->get_table_preoperative($request);
+
+            case 'add_preop_save':
+                return $this->add_preop($request);
             
             default:
                 return 'error happen..';
@@ -600,6 +603,37 @@ class PreoperativeController extends defaultController
         
         $responce->data = $data;
         return json_encode($responce);
+    }
+
+    public function add_preop(Request $request){
+        DB::beginTransaction();
+       
+        try {
+            
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'PREOPERATIVE',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
     }
     
 }

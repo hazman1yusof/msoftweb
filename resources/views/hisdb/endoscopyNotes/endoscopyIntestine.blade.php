@@ -6,7 +6,7 @@
             top: 9px;
             z-index: 2;">
             <button class="ui button" id="new_endoscopyIntestine"><span class="fa fa-plus-square-o"></span>New</button>
-            <button class="ui button" id="edit_endoscopyIntestine"><span class="fa fa-edit fa-lg"></span>Edit</button>
+            <!-- <button class="ui button" id="edit_endoscopyIntestine"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
             <button class="ui button" id="save_endoscopyIntestine"><span class="fa fa-save fa-lg"></span>Save</button>
             <button class="ui button" id="cancel_endoscopyIntestine"><span class="fa fa-ban fa-lg"></span>Cancel</button>
             <button class="ui button" id="endoscopyIntestine_chart"><span class="fa fa-print fa-lg"></span>Print</button>
@@ -213,6 +213,16 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="sixteen wide column" id="addnotes_endoIntestine">
+                        <div class="ui segments">
+                            <div class="ui secondary segment">Additional Notes</div>
+                            <div class="ui segment" id="jqGridAddNotesEndoIntestine_c">
+                                <table id="jqGridAddNotesEndoIntestine" class="table table-striped"></table>
+                                <div id="jqGridPagerAddNotesEndoIntestine"></div>
                             </div>
                         </div>
                     </div>

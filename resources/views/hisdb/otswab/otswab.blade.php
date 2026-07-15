@@ -154,6 +154,16 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="sixteen wide column" id="addnotes_otSwab">
+                    <div class="ui segments">
+                        <div class="ui secondary segment">Additional Notes</div>
+                        <div class="ui segment" id="jqGridAddNotesOtSwab_c">
+                            <table id="jqGridAddNotesOtSwab" class="table table-striped"></table>
+                            <div id="jqGridPagerAddNotesOtSwab"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </form>
     </div>

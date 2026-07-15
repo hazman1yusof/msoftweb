@@ -1,7 +1,17 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
+
+///////////////////////////////////parameter for jqGridAddNotesEndoStomach url///////////////////////////////////
+var urlParam_AddNotesEndoStomach = {
+	action: 'get_table_default',
+	url: './util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','ENDO_STOMACH'],
+}
 
 $(document).ready(function (){
     
@@ -98,6 +108,118 @@ $(document).ready(function (){
     $("#endoscopyStomach_chart").click(function (){
         window.open('./endoscopyNotes/endoscopystomach_chart?mrn='+$('#mrn_otMain').val()+'&episno='+$("#episno_otMain").val()+'&age='+$("#age_otMain").val()+'&type=STOMACH', '_blank');
     });
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridEndoStomach = {more:false,state:false,edit:false}
+	
+	///////////////////////////////////////////jqGridAddNotesEndoStomach///////////////////////////////////////////
+	$("#jqGridAddNotesEndoStomach").jqGrid({
+		datatype: "local",
+		editurl: "/endoscopyNotes/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		scroll: true,
+		width: 700,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesEndoStomach",
+		loadComplete: function (){
+			if(addmore_jqgridEndoStomach.more == true){$('#jqGridAddNotesEndoStomach_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid ('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridEndoStomach.edit = addmore_jqgridEndoStomach.more = false; // reset
+		},
+		ondblClickRow: function (rowid, iRow, iCol, e){
+			$("#jqGridAddNotesEndoStomach_iledit").click();
+		},
+	});
+	
+	////////////////////////////////////////////myEditOptions////////////////////////////////////////////
+	var myEditOptions_addEndoStomach = {
+		keys: true,
+		extraparam: {
+			"_token": $("#_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesEndoStomach_ilsave').click();
+				// addmore_jqgridEndoStomach.state = true;
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridEndoStomach.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesEndoStomach',urlParam_AddNotesEndoStomach,'add_endoStomach_save');
+			errorField.length = 0;
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesEndoStomach',urlParam_AddNotesEndoStomach,'add_endoStomach_save');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			if(errorField.length > 0)return false;
+			
+			let data = $('#jqGridAddNotesEndoStomach').jqGrid('getRowData', rowid);
+			
+			let editurl = "/endoscopyNotes/form?"+
+				$.param({
+					_token: $('#_token').val(),
+					episno: $('#episno_otMain').val(),
+					mrn: $('#mrn_otMain').val(),
+					action: 'add_endoStomach_save',
+				});
+			$("#jqGridAddNotesEndoStomach").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc : function (response){
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////////jqGridPagerAddNotesEndoStomach/////////////////////////////////////////
+	$("#jqGridAddNotesEndoStomach").inlineNav('#jqGridPagerAddNotesEndoStomach', {
+		add: true,
+		edit: false,
+		cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addEndoStomach
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesEndoStomach", {
+		id: "jqGridPagerRefresh_addnotes",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesEndoStomach", urlParam_AddNotesEndoStomach);
+		},
+	});
+	///////////////////////////////////////////////end grid///////////////////////////////////////////////
     
 });
 
@@ -267,9 +389,11 @@ function getdata_endoscopyStomach(){
         if(!$.isEmptyObject(data.endoscopyStomach)){
             autoinsert_rowdata("#formEndoscopyStomach",data.endoscopyStomach);
             button_state_endoscopyStomach('edit');
+            refreshGrid('#jqGridAddNotesEndoStomach',urlParam_AddNotesEndoStomach,'add_endoStomach_save');
             $('#endoscopyStomach_chart').attr('disabled',false);
         }else{
             button_state_endoscopyStomach('add');
+            refreshGrid('#jqGridAddNotesEndoStomach',urlParam_AddNotesEndoStomach,'kosongkan');
             $('#endoscopyStomach_chart').attr('disabled',true);
         }
         

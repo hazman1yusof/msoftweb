@@ -191,7 +191,6 @@ function populate_otMain(obj){
     $('#mrn_otMain').val(obj.mrn);
     $("#episno_otMain").val(obj.latest_episno);
     $("#age_otMain").val(dob_age(obj.DOB));
-    
     // $("#tab_otMain").collapse('hide');
 }
 

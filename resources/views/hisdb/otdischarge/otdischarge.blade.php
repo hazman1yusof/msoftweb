@@ -7,7 +7,7 @@
                     top: 9px;
                     z-index: 2;">
             <button class="ui button" id="new_otdischarge"><span class="fa fa-plus-square-o"></span>New</button>
-            <button class="ui button" id="edit_otdischarge"><span class="fa fa-edit fa-lg"></span>Edit</button>
+            <!-- <button class="ui button" id="edit_otdischarge"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
             <button class="ui button" id="save_otdischarge"><span class="fa fa-save fa-lg"></span>Save</button>
             <button class="ui button" id="cancel_otdischarge"><span class="fa fa-ban fa-lg"></span>Cancel</button>
         </div>
@@ -234,6 +234,16 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sixteen wide column" id="addnotes_otDischarge">
+                    <div class="ui segments">
+                        <div class="ui secondary segment">Additional Notes</div>
+                        <div class="ui segment" id="jqGridAddNotesOtDischarge_c">
+                            <table id="jqGridAddNotesOtDischarge" class="table table-striped"></table>
+                            <div id="jqGridPagerAddNotesOtDischarge"></div>
                         </div>
                     </div>
                 </div>

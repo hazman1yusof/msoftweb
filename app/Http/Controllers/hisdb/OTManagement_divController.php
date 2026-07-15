@@ -48,6 +48,9 @@ class OTManagement_divController extends defaultController
             
             case 'get_table_otmanage':
                 return $this->get_table_otmanage($request);
+
+            case 'add_operRec_save':
+                return $this->add_operRec($request);
             
             default:
                 return 'error happen..';
@@ -394,4 +397,34 @@ class OTManagement_divController extends defaultController
         
     }
     
+    public function add_operRec(Request $request){
+        DB::beginTransaction();
+       
+        try {
+            
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'OPERATION_RECORD',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
 }
