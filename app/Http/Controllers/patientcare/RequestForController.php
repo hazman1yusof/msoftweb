@@ -45,6 +45,10 @@ class RequestForController extends defaultController
                 return $this->get_table_referralLetterReqfor($request);
             case 'get_table_card_noninv':
                 return $this->get_table_card_noninv($request);
+            case 'get_table_followupReqfor':
+                return $this->get_table_followupReqfor($request);
+            case 'get_doctor_fup':
+                return $this->get_doctor_fup($request);
             case 'referralLetter_print':
                 return $this->referralLetter_print($request);
             case 'card_noninv_print':
@@ -148,6 +152,16 @@ class RequestForController extends defaultController
                         return $this->edit_card_noninv($request);
                     case 'edit':
                         return $this->edit_card_noninv($request);
+                    default:
+                        return 'error happen..';
+                }
+            
+            case 'save_followupReqfor':
+                switch($request->oper){
+                    case 'add':
+                        return $this->edit_followup($request);
+                    case 'edit':
+                        return $this->edit_followup($request);
                     default:
                         return 'error happen..';
                 }
@@ -2664,6 +2678,221 @@ class RequestForController extends defaultController
             
             return view('hisdb.radiology.card_noninv_pdfmake',compact('card_noninv','company'));
         }
+    }
+
+    public function get_table_followupReqfor(Request $request){
+        $followupReqfor_obj = DB::table('hisdb.reqfor_fup')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno);
+        
+        $responce = new stdClass();
+        
+        if($followupReqfor_obj->exists()){
+            $followupReqfor_obj = $followupReqfor_obj->first();
+            $responce->followupReqfor_obj = $followupReqfor_obj;
+        }else{
+            $followupReqfor_obj_default = new stdClass();
+            $followupReqfor_obj_default->remarkfup = 'FOLLOW UP';
+
+            $responce->followupReqfor_obj_default = $followupReqfor_obj_default;
+        }
+        
+        return json_encode($responce);
+    }
+
+    public function add_followup(Request $request){
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        } 
+    }
+    
+    public function edit_followup(Request $request){
+        DB::beginTransaction();
+        
+        try {
+            
+            $reqfor_fup = DB::table('hisdb.reqfor_fup')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno);
+
+            $pat_mast = DB::table('hisdb.pat_mast')
+                            ->where('compcode',session('compcode'))
+                            ->where('mrn',$request->mrn)
+                            ->first();
+            
+            if($reqfor_fup->exists()){
+                $reqfor_fup
+                    ->update([
+                        'docnamefup' => $request->docnamefup,
+                        'doctorcodefup' => $request->doctorcodefup,
+                        'datefup' => $request->datefup,
+                        'timefup' => $request->timefup,
+                        'end_timefup' => $request->end_timefup,
+                        'remarkfup' => $request->remarkfup,
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    ]);
+            }else{
+                DB::table('hisdb.reqfor_fup')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'docnamefup' => $request->docnamefup,
+                        'doctorcodefup' => $request->doctorcodefup,
+                        'datefup' => $request->datefup,
+                        'timefup' => $request->timefup,
+                        'end_timefup' => $request->end_timefup,
+                        'remarkfup' => $request->remarkfup,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    ]);
+            }
+
+            $apptbook = DB::table('hisdb.apptbook')
+                            ->where('compcode',session('compcode'))
+                            ->where('mrn',$request->mrn)
+                            ->where('episno',$request->episno);
+
+            $doctor_case = DB::table('hisdb.doctor as d')
+                            ->select('c.case_code','c.description')
+                            ->where('d.compcode',session('compcode'))
+                            ->where('d.doctorcode',$request->doctorcodefup)
+                            ->join('hisdb.casetype as c', function ($join){
+                                $join = $join->on('c.case_code', '=', 'd.disciplinecode')
+                                            ->where('c.compcode','=',session('compcode'));
+                            });
+            if($doctor_case->exists()){
+                $doctor_case = $doctor_case->first();
+                $case_code = $doctor_case->case_code;
+                $case_desc = $doctor_case->description;
+                $case_title = strtoupper(str_pad($request->mrn, 7, "0", STR_PAD_LEFT).' - '.$pat_mast->Name.' - '.$case_desc.' - '.$pat_mast->telhp.' - '.substr(preg_replace("/\s+/", " ", $request->remarkfup), 0, 30));
+            }else{
+                $case_code = null;
+                $case_desc = null;
+                $case_title = strtoupper(str_pad($request->mrn, 7, "0", STR_PAD_LEFT).' - '.$pat_mast->Name.' - '.$pat_mast->telhp.' - '.substr(preg_replace("/\s+/", " ", $request->remarkfup), 0, 30));
+            }
+
+            if($apptbook->exists()){
+                $apptbook
+                    ->update([
+                        'title'       => $case_title,
+                        'loccode'     => $request->doctorcodefup,
+                        // 'mrn'         => $request->mrn,
+                        // 'episno'         => $request->mrn,
+                        'icnum'       => $pat_mast->Newic,
+                        'pat_name'    => strtoupper($pat_mast->Name),
+                        'start'       => $request->datefup.' '.$request->timefup,
+                        'end'         => $request->datefup.' '.$request->end_timefup,
+                        'telno'       => $pat_mast->telh,
+                        // 'apptstatus'  => $request->status,
+                        'recstatus'   => 'A',
+                        'telhp'       => $pat_mast->telhp,
+                        'case_code'   => $case_code,
+                        'case_desc'   => $case_desc,
+                        'type'        => 'DOC',
+                        'remarks'     => strtoupper($request->remarkfup),
+                        'lastuser'    => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+            }else{
+                DB::table('hisdb.apptbook')->insert([
+                    'title'       => $case_title,
+                    'loccode'     => $request->doctorcodefup,
+                    'icnum'       => $pat_mast->Newic,
+                    'mrn'         => $request->mrn,
+                    'episno'      => $request->episno,
+                    'pat_name'    => strtoupper($pat_mast->Name),
+                    'start'       => $request->datefup.' '.$request->timefup,
+                    'end'         => $request->datefup.' '.$request->end_timefup,
+                    'telno'       => $pat_mast->telh,
+                    // 'apptstatus'  => $request->status,
+                    'telhp'       => $pat_mast->telhp,
+                    'case_code'   => $case_code,
+                    'case_desc'   => $case_desc,
+                    'remarks'     => strtoupper($request->remarkfup),
+                    'recstatus'   => 'A',
+                    'adduser'     => session('username'),
+                    'adddate'     => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser'    => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'type'        => 'DOC',
+                    'compcode'    => session('compcode')
+                ]);
+            }
+
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        } 
+    }
+
+    public function get_doctor_fup(Request $request){
+        $table = DB::table('hisdb.apptresrc as a')
+                        ->select('a.resourcecode','a.description','a.intervaltime')
+                        ->where('a.compcode',session('compcode'))
+                        ->where('a.TYPE','DOC')
+                        ->join('hisdb.doctor AS d', function ($join) use ($request){
+                            $join = $join->on('d.doctorcode', '=', 'a.resourcecode')
+                                        ->where('d.compcode','=',session('compcode'));
+                        });
+
+        if(!empty($request->searchCol)){
+            $table = $table->Where(function ($table) use ($request){
+                    $table->Where('a.'.$request->searchCol[0],'like',$request->searchVal[0]);
+            });
+        }
+
+        $paginate = $table->paginate($request->rows);
+
+        foreach ($paginate->items() as $obj) {
+            $table_session = DB::table('hisdb.apptsession')
+                            ->where('compcode',session('compcode'))
+                            ->where('status','True')
+                            ->where('doctorcode',$obj->resourcecode);
+
+            if($table_session->exists()){
+                $obj->source = json_encode($table_session->get());
+            }
+        }
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql_query = $this->getQueries($table);
+        
+        return json_encode($responce);
     }
     
 }

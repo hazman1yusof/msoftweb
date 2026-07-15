@@ -12,10 +12,11 @@ disableForm('#formOTBookReqFor');
 disableForm('#formRequestFor');
 disableForm('#formreferralLetterReqfor');
 disableForm('#formcard_noninv');
+disableForm('#formfollowupReqfor');
 
 $(document).ready(function (){
     $(".preloader").fadeOut();
-    
+
     // $("button.refreshbtn_requestFor").click(function (){
     //     empty_requestFor_ptcare();
     //     populate_requestFor_ptcare(selrowData('#jqGrid'));
@@ -402,7 +403,7 @@ $(document).ready(function (){
     });
     ////////////////////////////////////////////referralletter ends////////////////////////////////////////////
     
-    ///////////////////////////////////////////referralletter starts///////////////////////////////////////////
+    ///////////////////////////////////////////cardiology starts///////////////////////////////////////////
     
     $("#new_card_noninv").click(function (){
         radbuts_card_noninv.reset();
@@ -443,7 +444,49 @@ $(document).ready(function (){
         disableForm('#formcard_noninv');
         button_state_card_noninv($(this).data('oper'));
     });
-    ////////////////////////////////////////////referralletter ends////////////////////////////////////////////
+    ////////////////////////////////////////////cardiology ends////////////////////////////////////////////
+
+    ///////////////////////////////////////////followup starts///////////////////////////////////////////
+    
+    $("#new_followupReqfor").click(function (){
+        $('#cancel_followupReqfor').data('oper','add');
+        button_state_followupReqfor('wait');
+        enableForm('#formfollowupReqfor');
+        rdonly('#formfollowupReqfor');
+        emptyFormdata_div("#formfollowupReqfor",['#mrn_requestFor','#episno_requestFor','#remarkfup']);
+        dialog_doctor_fup.on();
+    });
+    
+    $("#edit_followupReqfor").click(function (){
+        button_state_followupReqfor('wait');
+        enableForm('#formfollowupReqfor');
+        rdonly('#formfollowupReqfor');
+        dialog_doctor_fup.on();
+    });
+    
+    $("#save_followupReqfor").click(function (){
+        disableForm('#formfollowupReqfor');
+        if($('#formfollowupReqfor').isValid({requiredFields: ''}, conf, true)){
+            saveForm_followupReqfor(function (data){
+                // emptyFormdata_div("#formConsentFormReqFor",['#mrn_requestFor','#episno_requestFor']);
+                // disableForm('#formConsentFormReqFor');
+                $('#cancel_followupReqfor').data('oper','edit');
+                $("#cancel_followupReqfor").click();
+                populate_followupReqfor_getdata();
+            });
+        }else{
+            enableForm('#formfollowupReqfor');
+            rdonly('#formfollowupReqfor');
+        }
+    });
+    
+    $("#cancel_followupReqfor").click(function (){
+        // emptyFormdata_div("#formConsentFormReqFor",['#mrn_requestFor','#episno_requestFor']);
+        disableForm('#formfollowupReqfor');
+        button_state_followupReqfor($(this).data('oper'));
+        dialog_doctor_fup.off();
+    });
+    ////////////////////////////////////////////followup ends////////////////////////////////////////////
     
     /////////////////////////////////////////print button starts/////////////////////////////////////////
     $("#otbookReqFor_chart").click(function (){
@@ -509,6 +552,9 @@ $(document).ready(function (){
                 break;
             case 'card_noninv_reqfor':
                 populate_card_noninv_getdata();
+                break;
+            case 'followup_reqfor':
+                populate_followupReqfor_getdata();
                 break;
         }
     }});
@@ -594,6 +640,45 @@ $(document).ready(function (){
         $('#accomodation_table tbody tr').removeClass('blue');
         $(this).addClass('blue');
     });
+
+    var dialog_doctor_fup = new ordialog(
+        'dialog_doctor_fup', ['hisdb.apptresrc AS a', 'hisdb.doctor AS d'], "input[name='docnamefup']", 'errorField',
+        {
+            colModel: [
+                { label: 'Resource Code', name: 'resourcecode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+                { label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true, checked: true },
+                { label: 'Interval Time', name: 'intervaltime', width: 400, classes: 'pointer', hidden:false},
+                { label: 'source', name: 'source', hidden:true},
+            ],
+            urlParam: {
+                url:"./ptcare_requestfor/table",
+                action: 'get_doctor_fup'
+            },
+            ondblClickRow: function () {
+                let data = selrowData('#' + dialog_doctor_fup.gridname);
+
+                $('#docnamefup').val(data.description);
+                $('#doctorcodefup').val(data.resourcecode);
+
+                session_field.addSessionInterval(data.intervaltime,JSON.parse(data.source));
+            }
+        },{
+            title: "Select Doctor",
+            open: function () {
+                dialog_doctor_fup.urlParam.url = "./ptcare_requestfor/table";
+                dialog_doctor_fup.urlParam.action = "get_doctor_fup";
+            }
+        }, 'none'
+    );
+    dialog_doctor_fup.makedialog(false);
+        
+    if($('#doctorcodefup')){
+        session_field.init();
+        $('#datefup').change(function(){
+            session_field.clear().ready().set();
+        });
+    }
+
 });
 
 var errorField = [];
@@ -820,7 +905,7 @@ function button_state_referralLetterReqfor(state){
             $("#toggle_requestFor").attr('data-toggle','collapse');
             $('#cancel_referralLetterReqfor').data('oper','add');
             $("#new_referralLetterReqfor").attr('disabled',false);
-            $('#save_referralLetterReqfor,#cancel_referralLetterReqfor,#edit_referralLetterReqfor').attr('disabled',true);
+            $('#save_referralLetterReqfor,#cancel_referralLetterReqfor,#edit_referralLetterReqforr,#referralLetterReqfor_chart').attr('disabled',true);
             break;
         case 'edit':
             $("#toggle_requestFor").attr('data-toggle','collapse');
@@ -831,7 +916,7 @@ function button_state_referralLetterReqfor(state){
         case 'wait':
             $("#toggle_requestFor").attr('data-toggle','collapse');
             $("#save_referralLetterReqfor,#cancel_referralLetterReqfor").attr('disabled',false);
-            $('#edit_referralLetterReqfor,#new_referralLetterReqfor').attr('disabled',true);
+            $('#edit_referralLetterReqfor,#new_referralLetterReqfor,#referralLetterReqfor_chart').attr('disabled',true);
             break;
     }
 }
@@ -848,18 +933,46 @@ function button_state_card_noninv(state){
             $("#toggle_requestFor").attr('data-toggle','collapse');
             $('#cancel_card_noninv').data('oper','add');
             $("#new_card_noninv").attr('disabled',false);
-            $('#save_card_noninv,#cancel_card_noninv,#edit_card_noninv').attr('disabled',true);
+            $('#save_card_noninv,#cancel_card_noninv,#edit_card_noninv,#card_noninv_chart').attr('disabled',true);
             break;
         case 'edit':
             $("#toggle_requestFor").attr('data-toggle','collapse');
             $('#cancel_card_noninv').data('oper','edit');
             $("#edit_card_noninv,#card_noninv_chart").attr('disabled',false);
-            $('#save_card_noninv,#cancel_card_noninv,#new_card_noninv').attr('disabled',true);
+            $('#save_card_noninv,#cancel_card_noninv,#new_card_noninv,#card_noninv_chart').attr('disabled',true);
             break;
         case 'wait':
             $("#toggle_requestFor").attr('data-toggle','collapse');
             $("#save_card_noninv,#cancel_card_noninv").attr('disabled',false);
-            $('#edit_card_noninv,#new_card_noninv').attr('disabled',true);
+            $('#edit_card_noninv,#new_card_noninv,#card_noninv_chart').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_followupReqfor('empty');
+function button_state_followupReqfor(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_requestFor").removeAttr('data-toggle');
+            $('#cancel_followupReqfor').data('oper','add');
+            $('#new_followupReqfor,#save_followupReqfor,#cancel_followupReqfor,#edit_followupReqfor,#card_noninv_chart').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_followupReqfor').data('oper','add');
+            $("#new_followupReqfor").attr('disabled',false);
+            $('#save_followupReqfor,#cancel_followupReqfor,#edit_followupReqfor').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_followupReqfor').data('oper','edit');
+            $("#edit_followupReqfor,#card_noninv_chart").attr('disabled',false);
+            $('#save_followupReqfor,#cancel_followupReqfor,#new_followupReqfor').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $("#save_followupReqfor,#cancel_followupReqfor").attr('disabled',false);
+            $('#edit_followupReqfor,#new_followupReqfor').attr('disabled',true);
             break;
     }
 }
@@ -1400,6 +1513,36 @@ function populate_card_noninv_getdata(){
             autoinsert_rowdata("#formcard_noninv",data.card_noninv_obj_default);
 
             button_state_card_noninv('add');
+        }
+    });
+}
+
+function populate_followupReqfor_getdata(){
+    disableForm('#formfollowupReqfor');
+    emptyFormdata(errorField,"#formfollowupReqfor",["#mrn_requestFor","#episno_requestFor"]);
+    
+    var saveParam = {
+        action: 'save_followupReqfor',
+    }
+    
+    var postobj = {
+        action: 'get_table_followupReqfor',
+        _token: $('#_token').val(),
+        mrn: $("#mrn_requestFor").val(),
+        episno: $("#episno_requestFor").val()
+    };
+    
+    $.get("./ptcare_requestfor/table?"+$.param(postobj), function (data){
+        
+    },'json').done(function (data){
+        if(!$.isEmptyObject(data.followupReqfor_obj)){
+            autoinsert_rowdata("#formfollowupReqfor",data.followupReqfor_obj);
+            
+            button_state_followupReqfor('edit');
+        }else if(!$.isEmptyObject(data.followupReqfor_obj_default)){
+            autoinsert_rowdata("#formfollowupReqfor",data.followupReqfor_obj_default);
+
+            button_state_followupReqfor('add');
         }
     });
 }
@@ -2148,6 +2291,60 @@ function saveForm_card_noninv(callback){
     });
 }
 
+function saveForm_followupReqfor(callback){
+    var saveParam = {
+        action: 'save_followupReqfor',
+        oper: $("#cancel_followupReqfor").data('oper'),
+        mrn: $('#mrn_requestFor').val(),
+        episno: $("#episno_requestFor").val(),
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formfollowupReqfor").serializeArray();
+    
+    values = values.concat(
+        $('#formfollowupReqfor input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formfollowupReqfor input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formfollowupReqfor input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formfollowupReqfor select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+    }).fail(function (data){
+        alert('error');
+        // callback(data);
+    });
+}
+
 $('#tab_requestFor').on('shown.bs.collapse', function (){
     SmoothScrollTo("#tab_requestFor", 500);
     
@@ -2322,6 +2519,124 @@ function toggle_reqfor_reqtype(){
         }else{
             $('#ReqFor_Bed_div,#ReqFor_OT_div').hide();
             $('iframe#otbook_iframe').attr('src','');
+        }
+    }
+}
+
+var session_field = new session_field();
+function session_field(){
+    this.apptsession;
+    this.interval;
+    this.date_fr;
+    this.day_fr;
+    this.fr_obj;
+    this.fr_start;
+    this.events=[];
+    this.appendto = `<div id="start_time_dialog" title="Pick Start Time"><div id='grid_start_time_c' style="padding:15px 0 15px 0"><table id="grid_start_time" class="table table-striped"></table><div id="grid_start_time_pager"></div></div></div>`;
+
+    this.addSessionInterval = function(interval,apptsession){
+        this.apptsession = apptsession;
+
+        let temp_bussHour=[];
+        this.apptsession.forEach(function( obj ) {
+            var temp_obj = {dow:[],start:obj.timefr1,end:obj.timeto2};
+            switch(obj.days) {
+                case "SUNDAY": temp_obj.dow.push(0); break;
+                case "MONDAY":  temp_obj.dow.push(1); break;
+                case "TUESDAY": temp_obj.dow.push(2); break;
+                case "WEDNESDAY": temp_obj.dow.push(3); break;
+                case "THURSDAY": temp_obj.dow.push(4); break;
+                case "FRIDAY": temp_obj.dow.push(5); break;
+                case "SATURDAY": temp_obj.dow.push(6); break;
+            }
+
+            temp_bussHour.push(temp_obj);
+        });
+
+        this.interval = interval;
+        return this;
+    }
+
+    this.init = function(){
+        $("html").append(this.appendto);
+
+        $("#start_time_dialog").dialog({
+            autoOpen : false, 
+            modal : true,
+            width: 9/10 * $(window).width(),
+            open: function(){
+                $("#grid_start_time").jqGrid ('setGridWidth', Math.floor($("#grid_start_time_c")[0].offsetWidth-$("#grid_start_time_c")[0].offsetLeft));
+            },
+            close:function(){
+            }
+        });
+
+        $("#timefup ~ a").click(function(){
+            $("#start_time_dialog").dialog("open");
+        });
+
+        $("#grid_start_time").jqGrid({
+            datatype: "local",
+            colModel: [
+                { label: 'timehidden', name: 'timehidden', width: 80, hidden: true },
+                { label: 'Pick time', name: 'time', width: 80, classes: 'pointer' },
+                { label: 'Patient Name', name: 'pat_name', width: 200, classes: 'pointer' },
+                { label: 'Remarks', name: 'remarks', width: 200, classes: 'pointer' },
+            ],
+            autowidth:true,viewrecords:true,loadonce:false,width:200,height:400,owNum:30,
+            // pager: "#grid_start_time_pager",
+            onSelectRow:function(){
+            },
+            ondblClickRow: function(rowid, iRow, iCol, e){
+                let time = selrowData("#grid_start_time").timehidden;
+                $('#timefup').val(time);
+                $('#end_timefup').val(moment($('#datefup').val()+" "+time).add(session_field.interval, 'minutes').format("HH:mm:SS"));
+                $("#start_time_dialog").dialog('close');
+            },
+        });
+
+    }
+
+    this.clear = function(){
+        $("#grid_start_time").jqGrid("clearGridData", true);
+        return this;
+    }
+
+    this.ready = function(){
+
+        this.date_fr = $('#datefup').val();
+        this.day_fr = moment(this.date_fr).format('dddd').toUpperCase();
+        let day_fr = this.day_fr;
+        this.fr_obj = this.apptsession.filter(function( obj ) {
+            return obj.days == day_fr;
+        });
+        this.fr_start = moment(this.date_fr+" "+this.fr_obj[0].timefr1);
+
+        return this;
+    }
+
+    this.set = function(){
+        var fr_start = this.fr_start, date_fr = this.date_fr, fr_obj = this.fr_obj, interval= this.interval, events = this.events;
+
+        var rowid = 0;
+        while(!fr_start.isSameOrAfter(date_fr+" "+fr_obj[0].timeto1)){
+            let time_use = fr_start.format("HH:mm:SS");
+            let objuse = {timehidden:time_use,time:time_use,pat_name:'',remarks:''}
+
+            rowid = rowid+1;
+            $("#grid_start_time").jqGrid('addRowData', rowid,objuse);
+            fr_start.add(interval, 'minutes');
+        }
+
+        fr_start = moment(date_fr+" "+fr_obj[0].timefr2);
+
+        while(!fr_start.isSameOrAfter(moment(date_fr+" "+fr_obj[0].timeto2).add(interval, 'minutes'))){
+            let time_use = fr_start.format("HH:mm:SS");
+            let objuse = {timehidden:time_use,time:time_use,pat_name:'',remarks:''}
+
+            rowid = rowid+1;
+            $("#grid_start_time").jqGrid('addRowData', rowid,objuse);
+            fr_start = fr_start.add(interval, 'minutes');
         }
     }
 }

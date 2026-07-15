@@ -200,6 +200,9 @@ $(document).ready(function (){
             case 'card_noninv_reqfor':
                 populate_card_noninv_getdata();
                 break;
+            case 'followup_reqfor':
+                populate_followupReqfor_getdata();
+                break;
         }
     }});
     
