@@ -165,11 +165,11 @@
                         
                         <div class="twelve wide column" style="padding-top: 0px;">
                             <div class="field nine wide column">
-                                <textarea id="ReqFor_clinicaldata" name="clinicaldata" type="text" rows="5" rdonly></textarea>
+                                <textarea id="ReqFor_clinicaldata" name="clinicaldata" type="text" rows="5" @if($radiology_inside_iframe_phase =='radiology'){{"rdonly"}}@else{{"data-validation=required"}}@endif></textarea>
                                 
                                 <div class="inline field" style="padding-top: 15px;">
                                     <label>Doctor's Name</label>
-                                    <input id="radClinicReqFor_doctorname" name="radClinic_doctorname" type="text" style="width: 320px; text-transform: uppercase;" rdonly>
+                                    <input id="radClinicReqFor_doctorname" name="radClinic_doctorname" type="text" style="width: 320px; text-transform: uppercase;" @if($radiology_inside_iframe_phase =='radiology'){{"rdonly"}}@else{{"data-validation=required"}}@endif>
                                 </div>
                             </div>
                         </div>
@@ -182,11 +182,11 @@
                         
                         <div class="twelve wide column" style="padding-top: 0px;">
                             <div class="field nine wide column">
-                                <textarea id="ReqFor_rad_note" name="rad_note" type="text" rows="5"  @if($radiology_inside_iframe_phase !='radiology'){{"rdonly"}}@endif></textarea>
+                                <textarea id="ReqFor_rad_note" name="rad_note" type="text" rows="5"  @if($radiology_inside_iframe_phase !='radiology'){{"rdonly"}}@else{{"data-validation=required"}}@endif></textarea>
                                 
                                 <div class="inline field" style="padding-top: 15px;">
                                     <label>Radiologist's Name</label>
-                                    <input id="radClinicReqFor_radiologist" name="radClinic_radiologist" type="text" style="width: 300px; text-transform: uppercase;" rdonly>
+                                    <input id="radClinicReqFor_radiologist" name="radClinic_radiologist" type="text" style="width: 300px; text-transform: uppercase;" @if($radiology_inside_iframe_phase !='radiology'){{"rdonly"}}@else{{"data-validation=required"}}@endif>
                                 </div>
                             </div>
                         </div>

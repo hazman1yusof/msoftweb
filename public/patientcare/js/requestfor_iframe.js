@@ -729,15 +729,7 @@ conf = {
     modules: 'logic',
     language: {
         requiredFields: 'You have not answered all required fields'
-    },
-    onValidate: function ($form){
-        if(errorField.length > 0){
-            return {
-                element: $(errorField[0]),
-                message: ''
-            }
-        }
-    },
+    }
 };
 
 button_state_otbookReqFor('empty');
@@ -1208,10 +1200,10 @@ function populate_radClinicReqFor_getdata(){
                 autoinsert_rowdata("#formRadClinicReqFor",data.pat_radiology);
 
                 if(data.pat_radiology.sex_radClinic == 'F'){
-                    $('#formRadClinicReqFor input[name=LMP]').attr('data-validation',true);
+                    $('#formRadClinicReqFor input[name=LMP]').attr('type','text');
                     $('#formRadClinicReqFor input[name=LMP]').parent('div.inline.field').show();
                 }else{
-                    $('#formRadClinicReqFor input[name=LMP]').attr('data-validation',false);
+                    $('#formRadClinicReqFor input[name=LMP]').attr('type','hidden');
                     $('#formRadClinicReqFor input[name=LMP]').parent('div.inline.field').hide();
                 }
                 
@@ -1221,15 +1213,12 @@ function populate_radClinicReqFor_getdata(){
 
 
                 if(data.pat_radiology_default.sex_radClinic == 'F'){
-                    $('#formRadClinicReqFor input[name=LMP]').attr('data-validation',true);
+                    $('#formRadClinicReqFor input[name=LMP]').attr('type','text');
                     $('#formRadClinicReqFor input[name=LMP]').parent('div.inline.field').show();
                 }else{
-                    $('#formRadClinicReqFor input[name=LMP]').attr('data-validation',false);
+                    $('#formRadClinicReqFor input[name=LMP]').attr('type','hidden');
                     $('#formRadClinicReqFor input[name=LMP]').parent('div.inline.field').hide();
                 }
-
-                console.log($('#formRadClinicReqFor input[name=LMP]'))
-                console.log($('#formRadClinicReqFor input[name=LMP]').parent('div.inline.field'))
 
                 button_state_radClinicReqFor('add');
             }
@@ -1512,9 +1501,9 @@ function populate_preContrastReqFor_getdata(){
             autoinsert_rowdata("#formPreContrastReqFor",data.pat_preContrast);
             
             if(data.pat_preContrast_default.sex_precon == 'F'){
-                $('#formPreContrastReqFor input[name=LMP]').attr('data-validation',true);
+                $('#formPreContrastReqFor input[name=LMP]').attr('type','text');
             }else{
-                $('#formPreContrastReqFor input[name=LMP]').attr('data-validation',false);
+                $('#formPreContrastReqFor input[name=LMP]').attr('type','hidden');
             }
             button_state_preContrastReqFor('edit');
             
@@ -1522,9 +1511,9 @@ function populate_preContrastReqFor_getdata(){
             autoinsert_rowdata("#formPreContrastReqFor",data.pat_preContrast_default);
 
             if(data.pat_preContrast_default.sex_precon == 'F'){
-                $('#formPreContrastReqFor input[name=LMP]').attr('data-validation',true);
+                $('#formPreContrastReqFor input[name=LMP]').attr('type','text');
             }else{
-                $('#formPreContrastReqFor input[name=LMP]').attr('data-validation',false);
+                $('#formPreContrastReqFor input[name=LMP]').attr('type','hidden');
             }
             button_state_preContrastReqFor('add');
         }
