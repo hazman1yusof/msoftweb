@@ -448,7 +448,6 @@ function populate_currDoctorNote(obj){
 	urlParam_AddNotes.filterVal[0] = obj.MRN;
 	urlParam_AddNotes.filterVal[1] = obj.Episno;
 	urlParam_AddNotes.filterVal[2] = 'DOCTORNOTE_ED';
-	refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add_notes');
 
 	// doctornote_docnote = {
 	// 	action: 'get_table_doctornote_div',
@@ -666,7 +665,6 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function (){
 	urlParam_AddNotes.filterVal[0] = data.mrn;
 	urlParam_AddNotes.filterVal[1] = data.episno;
 	urlParam_AddNotes.filterVal[2] = 'DOCTORNOTE_ED';
-	refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add_notes');
 	
 	$('#mrn_emergencyMain_past').val(data.mrn);
 	$('#episno_emergencyMain_past').val(data.episno);

@@ -98,7 +98,7 @@
                 <div class="eight wide column">
                     <div class="ui segments">
                             <div class="ui secondary segment">ALLERGIES</div>
-                            <div class="ui segment" style="height: 800px;">
+                            <div class="ui segment" style="height: 400px;">
                                 <table class="table table-sm table-hover">
                                     <tbody>
                                         <tr>

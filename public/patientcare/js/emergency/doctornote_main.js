@@ -153,8 +153,8 @@ $(document).ready(function () {
 				// refreshGrid("#jqGrid_trans_diet", urlParam_trans_diet);
 				// refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
 				populate_emergencyMain(selrowData('#jqGrid'));
-				// populate_currDoctorNote(selrowData('#jqGrid'));
-				// populate_nursingnote_ptcare(selrowData('#jqGrid'));
+				populate_currDoctorNote(selrowData('#jqGrid'));
+				populate_nursingnote_ptcare(selrowData('#jqGrid'));
 				// populate_requestFor_ptcare(selrowData('#jqGrid'));
 				// populate_admhandover_currpt(selrowData('#jqGrid'));
 				// populate_triage_currpt(selrowData('#jqGrid'));
@@ -272,15 +272,15 @@ $(document).ready(function () {
 				// refreshGrid("#jqGrid_trans_diet", urlParam_trans_diet);
 				// refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
 				populate_emergencyMain(selrowData('#jqGrid'));
-				// populate_currDoctorNote(selrowData('#jqGrid'));
-				// populate_nursingnote_ptcare(selrowData('#jqGrid'));
-				// populate_requestFor_ptcare(selrowData('#jqGrid'));
-				// populate_admhandover_currpt(selrowData('#jqGrid'));
-				// populate_triage_currpt(selrowData('#jqGrid'));
+				populate_currDoctorNote(selrowData('#jqGrid'));
+				populate_nursingnote_ptcare(selrowData('#jqGrid'));
+				populate_requestFor_ptcare(selrowData('#jqGrid'));
+				populate_admhandover_currpt(selrowData('#jqGrid'));
+				populate_triage_currpt(selrowData('#jqGrid'));
 				// populate_dieteticCareNotes_currpt(selrowData('#jqGrid'));
-				// populate_userfile(selrowData('#jqGrid'));
+				populate_userfile(selrowData('#jqGrid'));
 				// populate_phys(selrowData('#jqGrid'));
-				// populate_ordcom_currpt(selrowData('#jqGrid'));
+				populate_ordcom_currpt(selrowData('#jqGrid'));
 				
 				// if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
 				// 	$('#checkbox_completed').prop('disabled',true);

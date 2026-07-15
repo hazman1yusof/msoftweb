@@ -26,6 +26,8 @@ $(document).ready(function (){
         let tab = $(this).data('tab');
         switch(tab){
             case 'progress':
+                $("#jqGridAddNotesProgressED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesProgressED_c")[0].offsetWidth-$("#jqGridAddNotesProgressED_c")[0].offsetLeft));
+
                 var urlparam_datetime_ED_tbl = {
                     action: 'get_table_datetime_ED',
                     mrn: $("#mrn_emergencyMain").val(),
@@ -36,13 +38,17 @@ $(document).ready(function (){
                     emptyFormdata_div("#formProgress_ED",['#mrn_emergencyMain','#episno_emergencyMain','#doctor_nursNote','#ordcomtt_phar']);
                     $('#datetime_ED_tbl tbody tr:eq(0)').click();  // to select first row
                 });
+
+                refreshGrid('#jqGridAddNotesProgressED',urlParam_AddNotesProgressED);
+
                 populate_progressnote_ED_getdata();
 
-                $("#jqGridAddNotesProgressED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesProgressED_c")[0].offsetWidth-$("#jqGridAddNotesProgressED_c")[0].offsetLeft));
-			    refreshGrid('#jqGridAddNotesProgressED',urlParam_AddNotesProgressED);
                 break;
 
             case 'drug':
+                $("#jqGridPatMedic").jqGrid('setGridWidth', Math.floor($("#jqGridPatMedic_c")[0].offsetWidth-$("#jqGridPatMedic_c")[0].offsetLeft));
+                $("#jqGridAddNotesDrugAdminED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesDrugAdminED_c")[0].offsetWidth-$("#jqGridAddNotesDrugAdminED_c")[0].offsetLeft));
+                
                 var urlparam_tbl_prescription = {
                     action: 'get_prescription',
                     mrn: $("#mrn_emergencyMain").val(),
@@ -55,12 +61,10 @@ $(document).ready(function (){
                     $('#tbl_prescription tbody tr:eq(0)').click();  // to select first row
                 });
 
-                populate_drugadmin_getdata();
-
-                $("#jqGridPatMedic").jqGrid('setGridWidth', Math.floor($("#jqGridPatMedic_c")[0].offsetWidth-$("#jqGridPatMedic_c")[0].offsetLeft));
-
-                $("#jqGridAddNotesDrugAdminED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesDrugAdminED_c")[0].offsetWidth-$("#jqGridAddNotesDrugAdminED_c")[0].offsetLeft));
+                // refreshGrid('#jqGridPatMedic',urlParam_PatMedic);
 			    refreshGrid('#jqGridAddNotesDrugAdminED',urlParam_AddNotesDrugAdminED);
+
+                populate_drugadmin_getdata();
                 break;
                 
             case 'pivc':
@@ -79,6 +83,9 @@ $(document).ready(function (){
                 break;
 
             case 'thrombo':
+                $("#jqGridThrombo_ED").jqGrid('setGridWidth', Math.floor($("#jqGridThrombo_ED_c")[0].offsetWidth-$("#jqGridThrombo_ED_c")[0].offsetLeft));
+                $("#jqGridAddNotesThromboED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesThromboED_c")[0].offsetWidth-$("#jqGridAddNotesThromboED_c")[0].offsetLeft));
+                
                 var urlparam_datetimethrombo_ED_tbl = {
                     action: 'get_table_datetimethrombo_ED',
                     mrn: $("#mrn_emergencyMain").val(),
@@ -90,7 +97,9 @@ $(document).ready(function (){
                     $('#datetimethrombo_ED_tbl tbody tr:eq(0)').click(); // to select first row
                 });
 
-                $("#jqGridThrombo_ED").jqGrid('setGridWidth', Math.floor($("#jqGridThrombo_ED_c")[0].offsetWidth-$("#jqGridThrombo_ED_c")[0].offsetLeft));
+                refreshGrid('#jqGridThrombo_ED',urlParam_Thrombo_ED);
+                refreshGrid('#jqGridAddNotesThromboED',urlParam_AddNotesThromboED);
+
                 populate_thrombo_ED_getdata();
                 break;
         }
@@ -138,13 +147,11 @@ $(document).ready(function (){
         urlParam_PatMedic.filterVal[1] = data.episno;
         urlParam_PatMedic.filterVal[2] = data.auditno;
         urlParam_PatMedic.filterVal[3] = data.chgcode;
-        refreshGrid('#jqGridPatMedic',urlParam_PatMedic,'add');
 
         // jqGridAddNotesDrugAdminED
         urlParam_AddNotesDrugAdminED.filterVal[0] = data.mrn;
         urlParam_AddNotesDrugAdminED.filterVal[1] = data.episno;
         urlParam_AddNotesDrugAdminED.filterVal[2] = 'DRUGADMIN_ED';
-        refreshGrid('#jqGridAddNotesDrugAdminED',urlParam_AddNotesDrugAdminED,'add_DrugAdminED');
         
         // var saveParam={
         //     action: 'get_table_drug',
@@ -612,12 +619,12 @@ function empty_nursingnote_ptcare(obj){
 }
 
 function populate_nursingnote_ptcare(obj){
-    // emptyFormdata(errorField,"#formProgress_ED");
+    emptyFormdata(errorField,"#formNursNote");
 
-    emptyFormdata_div("#formProgress_ED",['#mrn_emergencyMain','#episno_emergencyMain']);
-    emptyFormdata_div("#formDrug",['#mrn_emergencyMain','#episno_emergencyMain']);
-    emptyFormdata_div("#formPivc_ED",['#mrn_emergencyMain','#episno_emergencyMain']);
-    emptyFormdata_div("#formThrombo_ED",['#mrn_emergencyMain','#episno_emergencyMain']);
+    // emptyFormdata_div("#formProgress_ED",['#mrn_emergencyMain','#episno_emergencyMain']);
+    // emptyFormdata_div("#formDrug",['#mrn_emergencyMain','#episno_emergencyMain']);
+    // emptyFormdata_div("#formPivc_ED",['#mrn_emergencyMain','#episno_emergencyMain']);
+    // emptyFormdata_div("#formThrombo_ED",['#mrn_emergencyMain','#episno_emergencyMain']);
 
     // panel header
     // $('#name_show_nursNote').text(obj.Name);
@@ -639,6 +646,26 @@ function populate_nursingnote_ptcare(obj){
     $('#preg_nursNote').val(obj.pregnant);
     $('#ic_nursNote').val(obj.Newic);
     $('#doctorname_nursNote').val(obj.doctorname);
+
+    ////jqGridAddNotesProgressED
+    urlParam_AddNotesProgressED.filterVal[0] = obj.MRN;
+    urlParam_AddNotesProgressED.filterVal[1] = obj.Episno;
+    urlParam_AddNotesProgressED.filterVal[2] = 'PROGRESSNOTE_ED';
+
+    ////jqGridAddNotesDrugAdminED
+    urlParam_AddNotesDrugAdminED.filterVal[0] = obj.MRN;
+    urlParam_AddNotesDrugAdminED.filterVal[1] = obj.Episno;
+    urlParam_AddNotesDrugAdminED.filterVal[2] = 'DRUGADMIN_ED';
+
+    //// jqGridThrombo_ED
+    urlParam_Thrombo_ED.filterVal[0] = obj.MRN;
+    urlParam_Thrombo_ED.filterVal[1] = obj.Episno;
+    urlParam_Thrombo_ED.filterVal[2] = obj.idno;
+
+    //// jqGridAddNotesThromboED
+    urlParam_AddNotesThromboED.filterVal[0] = obj.MRN;
+    urlParam_AddNotesThromboED.filterVal[1] = obj.Episno;
+    urlParam_AddNotesThromboED.filterVal[2] = 'THROMBO';
 
     $("#tab_nursNote").collapse('hide');
 

@@ -970,7 +970,7 @@
                                     <div class="ui form">
                                         <div class="inline field">
                                             <label>Nurse's Signature: </label>
-                                            <input type="text" name="nursesign" id="nursesign">
+                                            <input type="text" name="nursesign" id="nursesign" style="text-transform: uppercase;">
                                         </div>
                                     </div>
                                 </div>
@@ -1212,7 +1212,7 @@
                                     <div class="ui form">
                                         <div class="inline field">
                                             <label>A&E Staff: </label>
-                                            <input type="text" name="eduser" id="eduser">
+                                            <input type="text" name="eduser" id="eduser" style="text-transform: uppercase;">
                                         </div>
                                     </div>
                                 </div>

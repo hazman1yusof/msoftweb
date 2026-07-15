@@ -244,7 +244,6 @@ $(document).ready(function (){
         urlParam_AddNotesProgressED.filterVal[0] = data.mrn;
         urlParam_AddNotesProgressED.filterVal[1] = data.episno;
         urlParam_AddNotesProgressED.filterVal[2] = 'PROGRESSNOTE_ED';
-        refreshGrid('#jqGridAddNotesProgressED',urlParam_AddNotesProgressED,'add_ProgressED');
 
         var saveParam={
             action: 'get_table_progress_ED',
@@ -450,10 +449,11 @@ function populate_progressnote_ED_getdata(){
     },'json').done(function (data){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formProgress_ED",data.nurshandover);
+            refreshGrid('#jqGridAddNotesProgressED',urlParam_AddNotesProgressED);
             // $("#formProgress_ED :input[name='datetaken']").val(data.date);
             // $("#formProgress_ED :input[name='timetaken']").val(data.time);
             
-            button_state_progress_ED('edit');
+            button_state_progress_ED('empty');
             textarea_init_nursingnote();
         }else{
             button_state_progress_ED('add');

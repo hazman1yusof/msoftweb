@@ -317,6 +317,11 @@ function populate_admhandover_currpt(obj){
 	// $('#citizenship_show_admHandover').text(if_none(obj.Citizencode).toUpperCase());
 	// $('#area_show_admHandover').text(if_none(obj.AreaCode).toUpperCase());
     
+	////jqGridAddNotesAdmHandoverED
+	urlParam_AddNotesAdmHandoverED.filterVal[0] = obj.MRN;
+	urlParam_AddNotesAdmHandoverED.filterVal[1] = obj.Episno;
+	urlParam_AddNotesAdmHandoverED.filterVal[2] = 'ADMISSION HANDOVER';
+
     // formAdmHandover
     $("#mrn_emergencyMain").val(obj.MRN);
 	$("#episno_emergencyMain").val(obj.Episno);

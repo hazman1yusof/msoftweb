@@ -27,8 +27,6 @@ var urlParam_AddNotesThromboED = {
 $(document).ready(function (){
     
     var fdl = new faster_detail_load();
-    refreshGrid('#jqGridThrombo_ED',urlParam_Thrombo_ED,'add_thrombojqgrid_ED');
-    refreshGrid('#jqGridAddNotesThromboED',urlParam_AddNotesThromboED,'add_ThromboED_save');
     /////////////////////////////////////thrombo starts/////////////////////////////////////
     disableForm('#formThrombo_ED');
     
@@ -107,13 +105,11 @@ $(document).ready(function (){
         urlParam_Thrombo_ED.filterVal[0] = data.mrn;
         urlParam_Thrombo_ED.filterVal[1] = data.episno;
         urlParam_Thrombo_ED.filterVal[2] = data.idno;
-        refreshGrid('#jqGridThrombo_ED',urlParam_Thrombo_ED,'add_thrombojqgrid_ED');
 
         //// jqGridAddNotesThromboED
         urlParam_AddNotesThromboED.filterVal[0] = data.mrn;
         urlParam_AddNotesThromboED.filterVal[1] = data.episno;
         urlParam_AddNotesThromboED.filterVal[2] = 'THROMBO';
-        refreshGrid('#jqGridAddNotesThromboED',urlParam_AddNotesThromboED,'add_ThromboED_save');
 
         var saveParam = {
             action: 'get_table_thrombo_ED',
@@ -714,10 +710,13 @@ function populate_thrombo_ED_getdata(){
     }).done(function (data){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formThrombo_ED",data.thrombo);
-           
-            button_state_thrombo_ED('edit');
+            refreshGrid('#jqGridThrombo_ED',urlParam_Thrombo_ED,'add_thrombojqgrid_ED');
+            refreshGrid('#jqGridAddNotesThromboED',urlParam_AddNotesThromboED,'add_ThromboED_save');
+            button_state_thrombo_ED('empty');
         }else{
             button_state_thrombo_ED('add');
+            refreshGrid('#jqGridThrombo_ED',urlParam_Thrombo_ED,'kosongkan');
+            refreshGrid('#jqGridAddNotesThromboED',urlParam_AddNotesThromboED,'kosongkan');
         }
     });
 }

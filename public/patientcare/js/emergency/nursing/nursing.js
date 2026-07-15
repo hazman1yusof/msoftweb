@@ -17,7 +17,6 @@ $(document).ready(function () {
 	
 	var fdl = new faster_detail_load();
 	var radbuts = new checkradiobutton(['gsc_eye','gsc_verbal','gsc_motor','painscore']);
-	refreshGrid('#jqGridAddNotesNursingED',urlParam_AddNotesNursingED,'add_notes');
 
 	$('#tab_triage').on('show.bs.collapse', function () {
 		return check_if_user_selected();
@@ -416,10 +415,10 @@ function populate_triage_currpt(obj){
 	$("#episno_emergencyMain").val(obj.Episno);
 	$("#age_emergencyMain").val(dob_age(obj.DOB));
 
+	////jqGridAddNotesNursingED
 	urlParam_AddNotesNursingED.filterVal[0] = obj.MRN;
 	urlParam_AddNotesNursingED.filterVal[1] = obj.Episno;
 	urlParam_AddNotesNursingED.filterVal[2] = 'NURSING_ED';
-	refreshGrid('#jqGridAddNotesNursingED',urlParam_AddNotesNursingED,'add_notes');
 
 	$("#tab_triage").collapse('hide');
 }
@@ -544,20 +543,17 @@ function getdata_nursing(){
 			if(!emptyobj_(data.triage_nurshistory))autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
 			if(!emptyobj_(data.triage_gen))$('#formTriageInfo span#adduser').text(data.triage_gen.adduser);
 			refreshGrid('#jqGridAddNotesNursingED',urlParam_AddNotesNursingED,'add_notes');
-			button_state_ti('edit');
+			// button_state_ti('edit');
+			button_state_ti('empty');
 			tri_color_set();
 			changeTextInputColor();
 		}else{
 			button_state_ti('add');
+			refreshGrid('#jqGridAddNotesNursingED',urlParam_AddNotesNursingED,'kosongkan');
 			tri_color_set('empty');
 			changeTextInputColor('empty');
 			if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
 		}
-
-		urlParam_AddNotesNursingED.filterVal[0] = data.mrn;
-		urlParam_AddNotesNursingED.filterVal[1] = data.episno;
-		urlParam_AddNotesNursingED.filterVal[2] = 'NURSING_ED';
-		refreshGrid('#jqGridAddNotesNursingED',urlParam_AddNotesNursingED,'add_notes');
 
 	});
 }
