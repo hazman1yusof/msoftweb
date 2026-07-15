@@ -105,7 +105,7 @@
                                 ],
                                 [   
                                     { text: '5. Address',border: [false, false, false, false]},
-                                    { text: `: {{$card_noninv->card_addr}}`,border: [false, false, false, false]}
+                                    { text: `: {!!$card_noninv->card_addr!!}`,border: [false, false, false, false]}
                                 ]
                                 
                             ]

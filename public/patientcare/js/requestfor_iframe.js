@@ -1006,7 +1006,7 @@ function button_state_card_noninv(state){
             $("#toggle_requestFor").attr('data-toggle','collapse');
             $('#cancel_card_noninv').data('oper','edit');
             $("#edit_card_noninv,#card_noninv_chart").attr('disabled',false);
-            $('#save_card_noninv,#cancel_card_noninv,#new_card_noninv,#card_noninv_chart').attr('disabled',true);
+            $('#save_card_noninv,#cancel_card_noninv,#new_card_noninv').attr('disabled',true);
             break;
         case 'wait':
             $("#toggle_requestFor").attr('data-toggle','collapse');
@@ -1022,7 +1022,7 @@ function button_state_followupReqfor(state){
         case 'empty':
             $("#toggle_requestFor").removeAttr('data-toggle');
             $('#cancel_followupReqfor').data('oper','add');
-            $('#new_followupReqfor,#save_followupReqfor,#cancel_followupReqfor,#edit_followupReqfor,#card_noninv_chart').attr('disabled',true);
+            $('#new_followupReqfor,#save_followupReqfor,#cancel_followupReqfor,#edit_followupReqfor').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_requestFor").attr('data-toggle','collapse');
@@ -1033,7 +1033,7 @@ function button_state_followupReqfor(state){
         case 'edit':
             $("#toggle_requestFor").attr('data-toggle','collapse');
             $('#cancel_followupReqfor').data('oper','edit');
-            $("#edit_followupReqfor,#card_noninv_chart").attr('disabled',false);
+            $("#edit_followupReqfor").attr('disabled',false);
             $('#save_followupReqfor,#cancel_followupReqfor,#new_followupReqfor').attr('disabled',true);
             break;
         case 'wait':
@@ -1204,7 +1204,7 @@ function populate_radClinicReqFor_getdata(){
                 autoinsert_rowdata("#formRadClinicReqFor",data.pat_radiology);
 
                 if(data.pat_radiology.sex_radClinic == 'F'){
-                    $('#formRadClinicReqFor input[name=LMP]').attr('type','text');
+                    $('#formRadClinicReqFor input[name=LMP]').attr('type','date');
                     $('#formRadClinicReqFor input[name=LMP]').parent('div.inline.field').show();
                 }else{
                     $('#formRadClinicReqFor input[name=LMP]').attr('type','hidden');
@@ -1217,7 +1217,7 @@ function populate_radClinicReqFor_getdata(){
 
 
                 if(data.pat_radiology_default.sex_radClinic == 'F'){
-                    $('#formRadClinicReqFor input[name=LMP]').attr('type','text');
+                    $('#formRadClinicReqFor input[name=LMP]').attr('type','date');
                     $('#formRadClinicReqFor input[name=LMP]').parent('div.inline.field').show();
                 }else{
                     $('#formRadClinicReqFor input[name=LMP]').attr('type','hidden');
@@ -1505,7 +1505,7 @@ function populate_preContrastReqFor_getdata(){
             autoinsert_rowdata("#formPreContrastReqFor",data.pat_preContrast);
             
             if(data.pat_preContrast_default.sex_precon == 'F'){
-                $('#formPreContrastReqFor input[name=LMP]').attr('type','text');
+                $('#formPreContrastReqFor input[name=LMP]').attr('type','date');
             }else{
                 $('#formPreContrastReqFor input[name=LMP]').attr('type','hidden');
             }
@@ -1515,7 +1515,7 @@ function populate_preContrastReqFor_getdata(){
             autoinsert_rowdata("#formPreContrastReqFor",data.pat_preContrast_default);
 
             if(data.pat_preContrast_default.sex_precon == 'F'){
-                $('#formPreContrastReqFor input[name=LMP]').attr('type','text');
+                $('#formPreContrastReqFor input[name=LMP]').attr('type','date');
             }else{
                 $('#formPreContrastReqFor input[name=LMP]').attr('type','hidden');
             }

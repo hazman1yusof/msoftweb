@@ -497,6 +497,7 @@ class RehabController extends defaultController
     public function doctornote_event(Request $request){
         
         $emergency = DB::table('hisdb.episode')
+                    ->select('episode.reg_date')
                     ->where('episode.compcode','=',session('compcode'))
                     // ->whereIn('episode.regdept',['A&E','PHY','XRAY','DIET'])
                     // ->whereIn('episode.regdept',['PHY'])
