@@ -1043,19 +1043,25 @@ class RequestForController extends defaultController
         //         'lastuser'  => session('username'),
         //         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
         //     ]);
-        
-        DB::table('hisdb.queue') 
-            ->where('mrn','=',$request->mrn)
-            ->where('episno','=',$request->episno)
-            ->where('deptcode','!=','SPEC')
-            ->where('compcode','=',session('compcode'))
-            ->update([
-                'deptcode' =>'RAD',
-                'epistycode' => 'OP',
-                'chggroup' => 'OP',
-                'lastuser'  => session('username'),
-                'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-            ]);
+
+
+        $queue = DB::table('hisdb.queue')
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno)
+                    ->where('deptcode','=','RAD');
+
+        if(!$queue->exists()){
+            DB::table('hisdb.queue') 
+                ->insert([
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'deptcode' =>'RAD',
+                    'epistycode' => 'OP',
+                    'chggroup' => 'OP',
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
+        }
     }
     
     public function get_table_radClinic(Request $request){
@@ -1724,19 +1730,24 @@ class RequestForController extends defaultController
         //         'lastuser'  => session('username'),
         //         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
         //     ]);
-        
-        DB::table('hisdb.queue') 
-            ->where('mrn','=',$request->mrn)
-            ->where('episno','=',$request->episno)
-            ->where('deptcode','!=','SPEC')
-            ->where('compcode','=',session('compcode'))
-            ->update([
-                'deptcode' =>'PHY',
-                'epistycode' => 'OP',
-                'chggroup' => 'OP',
-                'lastuser'  => session('username'),
-                'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-            ]);
+
+        $queue = DB::table('hisdb.queue')
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno)
+                    ->where('deptcode','=','PHY');
+
+        if(!$queue->exists()){
+            DB::table('hisdb.queue') 
+                ->insert([
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'deptcode' =>'PHY',
+                    'epistycode' => 'OP',
+                    'chggroup' => 'OP',
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
+        }
     }
     
     public function get_table_physio(Request $request){

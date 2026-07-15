@@ -192,13 +192,13 @@ class AppointmentController extends defaultController
                     // );
         });
         
-        $table_patm = $table_patm->join('hisdb.queue', function ($join) use ($request){
-                    // $join = $join->on('queue.deptcode','=','episode.regdept');
-                    $join = $join->on('queue.mrn','=','episode.mrn');
-                    $join = $join->on('queue.episno','=','episode.episno');
-                    $join = $join->where('queue.deptcode','=','ALL');
-                    $join = $join->where('queue.compcode','=',session('compcode'));
-        });
+        // $table_patm = $table_patm->join('hisdb.queue', function ($join) use ($request){
+        //             // $join = $join->on('queue.deptcode','=','episode.regdept');
+        //             $join = $join->on('queue.mrn','=','episode.mrn');
+        //             $join = $join->on('queue.episno','=','episode.episno');
+        //             $join = $join->where('queue.deptcode','=','ALL');
+        //             $join = $join->where('queue.compcode','=',session('compcode'));
+        // });
         
         $table_patm = $table_patm->leftJoin('hisdb.doctor', function ($join) use ($request){
                     $join = $join->on('doctor.doctorcode','=','episode.admdoctor');
@@ -1190,13 +1190,13 @@ class AppointmentController extends defaultController
                     ->whereNotIn('episode.regdept',['A&E','PHY','REHAB'])
                     // ->whereIn('episode.regdept',['TH2','EYE','BEACON']),'XRAY','DIET'
                     // ->where('episode.admsrccode', '=', 'APPT')
-                    ->join('hisdb.queue', function ($join){
-                        // $join = $join->on('queue.deptcode','=','episode.regdept');
-                        $join = $join->on('queue.mrn','=','episode.mrn');
-                        $join = $join->on('queue.episno','=','episode.episno');
-                        $join = $join->where('queue.deptcode','=','ALL');
-                        $join = $join->where('queue.compcode','=',session('compcode'));
-                    })
+                    // ->join('hisdb.queue', function ($join){
+                    //     // $join = $join->on('queue.deptcode','=','episode.regdept');
+                    //     $join = $join->on('queue.mrn','=','episode.mrn');
+                    //     $join = $join->on('queue.episno','=','episode.episno');
+                    //     $join = $join->where('queue.deptcode','=','ALL');
+                    //     $join = $join->where('queue.compcode','=',session('compcode'));
+                    // })
                     ->whereRaw(
                         "(episode.reg_date >= ? AND episode.reg_date <= ?)",
                         [
