@@ -358,7 +358,7 @@
                             right: 0px;
                             bottom: 26px;">
                             <label>Entered By</label>
-                            <input id="req_enterby" name="req_enterby" type="text" style="width: 300px; text-transform: uppercase;" value="{{ session('username') }}">
+                            : <input id="req_enterby" name="req_enterby" type="text" style="width: 300px; text-transform: uppercase; border:none;" value="{{ session('username') }}">
                         </div>
                     </div>
                     

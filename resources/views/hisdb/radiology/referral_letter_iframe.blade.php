@@ -1,22 +1,39 @@
 <div class="ui segments" style="position: relative;">
     <div class="ui secondary segment bluecloudsegment" style="height: 50px;">
-        <div class="ui small blue icon buttons" id="btn_grp_edit_referralLetterReqfor" style="position: absolute;
-            padding: 0 0 0 0;
-            right: 40px;
-            top: 9px;
-            z-index: 2;">
-            <button class="ui button" id="new_referralLetterReqfor"><span class="fa fa-plus-square-o"></span>New</button>
-            <button class="ui button" id="edit_referralLetterReqfor"><span class="fa fa-edit fa-lg"></span>Edit</button>
-            <button class="ui button" id="save_referralLetterReqfor"><span class="fa fa-save fa-lg"></span>Save</button>
-            <button class="ui button" id="cancel_referralLetterReqfor"><span class="fa fa-ban fa-lg"></span>Cancel</button>
-            <button class="ui button" id="referralLetterReqfor_chart"><span class="fa fa-print fa-lg"></span>Print</button>
+        <div class='ui grid'>
+            <div class="ten wide column" style="border-right: solid #dededf 1px;position: relative;height: 50px;">
+                <div class="ui small blue icon buttons" id="btn_grp_edit_referralLetterReqfor" style="position: absolute;
+                    padding: 0 0 0 0;
+                    left: 20px;
+                    top: 9px;
+                    z-index: 2;">
+                    <button class="ui button" id="new_referralLetterReqfor"><span class="fa fa-plus-square-o"></span>New</button>
+                    <button class="ui button" id="edit_referralLetterReqfor"><span class="fa fa-edit fa-lg"></span>Edit</button>
+                    <button class="ui button" id="save_referralLetterReqfor"><span class="fa fa-save fa-lg"></span>Save</button>
+                    <button class="ui button" id="cancel_referralLetterReqfor"><span class="fa fa-ban fa-lg"></span>Cancel</button>
+                    <button class="ui button" id="referralLetterReqfor_chart"><span class="fa fa-print fa-lg"></span>Print</button>
+                </div>
+            </div>
+            <div class="six wide column">
+                <div class="ui small blue icon buttons" id="btn_grp_edit_referralLetter_freetextReqfor" style="position: absolute;
+                    padding: 0 0 0 0;
+                    right: 20px;
+                    top: 9px;
+                    z-index: 2;">
+                    <button class="ui button" id="new_referralLetter_freetextReqfor"><span class="fa fa-plus-square-o"></span>New</button>
+                    <button class="ui button" id="edit_referralLetter_freetextReqfor"><span class="fa fa-edit fa-lg"></span>Edit</button>
+                    <button class="ui button" id="save_referralLetter_freetextReqfor"><span class="fa fa-save fa-lg"></span>Save</button>
+                    <button class="ui button" id="cancel_referralLetter_freetextReqfor"><span class="fa fa-ban fa-lg"></span>Cancel</button>
+                    <button class="ui button" id="referralLetter_freetextReqfor_chart"><span class="fa fa-print fa-lg"></span>Print</button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="ui segment">
         <div class="ui grid">
-            <form id="formreferralLetterReqfor" class="floated ui form sixteen wide column">
+            <div class="floated ui form sixteen wide column">
                 <div class='ui grid'>
-                    <div class="ten wide column" style="border-right: solid #dededf 1px;">
+                    <form id="formreferralLetterReqfor" class="ten wide column" style="border-right: solid #dededf 1px;">
                         <div class='ui grid'>
                             <div class="sixteen wide column" style="padding-bottom:0px">
                                 <div class="inline fields">
@@ -206,18 +223,18 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
 
-                    <div class="six wide column">
+                    <form id="formreferralLetter_freetextReqfor" class="six wide column">
                         <div class="eight wide column">
                             <div class="field">
                                 <label>Free Text Form</label>
-                                <textarea rows="5" id="freetext_refl" name="reffreetxt" style="height:100vh"></textarea>
+                                <textarea rows="5" id="freetext_refl" name="reffreetxt" style="height:100vh" data-validation='required'></textarea>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

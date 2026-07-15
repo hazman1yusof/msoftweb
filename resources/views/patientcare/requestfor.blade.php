@@ -231,7 +231,7 @@
                                                             <div class="column">
                                                                 <div class="inline field" style="padding-bottom:8px">
                                                                     <label>Entered By</label>
-                                                                    <input id="otReqFor_lastuser" name="ot_lastuser" type="text" style="width: 350px; text-transform: uppercase;border: none;" value="{{ session('username') }}" rdonly>
+                                                                    :<input id="otReqFor_lastuser" name="ot_lastuser" type="text" style="width: 350px; text-transform: uppercase;border: none;" value="{{ session('username') }}" rdonly>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -401,7 +401,7 @@
                                     
                                     <div class="inline field">
                                         <label>Entered By</label>
-                                        <input id="phyReqFor_lastuser" name="phy_lastuser" type="text" style="width: 350px; text-transform: uppercase;">
+                                        :<input id="phyReqFor_lastuser" name="phy_lastuser" type="text" style="width: 350px; text-transform: uppercase;border: none;">
                                     </div>
                                 </div>
                             </div>
@@ -490,7 +490,7 @@
                                     
                                     <div class="inline field">
                                         <label>Entered By</label>
-                                        <input id="dressingReqFor_lastuser" name="dressing_lastuser" type="text" style="width: 350px; text-transform: uppercase;">
+                                        :<input id="dressingReqFor_lastuser" name="dressing_lastuser" type="text" style="width: 350px; text-transform: uppercase;border: none;">
                                     </div>
                                 </div>
                             </div>

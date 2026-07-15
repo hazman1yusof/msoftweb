@@ -146,6 +146,16 @@ class RequestForController extends defaultController
                         return 'error happen..';
                 }
             
+            case 'save_referralLetter_freetext':
+                switch($request->oper){
+                    case 'add':
+                        return $this->edit_referralLetter_freetext($request);
+                    case 'edit':
+                        return $this->edit_referralLetter_freetext($request);
+                    default:
+                        return 'error happen..';
+                }
+            
             case 'save_card_noninv':
                 switch($request->oper){
                     case 'add':
@@ -2325,6 +2335,16 @@ class RequestForController extends defaultController
             $responce->referralLetterReqfor_default = $pat_mast;
         }
         
+        $pat_patreferral_freetext_obj = DB::table('hisdb.patreferral_freetext')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno);
+
+        if($pat_patreferral_freetext_obj->exists()){
+            $pat_patreferral_freetext_obj = $pat_patreferral_freetext_obj->first();
+            $responce->referralLetter_freetextReqfor = $pat_patreferral_freetext_obj;
+        }
+        
         return json_encode($responce);
     }
 
@@ -2395,8 +2415,8 @@ class RequestForController extends defaultController
             if($patreferral->exists()){
                 $patreferral
                     ->update([
-                        'upduser' => $request->upduser,
-                        'upddate' => $request->upddate,
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'computerid' => $request->computerid,
                         'refdate' => $request->refdate,
                         'reftime' => $request->reftime,
@@ -2432,8 +2452,8 @@ class RequestForController extends defaultController
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
-                        'upduser' => $request->upduser,
-                        'upddate' => $request->upddate,
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'computerid' => $request->computerid,
                         'refdate' => $request->refdate,
                         'reftime' => $request->reftime,
@@ -2462,6 +2482,56 @@ class RequestForController extends defaultController
                         'refdocdept' => $request->refdocdept,
                         'refage' => $request->refage,
                         'refsex' => $request->refsex
+                    ]);
+            }
+            
+            // dump($queries);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        } 
+    }
+    
+    public function edit_referralLetter_freetext(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            $patreferral_freetext = DB::table('hisdb.patreferral_freetext')
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno)
+                            ->where('compcode','=',session('compcode'));
+            
+            if($patreferral_freetext->exists()){
+                $patreferral_freetext
+                    ->update([
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'freetext_patref' => $request->freetext_patref,
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'upduser' => session('username'),
+                    ]);
+            }else{
+                DB::table('hisdb.patreferral_freetext')
+                    ->insert([
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'freetext_patref' => $request->freetext_patref,
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'adduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'upduser' => session('username'),
                     ]);
             }
             
@@ -2787,7 +2857,8 @@ class RequestForController extends defaultController
             $apptbook = DB::table('hisdb.apptbook')
                             ->where('compcode',session('compcode'))
                             ->where('mrn',$request->mrn)
-                            ->where('episno',$request->episno);
+                            ->where('episno',0)
+                            ->whereDate('start','>=',Carbon::now("Asia/Kuala_Lumpur"));
 
             $doctor_case = DB::table('hisdb.doctor as d')
                             ->select('c.case_code','c.description')
@@ -2837,7 +2908,7 @@ class RequestForController extends defaultController
                     'loccode'     => $request->doctorcodefup,
                     'icnum'       => $pat_mast->Newic,
                     'mrn'         => $request->mrn,
-                    'episno'      => $request->episno,
+                    'episno'      => 0,
                     'pat_name'    => strtoupper($pat_mast->Name),
                     'start'       => $request->datefup.' '.$request->timefup,
                     'end'         => $request->datefup.' '.$request->end_timefup,

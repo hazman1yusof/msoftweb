@@ -402,6 +402,45 @@ $(document).ready(function (){
         button_state_referralLetterReqfor($(this).data('oper'));
     });
     ////////////////////////////////////////////referralletter ends////////////////////////////////////////////
+
+    ///////////////////////////////////////////referralletter_freetext starts///////////////////////////////////////////
+    
+    $("#new_referralLetter_freetextReqfor").click(function (){
+        $('#cancel_referralLetter_freetextReqfor').data('oper','add');
+        button_state_referralLetter_freetextReqfor('wait');
+        enableForm('#formreferralLetter_freetextReqfor');
+        rdonly('#formreferralLetter_freetextReqfor');
+        emptyFormdata_div("#formreferralLetter_freetextReqfor",['#mrn_requestFor','#episno_requestFor']);
+    });
+    
+    $("#edit_referralLetter_freetextReqfor").click(function (){
+        button_state_referralLetter_freetextReqfor('wait');
+        enableForm('#formreferralLetter_freetextReqfor');
+        rdonly('#formreferralLetter_freetextReqfor');
+    });
+    
+    $("#save_referralLetter_freetextReqfor").click(function (){
+        disableForm('#formreferralLetter_freetextReqfor');
+        if($('#formreferralLetter_freetextReqfor').isValid({requiredFields: ''}, conf, true)){
+            saveForm_referralLetter_freetextReqfor(function (data){
+                // emptyFormdata_div("#formConsentFormReqFor",['#mrn_requestFor','#episno_requestFor']);
+                // disableForm('#formConsentFormReqFor');
+                $('#cancel_referralLetter_freetextReqfor').data('oper','edit');
+                $("#cancel_referralLetter_freetextReqfor").click();
+                populate_referralLetterReqfor_getdata();
+            });
+        }else{
+            enableForm('#formreferralLetter_freetextReqfor');
+            rdonly('#formreferralLetter_freetextReqfor');
+        }
+    });
+    
+    $("#cancel_referralLetter_freetextReqfor").click(function (){
+        // emptyFormdata_div("#formConsentFormReqFor",['#mrn_requestFor','#episno_requestFor']);
+        disableForm('#formreferralLetter_freetextReqfor');
+        button_state_referralLetter_freetextReqfor($(this).data('oper'));
+    });
+    ////////////////////////////////////////////referralletter ends////////////////////////////////////////////
     
     ///////////////////////////////////////////cardiology starts///////////////////////////////////////////
     
@@ -917,6 +956,34 @@ function button_state_referralLetterReqfor(state){
             $("#toggle_requestFor").attr('data-toggle','collapse');
             $("#save_referralLetterReqfor,#cancel_referralLetterReqfor").attr('disabled',false);
             $('#edit_referralLetterReqfor,#new_referralLetterReqfor,#referralLetterReqfor_chart').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_referralLetter_freetextReqfor('empty');
+function button_state_referralLetter_freetextReqfor(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_requestFor").removeAttr('data-toggle');
+            $('#cancel_referralLetter_freetextReqfor').data('oper','add');
+            $('#new_referralLetter_freetextReqfor,#save_referralLetter_freetextReqfor,#cancel_referralLetter_freetextReqfor,#edit_referralLetter_freetextReqfor,#referralLetter_freetextReqfor_chart').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_referralLetter_freetextReqfor').data('oper','add');
+            $("#new_referralLetter_freetextReqfor").attr('disabled',false);
+            $('#save_referralLetter_freetextReqfor,#cancel_referralLetter_freetextReqfor,#edit_referralLetter_freetextReqforr,#referralLetter_freetextReqfor_chart').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_referralLetter_freetextReqfor').data('oper','edit');
+            $("#edit_referralLetter_freetextReqfor,#referralLetter_freetextReqfor_chart").attr('disabled',false);
+            $('#save_referralLetter_freetextReqfor,#cancel_referralLetter_freetextReqfor,#new_referralLetter_freetextReqfor').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $("#save_referralLetter_freetextReqfor,#cancel_referralLetter_freetextReqfor").attr('disabled',false);
+            $('#edit_referralLetter_freetextReqfor,#new_referralLetter_freetextReqfor,#referralLetter_freetextReqfor_chart').attr('disabled',true);
             break;
     }
 }
@@ -1518,6 +1585,15 @@ function populate_referralLetterReqfor_getdata(){
             autoinsert_rowdata("#formreferralLetterReqfor",data.referralLetterReqfor_default);
 
             button_state_referralLetterReqfor('add');
+        }
+
+        if(!$.isEmptyObject(data.referralLetter_freetextReqfor)){
+            autoinsert_rowdata("#formreferralLetter_freetextReqfor",data.referralLetterReqfor);
+
+            button_state_referralLetter_freetextReqfor('edit');
+        }else{
+
+            button_state_referralLetter_freetextReqfor('add');
         }
     });
 }
@@ -2261,6 +2337,32 @@ function saveForm_referralLetterReqfor(callback){
             return {"name": this.name, "value": this.value}
         }).get()
     );
+    
+    $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+    }).fail(function (data){
+        alert('error');
+        // callback(data);
+    });
+}
+
+function saveForm_referralLetter_freetextReqfor(callback){
+    var saveParam = {
+        action: 'save_referralLetter_freetext',
+        oper: $("#cancel_referralLetter_freetextReqfor").data('oper'),
+        mrn: $('#mrn_requestFor').val(),
+        episno: $("#episno_requestFor").val(),
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formreferralLetter_freetextReqfor").serializeArray();
     
     $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         

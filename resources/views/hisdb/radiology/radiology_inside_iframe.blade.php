@@ -197,7 +197,7 @@
                                     right: 0px;
                                     bottom: 26px;">
                                     <label>Entered By</label>
-                                    <input id="radClinicReqFor_enterby" name="radClinic_enterby" type="text" style="width: 300px; text-transform: uppercase;" value="{{ session('username') }}" rdonly>
+                                    :<input id="radClinicReqFor_enterby" name="radClinic_enterby" type="text" style="width: 300px; text-transform: uppercase;border:none;" value="{{ session('username') }}" rdonly>
                                 </div>
                             </div>
                         </div>
@@ -700,9 +700,9 @@
                         </div>
                         
                         <div class="five wide column">
-                            <div class="field">
+                            <div class="inline field">
                                 <label>Entered By</label>
-                                <input id="mriReqFor_lastuser" name="mri_lastuser" type="text" style="width: 320px; text-transform: uppercase;" value="{{ session('username') }}">
+                                :<input id="mriReqFor_lastuser" name="mri_lastuser" type="text" style="width: 320px; text-transform: uppercase; border:none;" value="{{ session('username') }}">
                             </div>
                         </div>
                     </div>
