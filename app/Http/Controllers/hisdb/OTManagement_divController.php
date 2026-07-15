@@ -95,6 +95,7 @@ class OTManagement_divController extends defaultController
                     'local' => $request->local,
                     'spinal' => $request->spinal,
                     'other' => $request->other,
+                    'enteredby'  => session('username'),
                 ]);
             
             DB::table('hisdb.apptbook')
@@ -204,6 +205,7 @@ class OTManagement_divController extends defaultController
                         'local' => $request->local,
                         'spinal' => $request->spinal,
                         'other' => $request->other,
+                        'enteredby'  => session('username'),
                     ]);
                 
                 DB::table('hisdb.apptbook')
@@ -266,6 +268,7 @@ class OTManagement_divController extends defaultController
                         'local' => $request->local,
                         'spinal' => $request->spinal,
                         'other' => $request->other,
+                        'enteredby'  => session('username'),
                     ]);
                 
                 DB::table('hisdb.apptbook')
@@ -335,7 +338,7 @@ class OTManagement_divController extends defaultController
     public function get_table_otmanage(Request $request){
         
         $otmanage_obj = DB::table('nursing.otmanage')
-                        ->select('idno','compcode','serialno','mrn','episno','iPesakit as i_Pesakit','diagnosis','natureoper','naturecode','finding','operdate','timestarted','timeended','hoursutilized','firstscrubnrs','firststaffno','secondscrubnrs','secondstaffno','gaassistant','gastaffno','circulator','circulatorstaffno','electiveemgc','classification','anaesthtype','otno','specimen','remarks','plan','active','code1','code2','adduser','adddate','upduser','upddate','admdate','admtime','ward','procedure','recstatus','surgeon','anaest','scrubnurse','consultant','e_yes','e_no','general','local','spinal','other')
+                        ->select('idno','compcode','serialno','mrn','episno','iPesakit as i_Pesakit','diagnosis','natureoper','naturecode','finding','operdate','timestarted','timeended','hoursutilized','firstscrubnrs','firststaffno','secondscrubnrs','secondstaffno','gaassistant','gastaffno','circulator','circulatorstaffno','electiveemgc','classification','anaesthtype','otno','specimen','remarks','plan','active','code1','code2','adduser','adddate','upduser','upddate','admdate','admtime','ward','procedure','recstatus','surgeon','anaest','scrubnurse','consultant','e_yes','e_no','general','local','spinal','other','enteredby')
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno);

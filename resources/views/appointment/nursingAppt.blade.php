@@ -7,7 +7,7 @@
                     top: 9px;
                     z-index: 2;">
           <button class="ui button" id="new_ti"><span class="fa fa-plus-square-o"></span> New</button>
-          <button class="ui button" id="edit_ti"><span class="fa fa-edit fa-lg"></span> Edit</button>
+          <!-- <button class="ui button" id="edit_ti"><span class="fa fa-edit fa-lg"></span> Edit</button> -->
           <button class="ui button" id="save_ti"><span class="fa fa-save fa-lg"></span> Save</button>
           <button class="ui button" id="cancel_ti"><span class="fa fa-ban fa-lg"></span> Cancel</button>
         </div>
@@ -81,30 +81,30 @@
                                     <tbody>
                                         <tr>
                                             <td><input type="checkbox" id="allergydrugs" name="allergydrugs" value="1" data-validation="required" data-validation-error-msg-required="Please enter information."></td>
-                                            <td><label for="allergydrugs">Drugs</label></td>
+                                            <td><label for="allergydrugs">Meds</label></td>
                                             <td><textarea id="drugs_remarks" name="drugs_remarks" type="text" rows="3" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea></td>
                                         </tr>
-                                        <tr>
+                                        <!-- <tr>
                                             <td><input type="checkbox" id="allergyplaster" name="allergyplaster" value="1" data-validation="required" data-validation-error-msg-required="Please enter information."></td>
                                             <td><label for="allergyplaster">Plaster</label></td>
                                             <td><textarea id="plaster_remarks" name="plaster_remarks" type="text" rows="3" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea></td>
-                                        </tr>
+                                        </tr> -->
                                         <tr>
                                             <td><input type="checkbox" id="allergyfood" name="allergyfood" value="1" data-validation="required" data-validation-error-msg-required="Please enter information."></td>
                                             <td><label for="allergyfood">Food</label></td>
                                             <td><textarea id="food_remarks" name="food_remarks" type="text" rows="3" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea></td>
                                         </tr>
-                                        <tr>
+                                        <!-- <tr>
                                             <td><input type="checkbox" id="allergyenvironment" name="allergyenvironment" value="1" data-validation="required" data-validation-error-msg-required="Please enter information."></td>
                                             <td><label for="allergyenvironment">Environment</label></td>
                                             <td><textarea id="environment_remarks" name="environment_remarks" type="text" rows="3" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea></td>
-                                        </tr>
+                                        </tr> -->
                                         <tr>
                                             <td><input type="checkbox" id="allergyothers" name="allergyothers" value="1" data-validation="required" data-validation-error-msg-required="Please enter information."></td>
                                             <td><label for="allergyothers">Others</label></td>
                                             <td><textarea id="others_remarks" name="others_remarks" type="text" rows="3" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea></td>
                                         </tr>
-                                        <tr>
+                                        <!-- <tr>
                                             <td><input type="checkbox" id="allergyunknown" name="allergyunknown" value="1" data-validation="required" data-validation-error-msg-required="Please enter information."></td>
                                             <td><label for="allergyunknown">Unknown</label></td>
                                             <td><textarea id="unknown_remarks" name="unknown_remarks" type="text" rows="3" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea></td>
@@ -113,7 +113,7 @@
                                             <td><input type="checkbox" id="allergynone" name="allergynone" value="1" data-validation="required" data-validation-error-msg-required="Please enter information."></td>
                                             <td><label for="allergynone">None</label></td>
                                             <td><textarea id="none_remarks" name="none_remarks" type="text" rows="3" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea></td>
-                                        </tr>
+                                        </tr> -->
                                     </tbody>
                                 </table>
                             </div>

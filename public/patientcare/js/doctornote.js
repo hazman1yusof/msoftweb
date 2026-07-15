@@ -5,14 +5,24 @@ var editedRow = 0;
 var dateParam_docnote,doctornote_docnote,curr_obj;
 
 ///////////////////////////////////parameter for jqGridAddNotes url///////////////////////////////////
+// var urlParam_AddNotes = {
+// 	action: 'get_table_default',
+// 	url: './util/get_table_default',
+// 	field: '',
+// 	table_name: 'hisdb.pathealthadd',
+// 	table_id: 'idno',
+// 	filterCol: ['mrn','episno'],
+// 	filterVal: ['',''],
+// }
+
 var urlParam_AddNotes = {
 	action: 'get_table_default',
-	url: './util/get_table_default',
+	url: 'util/get_table_default',
 	field: '',
-	table_name: 'hisdb.pathealthadd',
+	table_name: 'nursing.nursaddnote',
 	table_id: 'idno',
-	filterCol: ['mrn','episno'],
-	filterVal: ['',''],
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','DOCTOR NOTE PSY APPT'],
 }
 
 $(document).ready(function (){
@@ -437,13 +447,13 @@ $(document).ready(function (){
 	///////////////////////////////////////////jqGridAddNotes///////////////////////////////////////////
 	$("#jqGridAddNotes").jqGrid({
 		datatype: "local",
-		editurl: "/doctornote/form",
+		editurl: "/ptcare_doctornote/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'mrn', name: 'mrn', hidden: true },
 			{ label: 'episno', name: 'episno', hidden: true },
 			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
-			{ label: 'Note', name: 'additionalnote', classes: 'wrap', width: 120, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 120, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
 			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
 			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
 		],
@@ -480,7 +490,7 @@ $(document).ready(function (){
 		oneditfunc: function (rowid){
 			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").hide();
 			
-			$("input[name='additionalnote']").keydown(function (e){ // when click tab at last column in header, auto save
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGridAddNotes_ilsave').click();
 				// addmore_jqgrid.state = true;
@@ -504,7 +514,7 @@ $(document).ready(function (){
 			
 			let data = $('#jqGridAddNotes').jqGrid('getRowData', rowid);
 			
-			let editurl = "/doctornote/form?"+
+			let editurl = "/ptcare_doctornote/form?"+
 				$.param({
 					_token: $('#_token').val(),
 					episno: $('#episno_doctorNote_past').val(),
@@ -551,7 +561,7 @@ $(document).ready(function (){
 	// 					idno: selrowData('#jqGridAddNotes').idno,
 	// 				}
 					
-	// 				$.post("/doctornote/form?"+$.param(param), {oper:'del'}, function (data){
+	// 				$.post("/ptcare_doctornote/form?"+$.param(param), {oper:'del'}, function (data){
 						
 	// 				}).fail(function (data){
 	// 					//////////////////errorText(dialog,data.responseText);
@@ -675,7 +685,7 @@ function disableOtherFields(){
 	// 	return fieldsNotToBeDisabled.indexOf($(this).attr("name"))<0;
 	// }).prop("disabled", true);
 	
-	$('#remarks, #clinicnote, #pmh, #drugh, #allergyh, #socialh, #fmh, #followuptime, #followupdate, #examination, #diagfinal, #icdcode, #plan_, #height, #weight, #bp_sys1, #bp_dias2, #pulse, #temperature, #respiration,').prop('disabled',true);
+	$('#remarks, #clinicnote, #pmh, #drugh, #allergyh, #socialh, #fmh, #followuptime, #followupdate, #examination, #diagfinal, #icdcode, #plan_, #height, #weight, #bp_sys1, #bp_dias2, #pulse, #temperature, #respiration').prop('disabled',true);
 }
 
 // to enable fields when choose current
@@ -748,6 +758,15 @@ dialog_icd.makedialog();
 button_state_doctorNote('empty');
 function button_state_doctorNote(state){
 	empty_transaction('add');
+	
+	if($('#isdoctor').val() != '1'){
+		$("#toggle_doctorNote").removeAttr('data-toggle');
+		$('#cancel_doctorNote').data('oper','add');
+		$('#new_doctorNote,#save_doctorNote,#cancel_doctorNote,#edit_doctorNote').attr('disabled',true);
+		$('#jqGridAddNotes_iladd').addClass('ui-state-disabled');
+		return 0;
+	}
+	
 	switch(state){
 		case 'empty':
 			$("#toggle_doctorNote").removeAttr('data-toggle');
@@ -772,10 +791,6 @@ function button_state_doctorNote(state){
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
 			$("#save_doctorNote,#cancel_doctorNote").attr('disabled',false);
 			$('#edit_doctorNote,#new_doctorNote').attr('disabled',true);
-			break;
-		case 'disableAll':
-			$("#toggle_doctorNote").attr('data-toggle','collapse');
-			$('#new_doctorNote,#edit_doctorNote,#save_doctorNote,#cancel_doctorNote').attr('disabled',true);
 			break;
 		// case 'docnote':
 		// 	$("#toggle_doctorNote").attr('data-toggle','collapse');
@@ -1036,6 +1051,7 @@ function populate_currDoctorNote(obj){
 	
 	urlParam_AddNotes.filterVal[0] = obj.MRN;
 	urlParam_AddNotes.filterVal[1] = obj.Episno;
+	urlParam_AddNotes.filterVal[2] = 'DOCTOR NOTE PSY APPT';
 	
 	doctornote_docnote = {
 		action: 'get_table_doctornote_div',
@@ -1045,7 +1061,7 @@ function populate_currDoctorNote(obj){
 	};
 	
 	$("#tab_doctornote").collapse('hide');
-	button_state_doctorNote('disableAll');
+	button_state_doctorNote('empty');
 }
 
 function populate_otbook_getdata(){
@@ -1487,7 +1503,8 @@ function on_toggling_curr_past(obj = curr_obj){
 		}
 		$('#primary_icd_form,#followup_form').show();
 		
-		addnotes.style.display = "none";
+		// addnotes.style.display = "none";
+		addnotes.style.display = "block";
 		enableFields();
 		button_state_doctorNote('add'); // enable balik button
 		// $("#new_doctorNote").attr('disabled',false);
@@ -1501,7 +1518,7 @@ function on_toggling_curr_past(obj = curr_obj){
 		
 		addnotes.style.display = "block";
 		disableOtherFields();
-		button_state_doctorNote('disableAll'); // disable all buttons
+		button_state_doctorNote('empty'); // disable all buttons
 		$('#jqGridPagerRefresh_addnotes').click();
 	}
 }
@@ -2199,14 +2216,14 @@ var docnote_date_tbl = $('#docnote_date_tbl').DataTable({
 	"columns": [
 		{'data': 'mrn'},
 		{'data': 'episno'},
-		{'data': 'date', 'width': '100%'},
+		{'data': 'date', 'width': '50%'},
 		{'data': 'adduser'},
 		{'data': 'adddate'},
 		{'data': 'recordtime'},
-		{'data': 'doctorname'},
+		{'data': 'doctorname', 'width': '50%'},
 	],
 	columnDefs: [
-		{ targets: [0, 1, 3, 4, 5, 6], visible: false },
+		{ targets: [0, 1, 3, 4, 5], visible: false },
 	],
 	"drawCallback": function (settings){
 		if(settings.aoData.length > 0){
@@ -2262,10 +2279,10 @@ $("input[name=toggle_type]").on('change', function (){
 		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
 		// $('#docnote_date_tbl tbody tr:eq(0)').click(); // to select first row
 	});
-	$("#jqGridAddNotes").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotes_c")[0].offsetWidth-$("#jqGridAddNotes_c")[0].offsetLeft));
+	$("#jqGridAddNotes").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotes_c")[0].offsetWidth-$("#jqGridAddNotes_c")[0].offsetLeft-14));
 });
 
-$('#docnote_date_tbl tbody').on('click', 'tr', function (){ 
+$('#docnote_date_tbl tbody').on('click', 'tr', function (){
 	var data = docnote_date_tbl.row(this).data();
 	
 	emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
@@ -2279,6 +2296,7 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function (){
 	
 	urlParam_AddNotes.filterVal[0] = data.mrn;
 	urlParam_AddNotes.filterVal[1] = data.episno;
+	urlParam_AddNotes.filterVal[2] = 'DOCTOR NOTE PSY APPT';
 	
 	$('#mrn_doctorNote_past').val(data.mrn);
 	$('#episno_doctorNote_past').val(data.episno);
@@ -2296,12 +2314,17 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function (){
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathealthadd);
 			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add_notes');
 			getBMI();
+			button_state_doctorNote('add');
 			
-			if(data.pathealth == undefined){
-				button_state_doctorNote('add');
-			}else{
-				button_state_doctorNote('edit');
-			}
+			// if(data.pathealth == undefined){
+			// 	button_state_doctorNote('add');
+			// }else{
+			// 	button_state_doctorNote('edit');
+			// }
+		}
+		
+		if($('.pastcurr').find('[name="toggle_type"]:checked').val() == 'past'){
+			button_state_doctorNote('empty');
 		}
 	});
 	

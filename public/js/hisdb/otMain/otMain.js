@@ -37,7 +37,7 @@ $(document).ready(function (){
     
     $('#otMain_tab .top.menu .item').tab({'onVisible': function (){
         let tab = $(this).data('tab');
-        console.log(tab);
+        // console.log(tab);
 
         switch(tab){
             case 'preoperative':
@@ -57,7 +57,8 @@ $(document).ready(function (){
                 break;
             case 'otswab':
                 $("#jqGrid_otswab").jqGrid('setGridWidth', Math.floor($("#jqGrid_otswab_c")[0].offsetWidth-$("#jqGrid_otswab_c")[0].offsetLeft-14));
-    
+                $("#jqGrid_specimen").jqGrid('setGridWidth', Math.floor($("#jqGrid_specimen_c")[0].offsetWidth-$("#jqGrid_specimen_c")[0].offsetLeft-14));
+
                 if($('#mrn_otMain').val() != ''){
                     getdata_otswab();
                 }

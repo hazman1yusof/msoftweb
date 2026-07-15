@@ -2,6 +2,17 @@ $.jgrid.defaults.responsive = false;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
 
+///////////////////////////////////parameter for jqGridAddNotesDrugAdminED url///////////////////////////////////
+var urlParam_AddNotesDrugAdminED = {
+	action: 'get_table_default',
+	url: './util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','DRUGADMIN_ED'],
+}
+
 $(document).ready(function (){
 
     var fdl = new faster_detail_load();
@@ -26,6 +37,9 @@ $(document).ready(function (){
                     $('#datetime_ED_tbl tbody tr:eq(0)').click();  // to select first row
                 });
                 populate_progressnote_ED_getdata();
+
+                $("#jqGridAddNotesProgressED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesProgressED_c")[0].offsetWidth-$("#jqGridAddNotesProgressED_c")[0].offsetLeft));
+			    refreshGrid('#jqGridAddNotesProgressED',urlParam_AddNotesProgressED);
                 break;
 
             case 'drug':
@@ -42,6 +56,11 @@ $(document).ready(function (){
                 });
 
                 populate_drugadmin_getdata();
+
+                $("#jqGridPatMedic").jqGrid('setGridWidth', Math.floor($("#jqGridPatMedic_c")[0].offsetWidth-$("#jqGridPatMedic_c")[0].offsetLeft));
+
+                $("#jqGridAddNotesDrugAdminED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesDrugAdminED_c")[0].offsetWidth-$("#jqGridAddNotesDrugAdminED_c")[0].offsetLeft));
+			    refreshGrid('#jqGridAddNotesDrugAdminED',urlParam_AddNotesDrugAdminED);
                 break;
                 
             case 'pivc':
@@ -120,6 +139,12 @@ $(document).ready(function (){
         urlParam_PatMedic.filterVal[2] = data.auditno;
         urlParam_PatMedic.filterVal[3] = data.chgcode;
         refreshGrid('#jqGridPatMedic',urlParam_PatMedic,'add');
+
+        // jqGridAddNotesDrugAdminED
+        urlParam_AddNotesDrugAdminED.filterVal[0] = data.mrn;
+        urlParam_AddNotesDrugAdminED.filterVal[1] = data.episno;
+        urlParam_AddNotesDrugAdminED.filterVal[2] = 'DRUGADMIN_ED';
+        refreshGrid('#jqGridAddNotesDrugAdminED',urlParam_AddNotesDrugAdminED,'add_DrugAdminED');
         
         // var saveParam={
         //     action: 'get_table_drug',
@@ -362,6 +387,150 @@ $(document).ready(function (){
         });
     }
     //////////////////////////////////////////drug admin ends//////////////////////////////////////////
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridDrugAdminED = {more:false,state:false,edit:false}
+	
+	///////////////////////////////////////////jqGridAddNotesDrugAdminED///////////////////////////////////////////
+	$("#jqGridAddNotesDrugAdminED").jqGrid({
+		datatype: "local",
+		editurl: "/ptcare_nursingnote/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		scroll: true,
+		width: 700,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesDrugAdminED",
+		loadComplete: function (){
+			if(addmore_jqgridDrugAdminED.more == true){$('#jqGridAddNotesDrugAdminED_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid ('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridDrugAdminED.edit = addmore_jqgridDrugAdminED.more = false; // reset
+		},
+		ondblClickRow: function (rowid, iRow, iCol, e){
+			$("#jqGridAddNotesDrugAdminED_iledit").click();
+		},
+	});
+	
+	////////////////////////////////////////////myEditOptions////////////////////////////////////////////
+	var myEditOptions_addDrugAdminED = {
+		keys: true,
+		extraparam: {
+			"_token": $("#_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesDrugAdminED_ilsave').click();
+				// addmore_jqgridDrugAdminED.state = true;
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridDrugAdminED.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesDrugAdminED',urlParam_AddNotesDrugAdminED,'add_DrugAdminED');
+			errorField.length = 0;
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesDrugAdminED',urlParam_AddNotesDrugAdminED,'add_DrugAdminED');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			if(errorField.length > 0)return false;
+			
+			let data = $('#jqGridAddNotesDrugAdminED').jqGrid('getRowData', rowid);
+			
+			let editurl = "/ptcare_nursingnote/form?"+
+				$.param({
+					_token: $('#_token').val(),
+					episno: $('#episno_emergencyMain').val(),
+					mrn: $('#mrn_emergencyMain').val(),
+					action: 'add_DrugAdminED_save',
+				});
+			$("#jqGridAddNotesDrugAdminED").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc : function (response){
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////////jqGridPagerAddNotesDrugAdminED/////////////////////////////////////////
+	$("#jqGridAddNotesDrugAdminED").inlineNav('#jqGridPagerAddNotesDrugAdminED', {
+		add: true,
+		edit: false,
+		cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addDrugAdminED
+		},
+		// editParams: myEditOptions_edit
+	})
+	// .jqGrid('navButtonAdd', "#jqGridPagerAddNotesDrugAdminED", {
+	// 	id: "jqGridPagerDelete",
+	// 	caption: "", cursor: "pointer", position: "last",
+	// 	buttonicon: "glyphicon glyphicon-trash",
+	// 	title: "Delete Selected Row",
+	// 	onClickButton: function (){
+	// 		selRowId = $("#jqGridAddNotesDrugAdminED").jqGrid('getGridParam', 'selrow');
+	// 		if(!selRowId){
+	// 			alert('Please select row');
+	// 		}else{
+	// 			var result = confirm("Are you sure you want to delete this row?");
+	// 			if(result == true){
+	// 				param = {
+	// 					_token: $("#csrf_token").val(),
+	// 					action: 'addNotes_save',
+	// 					idno: selrowData('#jqGridAddNotesDrugAdminED').idno,
+	// 				}
+					
+	// 				$.post("/doctornote/form?"+$.param(param), {oper:'del'}, function (data){
+						
+	// 				}).fail(function (data){
+	// 					//////////////////errorText(dialog,data.responseText);
+	// 				}).done(function (data){
+	// 					refreshGrid("#jqGridAddNotesDrugAdminED", urlParam_AddNotesDrugAdminED);
+	// 				});
+	// 			}else{
+	// 				$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+	// 			}
+	// 		}
+	// 	},
+	// })
+	.jqGrid('navButtonAdd', "#jqGridPagerAddNotesDrugAdminED", {
+		id: "jqGridPagerRefresh_addnotes",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesDrugAdminED", urlParam_AddNotesDrugAdminED);
+		},
+	});
+	///////////////////////////////////////////////end grid///////////////////////////////////////////////
     
 });
 
@@ -530,7 +699,7 @@ function autoinsert_rowdata(form,rowData){
 }
 
 function textarea_init_nursingnote(){
-    $('textarea#airwayfreetext,textarea#frfreetext,textarea#drainfreetext,textarea#ivfreetext,textarea#assesothers,textarea#plannotes,textarea#oraltype1,textarea#oraltype2,textarea#oraltype3,textarea#oraltype4,textarea#oraltype5,textarea#oraltype6,textarea#oraltype7,textarea#oraltype8,textarea#oraltype9,textarea#oraltype10,textarea#oraltype11,textarea#oraltype12,textarea#oraltype13,textarea#oraltype14,textarea#oraltype15,textarea#oraltype16,textarea#oraltype17,textarea#oraltype18,textarea#oraltype19,textarea#oraltype20,textarea#oraltype21,textarea#oraltype22,textarea#oraltype23,textarea#oraltype24,textarea#intratype1,textarea#intratype2,textarea#intratype3,textarea#intratype4,textarea#intratype5,textarea#intratype6,textarea#intratype7,textarea#intratype8,textarea#intratype9,textarea#intratype10,textarea#intratype11,textarea#intratype12,textarea#intratype13,textarea#intratype14,textarea#intratype15,textarea#intratype16,textarea#intratype17,textarea#intratype18,textarea#intratype19,textarea#intratype20,textarea#intratype21,textarea#intratype22,textarea#intratype23,textarea#intratype24,textarea#othertype1,textarea#othertype2,textarea#othertype3,textarea#othertype4,textarea#othertype5,textarea#othertype6,textarea#othertype7,textarea#othertype8,textarea#othertype9,textarea#othertype10,textarea#othertype11,textarea#othertype12,textarea#othertype13,textarea#othertype14,textarea#othertype15,textarea#othertype16,textarea#othertype17,textarea#othertype18,textarea#othertype19,textarea#othertype20,textarea#othertype21,textarea#othertype22,textarea#othertype23,textarea#othertype24,textarea#ftxtdosage,textarea#treatment_remarks,textarea#investigation_remarks,textarea#injection_remarks,textarea#problem,textarea#problemdata,textarea#problemintincome,textarea#nursintervention,textarea#nursevaluation,textarea#fitchart_diag,textarea#circulation_diag,textarea#othersChart1_diag,textarea#othersChart2_diag').each(function () {
+    $('textarea#airwayfreetext,textarea#frfreetext,textarea#drainfreetext,textarea#ivfreetext,textarea#assesothers,textarea#oraltype1,textarea#oraltype2,textarea#oraltype3,textarea#oraltype4,textarea#oraltype5,textarea#oraltype6,textarea#oraltype7,textarea#oraltype8,textarea#oraltype9,textarea#oraltype10,textarea#oraltype11,textarea#oraltype12,textarea#oraltype13,textarea#oraltype14,textarea#oraltype15,textarea#oraltype16,textarea#oraltype17,textarea#oraltype18,textarea#oraltype19,textarea#oraltype20,textarea#oraltype21,textarea#oraltype22,textarea#oraltype23,textarea#oraltype24,textarea#intratype1,textarea#intratype2,textarea#intratype3,textarea#intratype4,textarea#intratype5,textarea#intratype6,textarea#intratype7,textarea#intratype8,textarea#intratype9,textarea#intratype10,textarea#intratype11,textarea#intratype12,textarea#intratype13,textarea#intratype14,textarea#intratype15,textarea#intratype16,textarea#intratype17,textarea#intratype18,textarea#intratype19,textarea#intratype20,textarea#intratype21,textarea#intratype22,textarea#intratype23,textarea#intratype24,textarea#othertype1,textarea#othertype2,textarea#othertype3,textarea#othertype4,textarea#othertype5,textarea#othertype6,textarea#othertype7,textarea#othertype8,textarea#othertype9,textarea#othertype10,textarea#othertype11,textarea#othertype12,textarea#othertype13,textarea#othertype14,textarea#othertype15,textarea#othertype16,textarea#othertype17,textarea#othertype18,textarea#othertype19,textarea#othertype20,textarea#othertype21,textarea#othertype22,textarea#othertype23,textarea#othertype24,textarea#ftxtdosage,textarea#treatment_remarks,textarea#investigation_remarks,textarea#injection_remarks,textarea#problem,textarea#problemdata,textarea#problemintincome,textarea#nursintervention,textarea#nursevaluation,textarea#fitchart_diag,textarea#circulation_diag,textarea#othersChart1_diag,textarea#othersChart2_diag').each(function () {
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{
@@ -595,7 +764,7 @@ function galGridCustomValue_nurs(elem, operation, value){
 $('#tab_nursNote').on('shown.bs.collapse', function (){
     SmoothScrollTo("#tab_nursNote", 500);
 
-    $('#nursNote .menu .item').tab('change tab','pivc');
+    $('#nursNote .menu .item').tab('change tab','thrombo');
 
     // var urlparam_datetime_ED_tbl = {
     //     action: 'get_table_datetime',

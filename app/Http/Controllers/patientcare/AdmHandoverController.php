@@ -49,6 +49,9 @@ class AdmHandoverController extends defaultController
                     default:
                         return 'error happen..';
                 }
+
+            case 'add_AdmHandoverED_save':
+                return $this->add_AdmHandoverED($request);
         }
     }
 
@@ -186,6 +189,37 @@ class AdmHandoverController extends defaultController
             ->first();
 
         return view('hisdb.admhandover.admhandover_pdfmake',compact('admhandover'));
+        
+    }
+
+    public function add_AdmHandoverED(Request $request){
+        DB::beginTransaction();
+       
+        try {
+            
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'ADMISSION HANDOVER',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
         
     }
 }

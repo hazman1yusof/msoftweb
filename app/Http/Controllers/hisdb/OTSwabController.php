@@ -59,6 +59,15 @@ class OTSwabController extends defaultController
             
             case 'addJqgrid_delete':
                 return $this->del_jqgrid($request);
+
+            case 'addSpecimen_save':
+                return $this->add_specimen($request);
+            
+            case 'addSpecimen_edit':
+                return $this->edit_specimen($request);
+            
+            case 'addSpecimen_delete':
+                return $this->del_specimen($request);
             
             default:
                 return 'error happen..';
@@ -108,6 +117,7 @@ class OTSwabController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
+                    'enteredby'  => session('username'),
                 ]);
             
             DB::commit();
@@ -169,6 +179,7 @@ class OTSwabController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
+                    'enteredby'  => session('username'),
                 ]);
             
             // $queries = DB::getQueryLog();
@@ -215,6 +226,7 @@ class OTSwabController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
+                    'enteredby'  => session('username'),
                 ]);
             
             if(!empty($request->iPesakit)){
@@ -274,6 +286,7 @@ class OTSwabController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
+                    'enteredby'  => session('username'),
                 ]);
             
             if(!empty($request->iPesakit)){
@@ -314,7 +327,7 @@ class OTSwabController extends defaultController
     public function get_table_otswab(Request $request){
         
         $otswab_obj = DB::table('nursing.otswab')
-                    ->select('idno','compcode','mrn','episno','iPesakit as i_Pesakit','startdate','starttime','enddate','endtime','basicset','supplemntryset','issuesOccured','actualOper','specimenSent','scrubNurse1','scrubNurse1Start','scrubNurse1End','scrubNurse2','scrubNurse2Start','scrubNurse2End','scrubNurse3','scrubNurse3Start','scrubNurse3End','circulateNurse1','circulateNurse1Start','circulateNurse1End','circulateNurse2','circulateNurse2Start','circulateNurse2End','circulateNurse3','circulateNurse3Start','circulateNurse3End','adduser','adddate','upduser','upddate','lastuser','lastupdate','computerid')
+                    ->select('idno','compcode','mrn','episno','iPesakit as i_Pesakit','startdate','starttime','enddate','endtime','basicset','supplemntryset','issuesOccured','actualOper','specimenSent','scrubNurse1','scrubNurse1Start','scrubNurse1End','scrubNurse2','scrubNurse2Start','scrubNurse2End','scrubNurse3','scrubNurse3Start','scrubNurse3End','circulateNurse1','circulateNurse1Start','circulateNurse1End','circulateNurse2','circulateNurse2Start','circulateNurse2End','circulateNurse3','circulateNurse3Start','circulateNurse3End','adduser','adddate','upduser','upddate','lastuser','lastupdate','computerid','enteredby')
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
@@ -468,6 +481,96 @@ class OTSwabController extends defaultController
         try {
             
             DB::table('nursing.otswab_sets')
+                ->where('idno','=',$request->idno)
+                ->where('compcode','=',session('compcode'))
+                ->delete();
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+    
+    }
+
+    public function add_specimen(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.otswab_specimen')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    // 'iPesakit' => $request->iPesakit,
+                    'timeInvestigation' => $request->timeInvestigation,
+                    'typeOfSpecimen' => $request->typeOfSpecimen,
+                    'typeOfInvestigation' => $request->typeOfInvestigation,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+    
+    }
+    
+    public function edit_specimen(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.otswab_specimen')
+                ->where('idno','=',$request->idno)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    // 'iPesakit' => $request->iPesakit,
+                    'timeInvestigation' => $request->timeInvestigation,
+                    'typeOfSpecimen' => $request->typeOfSpecimen,
+                    'typeOfInvestigation' => $request->typeOfInvestigation,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+    
+    }
+    
+    public function del_specimen(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.otswab_specimen')
                 ->where('idno','=',$request->idno)
                 ->where('compcode','=',session('compcode'))
                 ->delete();

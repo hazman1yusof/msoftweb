@@ -39,19 +39,19 @@ $(document).ready(function (){
             case 'docImaging':
                 // DataTable_preview.columns.adjust();
                 // preview_load_data();
-
+                
                 let param_docImaging = {
                     mrn: $("#mrn_apptMain").val(),
                     episno: $("#episno_apptMain").val(),
                 }
-
+                
                 let newurl_docImaging = './userfile_iframe'+"?"+$.param(param_docImaging);
                 let cururl_docImaging = $('iframe#userfile_iframe').attr('src');
-
+                
                 if(newurl_docImaging != cururl_docImaging){
                     $("iframe#userfile_iframe").attr('src',newurl_docImaging);
                 }
-
+                
                 break;
             case 'triageInfo':
                 $("#jqGridExamTriage").jqGrid('setGridWidth', Math.floor($("#jqGridExamTriage_c")[0].offsetWidth-$("#jqGridExamTriage_c")[0].offsetLeft-14));
@@ -60,15 +60,29 @@ $(document).ready(function (){
                 getdata_triageAppt();
                 break;
             case 'doctorNote':
+                // $('div#docNoteAppt_date_tbl_sticky').show();
+                $("#jqGridAddNotesAppt").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesAppt_c")[0].offsetWidth-$("#jqGridAddNotesAppt_c")[0].offsetLeft-14));
+                
+                docNoteAppt_date_tbl.ajax.url("./doctorNoteAppt/table?"+$.param(dateParam_docNoteAppt)).load(function (data){
+                    emptyFormdata_div("#formDoctorNoteAppt",['#mrn_doctorNoteAppt','#episno_doctorNoteAppt']);
+                    // $('#docNoteAppt_date_tbl tbody tr:eq(0)').click(); // to select first row
+                });
+                
+                refreshGrid("#jqGridAddNotesAppt", urlParam_AddNotesAppt);
+                break;
+            case 'doctorNotePsy':
                 // datable_medication.columns.adjust();
                 $('div#docnote_date_tbl_sticky').show();
                 $("#jqGrid_trans").jqGrid('setGridWidth', Math.floor($("#jqGrid_trans_c")[0].offsetWidth-$("#jqGrid_trans_c")[0].offsetLeft-14));
+                $("#jqGridAddNotes").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotes_c")[0].offsetWidth-$("#jqGridAddNotes_c")[0].offsetLeft-14));
                 
                 docnote_date_tbl.ajax.url("./ptcare_doctornote/table?"+$.param(dateParam_docnote)).load(function (data){
                     emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
                     // $('#docnote_date_tbl tbody tr:eq(0)').click(); // to select first row
                 });
+                
                 refreshGrid("#jqGrid_trans", urlParam_trans);
+                refreshGrid("#jqGridAddNotes", urlParam_AddNotes);
                 
                 $('#doctor_requestFor .top.menu .item').tab('change tab','otbook');
                 populate_otbook_getdata();
@@ -91,21 +105,22 @@ $(document).ready(function (){
                 // populate_dressingReqFor_getdata();
                 // populate_preContrastReqFor_getdata();
                 // populate_consentFormReqFor_getdata();
-
+                
                 // let param_reqFor = {
                 //     mrn: $("#mrn_apptMain").val(),
                 //     episno: $("#episno_apptMain").val(),
                 // }
-
+                
                 // let newurl_reqFor = './requestfor_iframe'+"?"+$.param(param_reqFor);
                 // let cururl_reqFor = $('iframe#wardbook_iframe').attr('src');
-
+                
                 // if(newurl_reqFor != cururl_reqFor){
                 //     $("iframe#requestfor_iframe").attr('src',newurl_reqFor);
                 // }
-
+                
                 break;
             case 'admHandover':
+                $("#jqGridNoteAdmHandover").jqGrid('setGridWidth', Math.floor($("#jqGridNoteAdmHandover_c")[0].offsetWidth-$("#jqGridNoteAdmHandover_c")[0].offsetLeft-14));
                 getdata_admHandoverAppt();
                 break;
             case 'dietNotes':

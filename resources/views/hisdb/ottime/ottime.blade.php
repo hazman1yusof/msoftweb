@@ -261,6 +261,21 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="eight wide column">
+                    <div class="ui segments">
+                        <div class="ui segment">
+                            <div class="ui grid">
+                                <div class="ui form">
+                                    <div class="inline field" style="margin: 10px 0;">
+                                        <label>Entered By</label>
+                                        <input id="enteredby" name="enteredby" type="text" style="width: 350px; text-transform: uppercase;" rdonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </form>
     </div>

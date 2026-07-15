@@ -42,7 +42,8 @@ class NursingController extends defaultController
             case 'get_table_triage':
                 return $this->get_table_triage($request);
             
-            
+            case 'addNotes_save':
+                return $this->add_notes($request);
             default:
                 return 'error happen..';
         }
@@ -137,9 +138,10 @@ class NursingController extends defaultController
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'lastuser'  => $request->lastuser,
                     'lastupdate'  => $request->lastupdate,
-                    'nursesign' => $request->nursesign,
-                    'eduser' => $request->eduser,
+                    'nursesign' => session('username'),
+                    'eduser' => session('username'),
                     'warduser' => $request->warduser,
+                    'ed_notes' => $request->ed_notes,
                 ]);
             
             DB::table('nursing.nurshistory')
@@ -351,9 +353,10 @@ class NursingController extends defaultController
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'nursesign' => $request->nursesign,
-                        'eduser' => $request->eduser,
+                        'nursesign' => session('username'),
+                        'eduser' => session('username'),
                         'warduser' => $request->warduser,
+                        'ed_notes' => $request->ed_notes,
                     ]);
             }else{
                 $nursassessment_triage
@@ -433,9 +436,10 @@ class NursingController extends defaultController
                         'dop_numb' => $request->dop_numb,
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'nursesign' => $request->nursesign,
-                        'eduser' => $request->eduser,
+                        'nursesign' => session('username'),
+                        'eduser' => session('username'),
                         'warduser' => $request->warduser,
+                        'ed_notes' => $request->ed_notes,
                     ]);
             }
             
@@ -706,6 +710,37 @@ class NursingController extends defaultController
         }
         
         return $location;
+        
+    }
+
+     public function add_notes(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'NURSING_ED',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
         
     }
     

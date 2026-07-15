@@ -7,7 +7,7 @@
                     top: 9px;
                     z-index: 2;">
             <button class="ui button" id="new_otswab"><span class="fa fa-plus-square-o"></span>New</button>
-            <button class="ui button" id="edit_otswab"><span class="fa fa-edit fa-lg"></span>Edit</button>
+            <!-- <button class="ui button" id="edit_otswab"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
             <button class="ui button" id="save_otswab"><span class="fa fa-save fa-lg"></span>Save</button>
             <button class="ui button" id="cancel_otswab"><span class="fa fa-ban fa-lg"></span>Cancel</button>
         </div>
@@ -76,17 +76,26 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="sixteen wide column">
+                                    <div class="ui segments">
+                                        <div class="ui segment" id="jqGrid_specimen_c" style="padding: 14px 5px;">
+                                            <table id="jqGrid_specimen" class="table table-striped"></table>
+                                            <div id="jqGridPager_specimen"></div>
+                                        </div>
+                                    </div>
+                                </div>
                                 
                                 <div class="sixteen wide column">
                                     <div class="ui segments">
                                         <div class="ui segment">
                                             <div class="ui grid">
-                                                <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
+                                                <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;display:none;">
                                                     <label>SPECIMENS SENT : </label>
                                                     <textarea id="otswab_specimenSent" name="specimenSent" rows="4"></textarea>
                                                 </div>
                                                 
-                                                <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
+                                                <div class="field sixteen wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
                                                     <label>INCIDENT / EQUIPMENT FAILURE : </label>
                                                     <textarea id="otswab_issuesOccured" name="issuesOccured" rows="4"></textarea>
                                                 </div>
@@ -124,6 +133,21 @@
                                                 </tbody>
                                             </table>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eight wide column">
+                    <div class="ui segments">
+                        <div class="ui segment">
+                            <div class="ui grid">
+                                <div class="ui form">
+                                    <div class="inline field" style="margin: 10px 0;">
+                                        <label>Entered By</label>
+                                        <input id="enteredby" name="enteredby" type="text" style="width: 350px; text-transform: uppercase;" rdonly>
                                     </div>
                                 </div>
                             </div>

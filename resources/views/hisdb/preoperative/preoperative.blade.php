@@ -7,7 +7,7 @@
                     top: 9px;
                     z-index: 2;">
             <button class="ui button" id="new_preoperative"><span class="fa fa-plus-square-o"></span>New</button>
-            <button class="ui button" id="edit_preoperative"><span class="fa fa-edit fa-lg"></span>Edit</button>
+            <!-- <button class="ui button" id="edit_preoperative"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
             <button class="ui button" id="save_preoperative"><span class="fa fa-save fa-lg"></span>Save</button>
             <button class="ui button" id="cancel_preoperative"><span class="fa fa-ban fa-lg"></span>Cancel</button>
         </div>
@@ -366,6 +366,21 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eight wide column">
+                    <div class="ui segments">
+                        <div class="ui segment">
+                            <div class="ui grid">
+                                <div class="ui form">
+                                    <div class="inline field" style="margin: 10px 0;">
+                                        <label>Entered By</label>
+                                        <input id="enteredby" name="enteredby" type="text" style="width: 350px; text-transform: uppercase;" rdonly>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -147,18 +147,18 @@ class NursingApptController extends defaultController
                         'familymedicalhist' => $request->familymedicalhist,
                         'allergydrugs' => $request->allergydrugs,
                         'drugs_remarks' => $request->drugs_remarks,
-                        'allergyplaster' => $request->allergyplaster,
-                        'plaster_remarks' => $request->plaster_remarks,
+                        // 'allergyplaster' => $request->allergyplaster,
+                        // 'plaster_remarks' => $request->plaster_remarks,
                         'allergyfood' => $request->allergyfood,
                         'food_remarks' => $request->food_remarks,
-                        'allergyenvironment' => $request->allergyenvironment,
-                        'environment_remarks' => $request->environment_remarks,
+                        // 'allergyenvironment' => $request->allergyenvironment,
+                        // 'environment_remarks' => $request->environment_remarks,
                         'allergyothers' => $request->allergyothers,
                         'others_remarks' => $request->others_remarks,
-                        'allergyunknown' => $request->allergyunknown,
-                        'unknown_remarks' => $request->unknown_remarks,
-                        'allergynone' => $request->allergynone,
-                        'none_remarks' => $request->none_remarks,
+                        // 'allergyunknown' => $request->allergyunknown,
+                        // 'unknown_remarks' => $request->unknown_remarks,
+                        // 'allergynone' => $request->allergynone,
+                        // 'none_remarks' => $request->none_remarks,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
@@ -392,18 +392,18 @@ class NursingApptController extends defaultController
                         'familymedicalhist' => $request->familymedicalhist,
                         'allergydrugs' => $request->allergydrugs,
                         'drugs_remarks' => $request->drugs_remarks,
-                        'allergyplaster' => $request->allergyplaster,
-                        'plaster_remarks' => $request->plaster_remarks,
+                        // 'allergyplaster' => $request->allergyplaster,
+                        // 'plaster_remarks' => $request->plaster_remarks,
                         'allergyfood' => $request->allergyfood,
                         'food_remarks' => $request->food_remarks,
-                        'allergyenvironment' => $request->allergyenvironment,
-                        'environment_remarks' => $request->environment_remarks,
+                        // 'allergyenvironment' => $request->allergyenvironment,
+                        // 'environment_remarks' => $request->environment_remarks,
                         'allergyothers' => $request->allergyothers,
                         'others_remarks' => $request->others_remarks,
-                        'allergyunknown' => $request->allergyunknown,
-                        'unknown_remarks' => $request->unknown_remarks,
-                        'allergynone' => $request->allergynone,
-                        'none_remarks' => $request->none_remarks,
+                        // 'allergyunknown' => $request->allergyunknown,
+                        // 'unknown_remarks' => $request->unknown_remarks,
+                        // 'allergynone' => $request->allergynone,
+                        // 'none_remarks' => $request->none_remarks,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
@@ -417,18 +417,18 @@ class NursingApptController extends defaultController
                         'familymedicalhist' => $request->familymedicalhist,
                         'allergydrugs' => $request->allergydrugs,
                         'drugs_remarks' => $request->drugs_remarks,
-                        'allergyplaster' => $request->allergyplaster,
-                        'plaster_remarks' => $request->plaster_remarks,
+                        // 'allergyplaster' => $request->allergyplaster,
+                        // 'plaster_remarks' => $request->plaster_remarks,
                         'allergyfood' => $request->allergyfood,
                         'food_remarks' => $request->food_remarks,
-                        'allergyenvironment' => $request->allergyenvironment,
-                        'environment_remarks' => $request->environment_remarks,
+                        // 'allergyenvironment' => $request->allergyenvironment,
+                        // 'environment_remarks' => $request->environment_remarks,
                         'allergyothers' => $request->allergyothers,
                         'others_remarks' => $request->others_remarks,
-                        'allergyunknown' => $request->allergyunknown,
-                        'unknown_remarks' => $request->unknown_remarks,
-                        'allergynone' => $request->allergynone,
-                        'none_remarks' => $request->none_remarks,
+                        // 'allergyunknown' => $request->allergyunknown,
+                        // 'unknown_remarks' => $request->unknown_remarks,
+                        // 'allergynone' => $request->allergynone,
+                        // 'none_remarks' => $request->none_remarks,
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
@@ -1317,32 +1317,48 @@ class NursingApptController extends defaultController
 
         return $location;
     }
-
+    
     public function addNotes_triage(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         try {
-
-            DB::table('nursing.triage_addnotes')
-                ->insert([  
+            
+            // DB::table('nursing.triage_addnotes')
+            //     ->insert([
+            //         'compcode' => session('compcode'),
+            //         'mrn' => $request->mrn,
+            //         'episno' => $request->episno,
+            //         'location' => 'TRIAGE',
+            //         'additionalnote' => $request->additionalnote,
+            //         'adduser'  => session('username'),
+            //         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")
+            //     ]);
+            
+            DB::table('nursing.nursaddnote')
+                ->insert([
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
-                    'location' => 'TRIAGE',
-                    'additionalnote' => $request->additionalnote,
+                    'type' => 'TRIAGE INFO APPT',
+                    'note' => $request->note,
                     'adduser'  => session('username'),
-                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")
-                    
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
                 ]);
-
-             DB::commit();
-
+            
+            DB::commit();
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+            
         }
+        
     }
-
+    
 }
