@@ -34,9 +34,11 @@ $(document).ready(function () {
 	$("#save_phys_ncase").click(function(){
 		// disableForm('#formphys_ncase');
 
-		if($('#category_phys_ncase').val().trim() == "" ){
-			alert('Please select either Rehabilitation or Physioteraphy');
-		}else if( $('#formphys_ncase').isValid({requiredFields: ''}, conf, true) ) {
+		// if($('#category_phys_ncase').val().trim() == "" ){
+		// 	alert('Please select either Rehabilitation or Physioteraphy');
+		// }else 
+		
+		if( $('#formphys_ncase').isValid({requiredFields: ''}, conf, true) ) {
 			saveForm_phys_ncase(function(){
 
 				$("#cancel_phys_ncase").data('oper','edit');
