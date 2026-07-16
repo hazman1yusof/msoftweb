@@ -191,6 +191,11 @@ function populate_otMain(obj){
     $('#mrn_otMain').val(obj.mrn);
     $("#episno_otMain").val(obj.latest_episno);
     $("#age_otMain").val(dob_age(obj.DOB));
+
+    ////jqGridAddNotesPreop
+    urlParam_AddNotesPreop.filterVal[0] = obj.mrn;
+	urlParam_AddNotesPreop.filterVal[1] = obj.latest_episno;
+	urlParam_AddNotesPreop.filterVal[2] = 'PREOPERATIVE';
     // $("#tab_otMain").collapse('hide');
 }
 

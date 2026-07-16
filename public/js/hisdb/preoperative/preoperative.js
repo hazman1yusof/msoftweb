@@ -321,7 +321,6 @@ function populate_preoperative(obj){
     urlParam_AddNotesPreop.filterVal[0] = obj.mrn;
 	urlParam_AddNotesPreop.filterVal[1] = obj.latest_episno;
 	urlParam_AddNotesPreop.filterVal[2] = 'PREOPERATIVE';
-	refreshGrid('#jqGridAddNotesPreop',urlParam_AddNotesPreop,'add_preop_save');
     
     // $("#tab_preoperative").collapse('hide');
 }
@@ -463,7 +462,7 @@ function getdata_preoperative(){
             button_state_preoperative('add');
             refreshGrid('#jqGridAddNotesPreop',urlParam_AddNotesPreop,'kosongkan');
         }
-        
+        refreshGrid('#jqGridAddNotesPreop',urlParam_AddNotesPreop,'add_preop_save');	
         if(!emptyobj_(data.iPesakit))$("#preop_iPesakit").val(data.iPesakit);
         textare_init_preoperative();
     });

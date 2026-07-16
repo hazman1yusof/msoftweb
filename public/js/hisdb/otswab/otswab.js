@@ -919,15 +919,12 @@ function populate_otswab(obj){
     // table jqGrid_specimen
     urlParam_otspecimen.filterVal[1] = obj.mrn;
 	urlParam_otspecimen.filterVal[2] = obj.latest_episno;
-    refreshGrid('#jqGrid_specimen',urlParam_otspecimen);
 
     ////jqGridAddNotesOtSwab
     urlParam_AddNotesOtSwab.filterVal[0] = obj.mrn;
 	urlParam_AddNotesOtSwab.filterVal[1] = obj.latest_episno;
 	urlParam_AddNotesOtSwab.filterVal[2] = 'OTSWAB';
-	refreshGrid('#jqGridAddNotesOtSwab',urlParam_AddNotesOtSwab,'add_otSwab_save');
-    // urlParam_otswab.mrn = obj.mrn;
-    // urlParam_otswab.episno = obj.latest_episno;
+   
     
     // $("#tab_otswab").collapse('hide');
 }

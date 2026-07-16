@@ -445,7 +445,6 @@ function populate_oper_team(obj){
     urlParam_AddNotesOperTeam.filterVal[0] = obj.mrn;
 	urlParam_AddNotesOperTeam.filterVal[1] = obj.latest_episno;
 	urlParam_AddNotesOperTeam.filterVal[2] = 'OPER_TEAM';
-	refreshGrid('#jqGridAddNotesOperTeam',urlParam_AddNotesOperTeam,'add_operTeam_save');
     
     // $("#tab_oper_team").collapse('hide');
 }

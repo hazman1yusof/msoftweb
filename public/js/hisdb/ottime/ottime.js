@@ -311,7 +311,6 @@ function populate_ottime(obj){
     urlParam_AddNotesOtTime.filterVal[0] = obj.mrn;
 	urlParam_AddNotesOtTime.filterVal[1] = obj.latest_episno;
 	urlParam_AddNotesOtTime.filterVal[2] = 'OTTIME';
-	refreshGrid('#jqGridAddNotesOtTime',urlParam_AddNotesOtTime,'add_otTime_save');
     
     // $("#tab_ottime").collapse('hide');
 }

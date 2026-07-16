@@ -248,7 +248,7 @@ $(document).ready(function () {
 			onSelectRow:function(rowid, selected){
 				$('button#timer_stop').click();
 				$('#otMain_tab .top.menu .item').tab('change tab','preoperative');
-				refreshGrid('#jqGridAddNotesPreop',urlParam_AddNotesPreop,'add_preop_save');
+				// refreshGrid('#jqGridAddNotesPreop',urlParam_AddNotesPreop,'add_preop_save');
 
 				// button_state_preoperative('add');
 				// empty_preoperative();
@@ -293,70 +293,73 @@ $(document).ready(function () {
         let tab = $(this).data('tab');
         switch(tab){
             case 'preoperative':
+				$("#jqGridAddNotesPreop").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesPreop_c")[0].offsetWidth-$("#jqGridAddNotesPreop_c")[0].offsetLeft));
+
                 if($('#mrn_otMain').val() != ''){
                     getdata_preoperative();	
                 }  	
 
-				$("#jqGridAddNotesPreop").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesPreop_c")[0].offsetWidth-$("#jqGridAddNotesPreop_c")[0].offsetLeft));
 				refreshGrid('#jqGridAddNotesPreop',urlParam_AddNotesPreop);
                 break;
             case 'preoperativeDC':
+				$("#jqGridAddNotesPreopDC").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesPreopDC_c")[0].offsetWidth-$("#jqGridAddNotesPreopDC_c")[0].offsetLeft));
                 if($('#mrn_otMain').val() != ''){
                     getdata_preoperativeDC();
                 }
 
-				$("#jqGridAddNotesPreopDC").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesPreopDC_c")[0].offsetWidth-$("#jqGridAddNotesPreopDC_c")[0].offsetLeft));
 		        refreshGrid('#jqGridAddNotesPreopDC',urlParam_AddNotesPreopDC);	
                 break;
             case 'oper_team':
+				$("#jqGridAddNotesOperTeam").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesOperTeam_c")[0].offsetWidth-$("#jqGridAddNotesOperTeam_c")[0].offsetLeft));
                 if($('#mrn_otMain').val() != ''){
                     getdata_oper_team();
                 }
 
-				$("#jqGridAddNotesOperTeam").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesOperTeam_c")[0].offsetWidth-$("#jqGridAddNotesOperTeam_c")[0].offsetLeft));
 		        refreshGrid('#jqGridAddNotesOperTeam',urlParam_AddNotesOperTeam);	
                 break;
             case 'otswab':
                 $("#jqGrid_otswab").jqGrid('setGridWidth', Math.floor($("#jqGrid_otswab_c")[0].offsetWidth-$("#jqGrid_otswab_c")[0].offsetLeft-14));
 				$("#jqGrid_specimen").jqGrid('setGridWidth', Math.floor($("#jqGrid_specimen_c")[0].offsetWidth-$("#jqGrid_specimen_c")[0].offsetLeft-14));
 				$("#jqGridAddNotesOtSwab").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesOtSwab_c")[0].offsetWidth-$("#jqGridAddNotesOtSwab_c")[0].offsetLeft));
-				refreshGrid('#jqGrid_specimen',urlParam_otspecimen);
-		        refreshGrid('#jqGridAddNotesOtSwab',urlParam_AddNotesOtSwab);	
-
+				
                 if($('#mrn_otMain').val() != ''){
                     getdata_otswab();
                 }
+
+				refreshGrid("#jqGrid_otswab", urlParam_otswab);
+				refreshGrid('#jqGrid_specimen',urlParam_otspecimen);
+		        refreshGrid('#jqGridAddNotesOtSwab',urlParam_AddNotesOtSwab);	
 				
                 break;
             case 'ottime':
+				$("#jqGridAddNotesOtTime").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesOtTime_c")[0].offsetWidth-$("#jqGridAddNotesOtTime_c")[0].offsetLeft));
                 if($('#mrn_otMain').val() != ''){
                     getdata_ottime();
                 }
 
-				$("#jqGridAddNotesOtTime").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesOtTime_c")[0].offsetWidth-$("#jqGridAddNotesOtTime_c")[0].offsetLeft));
 		        refreshGrid('#jqGridAddNotesOtTime',urlParam_AddNotesOtTime);	
                 break;
             case 'otdischarge':
+				$("#jqGridAddNotesOtDischarge").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesOtDischarge_c")[0].offsetWidth-$("#jqGridAddNotesOtDischarge_c")[0].offsetLeft));
                 if($('#mrn_otMain').val() != ''){
                     getdata_otdischarge();
                 }
 
-				$("#jqGridAddNotesOtDischarge").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesOtDischarge_c")[0].offsetWidth-$("#jqGridAddNotesOtDischarge_c")[0].offsetLeft));
 		        refreshGrid('#jqGridAddNotesOtDischarge',urlParam_AddNotesOtDischarge);
                 break;
             case 'endoscopyNotes':
                 $('#endoscopyNotes .top.menu .item').tab('change tab','endoscopyStomach');
+				$("#jqGridAddNotesEndoStomach").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesEndoStomach_c")[0].offsetWidth-$("#jqGridAddNotesEndoStomach_c")[0].offsetLeft));
                 getdata_endoscopyStomach();
 
-				$("#jqGridAddNotesEndoStomach").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesEndoStomach_c")[0].offsetWidth-$("#jqGridAddNotesEndoStomach_c")[0].offsetLeft));
 		        refreshGrid('#jqGridAddNotesEndoStomach',urlParam_AddNotesEndoStomach);
                 break;
             case 'otmanagement_div':
+				$("#jqGridAddNotesOperRec").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesOperRec_c")[0].offsetWidth-$("#jqGridAddNotesOperRec_c")[0].offsetLeft));
                 if($('#mrn_otMain').val() != ''){
                     getdata_otmgmt();
                 }
 
-				$("#jqGridAddNotesOperRec").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesOperRec_c")[0].offsetWidth-$("#jqGridAddNotesOperRec_c")[0].offsetLeft));
 		        refreshGrid('#jqGridAddNotesOperRec',urlParam_AddNotesOperRec);
                 break;
         }

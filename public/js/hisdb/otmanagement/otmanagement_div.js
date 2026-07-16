@@ -337,8 +337,6 @@ function populate_otmgmt_div(obj){
     urlParam_AddNotesOperRec.filterVal[0] = obj.mrn;
 	urlParam_AddNotesOperRec.filterVal[1] = obj.latest_episno;
 	urlParam_AddNotesOperRec.filterVal[2] = 'OPERATION_RECORD';
-	refreshGrid('#jqGridAddNotesOperRec',urlParam_AddNotesOperRec,'add_operRec_save');
-
     
     $("#tab_otmgmt_div").collapse('hide');
 }
@@ -470,7 +468,7 @@ function getdata_otmgmt(){
             // $('#form_otmgmt_div textarea#procedure').val(data.apptbook.procedure);
             // $('#form_otmgmt_div textarea#diagnosis').val(data.apptbook.diagnosis);
         }
-        
+
         autoinsert_rowdata("#form_otmgmt_div",data.apptbook);
         autoinsert_rowdata("#form_otmgmt_div",data.episode);
         $('#timestarted').val(data.start);

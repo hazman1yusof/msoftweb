@@ -306,7 +306,6 @@ function populate_preoperativeDC(obj){
     urlParam_AddNotesPreopDC.filterVal[0] = obj.mrn;
 	urlParam_AddNotesPreopDC.filterVal[1] = obj.latest_episno;
 	urlParam_AddNotesPreopDC.filterVal[2] = 'PREOPERATIVEDC';
-	refreshGrid('#jqGridAddNotesPreopDC',urlParam_AddNotesPreopDC,'add_preopDC_save');
     
     // $("#tab_preoperativeDC").collapse('hide');
 }

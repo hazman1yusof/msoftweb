@@ -36,13 +36,13 @@ $(document).ready(function (){
         
         switch(tab){
             case 'endoscopyStomach':
-                getdata_endoscopyStomach();
                 $("#jqGridAddNotesEndoStomach").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesEndoStomach_c")[0].offsetWidth-$("#jqGridAddNotesEndoStomach_c")[0].offsetLeft));
+                getdata_endoscopyStomach();
 		        refreshGrid('#jqGridAddNotesEndoStomach',urlParam_AddNotesEndoStomach);
                 break;
             case 'endoscopyIntestine':
-                getdata_endoscopyIntestine();
                 $("#jqGridAddNotesEndoIntestine").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesEndoIntestine_c")[0].offsetWidth-$("#jqGridAddNotesEndoIntestine_c")[0].offsetLeft));
+                getdata_endoscopyIntestine();
 		        refreshGrid('#jqGridAddNotesEndoIntestine',urlParam_AddNotesEndoIntestine);
                 break;
         }
@@ -135,13 +135,11 @@ function populate_endoscopyNotes(obj){
     urlParam_AddNotesEndoStomach.filterVal[0] = obj.mrn;
 	urlParam_AddNotesEndoStomach.filterVal[1] = obj.latest_episno;
 	urlParam_AddNotesEndoStomach.filterVal[2] = 'ENDO_STOMACH';
-	refreshGrid('#jqGridAddNotesEndoStomach',urlParam_AddNotesEndoStomach,'add_endoStomach_save');
 
     ////jqGridAddNotesEndoIntestine
     urlParam_AddNotesEndoIntestine.filterVal[0] = obj.mrn;
 	urlParam_AddNotesEndoIntestine.filterVal[1] = obj.latest_episno;
 	urlParam_AddNotesEndoIntestine.filterVal[2] = 'ENDO_INTESTINE';
-	refreshGrid('#jqGridAddNotesEndoIntestine',urlParam_AddNotesEndoIntestine,'add_endoIntestine_save');
     
     $("#tab_endoscopyNotes").collapse('hide');
 }

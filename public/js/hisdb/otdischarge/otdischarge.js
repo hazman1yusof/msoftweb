@@ -305,7 +305,6 @@ function populate_otdischarge(obj){
     urlParam_AddNotesOtDischarge.filterVal[0] = obj.mrn;
 	urlParam_AddNotesOtDischarge.filterVal[1] = obj.latest_episno;
 	urlParam_AddNotesOtDischarge.filterVal[2] = 'OTDISCHARGE';
-	refreshGrid('#jqGridAddNotesOtDischarge',urlParam_AddNotesOtDischarge,'add_otDischarge_save');
     
     $("#tab_otdischarge").collapse('hide');
 }
