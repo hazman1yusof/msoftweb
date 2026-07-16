@@ -36,7 +36,7 @@
             <div class="three wide column" style="position: absolute;
                         left: 10px;
                         top: 30px;">
-                <table id="docNoteAppt_date_tbl" class="ui celled table" style="min-width: 330px;">
+                <table id="docNoteAppt_date_tbl" class="ui celled table" style="min-width: 310px;">
                     <thead>
                         <tr>
                             <th class="scope">mrn</th>
