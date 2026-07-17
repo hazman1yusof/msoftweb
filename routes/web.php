@@ -1763,6 +1763,12 @@ Route::get('/radiology_iframe','rehab\radiologyController@iframe');
 
 // Route::post('/ptcare_doctornote_transaction_save', "rehab\RehabController@transaction_save");
 
+//// Neurorobotic page ////
+Route::get('/neurorobotic','rehab\NeuroroboticController@show');
+Route::get('/neurorobotic/table','rehab\NeuroroboticController@table');
+Route::post('/neurorobotic/form','rehab\NeuroroboticController@form');
+Route::get('/neurorobotic/neurorobotic_chart','rehab\NeuroroboticController@neurorobotic_chart');
+
 //// Physiotherapy page ////
 Route::get('/sixMinWalking','rehab\SixMinWalkingController@show');
 Route::get('/sixMinWalking/table','rehab\SixMinWalkingController@table');

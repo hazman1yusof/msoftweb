@@ -309,10 +309,25 @@ $(document).ready(function () {
     $('#rehabMain_tab .top.menu .item').tab({'onVisible': function (){
         let tab = $(this).data('tab');
         // console.log(tab);
-
+        
         switch(tab){
             case 'rehabilitation':
                 getdata_physio();
+                break;
+            case 'neurorobotic':
+                var urlparam_tbl_neurorobotic = {
+                    action: 'get_datetime_neurorobotic',
+                    mrn: $("#mrn_rehabMain").val(),
+                    episno: $("#episno_rehabMain").val()
+                }
+                
+                tbl_neurorobotic_date.ajax.url("./neurorobotic/table?"+$.param(urlparam_tbl_neurorobotic)).load(function (data){
+                    emptyFormdata_div("#formNeurorobotic",['#mrn_rehabMain','#episno_rehabMain']);
+                    $('#tbl_neurorobotic_date tbody tr:eq(0)').click(); // to select first row
+                });
+                
+                // $('#tbl_neurorobotic_date').DataTable().ajax.reload();
+                getdata_neurorobotic();
                 break;
             case 'physiotherapy':
                 $('#physioTabs .top.menu .item').tab('change tab','sixMinWalking');
@@ -332,7 +347,6 @@ $(document).ready(function () {
                 break;
             case 'occupTherapy':
                 $('#occupTherapy .top.menu .item').tab('change tab','notes');
-
                 var urlparam_datetimeNotes_tbl = {
                     action: 'get_table_datetimeNotes',
                     mrn: $("#mrn_rehabMain").val(),
@@ -341,16 +355,16 @@ $(document).ready(function () {
                 
                 datetimeNotes_tbl.ajax.url("./occupTherapy_notes/table?"+$.param(urlparam_datetimeNotes_tbl)).load(function (data){
                     emptyFormdata_div("#formOccupTherapyUpperExtremity",['#mrn_rehabMain','#episno_rehabMain','#idno_upperExtremity','#idno_rof','#rof_impressions']);
-                    $('#datetimeNotes_tbl tbody tr:eq(0)').click();  // to select first row
+                    $('#datetimeNotes_tbl tbody tr:eq(0)').click(); // to select first row
                 });
                 
                 populate_notes_getdata();
                 break;
         }
     }});
-
+    
     $("#jqGrid").jqGrid('setGroupHeaders', {
-        useColSpanStyle: true, 
+        useColSpanStyle: true,
         groupHeaders: [
             { startColumnName: 'reff_rehab', numberOfColumns: 2, titleText: '<em>Register Dept</em>' },
         ]

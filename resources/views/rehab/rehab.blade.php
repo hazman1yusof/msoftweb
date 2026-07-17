@@ -314,8 +314,9 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/transaction_phys.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/physiotherapy/physioterapy.js?v=1.6') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/physiotherapy/physioterapy_ncase.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/rehab_main.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/rehab_main.js?v=1.3') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/physio.js?v=1.5') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/neurorobotic/neurorobotic.js?v=1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/sixMinWalking.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/bergBalanceTest.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/musculoAssessment.js?v=1.2') }}"></script>
