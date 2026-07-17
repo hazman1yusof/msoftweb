@@ -291,8 +291,8 @@ function getdata_physio(){
 	
 	var postobj = {
 		_token: $('#_token').val(),
-		mrn_rehabMain: $('#mrn_rehabMain').val(),
-		episno_rehabMain: $("#episno_rehabMain").val(),
+		mrn: $('#mrn_rehabMain').val(),
+		episno: $("#episno_rehabMain").val(),
 	};
 	
 	$.post("./ptcare_phys/form?"+$.param(phys_ncase_urlparam), $.param(postobj), function (data){

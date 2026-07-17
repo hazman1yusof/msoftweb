@@ -204,75 +204,47 @@
                         }
                     },
                     { text: '', alignment: 'left', fontSize: 9, pageBreak: 'after' },
-                    { text: 'SUBJECTIVE AX\n\n', fontSize: 10, bold: true, decoration: 'underline' },
                     {
-                        text: [
-                            { text: '1) PATIENT COMPLAINT\n\n' },
-                            { text: `{!!$patrehabperkeso->patComplaint!!}`, decoration: 'underline' },
-                        ],
-                        style: 'pagecontent',
+                        style: 'tableExample',
+                        table: {
+                            headerRows: 1,
+                            widths: [70,'*'], // panjang standard dia 515
+                            body: [
+                                [
+                                    { text: 'SUBJECTIVE AX:' },
+                                    { text: `{!!$patrehabperkeso->subjective!!}` },
+                                ],
+                            ]
+                        },
+                        layout: 'noBorders',
                     },
-                    {
-                        text: [
-                            { text: '2) PATIENT HX\n\n' },
-                            { text: `{!!$patrehabperkeso->patHX!!}`, decoration: 'underline' },
-                        ],
-                        style: 'pagecontent',
-                    },
-                    { text: '\u200B\t3) INITIAL & FINAL ASSESSMENT', fontSize: 9 },
+                    { text: '\u200B\t1) PATIENT COMPLAINT:', fontSize: 9 },
                     {
                         style: 'tableExample1',
                         table: {
                             headerRows: 1,
-                            // widths: [150,150,150],
-                            widths: [230,230],
+                            widths: [150,150,150],
                             body: [
                                 [
                                     @if(!empty($patrehabperkeso->initialDate))
-                                        {
-                                            text: [
-                                                { text: 'INITIAL ASSESSMENT\n' },
-                                                { text: 'Date: \u200B\t{{\Carbon\Carbon::createFromFormat('Y-m-d',$patrehabperkeso->initialDate)->format('d-m-Y')}}' },
-                                            ],
-                                        },
+                                        { text: 'Initial Date: \u200B\t{{\Carbon\Carbon::createFromFormat('Y-m-d',$patrehabperkeso->initialDate)->format('d-m-Y')}}' },
                                     @else
-                                        {
-                                            text: [
-                                                { text: 'INITIAL ASSESSMENT\n' },
-                                                { text: 'Date: ' },
-                                            ],
-                                        },
+                                        { text: 'Initial Date: ' },
                                     @endif
-                                    
-                                    // @if(!empty($patrehabperkeso->progressDate))
-                                    //     { text: 'Progress Date: \u200B\t{{\Carbon\Carbon::createFromFormat('Y-m-d',$patrehabperkeso->progressDate)->format('d-m-Y')}}' },
-                                    // @else
-                                    //     { text: 'Progress Date: ' },
-                                    // @endif
-                                    
-                                    @if(!empty($patrehabperkeso->finalDate))
-                                        {
-                                            text: [
-                                                { text: 'FINAL ASSESSMENT\n' },
-                                                { text: 'Date: \u200B\t{{\Carbon\Carbon::createFromFormat('Y-m-d',$patrehabperkeso->finalDate)->format('d-m-Y')}}' },
-                                            ],
-                                        },
+                                    @if(!empty($patrehabperkeso->progressDate))
+                                        { text: 'Progress Date: \u200B\t{{\Carbon\Carbon::createFromFormat('Y-m-d',$patrehabperkeso->progressDate)->format('d-m-Y')}}' },
                                     @else
-                                        {
-                                            text: [
-                                                { text: 'FINAL ASSESSMENT\n' },
-                                                { text: 'Date: ' },
-                                            ],
-                                        },
+                                        { text: 'Progress Date: ' },
+                                    @endif
+                                    @if(!empty($patrehabperkeso->finalDate))
+                                        { text: 'Final Date: \u200B\t{{\Carbon\Carbon::createFromFormat('Y-m-d',$patrehabperkeso->finalDate)->format('d-m-Y')}}' },
+                                    @else
+                                        { text: 'Final Date: ' },
                                     @endif
                                 ],
                                 [
-                                    @if(!empty($patrehabperkeso->initialComplaint))
-                                        { text: `{!!$patrehabperkeso->initialComplaint!!}` },
-                                    @else
-                                        { text: '\n\n\n' },
-                                    @endif
-                                    // { text: `{!!$patrehabperkeso->progressComplaint!!}` },
+                                    { text: `{!!$patrehabperkeso->initialComplaint!!}` },
+                                    { text: `{!!$patrehabperkeso->progressComplaint!!}` },
                                     { text: `{!!$patrehabperkeso->finalComplaint!!}` },
                                 ],
                             ]
@@ -284,20 +256,47 @@
                         },
                     },
                     {
-                        text: [
-                            { text: '4) PATIENT EXPECTATION\n\n' },
-                            { text: `{!!$patrehabperkeso->patExpectation!!}`, decoration: 'underline' },
-                        ],
-                        style: 'pagecontent',
+                        style: 'tableExample',
+                        table: {
+                            headerRows: 1,
+                            widths: [140,'*'], // panjang standard dia 515
+                            body: [
+                                [
+                                    { text: '\u200B\t2) PATIENT EXPECTATION:' },
+                                    { text: `{!!$patrehabperkeso->patExpectation!!}` },
+                                ],
+                            ]
+                        },
+                        layout: 'noBorders',
                     },
                     {
-                        text: [
-                            { text: '5) FAMILY EXPECTATION\n\n' },
-                            { text: `{!!$patrehabperkeso->familyExpectation!!}`, decoration: 'underline' },
-                        ],
-                        style: 'pagecontent',
+                        style: 'tableExample',
+                        table: {
+                            headerRows: 1,
+                            widths: [140,'*'], // panjang standard dia 515
+                            body: [
+                                [
+                                    { text: '\u200B\t3) FAMILY EXPECTATION:' },
+                                    { text: `{!!$patrehabperkeso->familyExpectation!!}` },
+                                ],
+                            ]
+                        },
+                        layout: 'noBorders',
                     },
-                    { text: 'OBJECTIVE AX\n\n', fontSize: 10, bold: true, decoration: 'underline' },
+                    {
+                        style: 'tableExample',
+                        table: {
+                            headerRows: 1,
+                            widths: [70,'*'], // panjang standard dia 515
+                            body: [
+                                [
+                                    { text: 'OBJECTIVE AX:' },
+                                    { text: `{!!$patrehabperkeso->objective!!}` },
+                                ],
+                            ]
+                        },
+                        layout: 'noBorders',
+                    },
                     { text: '\u200B\t1) BODY CHART:', fontSize: 9 },
                     {
                         style: 'tableExample1',
@@ -307,65 +306,37 @@
                             body: [
                                 [
                                     { text: 'A) Pain Score: ' },
-                                    {
-                                        text: [
-                                            { text: '{{$neuroassessment->painscore}}/10', alignment: 'left' },
-                                            { text: '\n\n{{$neuroassessment->painscore2}}/10', alignment: 'left' },
-                                        ],
-                                    },
+                                    { text: '{{$neuroassessment->painscore}}/10', alignment: 'left' },
                                 ],
                                 [
                                     { text: 'B) Type of Pain: ' },
-                                    {
-                                        text: [
-                                            { text: '{{$neuroassessment->painType}}', alignment: 'left' },
-                                            { text: '\n\n{{$neuroassessment->painType2}}', alignment: 'left' },
-                                        ],
-                                    },
+                                    { text: '{{$neuroassessment->painType}}', alignment: 'left' },
                                 ],
                                 [
                                     { text: 'C) Severity: ' },
-                                    {
-                                        text: [
-                                            { text: '{{$neuroassessment->severityBC}}', alignment: 'left' },
-                                            { text: '\n\n{{$neuroassessment->severityBC2}}', alignment: 'left' },
-                                        ],
-                                    },
+                                    { text: '{{$neuroassessment->severityBC}}', alignment: 'left' },
                                 ],
                                 [
                                     { text: 'D) Irritability: ' },
-                                    {
-                                        text: [
-                                            { text: '{{$neuroassessment->irritabilityBC}}', alignment: 'left' },
-                                            { text: '\n\n{{$neuroassessment->irritabilityBC2}}', alignment: 'left' },
-                                        ],
-                                    },
+                                    { text: '{{$neuroassessment->irritabilityBC}}', alignment: 'left' },
                                 ],
                                 [
                                     { text: 'E) Location of Pain: ' },
-                                    
-                                    // @if($neuroassessment->painLocation == 'Deep')
-                                    //     { text: '[ √ ] Deep \u200B\t [\u200B\t] Superficial', alignment: 'left' },
-                                    // @elseif($neuroassessment->painLocation == 'Superficial')
-                                    //     { text: '[\u200B\t] Deep \u200B\t [ √ ] Superficial', alignment: 'left' },
-                                    // @else
-                                    //     { text: '[\u200B\t] Deep \u200B\t [\u200B\t] Superficial', alignment: 'left' },
-                                    // @endif
-                                    
-                                    {
-                                        text: [
-                                            { text: '{{$neuroassessment->painLocation}}', alignment: 'left' },
-                                            { text: '\n\n{{$neuroassessment->painLocation2}}', alignment: 'left' },
-                                        ],
-                                    },
+                                    @if($neuroassessment->painLocation == 'Deep')
+                                        { text: '[ √ ] Deep \u200B\t [\u200B\t] Superficial', alignment: 'left' },
+                                    @elseif($neuroassessment->painLocation == 'Superficial')
+                                        { text: '[\u200B\t] Deep \u200B\t [ √ ] Superficial', alignment: 'left' },
+                                    @else
+                                        { text: '[\u200B\t] Deep \u200B\t [\u200B\t] Superficial', alignment: 'left' },
+                                    @endif
                                 ],
                                 [
                                     { text: 'F) Subluxation: ' },
-                                    { text: `{!!$neuroassessment->subluxation!!}`, alignment: 'left' },
+                                    { text: '{{$neuroassessment->subluxation}}', alignment: 'left' },
                                 ],
                                 [
                                     { text: 'G) Palpation: ' },
-                                    { text: `{!!$neuroassessment->palpationBC!!}`, alignment: 'left' },
+                                    { text: '{{$neuroassessment->palpationBC}}', alignment: 'left' },
                                 ],
                             ]
                         },
@@ -507,14 +478,13 @@
                         style: 'tableExample1',
                         table: {
                             headerRows: 1,
-                            // widths: [46,75,50,50,50,50,50,50],
-                            widths: [50,80,75,75,75,75],
+                            widths: [46,75,50,50,50,50,50,50],
                             body: [
                                 [
                                     { text: 'JOINT ', style: 'tableHeader', alignment: 'left' },
                                     { text: 'MOVEMENT', style: 'tableHeader', alignment: 'left' },
                                     { text: 'INITIAL', style: 'tableHeader', alignment: 'left', colSpan: 2 },{},
-                                    // { text: 'PROGRESS', style: 'tableHeader', alignment: 'left', colSpan: 2 },{},
+                                    { text: 'PROGRESS', style: 'tableHeader', alignment: 'left', colSpan: 2 },{},
                                     { text: 'FINAL', style: 'tableHeader', alignment: 'left', colSpan: 2 },{},
                                 ],
                                 [
@@ -522,8 +492,8 @@
                                     { text: '', style: 'tableHeader' },
                                     { text: 'P', style: 'tableHeader', alignment: 'left' },
                                     { text: 'A', style: 'tableHeader', alignment: 'left' },
-                                    // { text: 'P', style: 'tableHeader', alignment: 'left' },
-                                    // { text: 'A', style: 'tableHeader', alignment: 'left' },
+                                    { text: 'P', style: 'tableHeader', alignment: 'left' },
+                                    { text: 'A', style: 'tableHeader', alignment: 'left' },
                                     { text: 'P', style: 'tableHeader', alignment: 'left' },
                                     { text: 'A', style: 'tableHeader', alignment: 'left' },
                                 ],
@@ -532,8 +502,8 @@
                                     { text: 'FLEXION' },
                                     { text: '{{$romaffectedside->aShlderFlxInitP}}' },
                                     { text: '{{$romaffectedside->aShlderFlxInitA}}' },
-                                    // { text: '{{$romaffectedside->aShlderFlxProgP}}' },
-                                    // { text: '{{$romaffectedside->aShlderFlxProgA}}' },
+                                    { text: '{{$romaffectedside->aShlderFlxProgP}}' },
+                                    { text: '{{$romaffectedside->aShlderFlxProgA}}' },
                                     { text: '{{$romaffectedside->aShlderFlxFinP}}' },
                                     { text: '{{$romaffectedside->aShlderFlxFinA}}' },
                                 ],
@@ -542,8 +512,8 @@
                                     { text: 'EXTENSION' },
                                     { text: '{{$romaffectedside->aShlderExtInitP}}' },
                                     { text: '{{$romaffectedside->aShlderExtInitA}}' },
-                                    // { text: '{{$romaffectedside->aShlderExtProgP}}' },
-                                    // { text: '{{$romaffectedside->aShlderExtProgA}}' },
+                                    { text: '{{$romaffectedside->aShlderExtProgP}}' },
+                                    { text: '{{$romaffectedside->aShlderExtProgA}}' },
                                     { text: '{{$romaffectedside->aShlderExtFinP}}' },
                                     { text: '{{$romaffectedside->aShlderExtFinA}}' },
                                 ],
@@ -552,8 +522,8 @@
                                     { text: 'ABDUCTION' },
                                     { text: '{{$romaffectedside->aShlderAbdInitP}}' },
                                     { text: '{{$romaffectedside->aShlderAbdInitA}}' },
-                                    // { text: '{{$romaffectedside->aShlderAbdProgP}}' },
-                                    // { text: '{{$romaffectedside->aShlderAbdProgA}}' },
+                                    { text: '{{$romaffectedside->aShlderAbdProgP}}' },
+                                    { text: '{{$romaffectedside->aShlderAbdProgA}}' },
                                     { text: '{{$romaffectedside->aShlderAbdFinP}}' },
                                     { text: '{{$romaffectedside->aShlderAbdFinA}}' },
                                 ],
@@ -562,8 +532,8 @@
                                     { text: 'ADDUCTION' },
                                     { text: '{{$romaffectedside->aShlderAddInitP}}' },
                                     { text: '{{$romaffectedside->aShlderAddInitA}}' },
-                                    // { text: '{{$romaffectedside->aShlderAddProgP}}' },
-                                    // { text: '{{$romaffectedside->aShlderAddProgA}}' },
+                                    { text: '{{$romaffectedside->aShlderAddProgP}}' },
+                                    { text: '{{$romaffectedside->aShlderAddProgA}}' },
                                     { text: '{{$romaffectedside->aShlderAddFinP}}' },
                                     { text: '{{$romaffectedside->aShlderAddFinA}}' },
                                 ],
@@ -572,8 +542,8 @@
                                     { text: 'INT. ROT' },
                                     { text: '{{$romaffectedside->aShlderIntRotInitP}}' },
                                     { text: '{{$romaffectedside->aShlderIntRotInitA}}' },
-                                    // { text: '{{$romaffectedside->aShlderIntRotProgP}}' },
-                                    // { text: '{{$romaffectedside->aShlderIntRotProgA}}' },
+                                    { text: '{{$romaffectedside->aShlderIntRotProgP}}' },
+                                    { text: '{{$romaffectedside->aShlderIntRotProgA}}' },
                                     { text: '{{$romaffectedside->aShlderIntRotFinP}}' },
                                     { text: '{{$romaffectedside->aShlderIntRotFinA}}' },
                                 ],
@@ -582,8 +552,8 @@
                                     { text: 'EXT. ROT' },
                                     { text: '{{$romaffectedside->aShlderExtRotInitP}}' },
                                     { text: '{{$romaffectedside->aShlderExtRotInitA}}' },
-                                    // { text: '{{$romaffectedside->aShlderExtRotProgP}}' },
-                                    // { text: '{{$romaffectedside->aShlderExtRotProgA}}' },
+                                    { text: '{{$romaffectedside->aShlderExtRotProgP}}' },
+                                    { text: '{{$romaffectedside->aShlderExtRotProgA}}' },
                                     { text: '{{$romaffectedside->aShlderExtRotFinP}}' },
                                     { text: '{{$romaffectedside->aShlderExtRotFinA}}' },
                                 ],
@@ -592,8 +562,8 @@
                                     { text: 'FLEXION' },
                                     { text: '{{$romaffectedside->aElbowFlxInitP}}' },
                                     { text: '{{$romaffectedside->aElbowFlxInitA}}' },
-                                    // { text: '{{$romaffectedside->aElbowFlxProgP}}' },
-                                    // { text: '{{$romaffectedside->aElbowFlxProgA}}' },
+                                    { text: '{{$romaffectedside->aElbowFlxProgP}}' },
+                                    { text: '{{$romaffectedside->aElbowFlxProgA}}' },
                                     { text: '{{$romaffectedside->aElbowFlxFinP}}' },
                                     { text: '{{$romaffectedside->aElbowFlxFinA}}' },
                                 ],
@@ -602,8 +572,8 @@
                                     { text: 'EXTENSION' },
                                     { text: '{{$romaffectedside->aElbowExtInitP}}' },
                                     { text: '{{$romaffectedside->aElbowExtInitA}}' },
-                                    // { text: '{{$romaffectedside->aElbowExtProgP}}' },
-                                    // { text: '{{$romaffectedside->aElbowExtProgA}}' },
+                                    { text: '{{$romaffectedside->aElbowExtProgP}}' },
+                                    { text: '{{$romaffectedside->aElbowExtProgA}}' },
                                     { text: '{{$romaffectedside->aElbowExtFinP}}' },
                                     { text: '{{$romaffectedside->aElbowExtFinA}}' },
                                 ],
@@ -612,8 +582,8 @@
                                     { text: 'PRONATION' },
                                     { text: '{{$romaffectedside->aElbowProInitP}}' },
                                     { text: '{{$romaffectedside->aElbowProInitA}}' },
-                                    // { text: '{{$romaffectedside->aElbowProProgP}}' },
-                                    // { text: '{{$romaffectedside->aElbowProProgA}}' },
+                                    { text: '{{$romaffectedside->aElbowProProgP}}' },
+                                    { text: '{{$romaffectedside->aElbowProProgA}}' },
                                     { text: '{{$romaffectedside->aElbowProFinP}}' },
                                     { text: '{{$romaffectedside->aElbowProFinA}}' },
                                 ],
@@ -622,8 +592,8 @@
                                     { text: 'SUPINATION' },
                                     { text: '{{$romaffectedside->aElbowSupInitP}}' },
                                     { text: '{{$romaffectedside->aElbowSupInitA}}' },
-                                    // { text: '{{$romaffectedside->aElbowSupProgP}}' },
-                                    // { text: '{{$romaffectedside->aElbowSupProgA}}' },
+                                    { text: '{{$romaffectedside->aElbowSupProgP}}' },
+                                    { text: '{{$romaffectedside->aElbowSupProgA}}' },
                                     { text: '{{$romaffectedside->aElbowSupFinP}}' },
                                     { text: '{{$romaffectedside->aElbowSupFinA}}' },
                                 ],
@@ -632,8 +602,8 @@
                                     { text: 'FLEXION' },
                                     { text: '{{$romaffectedside->aWristFlxInitP}}' },
                                     { text: '{{$romaffectedside->aWristFlxInitA}}' },
-                                    // { text: '{{$romaffectedside->aWristFlxProgP}}' },
-                                    // { text: '{{$romaffectedside->aWristFlxProgA}}' },
+                                    { text: '{{$romaffectedside->aWristFlxProgP}}' },
+                                    { text: '{{$romaffectedside->aWristFlxProgA}}' },
                                     { text: '{{$romaffectedside->aWristFlxFinP}}' },
                                     { text: '{{$romaffectedside->aWristFlxFinA}}' },
                                 ],
@@ -642,8 +612,8 @@
                                     { text: 'EXTENSION' },
                                     { text: '{{$romaffectedside->aWristExtInitP}}' },
                                     { text: '{{$romaffectedside->aWristExtInitA}}' },
-                                    // { text: '{{$romaffectedside->aWristExtProgP}}' },
-                                    // { text: '{{$romaffectedside->aWristExtProgA}}' },
+                                    { text: '{{$romaffectedside->aWristExtProgP}}' },
+                                    { text: '{{$romaffectedside->aWristExtProgA}}' },
                                     { text: '{{$romaffectedside->aWristExtFinP}}' },
                                     { text: '{{$romaffectedside->aWristExtFinA}}' },
                                 ],
@@ -652,8 +622,8 @@
                                     { text: 'RADIAL DEVIATION' },
                                     { text: '{{$romaffectedside->aWristRadInitP}}' },
                                     { text: '{{$romaffectedside->aWristRadInitA}}' },
-                                    // { text: '{{$romaffectedside->aWristRadProgP}}' },
-                                    // { text: '{{$romaffectedside->aWristRadProgA}}' },
+                                    { text: '{{$romaffectedside->aWristRadProgP}}' },
+                                    { text: '{{$romaffectedside->aWristRadProgA}}' },
                                     { text: '{{$romaffectedside->aWristRadFinP}}' },
                                     { text: '{{$romaffectedside->aWristRadFinA}}' },
                                 ],
@@ -662,8 +632,8 @@
                                     { text: 'ULNAR DEVIATION' },
                                     { text: '{{$romaffectedside->aWristUlnarInitP}}' },
                                     { text: '{{$romaffectedside->aWristUlnarInitA}}' },
-                                    // { text: '{{$romaffectedside->aWristUlnarProgP}}' },
-                                    // { text: '{{$romaffectedside->aWristUlnarProgA}}' },
+                                    { text: '{{$romaffectedside->aWristUlnarProgP}}' },
+                                    { text: '{{$romaffectedside->aWristUlnarProgA}}' },
                                     { text: '{{$romaffectedside->aWristUlnarFinP}}' },
                                     { text: '{{$romaffectedside->aWristUlnarFinA}}' },
                                 ],
@@ -672,8 +642,8 @@
                                     { text: 'FLEXION' },
                                     { text: '{{$romaffectedside->aHipFlxInitP}}' },
                                     { text: '{{$romaffectedside->aHipFlxInitA}}' },
-                                    // { text: '{{$romaffectedside->aHipFlxProgP}}' },
-                                    // { text: '{{$romaffectedside->aHipFlxProgA}}' },
+                                    { text: '{{$romaffectedside->aHipFlxProgP}}' },
+                                    { text: '{{$romaffectedside->aHipFlxProgA}}' },
                                     { text: '{{$romaffectedside->aHipFlxFinP}}' },
                                     { text: '{{$romaffectedside->aHipFlxFinA}}' },
                                 ],
@@ -682,8 +652,8 @@
                                     { text: 'EXTENSION' },
                                     { text: '{{$romaffectedside->aHipExtInitP}}' },
                                     { text: '{{$romaffectedside->aHipExtInitA}}' },
-                                    // { text: '{{$romaffectedside->aHipExtProgP}}' },
-                                    // { text: '{{$romaffectedside->aHipExtProgA}}' },
+                                    { text: '{{$romaffectedside->aHipExtProgP}}' },
+                                    { text: '{{$romaffectedside->aHipExtProgA}}' },
                                     { text: '{{$romaffectedside->aHipExtFinP}}' },
                                     { text: '{{$romaffectedside->aHipExtFinA}}' },
                                 ],
@@ -692,8 +662,8 @@
                                     { text: 'ABDUCTION' },
                                     { text: '{{$romaffectedside->aHipAbdInitP}}' },
                                     { text: '{{$romaffectedside->aHipAbdInitA}}' },
-                                    // { text: '{{$romaffectedside->aHipAbdProgP}}' },
-                                    // { text: '{{$romaffectedside->aHipAbdProgA}}' },
+                                    { text: '{{$romaffectedside->aHipAbdProgP}}' },
+                                    { text: '{{$romaffectedside->aHipAbdProgA}}' },
                                     { text: '{{$romaffectedside->aHipAbdFinP}}' },
                                     { text: '{{$romaffectedside->aHipAbdFinA}}' },
                                 ],
@@ -702,8 +672,8 @@
                                     { text: 'ADDUCTION' },
                                     { text: '{{$romaffectedside->aHipAddInitP}}' },
                                     { text: '{{$romaffectedside->aHipAddInitA}}' },
-                                    // { text: '{{$romaffectedside->aHipAddProgP}}' },
-                                    // { text: '{{$romaffectedside->aHipAddProgA}}' },
+                                    { text: '{{$romaffectedside->aHipAddProgP}}' },
+                                    { text: '{{$romaffectedside->aHipAddProgA}}' },
                                     { text: '{{$romaffectedside->aHipAddFinP}}' },
                                     { text: '{{$romaffectedside->aHipAddFinA}}' },
                                 ],
@@ -712,8 +682,8 @@
                                     { text: 'INT. ROT' },
                                     { text: '{{$romaffectedside->aHipIntRotInitP}}' },
                                     { text: '{{$romaffectedside->aHipIntRotInitA}}' },
-                                    // { text: '{{$romaffectedside->aHipIntRotProgP}}' },
-                                    // { text: '{{$romaffectedside->aHipIntRotProgA}}' },
+                                    { text: '{{$romaffectedside->aHipIntRotProgP}}' },
+                                    { text: '{{$romaffectedside->aHipIntRotProgA}}' },
                                     { text: '{{$romaffectedside->aHipIntRotFinP}}' },
                                     { text: '{{$romaffectedside->aHipIntRotFinA}}' },
                                 ],
@@ -722,8 +692,8 @@
                                     { text: 'EXT. ROT' },
                                     { text: '{{$romaffectedside->aHipExtRotInitP}}' },
                                     { text: '{{$romaffectedside->aHipExtRotInitA}}' },
-                                    // { text: '{{$romaffectedside->aHipExtRotProgP}}' },
-                                    // { text: '{{$romaffectedside->aHipExtRotProgA}}' },
+                                    { text: '{{$romaffectedside->aHipExtRotProgP}}' },
+                                    { text: '{{$romaffectedside->aHipExtRotProgA}}' },
                                     { text: '{{$romaffectedside->aHipExtRotFinP}}' },
                                     { text: '{{$romaffectedside->aHipExtRotFinA}}' },
                                 ],
@@ -732,8 +702,8 @@
                                     { text: 'EXTENSION' },
                                     { text: '{{$romaffectedside->aKneeExtInitP}}' },
                                     { text: '{{$romaffectedside->aKneeExtInitA}}' },
-                                    // { text: '{{$romaffectedside->aKneeExtProgP}}' },
-                                    // { text: '{{$romaffectedside->aKneeExtProgA}}' },
+                                    { text: '{{$romaffectedside->aKneeExtProgP}}' },
+                                    { text: '{{$romaffectedside->aKneeExtProgA}}' },
                                     { text: '{{$romaffectedside->aKneeExtFinP}}' },
                                     { text: '{{$romaffectedside->aKneeExtFinA}}' },
                                 ],
@@ -742,8 +712,8 @@
                                     { text: 'FLEXION' },
                                     { text: '{{$romaffectedside->aKneeFlxInitP}}' },
                                     { text: '{{$romaffectedside->aKneeFlxInitA}}' },
-                                    // { text: '{{$romaffectedside->aKneeFlxProgP}}' },
-                                    // { text: '{{$romaffectedside->aKneeFlxProgA}}' },
+                                    { text: '{{$romaffectedside->aKneeFlxProgP}}' },
+                                    { text: '{{$romaffectedside->aKneeFlxProgA}}' },
                                     { text: '{{$romaffectedside->aKneeFlxFinP}}' },
                                     { text: '{{$romaffectedside->aKneeFlxFinA}}' },
                                 ],
@@ -752,8 +722,8 @@
                                     { text: 'DORSIFLEXION' },
                                     { text: '{{$romaffectedside->aAnkleDorsInitP}}' },
                                     { text: '{{$romaffectedside->aAnkleDorsInitA}}' },
-                                    // { text: '{{$romaffectedside->aAnkleDorsProgP}}' },
-                                    // { text: '{{$romaffectedside->aAnkleDorsProgA}}' },
+                                    { text: '{{$romaffectedside->aAnkleDorsProgP}}' },
+                                    { text: '{{$romaffectedside->aAnkleDorsProgA}}' },
                                     { text: '{{$romaffectedside->aAnkleDorsFinP}}' },
                                     { text: '{{$romaffectedside->aAnkleDorsFinA}}' },
                                 ],
@@ -762,8 +732,8 @@
                                     { text: 'PLANTARFLEXION' },
                                     { text: '{{$romaffectedside->aAnklePtarInitP}}' },
                                     { text: '{{$romaffectedside->aAnklePtarInitA}}' },
-                                    // { text: '{{$romaffectedside->aAnklePtarProgP}}' },
-                                    // { text: '{{$romaffectedside->aAnklePtarProgA}}' },
+                                    { text: '{{$romaffectedside->aAnklePtarProgP}}' },
+                                    { text: '{{$romaffectedside->aAnklePtarProgA}}' },
                                     { text: '{{$romaffectedside->aAnklePtarFinP}}' },
                                     { text: '{{$romaffectedside->aAnklePtarFinA}}' },
                                 ],
@@ -772,8 +742,8 @@
                                     { text: 'EVERSION' },
                                     { text: '{{$romaffectedside->aAnkleEverInitP}}' },
                                     { text: '{{$romaffectedside->aAnkleEverInitA}}' },
-                                    // { text: '{{$romaffectedside->aAnkleEverProgP}}' },
-                                    // { text: '{{$romaffectedside->aAnkleEverProgA}}' },
+                                    { text: '{{$romaffectedside->aAnkleEverProgP}}' },
+                                    { text: '{{$romaffectedside->aAnkleEverProgA}}' },
                                     { text: '{{$romaffectedside->aAnkleEverFinP}}' },
                                     { text: '{{$romaffectedside->aAnkleEverFinA}}' },
                                 ],
@@ -782,8 +752,8 @@
                                     { text: 'INVERSION' },
                                     { text: '{{$romaffectedside->aAnkleInverInitP}}' },
                                     { text: '{{$romaffectedside->aAnkleInverInitA}}' },
-                                    // { text: '{{$romaffectedside->aAnkleInverProgP}}' },
-                                    // { text: '{{$romaffectedside->aAnkleInverProgA}}' },
+                                    { text: '{{$romaffectedside->aAnkleInverProgP}}' },
+                                    { text: '{{$romaffectedside->aAnkleInverProgA}}' },
                                     { text: '{{$romaffectedside->aAnkleInverFinP}}' },
                                     { text: '{{$romaffectedside->aAnkleInverFinA}}' },
                                 ],
@@ -811,14 +781,13 @@
                         style: 'tableExample1',
                         table: {
                             headerRows: 1,
-                            // widths: [46,75,50,50,50,50,50,50],
-                            widths: [50,80,75,75,75,75],
+                            widths: [46,75,50,50,50,50,50,50],
                             body: [
                                 [
                                     { text: 'JOINT ', style: 'tableHeader', alignment: 'left' },
                                     { text: 'MOVEMENT', style: 'tableHeader', alignment: 'left' },
                                     { text: 'INITIAL', style: 'tableHeader', alignment: 'left', colSpan: 2 },{},
-                                    // { text: 'PROGRESS', style: 'tableHeader', alignment: 'left', colSpan: 2 },{},
+                                    { text: 'PROGRESS', style: 'tableHeader', alignment: 'left', colSpan: 2 },{},
                                     { text: 'FINAL', style: 'tableHeader', alignment: 'left', colSpan: 2 },{},
                                 ],
                                 [
@@ -826,8 +795,8 @@
                                     { text: '', style: 'tableHeader' },
                                     { text: 'P', style: 'tableHeader', alignment: 'left' },
                                     { text: 'A', style: 'tableHeader', alignment: 'left' },
-                                    // { text: 'P', style: 'tableHeader', alignment: 'left' },
-                                    // { text: 'A', style: 'tableHeader', alignment: 'left' },
+                                    { text: 'P', style: 'tableHeader', alignment: 'left' },
+                                    { text: 'A', style: 'tableHeader', alignment: 'left' },
                                     { text: 'P', style: 'tableHeader', alignment: 'left' },
                                     { text: 'A', style: 'tableHeader', alignment: 'left' },
                                 ],
@@ -836,8 +805,8 @@
                                     { text: 'FLEXION' },
                                     { text: '{{$romsoundside->sShlderFlxInitP}}' },
                                     { text: '{{$romsoundside->sShlderFlxInitA}}' },
-                                    // { text: '{{$romsoundside->sShlderFlxProgP}}' },
-                                    // { text: '{{$romsoundside->sShlderFlxProgA}}' },
+                                    { text: '{{$romsoundside->sShlderFlxProgP}}' },
+                                    { text: '{{$romsoundside->sShlderFlxProgA}}' },
                                     { text: '{{$romsoundside->sShlderFlxFinP}}' },
                                     { text: '{{$romsoundside->sShlderFlxFinA}}' },
                                 ],
@@ -846,8 +815,8 @@
                                     { text: 'EXTENSION' },
                                     { text: '{{$romsoundside->sShlderExtInitP}}' },
                                     { text: '{{$romsoundside->sShlderExtInitA}}' },
-                                    // { text: '{{$romsoundside->sShlderExtProgP}}' },
-                                    // { text: '{{$romsoundside->sShlderExtProgA}}' },
+                                    { text: '{{$romsoundside->sShlderExtProgP}}' },
+                                    { text: '{{$romsoundside->sShlderExtProgA}}' },
                                     { text: '{{$romsoundside->sShlderExtFinP}}' },
                                     { text: '{{$romsoundside->sShlderExtFinA}}' },
                                 ],
@@ -856,8 +825,8 @@
                                     { text: 'ABDUCTION' },
                                     { text: '{{$romsoundside->sShlderAbdInitP}}' },
                                     { text: '{{$romsoundside->sShlderAbdInitA}}' },
-                                    // { text: '{{$romsoundside->sShlderAbdProgP}}' },
-                                    // { text: '{{$romsoundside->sShlderAbdProgA}}' },
+                                    { text: '{{$romsoundside->sShlderAbdProgP}}' },
+                                    { text: '{{$romsoundside->sShlderAbdProgA}}' },
                                     { text: '{{$romsoundside->sShlderAbdFinP}}' },
                                     { text: '{{$romsoundside->sShlderAbdFinA}}' },
                                 ],
@@ -866,8 +835,8 @@
                                     { text: 'ADDUCTION' },
                                     { text: '{{$romsoundside->sShlderAddInitP}}' },
                                     { text: '{{$romsoundside->sShlderAddInitA}}' },
-                                    // { text: '{{$romsoundside->sShlderAddProgP}}' },
-                                    // { text: '{{$romsoundside->sShlderAddProgA}}' },
+                                    { text: '{{$romsoundside->sShlderAddProgP}}' },
+                                    { text: '{{$romsoundside->sShlderAddProgA}}' },
                                     { text: '{{$romsoundside->sShlderAddFinP}}' },
                                     { text: '{{$romsoundside->sShlderAddFinA}}' },
                                 ],
@@ -876,8 +845,8 @@
                                     { text: 'INT. ROT' },
                                     { text: '{{$romsoundside->sShlderIntRotInitP}}' },
                                     { text: '{{$romsoundside->sShlderIntRotInitA}}' },
-                                    // { text: '{{$romsoundside->sShlderIntRotProgP}}' },
-                                    // { text: '{{$romsoundside->sShlderIntRotProgA}}' },
+                                    { text: '{{$romsoundside->sShlderIntRotProgP}}' },
+                                    { text: '{{$romsoundside->sShlderIntRotProgA}}' },
                                     { text: '{{$romsoundside->sShlderIntRotFinP}}' },
                                     { text: '{{$romsoundside->sShlderIntRotFinA}}' },
                                 ],
@@ -886,8 +855,8 @@
                                     { text: 'EXT. ROT' },
                                     { text: '{{$romsoundside->sShlderExtRotInitP}}' },
                                     { text: '{{$romsoundside->sShlderExtRotInitA}}' },
-                                    // { text: '{{$romsoundside->sShlderExtRotProgP}}' },
-                                    // { text: '{{$romsoundside->sShlderExtRotProgA}}' },
+                                    { text: '{{$romsoundside->sShlderExtRotProgP}}' },
+                                    { text: '{{$romsoundside->sShlderExtRotProgA}}' },
                                     { text: '{{$romsoundside->sShlderExtRotFinP}}' },
                                     { text: '{{$romsoundside->sShlderExtRotFinA}}' },
                                 ],
@@ -896,8 +865,8 @@
                                     { text: 'FLEXION' },
                                     { text: '{{$romsoundside->sElbowFlxInitP}}' },
                                     { text: '{{$romsoundside->sElbowFlxInitA}}' },
-                                    // { text: '{{$romsoundside->sElbowFlxProgP}}' },
-                                    // { text: '{{$romsoundside->sElbowFlxProgA}}' },
+                                    { text: '{{$romsoundside->sElbowFlxProgP}}' },
+                                    { text: '{{$romsoundside->sElbowFlxProgA}}' },
                                     { text: '{{$romsoundside->sElbowFlxFinP}}' },
                                     { text: '{{$romsoundside->sElbowFlxFinA}}' },
                                 ],
@@ -906,8 +875,8 @@
                                     { text: 'EXTENSION' },
                                     { text: '{{$romsoundside->sElbowExtInitP}}' },
                                     { text: '{{$romsoundside->sElbowExtInitA}}' },
-                                    // { text: '{{$romsoundside->sElbowExtProgP}}' },
-                                    // { text: '{{$romsoundside->sElbowExtProgA}}' },
+                                    { text: '{{$romsoundside->sElbowExtProgP}}' },
+                                    { text: '{{$romsoundside->sElbowExtProgA}}' },
                                     { text: '{{$romsoundside->sElbowExtFinP}}' },
                                     { text: '{{$romsoundside->sElbowExtFinA}}' },
                                 ],
@@ -916,8 +885,8 @@
                                     { text: 'PRONATION' },
                                     { text: '{{$romsoundside->sElbowProInitP}}' },
                                     { text: '{{$romsoundside->sElbowProInitA}}' },
-                                    // { text: '{{$romsoundside->sElbowProProgP}}' },
-                                    // { text: '{{$romsoundside->sElbowProProgA}}' },
+                                    { text: '{{$romsoundside->sElbowProProgP}}' },
+                                    { text: '{{$romsoundside->sElbowProProgA}}' },
                                     { text: '{{$romsoundside->sElbowProFinP}}' },
                                     { text: '{{$romsoundside->sElbowProFinA}}' },
                                 ],
@@ -926,8 +895,8 @@
                                     { text: 'SUPINATION' },
                                     { text: '{{$romsoundside->sElbowSupInitP}}' },
                                     { text: '{{$romsoundside->sElbowSupInitA}}' },
-                                    // { text: '{{$romsoundside->sElbowSupProgP}}' },
-                                    // { text: '{{$romsoundside->sElbowSupProgA}}' },
+                                    { text: '{{$romsoundside->sElbowSupProgP}}' },
+                                    { text: '{{$romsoundside->sElbowSupProgA}}' },
                                     { text: '{{$romsoundside->sElbowSupFinP}}' },
                                     { text: '{{$romsoundside->sElbowSupFinA}}' },
                                 ],
@@ -936,8 +905,8 @@
                                     { text: 'FLEXION' },
                                     { text: '{{$romsoundside->sWristFlxInitP}}' },
                                     { text: '{{$romsoundside->sWristFlxInitA}}' },
-                                    // { text: '{{$romsoundside->sWristFlxProgP}}' },
-                                    // { text: '{{$romsoundside->sWristFlxProgA}}' },
+                                    { text: '{{$romsoundside->sWristFlxProgP}}' },
+                                    { text: '{{$romsoundside->sWristFlxProgA}}' },
                                     { text: '{{$romsoundside->sWristFlxFinP}}' },
                                     { text: '{{$romsoundside->sWristFlxFinA}}' },
                                 ],
@@ -946,8 +915,8 @@
                                     { text: 'EXTENSION' },
                                     { text: '{{$romsoundside->sWristExtInitP}}' },
                                     { text: '{{$romsoundside->sWristExtInitA}}' },
-                                    // { text: '{{$romsoundside->sWristExtProgP}}' },
-                                    // { text: '{{$romsoundside->sWristExtProgA}}' },
+                                    { text: '{{$romsoundside->sWristExtProgP}}' },
+                                    { text: '{{$romsoundside->sWristExtProgA}}' },
                                     { text: '{{$romsoundside->sWristExtFinP}}' },
                                     { text: '{{$romsoundside->sWristExtFinA}}' },
                                 ],
@@ -956,8 +925,8 @@
                                     { text: 'RADIAL DEVIATION' },
                                     { text: '{{$romsoundside->sWristRadInitP}}' },
                                     { text: '{{$romsoundside->sWristRadInitA}}' },
-                                    // { text: '{{$romsoundside->sWristRadProgP}}' },
-                                    // { text: '{{$romsoundside->sWristRadProgA}}' },
+                                    { text: '{{$romsoundside->sWristRadProgP}}' },
+                                    { text: '{{$romsoundside->sWristRadProgA}}' },
                                     { text: '{{$romsoundside->sWristRadFinP}}' },
                                     { text: '{{$romsoundside->sWristRadFinA}}' },
                                 ],
@@ -966,8 +935,8 @@
                                     { text: 'ULNAR DEVIATION' },
                                     { text: '{{$romsoundside->sWristUlnarInitP}}' },
                                     { text: '{{$romsoundside->sWristUlnarInitA}}' },
-                                    // { text: '{{$romsoundside->sWristUlnarProgP}}' },
-                                    // { text: '{{$romsoundside->sWristUlnarProgA}}' },
+                                    { text: '{{$romsoundside->sWristUlnarProgP}}' },
+                                    { text: '{{$romsoundside->sWristUlnarProgA}}' },
                                     { text: '{{$romsoundside->sWristUlnarFinP}}' },
                                     { text: '{{$romsoundside->sWristUlnarFinA}}' },
                                 ],
@@ -976,8 +945,8 @@
                                     { text: 'FLEXION' },
                                     { text: '{{$romsoundside->sHipFlxInitP}}' },
                                     { text: '{{$romsoundside->sHipFlxInitA}}' },
-                                    // { text: '{{$romsoundside->sHipFlxProgP}}' },
-                                    // { text: '{{$romsoundside->sHipFlxProgA}}' },
+                                    { text: '{{$romsoundside->sHipFlxProgP}}' },
+                                    { text: '{{$romsoundside->sHipFlxProgA}}' },
                                     { text: '{{$romsoundside->sHipFlxFinP}}' },
                                     { text: '{{$romsoundside->sHipFlxFinA}}' },
                                 ],
@@ -986,8 +955,8 @@
                                     { text: 'EXTENSION' },
                                     { text: '{{$romsoundside->sHipExtInitP}}' },
                                     { text: '{{$romsoundside->sHipExtInitA}}' },
-                                    // { text: '{{$romsoundside->sHipExtProgP}}' },
-                                    // { text: '{{$romsoundside->sHipExtProgA}}' },
+                                    { text: '{{$romsoundside->sHipExtProgP}}' },
+                                    { text: '{{$romsoundside->sHipExtProgA}}' },
                                     { text: '{{$romsoundside->sHipExtFinP}}' },
                                     { text: '{{$romsoundside->sHipExtFinA}}' },
                                 ],
@@ -996,8 +965,8 @@
                                     { text: 'ABDUCTION' },
                                     { text: '{{$romsoundside->sHipAbdInitP}}' },
                                     { text: '{{$romsoundside->sHipAbdInitA}}' },
-                                    // { text: '{{$romsoundside->sHipAbdProgP}}' },
-                                    // { text: '{{$romsoundside->sHipAbdProgA}}' },
+                                    { text: '{{$romsoundside->sHipAbdProgP}}' },
+                                    { text: '{{$romsoundside->sHipAbdProgA}}' },
                                     { text: '{{$romsoundside->sHipAbdFinP}}' },
                                     { text: '{{$romsoundside->sHipAbdFinA}}' },
                                 ],
@@ -1006,8 +975,8 @@
                                     { text: 'ADDUCTION' },
                                     { text: '{{$romsoundside->sHipAddInitP}}' },
                                     { text: '{{$romsoundside->sHipAddInitA}}' },
-                                    // { text: '{{$romsoundside->sHipAddProgP}}' },
-                                    // { text: '{{$romsoundside->sHipAddProgA}}' },
+                                    { text: '{{$romsoundside->sHipAddProgP}}' },
+                                    { text: '{{$romsoundside->sHipAddProgA}}' },
                                     { text: '{{$romsoundside->sHipAddFinP}}' },
                                     { text: '{{$romsoundside->sHipAddFinA}}' },
                                 ],
@@ -1016,8 +985,8 @@
                                     { text: 'INT. ROT' },
                                     { text: '{{$romsoundside->sHipIntRotInitP}}' },
                                     { text: '{{$romsoundside->sHipIntRotInitA}}' },
-                                    // { text: '{{$romsoundside->sHipIntRotProgP}}' },
-                                    // { text: '{{$romsoundside->sHipIntRotProgA}}' },
+                                    { text: '{{$romsoundside->sHipIntRotProgP}}' },
+                                    { text: '{{$romsoundside->sHipIntRotProgA}}' },
                                     { text: '{{$romsoundside->sHipIntRotFinP}}' },
                                     { text: '{{$romsoundside->sHipIntRotFinA}}' },
                                 ],
@@ -1026,8 +995,8 @@
                                     { text: 'EXT. ROT' },
                                     { text: '{{$romsoundside->sHipExtRotInitP}}' },
                                     { text: '{{$romsoundside->sHipExtRotInitA}}' },
-                                    // { text: '{{$romsoundside->sHipExtRotProgP}}' },
-                                    // { text: '{{$romsoundside->sHipExtRotProgA}}' },
+                                    { text: '{{$romsoundside->sHipExtRotProgP}}' },
+                                    { text: '{{$romsoundside->sHipExtRotProgA}}' },
                                     { text: '{{$romsoundside->sHipExtRotFinP}}' },
                                     { text: '{{$romsoundside->sHipExtRotFinA}}' },
                                 ],
@@ -1036,8 +1005,8 @@
                                     { text: 'EXTENSION' },
                                     { text: '{{$romsoundside->sKneeExtInitP}}' },
                                     { text: '{{$romsoundside->sKneeExtInitA}}' },
-                                    // { text: '{{$romsoundside->sKneeExtProgP}}' },
-                                    // { text: '{{$romsoundside->sKneeExtProgA}}' },
+                                    { text: '{{$romsoundside->sKneeExtProgP}}' },
+                                    { text: '{{$romsoundside->sKneeExtProgA}}' },
                                     { text: '{{$romsoundside->sKneeExtFinP}}' },
                                     { text: '{{$romsoundside->sKneeExtFinA}}' },
                                 ],
@@ -1046,8 +1015,8 @@
                                     { text: 'FLEXION' },
                                     { text: '{{$romsoundside->sKneeFlxInitP}}' },
                                     { text: '{{$romsoundside->sKneeFlxInitA}}' },
-                                    // { text: '{{$romsoundside->sKneeFlxProgP}}' },
-                                    // { text: '{{$romsoundside->sKneeFlxProgA}}' },
+                                    { text: '{{$romsoundside->sKneeFlxProgP}}' },
+                                    { text: '{{$romsoundside->sKneeFlxProgA}}' },
                                     { text: '{{$romsoundside->sKneeFlxFinP}}' },
                                     { text: '{{$romsoundside->sKneeFlxFinA}}' },
                                 ],
@@ -1056,8 +1025,8 @@
                                     { text: 'DORSIFLEXION' },
                                     { text: '{{$romsoundside->sAnkleDorsInitP}}' },
                                     { text: '{{$romsoundside->sAnkleDorsInitA}}' },
-                                    // { text: '{{$romsoundside->sAnkleDorsProgP}}' },
-                                    // { text: '{{$romsoundside->sAnkleDorsProgA}}' },
+                                    { text: '{{$romsoundside->sAnkleDorsProgP}}' },
+                                    { text: '{{$romsoundside->sAnkleDorsProgA}}' },
                                     { text: '{{$romsoundside->sAnkleDorsFinP}}' },
                                     { text: '{{$romsoundside->sAnkleDorsFinA}}' },
                                 ],
@@ -1066,8 +1035,8 @@
                                     { text: 'PLANTARFLEXION' },
                                     { text: '{{$romsoundside->sAnklePtarInitP}}' },
                                     { text: '{{$romsoundside->sAnklePtarInitA}}' },
-                                    // { text: '{{$romsoundside->sAnklePtarProgP}}' },
-                                    // { text: '{{$romsoundside->sAnklePtarProgA}}' },
+                                    { text: '{{$romsoundside->sAnklePtarProgP}}' },
+                                    { text: '{{$romsoundside->sAnklePtarProgA}}' },
                                     { text: '{{$romsoundside->sAnklePtarFinP}}' },
                                     { text: '{{$romsoundside->sAnklePtarFinA}}' },
                                 ],
@@ -1076,8 +1045,8 @@
                                     { text: 'EVERSION' },
                                     { text: '{{$romsoundside->sAnkleEverInitP}}' },
                                     { text: '{{$romsoundside->sAnkleEverInitA}}' },
-                                    // { text: '{{$romsoundside->sAnkleEverProgP}}' },
-                                    // { text: '{{$romsoundside->sAnkleEverProgA}}' },
+                                    { text: '{{$romsoundside->sAnkleEverProgP}}' },
+                                    { text: '{{$romsoundside->sAnkleEverProgA}}' },
                                     { text: '{{$romsoundside->sAnkleEverFinP}}' },
                                     { text: '{{$romsoundside->sAnkleEverFinA}}' },
                                 ],
@@ -1086,8 +1055,8 @@
                                     { text: 'INVERSION' },
                                     { text: '{{$romsoundside->sAnkleInverInitP}}' },
                                     { text: '{{$romsoundside->sAnkleInverInitA}}' },
-                                    // { text: '{{$romsoundside->sAnkleInverProgP}}' },
-                                    // { text: '{{$romsoundside->sAnkleInverProgA}}' },
+                                    { text: '{{$romsoundside->sAnkleInverProgP}}' },
+                                    { text: '{{$romsoundside->sAnkleInverProgA}}' },
                                     { text: '{{$romsoundside->sAnkleInverFinP}}' },
                                     { text: '{{$romsoundside->sAnkleInverFinA}}' },
                                 ],
@@ -1147,13 +1116,12 @@
                         style: 'tableExample1',
                         table: {
                             headerRows: 1,
-                            widths: [80,80,80,80],
+                            widths: [80,80,80],
                             body: [
                                 [
                                     { text: ' ', style: 'tableHeader' },
                                     { text: 'RT', style: 'tableHeader', alignment: 'center' },
                                     { text: 'LT', style: 'tableHeader', alignment: 'center' },
-                                    { text: 'REMARKS', style: 'tableHeader', alignment: 'center' },
                                 ],
                                 [
                                     { text: 'BTR' },
@@ -1167,7 +1135,6 @@
                                     @else
                                         { text: ' ' },
                                     @endif
-                                    { text: '{{$neuroassessment->btrRemarks}}' },
                                 ],
                                 [
                                     { text: 'TTR' },
@@ -1181,7 +1148,6 @@
                                     @else
                                         { text: ' ' },
                                     @endif
-                                    { text: '{{$neuroassessment->ttrRemarks}}' },
                                 ],
                                 [
                                     { text: 'KTR' },
@@ -1195,7 +1161,6 @@
                                     @else
                                         { text: ' ' },
                                     @endif
-                                    { text: '{{$neuroassessment->ktrRemarks}}' },
                                 ],
                                 [
                                     { text: 'ATR' },
@@ -1209,7 +1174,6 @@
                                     @else
                                         { text: ' ' },
                                     @endif
-                                    { text: '{{$neuroassessment->atrRemarks}}' },
                                 ],
                                 [
                                     { text: 'Babinsky' },
@@ -1223,7 +1187,6 @@
                                     @else
                                         { text: ' ' },
                                     @endif
-                                    { text: '{{$neuroassessment->babinskyRemarks}}' },
                                 ],
                             ]
                         },
@@ -1264,196 +1227,195 @@
                         style: 'tableExample1',
                         table: {
                             headerRows: 1,
-                            // widths: [60,80,100,100,100],
-                            widths: [60,80,150,150],
+                            widths: [60,80,100,100,100],
                             body: [
                                 [
                                     { text: 'JOINT ', style: 'tableHeader', alignment: 'left' },
                                     { text: 'MOVEMENT', style: 'tableHeader', alignment: 'left' },
                                     { text: 'INITIAL', style: 'tableHeader', alignment: 'left' },
-                                    // { text: 'PROGRESS', style: 'tableHeader', alignment: 'left' },
+                                    { text: 'PROGRESS', style: 'tableHeader', alignment: 'left' },
                                     { text: 'FINAL', style: 'tableHeader', alignment: 'left' },
                                 ],
                                 [
                                     { text: 'SHOULDER' },
                                     { text: 'FLEXION' },
                                     { text: '{{$musclepower->aShlderFlxInit}}' },
-                                    // { text: '{{$musclepower->aShlderFlxProg}}' },
+                                    { text: '{{$musclepower->aShlderFlxProg}}' },
                                     { text: '{{$musclepower->aShlderFlxFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'EXTENSION' },
                                     { text: '{{$musclepower->aShlderExtInit}}' },
-                                    // { text: '{{$musclepower->aShlderExtProg}}' },
+                                    { text: '{{$musclepower->aShlderExtProg}}' },
                                     { text: '{{$musclepower->aShlderExtFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'ABDUCTION' },
                                     { text: '{{$musclepower->aShlderAbdInit}}' },
-                                    // { text: '{{$musclepower->aShlderAbdProg}}' },
+                                    { text: '{{$musclepower->aShlderAbdProg}}' },
                                     { text: '{{$musclepower->aShlderAbdFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'ADDUCTION' },
                                     { text: '{{$musclepower->aShlderAddInit}}' },
-                                    // { text: '{{$musclepower->aShlderAddProg}}' },
+                                    { text: '{{$musclepower->aShlderAddProg}}' },
                                     { text: '{{$musclepower->aShlderAddFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'INT. ROT' },
                                     { text: '{{$musclepower->aShlderIntRotInit}}' },
-                                    // { text: '{{$musclepower->aShlderIntRotProg}}' },
+                                    { text: '{{$musclepower->aShlderIntRotProg}}' },
                                     { text: '{{$musclepower->aShlderIntRotFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'EXT. ROT' },
                                     { text: '{{$musclepower->aShlderExtRotInit}}' },
-                                    // { text: '{{$musclepower->aShlderExtRotProg}}' },
+                                    { text: '{{$musclepower->aShlderExtRotProg}}' },
                                     { text: '{{$musclepower->aShlderExtRotFin}}' },
                                 ],
                                 [
                                     { text: 'ELBOW' },
                                     { text: 'FLEXION' },
                                     { text: '{{$musclepower->aElbowFlxInit}}' },
-                                    // { text: '{{$musclepower->aElbowFlxProg}}' },
+                                    { text: '{{$musclepower->aElbowFlxProg}}' },
                                     { text: '{{$musclepower->aElbowFlxFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'EXTENSION' },
                                     { text: '{{$musclepower->aElbowExtInit}}' },
-                                    // { text: '{{$musclepower->aElbowExtProg}}' },
+                                    { text: '{{$musclepower->aElbowExtProg}}' },
                                     { text: '{{$musclepower->aElbowExtFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'PRONATION' },
                                     { text: '{{$musclepower->aElbowProInit}}' },
-                                    // { text: '{{$musclepower->aElbowProProg}}' },
+                                    { text: '{{$musclepower->aElbowProProg}}' },
                                     { text: '{{$musclepower->aElbowProFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'SUPINATION' },
                                     { text: '{{$musclepower->aElbowSupInit}}' },
-                                    // { text: '{{$musclepower->aElbowSupProg}}' },
+                                    { text: '{{$musclepower->aElbowSupProg}}' },
                                     { text: '{{$musclepower->aElbowSupFin}}' },
                                 ],
                                 [
                                     { text: 'WRIST' },
                                     { text: 'FLEXION' },
                                     { text: '{{$musclepower->aWristFlxInit}}' },
-                                    // { text: '{{$musclepower->aWristFlxProg}}' },
+                                    { text: '{{$musclepower->aWristFlxProg}}' },
                                     { text: '{{$musclepower->aWristFlxFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'EXTENSION' },
                                     { text: '{{$musclepower->aWristExtInit}}' },
-                                    // { text: '{{$musclepower->aWristExtProg}}' },
+                                    { text: '{{$musclepower->aWristExtProg}}' },
                                     { text: '{{$musclepower->aWristExtFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'RADIAL DEVIATION' },
                                     { text: '{{$musclepower->aWristRadInit}}' },
-                                    // { text: '{{$musclepower->aWristRadProg}}' },
+                                    { text: '{{$musclepower->aWristRadProg}}' },
                                     { text: '{{$musclepower->aWristRadFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'ULNAR DEVIATION' },
                                     { text: '{{$musclepower->aWristUlnarInit}}' },
-                                    // { text: '{{$musclepower->aWristUlnarProg}}' },
+                                    { text: '{{$musclepower->aWristUlnarProg}}' },
                                     { text: '{{$musclepower->aWristUlnarFin}}' },
                                 ],
                                 [
                                     { text: 'HIP' },
                                     { text: 'FLEXION' },
                                     { text: '{{$musclepower->aHipFlxInit}}' },
-                                    // { text: '{{$musclepower->aHipFlxProg}}' },
+                                    { text: '{{$musclepower->aHipFlxProg}}' },
                                     { text: '{{$musclepower->aHipFlxFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'EXTENSION' },
                                     { text: '{{$musclepower->aHipExtInit}}' },
-                                    // { text: '{{$musclepower->aHipExtProg}}' },
+                                    { text: '{{$musclepower->aHipExtProg}}' },
                                     { text: '{{$musclepower->aHipExtFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'ABDUCTION' },
                                     { text: '{{$musclepower->aHipAbdInit}}' },
-                                    // { text: '{{$musclepower->aHipAbdProg}}' },
+                                    { text: '{{$musclepower->aHipAbdProg}}' },
                                     { text: '{{$musclepower->aHipAbdFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'ADDUCTION' },
                                     { text: '{{$musclepower->aHipAddInit}}' },
-                                    // { text: '{{$musclepower->aHipAddProg}}' },
+                                    { text: '{{$musclepower->aHipAddProg}}' },
                                     { text: '{{$musclepower->aHipAddFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'INT. ROT' },
                                     { text: '{{$musclepower->aHipIntRotInit}}' },
-                                    // { text: '{{$musclepower->aHipIntRotProg}}' },
+                                    { text: '{{$musclepower->aHipIntRotProg}}' },
                                     { text: '{{$musclepower->aHipIntRotFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'EXT. ROT' },
                                     { text: '{{$musclepower->aHipExtRotInit}}' },
-                                    // { text: '{{$musclepower->aHipExtRotProg}}' },
+                                    { text: '{{$musclepower->aHipExtRotProg}}' },
                                     { text: '{{$musclepower->aHipExtRotFin}}' },
                                 ],
                                 [
                                     { text: 'KNEE' },
                                     { text: 'EXTENSION' },
                                     { text: '{{$musclepower->aKneeExtInit}}' },
-                                    // { text: '{{$musclepower->aKneeExtProg}}' },
+                                    { text: '{{$musclepower->aKneeExtProg}}' },
                                     { text: '{{$musclepower->aKneeExtFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'FLEXION' },
                                     { text: '{{$musclepower->aKneeFlxInit}}' },
-                                    // { text: '{{$musclepower->aKneeFlxProg}}' },
+                                    { text: '{{$musclepower->aKneeFlxProg}}' },
                                     { text: '{{$musclepower->aKneeFlxFin}}' },
                                 ],
                                 [
                                     { text: 'ANKLE' },
                                     { text: 'DORSIFLEXION' },
                                     { text: '{{$musclepower->aAnkleDorsInit}}' },
-                                    // { text: '{{$musclepower->aAnkleDorsProg}}' },
+                                    { text: '{{$musclepower->aAnkleDorsProg}}' },
                                     { text: '{{$musclepower->aAnkleDorsFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'PLANTARFLEXION' },
                                     { text: '{{$musclepower->aAnklePtarInit}}' },
-                                    // { text: '{{$musclepower->aAnklePtarProg}}' },
+                                    { text: '{{$musclepower->aAnklePtarProg}}' },
                                     { text: '{{$musclepower->aAnklePtarFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'EVERSION' },
                                     { text: '{{$musclepower->aAnkleEverInit}}' },
-                                    // { text: '{{$musclepower->aAnkleEverProg}}' },
+                                    { text: '{{$musclepower->aAnkleEverProg}}' },
                                     { text: '{{$musclepower->aAnkleEverFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'INVERSION' },
                                     { text: '{{$musclepower->aAnkleInverInit}}' },
-                                    // { text: '{{$musclepower->aAnkleInverProg}}' },
+                                    { text: '{{$musclepower->aAnkleInverProg}}' },
                                     { text: '{{$musclepower->aAnkleInverFin}}' },
                                 ],
                             ]
@@ -1480,196 +1442,195 @@
                         style: 'tableExample1',
                         table: {
                             headerRows: 1,
-                            // widths: [60,80,100,100,100],
-                            widths: [60,80,150,150],
+                            widths: [60,80,100,100,100],
                             body: [
                                 [
                                     { text: 'JOINT ', style: 'tableHeader', alignment: 'left' },
                                     { text: 'MOVEMENT', style: 'tableHeader', alignment: 'left' },
                                     { text: 'INITIAL', style: 'tableHeader', alignment: 'left' },
-                                    // { text: 'PROGRESS', style: 'tableHeader', alignment: 'left' },
+                                    { text: 'PROGRESS', style: 'tableHeader', alignment: 'left' },
                                     { text: 'FINAL', style: 'tableHeader', alignment: 'left' },
                                 ],
                                 [
                                     { text: 'SHOULDER' },
                                     { text: 'FLEXION' },
                                     { text: '{{$musclepower->sShlderFlxInit}}' },
-                                    // { text: '{{$musclepower->sShlderFlxProg}}' },
+                                    { text: '{{$musclepower->sShlderFlxProg}}' },
                                     { text: '{{$musclepower->sShlderFlxFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'EXTENSION' },
                                     { text: '{{$musclepower->sShlderExtInit}}' },
-                                    // { text: '{{$musclepower->sShlderExtProg}}' },
+                                    { text: '{{$musclepower->sShlderExtProg}}' },
                                     { text: '{{$musclepower->sShlderExtFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'ABDUCTION' },
                                     { text: '{{$musclepower->sShlderAbdInit}}' },
-                                    // { text: '{{$musclepower->sShlderAbdProg}}' },
+                                    { text: '{{$musclepower->sShlderAbdProg}}' },
                                     { text: '{{$musclepower->sShlderAbdFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'ADDUCTION' },
                                     { text: '{{$musclepower->sShlderAddInit}}' },
-                                    // { text: '{{$musclepower->sShlderAddProg}}' },
+                                    { text: '{{$musclepower->sShlderAddProg}}' },
                                     { text: '{{$musclepower->sShlderAddFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'INT. ROT' },
                                     { text: '{{$musclepower->sShlderIntRotInit}}' },
-                                    // { text: '{{$musclepower->sShlderIntRotProg}}' },
+                                    { text: '{{$musclepower->sShlderIntRotProg}}' },
                                     { text: '{{$musclepower->sShlderIntRotFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'EXT. ROT' },
                                     { text: '{{$musclepower->sShlderExtRotInit}}' },
-                                    // { text: '{{$musclepower->sShlderExtRotProg}}' },
+                                    { text: '{{$musclepower->sShlderExtRotProg}}' },
                                     { text: '{{$musclepower->sShlderExtRotFin}}' },
                                 ],
                                 [
                                     { text: 'ELBOW' },
                                     { text: 'FLEXION' },
                                     { text: '{{$musclepower->sElbowFlxInit}}' },
-                                    // { text: '{{$musclepower->sElbowFlxProg}}' },
+                                    { text: '{{$musclepower->sElbowFlxProg}}' },
                                     { text: '{{$musclepower->sElbowFlxFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'EXTENSION' },
                                     { text: '{{$musclepower->sElbowExtInit}}' },
-                                    // { text: '{{$musclepower->sElbowExtProg}}' },
+                                    { text: '{{$musclepower->sElbowExtProg}}' },
                                     { text: '{{$musclepower->sElbowExtFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'PRONATION' },
                                     { text: '{{$musclepower->sElbowProInit}}' },
-                                    // { text: '{{$musclepower->sElbowProProg}}' },
+                                    { text: '{{$musclepower->sElbowProProg}}' },
                                     { text: '{{$musclepower->sElbowProFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'SUPINATION' },
                                     { text: '{{$musclepower->sElbowSupInit}}' },
-                                    // { text: '{{$musclepower->sElbowSupProg}}' },
+                                    { text: '{{$musclepower->sElbowSupProg}}' },
                                     { text: '{{$musclepower->sElbowSupFin}}' },
                                 ],
                                 [
                                     { text: 'WRIST' },
                                     { text: 'FLEXION' },
                                     { text: '{{$musclepower->sWristFlxInit}}' },
-                                    // { text: '{{$musclepower->sWristFlxProg}}' },
+                                    { text: '{{$musclepower->sWristFlxProg}}' },
                                     { text: '{{$musclepower->sWristFlxFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'EXTENSION' },
                                     { text: '{{$musclepower->sWristExtInit}}' },
-                                    // { text: '{{$musclepower->sWristExtProg}}' },
+                                    { text: '{{$musclepower->sWristExtProg}}' },
                                     { text: '{{$musclepower->sWristExtFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'RADIAL DEVIATION' },
                                     { text: '{{$musclepower->sWristRadInit}}' },
-                                    // { text: '{{$musclepower->sWristRadProg}}' },
+                                    { text: '{{$musclepower->sWristRadProg}}' },
                                     { text: '{{$musclepower->sWristRadFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'ULNAR DEVIATION' },
                                     { text: '{{$musclepower->sWristUlnarInit}}' },
-                                    // { text: '{{$musclepower->sWristUlnarProg}}' },
+                                    { text: '{{$musclepower->sWristUlnarProg}}' },
                                     { text: '{{$musclepower->sWristUlnarFin}}' },
                                 ],
                                 [
                                     { text: 'HIP' },
                                     { text: 'FLEXION' },
                                     { text: '{{$musclepower->sHipFlxInit}}' },
-                                    // { text: '{{$musclepower->sHipFlxProg}}' },
+                                    { text: '{{$musclepower->sHipFlxProg}}' },
                                     { text: '{{$musclepower->sHipFlxFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'EXTENSION' },
                                     { text: '{{$musclepower->sHipExtInit}}' },
-                                    // { text: '{{$musclepower->sHipExtProg}}' },
+                                    { text: '{{$musclepower->sHipExtProg}}' },
                                     { text: '{{$musclepower->sHipExtFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'ABDUCTION' },
                                     { text: '{{$musclepower->sHipAbdInit}}' },
-                                    // { text: '{{$musclepower->sHipAbdProg}}' },
+                                    { text: '{{$musclepower->sHipAbdProg}}' },
                                     { text: '{{$musclepower->sHipAbdFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'ADDUCTION' },
                                     { text: '{{$musclepower->sHipAddInit}}' },
-                                    // { text: '{{$musclepower->sHipAddProg}}' },
+                                    { text: '{{$musclepower->sHipAddProg}}' },
                                     { text: '{{$musclepower->sHipAddFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'INT. ROT' },
                                     { text: '{{$musclepower->sHipIntRotInit}}' },
-                                    // { text: '{{$musclepower->sHipIntRotProg}}' },
+                                    { text: '{{$musclepower->sHipIntRotProg}}' },
                                     { text: '{{$musclepower->sHipIntRotFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'EXT. ROT' },
                                     { text: '{{$musclepower->sHipExtRotInit}}' },
-                                    // { text: '{{$musclepower->sHipExtRotProg}}' },
+                                    { text: '{{$musclepower->sHipExtRotProg}}' },
                                     { text: '{{$musclepower->sHipExtRotFin}}' },
                                 ],
                                 [
                                     { text: 'KNEE' },
                                     { text: 'EXTENSION' },
                                     { text: '{{$musclepower->sKneeExtInit}}' },
-                                    // { text: '{{$musclepower->sKneeExtProg}}' },
+                                    { text: '{{$musclepower->sKneeExtProg}}' },
                                     { text: '{{$musclepower->sKneeExtFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'FLEXION' },
                                     { text: '{{$musclepower->sKneeFlxInit}}' },
-                                    // { text: '{{$musclepower->sKneeFlxProg}}' },
+                                    { text: '{{$musclepower->sKneeFlxProg}}' },
                                     { text: '{{$musclepower->sKneeFlxFin}}' },
                                 ],
                                 [
                                     { text: 'ANKLE' },
                                     { text: 'DORSIFLEXION' },
                                     { text: '{{$musclepower->sAnkleDorsInit}}' },
-                                    // { text: '{{$musclepower->sAnkleDorsProg}}' },
+                                    { text: '{{$musclepower->sAnkleDorsProg}}' },
                                     { text: '{{$musclepower->sAnkleDorsFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'PLANTARFLEXION' },
                                     { text: '{{$musclepower->sAnklePtarInit}}' },
-                                    // { text: '{{$musclepower->sAnklePtarProg}}' },
+                                    { text: '{{$musclepower->sAnklePtarProg}}' },
                                     { text: '{{$musclepower->sAnklePtarFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'EVERSION' },
                                     { text: '{{$musclepower->sAnkleEverInit}}' },
-                                    // { text: '{{$musclepower->sAnkleEverProg}}' },
+                                    { text: '{{$musclepower->sAnkleEverProg}}' },
                                     { text: '{{$musclepower->sAnkleEverFin}}' },
                                 ],
                                 [
                                     { text: '' },
                                     { text: 'INVERSION' },
                                     { text: '{{$musclepower->sAnkleInverInit}}' },
-                                    // { text: '{{$musclepower->sAnkleInverProg}}' },
+                                    { text: '{{$musclepower->sAnkleInverProg}}' },
                                     { text: '{{$musclepower->sAnkleInverFin}}' },
                                 ],
                             ]
@@ -1699,57 +1660,54 @@
                         style: 'tableExample1',
                         table: {
                             headerRows: 1,
-                            widths: [70,110,110,150],
+                            widths: [80,140,140],
                             body: [
                                 [
                                     { text: ' ', style: 'tableHeader' },
                                     { text: 'R', style: 'tableHeader', alignment: 'center' },
                                     { text: 'L', style: 'tableHeader', alignment: 'center' },
-                                    { text: 'REMARKS', style: 'tableHeader', alignment: 'center' },
                                 ],
                                 [
                                     { text: 'Finger Nose Test' },
                                     @if($neuroassessment->fingerTestR == 'Poor')
-                                        { text: '[ √ ] Poor [\u200B\t] Fair [\u200B\t] Good' },
+                                        { text: '[ √ ] Poor \u200B\t [\u200B\t] Fair \u200B\t [\u200B\t] Good' },
                                     @elseif($neuroassessment->fingerTestR == 'Fair')
-                                        { text: '[\u200B\t] Poor [ √ ] Fair [\u200B\t] Good' },
+                                        { text: '[\u200B\t] Poor \u200B\t [ √ ] Fair \u200B\t [\u200B\t] Good' },
                                     @elseif($neuroassessment->fingerTestR == 'Good')
-                                        { text: '[\u200B\t] Poor [\u200B\t] Fair [ √ ] Good' },
+                                        { text: '[\u200B\t] Poor \u200B\t [\u200B\t] Fair \u200B\t [ √ ] Good' },
                                     @else
-                                        { text: '[\u200B\t] Poor [\u200B\t] Fair [\u200B\t] Good' },
+                                        { text: '[\u200B\t] Poor \u200B\t [\u200B\t] Fair \u200B\t [\u200B\t] Good' },
                                     @endif
                                     @if($neuroassessment->fingerTestL == 'Poor')
-                                        { text: '[ √ ] Poor [\u200B\t] Fair [\u200B\t] Good' },
+                                        { text: '[ √ ] Poor \u200B\t [\u200B\t] Fair \u200B\t [\u200B\t] Good' },
                                     @elseif($neuroassessment->fingerTestL == 'Fair')
-                                        { text: '[\u200B\t] Poor [ √ ] Fair [\u200B\t] Good' },
+                                        { text: '[\u200B\t] Poor \u200B\t [ √ ] Fair \u200B\t [\u200B\t] Good' },
                                     @elseif($neuroassessment->fingerTestL == 'Good')
-                                        { text: '[\u200B\t] Poor [\u200B\t] Fair [ √ ] Good' },
+                                        { text: '[\u200B\t] Poor \u200B\t [\u200B\t] Fair \u200B\t [ √ ] Good' },
                                     @else
-                                        { text: '[\u200B\t] Poor [\u200B\t] Fair [\u200B\t] Good' },
+                                        { text: '[\u200B\t] Poor \u200B\t [\u200B\t] Fair \u200B\t [\u200B\t] Good' },
                                     @endif
-                                    { text: '{{$neuroassessment->fingerTestRemarks}}' },
                                 ],
                                 [
                                     { text: 'Heel Shin Test' },
                                     @if($neuroassessment->heelTestR == 'Poor')
-                                        { text: '[ √ ] Poor [\u200B\t] Fair [\u200B\t] Good' },
+                                        { text: '[ √ ] Poor \u200B\t [\u200B\t] Fair \u200B\t [\u200B\t] Good' },
                                     @elseif($neuroassessment->heelTestR == 'Fair')
-                                        { text: '[\u200B\t] Poor [ √ ] Fair [\u200B\t] Good' },
+                                        { text: '[\u200B\t] Poor \u200B\t [ √ ] Fair \u200B\t [\u200B\t] Good' },
                                     @elseif($neuroassessment->heelTestR == 'Good')
-                                        { text: '[\u200B\t] Poor [\u200B\t] Fair [ √ ] Good' },
+                                        { text: '[\u200B\t] Poor \u200B\t [\u200B\t] Fair \u200B\t [ √ ] Good' },
                                     @else
-                                        { text: '[\u200B\t] Poor [\u200B\t] Fair [\u200B\t] Good' },
+                                        { text: '[\u200B\t] Poor \u200B\t [\u200B\t] Fair \u200B\t [\u200B\t] Good' },
                                     @endif
                                     @if($neuroassessment->heelTestL == 'Poor')
-                                        { text: '[ √ ] Poor [\u200B\t] Fair [\u200B\t] Good' },
+                                        { text: '[ √ ] Poor \u200B\t [\u200B\t] Fair \u200B\t [\u200B\t] Good' },
                                     @elseif($neuroassessment->heelTestL == 'Fair')
-                                        { text: '[\u200B\t] Poor [ √ ] Fair [\u200B\t] Good' },
+                                        { text: '[\u200B\t] Poor \u200B\t [ √ ] Fair \u200B\t [\u200B\t] Good' },
                                     @elseif($neuroassessment->heelTestL == 'Good')
-                                        { text: '[\u200B\t] Poor [\u200B\t] Fair [ √ ] Good' },
+                                        { text: '[\u200B\t] Poor \u200B\t [\u200B\t] Fair \u200B\t [ √ ] Good' },
                                     @else
-                                        { text: '[\u200B\t] Poor [\u200B\t] Fair [\u200B\t] Good' },
+                                        { text: '[\u200B\t] Poor \u200B\t [\u200B\t] Fair \u200B\t [\u200B\t] Good' },
                                     @endif
-                                    { text: '{{$neuroassessment->heelTestRemarks}}' },
                                 ],
                             ]
                         },
@@ -1778,79 +1736,70 @@
                         style: 'tableExample1',
                         table: {
                             headerRows: 1,
-                            widths: [20,80,115,115,115],
+                            widths: [20,80,121,121,121],
                             body: [
                                 [
                                     { text: 'NO ', style: 'tableHeader' },
                                     { text: 'ACTIVITY', style: 'tableHeader', alignment: 'left' },
                                     { text: 'INTIAL', style: 'tableHeader', alignment: 'left' },
-                                    // { text: 'PROGRESS', style: 'tableHeader', alignment: 'left' },
+                                    { text: 'PROGRESS', style: 'tableHeader', alignment: 'left' },
                                     { text: 'FINAL', style: 'tableHeader', alignment: 'left' },
-                                    { text: 'REMARKS', style: 'tableHeader', alignment: 'left' },
                                 ],
                                 [
                                     { text: '1' },
                                     { text: 'Transfer' },
                                     { text: '{{$neuroassessment->transferInit}}', alignment: 'left' },
-                                    // { text: '{{$neuroassessment->transferProg}}', alignment: 'left' },
+                                    { text: '{{$neuroassessment->transferProg}}', alignment: 'left' },
                                     { text: '{{$neuroassessment->transferFin}}', alignment: 'left' },
-                                    { text: '{{$neuroassessment->transferRemarks}}' },
                                 ],
                                 [
                                     { text: '2' },
                                     { text: 'Supto Side Ly.' },
                                     { text: '{{$neuroassessment->suptoSideInit}}', alignment: 'left' },
-                                    // { text: '{{$neuroassessment->suptoSideProg}}', alignment: 'left' },
+                                    { text: '{{$neuroassessment->suptoSideProg}}', alignment: 'left' },
                                     { text: '{{$neuroassessment->suptoSideFin}}', alignment: 'left' },
-                                    { text: '{{$neuroassessment->suptoSideRemarks}}' },
                                 ],
                                 [
                                     { text: '3' },
                                     { text: 'Side Ly. To Sitt' },
                                     { text: '{{$neuroassessment->sideToSitInit}}', alignment: 'left' },
-                                    // { text: '{{$neuroassessment->sideToSitProg}}', alignment: 'left' },
+                                    { text: '{{$neuroassessment->sideToSitProg}}', alignment: 'left' },
                                     { text: '{{$neuroassessment->sideToSitFin}}', alignment: 'left' },
-                                    { text: '{{$neuroassessment->sideToSitRemarks}}' },
                                 ],
                                 [
                                     { text: '4' },
                                     { text: 'Sitt' },
                                     { text: '{{$neuroassessment->sittInit}}', alignment: 'left' },
-                                    // { text: '{{$neuroassessment->sittProg}}', alignment: 'left' },
+                                    { text: '{{$neuroassessment->sittProg}}', alignment: 'left' },
                                     { text: '{{$neuroassessment->sittFin}}', alignment: 'left' },
-                                    { text: '{{$neuroassessment->sittRemarks}}' },
                                 ],
                                 [
                                     { text: '5' },
                                     { text: 'Sitt To Std' },
                                     { text: '{{$neuroassessment->sitToStdInit}}', alignment: 'left' },
-                                    // { text: '{{$neuroassessment->sitToStdProg}}', alignment: 'left' },
+                                    { text: '{{$neuroassessment->sitToStdProg}}', alignment: 'left' },
                                     { text: '{{$neuroassessment->sitToStdFin}}', alignment: 'left' },
-                                    { text: '{{$neuroassessment->sitToStdRemarks}}' },
                                 ],
                                 [
                                     { text: '6' },
                                     { text: 'Std' },
                                     { text: '{{$neuroassessment->stdInit}}', alignment: 'left' },
-                                    // { text: '{{$neuroassessment->stdProg}}', alignment: 'left' },
+                                    { text: '{{$neuroassessment->stdProg}}', alignment: 'left' },
                                     { text: '{{$neuroassessment->stdFin}}', alignment: 'left' },
-                                    { text: '{{$neuroassessment->stdRemarks}}' },
                                 ],
                                 [
                                     { text: '7' },
                                     { text: 'Shifting Ability' },
                                     { text: '{{$neuroassessment->shiftInit}}', alignment: 'left' },
-                                    // { text: '{{$neuroassessment->shiftProg}}', alignment: 'left' },
+                                    { text: '{{$neuroassessment->shiftProg}}', alignment: 'left' },
                                     { text: '{{$neuroassessment->shiftFin}}', alignment: 'left' },
-                                    { text: '{{$neuroassessment->shiftRemarks}}' },
                                 ],
                                 [
                                     { text: '8' },
                                     { text: 'Ambulation' },
                                     { text: '{{$neuroassessment->ambulationInit}}', alignment: 'left' },
-                                    // { text: '{{$neuroassessment->ambulationProg}}', alignment: 'left' },
+                                    { text: '{{$neuroassessment->ambulationProg}}', alignment: 'left' },
                                     { text: '{{$neuroassessment->ambulationFin}}', alignment: 'left' },
-                                    { text: '{{$neuroassessment->ambulationRemarks}}' },
                                 ],
                             ]
                         },
@@ -1879,35 +1828,31 @@
                         style: 'tableExample1',
                         table: {
                             headerRows: 1,
-                            widths: [80,125,125,125],
+                            widths: [80,131,131,131],
                             body: [
                                 [
                                     { text: 'TEST', style: 'tableHeader', alignment: 'left' },
                                     { text: 'INTIAL', style: 'tableHeader', alignment: 'left' },
-                                    // { text: 'PROGRESS', style: 'tableHeader', alignment: 'left' },
+                                    { text: 'PROGRESS', style: 'tableHeader', alignment: 'left' },
                                     { text: 'FINAL', style: 'tableHeader', alignment: 'left' },
-                                    { text: 'REMARKS', style: 'tableHeader', alignment: 'left' },
                                 ],
                                 [
                                     { text: 'Barthel Index' },
                                     { text: '{{$patrehabperkeso->barthelIndexInit}}', alignment: 'left' },
-                                    // { text: '{{$patrehabperkeso->barthelIndexProg}}', alignment: 'left' },
+                                    { text: '{{$patrehabperkeso->barthelIndexProg}}', alignment: 'left' },
                                     { text: '{{$patrehabperkeso->barthelIndexFin}}', alignment: 'left' },
-                                    { text: '{{$patrehabperkeso->barthelIndexRemarks}}' },
                                 ],
                                 [
                                     { text: 'Berg Balance' },
                                     { text: '{{$patrehabperkeso->bergBalanceInit}}', alignment: 'left' },
-                                    // { text: '{{$patrehabperkeso->bergBalanceProg}}', alignment: 'left' },
+                                    { text: '{{$patrehabperkeso->bergBalanceProg}}', alignment: 'left' },
                                     { text: '{{$patrehabperkeso->bergBalanceFin}}', alignment: 'left' },
-                                    { text: '{{$patrehabperkeso->bergBalanceRemarks}}' },
                                 ],
                                 [
                                     { text: '6 Min Walk Test' },
                                     { text: '{{$patrehabperkeso->sixMinWalkInit}}', alignment: 'left' },
-                                    // { text: '{{$patrehabperkeso->sixMinWalkProg}}', alignment: 'left' },
+                                    { text: '{{$patrehabperkeso->sixMinWalkProg}}', alignment: 'left' },
                                     { text: '{{$patrehabperkeso->sixMinWalkFin}}', alignment: 'left' },
-                                    { text: '{{$patrehabperkeso->sixMinWalkRemarks}}' },
                                 ],
                             ]
                         },
@@ -1931,207 +1876,21 @@
                         },
                         layout: 'noBorders',
                     },
-                    { text: 'SPEECH - LANGUAGE AND SWALLOWING ASSESSMENT\n\n', fontSize: 10, bold: true, decoration: 'underline' },
-                    { text: '\u200B\t1) OROMOTOR EXAMINATION', fontSize: 9 },
+                    { text: '\u200B\t10) TREATMENT', fontSize: 9 },
                     {
                         style: 'tableExample1',
                         table: {
                             headerRows: 1,
-                            widths: [90,170,170],
-                            body: [
-                                [
-                                    { text: '', style: 'tableHeader', alignment: 'left' },
-                                    { text: 'INTIAL', style: 'tableHeader', alignment: 'left' },
-                                    { text: 'FINAL', style: 'tableHeader', alignment: 'left' },
-                                ],
-                                [
-                                    { text: 'Jaw' },
-                                    { text: `{!!$patrehabperkeso->jawInit!!}` },
-                                    { text: `{!!$patrehabperkeso->jawFin!!}` },
-                                ],
-                                [
-                                    { text: 'Lips' },
-                                    { text: `{!!$patrehabperkeso->lipsInit!!}` },
-                                    { text: `{!!$patrehabperkeso->lipsFin!!}` },
-                                ],
-                                [
-                                    { text: 'Soft Palate' },
-                                    { text: `{!!$patrehabperkeso->softPalateInit!!}` },
-                                    { text: `{!!$patrehabperkeso->softPalateFin!!}` },
-                                ],
-                                [
-                                    { text: 'Voice' },
-                                    { text: `{!!$patrehabperkeso->voiceInit!!}` },
-                                    { text: `{!!$patrehabperkeso->voiceFin!!}` },
-                                ],
-                                [
-                                    { text: 'Tongue' },
-                                    { text: `{!!$patrehabperkeso->tongueInit!!}` },
-                                    { text: `{!!$patrehabperkeso->tongueFin!!}` },
-                                ],
-                                [
-                                    { text: 'Comments:' },
-                                    { text: `{!!$patrehabperkeso->oromotorCmtInit!!}` },
-                                    { text: `{!!$patrehabperkeso->oromotorCmtFin!!}` },
-                                ],
-                            ]
-                        },
-                        layout: {
-                            fillColor: function (rowIndex, node, columnIndex){
-                                // return (rowIndex === 0) ? '#000000' : null;
-                            }
-                        },
-                    },
-                    { text: '\u200B\t2) SPEECH ASSESSMENT', fontSize: 9 },
-                    {
-                        style: 'tableExample1',
-                        table: {
-                            headerRows: 1,
-                            widths: [110,160,160],
-                            body: [
-                                [
-                                    { text: '', style: 'tableHeader', alignment: 'left' },
-                                    { text: 'INTIAL', style: 'tableHeader', alignment: 'left' },
-                                    { text: 'FINAL', style: 'tableHeader', alignment: 'left' },
-                                ],
-                                [
-                                    { text: 'Maximum Phonation Time (MPT)' },
-                                    { text: `{!!$patrehabperkeso->MPTInit!!}` },
-                                    { text: `{!!$patrehabperkeso->MPTFin!!}` },
-                                ],
-                                [
-                                    { text: 'Loudness' },
-                                    { text: `{!!$patrehabperkeso->loudInit!!}` },
-                                    { text: `{!!$patrehabperkeso->loudFin!!}` },
-                                ],
-                                [
-                                    { text: 'Pitch' },
-                                    { text: `{!!$patrehabperkeso->pitchInit!!}` },
-                                    { text: `{!!$patrehabperkeso->pitchFin!!}` },
-                                ],
-                                [
-                                    { text: 'Articulation' },
-                                    { text: `{!!$patrehabperkeso->articltInit!!}` },
-                                    { text: `{!!$patrehabperkeso->articltFin!!}` },
-                                ],
-                                [
-                                    { text: 'Comments:' },
-                                    { text: `{!!$patrehabperkeso->speechCmtInit!!}` },
-                                    { text: `{!!$patrehabperkeso->speechCmtFin!!}` },
-                                ],
-                            ]
-                        },
-                        layout: {
-                            fillColor: function (rowIndex, node, columnIndex){
-                                // return (rowIndex === 0) ? '#000000' : null;
-                            }
-                        },
-                    },
-                    { text: '\u200B\t3) LANGUAGE ASSESSMENT', fontSize: 9 },
-                    {
-                        style: 'tableExample1',
-                        table: {
-                            headerRows: 1,
-                            widths: [110,160,160],
-                            body: [
-                                [
-                                    { text: '', style: 'tableHeader', alignment: 'left' },
-                                    { text: 'INTIAL', style: 'tableHeader', alignment: 'left' },
-                                    { text: 'FINAL', style: 'tableHeader', alignment: 'left' },
-                                ],
-                                [
-                                    { text: 'Spontaneous Speech Score' },
-                                    { text: `{!!$patrehabperkeso->spontaneousInit!!}` },
-                                    { text: `{!!$patrehabperkeso->spontaneousFin!!}` },
-                                ],
-                                [
-                                    { text: 'Auditory Verbal Comprehension Score' },
-                                    { text: `{!!$patrehabperkeso->auditoryInit!!}` },
-                                    { text: `{!!$patrehabperkeso->auditoryFin!!}` },
-                                ],
-                                [
-                                    { text: 'Repetition Score' },
-                                    { text: `{!!$patrehabperkeso->repeatInit!!}` },
-                                    { text: `{!!$patrehabperkeso->repeatFin!!}` },
-                                ],
-                                [
-                                    { text: 'Naming and Word Finding Score' },
-                                    { text: `{!!$patrehabperkeso->namingInit!!}` },
-                                    { text: `{!!$patrehabperkeso->namingFin!!}` },
-                                ],
-                                [
-                                    { text: 'Aphasia Quotient:' },
-                                    { text: `{!!$patrehabperkeso->aphasiaInit!!}` },
-                                    { text: `{!!$patrehabperkeso->aphasiaFin!!}` },
-                                ],
-                                [
-                                    { text: 'Comments:' },
-                                    { text: `{!!$patrehabperkeso->languageCmtInit!!}` },
-                                    { text: `{!!$patrehabperkeso->languageCmtFin!!}` },
-                                ],
-                            ]
-                        },
-                        layout: {
-                            fillColor: function (rowIndex, node, columnIndex){
-                                // return (rowIndex === 0) ? '#000000' : null;
-                            }
-                        },
-                    },
-                    { text: '\u200B\t4) SWALLOWING ASSESSMENT', fontSize: 9 },
-                    {
-                        style: 'tableExample1',
-                        table: {
-                            headerRows: 1,
-                            widths: [110,160,160],
-                            body: [
-                                [
-                                    { text: '', style: 'tableHeader', alignment: 'left' },
-                                    { text: 'INTIAL', style: 'tableHeader', alignment: 'left' },
-                                    { text: 'FINAL', style: 'tableHeader', alignment: 'left' },
-                                ],
-                                [
-                                    { text: 'Oral Phase' },
-                                    { text: `{!!$patrehabperkeso->oralInit!!}` },
-                                    { text: `{!!$patrehabperkeso->oralFin!!}` },
-                                ],
-                                [
-                                    { text: 'Pharyngeal Phase' },
-                                    { text: `{!!$patrehabperkeso->pharyngealInit!!}` },
-                                    { text: `{!!$patrehabperkeso->pharyngealFin!!}` },
-                                ],
-                                [
-                                    { text: 'Recommendation and Management' },
-                                    { text: `{!!$patrehabperkeso->manageInit!!}` },
-                                    { text: `{!!$patrehabperkeso->manageFin!!}` },
-                                ],
-                            ]
-                        },
-                        layout: {
-                            fillColor: function (rowIndex, node, columnIndex){
-                                // return (rowIndex === 0) ? '#000000' : null;
-                            }
-                        },
-                    },
-                    { text: 'ANALYSIS\n\n', fontSize: 10, bold: true, decoration: 'underline' },
-                    { text: '\u200B\t1) PROBLEM LISTING & INTERVENTION', fontSize: 9 },
-                    {
-                        style: 'tableExample1',
-                        table: {
-                            headerRows: 1,
-                            widths: [230,230],
+                            widths: [247,247],
                             // widths: [20,232,232],
                             body: [
                                 [
                                     // { text: 'NO ', style: 'tableHeader' },
-                                    { text: 'FINDING', style: 'tableHeader', alignment: 'center' },
-                                    { text: 'INTERVENTION', style: 'tableHeader', alignment: 'center' },
+                                    { text: 'FINDING', style: 'tableHeader', alignment: 'left' },
+                                    { text: 'INTERVENTION', style: 'tableHeader', alignment: 'left' },
                                 ],
                                 [
-                                    @if(!empty($patrehabperkeso->finding))
-                                        { text: `{!!$patrehabperkeso->finding!!}`, alignment: 'left' },
-                                    @else
-                                        { text: '\n\n\n' },
-                                    @endif
+                                    { text: `{!!$patrehabperkeso->finding!!}`, alignment: 'left' },
                                     { text: `{!!$patrehabperkeso->intervention!!}`, alignment: 'left' },
                                 ],
                                 // [
@@ -2174,29 +1933,24 @@
                     },
                     {
                         text: [
-                            { text: '\u200B\t2) SUMMARY OF CASE PROGRESS\n', fontSize: 9 },
-                            { text: '\u200B\ta) REHABILITATION PLANS/GOALS', fontSize: 9 },
+                            { text: '\u200B\t11) SUMMARY OF CASE PROGRESS\n', fontSize: 9 },
+                            { text: '\u200B\ti. Rehabilitation plans/goals.', fontSize: 9 },
                         ],
                     },
                     {
                         style: 'tableExample1',
                         table: {
                             headerRows: 1,
-                            // widths: [162,162,162],
-                            widths: [230,230],
+                            widths: [162,162,162],
                             body: [
                                 [
                                     { text: 'INITIAL ', style: 'tableHeader', alignment: 'center' },
-                                    // { text: 'PROGRESS', style: 'tableHeader', alignment: 'center' },
+                                    { text: 'PROGRESS', style: 'tableHeader', alignment: 'center' },
                                     { text: 'FINAL', style: 'tableHeader', alignment: 'center' },
                                 ],
                                 [
-                                    @if(!empty($patrehabperkeso->rehabPlansInit))
-                                        { text: `{!!$patrehabperkeso->rehabPlansInit!!}` },
-                                    @else
-                                        { text: '\n\n\n' },
-                                    @endif
-                                    // { text: `{!!$patrehabperkeso->rehabPlansProg!!}` },
+                                    { text: `{!!$patrehabperkeso->rehabPlansInit!!}` },
+                                    { text: `{!!$patrehabperkeso->rehabPlansProg!!}` },
                                     { text: `{!!$patrehabperkeso->rehabPlansFin!!}` },
                                 ],
                             ]
@@ -2207,26 +1961,21 @@
                             }
                         },
                     },
-                    { text: '\u200B\tb) LIMITATIONS', fontSize: 9 },
+                    { text: '\u200B\tii. Limitations', fontSize: 9 },
                     {
                         style: 'tableExample1',
                         table: {
                             headerRows: 1,
-                            // widths: [162,162,162],
-                            widths: [230,230],
+                            widths: [162,162,162],
                             body: [
                                 [
                                     { text: 'INITIAL ', style: 'tableHeader', alignment: 'center' },
-                                    // { text: 'PROGRESS', style: 'tableHeader', alignment: 'center' },
+                                    { text: 'PROGRESS', style: 'tableHeader', alignment: 'center' },
                                     { text: 'FINAL', style: 'tableHeader', alignment: 'center' },
                                 ],
                                 [
-                                    @if(!empty($patrehabperkeso->limitInit))
-                                        { text: `{!!$patrehabperkeso->limitInit!!}` },
-                                    @else
-                                        { text: '\n\n\n' },
-                                    @endif
-                                    // { text: `{!!$patrehabperkeso->limitProg!!}` },
+                                    { text: `{!!$patrehabperkeso->limitInit!!}` },
+                                    { text: `{!!$patrehabperkeso->limitProg!!}` },
                                     { text: `{!!$patrehabperkeso->limitFin!!}` },
                                 ],
                             ]
@@ -2237,26 +1986,21 @@
                             }
                         },
                     },
-                    { text: '\u200B\tc) IMPROVEMENTS', fontSize: 9 },
+                    { text: '\u200B\tiii. Improvements', fontSize: 9 },
                     {
                         style: 'tableExample1',
                         table: {
                             headerRows: 1,
-                            // widths: [162,162,162],
-                            widths: [230,230],
+                            widths: [162,162,162],
                             body: [
                                 [
                                     { text: 'INITIAL ', style: 'tableHeader', alignment: 'center' },
-                                    // { text: 'PROGRESS', style: 'tableHeader', alignment: 'center' },
+                                    { text: 'PROGRESS', style: 'tableHeader', alignment: 'center' },
                                     { text: 'FINAL', style: 'tableHeader', alignment: 'center' },
                                 ],
                                 [
-                                    @if(!empty($patrehabperkeso->improvementInit))
-                                        { text: `{!!$patrehabperkeso->improvementInit!!}` },
-                                    @else
-                                        { text: '\n\n\n' },
-                                    @endif
-                                    // { text: `{!!$patrehabperkeso->improvementProg!!}` },
+                                    { text: `{!!$patrehabperkeso->improvementInit!!}` },
+                                    { text: `{!!$patrehabperkeso->improvementProg!!}` },
                                     { text: `{!!$patrehabperkeso->improvementFin!!}` },
                                 ],
                             ]
@@ -2267,42 +2011,32 @@
                             }
                         },
                     },
-                    { text: '\u200B\td) RECOMMENDATIONS', fontSize: 9 },
+                    { text: '\u200B\tiv. Recommendations', fontSize: 9 },
                     {
                         style: 'tableExample1',
                         table: {
                             headerRows: 1,
-                            // widths: [162,162,162],
-                            widths: [230,230],
+                            widths: [162,162,162],
                             body: [
                                 [
                                     { text: 'INITIAL ', style: 'tableHeader', alignment: 'center' },
-                                    // { text: 'PROGRESS', style: 'tableHeader', alignment: 'center' },
+                                    { text: 'PROGRESS', style: 'tableHeader', alignment: 'center' },
                                     { text: 'FINAL', style: 'tableHeader', alignment: 'center' },
                                 ],
                                 [
-                                    @if(!empty($patrehabperkeso->recommendInit))
-                                        { text: `{!!$patrehabperkeso->recommendInit!!}` },
-                                    @else
-                                        { text: '\n\n\n' },
-                                    @endif
-                                    // { text: `{!!$patrehabperkeso->recommendProg!!}` },
+                                    { text: `{!!$patrehabperkeso->recommendInit!!}` },
+                                    { text: `{!!$patrehabperkeso->recommendProg!!}` },
                                     { text: `{!!$patrehabperkeso->recommendFin!!}` },
                                 ],
                                 [
                                     { text: 'Therapist name: {{$patrehabperkeso->therapistNameInit1}}' },
-                                    // { text: 'Therapist name: {{$patrehabperkeso->therapistNameProg1}}' },
+                                    { text: 'Therapist name: {{$patrehabperkeso->therapistNameProg1}}' },
                                     { text: 'Therapist name: {{$patrehabperkeso->therapistNameFin1}}' },
                                 ],
                                 [
                                     { text: 'Therapist name: {{$patrehabperkeso->therapistNameInit2}}' },
-                                    // { text: 'Therapist name: {{$patrehabperkeso->therapistNameProg2}}' },
+                                    { text: 'Therapist name: {{$patrehabperkeso->therapistNameProg2}}' },
                                     { text: 'Therapist name: {{$patrehabperkeso->therapistNameFin2}}' },
-                                ],
-                                [
-                                    { text: 'Therapist name: {{$patrehabperkeso->therapistNameInit3}}' },
-                                    // { text: 'Therapist name: {{$patrehabperkeso->therapistNameProg3}}' },
-                                    { text: 'Therapist name: {{$patrehabperkeso->therapistNameFin3}}' },
                                 ],
                             ]
                         },
@@ -2317,17 +2051,13 @@
                         style: 'tableExample1',
                         table: {
                             headerRows: 1,
-                            widths: [470],
+                            widths: ['*'],
                             body: [
                                 [
-                                    @if(!empty($patrehabperkeso->summaryInitRmk))
-                                        { text: `{!!$patrehabperkeso->summaryInitRmk!!}` },
-                                    @else
-                                        { text: '\n\n\n' },
-                                    @endif
+                                    { text: `{!!$patrehabperkeso->summaryInitRmk!!}` },
                                 ],
                                 [
-                                    { text: 'SUMMARY INITIAL ASSESSMENT: {{$patrehabperkeso->summaryInitial}}' },
+                                    { text: 'SUMMARY INITIAL & PROGRESS ASSESSMENT: {{$patrehabperkeso->summaryInitial}}' },
                                 ],
                             ]
                         },
@@ -2341,14 +2071,10 @@
                         style: 'tableExample1',
                         table: {
                             headerRows: 1,
-                            widths: [470],
+                            widths: ['*'],
                             body: [
                                 [
-                                    @if(!empty($patrehabperkeso->summaryFinalRmk))
-                                        { text: `{!!$patrehabperkeso->summaryFinalRmk!!}` },
-                                    @else
-                                        { text: '\n\n\n' },
-                                    @endif
+                                    { text: `{!!$patrehabperkeso->summaryFinalRmk!!}` },
                                 ],
                                 [
                                     { text: 'SUMMARY FINAL ASSESSMENT: {{$patrehabperkeso->summaryFinal}}' },
@@ -2384,10 +2110,6 @@
                     tableExample2: {
                         fontSize: 9,
                         margin: [60, 5, 0, 10]
-                    },
-                    pagecontent: {
-                        fontSize: 9,
-                        margin: [10, 5, 10, 10],
                     },
                     tableHeader: {
                         bold: true,
