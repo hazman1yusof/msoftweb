@@ -360,6 +360,21 @@ $(document).ready(function () {
                 
                 populate_notes_getdata();
                 break;
+            case 'speechTherapy':
+                var urlparam_tbl_speechTherapy = {
+                    action: 'get_datetime_speechTherapy',
+                    mrn: $("#mrn_rehabMain").val(),
+                    episno: $("#episno_rehabMain").val()
+                }
+                
+                tbl_speechTherapy_date.ajax.url("./speechTherapy/table?"+$.param(urlparam_tbl_speechTherapy)).load(function (data){
+                    emptyFormdata_div("#formSpeechTherapy",['#mrn_rehabMain','#episno_rehabMain']);
+                    $('#tbl_speechTherapy_date tbody tr:eq(0)').click(); // to select first row
+                });
+                
+                // $('#tbl_speechTherapy_date').DataTable().ajax.reload();
+                getdata_speechTherapy();
+                break;
         }
     }});
     

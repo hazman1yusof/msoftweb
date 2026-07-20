@@ -13,6 +13,7 @@
             <a class="item" data-tab="neurorobotic" id="navtab_neurorobotic">NEUROROBOTIC</a>
             <a class="item" data-tab="physiotherapy" id="navtab_physiotherapy">PHYSIOTHERAPY</a>
             <a class="item" data-tab="occupTherapy" id="navtab_occupTherapy">OCCUPATIONAL THERAPY</a>
+            <a class="item" data-tab="speechTherapy" id="navtab_speechTherapy">SPEECH THERAPY</a>
         </div>
         
         <div class="ui bottom attached tab raised segment active" data-tab="rehabilitation">
@@ -29,6 +30,10 @@
         
         <div class="ui bottom attached tab raised segment" data-tab="occupTherapy">
             @include('rehab.occupTherapy.occupTherapy')
+        </div>
+        
+        <div class="ui bottom attached tab raised segment" data-tab="speechTherapy">
+            @include('rehab.speechTherapy.speechTherapy')
         </div>
     </div>
 </div>

@@ -1842,6 +1842,12 @@ Route::get('/occupTherapy_notes/table','rehab\OccupTherapyNotesController@table'
 Route::post('/occupTherapy_notes/form','rehab\OccupTherapyNotesController@form');
 Route::get('/occupTherapy_notes/notes_chart','rehab\OccupTherapyNotesController@notes_chart');
 
+//// Speech Therapy page ////
+Route::get('/speechTherapy','rehab\SpeechTherapyController@show');
+Route::get('/speechTherapy/table','rehab\SpeechTherapyController@table');
+Route::post('/speechTherapy/form','rehab\SpeechTherapyController@form');
+Route::get('/speechTherapy/speechtherapy_chart','rehab\SpeechTherapyController@speechtherapy_chart');
+
 //dari appointment
 
 Route::get('/appointment','appointment\AppointmentController@index');
