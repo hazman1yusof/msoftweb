@@ -1848,6 +1848,12 @@ Route::get('/speechTherapy/table','rehab\SpeechTherapyController@table');
 Route::post('/speechTherapy/form','rehab\SpeechTherapyController@form');
 Route::get('/speechTherapy/speechtherapy_chart','rehab\SpeechTherapyController@speechtherapy_chart');
 
+//// Psychotherapy page ////
+Route::get('/psychotherapy','rehab\PsychotherapyController@show');
+Route::get('/psychotherapy/table','rehab\PsychotherapyController@table');
+Route::post('/psychotherapy/form','rehab\PsychotherapyController@form');
+Route::get('/psychotherapy/psychotherapy_chart','rehab\PsychotherapyController@psychotherapy_chart');
+
 //dari appointment
 
 Route::get('/appointment','appointment\AppointmentController@index');

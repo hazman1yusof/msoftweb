@@ -375,6 +375,21 @@ $(document).ready(function () {
                 // $('#tbl_speechTherapy_date').DataTable().ajax.reload();
                 getdata_speechTherapy();
                 break;
+            case 'psychotherapy':
+                var urlparam_tbl_psychotherapy = {
+                    action: 'get_datetime_psychotherapy',
+                    mrn: $("#mrn_rehabMain").val(),
+                    episno: $("#episno_rehabMain").val()
+                }
+                
+                tbl_psychotherapy_date.ajax.url("./psychotherapy/table?"+$.param(urlparam_tbl_psychotherapy)).load(function (data){
+                    emptyFormdata_div("#formPsychotherapy",['#mrn_rehabMain','#episno_rehabMain']);
+                    $('#tbl_psychotherapy_date tbody tr:eq(0)').click(); // to select first row
+                });
+                
+                // $('#tbl_psychotherapy_date').DataTable().ajax.reload();
+                getdata_psychotherapy();
+                break;
         }
     }});
     
