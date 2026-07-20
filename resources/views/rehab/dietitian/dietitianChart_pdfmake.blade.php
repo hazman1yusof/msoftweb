@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Psychotherapy</title>
+        <title>Dietitian</title>
     </head>
     
     <!-- <script src="https://unpkg.com/@jsreport/browser-client/dist/jsreport.umd.js"></script>
@@ -28,7 +28,7 @@
                         image: 'letterhead', width: 500, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
-                        text: '\nPSYCHOTHERAPY\n',
+                        text: '\nDIETITIAN\n',
                         style: 'header',
                         alignment: 'center',
                     },
@@ -42,18 +42,18 @@
                                 [
                                     { text: 'Name' },
                                     { text: ':' },
-                                    { text: `{!!$psychotherapy->Name!!}` },
+                                    { text: `{!!$dietitian->Name!!}` },
                                     { text: 'MRN' },
                                     { text: ':' },
-                                    { text: '{{str_pad($psychotherapy->mrn, 7, "0", STR_PAD_LEFT)}}' },
+                                    { text: '{{str_pad($dietitian->mrn, 7, "0", STR_PAD_LEFT)}}' },
                                 ],
                                 [
                                     { text: 'NRIC/Passport No.' },
                                     { text: ':' },
-                                    { text: '{{$psychotherapy->Newic}}' },
+                                    { text: '{{$dietitian->Newic}}' },
                                     { text: 'Date' },
                                     { text: ':' },
-                                    { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$psychotherapy->entereddate)->format('d-m-Y')}}' },
+                                    { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$dietitian->entereddate)->format('d-m-Y')}}' },
                                 ],
                             ]
                         },
@@ -67,7 +67,7 @@
                             widths: ['*'], // panjang standard dia 515
                             body: [
                                 [
-                                    { text: `{!!$psychotherapy->notes!!}` },
+                                    { text: `{!!$dietitian->notes!!}` },
                                 ],
                             ]
                         },

@@ -15,6 +15,7 @@
             <a class="item" data-tab="occupTherapy" id="navtab_occupTherapy">OCCUPATIONAL THERAPY</a>
             <a class="item" data-tab="speechTherapy" id="navtab_speechTherapy">SPEECH THERAPY</a>
             <a class="item" data-tab="psychotherapy" id="navtab_psychotherapy">PSYCHOTHERAPY</a>
+            <a class="item" data-tab="dietitian" id="navtab_dietitian">DIETITIAN</a>
         </div>
         
         <div class="ui bottom attached tab raised segment active" data-tab="rehabilitation">
@@ -39,6 +40,10 @@
         
         <div class="ui bottom attached tab raised segment" data-tab="psychotherapy">
             @include('rehab.psychotherapy.psychotherapy')
+        </div>
+        
+        <div class="ui bottom attached tab raised segment" data-tab="dietitian">
+            @include('rehab.dietitian.dietitian')
         </div>
     </div>
 </div>

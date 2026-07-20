@@ -1854,6 +1854,12 @@ Route::get('/psychotherapy/table','rehab\PsychotherapyController@table');
 Route::post('/psychotherapy/form','rehab\PsychotherapyController@form');
 Route::get('/psychotherapy/psychotherapy_chart','rehab\PsychotherapyController@psychotherapy_chart');
 
+//// Dietitian page ////
+Route::get('/dietitian','rehab\DietitianController@show');
+Route::get('/dietitian/table','rehab\DietitianController@table');
+Route::post('/dietitian/form','rehab\DietitianController@form');
+Route::get('/dietitian/dietitian_chart','rehab\DietitianController@dietitian_chart');
+
 //dari appointment
 
 Route::get('/appointment','appointment\AppointmentController@index');

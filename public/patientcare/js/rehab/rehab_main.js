@@ -390,6 +390,21 @@ $(document).ready(function () {
                 // $('#tbl_psychotherapy_date').DataTable().ajax.reload();
                 getdata_psychotherapy();
                 break;
+            case 'dietitian':
+                var urlparam_tbl_dietitian = {
+                    action: 'get_datetime_dietitian',
+                    mrn: $("#mrn_rehabMain").val(),
+                    episno: $("#episno_rehabMain").val()
+                }
+                
+                tbl_dietitian_date.ajax.url("./dietitian/table?"+$.param(urlparam_tbl_dietitian)).load(function (data){
+                    emptyFormdata_div("#formDietitian",['#mrn_rehabMain','#episno_rehabMain']);
+                    $('#tbl_dietitian_date tbody tr:eq(0)').click(); // to select first row
+                });
+                
+                // $('#tbl_dietitian_date').DataTable().ajax.reload();
+                getdata_dietitian();
+                break;
         }
     }});
     
