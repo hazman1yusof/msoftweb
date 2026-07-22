@@ -1,4 +1,3 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
@@ -15,6 +14,9 @@ $(document).ready(function (){
         $('#jqGridWardMain_panel').find('.nav a:first').tab('show');
 
         $('#wardMain_panel_title').show();
+
+        $("#jqGridAddNotesNursingED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesNursingED_c")[0].offsetWidth-$("#jqGridAddNotesNursingED_c")[0].offsetLeft-310));
+
     });
     
     $("#jqGridWardMain_panel").on("hidden.bs.collapse", function (){
@@ -43,6 +45,7 @@ $(document).ready(function (){
         switch(type){
             case 'EDAssmtIP':
                 populate_triageED_currpt_getdata();
+                $("#jqGridAddNotesNursingED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesNursingED_c")[0].offsetWidth-$("#jqGridAddNotesNursingED_c")[0].offsetLeft-310));
                 break;
             case 'triageIP':
                 populate_triage_currpt_getdata();

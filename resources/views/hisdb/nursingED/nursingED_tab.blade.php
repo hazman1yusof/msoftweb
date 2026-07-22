@@ -1,4 +1,3 @@
-
 <!-- <div class="panel-body paneldiv" style="overflow-y: auto;"> -->
     <div class='col-md-12' style="padding: 0 0 15px 0;">
         <form class='form-horizontal' style='width: 99%;' id='formTriageInfoED'>
@@ -14,9 +13,9 @@
                             <button type="button" class="btn btn-default" id="new_tiED">
                                 <span class="fa fa-plus-square-o"></span> New 
                             </button>
-                            <button type="button" class="btn btn-default" id="edit_tiED">
+                            <!-- <button type="button" class="btn btn-default" id="edit_tiED">
                                 <span class="fa fa-edit fa-lg"></span> Edit 
-                            </button>
+                            </button> -->
                             <button type="button" class="btn btn-default" data-oper='add' id="save_tiED">
                                 <span class="fa fa-save fa-lg"></span> Save 
                             </button>
@@ -868,6 +867,19 @@
                                         </div>
                                     </div>
 
+                                     <div class='col-md-12'>
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading text-center">NOTES</div>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <textarea id="ed_notes" name="ed_notes" type="text" class="form-control input-sm" rows="10"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class='col-md-12'>
                                         <div class="row justify-content-evenly">
                                             <div class="col-3"></div>
@@ -885,6 +897,18 @@
                                             </div>
                                             <div class="col-3"></div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class='col-md-12'>
+                            <div class="panel panel-info" id="jqGridAddNotesNursingED_c">
+                                <div class="panel-heading text-center">ADDITIONAL NOTES</div>
+                                <div class="panel-body">
+                                    <div class='col-md-12'>
+                                        <table id="jqGridAddNotesNursingED" class="table table-striped"></table>
+                                        <div id="jqGridPagerAddNotesNursingED"></div>
                                     </div>
                                 </div>
                             </div>
