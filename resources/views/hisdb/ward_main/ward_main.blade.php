@@ -43,7 +43,6 @@
             <div class='col-md-12' style="padding: 0 0 15px 0;">
                 <ul class="nav nav-tabs" id="jqGridWardMain_panel_tabs">
                     <li><a data-toggle="tab" id="navtab_EDAssmtIP" href="#tab-EDAssmtIP" data-type='EDAssmtIP'>Emergency<br>Nursing<br>Assessment</a></li>
-                    <li><a data-toggle="tab" id="navtab_triageIP" href="#tab-triageIP" data-type='triageIP'>Triage<br>Information</a></li>
                     <li><a data-toggle="tab" id="navtab_nursActionIP" href="#tab-nursActionIP" data-type='nursActionIP'>Nursing<br>Action Plan</a></li>
                     <li><a data-toggle="tab" id="navtab_nursNoteIP" href="#tab-nursNoteIP" data-type='nursNoteIP'>Nursing Note</a></li>
                     @if(Auth::user()->doctor == 1)
@@ -51,7 +50,6 @@
                     @endif
                     <li><a data-toggle="tab" id="navtab_docNoteIP" href="#tab-docNoteIP" data-type='docNoteIP'>Doctor Note</a></li>
                     <li><a data-toggle="tab" id="navtab_docNoteRefIP" href="#tab-docNoteRefIP" data-type='docNoteRefIP'>Doctor Note<br>(Referral)</a></li>
-                    <li><a data-toggle="tab" id="navtab_docNotePsyIP" href="#tab-docNotePsyIP" data-type='docNotePsyIP'>Doctor Note<br>(Psychiatry)</a></li>
                     <li><a data-toggle="tab" id="navtab_reqForIP" href="#tab-reqForIP" data-type='reqForIP'>Request For</a></li>
                     <li><a data-toggle="tab" id="navtab_dietNoteIP" href="#tab-dietNoteIP" data-type='dietNoteIP'>Dietetic<br>Care Notes</a></li>
                     <li><a data-toggle="tab" id="navtab_dietOrderIP" href="#tab-dietOrderIP" data-type='dietOrderIP'>Diet Order</a></li>
@@ -69,9 +67,6 @@
                     <div id="tab-EDAssmtIP" class="active in tab-pane fade">
                         @include('hisdb.nursingED.nursingED_tab')
                     </div>
-                    <div id="tab-triageIP" class="tab-pane fade">
-                        @include('hisdb.nursing.nursing_tab',['page_screen' => "patmast"])
-                    </div>
                     <div id="tab-nursActionIP" class="tab-pane fade">
                         @include('hisdb.nursingActionPlan.nursingActionPlan_tab')
                     </div>
@@ -86,9 +81,6 @@
                     </div>
                     <div id="tab-docNoteRefIP" class="tab-pane fade">
                         @include('hisdb.clientprogressnote.clientprogressnoteref_tab')
-                    </div>
-                    <div id="tab-docNotePsyIP" class="tab-pane fade">
-                        @include('hisdb.doctornote.doctornote_tab')
                     </div>
                     <div id="tab-reqForIP" class="tab-pane fade">
                         <!-- #include('hisdb.requestfor.requestfor_tab') -->

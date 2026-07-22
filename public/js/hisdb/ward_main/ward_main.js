@@ -261,37 +261,19 @@ $(document).ready(function (){
 
                 break;
             case 'dietNoteIP':
-                $.post("./dieteticCareNotes/form?"+$.param(saveParam_dietaticCareNotes), $.param(postobj_dietaticCareNotes), function (data){
-                    
-                },'json').fail(function (data){
-                    alert('there is an error');
-                }).success(function (data){
-                    // console.log('data');
-                    
-                    if(!$.isEmptyObject(data)){
-                        // console.log(data);
-                        autoinsert_rowdata_dieteticCareNotes("#formDieteticCareNotes",data.patdietncase);
-                        button_state_dieteticCareNotes('disable_ncase');
-                        getBMI_ncase();
-                        // disableFields_dieteticCareNotes();
-                        textare_init_dietetic();
-                    }else{
-                        button_state_dieteticCareNotes('add');
-                        textare_init_dietetic();
-                    }
-                });
+                getdata_dietNote();
                 
-                var urlparam_dietetic_date_tbl = {
-                    action: 'get_table_date_dietetic',
+	            var urlparam_dietNote_date_tbl = {
+                    action: 'get_table_datetimeDietNote',
                     mrn: $("#mrn_wardMain").val(),
-                    episno: $("#episno_wardMain").val(),
+                    episno: $("#episno_wardMain").val()
                 }
                 
-                dietetic_date_tbl.ajax.url("./dieteticCareNotes/table?"+$.param(urlparam_dietetic_date_tbl)).load(function (data){
-                    emptyFormdata_div("#formDieteticCareNotes_fup",['#mrn_dieteticCareNotes_fup','#episno_dieteticCareNotes_fup']);
-                    // $('#dietetic_date_tbl tbody tr:eq(0)').click(); // to select first row
+                dietNote_date_tbl.ajax.url("./dieteticCareNotes/table?"+$.param(urlparam_dietNote_date_tbl)).load(function (data){
+                    emptyFormdata_div("#formDieteticCareNotes",['#mrn_wardMain','#episno_wardMain','#idno_dieteticCareNotes']);
+                    $('#dietNote_date_tbl tbody tr:eq(0)').click();  // to select first row
                 });
-                
+                                
                 break;
             case 'dietOrderIP':
                 var saveParam = {
