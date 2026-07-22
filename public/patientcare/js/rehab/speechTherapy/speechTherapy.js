@@ -91,11 +91,11 @@ $(document).ready(function (){
         $('#tbl_speechTherapy_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
-        if(check_same_usr_edit(data)){
-            button_state_speechTherapy('edit');
-        }else{
+        // if(check_same_usr_edit(data)){
+        //     button_state_speechTherapy('edit');
+        // }else{
             button_state_speechTherapy('add');
-        }
+        // }
         $('#speechTherapy_chart').attr('disabled',false);
         
         // getdata_speechTherapy();
@@ -130,7 +130,7 @@ $(document).ready(function (){
     ////////////////////////////////////////speechTherapy ends////////////////////////////////////////
     
     $("#speechTherapy_chart").click(function (){
-        window.open('./speechTherapy/speechtherapy_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#speechTherapy_entereddate").val()+'&age='+$("#age_rehabMain").val(), '_blank');
+        window.open('./speechTherapy/speechtherapy_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#speechTherapy_entereddate").val()+'&enteredtime='+$("#speechTherapy_enteredtime").val()+'&age='+$("#age_rehabMain").val(), '_blank');
     });
     
 });
@@ -280,7 +280,8 @@ function saveForm_speechTherapy(callback){
         
     },'json').done(function (data){
         callback(data);
-        button_state_speechTherapy('edit');
+        // button_state_speechTherapy('edit');
+        button_state_speechTherapy('add');
     }).fail(function (data){
         if(data.responseText !== ''){
             // $('#p_error_intake').text(data.responseText);
@@ -327,13 +328,14 @@ function getdata_speechTherapy(){
     }).done(function (data){
         if(!$.isEmptyObject(data.speechtherapy)){
             autoinsert_rowdata("#formSpeechTherapy",data.speechtherapy);
-            button_state_speechTherapy('edit');
+            // button_state_speechTherapy('edit');
             $('#speechTherapy_chart').attr('disabled',false);
         }else{
-            button_state_speechTherapy('add');
+            // button_state_speechTherapy('add');
             $('#speechTherapy_chart').attr('disabled',true);
         }
         
+        button_state_speechTherapy('add');
         // textarea_init_speechTherapy();
     });
 }

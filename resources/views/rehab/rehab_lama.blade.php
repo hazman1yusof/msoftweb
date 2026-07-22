@@ -144,6 +144,132 @@
             </div>
         </div>
     </div>
+
+    <!-- <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;display:none" id="phys_panel">
+        <div class="panel-heading clearfix collapsed" role="tab" id="toggle_phys">
+            <b>NAME: <span id="name_show_phys"></span></b><br>
+            MRN: <span id="mrn_show_phys"></span>
+            SEX: <span id="sex_show_phys"></span>
+            DOB: <span id="dob_show_phys"></span>
+            AGE: <span id="age_show_phys"></span>
+            RACE: <span id="race_show_phys"></span>
+            RELIGION: <span id="religion_show_phys"></span><br>
+            OCCUPATION: <span id="occupation_show_phys"></span>
+            CITIZENSHIP: <span id="citizenship_show_phys"></span>
+            AREA: <span id="area_show_phys"></span>
+            
+            <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_phys"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_phys"></i>
+            
+            <div style="position: absolute; 
+                        padding: 0 0 0 0; 
+                        right: 0px; 
+                        top: 0px; 
+                        z-index: 1000;">
+                <button class="ui icon tertiary button refreshbtn_phys">
+                    <i class="sync alternate icon"></i>
+                </button>
+            </div>
+            
+            <div style="position: absolute; 
+                        padding: 0 0 0 0; 
+                        right: 50px; 
+                        top: 48px;">
+                <h5><strong>Rehabilitation</strong>&nbsp;&nbsp;
+                    <span class="metal"></span></h5>
+            </div>
+        </div>
+        
+        <div id="tab_phys" class="panel-collapse">
+            <div class="panel-body paneldiv">
+                @include('patientcare.physiotherapy.physioterapy')
+            </div>
+        </div>
+    </div>
+    
+    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;display:none" id="physio_panel">
+        <div class="panel-heading clearfix collapsed" id="toggle_physio">
+            <b>NAME: <span id="name_show_physio"></span></b><br>
+            MRN: <span id="mrn_show_physio"></span>
+            SEX: <span id="sex_show_physio"></span>
+            DOB: <span id="dob_show_physio"></span>
+            AGE: <span id="age_show_physio"></span>
+            RACE: <span id="race_show_physio"></span>
+            RELIGION: <span id="religion_show_physio"></span><br>
+            OCCUPATION: <span id="occupation_show_physio"></span>
+            CITIZENSHIP: <span id="citizenship_show_physio"></span>
+            AREA: <span id="area_show_physio"></span>
+            
+            <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_physio"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_physio"></i>
+            
+            <div style="position: absolute; 
+                        padding: 0 0 0 0; 
+                        right: 0px; 
+                        top: 0px; 
+                        z-index: 1000;">
+                <button class="ui icon tertiary button refreshbtn_physio">
+                    <i class="sync alternate icon"></i>
+                </button>
+            </div>
+            
+            <div id='physio_title' style="position: absolute; 
+                            padding: 0 0 0 0; 
+                            right: 50px; 
+                            top: 48px;">
+                <h5><strong>Physiotherapy</strong>&nbsp;&nbsp;
+                    <span class="metal"></span></h5>
+            </div>
+        </div>
+        
+        <div id="tab_physio" class="panel-collapse collapse" data-curtype='navtab_otbookReqFor'>
+            <div class="panel-body paneldiv" id="tab_physio_sticky">
+                @include('rehab.physio.physio')
+            </div>
+        </div>
+    </div>
+    
+    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;display:none" id="occupTherapy_panel">
+        <div class="panel-heading clearfix collapsed" id="toggle_occupTherapy">
+            <b>NAME: <span id="name_show_occupTherapy"></span></b><br>
+            MRN: <span id="mrn_show_occupTherapy"></span>
+            SEX: <span id="sex_show_occupTherapy"></span>
+            DOB: <span id="dob_show_occupTherapy"></span>
+            AGE: <span id="age_show_occupTherapy"></span>
+            RACE: <span id="race_show_occupTherapy"></span>
+            RELIGION: <span id="religion_show_occupTherapy"></span><br>
+            OCCUPATION: <span id="occupation_show_occupTherapy"></span>
+            CITIZENSHIP: <span id="citizenship_show_occupTherapy"></span>
+            AREA: <span id="area_show_occupTherapy"></span>
+            
+            <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_occupTherapy"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_occupTherapy"></i>
+            
+            <div style="position: absolute; 
+                        padding: 0 0 0 0; 
+                        right: 0px; 
+                        top: 0px; 
+                        z-index: 1000;">
+                <button class="ui icon tertiary button refreshbtn_occupTherapy">
+                    <i class="sync alternate icon"></i>
+                </button>
+            </div>
+            
+            <div id='occupTherapy_title' style="position: absolute; 
+                            padding: 0 0 0 0; 
+                            right: 50px; 
+                            top: 48px;">
+                <h5><strong>Occupational Therapy</strong>&nbsp;&nbsp;
+                    <span class="metal"></span></h5>
+            </div>
+        </div>
+        
+        <div id="tab_occupTherapy" class="panel-collapse collapse" data-curtype='navtab_occupTherapy'>
+            <div class="panel-body paneldiv" id="tab_occupTherapy_sticky">
+                @include('rehab.occupTherapy.occupTherapy')
+            </div>
+        </div>
+    </div> -->
     
     @include('hisdb.pat_mgmt.pat_mgmt_iframe',['phase' => 'semantic'])
     @include('patientcare.itemselector')
@@ -190,7 +316,7 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/physiotherapy/physioterapy_ncase.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/rehab_main.js?v=1.6') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/physio.js?v=1.5') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/neurorobotic/neurorobotic.js?v=1.1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/neurorobotic/neurorobotic.js?v=1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/sixMinWalking.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/bergBalanceTest.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/musculoAssessment.js?v=1.2') }}"></script>
@@ -206,7 +332,7 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_barthel.js?v=1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_upperExtremity.js?v=1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_notes.js?v=1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/speechTherapy/speechTherapy.js?v=1.1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/psychotherapy/psychotherapy.js?v=1.1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/dietitian/dietitian.js?v=1.1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/speechTherapy/speechTherapy.js?v=1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/psychotherapy/psychotherapy.js?v=1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/dietitian/dietitian.js?v=1') }}"></script>
 @endsection

@@ -91,11 +91,11 @@ $(document).ready(function (){
         $('#tbl_dietitian_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
-        if(check_same_usr_edit(data)){
-            button_state_dietitian('edit');
-        }else{
+        // if(check_same_usr_edit(data)){
+        //     button_state_dietitian('edit');
+        // }else{
             button_state_dietitian('add');
-        }
+        // }
         $('#dietitian_chart').attr('disabled',false);
         
         // getdata_dietitian();
@@ -130,7 +130,7 @@ $(document).ready(function (){
     ////////////////////////////////////////dietitian ends////////////////////////////////////////
     
     $("#dietitian_chart").click(function (){
-        window.open('./dietitian/dietitian_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#dietitian_entereddate").val()+'&age='+$("#age_rehabMain").val(), '_blank');
+        window.open('./dietitian/dietitian_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#dietitian_entereddate").val()+'&enteredtime='+$("#dietitian_enteredtime").val()+'&age='+$("#age_rehabMain").val(), '_blank');
     });
     
 });
@@ -280,7 +280,8 @@ function saveForm_dietitian(callback){
         
     },'json').done(function (data){
         callback(data);
-        button_state_dietitian('edit');
+        // button_state_dietitian('edit');
+        button_state_dietitian('add');
     }).fail(function (data){
         if(data.responseText !== ''){
             // $('#p_error_intake').text(data.responseText);
@@ -327,13 +328,14 @@ function getdata_dietitian(){
     }).done(function (data){
         if(!$.isEmptyObject(data.dietitian)){
             autoinsert_rowdata("#formDietitian",data.dietitian);
-            button_state_dietitian('edit');
+            // button_state_dietitian('edit');
             $('#dietitian_chart').attr('disabled',false);
         }else{
-            button_state_dietitian('add');
+            // button_state_dietitian('add');
             $('#dietitian_chart').attr('disabled',true);
         }
         
+        button_state_dietitian('add');
         // textarea_init_dietitian();
     });
 }

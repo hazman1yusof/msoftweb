@@ -91,11 +91,11 @@ $(document).ready(function (){
         $('#tbl_neurorobotic_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
-        if(check_same_usr_edit(data)){
-            button_state_neurorobotic('edit');
-        }else{
+        // if(check_same_usr_edit(data)){
+        //     button_state_neurorobotic('edit');
+        // }else{
             button_state_neurorobotic('add');
-        }
+        // }
         $('#neurorobotic_chart').attr('disabled',false);
         
         // getdata_neurorobotic();
@@ -130,7 +130,7 @@ $(document).ready(function (){
     ////////////////////////////////////////neurorobotic ends////////////////////////////////////////
     
     $("#neurorobotic_chart").click(function (){
-        window.open('./neurorobotic/neurorobotic_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#neurorobotic_entereddate").val()+'&age='+$("#age_rehabMain").val(), '_blank');
+        window.open('./neurorobotic/neurorobotic_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#neurorobotic_entereddate").val()+'&enteredtime='+$("#neurorobotic_enteredtime").val()+'&age='+$("#age_rehabMain").val(), '_blank');
     });
     
 });
@@ -280,7 +280,8 @@ function saveForm_neurorobotic(callback){
         
     },'json').done(function (data){
         callback(data);
-        button_state_neurorobotic('edit');
+        // button_state_neurorobotic('edit');
+        button_state_neurorobotic('add');
     }).fail(function (data){
         if(data.responseText !== ''){
             // $('#p_error_intake').text(data.responseText);
@@ -327,13 +328,14 @@ function getdata_neurorobotic(){
     }).done(function (data){
         if(!$.isEmptyObject(data.neurorobotic)){
             autoinsert_rowdata("#formNeurorobotic",data.neurorobotic);
-            button_state_neurorobotic('edit');
+            // button_state_neurorobotic('edit');
             $('#neurorobotic_chart').attr('disabled',false);
         }else{
-            button_state_neurorobotic('add');
+            // button_state_neurorobotic('add');
             $('#neurorobotic_chart').attr('disabled',true);
         }
         
+        button_state_neurorobotic('add');
         // textarea_init_neurorobotic();
     });
 }

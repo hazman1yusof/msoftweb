@@ -67,12 +67,13 @@ class DietitianController extends defaultController
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno)
-                        ->where('entereddate','=',$request->entereddate);
+                        ->where('entereddate','=',$request->entereddate)
+                        ->where('enteredtime','=',$request->enteredtime);
             
-            if($dietitian->exists()){
-                // throw new \Exception('Date already exist.', 500);
-                return response('Date already exist.');
-            }
+            // if($dietitian->exists()){
+            //     // throw new \Exception('Date already exist.', 500);
+            //     return response('Date already exist.');
+            // }
             
             DB::table('hisdb.dietitian')
                 ->insert([
@@ -80,6 +81,7 @@ class DietitianController extends defaultController
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
                     'entereddate' => $request->entereddate,
+                    'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'notes' => $request->notes,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -203,8 +205,8 @@ class DietitianController extends defaultController
         
         $dietitian_obj = DB::table('hisdb.dietitian')
                         ->where('compcode','=',session('compcode'))
-                        ->where('mrn','=',$request->mrn)
-                        ->where('episno','=',$request->episno);
+                        ->where('mrn','=',$request->mrn);
+                        // ->where('episno','=',$request->episno);
         
         if($dietitian_obj->exists()){
             $dietitian_obj = $dietitian_obj->get();
@@ -220,7 +222,12 @@ class DietitianController extends defaultController
                 }else{
                     $date['entereddate'] =  '-';
                 }
-                $date['dt'] = $value->entereddate; // for sorting
+                // $date['dt'] = $value->entereddate; // for sorting
+                if(!empty($value->entereddate)){ // for sorting
+                    $date['dt'] =  Carbon::createFromFormat('Y-m-d', $value->entereddate)->format('d-m-Y').' '.$value->enteredtime;
+                }else{
+                    $date['dt'] =  '-';
+                }
                 $date['adduser'] = $value->adduser;
                 
                 array_push($data,$date);
@@ -245,7 +252,7 @@ class DietitianController extends defaultController
         }
         
         $dietitian = DB::table('hisdb.dietitian as dt')
-                    ->select('dt.idno','dt.compcode','dt.mrn','dt.episno','dt.entereddate','dt.notes','dt.adduser','dt.adddate','dt.upduser','dt.upddate','dt.lastuser','dt.lastupdate','dt.computerid','pm.Name','pm.Newic')
+                    ->select('dt.idno','dt.compcode','dt.mrn','dt.episno','dt.entereddate','dt.enteredtime','dt.notes','dt.adduser','dt.adddate','dt.upduser','dt.upddate','dt.lastuser','dt.lastupdate','dt.computerid','pm.Name','pm.Newic')
                     ->leftjoin('hisdb.pat_mast as pm', function ($join){
                         $join = $join->on('pm.MRN','=','dt.mrn');
                         // $join = $join->on('pm.Episno','=','dt.episno');
@@ -255,6 +262,7 @@ class DietitianController extends defaultController
                     ->where('dt.mrn','=',$mrn)
                     ->where('dt.episno','=',$episno)
                     ->where('dt.entereddate','=',$entereddate)
+                    ->where('dt.enteredtime','=',$request->enteredtime)
                     ->first();
         // dd($dietitian);
         

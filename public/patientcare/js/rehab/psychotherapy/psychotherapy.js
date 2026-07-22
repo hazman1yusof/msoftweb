@@ -91,11 +91,11 @@ $(document).ready(function (){
         $('#tbl_psychotherapy_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
-        if(check_same_usr_edit(data)){
-            button_state_psychotherapy('edit');
-        }else{
+        // if(check_same_usr_edit(data)){
+        //     button_state_psychotherapy('edit');
+        // }else{
             button_state_psychotherapy('add');
-        }
+        // }
         $('#psychotherapy_chart').attr('disabled',false);
         
         // getdata_psychotherapy();
@@ -130,7 +130,7 @@ $(document).ready(function (){
     ////////////////////////////////////////psychotherapy ends////////////////////////////////////////
     
     $("#psychotherapy_chart").click(function (){
-        window.open('./psychotherapy/psychotherapy_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#psychotherapy_entereddate").val()+'&age='+$("#age_rehabMain").val(), '_blank');
+        window.open('./psychotherapy/psychotherapy_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#psychotherapy_entereddate").val()+'&enteredtime='+$("#psychotherapy_enteredtime").val()+'&age='+$("#age_rehabMain").val(), '_blank');
     });
     
 });
@@ -280,7 +280,8 @@ function saveForm_psychotherapy(callback){
         
     },'json').done(function (data){
         callback(data);
-        button_state_psychotherapy('edit');
+        // button_state_psychotherapy('edit');
+        button_state_psychotherapy('add');
     }).fail(function (data){
         if(data.responseText !== ''){
             // $('#p_error_intake').text(data.responseText);
@@ -327,13 +328,14 @@ function getdata_psychotherapy(){
     }).done(function (data){
         if(!$.isEmptyObject(data.psychotherapy)){
             autoinsert_rowdata("#formPsychotherapy",data.psychotherapy);
-            button_state_psychotherapy('edit');
+            // button_state_psychotherapy('edit');
             $('#psychotherapy_chart').attr('disabled',false);
         }else{
-            button_state_psychotherapy('add');
+            // button_state_psychotherapy('add');
             $('#psychotherapy_chart').attr('disabled',true);
         }
         
+        button_state_psychotherapy('add');
         // textarea_init_psychotherapy();
     });
 }

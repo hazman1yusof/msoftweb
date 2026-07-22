@@ -67,12 +67,13 @@ class NeuroroboticController extends defaultController
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
                             ->where('episno','=',$request->episno)
-                            ->where('entereddate','=',$request->entereddate);
+                            ->where('entereddate','=',$request->entereddate)
+                            ->where('enteredtime','=',$request->enteredtime);
             
-            if($neurorobotic->exists()){
-                // throw new \Exception('Date already exist.', 500);
-                return response('Date already exist.');
-            }
+            // if($neurorobotic->exists()){
+            //     // throw new \Exception('Date already exist.', 500);
+            //     return response('Date already exist.');
+            // }
             
             DB::table('hisdb.neurorobotic')
                 ->insert([
@@ -80,6 +81,7 @@ class NeuroroboticController extends defaultController
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
                     'entereddate' => $request->entereddate,
+                    'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'notes' => $request->notes,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -203,8 +205,8 @@ class NeuroroboticController extends defaultController
         
         $neurorobotic_obj = DB::table('hisdb.neurorobotic')
                             ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno);
+                            ->where('mrn','=',$request->mrn);
+                            // ->where('episno','=',$request->episno);
         
         if($neurorobotic_obj->exists()){
             $neurorobotic_obj = $neurorobotic_obj->get();
@@ -220,7 +222,12 @@ class NeuroroboticController extends defaultController
                 }else{
                     $date['entereddate'] =  '-';
                 }
-                $date['dt'] = $value->entereddate; // for sorting
+                // $date['dt'] = $value->entereddate; // for sorting
+                if(!empty($value->entereddate)){ // for sorting
+                    $date['dt'] =  Carbon::createFromFormat('Y-m-d', $value->entereddate)->format('d-m-Y').' '.$value->enteredtime;
+                }else{
+                    $date['dt'] =  '-';
+                }
                 $date['adduser'] = $value->adduser;
                 
                 array_push($data,$date);
@@ -245,7 +252,7 @@ class NeuroroboticController extends defaultController
         }
         
         $neurorobotic = DB::table('hisdb.neurorobotic as nr')
-                        ->select('nr.idno','nr.compcode','nr.mrn','nr.episno','nr.entereddate','nr.notes','nr.adduser','nr.adddate','nr.upduser','nr.upddate','nr.lastuser','nr.lastupdate','nr.computerid','pm.Name','pm.Newic')
+                        ->select('nr.idno','nr.compcode','nr.mrn','nr.episno','nr.entereddate','nr.enteredtime','nr.notes','nr.adduser','nr.adddate','nr.upduser','nr.upddate','nr.lastuser','nr.lastupdate','nr.computerid','pm.Name','pm.Newic')
                         ->leftjoin('hisdb.pat_mast as pm', function ($join){
                             $join = $join->on('pm.MRN','=','nr.mrn');
                             // $join = $join->on('pm.Episno','=','nr.episno');
@@ -255,6 +262,7 @@ class NeuroroboticController extends defaultController
                         ->where('nr.mrn','=',$mrn)
                         ->where('nr.episno','=',$episno)
                         ->where('nr.entereddate','=',$entereddate)
+                        ->where('nr.enteredtime','=',$request->enteredtime)
                         ->first();
         // dd($neurorobotic);
         

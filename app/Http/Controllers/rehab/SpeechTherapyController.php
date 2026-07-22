@@ -67,12 +67,13 @@ class SpeechTherapyController extends defaultController
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
                             ->where('episno','=',$request->episno)
-                            ->where('entereddate','=',$request->entereddate);
+                            ->where('entereddate','=',$request->entereddate)
+                            ->where('enteredtime','=',$request->enteredtime);
             
-            if($speechtherapy->exists()){
-                // throw new \Exception('Date already exist.', 500);
-                return response('Date already exist.');
-            }
+            // if($speechtherapy->exists()){
+            //     // throw new \Exception('Date already exist.', 500);
+            //     return response('Date already exist.');
+            // }
             
             DB::table('hisdb.speechtherapy')
                 ->insert([
@@ -80,6 +81,7 @@ class SpeechTherapyController extends defaultController
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
                     'entereddate' => $request->entereddate,
+                    'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'notes' => $request->notes,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -203,8 +205,8 @@ class SpeechTherapyController extends defaultController
         
         $speechtherapy_obj = DB::table('hisdb.speechtherapy')
                             ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno);
+                            ->where('mrn','=',$request->mrn);
+                            // ->where('episno','=',$request->episno);
         
         if($speechtherapy_obj->exists()){
             $speechtherapy_obj = $speechtherapy_obj->get();
@@ -220,7 +222,12 @@ class SpeechTherapyController extends defaultController
                 }else{
                     $date['entereddate'] =  '-';
                 }
-                $date['dt'] = $value->entereddate; // for sorting
+                // $date['dt'] = $value->entereddate; // for sorting
+                if(!empty($value->entereddate)){ // for sorting
+                    $date['dt'] =  Carbon::createFromFormat('Y-m-d', $value->entereddate)->format('d-m-Y').' '.$value->enteredtime;
+                }else{
+                    $date['dt'] =  '-';
+                }
                 $date['adduser'] = $value->adduser;
                 
                 array_push($data,$date);
@@ -245,7 +252,7 @@ class SpeechTherapyController extends defaultController
         }
         
         $speechtherapy = DB::table('hisdb.speechtherapy as st')
-                        ->select('st.idno','st.compcode','st.mrn','st.episno','st.entereddate','st.notes','st.adduser','st.adddate','st.upduser','st.upddate','st.lastuser','st.lastupdate','st.computerid','pm.Name','pm.Newic')
+                        ->select('st.idno','st.compcode','st.mrn','st.episno','st.entereddate','st.enteredtime','st.notes','st.adduser','st.adddate','st.upduser','st.upddate','st.lastuser','st.lastupdate','st.computerid','pm.Name','pm.Newic')
                         ->leftjoin('hisdb.pat_mast as pm', function ($join){
                             $join = $join->on('pm.MRN','=','st.mrn');
                             // $join = $join->on('pm.Episno','=','st.episno');
@@ -255,6 +262,7 @@ class SpeechTherapyController extends defaultController
                         ->where('st.mrn','=',$mrn)
                         ->where('st.episno','=',$episno)
                         ->where('st.entereddate','=',$entereddate)
+                        ->where('st.enteredtime','=',$request->enteredtime)
                         ->first();
         // dd($speechtherapy);
         

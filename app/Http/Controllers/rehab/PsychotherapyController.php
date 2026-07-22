@@ -67,12 +67,13 @@ class PsychotherapyController extends defaultController
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
                             ->where('episno','=',$request->episno)
-                            ->where('entereddate','=',$request->entereddate);
+                            ->where('entereddate','=',$request->entereddate)
+                            ->where('enteredtime','=',$request->enteredtime);
             
-            if($psychotherapy->exists()){
-                // throw new \Exception('Date already exist.', 500);
-                return response('Date already exist.');
-            }
+            // if($psychotherapy->exists()){
+            //     // throw new \Exception('Date already exist.', 500);
+            //     return response('Date already exist.');
+            // }
             
             DB::table('hisdb.psychotherapy')
                 ->insert([
@@ -80,6 +81,7 @@ class PsychotherapyController extends defaultController
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
                     'entereddate' => $request->entereddate,
+                    'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'notes' => $request->notes,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -203,8 +205,8 @@ class PsychotherapyController extends defaultController
         
         $psychotherapy_obj = DB::table('hisdb.psychotherapy')
                             ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno);
+                            ->where('mrn','=',$request->mrn);
+                            // ->where('episno','=',$request->episno);
         
         if($psychotherapy_obj->exists()){
             $psychotherapy_obj = $psychotherapy_obj->get();
@@ -220,7 +222,12 @@ class PsychotherapyController extends defaultController
                 }else{
                     $date['entereddate'] =  '-';
                 }
-                $date['dt'] = $value->entereddate; // for sorting
+                // $date['dt'] = $value->entereddate; // for sorting
+                if(!empty($value->entereddate)){ // for sorting
+                    $date['dt'] =  Carbon::createFromFormat('Y-m-d', $value->entereddate)->format('d-m-Y').' '.$value->enteredtime;
+                }else{
+                    $date['dt'] =  '-';
+                }
                 $date['adduser'] = $value->adduser;
                 
                 array_push($data,$date);
@@ -245,7 +252,7 @@ class PsychotherapyController extends defaultController
         }
         
         $psychotherapy = DB::table('hisdb.psychotherapy as pt')
-                        ->select('pt.idno','pt.compcode','pt.mrn','pt.episno','pt.entereddate','pt.notes','pt.adduser','pt.adddate','pt.upduser','pt.upddate','pt.lastuser','pt.lastupdate','pt.computerid','pm.Name','pm.Newic')
+                        ->select('pt.idno','pt.compcode','pt.mrn','pt.episno','pt.entereddate','pt.enteredtime','pt.notes','pt.adduser','pt.adddate','pt.upduser','pt.upddate','pt.lastuser','pt.lastupdate','pt.computerid','pm.Name','pm.Newic')
                         ->leftjoin('hisdb.pat_mast as pm', function ($join){
                             $join = $join->on('pm.MRN','=','pt.mrn');
                             // $join = $join->on('pm.Episno','=','pt.episno');
@@ -255,6 +262,7 @@ class PsychotherapyController extends defaultController
                         ->where('pt.mrn','=',$mrn)
                         ->where('pt.episno','=',$episno)
                         ->where('pt.entereddate','=',$entereddate)
+                        ->where('pt.enteredtime','=',$request->enteredtime)
                         ->first();
         // dd($psychotherapy);
         
