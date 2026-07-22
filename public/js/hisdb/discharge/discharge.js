@@ -84,6 +84,50 @@ $(document).ready(function () {
 		disableForm('#form_discharge');
 	});
 
+	$('input#ward_discharge_ckb[type=checkbox]').change(function(){
+		if($(this).is(':checked')){
+			$('#ward_dischargedt').prop("readonly",false);
+			$('#ward_dischargetm').prop("readonly",false);
+
+			$('#ward_dischargedt').attr("data-validation","required");
+			$('#ward_dischargetm').attr("data-validation","required");
+
+			$('#ward_dischargedt').val(moment().format('YYYY-MM-DD'));
+			$('#ward_dischargetm').val(moment().format('HH:mm'));
+		}else{
+			$('#ward_dischargedt').prop("readonly",true);
+			$('#ward_dischargetm').prop("readonly",true);
+
+			$('#ward_dischargedt').attr("data-validation","");
+			$('#ward_dischargetm').attr("data-validation","");
+
+			$('#ward_dischargedt').val("");
+			$('#ward_dischargetm').val("");
+		}
+	});
+
+	$('input#complete_ckb[type=checkbox]').change(function(){
+		if($(this).is(':checked')){
+			$('#complete_notedt').prop("readonly",false);
+			$('#complete_notetm').prop("readonly",false);
+
+			$('#complete_notedt').attr("data-validation","required");
+			$('#complete_notetm').attr("data-validation","required");
+
+			$('#complete_notedt').val(moment().format('YYYY-MM-DD'));
+			$('#complete_notetm').val(moment().format('HH:mm'));
+		}else{
+			$('#complete_notedt').prop("readonly",true);
+			$('#complete_notetm').prop("readonly",true);
+
+			$('#complete_notedt').attr("data-validation","");
+			$('#complete_notetm').attr("data-validation","");
+
+			$('#complete_notedt').val("");
+			$('#complete_notetm').val("");
+		}
+	});
+
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language : {
@@ -358,6 +402,8 @@ button_state_discharge('empty');
 		}
 		var postobj = {
 			_token: $('#csrf_token').val(),
+			mrn: $('#mrn_discharge').val(),
+			episno: $('#episno_discharge').val(),
 			// dischargeuser: $('#dischargeuser').val(),
 			// idtype_edit: $('#idtype_edit').val()
 		};

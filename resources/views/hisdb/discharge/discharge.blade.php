@@ -14,7 +14,7 @@
 		
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid_discharge_panel"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid_discharge_panel"></i>
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 420px; top: 25px;">
+		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right:40px; top: 25px;">
 			<h5>Discharge Summary</h5>
 		</div>
 
@@ -25,12 +25,12 @@
 				    top: 18px;" 
 
 		>
-			<div class="btn-group">
+			<!-- <div class="btn-group">
 			  <button type="button" class="btn btn-default" id="cancel_epis_btn">Cancel Episode</button>
 			  <button type="button" class="btn btn-default" id="cancel_disc_btn">Cancel Discharge</button>
 			</div>
 			&nbsp;&nbsp;&nbsp;&nbsp;
-			<button type="button" class="btn btn-success" id="discharge_btn">Discharge</button>
+			<button type="button" class="btn btn-success" id="discharge_btn">Discharge</button> -->
 		</div>			
 	</div>
 	<div id="jqGrid_discharge_panel" class="panel-collapse collapse">
@@ -39,7 +39,14 @@
 				<form class='form-horizontal' style='width:99%' id='form_discharge'>
 					<div class='col-md-12'>
 						<div class="panel panel-info">
-							<div class="panel-heading text-center">DISCHARGE INFORMATION	
+							<div class="panel-heading text-center" style="position: sticky;top: 0px;z-index: 3;min-height: 35px;">DISCHARGE INFORMATION
+								<div class="btn-group" style="position: absolute;
+											padding: 0 0 0 0;
+											left: 30px;
+											top: 2px;">
+								  <button type="button" class="btn btn-default" id="cancel_epis_btn">Cancel Episode</button>
+								  <button type="button" class="btn btn-default" id="cancel_disc_btn">Cancel Discharge</button>
+								</div>
 
 								<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
 									id="btn_grp_edit_discharge"
@@ -116,38 +123,74 @@
 											</div>
 
 
-											<div class="panel-body highlight">
-												<div class="form-group row">
-													<label class="col-md-1 control-label" for="reg_date">Reg Date</label>  
+											<div class="panel-body highlight" style="padding: 20px 20px 15px 40px;">
+												<div class="form-group row" style="padding-bottom: 10px;border-bottom: 1px solid #cccccc;">
+													<label class="col-md-1 control-label" for="reg_date" style="padding:0px">Reg Date</label>  
 													<div class="col-md-2">
 														<input id="reg_date" name="reg_date" type="date" class="form-control input-sm" rdonly>
 													</div>
 
-													<label class="col-md-1 control-label" for="reg_by">Register By</label>  
+													<label class="col-md-1 control-label" for="reg_by" style="padding:0px">Register By</label>  
 													<div class="col-md-5">
 														<input id="reg_by" name="reg_by" type="text" class="form-control input-sm" rdonly>
 													</div>
 
-													<label class="col-md-1 control-label" for="reg_time">Register Time</label>  
+													<label class="col-md-1 control-label" for="reg_time" style="padding:0px">Register Time</label>  
 													<div class="col-md-2">
 														<input id="reg_time" name="reg_time" type="time" class="form-control input-sm" rdonly>
 													</div>
 												</div>
 
-												<div class="form-group row">
-													<label class="col-md-1 control-label" for="dischargedate">Discharge Date</label>  
+												<div class="form-group row" style="padding-bottom: 10px;border-bottom: 1px solid #cccccc;">
+													<label class="col-md-1 control-label" for="dischargedate" style="padding:0px">Discharge Date</label>  
 													<div class="col-md-2">
-														<input id="dischargedate" name="dischargedate" type="date" class="form-control input-sm" readonly>
+														<input id="dischargedate" name="dischargedate" type="date" class="form-control input-sm" data-validation="required">
 													</div>
 
-													<label class="col-md-1 control-label" for="dischargeuser">Discharge By</label>  
+													<label class="col-md-1 control-label" for="dischargeuser" style="padding:0px">Discharge By</label>  
 													<div class="col-md-5">
-														<input id="dischargeuser" name="dischargeuser" type="text" class="form-control input-sm" rdonly value="{{Session::get('username')}}">
+														<input id="dischargeuser" name="dischargeuser" type="text" class="form-control input-sm" rdonly>
 													</div>
 
-													<label class="col-md-1 control-label" for="dischargetime">Discharge Time</label>  
+													<label class="col-md-1 control-label" for="dischargetime" style="padding:0px">Discharge Time</label>  
 													<div class="col-md-2">
-														<input id="dischargetime" name="dischargetime" type="time" class="form-control input-sm" readonly>
+														<input id="dischargetime" name="dischargetime" type="time" class="form-control input-sm" data-validation="required">
+													</div>
+												</div>
+
+												<div class="form-group row" style="padding-bottom: 10px;border-bottom: 1px solid #cccccc; position: relative;">
+													<input class="form-check-input" type="checkbox" name="ward_discharge_ckb" id="ward_discharge_ckb" style="position:absolute;left: -12px;">
+													<label class="col-md-1 control-label" for="ward_dischargedt" style="padding:0px">Ward Discharge Date</label>  
+													<div class="col-md-2">
+														<input id="ward_dischargedt" name="ward_dischargedt" type="date" class="form-control input-sm" rdonly data-validation="">
+													</div>
+
+													<label class="col-md-1 control-label" for="ward_dischargeusr" style="padding:0px">Ward Discharge By</label>  
+													<div class="col-md-5">
+														<input id="ward_dischargeusr" name="ward_dischargeusr" type="text" class="form-control input-sm" rdonly >
+													</div>
+
+													<label class="col-md-1 control-label" for="ward_dischargetm" style="padding:0px">Ward Discharge Time</label>  
+													<div class="col-md-2">
+														<input id="ward_dischargetm" name="ward_dischargetm" type="time" class="form-control input-sm" rdonly data-validation="">
+													</div>
+												</div>
+
+												<div class="form-group row" style="padding-bottom: 5px; position: relative;">
+													<input class="form-check-input" type="checkbox" name="complete_ckb" id="complete_ckb" style="position:absolute;left: -12px;">
+													<label class="col-md-1 control-label" for="complete_notedt" style="padding:0px">Complete Date</label>  
+													<div class="col-md-2">
+														<input id="complete_notedt" name="complete_notedt" type="date" class="form-control input-sm" rdonly data-validation="">
+													</div>
+
+													<label class="col-md-1 control-label" for="complete_noteusr" style="padding:0px">Complete By</label>  
+													<div class="col-md-5">
+														<input id="complete_noteusr" name="complete_noteusr" type="text" class="form-control input-sm" rdonly >
+													</div>
+
+													<label class="col-md-1 control-label" for="complete_notetm" style="padding:0px">Complete Time</label>  
+													<div class="col-md-2">
+														<input id="complete_notetm" name="complete_notetm" type="time" class="form-control input-sm" rdonly data-validation="">
 													</div>
 												</div>
 
