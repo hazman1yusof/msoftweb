@@ -91,11 +91,11 @@ $(document).ready(function (){
         $('#tbl_physioNotes_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
-        if(check_same_usr_edit(data)){
-            button_state_physioNotes('edit');
-        }else{
+        // if(check_same_usr_edit(data)){
+        //     button_state_physioNotes('edit');
+        // }else{
             button_state_physioNotes('add');
-        }
+        // }
         $('#physioNotes_chart').attr('disabled',false);
         
         // getdata_physioNotes();
@@ -130,7 +130,7 @@ $(document).ready(function (){
     ////////////////////////////////////////physioNotes ends////////////////////////////////////////
     
     $("#physioNotes_chart").click(function (){
-        window.open('./physioNotes/physionotes_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#physioNotes_entereddate").val()+'&age='+$("#age_rehabMain").val(), '_blank');
+        window.open('./physioNotes/physionotes_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#physioNotes_entereddate").val()+'&enteredtime='+$("#physioNotes_enteredtime").val()+'&age='+$("#age_rehabMain").val(), '_blank');
     });
     
 });
@@ -280,7 +280,8 @@ function saveForm_physioNotes(callback){
         
     },'json').done(function (data){
         callback(data);
-        button_state_physioNotes('edit');
+        // button_state_physioNotes('edit');
+        button_state_physioNotes('add');
     }).fail(function (data){
         if(data.responseText !== ''){
             // $('#p_error_intake').text(data.responseText);
@@ -327,13 +328,14 @@ function getdata_physioNotes(){
     }).done(function (data){
         if(!$.isEmptyObject(data.notes)){
             autoinsert_rowdata("#formPhysioNotes",data.notes);
-            button_state_physioNotes('edit');
+            // button_state_physioNotes('edit');
             $('#physioNotes_chart').attr('disabled',false);
         }else{
-            button_state_physioNotes('add');
+            // button_state_physioNotes('add');
             $('#physioNotes_chart').attr('disabled',true);
         }
         
+        button_state_physioNotes('add');
         // textarea_init_physioNotes();
     });
 }

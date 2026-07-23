@@ -67,12 +67,13 @@ class MotorScaleController extends defaultController
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno)
-                        ->where('entereddate','=',$request->entereddate);
+                        ->where('entereddate','=',$request->entereddate)
+                        ->where('enteredtime','=',$request->enteredtime);
             
-            if($motorscale->exists()){
-                // throw new \Exception('Date already exist.', 500);
-                return response('Date already exist.');
-            }
+            // if($motorscale->exists()){
+            //     // throw new \Exception('Date already exist.', 500);
+            //     return response('Date already exist.');
+            // }
             
             DB::table('hisdb.phy_motorscale')
                 ->insert([
@@ -80,6 +81,7 @@ class MotorScaleController extends defaultController
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
                     'entereddate' => $request->entereddate,
+                    'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'sideLie' => $request->sideLie,
                     'sitOverBed' => $request->sitOverBed,
                     'balancedSit' => $request->balancedSit,
@@ -230,8 +232,8 @@ class MotorScaleController extends defaultController
         
         $motorscale_obj = DB::table('hisdb.phy_motorscale')
                         ->where('compcode','=',session('compcode'))
-                        ->where('mrn','=',$request->mrn)
-                        ->where('episno','=',$request->episno);
+                        ->where('mrn','=',$request->mrn);
+                        // ->where('episno','=',$request->episno);
         
         if($motorscale_obj->exists()){
             $motorscale_obj = $motorscale_obj->get();
@@ -247,7 +249,12 @@ class MotorScaleController extends defaultController
                 }else{
                     $date['entereddate'] =  '-';
                 }
-                $date['dt'] = $value->entereddate; // for sorting
+                // $date['dt'] = $value->entereddate; // for sorting
+                if(!empty($value->entereddate)){ // for sorting
+                    $date['dt'] =  Carbon::createFromFormat('Y-m-d', $value->entereddate)->format('d-m-Y').' '.$value->enteredtime;
+                }else{
+                    $date['dt'] =  '-';
+                }
                 $date['adduser'] = $value->adduser;
                 
                 array_push($data,$date);
@@ -267,12 +274,13 @@ class MotorScaleController extends defaultController
         $mrn = $request->mrn;
         $episno = $request->episno;
         $entereddate = $request->entereddate;
+        $enteredtime = $request->enteredtime;
         if(!$mrn || !$episno || !$entereddate){
             abort(404);
         }
         
         $motorscale = DB::table('hisdb.phy_motorscale as ms')
-                    ->select('ms.idno','ms.compcode','ms.mrn','ms.episno','ms.entereddate','ms.sideLie','ms.sitOverBed','ms.balancedSit','ms.sitToStand','ms.walking','ms.upperArmFunc','ms.advHandActvt','ms.generalTonus','ms.movementScore','ms.comments','ms.adduser','ms.adddate','ms.upduser','ms.upddate','ms.lastuser','ms.lastupdate','ms.computerid','pm.Name','pm.Newic')
+                    ->select('ms.idno','ms.compcode','ms.mrn','ms.episno','ms.entereddate','ms.enteredtime','ms.sideLie','ms.sitOverBed','ms.balancedSit','ms.sitToStand','ms.walking','ms.upperArmFunc','ms.advHandActvt','ms.generalTonus','ms.movementScore','ms.comments','ms.adduser','ms.adddate','ms.upduser','ms.upddate','ms.lastuser','ms.lastupdate','ms.computerid','pm.Name','pm.Newic')
                     ->leftjoin('hisdb.pat_mast as pm', function ($join){
                         $join = $join->on('pm.MRN','=','ms.mrn');
                         // $join = $join->on('pm.Episno','=','ms.episno');
@@ -282,6 +290,7 @@ class MotorScaleController extends defaultController
                     ->where('ms.mrn','=',$mrn)
                     ->where('ms.episno','=',$episno)
                     ->where('ms.entereddate','=',$entereddate)
+                    ->where('ms.enteredtime','=',$enteredtime)
                     ->first();
         // dd($motorscale);
         

@@ -92,11 +92,11 @@ $(document).ready(function (){
         $('#tbl_motorScale_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
-        if(check_same_usr_edit(data)){
-            button_state_motorScale('edit');
-        }else{
+        // if(check_same_usr_edit(data)){
+        //     button_state_motorScale('edit');
+        // }else{
             button_state_motorScale('add');
-        }
+        // }
         $('#motorScale_chart').attr('disabled',false);
         
         // getdata_motorScale();
@@ -145,7 +145,7 @@ $(document).ready(function (){
     /////////////////////to calculate the total of movement scoring sheet ends/////////////////////
     
     $("#motorScale_chart").click(function (){
-        window.open('./motorScale/motorscale_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#motorScale_entereddate").val(), '_blank');
+        window.open('./motorScale/motorscale_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#motorScale_entereddate").val()+'&enteredtime='+$("#motorScale_enteredtime").val(), '_blank');
     });
     
 });
@@ -296,7 +296,8 @@ function saveForm_motorScale(callback){
         
     },'json').done(function (data){
         callback(data);
-        button_state_motorScale('edit');
+        // button_state_motorScale('edit');
+        button_state_motorScale('add');
     }).fail(function (data){
         if(data.responseText !== ''){
             // $('#p_error_intake').text(data.responseText);
@@ -343,13 +344,14 @@ function getdata_motorScale(){
     }).done(function (data){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formMotorScale",data.motorscale);
-            button_state_motorScale('edit');
+            // button_state_motorScale('edit');
             $('#motorScale_chart').attr('disabled',false);
         }else{
-            button_state_motorScale('add');
+            // button_state_motorScale('add');
             $('#motorScale_chart').attr('disabled',true);
         }
         
+        button_state_motorScale('add');
         // textarea_init_motorScale();
     });
 }

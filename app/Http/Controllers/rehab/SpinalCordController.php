@@ -67,12 +67,13 @@ class SpinalCordController extends defaultController
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno)
-                        ->where('entereddate','=',$request->entereddate);
+                        ->where('entereddate','=',$request->entereddate)
+                        ->where('enteredtime','=',$request->enteredtime);
             
-            if($spinalcord->exists()){
-                // throw new \Exception('Date already exist.', 500);
-                return response('Date already exist.');
-            }
+            // if($spinalcord->exists()){
+            //     // throw new \Exception('Date already exist.', 500);
+            //     return response('Date already exist.');
+            // }
             
             DB::table('hisdb.phy_spinalcord')
                 ->insert([
@@ -80,6 +81,7 @@ class SpinalCordController extends defaultController
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
                     'entereddate' => $request->entereddate,
+                    'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'ltrC2' => $request->ltrC2,
                     'pprC2' => $request->pprC2,
                     'ltrC3' => $request->ltrC3,
@@ -692,8 +694,8 @@ class SpinalCordController extends defaultController
         
         $spinalcord_obj = DB::table('hisdb.phy_spinalcord')
                         ->where('compcode','=',session('compcode'))
-                        ->where('mrn','=',$request->mrn)
-                        ->where('episno','=',$request->episno);
+                        ->where('mrn','=',$request->mrn);
+                        // ->where('episno','=',$request->episno);
         
         if($spinalcord_obj->exists()){
             $spinalcord_obj = $spinalcord_obj->get();
@@ -709,7 +711,12 @@ class SpinalCordController extends defaultController
                 }else{
                     $date['entereddate'] =  '-';
                 }
-                $date['dt'] = $value->entereddate; // for sorting
+                // $date['dt'] = $value->entereddate; // for sorting
+                if(!empty($value->entereddate)){ // for sorting
+                    $date['dt'] =  Carbon::createFromFormat('Y-m-d', $value->entereddate)->format('d-m-Y').' '.$value->enteredtime;
+                }else{
+                    $date['dt'] =  '-';
+                }
                 $date['adduser'] = $value->adduser;
                 
                 array_push($data,$date);
@@ -729,12 +736,13 @@ class SpinalCordController extends defaultController
         $mrn = $request->mrn;
         $episno = $request->episno;
         $entereddate = $request->entereddate;
+        $enteredtime = $request->enteredtime;
         if(!$mrn || !$episno || !$entereddate){
             abort(404);
         }
         
         $spinalcord = DB::table('hisdb.phy_spinalcord as sc')
-                    ->select('sc.idno','sc.compcode','sc.mrn','sc.episno','sc.entereddate','sc.ltrC2','sc.pprC2','sc.ltrC3','sc.pprC3','sc.ltrC4','sc.pprC4','sc.motorRC5','sc.ltrC5','sc.pprC5','sc.motorRC6','sc.ltrC6','sc.pprC6','sc.motorRC7','sc.ltrC7','sc.pprC7','sc.motorRC8','sc.ltrC8','sc.pprC8','sc.motorRT1','sc.ltrT1','sc.pprT1','sc.comments','sc.ltrT2','sc.pprT2','sc.ltrT3','sc.pprT3','sc.ltrT4','sc.pprT4','sc.ltrT5','sc.pprT5','sc.ltrT6','sc.pprT6','sc.ltrT7','sc.pprT7','sc.ltrT8','sc.pprT8','sc.ltrT9','sc.pprT9','sc.ltrT10','sc.pprT10','sc.ltrT11','sc.pprT11','sc.ltrT12','sc.pprT12','sc.ltrL1','sc.pprL1','sc.motorRL2','sc.ltrL2','sc.pprL2','sc.motorRL3','sc.ltrL3','sc.pprL3','sc.motorRL4','sc.ltrL4','sc.pprL4','sc.motorRL5','sc.ltrL5','sc.pprL5','sc.motorRS1','sc.ltrS1','sc.pprS1','sc.ltrS2','sc.pprS2','sc.ltrS3','sc.pprS3','sc.vac','sc.ltrS4','sc.pprS4','sc.motorRTotal','sc.ltrTotal','sc.pprTotal','sc.ltlC2','sc.pplC2','sc.ltlC3','sc.pplC3','sc.ltlC4','sc.pplC4','sc.ltlC5','sc.pplC5','sc.motorLC5','sc.ltlC6','sc.pplC6','sc.motorLC6','sc.ltlC7','sc.pplC7','sc.motorLC7','sc.ltlC8','sc.pplC8','sc.motorLC8','sc.ltlT1','sc.pplT1','sc.motorLT1','sc.ltlT2','sc.pplT2','sc.ltlT3','sc.pplT3','sc.ltlT4','sc.pplT4','sc.ltlT5','sc.pplT5','sc.ltlT6','sc.pplT6','sc.ltlT7','sc.pplT7','sc.ltlT8','sc.pplT8','sc.ltlT9','sc.pplT9','sc.ltlT10','sc.pplT10','sc.ltlT11','sc.pplT11','sc.ltlT12','sc.pplT12','sc.ltlL1','sc.pplL1','sc.ltlL2','sc.pplL2','sc.motorLL2','sc.ltlL3','sc.pplL3','sc.motorLL3','sc.ltlL4','sc.pplL4','sc.motorLL4','sc.ltlL5','sc.pplL5','sc.motorLL5','sc.ltlS1','sc.pplS1','sc.motorLS1','sc.ltlS2','sc.pplS2','sc.ltlS3','sc.pplS3','sc.ltlS4','sc.pplS4','sc.dap','sc.ltlTotal','sc.pplTotal','sc.motorLTotal','sc.uer','sc.uel','sc.uemsTotal','sc.ler','sc.lel','sc.lemsTotal','sc.ltr','sc.ltl','sc.ltTotal','sc.ppr','sc.ppl','sc.ppTotal','sc.sensoryRNL','sc.sensoryLNL','sc.motorRNL','sc.motorLNL','sc.nli','sc.completion','sc.ais','sc.sensoryRPP','sc.sensoryLPP','sc.motorRPP','sc.motorLPP','sc.adduser','sc.adddate','sc.upduser','sc.upddate','sc.lastuser','sc.lastupdate','sc.computerid','pm.Name','pm.Newic')
+                    ->select('sc.idno','sc.compcode','sc.mrn','sc.episno','sc.entereddate','sc.enteredtime','sc.ltrC2','sc.pprC2','sc.ltrC3','sc.pprC3','sc.ltrC4','sc.pprC4','sc.motorRC5','sc.ltrC5','sc.pprC5','sc.motorRC6','sc.ltrC6','sc.pprC6','sc.motorRC7','sc.ltrC7','sc.pprC7','sc.motorRC8','sc.ltrC8','sc.pprC8','sc.motorRT1','sc.ltrT1','sc.pprT1','sc.comments','sc.ltrT2','sc.pprT2','sc.ltrT3','sc.pprT3','sc.ltrT4','sc.pprT4','sc.ltrT5','sc.pprT5','sc.ltrT6','sc.pprT6','sc.ltrT7','sc.pprT7','sc.ltrT8','sc.pprT8','sc.ltrT9','sc.pprT9','sc.ltrT10','sc.pprT10','sc.ltrT11','sc.pprT11','sc.ltrT12','sc.pprT12','sc.ltrL1','sc.pprL1','sc.motorRL2','sc.ltrL2','sc.pprL2','sc.motorRL3','sc.ltrL3','sc.pprL3','sc.motorRL4','sc.ltrL4','sc.pprL4','sc.motorRL5','sc.ltrL5','sc.pprL5','sc.motorRS1','sc.ltrS1','sc.pprS1','sc.ltrS2','sc.pprS2','sc.ltrS3','sc.pprS3','sc.vac','sc.ltrS4','sc.pprS4','sc.motorRTotal','sc.ltrTotal','sc.pprTotal','sc.ltlC2','sc.pplC2','sc.ltlC3','sc.pplC3','sc.ltlC4','sc.pplC4','sc.ltlC5','sc.pplC5','sc.motorLC5','sc.ltlC6','sc.pplC6','sc.motorLC6','sc.ltlC7','sc.pplC7','sc.motorLC7','sc.ltlC8','sc.pplC8','sc.motorLC8','sc.ltlT1','sc.pplT1','sc.motorLT1','sc.ltlT2','sc.pplT2','sc.ltlT3','sc.pplT3','sc.ltlT4','sc.pplT4','sc.ltlT5','sc.pplT5','sc.ltlT6','sc.pplT6','sc.ltlT7','sc.pplT7','sc.ltlT8','sc.pplT8','sc.ltlT9','sc.pplT9','sc.ltlT10','sc.pplT10','sc.ltlT11','sc.pplT11','sc.ltlT12','sc.pplT12','sc.ltlL1','sc.pplL1','sc.ltlL2','sc.pplL2','sc.motorLL2','sc.ltlL3','sc.pplL3','sc.motorLL3','sc.ltlL4','sc.pplL4','sc.motorLL4','sc.ltlL5','sc.pplL5','sc.motorLL5','sc.ltlS1','sc.pplS1','sc.motorLS1','sc.ltlS2','sc.pplS2','sc.ltlS3','sc.pplS3','sc.ltlS4','sc.pplS4','sc.dap','sc.ltlTotal','sc.pplTotal','sc.motorLTotal','sc.uer','sc.uel','sc.uemsTotal','sc.ler','sc.lel','sc.lemsTotal','sc.ltr','sc.ltl','sc.ltTotal','sc.ppr','sc.ppl','sc.ppTotal','sc.sensoryRNL','sc.sensoryLNL','sc.motorRNL','sc.motorLNL','sc.nli','sc.completion','sc.ais','sc.sensoryRPP','sc.sensoryLPP','sc.motorRPP','sc.motorLPP','sc.adduser','sc.adddate','sc.upduser','sc.upddate','sc.lastuser','sc.lastupdate','sc.computerid','pm.Name','pm.Newic')
                     ->leftjoin('hisdb.pat_mast as pm', function ($join){
                         $join = $join->on('pm.MRN','=','sc.mrn');
                         // $join = $join->on('pm.Episno','=','sc.episno');
@@ -744,6 +752,7 @@ class SpinalCordController extends defaultController
                     ->where('sc.mrn','=',$mrn)
                     ->where('sc.episno','=',$episno)
                     ->where('sc.entereddate','=',$entereddate)
+                    ->where('sc.enteredtime','=',$enteredtime)
                     ->first();
         // dd($spinalcord);
         
