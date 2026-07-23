@@ -30,6 +30,17 @@ var urlParam_ObstetricsUltrasound = {
 	filterVal:['',''],
 }
 
+/////////////////////////////parameter for jqGridAddNotesAntenatal url/////////////////////////////
+var urlParam_AddNotesAntenatal = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','ANTENATAL'],
+}
+
 $(document).ready(function () {
 
 	$('textarea#drug_allergy,textarea#pgh_others,textarea#pmh_others,textarea#psh_others,textarea#fh_congenital,textarea#sysexam_remark').each(function () {
@@ -957,6 +968,116 @@ $(document).ready(function () {
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
+	//////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridAntenatal = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesAntenatal///////////////////////////////////////
+	$("#jqGridAddNotesAntenatal").jqGrid({
+		datatype: "local",
+		editurl: "./antenatal/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesAntenatal",
+		loadComplete: function (){
+			if(addmore_jqgridAntenatal.more == true){$('#jqGridAddNotesAntenatal_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridAntenatal.edit = addmore_jqgridAntenatal.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesAntenatal");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesAntenatal_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addAntenatal = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesAntenatal,#jqGridPagerRefresh_addnoteAntenatal").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesAntenatal_ilsave').click();
+				// addmore_jqgridAntenatal.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridAntenatal.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesAntenatal',urlParam_AddNotesAntenatal,'add_notesAntenatal');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesAntenatal,#jqGridPagerRefresh_addnoteAntenatal").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesAntenatal',urlParam_AddNotesAntenatal,'add_notesAntenatal');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesAntenatal').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./antenatal/form?"+
+				$.param({
+					episno: $('#episno_antenatal').val(),
+					mrn: $('#mrn_antenatal').val(),
+					action: 'addNotesAntenatal_save',
+				});
+			$("#jqGridAddNotesAntenatal").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesAntenatal,#jqGridPagerRefresh_addnoteAntenatal").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesAntenatal/////////////////////////////////////
+	$("#jqGridAddNotesAntenatal").inlineNav('#jqGridPagerAddNotesAntenatal', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addAntenatal
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesAntenatal", {
+		id: "jqGridPagerRefresh_addnoteAntenatal",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesAntenatal", urlParam_AddNotesAntenatal);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
+
 	//////////////////////////////////////////////custom edits//////////////////////////////////////////////
 	function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
@@ -1731,6 +1852,11 @@ function populate_antenatal(obj){
 	
 	// OBSTETRICS ULTRASOUND SCAN
 	urlParam_ObstetricsUltrasound.filterVal[0] = obj.MRN;
+
+	////jqGridAddNotesAntenatal
+	urlParam_AddNotesAntenatal.filterVal[0] = obj.MRN;
+	urlParam_AddNotesAntenatal.filterVal[1] = obj.Episno;
+	urlParam_AddNotesAntenatal.filterVal[2] = 'ANTENATAL';
 	
 	// var saveParam={
 	// 	action: 'get_table_antenatal',

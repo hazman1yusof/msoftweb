@@ -202,6 +202,8 @@ $(document).ready(function (){
                 $("#jqGridPrevObstetrics").jqGrid('setGridWidth', Math.floor($("#jqGridWardMain_c")[0].offsetWidth-$("#jqGridWardMain_c")[0].offsetLeft-210));
                 $("#jqGridCurrPregnancy").jqGrid('setGridWidth', Math.floor($("#jqGridWardMain_c")[0].offsetWidth-$("#jqGridWardMain_c")[0].offsetLeft-210));
                 $("#jqGridObstetricsUltrasound").jqGrid('setGridWidth', Math.floor($("#jqGridWardMain_c")[0].offsetWidth-$("#jqGridWardMain_c")[0].offsetLeft-210));
+                $("#jqGridAddNotesAntenatal").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesAntenatal_c")[0].offsetWidth-$("#jqGridAddNotesAntenatal_c")[0].offsetLeft-30));
+
                 break;
             case 'docNoteIP':
                 sticky_clientprognotetbl(on = true);
