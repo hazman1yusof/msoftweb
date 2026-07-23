@@ -45,7 +45,7 @@ $(document).ready(function (){
         switch(type){
             case 'EDAssmtIP':
                 populate_triageED_currpt_getdata();
-                $("#jqGridAddNotesNursingED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesNursingED_c")[0].offsetWidth-$("#jqGridAddNotesNursingED_c")[0].offsetLeft-310));
+                $("#jqGridAddNotesNursingED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesNursingED_c")[0].offsetWidth-$("#jqGridAddNotesNursingED_c")[0].offsetLeft-30));
                 break;
             // case 'triageIP':
             //     populate_triage_currpt_getdata();

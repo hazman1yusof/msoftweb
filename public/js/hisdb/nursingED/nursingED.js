@@ -178,7 +178,7 @@ $(document).ready(function (){
 		sortorder: 'desc',
 		viewrecords: true,
 		loadonce: false,
-		width: 1000,
+		width: 900,
 		height: 200,
 		rowNum: 30,
 		pager: "#jqGridPagerAddNotesNursingED",

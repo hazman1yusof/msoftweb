@@ -906,7 +906,7 @@
                             <div class="panel panel-info" id="jqGridAddNotesNursingED_c">
                                 <div class="panel-heading text-center">ADDITIONAL NOTES</div>
                                 <div class="panel-body">
-                                    <div class='col-md-12'>
+                                    <div class='col-md-12' style="padding:0 0 15px 0">
                                         <table id="jqGridAddNotesNursingED" class="table table-striped"></table>
                                         <div id="jqGridPagerAddNotesNursingED"></div>
                                     </div>
