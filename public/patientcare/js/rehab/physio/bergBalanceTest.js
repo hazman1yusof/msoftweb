@@ -91,11 +91,11 @@ $(document).ready(function (){
         $('#tbl_bergBalanceTest_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
-        if(check_same_usr_edit(data)){
-            button_state_bergBalanceTest('edit');
-        }else{
+        // if(check_same_usr_edit(data)){
+        //     button_state_bergBalanceTest('edit');
+        // }else{
             button_state_bergBalanceTest('add');
-        }
+        // }
         $('#bergBalanceTest_chart').attr('disabled',false);
         
         // getdata_bergBalanceTest();
@@ -144,7 +144,7 @@ $(document).ready(function (){
     ///////////////////////////////to calculate the total score ends///////////////////////////////
     
     $("#bergBalanceTest_chart").click(function (){
-        window.open('./bergBalanceTest/bergbalancetest_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#bergBalanceTest_entereddate").val(), '_blank');
+        window.open('./bergBalanceTest/bergbalancetest_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#bergBalanceTest_entereddate").val()+'&enteredtime='+$("#bergBalanceTest_enteredtime").val(), '_blank');
     });
     
 });
@@ -295,7 +295,8 @@ function saveForm_bergBalanceTest(callback){
         
     },'json').done(function (data){
         callback(data);
-        button_state_bergBalanceTest('edit');
+        // button_state_bergBalanceTest('edit');
+        button_state_bergBalanceTest('add');
     }).fail(function (data){
         if(data.responseText !== ''){
             // $('#p_error_intake').text(data.responseText);
@@ -342,13 +343,14 @@ function getdata_bergBalanceTest(){
     }).done(function (data){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formBergBalanceTest",data.bergtest);
-            button_state_bergBalanceTest('edit');
+            // button_state_bergBalanceTest('edit');
             $('#bergBalanceTest_chart').attr('disabled',false);
         }else{
-            button_state_bergBalanceTest('add');
+            // button_state_bergBalanceTest('add');
             $('#bergBalanceTest_chart').attr('disabled',true);
         }
         
+        button_state_bergBalanceTest('add');
         // textarea_init_bergBalanceTest();
     });
 }
