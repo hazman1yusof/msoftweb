@@ -1,4 +1,3 @@
-
 <!-- <div class="panel-body paneldiv" style="overflow-y: auto;"> -->
     <div id="jqGridNursActionPlan_paneltab" class="panel-body" data-curtype='navtab_treatment'>
         <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
@@ -10,12 +9,12 @@
                                 padding: 0 0 0 0; 
                                 right: 40px; 
                                 top: 5px;">
-                        <!-- <button type="button" class="btn btn-default" id="new_header">
+                        <button type="button" class="btn btn-default" id="new_header">
                             <span class="fa fa-plus-square-o"></span> New 
-                        </button> -->
-                        <button type="button" class="btn btn-default" id="edit_header">
-                            <span class="fa fa-edit fa-lg"></span> Edit 
                         </button>
+                        <!-- <button type="button" class="btn btn-default" id="edit_header">
+                            <span class="fa fa-plus-square-o"></span> edit 
+                        </button> -->
                         <button type="button" class="btn btn-default" data-oper='add' id="save_header">
                             <span class="fa fa-save fa-lg"></span> Save 
                         </button>
@@ -117,6 +116,18 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class='col-md-12'>
+                                        <div class="panel panel-info" id="jqGridAddNotesNursActPlanTreatment_c">
+                                            <div class="panel-heading text-center">ADDITIONAL NOTES</div>
+                                            <div class="panel-body">
+                                                <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <table id="jqGridAddNotesNursActPlanTreatment" class="table table-striped"></table>
+                                                    <div id="jqGridPagerAddNotesNursActPlanTreatment"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -148,6 +159,18 @@
                                                 <div class='col-md-12' style="padding:0 0 15px 0">
                                                     <table id="jqGridObservation" class="table table-striped"></table>
                                                     <div id="jqGridPagerObservation"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class='col-md-12'>
+                                        <div class="panel panel-info" id="jqGridAddNotesNursActPlanObservation_c">
+                                            <div class="panel-heading text-center">ADDITIONAL NOTES</div>
+                                            <div class="panel-body">
+                                                <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <table id="jqGridAddNotesNursActPlanObservation" class="table table-striped"></table>
+                                                    <div id="jqGridPagerAddNotesNursActPlanObservation"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -187,6 +210,18 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class='col-md-12'>
+                                        <div class="panel panel-info" id="jqGridAddNotesNursActPlanFeeding_c">
+                                            <div class="panel-heading text-center">ADDITIONAL NOTES</div>
+                                            <div class="panel-body">
+                                                <div class='col-md-12'>
+                                                    <table id="jqGridAddNotesNursActPlanFeeding" class="table table-striped"></table>
+                                                    <div id="jqGridPagerAddNotesNursActPlanFeeding"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -218,6 +253,18 @@
                                                 <div class='col-md-12' style="padding:0 0 15px 0">
                                                     <table id="jqGridImgDiag" class="table table-striped"></table>
                                                     <div id="jqGridPagerImgDiag"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class='col-md-12'>
+                                        <div class="panel panel-info" id="jqGridAddNotesNursActPlanImgDiag_c">
+                                            <div class="panel-heading text-center">ADDITIONAL NOTES</div>
+                                            <div class="panel-body">
+                                                <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <table id="jqGridAddNotesNursActPlanImgDiag" class="table table-striped"></table>
+                                                    <div id="jqGridPagerAddNotesNursActPlanImgDiag"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -257,6 +304,18 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class='col-md-12'>
+                                        <div class="panel panel-info" id="jqGridAddNotesNursActPlanBloodTrans_c">
+                                            <div class="panel-heading text-center">ADDITIONAL NOTES</div>
+                                            <div class="panel-body">
+                                                <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <table id="jqGridAddNotesNursActPlanBloodTrans" class="table table-striped"></table>
+                                                    <div id="jqGridPagerAddNotesNursActPlanBloodTrans"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -288,6 +347,18 @@
                                                 <div class='col-md-12' style="padding:0 0 15px 0">
                                                     <table id="jqGridExams" class="table table-striped"></table>
                                                     <div id="jqGridPagerExams"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class='col-md-12'>
+                                        <div class="panel panel-info" id="jqGridAddNotesNursActPlanExams_c">
+                                            <div class="panel-heading text-center">ADDITIONAL NOTES</div>
+                                            <div class="panel-body">
+                                                <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <table id="jqGridAddNotesNursActPlanExams" class="table table-striped"></table>
+                                                    <div id="jqGridPagerAddNotesNursActPlanExams"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -395,6 +466,18 @@
                                                 <div class='col-md-12' style="padding:0 0 15px 0">
                                                     <table id="jqGridProcedure" class="table table-striped"></table>
                                                     <div id="jqGridPagerProcedure"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class='col-md-12'>
+                                            <div class="panel panel-info" id="jqGridAddNotesNursActPlanProcedure_c">
+                                                <div class="panel-heading text-center" id="addNotes_title"></div>
+                                                <div class="panel-body">
+                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                        <table id="jqGridAddNotesNursActPlanProcedure" class="table table-striped"></table>
+                                                        <div id="jqGridPagerAddNotesNursActPlanProcedure"></div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

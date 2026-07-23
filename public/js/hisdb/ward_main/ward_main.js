@@ -47,23 +47,23 @@ $(document).ready(function (){
                 populate_triageED_currpt_getdata();
                 $("#jqGridAddNotesNursingED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesNursingED_c")[0].offsetWidth-$("#jqGridAddNotesNursingED_c")[0].offsetLeft-310));
                 break;
-            case 'triageIP':
-                populate_triage_currpt_getdata();
+            // case 'triageIP':
+            //     populate_triage_currpt_getdata();
                 
-                $("#jqGridExamTriage").jqGrid('setGridWidth', Math.floor($("#jqGridWardMain_c")[0].offsetWidth-$("#jqGridWardMain_c")[0].offsetLeft-310));
-                $("#jqGridAddNotesTriage").jqGrid('setGridWidth', Math.floor($("#jqGridWardMain_c")[0].offsetWidth-$("#jqGridWardMain_c")[0].offsetLeft-310));
+            //     $("#jqGridExamTriage").jqGrid('setGridWidth', Math.floor($("#jqGridWardMain_c")[0].offsetWidth-$("#jqGridWardMain_c")[0].offsetLeft-310));
+            //     $("#jqGridAddNotesTriage").jqGrid('setGridWidth', Math.floor($("#jqGridWardMain_c")[0].offsetWidth-$("#jqGridWardMain_c")[0].offsetLeft-310));
                 
-                var urlaram_nursing_date_tbl = {
-                    action: 'get_table_date_past',
-                    mrn: $("#mrn_wardMain").val(),
-                }
+            //     var urlaram_nursing_date_tbl = {
+            //         action: 'get_table_date_past',
+            //         mrn: $("#mrn_wardMain").val(),
+            //     }
                 
-                nursing_date_tbl.ajax.url("./doctornote/table?"+$.param(urlaram_nursing_date_tbl)).load(function (data){
-                    emptyFormdata_div("#formTriageInfo",['#mrn_ti','#episno_ti','#epistycode_ti']);
-                    $('#nursing_date_tbl tbody tr:eq(0)').click(); // to select first row
-                });
+            //     nursing_date_tbl.ajax.url("./doctornote/table?"+$.param(urlaram_nursing_date_tbl)).load(function (data){
+            //         emptyFormdata_div("#formTriageInfo",['#mrn_ti','#episno_ti','#epistycode_ti']);
+            //         $('#nursing_date_tbl tbody tr:eq(0)').click(); // to select first row
+            //     });
                 
-                break;
+            //     break;
             case 'nursActionIP':
                 var saveParam = {
                     action: 'get_table_formHeader',
@@ -83,18 +83,18 @@ $(document).ready(function (){
                     if(!$.isEmptyObject(data.header)){
                         // autoinsert_rowdata("#formHeader",data.episode);
                         autoinsert_rowdata("#formHeader",data.header);
-                        button_state_header('edit');
+                        button_state_header('empty');
                         // textarea_init_nursingActionPlan();
                     }else{
                         // autoinsert_rowdata("#formHeader",data.episode);
                         // autoinsert_rowdata("#formHeader",data.header);
-                        // button_state_header('add');
+                        button_state_header('add');
                         // textarea_init_nursingActionPlan();
                         emptyFormdata(errorField,'#formHeader');
                     }
                     
-                    autoinsert_rowdata("#formHeader",data.episode);
-                    button_state_header('edit');
+                    // autoinsert_rowdata("#formHeader",data.episode);
+                    // button_state_header('empty');
                     textarea_init_nursingActionPlan();
                 });
                 
@@ -106,7 +106,9 @@ $(document).ready(function (){
                 urlParam_Treatment.filterVal[0] = $("#mrn_nursActionPlan").val();
                 urlParam_Treatment.filterVal[1] = $("#episno_nursActionPlan").val();
                 refreshGrid('#jqGridTreatment',urlParam_Treatment,'add');
+                refreshGrid('#jqGridAddNotesNursActPlanTreatment',urlParam_AddNotesNursActPlanTreatment,'add_notesNursActPlanTreatment');
                 $("#jqGridTreatment").jqGrid('setGridWidth', Math.floor($("#jqGridTreatment_c")[0].offsetWidth-$("#jqGridTreatment_c")[0].offsetLeft-30));
+                $("#jqGridAddNotesNursActPlanTreatment").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesNursActPlanTreatment_c")[0].offsetWidth-$("#jqGridAddNotesNursActPlanTreatment_c")[0].offsetLeft-30));
                 break;
             case 'nursNoteIP':
                 let curtype_nursNoteIP = $("#jqGridNursNote_paneltab").data('curtype');

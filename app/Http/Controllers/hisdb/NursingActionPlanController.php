@@ -54,6 +54,9 @@ class NursingActionPlanController extends defaultController
             
             case 'Treatment_del':
                 return $this->del_Treatment($request);
+
+            case 'addNotesNursActPlanTreatment_save':
+                return $this->add_notesNursActPlanTreatment($request);
             
             case 'Observation_save':
                 return $this->add_Observation($request);
@@ -63,6 +66,9 @@ class NursingActionPlanController extends defaultController
             
             case 'Observation_del':
                 return $this->del_Observation($request);
+
+            case 'addNotesNursActPlanObservation_save':
+                return $this->add_notesNursActPlanObservation($request);
             
             case 'Feeding_save':
                 return $this->add_Feeding($request);
@@ -72,6 +78,9 @@ class NursingActionPlanController extends defaultController
             
             case 'Feeding_del':
                 return $this->del_Feeding($request);
+
+            case 'addNotesNursActPlanFeeding_save':
+                return $this->add_notesNursActPlanFeeding($request);
             
             case 'ImgDiag_save':
                 return $this->add_ImgDiag($request);
@@ -82,6 +91,9 @@ class NursingActionPlanController extends defaultController
             case 'ImgDiag_del':
                 return $this->del_ImgDiag($request);
 
+            case 'addNotesNursActPlanImgDiag_save':
+                return $this->add_notesNursActPlanImgDiag($request);
+
             case 'BloodTrans_save':
                 return $this->add_BloodTrans($request);
             
@@ -90,6 +102,9 @@ class NursingActionPlanController extends defaultController
             
             case 'BloodTrans_del':
                 return $this->del_BloodTrans($request);
+
+            case 'addNotesNursActPlanBloodTrans_save':
+                return $this->add_notesNursActPlanBloodTrans($request);
 
             case 'Exams_save':
                 return $this->add_Exams($request);
@@ -100,6 +115,9 @@ class NursingActionPlanController extends defaultController
             case 'Exams_del':
                 return $this->del_Exams($request);
 
+            case 'addNotesNursActPlanExams_save':
+                return $this->add_notesNursActPlanExams($request);
+
             case 'Procedure_save':
                 return $this->add_Procedure($request);
             
@@ -108,6 +126,9 @@ class NursingActionPlanController extends defaultController
             
             case 'Procedure_del':
                 return $this->del_Procedure($request);
+
+            case 'addNotesNursActPlanProcedure_save':
+                return $this->add_notesNursActPlanProcedure($request);
         
             case 'get_table_formHeader':
                 return $this->get_table_formHeader($request);
@@ -308,6 +329,37 @@ class NursingActionPlanController extends defaultController
         }
         
     }
+
+    public function add_notesNursActPlanTreatment(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'NURSACTPLAN_TREATMENT',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
     
     public function add_Observation(Request $request){
         
@@ -393,6 +445,37 @@ class NursingActionPlanController extends defaultController
                     ->delete();
             }
             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+
+    public function add_notesNursActPlanObservation(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'NURSACTPLAN_OBSERVATION',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
             DB::commit();
             
         } catch (\Exception $e) {
@@ -499,6 +582,37 @@ class NursingActionPlanController extends defaultController
         }
         
     }
+
+    public function add_notesNursActPlanFeeding(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'NURSACTPLAN_FEEDING',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
     
     public function add_ImgDiag(Request $request){
         
@@ -586,6 +700,37 @@ class NursingActionPlanController extends defaultController
                     ->delete();
             }
             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+
+    public function add_notesNursActPlanImgDiag(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'NURSACTPLAN_IMGDIAG',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
             DB::commit();
             
         } catch (\Exception $e) {
@@ -700,6 +845,37 @@ class NursingActionPlanController extends defaultController
         
     }
 
+    public function add_notesNursActPlanBloodTrans(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'NURSACTPLAN_BLOODTRANS',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+
     public function add_Exams(Request $request){
         
         DB::beginTransaction();
@@ -783,6 +959,37 @@ class NursingActionPlanController extends defaultController
                     ->delete();
             }
             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+
+    public function add_notesNursActPlanExams(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'NURSACTPLAN_EXAMS',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
             DB::commit();
             
         } catch (\Exception $e) {
@@ -898,6 +1105,56 @@ class NursingActionPlanController extends defaultController
                     ->delete();
             }
             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+
+    public function add_notesNursActPlanProcedure(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+             if(($request->prodType)=='artLine'){
+                $ptype = 'artLine';
+            }else if(($request->prodType)=='CVP'){
+                $ptype = 'CVP';
+            }else if(($request->prodType)=='venLine'){
+                $ptype = 'venLine';
+            }else if(($request->prodType)=='ETT'){
+                $ptype = 'ETT';
+            }else if(($request->prodType)=='CBD'){
+                $ptype = 'CBD';
+            }else if(($request->prodType)=='STO'){
+                $ptype = 'STO';
+            }else{
+                $ptype = 'woundIns';
+            }
+
+            // dd($ptype);
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'NURSACTPLAN_PROCEDURE',
+                    'note' => $request->note,
+                    'prodType' => $ptype,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
             DB::commit();
             
         } catch (\Exception $e) {

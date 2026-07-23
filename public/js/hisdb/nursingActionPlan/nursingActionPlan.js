@@ -1,4 +1,3 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
@@ -15,6 +14,17 @@ var urlParam_Treatment = {
     filterVal: ['',''],
 }
 
+/////////////////////////////parameter for jqGridAddNotesNursActPlanTreatment url/////////////////////////////
+var urlParam_AddNotesNursActPlanTreatment = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','NURSACTPLAN_TREATMENT'],
+}
+
 ///////////////////////parameter for jqGridObservation url///////////////////////
 var urlParam_Observation = {
     action: 'get_table_default',
@@ -24,6 +34,17 @@ var urlParam_Observation = {
     table_id: 'idno',
     filterCol: ['mrn','episno'],
     filterVal: ['',''],
+}
+
+/////////////////////////////parameter for jqGridAddNotesNursActPlanObservation url/////////////////////////////
+var urlParam_AddNotesNursActPlanObservation = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','NURSACTPLAN_OBSERVATION'],
 }
 
 ///////////////////////parameter for jqGridFeeding url///////////////////////
@@ -37,6 +58,17 @@ var urlParam_Feeding = {
     filterVal: ['',''],
 }
 
+/////////////////////////////parameter for jqGridAddNotesNursActPlanFeeding url/////////////////////////////
+var urlParam_AddNotesNursActPlanFeeding = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','NURSACTPLAN_FEEDING'],
+}
+
 //////////////////////parameter for jqGridImgDiag url//////////////////////
 var urlParam_ImgDiag = {
     action: 'get_table_default',
@@ -46,6 +78,17 @@ var urlParam_ImgDiag = {
     table_id: 'idno',
     filterCol: ['mrn','episno'],
     filterVal: ['',''],
+}
+
+/////////////////////////////parameter for jqGridAddNotesNursActPlanImgDiag url/////////////////////////////
+var urlParam_AddNotesNursActPlanImgDiag = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','NURSACTPLAN_IMGDIAG'],
 }
 
 //////////////////////parameter for jqGridBloodTrans url//////////////////////
@@ -59,6 +102,17 @@ var urlParam_BloodTrans = {
     filterVal: ['',''],
 }
 
+/////////////////////////////parameter for jqGridAddNotesNursActPlanBloodTrans url/////////////////////////////
+var urlParam_AddNotesNursActPlanBloodTrans = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','NURSACTPLAN_BLOODTRANS'],
+}
+
 //////////////////////parameter for jqGridExams url//////////////////////
 var urlParam_Exams = {
     action: 'get_table_default',
@@ -70,6 +124,17 @@ var urlParam_Exams = {
     filterVal: ['',''],
 }
 
+/////////////////////////////parameter for jqGridAddNotesNursActPlanExams url/////////////////////////////
+var urlParam_AddNotesNursActPlanExams = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','NURSACTPLAN_EXAMS'],
+}
+
 //////////////////////parameter for jqGridProcedure url//////////////////////
 var urlParam_Procedure = {
     action: 'get_table_default',
@@ -79,6 +144,17 @@ var urlParam_Procedure = {
     table_id: 'idno',
     filterCol: ['mrn','episno','prodType'],
     filterVal: ['','',''],
+}
+
+/////////////////////////////parameter for jqGridAddNotesNursActPlanProcedure url/////////////////////////////
+var urlParam_AddNotesNursActPlanProcedure = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type','prodType'],
+	filterVal: ['','','NURSACTPLAN_PROCEDURE',''],
 }
 
 $(document).ready(function (){
@@ -175,7 +251,7 @@ $(document).ready(function (){
 			if(!$.isEmptyObject(data)){
                 autoinsert_rowdata("#formHeader",data.episode);
 				autoinsert_rowdata("#formHeader",data.header);
-				button_state_header('edit');
+				button_state_header('empty');
 				textarea_init_nursingActionPlan();
 
 			}else{
@@ -217,45 +293,65 @@ $(document).ready(function (){
             case 'treatment':
                 urlParam_Treatment.filterVal[0] = $("#mrn_nursActionPlan").val();
                 urlParam_Treatment.filterVal[1] = $("#episno_nursActionPlan").val();
-                refreshGrid('#jqGridTreatment',urlParam_Treatment,'add');  
+                refreshGrid('#jqGridTreatment',urlParam_Treatment,'add'); 
+                refreshGrid('#jqGridAddNotesNursActPlanTreatment',urlParam_AddNotesNursActPlanTreatment,'add_notesNursActPlanTreatment'); 
                 $("#jqGridTreatment").jqGrid('setGridWidth', Math.floor($("#jqGridTreatment_c")[0].offsetWidth-$("#jqGridTreatment_c")[0].offsetLeft-30));
+                $("#jqGridAddNotesNursActPlanTreatment").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesNursActPlanTreatment_c")[0].offsetWidth-$("#jqGridAddNotesNursActPlanTreatment_c")[0].offsetLeft-30));
                 break;
             case 'observation':
                 urlParam_Observation.filterVal[0] = $("#mrn_nursActionPlan").val();
                 urlParam_Observation.filterVal[1] = $("#episno_nursActionPlan").val();
                 refreshGrid('#jqGridObservation',urlParam_Observation,'add');
+                refreshGrid('#jqGridAddNotesNursActPlanObservation',urlParam_AddNotesNursActPlanObservation,'add_notesNursActPlanObservation');
                 $("#jqGridObservation").jqGrid('setGridWidth', Math.floor($("#jqGridObservation_c")[0].offsetWidth-$("#jqGridObservation_c")[0].offsetLeft-30));
+                $("#jqGridAddNotesNursActPlanObservation").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesNursActPlanObservation_c")[0].offsetWidth-$("#jqGridAddNotesNursActPlanObservation_c")[0].offsetLeft-30));
                 break;
             case 'feeding':
                 urlParam_Feeding.filterVal[0] = $("#mrn_nursActionPlan").val();
                 urlParam_Feeding.filterVal[1] = $("#episno_nursActionPlan").val();
                 refreshGrid('#jqGridFeeding',urlParam_Feeding,'add');
+                refreshGrid('#jqGridAddNotesNursActPlanFeeding',urlParam_AddNotesNursActPlanFeeding,'add_notesNursActPlanFeeding');
                 $("#jqGridFeeding").jqGrid('setGridWidth', Math.floor($("#jqGridFeeding_c")[0].offsetWidth-$("#jqGridFeeding_c")[0].offsetLeft-30));
+                $("#jqGridAddNotesNursActPlanFeeding").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesNursActPlanFeeding_c")[0].offsetWidth-$("#jqGridAddNotesNursActPlanFeeding_c")[0].offsetLeft-30));
                 break;
             case 'imgDiag':
                 urlParam_ImgDiag.filterVal[0] = $("#mrn_nursActionPlan").val();
                 urlParam_ImgDiag.filterVal[1] = $("#episno_nursActionPlan").val();
                 refreshGrid('#jqGridImgDiag',urlParam_ImgDiag,'add');
+                refreshGrid('#jqGridAddNotesNursActPlanImgDiag',urlParam_AddNotesNursActPlanImgDiag,'add_notesNursActPlanImgDiag');
                 $("#jqGridImgDiag").jqGrid('setGridWidth', Math.floor($("#jqGridImgDiag_c")[0].offsetWidth-$("#jqGridImgDiag_c")[0].offsetLeft-30));
+                $("#jqGridAddNotesNursActPlanImgDiag").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesNursActPlanImgDiag_c")[0].offsetWidth-$("#jqGridAddNotesNursActPlanImgDiag_c")[0].offsetLeft-30));
                 break;
             case 'bloodTrans':
                 urlParam_BloodTrans.filterVal[0] = $("#mrn_nursActionPlan").val();
                 urlParam_BloodTrans.filterVal[1] = $("#episno_nursActionPlan").val();
                 refreshGrid('#jqGridBloodTrans',urlParam_BloodTrans,'add');
+                refreshGrid('#jqGridAddNotesNursActPlanBloodTrans',urlParam_AddNotesNursActPlanBloodTrans,'add_notesNursActPlanBloodTrans');
                 $("#jqGridBloodTrans").jqGrid('setGridWidth', Math.floor($("#jqGridBloodTrans_c")[0].offsetWidth-$("#jqGridBloodTrans_c")[0].offsetLeft-30));
+                $("#jqGridAddNotesNursActPlanBloodTrans").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesNursActPlanBloodTrans_c")[0].offsetWidth-$("#jqGridAddNotesNursActPlanBloodTrans_c")[0].offsetLeft-30));
                 break;
             case 'exams':
                 urlParam_Exams.filterVal[0] = $("#mrn_nursActionPlan").val();
                 urlParam_Exams.filterVal[1] = $("#episno_nursActionPlan").val();
                 refreshGrid('#jqGridExams',urlParam_Exams,'add');
+                refreshGrid('#jqGridAddNotesNursActPlanExams',urlParam_AddNotesNursActPlanExams,'add_notesNursActPlanExams');
                 $("#jqGridExams").jqGrid('setGridWidth', Math.floor($("#jqGridExams_c")[0].offsetWidth-$("#jqGridExams_c")[0].offsetLeft-30));
+                $("#jqGridAddNotesNursActPlanExams").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesNursActPlanExams_c")[0].offsetWidth-$("#jqGridAddNotesNursActPlanExams_c")[0].offsetLeft-30));
                 break;
             case 'procedure':
                 urlParam_Procedure.filterVal[0] = $("#mrn_nursActionPlan").val();
                 urlParam_Procedure.filterVal[1] = $("#episno_nursActionPlan").val();
                 urlParam_Procedure.filterVal[2] = 'artLine';
                 refreshGrid('#jqGridProcedure',urlParam_Procedure,'add');
+
+                urlParam_AddNotesNursActPlanProcedure.filterVal[0] = $("#mrn_nursActionPlan").val();
+                urlParam_AddNotesNursActPlanProcedure.filterVal[1] = $("#episno_nursActionPlan").val();
+                urlParam_AddNotesNursActPlanProcedure.filterVal[2] = 'NURSACTPLAN_PROCEDURE';
+                urlParam_AddNotesNursActPlanProcedure.filterVal[3] = 'artLine';
+                refreshGrid('#jqGridAddNotesNursActPlanProcedure',urlParam_AddNotesNursActPlanProcedure,'add_notesNursActPlanProcedure');
+
                 $('#prod').text('ARTERIAL LINE');
+                $('#addNotes_title').text('ADDITIONAL NOTES ARTERIAL LINE');
 
                 $('input[name="ptype"]:radio').on('change', function() {
                     let ptype  = $("#formProcedure input[type=radio]:checked").val();
@@ -267,7 +363,15 @@ $(document).ready(function (){
                             urlParam_Procedure.filterVal[1] = $("#episno_nursActionPlan").val();
                             urlParam_Procedure.filterVal[2] = 'artLine';
                             refreshGrid('#jqGridProcedure',urlParam_Procedure,'add');
+
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[0] = $("#mrn_nursActionPlan").val();
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[1] = $("#episno_nursActionPlan").val();
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[2] = 'NURSACTPLAN_PROCEDURE';
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[3] = 'artLine';
+                            refreshGrid('#jqGridAddNotesNursActPlanProcedure',urlParam_AddNotesNursActPlanProcedure,'add_notesNursActPlanProcedure');
+                            
                             $('#prod').text('ARTERIAL LINE');
+                            $('#addNotes_title').text('ADDITIONAL NOTES FOR ARTERIAL LINE');
                             break;
                         
                         case 'CVP':
@@ -275,7 +379,15 @@ $(document).ready(function (){
                             urlParam_Procedure.filterVal[1] = $("#episno_nursActionPlan").val();
                             urlParam_Procedure.filterVal[2] = 'CVP';
                             refreshGrid('#jqGridProcedure',urlParam_Procedure,'add');
+
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[0] = $("#mrn_nursActionPlan").val();
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[1] = $("#episno_nursActionPlan").val();
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[2] = 'NURSACTPLAN_PROCEDURE';
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[3] = 'CVP';
+                            refreshGrid('#jqGridAddNotesNursActPlanProcedure',urlParam_AddNotesNursActPlanProcedure,'add_notesNursActPlanProcedure');
+                            
                             $('#prod').text('CVP');
+                            $('#addNotes_title').text('ADDITIONAL NOTES FOR CVP');
                             break;
 
                         case 'venLine':
@@ -283,7 +395,15 @@ $(document).ready(function (){
                             urlParam_Procedure.filterVal[1] = $("#episno_nursActionPlan").val();
                             urlParam_Procedure.filterVal[2] = 'venLine';
                             refreshGrid('#jqGridProcedure',urlParam_Procedure,'add');
+
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[0] = $("#mrn_nursActionPlan").val();
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[1] = $("#episno_nursActionPlan").val();
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[2] = 'NURSACTPLAN_PROCEDURE';
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[3] = 'venLine';
+                            refreshGrid('#jqGridAddNotesNursActPlanProcedure',urlParam_AddNotesNursActPlanProcedure,'add_notesNursActPlanProcedure');
+                            
                             $('#prod').text('VENOUS LINE');
+                            $('#addNotes_title').text('ADDITIONAL NOTES FOR VENOUS LINE');
                             break;
 
                         case 'ETT':
@@ -291,7 +411,15 @@ $(document).ready(function (){
                             urlParam_Procedure.filterVal[1] = $("#episno_nursActionPlan").val();
                             urlParam_Procedure.filterVal[2] = 'ETT';
                             refreshGrid('#jqGridProcedure',urlParam_Procedure,'add');
+
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[0] = $("#mrn_nursActionPlan").val();
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[1] = $("#episno_nursActionPlan").val();
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[2] = 'NURSACTPLAN_PROCEDURE';
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[3] = 'ETT';
+                            refreshGrid('#jqGridAddNotesNursActPlanProcedure',urlParam_AddNotesNursActPlanProcedure,'add_notesNursActPlanProcedure');
+                            
                             $('#prod').text('ETT');
+                            $('#addNotes_title').text('ADDITIONAL NOTES FOR ETT');
                             break;
 
                         case 'CBD':
@@ -299,7 +427,15 @@ $(document).ready(function (){
                             urlParam_Procedure.filterVal[1] = $("#episno_nursActionPlan").val();
                             urlParam_Procedure.filterVal[2] = 'CBD';
                             refreshGrid('#jqGridProcedure',urlParam_Procedure,'add');
+
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[0] = $("#mrn_nursActionPlan").val();
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[1] = $("#episno_nursActionPlan").val();
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[2] = 'NURSACTPLAN_PROCEDURE';
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[3] = 'CBD';
+                            refreshGrid('#jqGridAddNotesNursActPlanProcedure',urlParam_AddNotesNursActPlanProcedure,'add_notesNursActPlanProcedure');
+                            
                             $('#prod').text('CBD');
+                            $('#addNotes_title').text('ADDITIONAL NOTES FOR CBD');
                             break;
 
                         case 'STO':
@@ -307,7 +443,15 @@ $(document).ready(function (){
                             urlParam_Procedure.filterVal[1] = $("#episno_nursActionPlan").val();
                             urlParam_Procedure.filterVal[2] = 'STO';
                             refreshGrid('#jqGridProcedure',urlParam_Procedure,'add');
+
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[0] = $("#mrn_nursActionPlan").val();
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[1] = $("#episno_nursActionPlan").val();
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[2] = 'NURSACTPLAN_PROCEDURE';
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[3] = 'STO';
+                            refreshGrid('#jqGridAddNotesNursActPlanProcedure',urlParam_AddNotesNursActPlanProcedure,'add_notesNursActPlanProcedure');
+
                             $('#prod').text('STO');
+                            $('#addNotes_title').text('ADDITIONAL NOTES FOR STO');
                             break;
 
                         case 'woundIns':
@@ -315,13 +459,23 @@ $(document).ready(function (){
                             urlParam_Procedure.filterVal[1] = $("#episno_nursActionPlan").val();
                             urlParam_Procedure.filterVal[2] = 'woundIns';
                             refreshGrid('#jqGridProcedure',urlParam_Procedure,'add');
+
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[0] = $("#mrn_nursActionPlan").val();
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[1] = $("#episno_nursActionPlan").val();
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[2] = 'NURSACTPLAN_PROCEDURE';
+                            urlParam_AddNotesNursActPlanProcedure.filterVal[3] = 'woundIns';
+                            refreshGrid('#jqGridAddNotesNursActPlanProcedure',urlParam_AddNotesNursActPlanProcedure,'add_notesNursActPlanProcedure');
+
                             $('#prod').text('WOUND INSPECTION');
+                            $('#addNotes_title').text('ADDITIONAL NOTES FOR WOUND INSPECTION');
                             break;
                     }
 
                 });
 
                 $("#jqGridProcedure").jqGrid('setGridWidth', Math.floor($("#jqGridProcedure_c")[0].offsetWidth-$("#jqGridProcedure_c")[0].offsetLeft-30));
+                $("#jqGridAddNotesNursActPlanProcedure").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesNursActPlanProcedure_c")[0].offsetWidth-$("#jqGridAddNotesNursActPlanProcedure_c")[0].offsetLeft-30));
+
                 break;
                 
         }
@@ -579,6 +733,117 @@ $(document).ready(function (){
         refreshGrid("#jqGridTreatment", urlParam_Treatment);
     });
     ////////////////////////////////////////////end grid////////////////////////////////////////////
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridNursActPlanTreatment = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesNursActPlanTreatment///////////////////////////////////////
+	$("#jqGridAddNotesNursActPlanTreatment").jqGrid({
+		datatype: "local",
+		editurl: "./nursingActionPlan/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesNursActPlanTreatment",
+		loadComplete: function (){
+			if(addmore_jqgridNursActPlanTreatment.more == true){$('#jqGridAddNotesNursActPlanTreatment_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridNursActPlanTreatment.edit = addmore_jqgridNursActPlanTreatment.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesNursActPlanTreatment");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesNursActPlanTreatment_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addNursActPlanTreatment = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesNursActPlanTreatment,#jqGridPagerRefresh_addnoteNursActPlanTreatment").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesNursActPlanTreatment_ilsave').click();
+				// addmore_jqgridNursActPlanTreatment.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridNursActPlanTreatment.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesNursActPlanTreatment',urlParam_AddNotesNursActPlanTreatment,'add_notesNursActPlanTreatment');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesNursActPlanTreatment,#jqGridPagerRefresh_addnoteNursActPlanTreatment").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesNursActPlanTreatment',urlParam_AddNotesNursActPlanTreatment,'add_notesNursActPlanTreatment');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesNursActPlanTreatment').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./nursingActionPlan/form?"+
+				$.param({
+					episno: $('#episno_nursActionPlan').val(),
+					mrn: $('#mrn_nursActionPlan').val(),
+					action: 'addNotesNursActPlanTreatment_save',
+				});
+			$("#jqGridAddNotesNursActPlanTreatment").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesNursActPlanTreatment,#jqGridPagerRefresh_addnoteNursActPlanTreatment").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesNursActPlanTreatment/////////////////////////////////////
+	$("#jqGridAddNotesNursActPlanTreatment").inlineNav('#jqGridPagerAddNotesNursActPlanTreatment', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addNursActPlanTreatment
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesNursActPlanTreatment", {
+		id: "jqGridPagerRefresh_addnoteNursActPlanTreatment",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesNursActPlanTreatment", urlParam_AddNotesNursActPlanTreatment);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
+
     //////////////////////////////////////////Treatment ends//////////////////////////////////////////
     
     ///////////////////////////////////////observation starts///////////////////////////////////////
@@ -833,6 +1098,117 @@ $(document).ready(function (){
         refreshGrid("#jqGridObservation", urlParam_Observation);
     });
     ///////////////////////////////////////////end grid///////////////////////////////////////////
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridNursActPlanObservation = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesNursActPlanObservation///////////////////////////////////////
+	$("#jqGridAddNotesNursActPlanObservation").jqGrid({
+		datatype: "local",
+		editurl: "./nursingActionPlan/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesNursActPlanObservation",
+		loadComplete: function (){
+			if(addmore_jqgridNursActPlanObservation.more == true){$('#jqGridAddNotesNursActPlanObservation_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridNursActPlanObservation.edit = addmore_jqgridNursActPlanObservation.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesNursActPlanObservation");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesNursActPlanObservation_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addNursActPlanObservation = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesNursActPlanObservation,#jqGridPagerRefresh_addnoteNursActPlanObservation").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesNursActPlanObservation_ilsave').click();
+				// addmore_jqgridNursActPlanObservation.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridNursActPlanObservation.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesNursActPlanObservation',urlParam_AddNotesNursActPlanObservation,'add_notesNursActPlanObservation');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesNursActPlanObservation,#jqGridPagerRefresh_addnoteNursActPlanObservation").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesNursActPlanObservation',urlParam_AddNotesNursActPlanObservation,'add_notesNursActPlanObservation');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesNursActPlanObservation').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./nursingActionPlan/form?"+
+				$.param({
+					episno: $('#episno_nursActionPlan').val(),
+					mrn: $('#mrn_nursActionPlan').val(),
+					action: 'addNotesNursActPlanObservation_save',
+				});
+			$("#jqGridAddNotesNursActPlanObservation").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesNursActPlanObservation,#jqGridPagerRefresh_addnoteNursActPlanObservation").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesNursActPlanObservation/////////////////////////////////////
+	$("#jqGridAddNotesNursActPlanObservation").inlineNav('#jqGridPagerAddNotesNursActPlanObservation', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addNursActPlanObservation
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesNursActPlanObservation", {
+		id: "jqGridPagerRefresh_addnoteNursActPlanObservation",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesNursActPlanObservation", urlParam_AddNotesNursActPlanObservation);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
+
     ////////////////////////////////////////Observation ends////////////////////////////////////////
     
     //////////////////////////////////////feeding starts//////////////////////////////////////
@@ -1088,6 +1464,116 @@ $(document).ready(function (){
         refreshGrid("#jqGridFeeding", urlParam_Feeding);
     });
     ///////////////////////////////////////////end grid///////////////////////////////////////////
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridNursActPlanFeeding = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesNursActPlanFeeding///////////////////////////////////////
+	$("#jqGridAddNotesNursActPlanFeeding").jqGrid({
+		datatype: "local",
+		editurl: "./nursingActionPlan/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesNursActPlanFeeding",
+		loadComplete: function (){
+			if(addmore_jqgridNursActPlanFeeding.more == true){$('#jqGridAddNotesNursActPlanFeeding_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridNursActPlanFeeding.edit = addmore_jqgridNursActPlanFeeding.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesNursActPlanFeeding");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesNursActPlanFeeding_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addNursActPlanFeeding = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesNursActPlanFeeding,#jqGridPagerRefresh_addnoteNursActPlanFeeding").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesNursActPlanFeeding_ilsave').click();
+				// addmore_jqgridNursActPlanFeeding.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridNursActPlanFeeding.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesNursActPlanFeeding',urlParam_AddNotesNursActPlanFeeding,'add_notesNursActPlanFeeding');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesNursActPlanFeeding,#jqGridPagerRefresh_addnoteNursActPlanFeeding").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesNursActPlanFeeding',urlParam_AddNotesNursActPlanFeeding,'add_notesNursActPlanFeeding');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesNursActPlanFeeding').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./nursingActionPlan/form?"+
+				$.param({
+					episno: $('#episno_nursActionPlan').val(),
+					mrn: $('#mrn_nursActionPlan').val(),
+					action: 'addNotesNursActPlanFeeding_save',
+				});
+			$("#jqGridAddNotesNursActPlanFeeding").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesNursActPlanFeeding,#jqGridPagerRefresh_addnoteNursActPlanFeeding").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesNursActPlanFeeding/////////////////////////////////////
+	$("#jqGridAddNotesNursActPlanFeeding").inlineNav('#jqGridPagerAddNotesNursActPlanFeeding', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addNursActPlanFeeding
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesNursActPlanFeeding", {
+		id: "jqGridPagerRefresh_addnoteNursActPlanFeeding",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesNursActPlanFeeding", urlParam_AddNotesNursActPlanFeeding);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
     ///////////////////////////////////////Feeding ends///////////////////////////////////////
     
     //////////////////////////////////////ImgDiag starts//////////////////////////////////////
@@ -1349,6 +1835,117 @@ $(document).ready(function (){
         refreshGrid("#jqGridImgDiag", urlParam_ImgDiag);
     });
     ///////////////////////////////////////////end grid///////////////////////////////////////////
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridNursActPlanImgDiag = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesNursActPlanImgDiag///////////////////////////////////////
+	$("#jqGridAddNotesNursActPlanImgDiag").jqGrid({
+		datatype: "local",
+		editurl: "./nursingActionPlan/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesNursActPlanImgDiag",
+		loadComplete: function (){
+			if(addmore_jqgridNursActPlanImgDiag.more == true){$('#jqGridAddNotesNursActPlanImgDiag_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridNursActPlanImgDiag.edit = addmore_jqgridNursActPlanImgDiag.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesNursActPlanImgDiag");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesNursActPlanImgDiag_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addNursActPlanImgDiag = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesNursActPlanImgDiag,#jqGridPagerRefresh_addnoteNursActPlanImgDiag").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesNursActPlanImgDiag_ilsave').click();
+				// addmore_jqgridNursActPlanImgDiag.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridNursActPlanImgDiag.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesNursActPlanImgDiag',urlParam_AddNotesNursActPlanImgDiag,'add_notesNursActPlanImgDiag');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesNursActPlanImgDiag,#jqGridPagerRefresh_addnoteNursActPlanImgDiag").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesNursActPlanImgDiag',urlParam_AddNotesNursActPlanImgDiag,'add_notesNursActPlanImgDiag');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesNursActPlanImgDiag').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./nursingActionPlan/form?"+
+				$.param({
+					episno: $('#episno_nursActionPlan').val(),
+					mrn: $('#mrn_nursActionPlan').val(),
+					action: 'addNotesNursActPlanImgDiag_save',
+				});
+			$("#jqGridAddNotesNursActPlanImgDiag").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesNursActPlanImgDiag,#jqGridPagerRefresh_addnoteNursActPlanImgDiag").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesNursActPlanImgDiag/////////////////////////////////////
+	$("#jqGridAddNotesNursActPlanImgDiag").inlineNav('#jqGridPagerAddNotesNursActPlanImgDiag', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addNursActPlanImgDiag
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesNursActPlanImgDiag", {
+		id: "jqGridPagerRefresh_addnoteNursActPlanImgDiag",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesNursActPlanImgDiag", urlParam_AddNotesNursActPlanImgDiag);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
+
     ///////////////////////////////////////ImgDiag ends///////////////////////////////////////
     
     //////////////////////////////////////bloodTrans starts//////////////////////////////////////
@@ -1590,6 +2187,116 @@ $(document).ready(function (){
         refreshGrid("#jqGridBloodTrans", urlParam_BloodTrans);
     });
     ///////////////////////////////////////////end grid///////////////////////////////////////////
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridNursActPlanBloodTrans = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesNursActPlanBloodTrans///////////////////////////////////////
+	$("#jqGridAddNotesNursActPlanBloodTrans").jqGrid({
+		datatype: "local",
+		editurl: "./nursingActionPlan/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesNursActPlanBloodTrans",
+		loadComplete: function (){
+			if(addmore_jqgridNursActPlanBloodTrans.more == true){$('#jqGridAddNotesNursActPlanBloodTrans_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridNursActPlanBloodTrans.edit = addmore_jqgridNursActPlanBloodTrans.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesNursActPlanBloodTrans");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesNursActPlanBloodTrans_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addNursActPlanBloodTrans = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesNursActPlanBloodTrans,#jqGridPagerRefresh_addnoteNursActPlanBloodTrans").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesNursActPlanBloodTrans_ilsave').click();
+				// addmore_jqgridNursActPlanBloodTrans.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridNursActPlanBloodTrans.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesNursActPlanBloodTrans',urlParam_AddNotesNursActPlanBloodTrans,'add_notesNursActPlanBloodTrans');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesNursActPlanBloodTrans,#jqGridPagerRefresh_addnoteNursActPlanBloodTrans").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesNursActPlanBloodTrans',urlParam_AddNotesNursActPlanBloodTrans,'add_notesNursActPlanBloodTrans');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesNursActPlanBloodTrans').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./nursingActionPlan/form?"+
+				$.param({
+					episno: $('#episno_nursActionPlan').val(),
+					mrn: $('#mrn_nursActionPlan').val(),
+					action: 'addNotesNursActPlanBloodTrans_save',
+				});
+			$("#jqGridAddNotesNursActPlanBloodTrans").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesNursActPlanBloodTrans,#jqGridPagerRefresh_addnoteNursActPlanBloodTrans").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesNursActPlanBloodTrans/////////////////////////////////////
+	$("#jqGridAddNotesNursActPlanBloodTrans").inlineNav('#jqGridPagerAddNotesNursActPlanBloodTrans', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addNursActPlanBloodTrans
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesNursActPlanBloodTrans", {
+		id: "jqGridPagerRefresh_addnoteNursActPlanBloodTrans",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesNursActPlanBloodTrans", urlParam_AddNotesNursActPlanBloodTrans);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
     ///////////////////////////////////////BloodTrans ends///////////////////////////////////////
 
     /////////////////////////////////////////Exams starts/////////////////////////////////////////
@@ -1845,6 +2552,116 @@ $(document).ready(function (){
         refreshGrid("#jqGridExams", urlParam_Exams);
     });
     ////////////////////////////////////////////end grid////////////////////////////////////////////
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridNursActPlanExams = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesNursActPlanExams///////////////////////////////////////
+	$("#jqGridAddNotesNursActPlanExams").jqGrid({
+		datatype: "local",
+		editurl: "./nursingActionPlan/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesNursActPlanExams",
+		loadComplete: function (){
+			if(addmore_jqgridNursActPlanExams.more == true){$('#jqGridAddNotesNursActPlanExams_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridNursActPlanExams.edit = addmore_jqgridNursActPlanExams.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesNursActPlanExams");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesNursActPlanExams_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addNursActPlanExams = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesNursActPlanExams,#jqGridPagerRefresh_addnoteNursActPlanExams").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesNursActPlanExams_ilsave').click();
+				// addmore_jqgridNursActPlanExams.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridNursActPlanExams.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesNursActPlanExams',urlParam_AddNotesNursActPlanExams,'add_notesNursActPlanExams');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesNursActPlanExams,#jqGridPagerRefresh_addnoteNursActPlanExams").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesNursActPlanExams',urlParam_AddNotesNursActPlanExams,'add_notesNursActPlanExams');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesNursActPlanExams').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./nursingActionPlan/form?"+
+				$.param({
+					episno: $('#episno_nursActionPlan').val(),
+					mrn: $('#mrn_nursActionPlan').val(),
+					action: 'addNotesNursActPlanExams_save',
+				});
+			$("#jqGridAddNotesNursActPlanExams").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesNursActPlanExams,#jqGridPagerRefresh_addnoteNursActPlanExams").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesNursActPlanExams/////////////////////////////////////
+	$("#jqGridAddNotesNursActPlanExams").inlineNav('#jqGridPagerAddNotesNursActPlanExams', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addNursActPlanExams
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesNursActPlanExams", {
+		id: "jqGridPagerRefresh_addnoteNursActPlanExams",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesNursActPlanExams", urlParam_AddNotesNursActPlanExams);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
     //////////////////////////////////////////Exam ends//////////////////////////////////////////
     
     /////////////////////////////////////////Procedure starts/////////////////////////////////////////
@@ -2099,6 +2916,118 @@ $(document).ready(function (){
         refreshGrid("#jqGridProcedure", urlParam_Procedure);
     });
     ////////////////////////////////////////////end grid////////////////////////////////////////////
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridNursActPlanProcedure = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesNursActPlanProcedure///////////////////////////////////////
+	$("#jqGridAddNotesNursActPlanProcedure").jqGrid({
+		datatype: "local",
+		editurl: "./nursingActionPlan/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+            { label: 'prodType', name: 'prodType', hidden: true },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesNursActPlanProcedure",
+		loadComplete: function (){
+			if(addmore_jqgridNursActPlanProcedure.more == true){$('#jqGridAddNotesNursActPlanProcedure_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridNursActPlanProcedure.edit = addmore_jqgridNursActPlanProcedure.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesNursActPlanProcedure");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesNursActPlanProcedure_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addNursActPlanProcedure = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesNursActPlanProcedure,#jqGridPagerRefresh_addnoteNursActPlanProcedure").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesNursActPlanProcedure_ilsave').click();
+				// addmore_jqgridNursActPlanProcedure.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridNursActPlanProcedure.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesNursActPlanProcedure',urlParam_AddNotesNursActPlanProcedure,'add_notesNursActPlanProcedure');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesNursActPlanProcedure,#jqGridPagerRefresh_addnoteNursActPlanProcedure").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesNursActPlanProcedure',urlParam_AddNotesNursActPlanProcedure,'add_notesNursActPlanProcedure');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesNursActPlanProcedure').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./nursingActionPlan/form?"+
+				$.param({
+					episno: $('#episno_nursActionPlan').val(),
+					mrn: $('#mrn_nursActionPlan').val(),
+                    prodType: $("#formProcedure input[type=radio]:checked").val(),
+					action: 'addNotesNursActPlanProcedure_save',
+				});
+			$("#jqGridAddNotesNursActPlanProcedure").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesNursActPlanProcedure,#jqGridPagerRefresh_addnoteNursActPlanProcedure").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesNursActPlanProcedure/////////////////////////////////////
+	$("#jqGridAddNotesNursActPlanProcedure").inlineNav('#jqGridPagerAddNotesNursActPlanProcedure', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addNursActPlanProcedure
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesNursActPlanProcedure", {
+		id: "jqGridPagerRefresh_addnoteNursActPlanProcedure",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesNursActPlanProcedure", urlParam_AddNotesNursActPlanProcedure);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
     //////////////////////////////////////////Procedure ends//////////////////////////////////////////
 
     var dialog_icd = new ordialog(
@@ -2154,8 +3083,6 @@ conf = {
     },
 };
 
-
-
 button_state_header('empty');
 function button_state_header(state){
     switch(state){
@@ -2181,6 +3108,10 @@ function button_state_header(state){
             $("#save_header,#cancel_header").attr('disabled',false);
             $('#edit_header,#new_header').attr('disabled',true);
             break;
+        case 'disableAll':
+			$("#toggle_nursActionPlan").attr('data-toggle','collapse');
+			$('#new_header,#save_header,#cancel_header,#edit_tiED').attr('disabled',true);
+			break;
     }
 }
 
@@ -2207,6 +3138,42 @@ function populate_nursingActionPlan(obj){
     $("#bednum_nursActionPlan").val(obj.bednum);
     $("#age_nursActionPlan").val(dob_age(obj.DOB));
     $("#reg_date").val(obj.reg_date);
+
+    ////jqGridAddNotesNursActPlanTreatment
+	urlParam_AddNotesNursActPlanTreatment.filterVal[0] = obj.MRN;
+	urlParam_AddNotesNursActPlanTreatment.filterVal[1] = obj.Episno;
+	urlParam_AddNotesNursActPlanTreatment.filterVal[2] = 'NURSACTPLAN_TREATMENT';
+
+    ////jqGridAddNotesNursActPlanObservation
+	urlParam_AddNotesNursActPlanObservation.filterVal[0] = obj.MRN;
+	urlParam_AddNotesNursActPlanObservation.filterVal[1] = obj.Episno;
+	urlParam_AddNotesNursActPlanObservation.filterVal[2] = 'NURSACTPLAN_OBSERVATION';
+
+    ////jqGridAddNotesNursActPlanFeeding
+	urlParam_AddNotesNursActPlanFeeding.filterVal[0] = obj.MRN;
+	urlParam_AddNotesNursActPlanFeeding.filterVal[1] = obj.Episno;
+	urlParam_AddNotesNursActPlanFeeding.filterVal[2] = 'NURSACTPLAN_FEEDING';
+
+    ////jqGridAddNotesNursActPlanImgDiag
+	urlParam_AddNotesNursActPlanImgDiag.filterVal[0] = obj.MRN;
+	urlParam_AddNotesNursActPlanImgDiag.filterVal[1] = obj.Episno;
+	urlParam_AddNotesNursActPlanImgDiag.filterVal[2] = 'NURSACTPLAN_IMGDIAG';
+
+    ////jqGridAddNotesNursActPlanBloodTrans
+	urlParam_AddNotesNursActPlanBloodTrans.filterVal[0] = obj.MRN;
+	urlParam_AddNotesNursActPlanBloodTrans.filterVal[1] = obj.Episno;
+	urlParam_AddNotesNursActPlanBloodTrans.filterVal[2] = 'NURSACTPLAN_BLOODTRANS';
+
+    ////jqGridAddNotesNursActPlanExams
+	urlParam_AddNotesNursActPlanExams.filterVal[0] = obj.MRN;
+	urlParam_AddNotesNursActPlanExams.filterVal[1] = obj.Episno;
+	urlParam_AddNotesNursActPlanExams.filterVal[2] = 'NURSACTPLAN_EXAMS';
+
+    ////jqGridAddNotesNursActPlanProcedure
+	urlParam_AddNotesNursActPlanProcedure.filterVal[0] = obj.MRN;
+	urlParam_AddNotesNursActPlanProcedure.filterVal[1] = obj.Episno;
+	urlParam_AddNotesNursActPlanProcedure.filterVal[2] = 'NURSACTPLAN_PROCEDURE';
+    urlParam_AddNotesNursActPlanProcedure.filterVal[3] = obj.prodType;
 }
 
 function populate_header_getdata(){
@@ -2230,7 +3197,7 @@ function populate_header_getdata(){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formHeader",data.episode);
             autoinsert_rowdata("#formHeader",data.header);
-            button_state_header('edit');
+            button_state_header('empty');
 
         }else{
             button_state_header('add');
