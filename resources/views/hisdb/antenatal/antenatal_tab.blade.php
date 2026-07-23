@@ -32,9 +32,9 @@
                                     <button type="button" class="btn btn-default" id="new_antenatal">
                                         <span class="fa fa-plus-square-o"></span> New
                                     </button>
-                                    <button type="button" class="btn btn-default" id="edit_antenatal">
+                                    <!-- <button type="button" class="btn btn-default" id="edit_antenatal">
                                         <span class="fa fa-edit fa-lg"></span> Edit
-                                    </button>
+                                    </button> -->
                                     <button type="button" class="btn btn-default" data-oper='add' id="save_antenatal">
                                         <span class="fa fa-save fa-lg"></span> Save
                                     </button>
@@ -422,9 +422,9 @@
                                     <button type="button" class="btn btn-default" id="new_pregnancy">
                                         <span class="fa fa-plus-square-o"></span> New
                                     </button>
-                                    <button type="button" class="btn btn-default" id="edit_pregnancy">
+                                    <!-- <button type="button" class="btn btn-default" id="edit_pregnancy">
                                         <span class="fa fa-edit fa-lg"></span> Edit
-                                    </button>
+                                    </button> -->
                                     <button type="button" class="btn btn-default" data-oper='add' id="save_pregnancy">
                                         <span class="fa fa-save fa-lg"></span> Save
                                     </button>
@@ -556,9 +556,9 @@
                                     <button type="button" class="btn btn-default" id="new_ultrasound">
                                         <span class="fa fa-plus-square-o"></span> New
                                     </button>
-                                    <button type="button" class="btn btn-default" id="edit_ultrasound">
+                                    <!-- <button type="button" class="btn btn-default" id="edit_ultrasound">
                                         <span class="fa fa-edit fa-lg"></span> Edit
-                                    </button>
+                                    </button> -->
                                     <button type="button" class="btn btn-default" data-oper='add' id="save_ultrasound">
                                         <span class="fa fa-save fa-lg"></span> Save
                                     </button>

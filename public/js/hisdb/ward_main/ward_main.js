@@ -154,7 +154,7 @@ $(document).ready(function (){
                     if(!$.isEmptyObject(data)){
                         if(!$.isEmptyObject(data.antenatal)){
                             autoinsert_rowdata_antenatal("#formAntenatal",data.antenatal);
-                            button_state_antenatal('edit_antenatal');
+                            button_state_antenatal('empty_antenatal');
                         }else{
                             button_state_antenatal('add_antenatal');
                         }
@@ -168,7 +168,7 @@ $(document).ready(function (){
                                 $('#jqGridPagerCurrPregnancy_left td.ui-pg-button').hide();
                                 $('#jqGridPagerObstetricsUltrasound_left td.ui-pg-button').hide();
                             }else{
-                                button_state_antenatal('edit_pregnancy');
+                                button_state_antenatal('empty_pregnancy');
                                 
                                 // to show pager
                                 $('#jqGridPagerCurrPregnancy_left td.ui-pg-button').show();
