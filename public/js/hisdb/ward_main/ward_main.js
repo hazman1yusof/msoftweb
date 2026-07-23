@@ -198,7 +198,8 @@ $(document).ready(function (){
                     }
                     refreshGrid('#jqGridPrevObstetrics',urlParam_PrevObstetrics,'add');
                 });
-                
+                refreshGrid('#jqGridAddNotesAntenatal',urlParam_AddNotesAntenatal,'add_notesAntenatal');
+
                 $("#jqGridPrevObstetrics").jqGrid('setGridWidth', Math.floor($("#jqGridWardMain_c")[0].offsetWidth-$("#jqGridWardMain_c")[0].offsetLeft-210));
                 $("#jqGridCurrPregnancy").jqGrid('setGridWidth', Math.floor($("#jqGridWardMain_c")[0].offsetWidth-$("#jqGridWardMain_c")[0].offsetLeft-210));
                 $("#jqGridObstetricsUltrasound").jqGrid('setGridWidth', Math.floor($("#jqGridWardMain_c")[0].offsetWidth-$("#jqGridWardMain_c")[0].offsetLeft-210));
