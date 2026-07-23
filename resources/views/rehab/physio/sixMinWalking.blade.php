@@ -6,7 +6,7 @@
             top: 9px;
             z-index: 2;">
             <button class="ui button" id="new_sixMinWalking"><span class="fa fa-plus-square-o"></span>New</button>
-            <button class="ui button" id="edit_sixMinWalking"><span class="fa fa-edit fa-lg"></span>Edit</button>
+            <!-- <button class="ui button" id="edit_sixMinWalking"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
             <button class="ui button" id="save_sixMinWalking"><span class="fa fa-save fa-lg"></span>Save</button>
             <button class="ui button" id="cancel_sixMinWalking"><span class="fa fa-ban fa-lg"></span>Cancel</button>
             <button class="ui button" id="sixMinWalking_chart"><span class="fa fa-print fa-lg"></span>Print</button>
@@ -93,6 +93,10 @@
                                                 <label>Date:</label>
                                                 <div class="field">
                                                     <input type="date" class="form-control" id="sixMinWalking_entereddate" name="entereddate" data-validation="required" data-validation-error-msg-required="Please enter information.">
+                                                </div>
+                                                
+                                                <div class="field" style="display: none;">
+                                                    <input id="sixMinWalking_enteredtime" name="enteredtime" type="time">
                                                 </div>
                                             </div>
                                         </td>
