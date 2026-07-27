@@ -552,6 +552,9 @@ $(document).ready(function (){
                 
                 // $('#tbl_invcat_FBC').DataTable().ajax.reload();
                 $("#jqGridInvChart_FBC").jqGrid('setGridWidth', Math.floor($("#jqGridInvChartFBC_c")[0].offsetWidth-$("#jqGridInvChartFBC_c")[0].offsetLeft-58));
+                refreshGrid('#jqGridAddNotesInvChartFBC',urlParam_AddNotesInvChartFBC,'add_notesInvChartFBC');
+                $("#jqGridAddNotesInvChartFBC").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesInvChartFBC_c")[0].offsetWidth-$("#jqGridAddNotesInvChartFBC_c")[0].offsetLeft-30));
+                $('#addNotesFBC_title').text('ADDITIONAL NOTES FOR FBC');
                 break;
             case 'progress':
                 populate_progressnote_getdata();
@@ -4662,6 +4665,11 @@ function populate_nursingnote(obj){
 
     $("#bladder_ward").val($('#ward_nursNote').val());
     $("#bladder_bednum").val($('#bednum_nursNote').val());
+
+    ////jqGridAddNotesInvChartFBC
+	urlParam_AddNotesInvChartFBC.filterVal[0] = obj.MRN;
+	urlParam_AddNotesInvChartFBC.filterVal[1] = obj.Episno;
+	urlParam_AddNotesInvChartFBC.filterVal[2] = 'INVCHART_FBC';
 
     // $("#tot_input").val(obj.total_all_i);
     

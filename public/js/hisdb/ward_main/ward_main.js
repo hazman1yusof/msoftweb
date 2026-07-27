@@ -134,6 +134,9 @@ $(document).ready(function (){
                 
                 // $('#tbl_invcat_FBC').DataTable().ajax.reload();
                 $("#jqGridInvChart_FBC").jqGrid('setGridWidth', Math.floor($("#jqGridInvChartFBC_c")[0].offsetWidth-$("#jqGridInvChartFBC_c")[0].offsetLeft-58));
+                refreshGrid('#jqGridAddNotesInvChartFBC',urlParam_AddNotesInvChartFBC,'add_notesInvChartFBC');
+                $("#jqGridAddNotesInvChartFBC").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesInvChartFBC_c")[0].offsetWidth-$("#jqGridAddNotesInvChartFBC_c")[0].offsetLeft-30));
+                $('#addNotesFBC_title').text('ADDITIONAL NOTES FOR FBC');
                 break;
             case 'antenatalIP':
                 var saveParam = {
