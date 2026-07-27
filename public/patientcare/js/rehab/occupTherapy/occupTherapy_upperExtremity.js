@@ -419,7 +419,7 @@ $(document).ready(function (){
     
     /////////////////////////////////////////print button starts/////////////////////////////////////////
     $("#upperExtremity_chart").click(function (){
-        window.open('./occupTherapy_upperExtremity/upperExtremity_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&dateAssess='+$("#dateAssess").val(), '_blank');
+        window.open('./occupTherapy_upperExtremity/upperExtremity_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&dateAssess='+$("#dateAssess").val()+'&enteredtime='+$("#upperExtremity_enteredtime").val(), '_blank');
     });
 
     // to format number input to two decimal places (0.00)
@@ -629,7 +629,7 @@ $(document).ready(function (){
     ////////////////////////////////////////////////jqGridPager////////////////////////////////////////////////
     $("#jqGrid_rof").inlineNav('#jqGridPager_rof', {
         add: true,
-        edit: true,
+        edit: false,
         cancel: true,
         // to prevent the row being edited/added from being automatically cancelled once the user clicks another row
         restoreAfterSelect: false,
@@ -881,7 +881,7 @@ $(document).ready(function (){
     ////////////////////////////////////////////////jqGridPager_hand////////////////////////////////////////////////
     $("#jqGrid_hand").inlineNav('#jqGridPager_hand', {
         add: true,
-        edit: true,
+        edit: false,
         cancel: true,
         // to prevent the row being edited/added from being automatically cancelled once the user clicks another row
         restoreAfterSelect: false,
@@ -991,17 +991,19 @@ $(document).ready(function (){
         }).done(function (data){
             if(!$.isEmptyObject(data)){
                 autoinsert_rowdata("#formOccupTherapyUpperExtremity",data.upperExtremity);
-
-                button_state_upperExtremity('edit');
+                
+                // button_state_upperExtremity('edit');
+                button_state_upperExtremity('add');
                 populate_rof_getdata();
                 populate_hand_getdata();
                 populate_strength_getdata();
-                populate_sensation_getdata();               
-                populate_prehensive_getdata();             
-                populate_skin_getdata();             
-                populate_edema_getdata();             
-                populate_func_getdata();             
-
+                populate_sensation_getdata();
+                populate_prehensive_getdata();
+                populate_skin_getdata();
+                populate_edema_getdata();
+                populate_func_getdata();
+                
+                $('#upperExtremity_chart').attr('disabled',false);
             }else{
                 button_state_upperExtremity('add');
             }
@@ -1021,9 +1023,10 @@ var datetimeUpperExtremity_tbl = $('#datetimeUpperExtremity_tbl').DataTable({
         { 'data': 'mrn' },
         { 'data': 'episno' },
         { 'data': 'dateAssess', 'width': '10%' },
+        { 'data': 'datetime' },
     ],
     columnDefs: [
-        { targets: [0, 1, 2], visible: false },
+        { targets: [0, 1, 2, 4], visible: false },
     ],
     order: [[0, 'desc']],
     "drawCallback": function (settings){
@@ -1759,7 +1762,8 @@ function saveForm_prehensive(callback){
         
     },'json').done(function (data){
         callback(data);
-        button_state_prehensive('edit');
+        // button_state_prehensive('edit');
+        button_state_prehensive('empty');
     }).fail(function (data){
         callback(data);
         button_state_prehensive($(this).data('oper'));
@@ -1829,7 +1833,8 @@ function saveForm_skin(callback){
         
     },'json').done(function (data){
         callback(data);
-        button_state_skin('edit');
+        // button_state_skin('edit');
+        button_state_skin('empty');
     }).fail(function (data){
         callback(data);
         button_state_skin($(this).data('oper'));
@@ -1899,7 +1904,8 @@ function saveForm_edema(callback){
         
     },'json').done(function (data){
         callback(data);
-        button_state_edema('edit');
+        // button_state_edema('edit');
+        button_state_edema('empty');
     }).fail(function (data){
         callback(data);
         button_state_edema($(this).data('oper'));
@@ -1969,7 +1975,8 @@ function saveForm_func(callback){
         
     },'json').done(function (data){
         callback(data);
-        button_state_func('edit');
+        // button_state_func('edit');
+        button_state_func('empty');
     }).fail(function (data){
         callback(data);
         button_state_func($(this).data('oper'));
@@ -1998,7 +2005,9 @@ function populate_upperExtremity_getdata(){
     }).done(function (data){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formOccupTherapyUpperExtremity",data.upperExtremity);
-            button_state_upperExtremity('edit');
+            // button_state_upperExtremity('edit');
+            button_state_upperExtremity('add');
+            $('#upperExtremity_chart').attr('disabled',false);
         }else{
             button_state_upperExtremity('add');
         }
@@ -2030,7 +2039,8 @@ function populate_rof_getdata(){
     }).done(function (data){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formROF",data.impressions);
-            button_state_rof('edit');
+            // button_state_rof('edit');
+            button_state_rof('empty');
         }else{
             button_state_rof('add');
         }
@@ -2060,7 +2070,8 @@ function populate_hand_getdata(){
     }).done(function (data){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formHand",data.impressions);
-            button_state_hand('edit');
+            // button_state_hand('edit');
+            button_state_hand('empty');
         }else{
             button_state_hand('add');
         }
@@ -2089,7 +2100,8 @@ function populate_strength_getdata(){
     }).done(function (data){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formStrength",data.strength);
-            button_state_strength('edit');
+            // button_state_strength('edit');
+            button_state_strength('empty');
         }else{
             button_state_strength('add');
         }
@@ -2118,7 +2130,8 @@ function populate_sensation_getdata(){
     }).done(function (data){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formSensation",data.sensation);
-            button_state_sensation('edit');
+            // button_state_sensation('edit');
+            button_state_sensation('empty');
         }else{
             button_state_sensation('add');
         }
@@ -2146,7 +2159,8 @@ function populate_prehensive_getdata(){
         alert('there is an error');
     }).done(function (data){
         if(!$.isEmptyObject(data)){
-            button_state_prehensive('edit');
+            // button_state_prehensive('edit');
+            button_state_prehensive('empty');
             autoinsert_rowdata("#formPrehensive",data.prehensive);
         }else{
             button_state_prehensive('add');
@@ -2175,7 +2189,8 @@ function populate_skin_getdata(){
         alert('there is an error');
     }).done(function (data){
         if(!$.isEmptyObject(data)){
-            button_state_skin('edit');
+            // button_state_skin('edit');
+            button_state_skin('empty');
             autoinsert_rowdata("#formSkin",data.skin);
         }else{
             button_state_skin('add');
@@ -2204,7 +2219,8 @@ function populate_edema_getdata(){
         alert('there is an error');
     }).done(function (data){
         if(!$.isEmptyObject(data)){
-            button_state_edema('edit');
+            // button_state_edema('edit');
+            button_state_edema('empty');
             autoinsert_rowdata("#formEdema",data.edema);
         }else{
             button_state_edema('add');
@@ -2233,7 +2249,8 @@ function populate_func_getdata(){
         alert('there is an error');
     }).done(function (data){
         if(!$.isEmptyObject(data)){
-            button_state_func('edit');
+            // button_state_func('edit');
+            button_state_func('empty');
             autoinsert_rowdata("#formFunctional",data.func);
         }else{
             button_state_func('add');
