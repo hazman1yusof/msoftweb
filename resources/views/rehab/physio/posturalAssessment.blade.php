@@ -6,7 +6,7 @@
             top: 9px;
             z-index: 2;">
             <button class="ui button" id="new_posturalAssessment"><span class="fa fa-plus-square-o"></span>New</button>
-            <button class="ui button" id="edit_posturalAssessment"><span class="fa fa-edit fa-lg"></span>Edit</button>
+            <!-- <button class="ui button" id="edit_posturalAssessment"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
             <button class="ui button" id="save_posturalAssessment"><span class="fa fa-save fa-lg"></span>Save</button>
             <button class="ui button" id="cancel_posturalAssessment"><span class="fa fa-ban fa-lg"></span>Cancel</button>
             <button class="ui button" id="posturalAssessment_chart"><span class="fa fa-print fa-lg"></span>Print</button>
@@ -43,6 +43,10 @@
                             <label>Date</label>
                             <div class="field">
                                 <input id="posturalAssessment_entereddate" name="entereddate" type="date" data-validation="required" data-validation-error-msg-required="Please enter information.">
+                            </div>
+                            
+                            <div class="field" style="display: none;">
+                                <input id="posturalAssessment_enteredtime" name="enteredtime" type="time">
                             </div>
                         </div>
                         
