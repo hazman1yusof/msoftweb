@@ -1,6 +1,17 @@
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
+/////////////////////////////parameter for jqGridAddNotesProgressIP url/////////////////////////////
+var urlParam_AddNotesProgressIP = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','PROGRESSNOTE_IP'],
+}
+
 /////////////////////////parameter for jqGridPatMedic url/////////////////////////
 var urlParam_PatMedic = {
     action: 'get_table_default',
@@ -580,6 +591,8 @@ $(document).ready(function (){
                     $('#datetime_tbl tbody tr:eq(0)').click(); // to select first row
                 });
                 
+                $("#jqGridAddNotesProgressIP").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesProgressIP_c")[0].offsetWidth-$("#jqGridAddNotesProgressIP_c")[0].offsetLeft-30));
+                refreshGrid('#jqGridAddNotesProgressIP',urlParam_AddNotesProgressIP,'add_notesProgressIP');
                 // $('#datetime_tbl').DataTable().ajax.reload();
                 break;
             case 'intake':
@@ -1076,6 +1089,116 @@ $(document).ready(function (){
             }
         });
     });
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridProgressIP = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesProgressIP///////////////////////////////////////
+	$("#jqGridAddNotesProgressIP").jqGrid({
+		datatype: "local",
+		editurl: "./nursingnote/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesProgressIP",
+		loadComplete: function (){
+			if(addmore_jqgridProgressIP.more == true){$('#jqGridAddNotesProgressIP_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridProgressIP.edit = addmore_jqgridProgressIP.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesProgressIP");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesProgressIP_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addProgressIP = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesProgressIP,#jqGridPagerRefresh_addnoteProgressIP").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesProgressIP_ilsave').click();
+				// addmore_jqgridProgressIP.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridProgressIP.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesProgressIP',urlParam_AddNotesProgressIP,'add_notesProgressIP');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesProgressIP,#jqGridPagerRefresh_addnoteProgressIP").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesProgressIP',urlParam_AddNotesProgressIP,'add_notesProgressIP');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesProgressIP').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./nursingnote/form?"+
+				$.param({
+					episno: $('#episno_nursNote').val(),
+					mrn: $('#mrn_nursNote').val(),
+					action: 'addNotesProgressIP_save',
+				});
+			$("#jqGridAddNotesProgressIP").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesProgressIP,#jqGridPagerRefresh_addnoteProgressIP").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesProgressIP/////////////////////////////////////
+	$("#jqGridAddNotesProgressIP").inlineNav('#jqGridPagerAddNotesProgressIP', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addProgressIP
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesProgressIP", {
+		id: "jqGridPagerRefresh_addnoteProgressIP",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesProgressIP", urlParam_AddNotesProgressIP);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
     /////////////////////////////////////////progressnote ends/////////////////////////////////////////
     
     /////////////////////////////////////////drug admin starts/////////////////////////////////////////
@@ -4863,6 +4986,11 @@ function populate_nursingnote(obj){
 	urlParam_AddNotesInvChartCS.filterVal[0] = obj.MRN;
 	urlParam_AddNotesInvChartCS.filterVal[1] = obj.Episno;
 	urlParam_AddNotesInvChartCS.filterVal[2] = 'INVCHART_CS';
+
+    ////jqGridAddNotesProgressIP
+	urlParam_AddNotesProgressIP.filterVal[0] = obj.MRN;
+	urlParam_AddNotesProgressIP.filterVal[1] = obj.Episno;
+	urlParam_AddNotesProgressIP.filterVal[2] = 'PROGRESSNOTE_IP';
 
     ////jqGridAddNotesDrugAdminIP
 	urlParam_AddNotesDrugAdminIP.filterVal[0] = obj.MRN;
