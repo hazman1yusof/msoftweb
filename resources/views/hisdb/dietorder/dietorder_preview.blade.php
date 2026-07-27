@@ -89,7 +89,7 @@
           name:`{{$diet->Name}}`,
           mrn:`{{$diet->mrn}}`,
           age:`{{$diet->age}}`,
-          diagnosis:`{{$diet->diagfinal}}`,
+          diagnosis:`{{$diet->diagnosis}}`,
           lodger:`{{$diet->lodgervalue}}`,
           nbm:`{{$diet->nbm}}`,
           rtf:`{{$diet->rtf}}`,

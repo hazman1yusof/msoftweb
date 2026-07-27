@@ -2,6 +2,17 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
 
+/////////////////////////////parameter for jqGridAddNotesDieteticCareNotes url/////////////////////////////
+var urlParam_AddNotesDieteticCareNotes = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','DIETETIC_CARE_NOTES'],
+}
+
 $(document).ready(function (){
     
     //////////////////////////////////////dietNote starts//////////////////////////////////////
@@ -112,6 +123,116 @@ $(document).ready(function (){
             }
         });
     });
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridDieteticCareNotes = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesDieteticCareNotes///////////////////////////////////////
+	$("#jqGridAddNotesDieteticCareNotes").jqGrid({
+		datatype: "local",
+		editurl: "./dieteticCareNotes/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesDieteticCareNotes",
+		loadComplete: function (){
+			if(addmore_jqgridDieteticCareNotes.more == true){$('#jqGridAddNotesDieteticCareNotes_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridDieteticCareNotes.edit = addmore_jqgridDieteticCareNotes.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesDieteticCareNotes");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesDieteticCareNotes_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addDieteticCareNotes = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesDieteticCareNotes,#jqGridPagerRefresh_addnoteDieteticCareNotes").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesDieteticCareNotes_ilsave').click();
+				// addmore_jqgridDieteticCareNotes.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridDieteticCareNotes.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesDieteticCareNotes',urlParam_AddNotesDieteticCareNotes,'add_notesDieteticCareNotes');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesDieteticCareNotes,#jqGridPagerRefresh_addnoteDieteticCareNotes").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesDieteticCareNotes',urlParam_AddNotesDieteticCareNotes,'add_notesDieteticCareNotes');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesDieteticCareNotes').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./dieteticCareNotes/form?"+
+				$.param({
+					episno: $('#episno_wardMain').val(),
+					mrn: $('#mrn_wardMain').val(),
+					action: 'addNotesDieteticCareNotes_save',
+				});
+			$("#jqGridAddNotesDieteticCareNotes").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesDieteticCareNotes,#jqGridPagerRefresh_addnoteDieteticCareNotes").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesDieteticCareNotes/////////////////////////////////////
+	$("#jqGridAddNotesDieteticCareNotes").inlineNav('#jqGridPagerAddNotesDieteticCareNotes', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addDieteticCareNotes
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesDieteticCareNotes", {
+		id: "jqGridPagerRefresh_addnoteDieteticCareNotes",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesDieteticCareNotes", urlParam_AddNotesDieteticCareNotes);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
 	
 });
 
@@ -313,6 +434,11 @@ function getdata_dietNote(){
             button_state_dieteticCareNotes('add');
         }
     });
+
+    ////jqGridAddNotesDieteticCareNotes
+	urlParam_AddNotesDieteticCareNotes.filterVal[0] = $("#mrn_wardMain").val();
+	urlParam_AddNotesDieteticCareNotes.filterVal[1] = $("#episno_wardMain").val();
+	urlParam_AddNotesDieteticCareNotes.filterVal[2] = 'DIETETIC_CARE_NOTES';
 }
 
 function check_same_usr_edit(data){

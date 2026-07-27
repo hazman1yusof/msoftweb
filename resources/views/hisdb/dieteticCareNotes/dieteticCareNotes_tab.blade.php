@@ -70,6 +70,18 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class='col-md-12'>
+                                        <div class="panel panel-info" id="jqGridAddNotesDieteticCareNotes_c">
+                                            <div class="panel-heading text-center">ADDITIONAL NOTES</div>
+                                            <div class="panel-body">
+                                                <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <table id="jqGridAddNotesDieteticCareNotes" class="table table-striped"></table>
+                                                    <div id="jqGridPagerAddNotesDieteticCareNotes"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </form>
