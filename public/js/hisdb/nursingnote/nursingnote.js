@@ -853,6 +853,10 @@ $(document).ready(function (){
                 // $('#tbl_invcat_FBC').DataTable().ajax.reload();
                 $("#jqGridInvChart_FBC").jqGrid('setGridWidth', Math.floor($("#jqGridInvChartFBC_c")[0].offsetWidth-$("#jqGridInvChartFBC_c")[0].offsetLeft-58));
                 refreshGrid('#jqGridInvChart_FBC',urlParam_FBC,'add');
+
+                $("#jqGridAddNotesInvChartFBC").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesInvChartFBC_c")[0].offsetWidth-$("#jqGridAddNotesInvChartFBC_c")[0].offsetLeft-30));
+                refreshGrid('#jqGridAddNotesInvChartFBC',urlParam_AddNotesInvChartFBC,'add_notesInvChartFBC');
+                $('#addNotesFBC_title').text('ADDITIONAL NOTES FOR FBC');
                 break;
             case 'Coag':
                 var urlparam_tbl_invcat_Coag = {
@@ -868,6 +872,10 @@ $(document).ready(function (){
                 // $('#tbl_invcat_Coag').DataTable().ajax.reload();
                 $("#jqGridInvChart_Coag").jqGrid('setGridWidth', Math.floor($("#jqGridInvChartCoag_c")[0].offsetWidth-$("#jqGridInvChartCoag_c")[0].offsetLeft-58));
                 refreshGrid('#jqGridInvChart_Coag',urlParam_Coag,'add');
+
+                $("#jqGridAddNotesInvChartCoag").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesInvChartCoag_c")[0].offsetWidth-$("#jqGridAddNotesInvChartCoag_c")[0].offsetLeft-30));
+                refreshGrid('#jqGridAddNotesInvChartCoag',urlParam_AddNotesInvChartCoag,'add_notesInvChartCoag');
+                $('#addNotesCoag_title').text('ADDITIONAL NOTES FOR COAG');
                 break;
             case 'RP':
                 var urlparam_tbl_invcat_RP = {
@@ -883,6 +891,10 @@ $(document).ready(function (){
                 // $('#tbl_invcat_RP').DataTable().ajax.reload();
                 $("#jqGridInvChart_RP").jqGrid('setGridWidth', Math.floor($("#jqGridInvChartRP_c")[0].offsetWidth-$("#jqGridInvChartRP_c")[0].offsetLeft-58));
                 refreshGrid('#jqGridInvChart_RP',urlParam_RP,'add');
+
+                $("#jqGridAddNotesInvChartRP").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesInvChartRP_c")[0].offsetWidth-$("#jqGridAddNotesInvChartRP_c")[0].offsetLeft-30));
+                refreshGrid('#jqGridAddNotesInvChartRP',urlParam_AddNotesInvChartRP,'add_notesInvChartRP');
+                $('#addNotesRP_title').text('ADDITIONAL NOTES FOR RP');
                 break;
             case 'LFT':
                 var urlparam_tbl_invcat_LFT = {
@@ -898,6 +910,10 @@ $(document).ready(function (){
                 // $('#tbl_invcat_LFT').DataTable().ajax.reload();
                 $("#jqGridInvChart_LFT").jqGrid('setGridWidth', Math.floor($("#jqGridInvChartLFT_c")[0].offsetWidth-$("#jqGridInvChartLFT_c")[0].offsetLeft-58));
                 refreshGrid('#jqGridInvChart_LFT',urlParam_LFT,'add');
+
+                $("#jqGridAddNotesInvChartLFT").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesInvChartLFT_c")[0].offsetWidth-$("#jqGridAddNotesInvChartLFT_c")[0].offsetLeft-30));
+                refreshGrid('#jqGridAddNotesInvChartLFT',urlParam_AddNotesInvChartLFT,'add_notesInvChartLFT');
+                $('#addNotesLFT_title').text('ADDITIONAL NOTES FOR LFT');
                 break;
             case 'Elect':
                 var urlparam_tbl_invcat_Elect = {
@@ -913,6 +929,10 @@ $(document).ready(function (){
                 // $('#tbl_invcat_Elect').DataTable().ajax.reload();
                 $("#jqGridInvChart_Elect").jqGrid('setGridWidth', Math.floor($("#jqGridInvChartElect_c")[0].offsetWidth-$("#jqGridInvChartElect_c")[0].offsetLeft-58));
                 refreshGrid('#jqGridInvChart_Elect',urlParam_Elect,'add');
+
+                $("#jqGridAddNotesInvChartElect").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesInvChartElect_c")[0].offsetWidth-$("#jqGridAddNotesInvChartElect_c")[0].offsetLeft-30));
+                refreshGrid('#jqGridAddNotesInvChartElect',urlParam_AddNotesInvChartElect,'add_notesInvChartElect');
+                $('#addNotesElect_title').text('ADDITIONAL NOTES FOR ELECT');
                 break;
             case 'ABGVBG':
                 var urlparam_tbl_invcat_ABGVBG = {
@@ -928,6 +948,10 @@ $(document).ready(function (){
                 // $('#tbl_invcat_ABGVBG').DataTable().ajax.reload();
                 $("#jqGridInvChart_ABGVBG").jqGrid('setGridWidth', Math.floor($("#jqGridInvChartABGVBG_c")[0].offsetWidth-$("#jqGridInvChartABGVBG_c")[0].offsetLeft-58));
                 refreshGrid('#jqGridInvChart_ABGVBG',urlParam_ABGVBG,'add');
+
+                $("#jqGridAddNotesInvChartABGVBG").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesInvChartABGVBG_c")[0].offsetWidth-$("#jqGridAddNotesInvChartABGVBG_c")[0].offsetLeft-30));
+                refreshGrid('#jqGridAddNotesInvChartABGVBG',urlParam_AddNotesInvChartABGVBG,'add_notesInvChartABGVBG');
+                $('#addNotesABGVBG_title').text('ADDITIONAL NOTES FOR ABGVBG');
                 break;
             case 'UFEME':
                 var urlparam_tbl_invcat_UFEME = {
@@ -943,6 +967,10 @@ $(document).ready(function (){
                 // $('#tbl_invcat_UFEME').DataTable().ajax.reload();
                 $("#jqGridInvChart_UFEME").jqGrid('setGridWidth', Math.floor($("#jqGridInvChartUFEME_c")[0].offsetWidth-$("#jqGridInvChartUFEME_c")[0].offsetLeft-58));
                 refreshGrid('#jqGridInvChart_UFEME',urlParam_UFEME,'add');
+
+                $("#jqGridAddNotesInvChartUFEME").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesInvChartUFEME_c")[0].offsetWidth-$("#jqGridAddNotesInvChartUFEME_c")[0].offsetLeft-30));
+                refreshGrid('#jqGridAddNotesInvChartUFEME',urlParam_AddNotesInvChartUFEME,'add_notesInvChartUFEME');
+                $('#addNotesUFEME_title').text('ADDITIONAL NOTES FOR UFEME');
                 break;
             case 'CE':
                 var urlparam_tbl_invcat_CE = {
@@ -958,6 +986,10 @@ $(document).ready(function (){
                 // $('#tbl_invcat_CE').DataTable().ajax.reload();
                 $("#jqGridInvChart_CE").jqGrid('setGridWidth', Math.floor($("#jqGridInvChartCE_c")[0].offsetWidth-$("#jqGridInvChartCE_c")[0].offsetLeft-58));
                 refreshGrid('#jqGridInvChart_CE',urlParam_CE,'add');
+
+                $("#jqGridAddNotesInvChartCE").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesInvChartCE_c")[0].offsetWidth-$("#jqGridAddNotesInvChartCE_c")[0].offsetLeft-30));
+                refreshGrid('#jqGridAddNotesInvChartCE',urlParam_AddNotesInvChartCE,'add_notesInvChartCE');
+                $('#addNotesCE_title').text('ADDITIONAL NOTES FOR CE');
                 break;
             case 'CS':
                 var urlparam_tbl_invcat_CS = {
@@ -973,6 +1005,10 @@ $(document).ready(function (){
                 // $('#tbl_invcat_CS').DataTable().ajax.reload();
                 $("#jqGridInvChart_CS").jqGrid('setGridWidth', Math.floor($("#jqGridInvChartCS_c")[0].offsetWidth-$("#jqGridInvChartCS_c")[0].offsetLeft-58));
                 refreshGrid('#jqGridInvChart_CS',urlParam_CS,'add');
+
+                $("#jqGridAddNotesInvChartCS").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesInvChartCS_c")[0].offsetWidth-$("#jqGridAddNotesInvChartCS_c")[0].offsetLeft-30));
+                refreshGrid('#jqGridAddNotesInvChartCS',urlParam_AddNotesInvChartCS,'add_notesInvChartCS');
+                $('#addNotesCS_title').text('ADDITIONAL NOTES FOR CS');
                 break;
         }
     });
@@ -4671,6 +4707,40 @@ function populate_nursingnote(obj){
 	urlParam_AddNotesInvChartFBC.filterVal[1] = obj.Episno;
 	urlParam_AddNotesInvChartFBC.filterVal[2] = 'INVCHART_FBC';
 
+    ////jqGridAddNotesInvChartCoag
+	urlParam_AddNotesInvChartCoag.filterVal[0] = obj.MRN;
+	urlParam_AddNotesInvChartCoag.filterVal[1] = obj.Episno;
+	urlParam_AddNotesInvChartCoag.filterVal[2] = 'INVCHART_COAG';
+
+    ////jqGridAddNotesInvChartRP
+	urlParam_AddNotesInvChartRP.filterVal[0] = obj.MRN;
+	urlParam_AddNotesInvChartRP.filterVal[1] = obj.Episno;
+	urlParam_AddNotesInvChartRP.filterVal[2] = 'INVCHART_RP';
+
+    ////jqGridAddNotesInvChartLFT
+	urlParam_AddNotesInvChartLFT.filterVal[0] = obj.MRN;
+	urlParam_AddNotesInvChartLFT.filterVal[1] = obj.Episno;
+	urlParam_AddNotesInvChartLFT.filterVal[2] = 'INVCHART_LFT';
+
+    ////jqGridAddNotesInvChartElect
+	urlParam_AddNotesInvChartElect.filterVal[0] = obj.MRN;
+	urlParam_AddNotesInvChartElect.filterVal[1] = obj.Episno;
+	urlParam_AddNotesInvChartElect.filterVal[2] = 'INVCHART_ELECT';
+    
+    ////jqGridAddNotesInvChartABGVBG
+	urlParam_AddNotesInvChartABGVBG.filterVal[0] = obj.MRN;
+	urlParam_AddNotesInvChartABGVBG.filterVal[1] = obj.Episno;
+	urlParam_AddNotesInvChartABGVBG.filterVal[2] = 'INVCHART_ABGVBG';
+
+    ////jqGridAddNotesInvChartCE
+	urlParam_AddNotesInvChartCE.filterVal[0] = obj.MRN;
+	urlParam_AddNotesInvChartCE.filterVal[1] = obj.Episno;
+	urlParam_AddNotesInvChartCE.filterVal[2] = 'INVCHART_CE';
+
+    ////jqGridAddNotesInvChartCS
+	urlParam_AddNotesInvChartCS.filterVal[0] = obj.MRN;
+	urlParam_AddNotesInvChartCS.filterVal[1] = obj.Episno;
+	urlParam_AddNotesInvChartCS.filterVal[2] = 'INVCHART_CS';
     // $("#tot_input").val(obj.total_all_i);
     
     // var urlparam_datetime_tbl = {

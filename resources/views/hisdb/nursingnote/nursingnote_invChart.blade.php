@@ -155,6 +155,18 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class='col-md-12'>
+                                            <div class="panel panel-info" id="jqGridAddNotesInvChartCoag_c">
+                                                <div class="panel-heading text-center" id="addNotesCoag_title">ADDITIONAL NOTES</div>
+                                                <div class="panel-body">
+                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                        <table id="jqGridAddNotesInvChartCoag" class="table table-striped"></table>
+                                                        <div id="jqGridPagerAddNotesInvChartCoag"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div id="tab-RP" class="tab-pane fade">
                                         <div class="col-md-4" style="padding: 0 0 0 0;">
@@ -181,6 +193,18 @@
                                                         <input id="inv_catRP" name="inv_catRP" type="hidden">
                                                         <table id="jqGridInvChart_RP" class="table table-striped"></table>
                                                         <div id="jqGridPagerInvChart_RP"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class='col-md-12'>
+                                            <div class="panel panel-info" id="jqGridAddNotesInvChartRP_c">
+                                                <div class="panel-heading text-center" id="addNotesRP_title">ADDITIONAL NOTES</div>
+                                                <div class="panel-body">
+                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                        <table id="jqGridAddNotesInvChartRP" class="table table-striped"></table>
+                                                        <div id="jqGridPagerAddNotesInvChartRP"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -215,6 +239,18 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class='col-md-12'>
+                                            <div class="panel panel-info" id="jqGridAddNotesInvChartLFT_c">
+                                                <div class="panel-heading text-center" id="addNotesLFT_title">ADDITIONAL NOTES</div>
+                                                <div class="panel-body">
+                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                        <table id="jqGridAddNotesInvChartLFT" class="table table-striped"></table>
+                                                        <div id="jqGridPagerAddNotesInvChartLFT"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div id="tab-Elect" class="tab-pane fade">
                                         <div class="col-md-4" style="padding: 0 0 0 0;">
@@ -241,6 +277,18 @@
                                                         <input id="inv_catElect" name="inv_catElect" type="hidden">
                                                         <table id="jqGridInvChart_Elect" class="table table-striped"></table>
                                                         <div id="jqGridPagerInvChart_Elect"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class='col-md-12'>
+                                            <div class="panel panel-info" id="jqGridAddNotesInvChartElect_c">
+                                                <div class="panel-heading text-center" id="addNotesElect_title">ADDITIONAL NOTES</div>
+                                                <div class="panel-body">
+                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                        <table id="jqGridAddNotesInvChartElect" class="table table-striped"></table>
+                                                        <div id="jqGridPagerAddNotesInvChartElect"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -275,6 +323,18 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class='col-md-12'>
+                                            <div class="panel panel-info" id="jqGridAddNotesInvChartABGVBG_c">
+                                                <div class="panel-heading text-center" id="addNotesABGVBG_title">ADDITIONAL NOTES</div>
+                                                <div class="panel-body">
+                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                        <table id="jqGridAddNotesInvChartABGVBG" class="table table-striped"></table>
+                                                        <div id="jqGridPagerAddNotesInvChartABGVBG"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div id="tab-UFEME" class="tab-pane fade">
                                         <div class="col-md-4" style="padding: 0 0 0 0;">
@@ -301,6 +361,18 @@
                                                         <input id="inv_catUFEME" name="inv_catUFEME" type="hidden">
                                                         <table id="jqGridInvChart_UFEME" class="table table-striped"></table>
                                                         <div id="jqGridPagerInvChart_UFEME"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class='col-md-12'>
+                                            <div class="panel panel-info" id="jqGridAddNotesInvChartUFEME_c">
+                                                <div class="panel-heading text-center" id="addNotesUFEME_title">ADDITIONAL NOTES</div>
+                                                <div class="panel-body">
+                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                        <table id="jqGridAddNotesInvChartUFEME" class="table table-striped"></table>
+                                                        <div id="jqGridPagerAddNotesInvChartUFEME"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -335,6 +407,18 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class='col-md-12'>
+                                            <div class="panel panel-info" id="jqGridAddNotesInvChartCE_c">
+                                                <div class="panel-heading text-center" id="addNotesCE_title">ADDITIONAL NOTES</div>
+                                                <div class="panel-body">
+                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                        <table id="jqGridAddNotesInvChartCE" class="table table-striped"></table>
+                                                        <div id="jqGridPagerAddNotesInvChartCE"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div id="tab-CS" class="tab-pane fade">
                                         <div class="col-md-4" style="padding: 0 0 0 0;">
@@ -361,6 +445,18 @@
                                                         <input id="inv_catCS" name="inv_catCS" type="hidden">
                                                         <table id="jqGridInvChart_CS" class="table table-striped"></table>
                                                         <div id="jqGridPagerInvChart_CS"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class='col-md-12'>
+                                            <div class="panel panel-info" id="jqGridAddNotesInvChartCS_c">
+                                                <div class="panel-heading text-center" id="addNotesCS_title">ADDITIONAL NOTES</div>
+                                                <div class="panel-body">
+                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                        <table id="jqGridAddNotesInvChartCS" class="table table-striped"></table>
+                                                        <div id="jqGridPagerAddNotesInvChartCS"></div>
                                                     </div>
                                                 </div>
                                             </div>

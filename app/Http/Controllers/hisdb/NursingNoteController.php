@@ -222,7 +222,30 @@ class NursingNoteController extends defaultController
             case 'addNotesInvChartFBC_save':
                 return $this->add_notesInvChartFBC($request);
         
+            case 'addNotesInvChartCoag_save':
+                return $this->add_notesInvChartCoag($request);
+
+            case 'addNotesInvChartRP_save':
+                return $this->add_notesInvChartRP($request);
             
+            case 'addNotesInvChartLFT_save':
+                return $this->add_notesInvChartLFT($request);
+
+            case 'addNotesInvChartElect_save':
+                return $this->add_notesInvChartElect($request);
+
+            case 'addNotesInvChartABGVBG_save':
+                return $this->add_notesInvChartABGVBG($request);
+
+            case 'addNotesInvChartUFEME_save':
+                return $this->add_notesInvChartUFEME($request);
+
+            case 'addNotesInvChartCE_save':
+                return $this->add_notesInvChartCE($request);
+
+            case 'addNotesInvChartCS_save':
+                return $this->add_notesInvChartCS($request);
+
             default:
                 return 'error happen..';
         }
@@ -466,6 +489,253 @@ class NursingNoteController extends defaultController
         
     }
 
+    public function add_notesInvChartCoag(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'INVCHART_COAG',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+
+    public function add_notesInvChartRP(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'INVCHART_RP',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+
+    public function add_notesInvChartLFT(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'INVCHART_LFT',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+
+    public function add_notesInvChartElect(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'INVCHART_ELECT',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+
+    public function add_notesInvChartABGVBG(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'INVCHART_ABGVBG',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+
+    public function add_notesInvChartUFEME(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'INVCHART_UFEME',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+
+    public function add_notesInvChartCE(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'INVCHART_CE',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+
+    public function add_notesInvChartCS(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'INVCHART_CS',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
     //////////////////////////////////////////PROGRESS NOTE//////////////////////////////////////////
     
     public function get_table_datetime(Request $request){
