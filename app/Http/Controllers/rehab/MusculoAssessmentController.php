@@ -69,12 +69,13 @@ class MusculoAssessmentController extends defaultController
                                 ->where('mrn','=',$request->mrn)
                                 ->where('episno','=',$request->episno)
                                 ->where('entereddate','=',$request->entereddate)
+                                ->where('enteredtime','=',$request->enteredtime)
                                 ->where('type','=','musculoskeletal');
             
-            if($musculoassessment->exists()){
-                // throw new \Exception('Date already exist.', 500);
-                return response('Date already exist.');
-            }
+            // if($musculoassessment->exists()){
+            //     // throw new \Exception('Date already exist.', 500);
+            //     return response('Date already exist.');
+            // }
             
             DB::table('hisdb.phy_musculoassessment')
                 ->insert([
@@ -83,6 +84,8 @@ class MusculoAssessmentController extends defaultController
                     'episno' => $request->episno,
                     'type' => $request->type,
                     'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
+                    // 'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'subjectiveAssessmt' => $request->subjectiveAssessmt,
                     'objectiveAssessmt' => $request->objectiveAssessmt,
                     'painscore' => $request->painscore,
@@ -155,6 +158,8 @@ class MusculoAssessmentController extends defaultController
                     'episno' => $request->episno,
                     'type' => $request->type,
                     'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
+                    // 'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'romAffectedSide' => $request->romAffectedSide,
                     'aShlderFlxInitP' => $request->aShlderFlxInitP,
                     'aShlderFlxInitA' => $request->aShlderFlxInitA,
@@ -326,6 +331,8 @@ class MusculoAssessmentController extends defaultController
                     'episno' => $request->episno,
                     'type' => $request->type,
                     'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
+                    // 'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'romSoundSide' => $request->romSoundSide,
                     'sShlderFlxInitP' => $request->sShlderFlxInitP,
                     'sShlderFlxInitA' => $request->sShlderFlxInitA,
@@ -498,6 +505,8 @@ class MusculoAssessmentController extends defaultController
                     'episno' => $request->episno,
                     'type' => $request->type,
                     'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
+                    // 'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'affectedSide' => $request->affectedSide,
                     'aShlderFlxInit' => $request->aShlderFlxInit,
                     'aShlderFlxProg' => $request->aShlderFlxProg,
@@ -1962,12 +1971,13 @@ class MusculoAssessmentController extends defaultController
         $responce = new stdClass();
         
         $musculoassessment_obj = DB::table('hisdb.phy_musculoassessment as ma')
-                                ->select('ma.idno as ma_idno','ma.mrn','ma.episno','ma.entereddate','ma.adduser','a.idno as a_idno','s.idno as s_idno','m.idno as m_idno')
+                                ->select('ma.idno as ma_idno','ma.mrn','ma.episno','ma.entereddate','ma.enteredtime','ma.adduser','a.idno as a_idno','s.idno as s_idno','m.idno as m_idno')
                                 ->join('hisdb.phy_romaffectedside as a', function ($join) use ($request){
                                     $join = $join->on('a.mrn','=','ma.mrn');
                                     $join = $join->on('a.episno','=','ma.episno');
                                     $join = $join->on('a.compcode','=','ma.compcode');
                                     $join = $join->on('a.entereddate','=','ma.entereddate');
+                                    $join = $join->on('a.enteredtime','=','ma.enteredtime');
                                     $join = $join->where('a.type','=','musculoskeletal');
                                 })
                                 ->join('hisdb.phy_romsoundside as s', function ($join) use ($request){
@@ -1975,6 +1985,7 @@ class MusculoAssessmentController extends defaultController
                                     $join = $join->on('s.episno','=','ma.episno');
                                     $join = $join->on('s.compcode','=','ma.compcode');
                                     $join = $join->on('s.entereddate','=','ma.entereddate');
+                                    $join = $join->on('s.enteredtime','=','ma.enteredtime');
                                     $join = $join->where('s.type','=','musculoskeletal');
                                 })
                                 ->join('hisdb.phy_musclepower as m', function ($join) use ($request){
@@ -1982,11 +1993,12 @@ class MusculoAssessmentController extends defaultController
                                     $join = $join->on('m.episno','=','ma.episno');
                                     $join = $join->on('m.compcode','=','ma.compcode');
                                     $join = $join->on('m.entereddate','=','ma.entereddate');
+                                    $join = $join->on('m.enteredtime','=','ma.enteredtime');
                                     $join = $join->where('m.type','=','musculoskeletal');
                                 })
                                 ->where('ma.compcode','=',session('compcode'))
                                 ->where('ma.mrn','=',$request->mrn)
-                                ->where('ma.episno','=',$request->episno)
+                                // ->where('ma.episno','=',$request->episno)
                                 ->where('ma.type','=','musculoskeletal');
         
         if($musculoassessment_obj->exists()){
@@ -2003,7 +2015,12 @@ class MusculoAssessmentController extends defaultController
                 }else{
                     $date['entereddate'] =  '-';
                 }
-                $date['dt'] = $value->entereddate; // for sorting
+                // $date['dt'] = $value->entereddate; // for sorting
+                if(!empty($value->entereddate)){ // for sorting
+                    $date['dt'] =  Carbon::createFromFormat('Y-m-d', $value->entereddate)->format('d-m-Y').' '.$value->enteredtime;
+                }else{
+                    $date['dt'] =  '-';
+                }
                 $date['adduser'] = $value->adduser;
                 $date['a_idno'] = $value->a_idno;
                 $date['s_idno'] = $value->s_idno;
@@ -2026,13 +2043,14 @@ class MusculoAssessmentController extends defaultController
         $mrn = $request->mrn;
         $episno = $request->episno;
         $entereddate = $request->entereddate;
+        $enteredtime = $request->enteredtime;
         $type = $request->type;
         if(!$mrn || !$episno || !$entereddate){
             abort(404);
         }
         
         $musculoassessment = DB::table('hisdb.phy_musculoassessment as ma')
-                            ->select('ma.idno','ma.compcode','ma.mrn','ma.episno','ma.type','ma.entereddate','ma.subjectiveAssessmt','ma.objectiveAssessmt','ma.painscore','ma.painType','ma.severity','ma.irritability','ma.painLocation','ma.deep','ma.superficial','ma.subluxation','ma.palpation','ma.impressionBC','ma.superficialR','ma.superficialL','ma.superficialSpec','ma.deepR','ma.deepL','ma.deepSpec','ma.numbnessR','ma.numbnessL','ma.numbnessSpec','ma.paresthesiaR','ma.paresthesiaL','ma.paresthesiaSpec','ma.otherR','ma.otherL','ma.otherSpec','ma.impressionSens','ma.transferInit','ma.transferProg','ma.transferFin','ma.suptoSideInit','ma.suptoSideProg','ma.suptoSideFin','ma.sideToSitInit','ma.sideToSitProg','ma.sideToSitFin','ma.sittInit','ma.sittProg','ma.sittFin','ma.sitToStdInit','ma.sitToStdProg','ma.sitToStdFin','ma.stdInit','ma.stdProg','ma.stdFin','ma.shiftInit','ma.shiftProg','ma.shiftFin','ma.ambulationInit','ma.ambulationProg','ma.ambulationFin','ma.impressionFA','ma.intervention','ma.homeEducation','ma.evaluation','ma.review','ma.additionalNotes','pm.Name','pm.Newic')
+                            ->select('ma.idno','ma.compcode','ma.mrn','ma.episno','ma.type','ma.entereddate','ma.enteredtime','ma.subjectiveAssessmt','ma.objectiveAssessmt','ma.painscore','ma.painType','ma.severity','ma.irritability','ma.painLocation','ma.deep','ma.superficial','ma.subluxation','ma.palpation','ma.impressionBC','ma.superficialR','ma.superficialL','ma.superficialSpec','ma.deepR','ma.deepL','ma.deepSpec','ma.numbnessR','ma.numbnessL','ma.numbnessSpec','ma.paresthesiaR','ma.paresthesiaL','ma.paresthesiaSpec','ma.otherR','ma.otherL','ma.otherSpec','ma.impressionSens','ma.transferInit','ma.transferProg','ma.transferFin','ma.suptoSideInit','ma.suptoSideProg','ma.suptoSideFin','ma.sideToSitInit','ma.sideToSitProg','ma.sideToSitFin','ma.sittInit','ma.sittProg','ma.sittFin','ma.sitToStdInit','ma.sitToStdProg','ma.sitToStdFin','ma.stdInit','ma.stdProg','ma.stdFin','ma.shiftInit','ma.shiftProg','ma.shiftFin','ma.ambulationInit','ma.ambulationProg','ma.ambulationFin','ma.impressionFA','ma.intervention','ma.homeEducation','ma.evaluation','ma.review','ma.additionalNotes','pm.Name','pm.Newic')
                             ->leftjoin('hisdb.pat_mast as pm', function ($join){
                                 $join = $join->on('pm.MRN','=','ma.mrn');
                                 // $join = $join->on('pm.Episno','=','ma.episno');
@@ -2042,6 +2060,7 @@ class MusculoAssessmentController extends defaultController
                             ->where('ma.mrn','=',$mrn)
                             ->where('ma.episno','=',$episno)
                             ->where('ma.entereddate','=',$entereddate)
+                            ->where('ma.enteredtime','=',$enteredtime)
                             ->where('ma.type','=','musculoskeletal')
                             ->first();
         // dd($musculoassessment);
@@ -2051,6 +2070,7 @@ class MusculoAssessmentController extends defaultController
                             ->where('mrn','=',$mrn)
                             ->where('episno','=',$episno)
                             ->where('entereddate','=',$entereddate)
+                            ->where('enteredtime','=',$enteredtime)
                             ->where('type','=','musculoskeletal')
                             ->first();
         
@@ -2059,6 +2079,7 @@ class MusculoAssessmentController extends defaultController
                         ->where('mrn','=',$mrn)
                         ->where('episno','=',$episno)
                         ->where('entereddate','=',$entereddate)
+                        ->where('enteredtime','=',$enteredtime)
                         ->where('type','=','musculoskeletal')
                         ->first();
         
@@ -2067,6 +2088,7 @@ class MusculoAssessmentController extends defaultController
                         ->where('mrn','=',$mrn)
                         ->where('episno','=',$episno)
                         ->where('entereddate','=',$entereddate)
+                        ->where('enteredtime','=',$enteredtime)
                         ->where('type','=','musculoskeletal')
                         ->first();
         

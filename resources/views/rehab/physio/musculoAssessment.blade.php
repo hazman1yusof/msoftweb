@@ -6,7 +6,7 @@
             top: 9px;
             z-index: 2;">
             <button class="ui button" id="new_musculoAssessment"><span class="fa fa-plus-square-o"></span>New</button>
-            <button class="ui button" id="edit_musculoAssessment"><span class="fa fa-edit fa-lg"></span>Edit</button>
+            <!-- <button class="ui button" id="edit_musculoAssessment"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
             <button class="ui button" id="save_musculoAssessment"><span class="fa fa-save fa-lg"></span>Save</button>
             <button class="ui button" id="cancel_musculoAssessment"><span class="fa fa-ban fa-lg"></span>Cancel</button>
             <button class="ui button" id="musculoAssessment_chart"><span class="fa fa-print fa-lg"></span>Print</button>
@@ -62,6 +62,10 @@
                                                 <label>DATE:</label>
                                                 <div class="field">
                                                     <input type="date" class="form-control" id="musculoAssessment_entereddate" name="entereddate" data-validation="required" data-validation-error-msg-required="Please enter information.">
+                                                </div>
+                                                
+                                                <div class="field" style="display: none;">
+                                                    <input id="musculoAssessment_enteredtime" name="enteredtime" type="time">
                                                 </div>
                                             </div>
                                         </td>
