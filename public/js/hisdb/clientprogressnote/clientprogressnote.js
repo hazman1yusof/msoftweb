@@ -1,11 +1,21 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
 
+/////////////////////////////parameter for jqGridAddNotesClientProgNote url/////////////////////////////
+var urlParam_AddNotesClientProgNote = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','DOCTORNOTE_IP'],
+}
+
 $(document).ready(function (){
 	
-	textarea_init_clientProgNote();
+	// textarea_init_clientProgNote();
 	
 	var fdl = new faster_detail_load();
 	
@@ -148,6 +158,117 @@ $(document).ready(function (){
 		disableForm('#form_refLetterClientProgNote');
 		button_state_refLetterClientProgNote($(this).data('oper'));
 	});
+
+	//////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridClientProgNote = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesClientProgNote///////////////////////////////////////
+	$("#jqGridAddNotesClientProgNote").jqGrid({
+		datatype: "local",
+		editurl: "./clientprogressnote/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesClientProgNote",
+		loadComplete: function (){
+			if(addmore_jqgridClientProgNote.more == true){$('#jqGridAddNotesClientProgNote_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridClientProgNote.edit = addmore_jqgridClientProgNote.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesClientProgNote");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesClientProgNote_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addClientProgNote = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesClientProgNote,#jqGridPagerRefresh_addnoteClientProgNote").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesClientProgNote_ilsave').click();
+				// addmore_jqgridClientProgNote.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridClientProgNote.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesClientProgNote',urlParam_AddNotesClientProgNote,'add_notesClientProgNote');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesClientProgNote,#jqGridPagerRefresh_addnoteClientProgNote").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesClientProgNote',urlParam_AddNotesClientProgNote,'add_notesClientProgNote');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesClientProgNote').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./clientprogressnote/form?"+
+				$.param({
+					episno: $('#episno_clientProgNote').val(),
+					mrn: $('#mrn_clientProgNote').val(),
+					action: 'addNotesClientProgNote_save',
+				});
+			$("#jqGridAddNotesClientProgNote").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesClientProgNote,#jqGridPagerRefresh_addnoteClientProgNote").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesClientProgNote/////////////////////////////////////
+	$("#jqGridAddNotesClientProgNote").inlineNav('#jqGridPagerAddNotesClientProgNote', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addClientProgNote
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesClientProgNote", {
+		id: "jqGridPagerRefresh_addnoteClientProgNote",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesClientProgNote", urlParam_AddNotesClientProgNote);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
+
 	
 });
 
@@ -276,6 +397,11 @@ function populate_clientProgNote_currpt(obj){
 		mrn: obj.MRN,
 		episno: obj.Episno
 	}
+
+	////jqGridAddNotesClientProgNote
+	urlParam_AddNotesClientProgNote.filterVal[0] = obj.MRN;
+	urlParam_AddNotesClientProgNote.filterVal[1] = obj.Episno;
+	urlParam_AddNotesClientProgNote.filterVal[2] = 'DOCTORNOTE_IP';
 	
 	button_state_clientProgNote('empty');
 	
@@ -569,7 +695,7 @@ $('#clientprognote_date_tbl tbody').on('click', 'tr', function (){
 			// if(!emptyobj_(data.episode))autoinsert_rowdata("#formClientProgNote",data.episode);
 			if(!emptyobj_(data.patprogressnote))autoinsert_rowdata("#formClientProgNote",data.patprogressnote);
 			
-			textarea_init_clientProgNote();
+			// textarea_init_clientProgNote();
 		}else{
 			
 		}

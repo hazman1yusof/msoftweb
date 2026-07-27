@@ -212,7 +212,9 @@ $(document).ready(function (){
                     emptyFormdata_div("#formClientProgNote",['#mrn_clientProgNote','#episno_clientProgNote','#datetime_clientProgNote','#epistycode_clientProgNote']);
                     $('#clientprognote_date_tbl tbody tr:eq(0)').click(); // to select first row
                 });
-                textarea_init_clientProgNote();
+                refreshGrid('#jqGridAddNotesClientProgNote',urlParam_AddNotesClientProgNote,'add_notesClientProgNote');
+                $("#jqGridAddNotesClientProgNote").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesClientProgNote_c")[0].offsetWidth-$("#jqGridAddNotesClientProgNote_c")[0].offsetLeft-30));
+                // textarea_init_clientProgNote();
                 break;
             case 'docNoteRefIP':
                 sticky_clientprognotereftbl(on = true);

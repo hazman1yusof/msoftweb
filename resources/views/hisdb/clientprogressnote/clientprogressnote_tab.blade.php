@@ -12,9 +12,9 @@
                     <button type="button" class="btn btn-default" id="new_clientProgNote">
                         <span class="fa fa-plus-square-o"></span> New 
                     </button>
-                    <button type="button" class="btn btn-default" id="edit_clientProgNote">
+                    <!-- <button type="button" class="btn btn-default" id="edit_clientProgNote">
                         <span class="fa fa-edit fa-lg"></span> Edit 
-                    </button>
+                    </button> -->
                     <button type="button" class="btn btn-default" data-oper='add' id="save_clientProgNote">
                         <span class="fa fa-save fa-lg"></span> Save 
                     </button>
@@ -77,7 +77,7 @@
                                         <div class="panel panel-info">
                                             <div class="panel-heading text-center">CLIENT'S PROGRESS NOTES</div>
                                             <div class="panel-body">
-                                                <textarea id="clientProgNote_progressnote" name="progressnote" type="text" class="form-control input-sm"></textarea>
+                                                <textarea id="clientProgNote_progressnote" name="progressnote" type="text" class="form-control input-sm" rows="20"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -85,6 +85,18 @@
                                     @if(request()->get('epistycode') == 'OP')
                                         @include('hisdb.clientprogressnote.patprescription')
                                     @endif
+
+                                    <div class='col-md-12'>
+                                        <div class="panel panel-info" id="jqGridAddNotesClientProgNote_c">
+                                            <div class="panel-heading text-center">ADDITIONAL NOTES</div>
+                                            <div class="panel-body">
+                                                <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <table id="jqGridAddNotesClientProgNote" class="table table-striped"></table>
+                                                    <div id="jqGridPagerAddNotesClientProgNote"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </form>
