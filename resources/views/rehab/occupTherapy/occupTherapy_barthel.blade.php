@@ -7,7 +7,7 @@
             top: 9px;
             z-index: 2;">
             <button class="ui button" id="new_barthel"><span class="fa fa-plus-square-o"></span>New</button>
-            <button class="ui button" id="edit_barthel"><span class="fa fa-edit fa-lg"></span>Edit</button>
+            <!-- <button class="ui button" id="edit_barthel"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
             <button class="ui button" id="save_barthel"><span class="fa fa-save fa-lg"></span>Save</button>
             <button class="ui button" id="cancel_barthel"><span class="fa fa-ban fa-lg"></span>Cancel</button>
             <button class="ui button" id="barthel_chart"><span class="fa fa-print fa-lg"></span>Print</button>
@@ -31,6 +31,7 @@
                                                     <th class="scope">mrn</th>
                                                     <th class="scope">episno</th>
                                                     <th class="scope">Date</th>
+                                                    <th class="scope">datetime</th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -48,10 +49,10 @@
                                                 <label for="dateofAssessment" style="padding-right: 5px;">Date</label>
                                                 <input id="dateofAssessment" name="dateofAssessment" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                             </div>
-                                            <!-- <div class="field">
+                                            <div class="field" style="display: none;">
                                                 <label for="timeAssessment" style="padding-left: 15px; padding-right: 5px;">Time</label>
                                                 <input id="timeAssessment" name="timeAssessment" type="time" class="form-control input-sm">
-                                            </div> -->
+                                            </div>
                                         </div>
                                     </div>
 

@@ -62,8 +62,8 @@ class OccupTherapyBarthelController extends defaultController
         
         $barthel_obj = DB::table('hisdb.ot_barthel')
                             ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno);
+                            ->where('mrn','=',$request->mrn);
+                            // ->where('episno','=',$request->episno);
         
         if($barthel_obj->exists()){
             $barthel_obj = $barthel_obj->get();
@@ -84,6 +84,11 @@ class OccupTherapyBarthelController extends defaultController
                 // }else{
                 //     $date['timeAssessment'] =  '-';
                 // }
+                if(!empty($value->dateofAssessment)){ // for sorting
+                    $date['datetime'] =  Carbon::createFromFormat('Y-m-d', $value->dateofAssessment)->format('d-m-Y').' '.$value->timeAssessment;
+                }else{
+                    $date['datetime'] =  '-';
+                }
                 
                 array_push($data,$date);
             }
@@ -109,7 +114,7 @@ class OccupTherapyBarthelController extends defaultController
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'dateofAssessment' => $request->dateofAssessment,
-                        // 'timeAssessment' => $request->timeAssessment,
+                        'timeAssessment' => Carbon::now("Asia/Kuala_Lumpur"),
                         'chairBedTrf' => $request->chairBedTrf,
                         'ambulation' => $request->ambulation,
                         'ambulationWheelchair' => $request->ambulationWheelchair,
@@ -257,13 +262,14 @@ class OccupTherapyBarthelController extends defaultController
         $mrn = $request->mrn;
         $episno = $request->episno;
         $dateofAssessment = $request->dateofAssessment;
+        $timeAssessment = $request->timeAssessment;
 
         if(!$mrn || !$episno){
             abort(404);
         }
 
         $barthel = DB::table('hisdb.ot_barthel as b')
-                ->select('b.mrn','b.episno','b.dateofAssessment','b.chairBedTrf','b.ambulation','b.ambulationWheelchair','b.stairClimbing','b.toiletTrf','b.bowelControl','b.bladderControl','b.bathing','b.dressing','b.personalHygiene','b.feeding','b.tot_score','b.interpretation','b.prediction','pm.Name','pm.Newic')
+                ->select('b.mrn','b.episno','b.dateofAssessment','b.timeAssessment','b.chairBedTrf','b.ambulation','b.ambulationWheelchair','b.stairClimbing','b.toiletTrf','b.bowelControl','b.bladderControl','b.bathing','b.dressing','b.personalHygiene','b.feeding','b.tot_score','b.interpretation','b.prediction','pm.Name','pm.Newic')
                 ->leftjoin('hisdb.pat_mast as pm', function ($join){
                     $join = $join->on('pm.MRN','=','b.mrn');
                     $join = $join->where('pm.compcode','=',session('compcode'));
@@ -272,6 +278,7 @@ class OccupTherapyBarthelController extends defaultController
                 ->where('b.mrn','=',$mrn)
                 ->where('b.episno','=',$episno)
                 ->where('b.dateofAssessment','=',$dateofAssessment)
+                ->where('b.timeAssessment','=',$timeAssessment)
                 ->first();
 
         // $pat_mast = DB::table('hisdb.pat_mast as pm')
