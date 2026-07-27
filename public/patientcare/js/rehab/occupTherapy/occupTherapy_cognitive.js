@@ -114,11 +114,11 @@ $(document).ready(function (){
 
     /////////////////////////////////////////print button starts/////////////////////////////////////////
     $("#mmse_chart").click(function (){
-        window.open('./occupTherapy_cognitive/mmse_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&dateofexam='+$("#dateofexam").val(), '_blank');
+        window.open('./occupTherapy_cognitive/mmse_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&dateofexam='+$("#dateofexam").val()+'&enteredtime='+$("#mmse_enteredtime").val(), '_blank');
     });
 
      $("#moca_chart").click(function (){
-        window.open('./occupTherapy_cognitive/moca_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&dateAssessment='+$("#dateAssessment").val(), '_blank');
+        window.open('./occupTherapy_cognitive/moca_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&dateAssessment='+$("#dateAssessment").val()+'&enteredtime='+$("#moca_enteredtime").val(), '_blank');
     });
 
     // to format number input to two decimal places (0.00)
@@ -162,7 +162,7 @@ $(document).ready(function (){
         
         $("#idno_mmse").val(data.idno);
         
-        $('#ot_mmse_file').DataTable().ajax.url('./occupTherapy_cognitive/table?action=ot_mmse_file&idno_mmse='+data.idno).load();
+        $('#ot_mmse_file').DataTable().ajax.url('./occupTherapy_cognitive/table?action=ot_mmse_file&idno_mmse='+data.idno+'&mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()).load();
         
         var saveParam={
             action: 'get_table_mmse',
@@ -184,10 +184,12 @@ $(document).ready(function (){
         }).done(function (data){
             if(!$.isEmptyObject(data)){
                 autoinsert_rowdata("#formOccupTherapyMMSE",data.mmse);
-
-                button_state_mmse('edit');
+                // button_state_mmse('edit');
+                button_state_mmse('add');
+                $("#click,#mmse_chart").attr('disabled',false);
             }else{
                 button_state_mmse('add');
+                $("#click").attr('disabled',true);
             }
         });
     });
@@ -234,8 +236,9 @@ $(document).ready(function (){
         }).done(function (data){
             if(!$.isEmptyObject(data)){
                 autoinsert_rowdata("#formOccupTherapyMOCA",data.moca);
-
-                button_state_moca('edit');
+                // button_state_moca('edit');
+                button_state_moca('add');
+                $("#moca_chart").attr('disabled',false);
             }else{
                 button_state_moca('add');
             }
@@ -267,11 +270,11 @@ var mmsetbl = $('#ot_mmse_file').DataTable( {
    		}
     ],
     sDom: 't',
-    ajax: './occupTherapy_cognitive/table?action=ot_mmse_file&idno_mmse='+$('#idno_mmse').val()
+    ajax: './occupTherapy_cognitive/table?action=ot_mmse_file&idno_mmse='+$('#idno_mmse').val()+'&mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()
 });
 
 function uploadfile(){
-	var formData = new FormData();
+    var formData = new FormData();
 	formData.append('file', $('#file')[0].files[0]);
 	formData.append('_token', $("#_token").val());
     
@@ -292,7 +295,7 @@ function uploadfile(){
 	}).done(function(msg) {
 		// make_all_attachment(msg.all_attach);
     	// $('#idno_mmse').val(msg.idno);
-        $('#ot_mmse_file').DataTable().ajax.url('./occupTherapy_cognitive/table?action=ot_mmse_file&idno_mmse='+$('#idno_mmse').val()).load();
+        $('#ot_mmse_file').DataTable().ajax.url('./occupTherapy_cognitive/table?action=ot_mmse_file&idno_mmse='+$('#idno_mmse').val()+'&mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()).load();
   	});
 }
 
@@ -348,9 +351,10 @@ var datetimeMMSE_tbl = $('#datetimeMMSE_tbl').DataTable({
         { 'data': 'mrn' },
         { 'data': 'episno' },
         { 'data': 'dateofexam', 'width': '10%' },
+        { 'data': 'datetime' },
     ],
     columnDefs: [
-        { targets: [0, 1, 2], visible: false },
+        { targets: [0, 1, 2, 4], visible: false },
     ],
     order: [[0, 'desc']],
     "drawCallback": function (settings){
@@ -369,9 +373,10 @@ var datetimeMOCA_tbl = $('#datetimeMOCA_tbl').DataTable({
         { 'data': 'mrn' },
         { 'data': 'episno' },
         { 'data': 'dateAssessment', 'width': '10%' },
+        { 'data': 'datetime' },
     ],
     columnDefs: [
-        { targets: [0, 1, 2], visible: false },
+        { targets: [0, 1, 2, 4], visible: false },
     ],
     order: [[0, 'desc']],
     "drawCallback": function (settings){
@@ -408,7 +413,8 @@ function button_state_mmse(state){
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
             $('#cancel_mmse').data('oper','add');
             $("#new_mmse").attr('disabled',false);
-            $('#save_mmse,#cancel_mmse,#edit_mmse,#click').attr('disabled',true);
+            // $('#save_mmse,#cancel_mmse,#edit_mmse,#click').attr('disabled',true);
+            $('#save_mmse,#cancel_mmse,#edit_mmse').attr('disabled',true);
             break;
         case 'edit':
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
@@ -622,9 +628,12 @@ function populate_mmse_getdata(){
     }).done(function (data){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formOccupTherapyMMSE",data.mmse);
-            button_state_mmse('edit');
+            // button_state_mmse('edit');
+            button_state_mmse('add');
+            $("#click,#mmse_chart").attr('disabled',false);
         }else{
             button_state_mmse('add');
+            $("#click").attr('disabled',true);
         }
     });
 }
@@ -649,10 +658,13 @@ function getdata_mmse(){
         alert('there is an error');
     }).done(function (data){
         if(!$.isEmptyObject(data)){
-            button_state_mmse('edit');
+            // button_state_mmse('edit');
+            button_state_mmse('add');
+            $("#click,#mmse_chart").attr('disabled',false);
             autoinsert_rowdata("#formOccupTherapyMMSE",data.mmse);
         }else{
             button_state_mmse('add');
+            $("#click").attr('disabled',true);
         }
     });
 }
@@ -679,7 +691,9 @@ function populate_moca_getdata(){
     }).done(function (data){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formOccupTherapyMOCA",data.moca);
-            button_state_moca('edit');
+            // button_state_moca('edit');
+            button_state_moca('add');
+            $("#moca_chart").attr('disabled',false);
         }else{
             button_state_moca('add');
         }
@@ -706,7 +720,9 @@ function getdata_moca(){
         alert('there is an error');
     }).done(function (data){
         if(!$.isEmptyObject(data)){
-            button_state_moca('edit');
+            // button_state_moca('edit');
+            button_state_moca('add');
+            $("#moca_chart").attr('disabled',false);
             autoinsert_rowdata("#formOccupTherapyMOCA",data.moca);
         }else{
             button_state_moca('add');

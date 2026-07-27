@@ -85,8 +85,8 @@ class OccupTherapyCognitiveController extends defaultController
         
         $mmse_obj = DB::table('hisdb.ot_mmse')
                             ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno);
+                            ->where('mrn','=',$request->mrn);
+                            // ->where('episno','=',$request->episno);
         
         if($mmse_obj->exists()){
             $mmse_obj = $mmse_obj->get();
@@ -102,6 +102,11 @@ class OccupTherapyCognitiveController extends defaultController
                 $date['idno'] = $value->idno;
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
+                if(!empty($value->dateofexam)){ // for sorting
+                    $date['datetime'] =  Carbon::createFromFormat('Y-m-d', $value->dateofexam)->format('d-m-Y').' '.$value->enteredtime;
+                }else{
+                    $date['datetime'] =  '-';
+                }
                 
                 array_push($data,$date);
             }
@@ -121,8 +126,8 @@ class OccupTherapyCognitiveController extends defaultController
         
         $moca_obj = DB::table('hisdb.ot_moca')
                             ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno);
+                            ->where('mrn','=',$request->mrn);
+                            // ->where('episno','=',$request->episno);
         
         if($moca_obj->exists()){
             $moca_obj = $moca_obj->get();
@@ -138,6 +143,11 @@ class OccupTherapyCognitiveController extends defaultController
                 $date['idno'] = $value->idno;
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
+                if(!empty($value->dateAssessment)){ // for sorting
+                    $date['datetime'] =  Carbon::createFromFormat('Y-m-d', $value->dateAssessment)->format('d-m-Y').' '.$value->enteredtime;
+                }else{
+                    $date['datetime'] =  '-';
+                }
                 
                 array_push($data,$date);
             }
@@ -163,6 +173,7 @@ class OccupTherapyCognitiveController extends defaultController
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'dateofexam' => $request->dateofexam,
+                        'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                         'examiner' => strtoupper($request->examiner),
                         'orientation1' => $request->orientation1,
                         'orientation2' => $request->orientation2,
@@ -298,6 +309,7 @@ class OccupTherapyCognitiveController extends defaultController
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'dateAssessment' => $request->dateAssessment,
+                        'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                         'education' => strtoupper($request->education),
                         'visuospatial' => $request->visuospatial,
                         'naming' => $request->naming,
@@ -456,13 +468,14 @@ class OccupTherapyCognitiveController extends defaultController
         $mrn = $request->mrn;
         $episno = $request->episno;
         $dateofexam = $request->dateofexam;
+        $enteredtime = $request->enteredtime;
 
         if(!$mrn || !$episno){
             abort(404);
         }
         
         $mmse = DB::table('hisdb.ot_mmse as m')
-                ->select('m.idno','m.mrn','m.episno','m.dateofexam','m.examiner','m.orientation1','m.orientation2','m.registration','m.registrationTrials','m.attnCalc','m.recall','m.language1','m.language2','m.language3','m.language4','m.language5','m.language6','m.tot_mmse','m.assess_lvl','pm.Name','pm.Newic')
+                ->select('m.idno','m.mrn','m.episno','m.dateofexam','m.enteredtime','m.examiner','m.orientation1','m.orientation2','m.registration','m.registrationTrials','m.attnCalc','m.recall','m.language1','m.language2','m.language3','m.language4','m.language5','m.language6','m.tot_mmse','m.assess_lvl','pm.Name','pm.Newic')
                 ->leftjoin('hisdb.pat_mast as pm', function ($join){
                     $join = $join->on('pm.MRN','=','m.mrn');
                     // $join = $join->on('pm.Episno','=','m.episno');
@@ -472,6 +485,7 @@ class OccupTherapyCognitiveController extends defaultController
                 ->where('m.mrn','=',$mrn)
                 ->where('m.episno','=',$episno)
                 ->where('m.dateofexam','=',$dateofexam)
+                ->where('m.enteredtime','=',$enteredtime)
                 ->first();
         // dd($mmse);
 
@@ -504,13 +518,14 @@ class OccupTherapyCognitiveController extends defaultController
         $mrn = $request->mrn;
         $episno = $request->episno;
         $dateAssessment = $request->dateAssessment;
+        $enteredtime = $request->enteredtime;
 
         if(!$mrn || !$episno){
             abort(404);
         }
         
         $moca = DB::table('hisdb.ot_moca as c')
-                ->select('c.mrn','c.episno','c.dateAssessment','c.education','c.visuospatial','c.naming','c.attention1','c.attention2','c.attention3','c.languageRepeat','c.languageFluency','c.abstraction','c.delayed','c.orientation','c.tot_moca','pm.Name','pm.Newic')
+                ->select('c.mrn','c.episno','c.dateAssessment','c.enteredtime','c.education','c.visuospatial','c.naming','c.attention1','c.attention2','c.attention3','c.languageRepeat','c.languageFluency','c.abstraction','c.delayed','c.orientation','c.tot_moca','pm.Name','pm.Newic')
                 ->leftjoin('hisdb.pat_mast as pm', function ($join){
                     $join = $join->on('pm.MRN','=','c.mrn');
                     // $join = $join->on('pm.Episno','=','c.episno');
@@ -520,6 +535,7 @@ class OccupTherapyCognitiveController extends defaultController
                 ->where('c.mrn','=',$mrn)
                 ->where('c.episno','=',$episno)
                 ->where('c.dateAssessment','=',$dateAssessment)
+                ->where('c.enteredtime','=',$enteredtime)
                 ->first();
         // dd($moca);
 
@@ -560,8 +576,10 @@ class OccupTherapyCognitiveController extends defaultController
         $responce = new stdClass();
         $ot_mmse_file = DB::table('hisdb.ot_mmse_file')
                     ->where('compcode',session('compcode'))
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno)
                     ->where('idno_mmse','=',$request->idno_mmse);
-
+        
         if($ot_mmse_file->exists()){
             $ot_mmse_file = $ot_mmse_file->get();
             
