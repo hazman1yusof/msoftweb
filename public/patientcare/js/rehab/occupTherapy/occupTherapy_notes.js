@@ -48,7 +48,7 @@ $(document).ready(function (){
 
     /////////////////////////////////////////print button starts/////////////////////////////////////////
     $("#notes_chart").click(function (){
-        window.open('./occupTherapy_notes/notes_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&dateNotes='+$("#dateNotes").val(), '_blank');
+        window.open('./occupTherapy_notes/notes_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&dateNotes='+$("#dateNotes").val()+'&enteredtime='+$("#notes_enteredtime").val(), '_blank');
     });
 
     // to format number input to two decimal places (0.00)
@@ -112,8 +112,9 @@ $(document).ready(function (){
         }).done(function (data){
             if(!$.isEmptyObject(data)){
                 autoinsert_rowdata("#formOccupTherapyNotes",data.notes);
-
-                button_state_notes('edit');
+                // button_state_notes('edit');
+                button_state_notes('add');
+                $("#notes_chart").attr('disabled',false);
             }else{
                 button_state_notes('add');
             }
@@ -132,10 +133,11 @@ var datetimeNotes_tbl = $('#datetimeNotes_tbl').DataTable({
         { 'data': 'mrn' },
         { 'data': 'episno' },
         { 'data': 'dateNotes', 'width': '10%' },
+        { 'data': 'datetime' },
 
     ],
     columnDefs: [
-        { targets: [0, 1, 2], visible: false },
+        { targets: [0, 1, 2, 4], visible: false },
     ],
     order: [[0, 'desc']],
     "drawCallback": function (settings){
@@ -293,7 +295,9 @@ function populate_notes_getdata(){
     }).done(function (data){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formOccupTherapyNotes",data.notes);
-            button_state_notes('edit');
+            // button_state_notes('edit');
+            button_state_notes('add');
+            $("#notes_chart").attr('disabled',false);
         }else{
             button_state_notes('add');
         }
@@ -320,7 +324,9 @@ function getdata_notes(){
         alert('there is an error');
     }).done(function (data){
         if(!$.isEmptyObject(data)){
-            button_state_notes('edit');
+            // button_state_notes('edit');
+            button_state_notes('add');
+            $("#notes_chart").attr('disabled',false);
             autoinsert_rowdata("#formOccupTherapyNotes",data.notes);
         }else{
             button_state_notes('add');

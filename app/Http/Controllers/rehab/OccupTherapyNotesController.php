@@ -61,9 +61,9 @@ class OccupTherapyNotesController extends defaultController
         $responce = new stdClass();
         
         $notes_obj = DB::table('hisdb.ot_notes')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno);
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$request->mrn);
+                    // ->where('episno','=',$request->episno);
         
         if($notes_obj->exists()){
             $notes_obj = $notes_obj->get();
@@ -79,6 +79,11 @@ class OccupTherapyNotesController extends defaultController
                 $date['idno'] = $value->idno;
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
+                if(!empty($value->dateNotes)){ // for sorting
+                    $date['datetime'] =  Carbon::createFromFormat('Y-m-d', $value->dateNotes)->format('d-m-Y').' '.$value->enteredtime;
+                }else{
+                    $date['datetime'] =  '-';
+                }
                 
                 array_push($data,$date);
             }
@@ -104,6 +109,7 @@ class OccupTherapyNotesController extends defaultController
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'dateNotes' => $request->dateNotes,
+                        'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                         'notes' => $request->notes,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
@@ -211,13 +217,14 @@ class OccupTherapyNotesController extends defaultController
         $mrn = $request->mrn;
         $episno = $request->episno;
         $dateNotes = $request->dateNotes;
+        $enteredtime = $request->enteredtime;
 
         if(!$mrn || !$episno){
             abort(404);
         }
         
         $notes = DB::table('hisdb.ot_notes as n')
-                ->select('n.mrn','n.episno','n.dateNotes','n.notes','pm.Name','pm.Newic')
+                ->select('n.mrn','n.episno','n.dateNotes','n.enteredtime','n.notes','pm.Name','pm.Newic')
                 ->leftjoin('hisdb.pat_mast as pm', function ($join){
                     $join = $join->on('pm.MRN','=','n.mrn');
                     // $join = $join->on('pm.Episno','=','n.episno');
@@ -227,6 +234,7 @@ class OccupTherapyNotesController extends defaultController
                 ->where('n.mrn','=',$mrn)
                 ->where('n.episno','=',$episno)
                 ->where('n.dateNotes','=',$dateNotes)
+                ->where('n.enteredtime','=',$enteredtime)
                 ->first();
         // dd($notes);
 

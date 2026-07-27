@@ -7,7 +7,7 @@
             top: 9px;
             z-index: 2;">
             <button class="ui button" id="new_notes"><span class="fa fa-plus-square-o"></span>New</button>
-            <button class="ui button" id="edit_notes"><span class="fa fa-edit fa-lg"></span>Edit</button>
+            <!-- <button class="ui button" id="edit_notes"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
             <button class="ui button" id="save_notes"><span class="fa fa-save fa-lg"></span>Save</button>
             <button class="ui button" id="cancel_notes"><span class="fa fa-ban fa-lg"></span>Cancel</button>
             <button class="ui button" id="notes_chart"><span class="fa fa-print fa-lg"></span>Print</button>
@@ -31,6 +31,7 @@
                                                     <th class="scope">mrn</th>
                                                     <th class="scope">episno</th>
                                                     <th class="scope">Date</th>
+                                                    <th class="scope">datetime</th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -47,7 +48,11 @@
                                             <div class="field">
                                                 <label for="dateNotes" style="padding-left: 15px;">Date: </label>
                                                 <input id="dateNotes" name="dateNotes" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" data-validation="required" data-validation-error-msg-required="Please enter information.">
-                                            </div>                                         
+                                            </div>
+                                            
+                                            <div class="field" style="display: none;">
+                                                <input id="notes_enteredtime" name="enteredtime" type="time">
+                                            </div>
                                         </div>
                                     </div>
 
