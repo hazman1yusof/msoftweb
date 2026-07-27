@@ -246,6 +246,9 @@ class NursingNoteController extends defaultController
             case 'addNotesInvChartCS_save':
                 return $this->add_notesInvChartCS($request);
 
+            case 'addNotesDrugAdminIP_save':
+                return $this->add_notesDrugAdminIP($request);
+
             default:
                 return 'error happen..';
         }
@@ -1997,6 +2000,37 @@ class NursingNoteController extends defaultController
         }
         
         return json_encode($responce);
+        
+    }
+
+    public function add_notesDrugAdminIP(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'DRUGADMIN_IP',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
         
     }
 

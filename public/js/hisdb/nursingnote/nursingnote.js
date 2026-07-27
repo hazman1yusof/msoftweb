@@ -1,4 +1,3 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
@@ -11,6 +10,17 @@ var urlParam_PatMedic = {
     table_id: 'idno',
     filterCol: ['mrn','episno','auditno','chgcode'],
     filterVal: ['','','',''],
+}
+
+/////////////////////////////parameter for jqGridAddNotesDrugAdminIP url/////////////////////////////
+var urlParam_AddNotesDrugAdminIP = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','DRUGADMIN_IP'],
 }
 
 /////////////////////////parameter for jqGridFitChart url/////////////////////////
@@ -620,6 +630,8 @@ $(document).ready(function (){
                 
                 // $('#tbl_prescription').DataTable().ajax.reload();
                 $("#jqGridPatMedic").jqGrid('setGridWidth', Math.floor($("#jqGridPatMedic_c")[0].offsetWidth-$("#jqGridPatMedic_c")[0].offsetLeft-30));
+                $("#jqGridAddNotesDrugAdminIP").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesDrugAdminIP_c")[0].offsetWidth-$("#jqGridAddNotesDrugAdminIP_c")[0].offsetLeft-30));
+                refreshGrid('#jqGridAddNotesDrugAdminIP',urlParam_AddNotesDrugAdminIP,'add_notesDrugAdminIP');
                 break;
             case 'treatmentP':
                 populate_treatmentP_getdata();
@@ -1346,6 +1358,116 @@ $(document).ready(function (){
             }
         });
     }
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridDrugAdminIP = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesDrugAdminIP///////////////////////////////////////
+	$("#jqGridAddNotesDrugAdminIP").jqGrid({
+		datatype: "local",
+		editurl: "./nursingnote/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesDrugAdminIP",
+		loadComplete: function (){
+			if(addmore_jqgridDrugAdminIP.more == true){$('#jqGridAddNotesDrugAdminIP_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridDrugAdminIP.edit = addmore_jqgridDrugAdminIP.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesDrugAdminIP");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesDrugAdminIP_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addDrugAdminIP = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesDrugAdminIP,#jqGridPagerRefresh_addnoteDrugAdminIP").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesDrugAdminIP_ilsave').click();
+				// addmore_jqgridDrugAdminIP.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridDrugAdminIP.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesDrugAdminIP',urlParam_AddNotesDrugAdminIP,'add_notesDrugAdminIP');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesDrugAdminIP,#jqGridPagerRefresh_addnoteDrugAdminIP").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesDrugAdminIP',urlParam_AddNotesDrugAdminIP,'add_notesDrugAdminIP');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesDrugAdminIP').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./nursingnote/form?"+
+				$.param({
+					episno: $('#episno_nursNote').val(),
+					mrn: $('#mrn_nursNote').val(),
+					action: 'addNotesDrugAdminIP_save',
+				});
+			$("#jqGridAddNotesDrugAdminIP").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesDrugAdminIP,#jqGridPagerRefresh_addnoteDrugAdminIP").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesDrugAdminIP/////////////////////////////////////
+	$("#jqGridAddNotesDrugAdminIP").inlineNav('#jqGridPagerAddNotesDrugAdminIP', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addDrugAdminIP
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesDrugAdminIP", {
+		id: "jqGridPagerRefresh_addnoteDrugAdminIP",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesDrugAdminIP", urlParam_AddNotesDrugAdminIP);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
     //////////////////////////////////////////drug admin ends//////////////////////////////////////////
     
     /////////////////////////////////////////treatment starts/////////////////////////////////////////
@@ -4741,6 +4863,11 @@ function populate_nursingnote(obj){
 	urlParam_AddNotesInvChartCS.filterVal[0] = obj.MRN;
 	urlParam_AddNotesInvChartCS.filterVal[1] = obj.Episno;
 	urlParam_AddNotesInvChartCS.filterVal[2] = 'INVCHART_CS';
+
+    ////jqGridAddNotesDrugAdminIP
+	urlParam_AddNotesDrugAdminIP.filterVal[0] = obj.MRN;
+	urlParam_AddNotesDrugAdminIP.filterVal[1] = obj.Episno;
+	urlParam_AddNotesDrugAdminIP.filterVal[2] = 'DRUGADMIN_IP';
     // $("#tot_input").val(obj.total_all_i);
     
     // var urlparam_datetime_tbl = {
