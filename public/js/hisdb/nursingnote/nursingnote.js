@@ -610,18 +610,34 @@ $(document).ready(function (){
                 });
                 
                 // $('#tbl_intake_date').DataTable().ajax.reload();
-                
+                refreshGrid('#jqGridAddNotesIntake1',urlParam_AddNotesIntake1,'add_notesIntake1');
+                $("#jqGridAddNotesIntake1").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesIntake1_c")[0].offsetWidth-$("#jqGridAddNotesIntake1_c")[0].offsetLeft-30));
+
+                $('#addNotesIntake1_title').text('ADDITIONAL NOTES FOR MORNING');
+    
                 $('#jqGridNursNote_intake_tabs.nav-tabs a').on('shown.bs.tab', function (e){
                     let shift = $(this).data('shift');
                     switch(shift){
                         case 'first':
                             textarea_init_intake();
-                            break;
+                            refreshGrid('#jqGridAddNotesIntake1',urlParam_AddNotesIntake1,'add_notesIntake1');
+                            $("#jqGridAddNotesIntake1").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesIntake1_c")[0].offsetWidth-$("#jqGridAddNotesIntake1_c")[0].offsetLeft-30));
+
+                            $('#addNotesIntake1_title').text('ADDITIONAL NOTES FOR MORNING');
                         case 'second':
                             textarea_init_intake();
+                            refreshGrid('#jqGridAddNotesIntake2',urlParam_AddNotesIntake2,'add_notesIntake2');
+                            $("#jqGridAddNotesIntake2").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesIntake2_c")[0].offsetWidth-$("#jqGridAddNotesIntake2_c")[0].offsetLeft-30));
+
+                            $('#addNotesIntake2_title').text('ADDITIONAL NOTES FOR EVENING');
                             break;
                         case 'third':
                             textarea_init_intake();
+
+                            refreshGrid('#jqGridAddNotesIntake3',urlParam_AddNotesIntake3,'add_notesIntake3');
+                            $("#jqGridAddNotesIntake3").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesIntake3_c")[0].offsetWidth-$("#jqGridAddNotesIntake3_c")[0].offsetLeft-30));
+
+                            $('#addNotesIntake3_title').text('ADDITIONAL NOTES FOR NIGHT');
                             break;
                     }
                 });
