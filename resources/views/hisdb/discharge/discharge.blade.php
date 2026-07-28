@@ -125,13 +125,13 @@
 
 											<div class="panel-body highlight">
 												<div class="form-group row" style="padding: 10px;border-bottom: 1px solid #cccccc; margin: 0px; background: aliceblue;">
-													<label class="col-md-1 control-label" for="reg_date" style="padding:0px">Reg Date</label>  
+													<label class="col-md-2 control-label" for="reg_date" style="padding:0px">Reg Date</label>  
 													<div class="col-md-2">
 														<input id="reg_date" name="reg_date" type="date" class="form-control input-sm" rdonly>
 													</div>
 
 													<label class="col-md-1 control-label" for="reg_by" style="padding:0px">Register By</label>  
-													<div class="col-md-5">
+													<div class="col-md-4">
 														<input id="reg_by" name="reg_by" type="text" class="form-control input-sm" rdonly>
 													</div>
 
@@ -142,13 +142,13 @@
 												</div>
 
 												<div class="form-group row" style="padding: 10px;border-bottom: 1px solid #cccccc; margin: 0px;">
-													<label class="col-md-1 control-label" for="dischargedate" style="padding:0px">Discharge Date</label>  
+													<label class="col-md-2 control-label" for="dischargedate" style="padding:0px">Discharge Date</label>  
 													<div class="col-md-2">
 														<input id="dischargedate" name="dischargedate" type="date" class="form-control input-sm" data-validation="required">
 													</div>
 
 													<label class="col-md-1 control-label" for="dischargeuser" style="padding:0px">Discharge By</label>  
-													<div class="col-md-5">
+													<div class="col-md-4">
 														<input id="dischargeuser" name="dischargeuser" type="text" class="form-control input-sm" rdonly>
 													</div>
 
@@ -160,13 +160,13 @@
 
 												<div class="form-group row" style="padding: 10px;border-bottom: 1px solid #cccccc; position: relative; margin: 0px; background: aliceblue;">
 													<input class="form-check-input" type="checkbox" name="ward_discharge_ckb" id="ward_discharge_ckb" style="position:absolute;">
-													<label class="col-md-1 control-label" for="ward_dischargedt" style="padding:0px">Ward Discharge Date</label>  
+													<label class="col-md-2 control-label" for="ward_dischargedt" style="padding:0px">Ward Discharge Date</label>  
 													<div class="col-md-2">
 														<input id="ward_dischargedt" name="ward_dischargedt" type="date" class="form-control input-sm" rdonly>
 													</div>
 
 													<label class="col-md-1 control-label" for="ward_dischargeusr" style="padding:0px">Ward Discharge By</label>  
-													<div class="col-md-5">
+													<div class="col-md-4">
 														<input id="ward_dischargeusr" name="ward_dischargeusr" type="text" class="form-control input-sm" rdonly >
 													</div>
 
@@ -178,13 +178,13 @@
 
 												<div class="form-group row" style="padding: 10px; position: relative; margin: 0px;">
 													<input class="form-check-input" type="checkbox" name="complete_ckb" id="complete_ckb" style="position:absolute;">
-													<label class="col-md-1 control-label" for="complete_notedt" style="padding:0px">Complete Date</label>  
+													<label class="col-md-2 control-label" for="complete_notedt" style="padding:0px">Complete Date</label>  
 													<div class="col-md-2">
 														<input id="complete_notedt" name="complete_notedt" type="date" class="form-control input-sm" rdonly>
 													</div>
 
 													<label class="col-md-1 control-label" for="complete_noteusr" style="padding:0px">Complete By</label>  
-													<div class="col-md-5">
+													<div class="col-md-4">
 														<input id="complete_noteusr" name="complete_noteusr" type="text" class="form-control input-sm" rdonly >
 													</div>
 
