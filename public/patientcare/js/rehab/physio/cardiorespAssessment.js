@@ -12,11 +12,12 @@ $(document).ready(function (){
     disableForm('#formCardiorespAssessment');
     
     $("#new_cardiorespAssessment").click(function (){
+        $("#cardiorespAssessment_enteredtime").val(moment().format('HH:mm:ss'));
         $('#cancel_cardiorespAssessment').data('oper','add');
         button_state_cardiorespAssessment('wait');
         enableForm('#formCardiorespAssessment');
         rdonly('#formCardiorespAssessment');
-        emptyFormdata_div("#formCardiorespAssessment",['#mrn_rehabMain','#episno_rehabMain']);
+        emptyFormdata_div("#formCardiorespAssessment",['#mrn_rehabMain','#episno_rehabMain','#cardiorespAssessment_enteredtime']);
         document.getElementById("idno_cardiorespAssessment").value = "";
         // dialog_mrn_edit.on();
     });
@@ -90,11 +91,11 @@ $(document).ready(function (){
         $('#tbl_cardiorespAssessment_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
-        if(check_same_usr_edit(data)){
-            button_state_cardiorespAssessment('edit');
-        }else{
+        // if(check_same_usr_edit(data)){
+        //     button_state_cardiorespAssessment('edit');
+        // }else{
             button_state_cardiorespAssessment('add');
-        }
+        // }
         $('#cardiorespAssessment_chart').attr('disabled',false);
         
         // getdata_cardiorespAssessment();
@@ -133,6 +134,7 @@ $(document).ready(function (){
         let mrn = $('#mrn_rehabMain').val();
         let episno = $('#episno_rehabMain').val();
         let entereddate = $('#cardiorespAssessment_entereddate').val();
+        let enteredtime = $('#cardiorespAssessment_enteredtime').val();
         let type = $(this).data('type');
         let istablet = $(window).width() <= 1024;
         
@@ -148,7 +150,7 @@ $(document).ready(function (){
                 let url = $('#urltodiagram').val() + filename;
                 var win = window.open(url, '_blank');
             }else{
-                var win = window.open('http://localhost:8443/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&entereddate='+entereddate+'&type='+type+'&from=cardiorespAssessment', '_blank');
+                var win = window.open('http://localhost:8443/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&entereddate='+entereddate+enteredtime+'&type='+type+'&from=cardiorespAssessment', '_blank');
             }
             
             if(win){
@@ -161,7 +163,7 @@ $(document).ready(function (){
     ///////////////////////////////////////body diagram ends///////////////////////////////////////
     
     $("#cardiorespAssessment_chart").click(function (){
-        window.open('./cardiorespAssessment/cardiorespassessment_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#cardiorespAssessment_entereddate").val()+'&type=DIAG_CARDIO', '_blank');
+        window.open('./cardiorespAssessment/cardiorespassessment_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#cardiorespAssessment_entereddate").val()+'&enteredtime='+$("#cardiorespAssessment_enteredtime").val()+'&type=DIAG_CARDIO', '_blank');
     });
     
 });
@@ -311,7 +313,8 @@ function saveForm_cardiorespAssessment(callback){
         
     },'json').done(function (data){
         callback(data);
-        button_state_cardiorespAssessment('edit');
+        // button_state_cardiorespAssessment('edit');
+        button_state_cardiorespAssessment('add');
     }).fail(function (data){
         if(data.responseText !== ''){
             // $('#p_error_intake').text(data.responseText);
@@ -358,13 +361,14 @@ function getdata_cardiorespAssessment(){
     }).done(function (data){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formCardiorespAssessment",data.cardiorespassessment);
-            button_state_cardiorespAssessment('edit');
+            // button_state_cardiorespAssessment('edit');
             $('#cardiorespAssessment_chart').attr('disabled',false);
         }else{
-            button_state_cardiorespAssessment('add');
+            // button_state_cardiorespAssessment('add');
             $('#cardiorespAssessment_chart').attr('disabled',true);
         }
         
+        button_state_cardiorespAssessment('add');
         // textarea_init_cardiorespAssessment();
     });
 }

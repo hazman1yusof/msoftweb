@@ -68,12 +68,13 @@ class CardiorespAssessmentController extends defaultController
                                     ->where('compcode','=',session('compcode'))
                                     ->where('mrn','=',$request->mrn)
                                     ->where('episno','=',$request->episno)
-                                    ->where('entereddate','=',$request->entereddate);
+                                    ->where('entereddate','=',$request->entereddate)
+                                    ->where('enteredtime','=',$request->enteredtime);
             
-            if($cardiorespassessment->exists()){
-                // throw new \Exception('Date already exist.', 500);
-                return response('Date already exist.');
-            }
+            // if($cardiorespassessment->exists()){
+            //     // throw new \Exception('Date already exist.', 500);
+            //     return response('Date already exist.');
+            // }
             
             DB::table('hisdb.phy_cardiorespassessment')
                 ->insert([
@@ -81,6 +82,8 @@ class CardiorespAssessmentController extends defaultController
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
                     'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
+                    // 'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'subjectiveAssessmt' => $request->subjectiveAssessmt,
                     'objectiveAssessmt' => $request->objectiveAssessmt,
                     'analysis' => $request->analysis,
@@ -225,8 +228,8 @@ class CardiorespAssessmentController extends defaultController
         
         $cardiorespassessment_obj = DB::table('hisdb.phy_cardiorespassessment')
                                     ->where('compcode','=',session('compcode'))
-                                    ->where('mrn','=',$request->mrn)
-                                    ->where('episno','=',$request->episno);
+                                    ->where('mrn','=',$request->mrn);
+                                    // ->where('episno','=',$request->episno);
         
         if($cardiorespassessment_obj->exists()){
             $cardiorespassessment_obj = $cardiorespassessment_obj->get();
@@ -242,7 +245,12 @@ class CardiorespAssessmentController extends defaultController
                 }else{
                     $date['entereddate'] =  '-';
                 }
-                $date['dt'] = $value->entereddate; // for sorting
+                // $date['dt'] = $value->entereddate; // for sorting
+                if(!empty($value->entereddate)){ // for sorting
+                    $date['dt'] =  Carbon::createFromFormat('Y-m-d', $value->entereddate)->format('d-m-Y').' '.$value->enteredtime;
+                }else{
+                    $date['dt'] =  '-';
+                }
                 $date['adduser'] = $value->adduser;
                 
                 array_push($data,$date);
@@ -262,13 +270,14 @@ class CardiorespAssessmentController extends defaultController
         $mrn = $request->mrn;
         $episno = $request->episno;
         $entereddate = $request->entereddate;
+        $enteredtime = $request->enteredtime;
         $type = $request->type;
         if(!$mrn || !$episno || !$entereddate){
             abort(404);
         }
         
         $cardiorespassessment = DB::table('hisdb.phy_cardiorespassessment as c')
-                                ->select('c.idno as c_idno','c.compcode','c.mrn','c.episno','c.entereddate','c.subjectiveAssessmt','c.objectiveAssessmt','c.analysis','c.intervention','c.homeEducation','c.evaluation','c.review','c.additionalNotes','c.adduser','c.adddate','c.upduser','c.upddate','c.lastuser','c.lastupdate','c.computerid','pm.Name','pm.Newic')
+                                ->select('c.idno as c_idno','c.compcode','c.mrn','c.episno','c.entereddate','c.enteredtime','c.subjectiveAssessmt','c.objectiveAssessmt','c.analysis','c.intervention','c.homeEducation','c.evaluation','c.review','c.additionalNotes','c.adduser','c.adddate','c.upduser','c.upddate','c.lastuser','c.lastupdate','c.computerid','pm.Name','pm.Newic')
                                 ->leftjoin('hisdb.pat_mast as pm', function ($join){
                                     $join = $join->on('pm.MRN','=','c.mrn');
                                     // $join = $join->on('pm.Episno','=','c.episno');
@@ -278,6 +287,7 @@ class CardiorespAssessmentController extends defaultController
                                 ->where('c.mrn','=',$mrn)
                                 ->where('c.episno','=',$episno)
                                 ->where('c.entereddate','=',$entereddate)
+                                ->where('c.enteredtime','=',$enteredtime)
                                 ->first();
         // dd($cardiorespassessment);
         
