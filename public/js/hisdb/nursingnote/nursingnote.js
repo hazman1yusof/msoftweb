@@ -67,6 +67,17 @@ var urlParam_FitChart = {
     filterVal: ['',''],
 }
 
+/////////////////////////////parameter for jqGridAddNotesFitChart url/////////////////////////////
+var urlParam_AddNotesFitChart = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','FIT_CHART'],
+}
+
 ///////////////////////parameter for jqGridCirculation url///////////////////////
 var urlParam_Circulation = {
     action: 'get_table_default',
@@ -757,6 +768,8 @@ $(document).ready(function (){
                 refreshGrid('#jqGridFitChart',urlParam_FitChart,'add');
                 
                 $("#jqGridFitChart").jqGrid('setGridWidth', Math.floor($("#jqGridFitChart_c")[0].offsetWidth-$("#jqGridFitChart_c")[0].offsetLeft-30));
+                $("#jqGridAddNotesFitChart").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesFitChart_c")[0].offsetWidth-$("#jqGridAddNotesFitChart_c")[0].offsetLeft-30));
+                refreshGrid('#jqGridAddNotesFitChart',urlParam_AddNotesFitChart,'add_notesFitChart');
                 break;
             case 'circulation':
                 populate_circulation_getdata();
@@ -2626,6 +2639,117 @@ $(document).ready(function (){
         refreshGrid("#jqGridFitChart", urlParam_FitChart);
     });
     ////////////////////////////////////////////end grid////////////////////////////////////////////
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridFitChart = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesFitChart///////////////////////////////////////
+	$("#jqGridAddNotesFitChart").jqGrid({
+		datatype: "local",
+		editurl: "./nursingnote/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesFitChart",
+		loadComplete: function (){
+			if(addmore_jqgridFitChart.more == true){$('#jqGridAddNotesFitChart_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridFitChart.edit = addmore_jqgridFitChart.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesFitChart");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesFitChart_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addFitChart = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesFitChart,#jqGridPagerRefresh_addnoteFitChart").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesFitChart_ilsave').click();
+				// addmore_jqgridFitChart.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridFitChart.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesFitChart',urlParam_AddNotesFitChart,'add_notesFitChart');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesFitChart,#jqGridPagerRefresh_addnoteFitChart").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesFitChart',urlParam_AddNotesFitChart,'add_notesFitChart');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesFitChart').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./nursingnote/form?"+
+				$.param({
+					episno: $('#episno_nursNote').val(),
+					mrn: $('#mrn_nursNote').val(),
+					action: 'addNotesFitChart_save',
+				});
+			$("#jqGridAddNotesFitChart").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesFitChart,#jqGridPagerRefresh_addnoteFitChart").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesFitChart/////////////////////////////////////
+	$("#jqGridAddNotesFitChart").inlineNav('#jqGridPagerAddNotesFitChart', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addFitChart
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesFitChart", {
+		id: "jqGridPagerRefresh_addnoteFitChart",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesFitChart", urlParam_AddNotesFitChart);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
+
     //////////////////////////////////////////fitchart ends//////////////////////////////////////////
     
     ///////////////////////////////////////circulation starts///////////////////////////////////////
@@ -5286,6 +5410,11 @@ function populate_nursingnote(obj){
     urlParam_AddNotesCarePlan.filterVal[0] = obj.MRN;
     urlParam_AddNotesCarePlan.filterVal[1] = obj.Episno;
     urlParam_AddNotesCarePlan.filterVal[2] = 'CARE_PLAN';
+
+    ////jqGridAddNotesFitChart
+    urlParam_AddNotesFitChart.filterVal[0] = obj.MRN;
+    urlParam_AddNotesFitChart.filterVal[1] = obj.Episno;
+    urlParam_AddNotesFitChart.filterVal[2] = 'FIT_CHART';
     // $("#tot_input").val(obj.total_all_i);
     
     // var urlparam_datetime_tbl = {

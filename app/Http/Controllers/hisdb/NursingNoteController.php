@@ -267,6 +267,9 @@ class NursingNoteController extends defaultController
             case 'addNotesCarePlan_save':
                 return $this->add_notesCarePlan($request);
 
+            case 'addNotesFitChart_save':
+                return $this->add_notesFitChart($request);
+
             default:
                 return 'error happen..';
         }
@@ -2916,6 +2919,37 @@ class NursingNoteController extends defaultController
         
     }
 
+    public function add_notesFitChart(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'FIT_CHART',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+    
     //////////////////////////////////////////CIRCULATION CHART//////////////////////////////////////////
 
     public function add_Circulation(Request $request){
