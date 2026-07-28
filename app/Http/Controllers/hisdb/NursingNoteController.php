@@ -270,6 +270,9 @@ class NursingNoteController extends defaultController
             case 'addNotesFitChart_save':
                 return $this->add_notesFitChart($request);
 
+            case 'addNotesCirculation_save':
+                return $this->add_notesCirculation($request);
+
             default:
                 return 'error happen..';
         }
@@ -3126,6 +3129,37 @@ class NursingNoteController extends defaultController
         // dd($nurs_circulation);
         
         return view('hisdb.nursingnote.circulation_chart_pdfmake', compact('age','pat_mast','nurs_circulation'));
+        
+    }
+
+    public function add_notesCirculation(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'CIRCULATION_CHART',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
         
     }
 
