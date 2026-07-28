@@ -69,12 +69,13 @@ class NeuroAssessmentController extends defaultController
                                 ->where('mrn','=',$request->mrn)
                                 ->where('episno','=',$request->episno)
                                 ->where('entereddate','=',$request->entereddate)
+                                ->where('enteredtime','=',$request->enteredtime)
                                 ->where('type','=','neurological');
             
-            if($neuroassessment->exists()){
-                // throw new \Exception('Date already exist.', 500);
-                return response('Date already exist.');
-            }
+            // if($neuroassessment->exists()){
+            //     // throw new \Exception('Date already exist.', 500);
+            //     return response('Date already exist.');
+            // }
             
             DB::table('hisdb.phy_neuroassessment')
                 ->insert([
@@ -83,6 +84,8 @@ class NeuroAssessmentController extends defaultController
                     'episno' => $request->episno,
                     'type' => $request->type,
                     'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
+                    // 'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'objective' => $request->objective,
                     'painscore' => $request->painscore,
                     'painType' => $request->painType,
@@ -167,6 +170,8 @@ class NeuroAssessmentController extends defaultController
                     'episno' => $request->episno,
                     'type' => $request->type,
                     'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
+                    // 'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'romAffectedSide' => $request->romAffectedSide,
                     'aShlderFlxInitP' => $request->aShlderFlxInitP,
                     'aShlderFlxInitA' => $request->aShlderFlxInitA,
@@ -338,6 +343,8 @@ class NeuroAssessmentController extends defaultController
                     'episno' => $request->episno,
                     'type' => $request->type,
                     'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
+                    // 'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'romSoundSide' => $request->romSoundSide,
                     'sShlderFlxInitP' => $request->sShlderFlxInitP,
                     'sShlderFlxInitA' => $request->sShlderFlxInitA,
@@ -510,6 +517,8 @@ class NeuroAssessmentController extends defaultController
                     'episno' => $request->episno,
                     'type' => $request->type,
                     'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
+                    // 'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'affectedSide' => $request->affectedSide,
                     'aShlderFlxInit' => $request->aShlderFlxInit,
                     'aShlderFlxProg' => $request->aShlderFlxProg,
@@ -1998,12 +2007,13 @@ class NeuroAssessmentController extends defaultController
         $responce = new stdClass();
         
         $neuroassessment_obj = DB::table('hisdb.phy_neuroassessment as n')
-                                ->select('n.idno as n_idno','n.mrn','n.episno','n.entereddate','n.adduser','a.idno as a_idno','s.idno as s_idno','m.idno as m_idno')
+                                ->select('n.idno as n_idno','n.mrn','n.episno','n.entereddate','n.enteredtime','n.adduser','a.idno as a_idno','s.idno as s_idno','m.idno as m_idno')
                                 ->join('hisdb.phy_romaffectedside as a', function ($join) use ($request){
                                     $join = $join->on('a.mrn','=','n.mrn');
                                     $join = $join->on('a.episno','=','n.episno');
                                     $join = $join->on('a.compcode','=','n.compcode');
                                     $join = $join->on('a.entereddate','=','n.entereddate');
+                                    $join = $join->on('a.enteredtime','=','n.enteredtime');
                                     $join = $join->where('a.type','=','neurological');
                                 })
                                 ->join('hisdb.phy_romsoundside as s', function ($join) use ($request){
@@ -2011,6 +2021,7 @@ class NeuroAssessmentController extends defaultController
                                     $join = $join->on('s.episno','=','n.episno');
                                     $join = $join->on('s.compcode','=','n.compcode');
                                     $join = $join->on('s.entereddate','=','n.entereddate');
+                                    $join = $join->on('s.enteredtime','=','n.enteredtime');
                                     $join = $join->where('s.type','=','neurological');
                                 })
                                 ->join('hisdb.phy_musclepower as m', function ($join) use ($request){
@@ -2018,11 +2029,12 @@ class NeuroAssessmentController extends defaultController
                                     $join = $join->on('m.episno','=','n.episno');
                                     $join = $join->on('m.compcode','=','n.compcode');
                                     $join = $join->on('m.entereddate','=','n.entereddate');
+                                    $join = $join->on('m.enteredtime','=','n.enteredtime');
                                     $join = $join->where('m.type','=','neurological');
                                 })
                                 ->where('n.compcode','=',session('compcode'))
                                 ->where('n.mrn','=',$request->mrn)
-                                ->where('n.episno','=',$request->episno)
+                                // ->where('n.episno','=',$request->episno)
                                 ->where('n.type','=','neurological');
         
         if($neuroassessment_obj->exists()){
@@ -2039,7 +2051,12 @@ class NeuroAssessmentController extends defaultController
                 }else{
                     $date['entereddate'] =  '-';
                 }
-                $date['dt'] = $value->entereddate; // for sorting
+                // $date['dt'] = $value->entereddate; // for sorting
+                if(!empty($value->entereddate)){ // for sorting
+                    $date['dt'] =  Carbon::createFromFormat('Y-m-d', $value->entereddate)->format('d-m-Y').' '.$value->enteredtime;
+                }else{
+                    $date['dt'] =  '-';
+                }
                 $date['adduser'] = $value->adduser;
                 $date['a_idno'] = $value->a_idno;
                 $date['s_idno'] = $value->s_idno;
@@ -2062,6 +2079,7 @@ class NeuroAssessmentController extends defaultController
         $mrn = $request->mrn;
         $episno = $request->episno;
         $entereddate = $request->entereddate;
+        $enteredtime = $request->enteredtime;
         $type1 = $request->type1;
         $type2 = $request->type2;
         if(!$mrn || !$episno || !$entereddate){
@@ -2069,7 +2087,7 @@ class NeuroAssessmentController extends defaultController
         }
         
         $neuroassessment = DB::table('hisdb.phy_neuroassessment as n')
-                            ->select('n.idno','n.compcode','n.mrn','n.episno','n.type','n.entereddate','n.objective','n.painscore','n.painType','n.severityBC','n.irritabilityBC','n.painLocation','n.subluxation','n.palpationBC','n.impressionBC','n.superficialR','n.superficialL','n.superficialSpec','n.deepR','n.deepL','n.deepSpec','n.numbnessR','n.numbnessL','n.numbnessSpec','n.paresthesiaR','n.paresthesiaL','n.paresthesiaSpec','n.otherR','n.otherL','n.otherSpec','n.impressionSens','n.muscleUL','n.muscleLL','n.impressionMAS','n.btrRT','n.btrLT','n.ttrRT','n.ttrLT','n.ktrRT','n.ktrLT','n.atrRT','n.atrLT','n.babinskyRT','n.babinskyLT','n.impressionDTR','n.fingerTestR','n.fingerTestL','n.heelTestR','n.heelTestL','n.impressionCoord','n.transferInit','n.transferProg','n.transferFin','n.suptoSideInit','n.suptoSideProg','n.suptoSideFin','n.sideToSitInit','n.sideToSitProg','n.sideToSitFin','n.sittInit','n.sittProg','n.sittFin','n.sitToStdInit','n.sitToStdProg','n.sitToStdFin','n.stdInit','n.stdProg','n.stdFin','n.shiftInit','n.shiftProg','n.shiftFin','n.ambulationInit','n.ambulationProg','n.ambulationFin','n.impressionFA','n.summary','n.adduser','n.adddate','n.upduser','n.upddate','n.lastuser','n.lastupdate','n.computerid','pm.Name','pm.Newic')
+                            ->select('n.idno','n.compcode','n.mrn','n.episno','n.type','n.entereddate','n.enteredtime','n.objective','n.painscore','n.painType','n.severityBC','n.irritabilityBC','n.painLocation','n.subluxation','n.palpationBC','n.impressionBC','n.superficialR','n.superficialL','n.superficialSpec','n.deepR','n.deepL','n.deepSpec','n.numbnessR','n.numbnessL','n.numbnessSpec','n.paresthesiaR','n.paresthesiaL','n.paresthesiaSpec','n.otherR','n.otherL','n.otherSpec','n.impressionSens','n.muscleUL','n.muscleLL','n.impressionMAS','n.btrRT','n.btrLT','n.ttrRT','n.ttrLT','n.ktrRT','n.ktrLT','n.atrRT','n.atrLT','n.babinskyRT','n.babinskyLT','n.impressionDTR','n.fingerTestR','n.fingerTestL','n.heelTestR','n.heelTestL','n.impressionCoord','n.transferInit','n.transferProg','n.transferFin','n.suptoSideInit','n.suptoSideProg','n.suptoSideFin','n.sideToSitInit','n.sideToSitProg','n.sideToSitFin','n.sittInit','n.sittProg','n.sittFin','n.sitToStdInit','n.sitToStdProg','n.sitToStdFin','n.stdInit','n.stdProg','n.stdFin','n.shiftInit','n.shiftProg','n.shiftFin','n.ambulationInit','n.ambulationProg','n.ambulationFin','n.impressionFA','n.summary','n.adduser','n.adddate','n.upduser','n.upddate','n.lastuser','n.lastupdate','n.computerid','pm.Name','pm.Newic')
                             ->leftjoin('hisdb.pat_mast as pm', function ($join){
                                 $join = $join->on('pm.MRN','=','n.mrn');
                                 // $join = $join->on('pm.Episno','=','n.episno');
@@ -2079,6 +2097,7 @@ class NeuroAssessmentController extends defaultController
                             ->where('n.mrn','=',$mrn)
                             ->where('n.episno','=',$episno)
                             ->where('n.entereddate','=',$entereddate)
+                            ->where('n.enteredtime','=',$enteredtime)
                             ->where('n.type','=','neurological')
                             ->first();
         // dd($neuroassessment);
@@ -2088,6 +2107,7 @@ class NeuroAssessmentController extends defaultController
                             ->where('mrn','=',$mrn)
                             ->where('episno','=',$episno)
                             ->where('entereddate','=',$entereddate)
+                            ->where('enteredtime','=',$enteredtime)
                             ->where('type','=','neurological')
                             ->first();
         
@@ -2096,6 +2116,7 @@ class NeuroAssessmentController extends defaultController
                         ->where('mrn','=',$mrn)
                         ->where('episno','=',$episno)
                         ->where('entereddate','=',$entereddate)
+                        ->where('enteredtime','=',$enteredtime)
                         ->where('type','=','neurological')
                         ->first();
         
@@ -2104,6 +2125,7 @@ class NeuroAssessmentController extends defaultController
                         ->where('mrn','=',$mrn)
                         ->where('episno','=',$episno)
                         ->where('entereddate','=',$entereddate)
+                        ->where('enteredtime','=',$enteredtime)
                         ->where('type','=','neurological')
                         ->first();
         

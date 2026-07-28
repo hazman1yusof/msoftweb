@@ -70,6 +70,9 @@ class ClientProgressNoteController extends defaultController
 
             case 'get_table_refLetterClientProgNote':
                 return $this->get_table_refLetterClientProgNote($request);
+
+            case 'addNotesClientProgNote_save':
+                return $this->add_notesClientProgNote($request);
             
             default:
                 return 'error happen..';
@@ -653,6 +656,37 @@ class ClientProgressNoteController extends defaultController
         ];
         
         return view('hisdb.clientprogressnote.refLetterClientProgNote_pdfmake',compact('ini_array'));
+        
+    }
+
+    public function add_notesClientProgNote(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'DOCTORNOTE_IP',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
         
     }
 }

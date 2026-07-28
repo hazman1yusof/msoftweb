@@ -67,12 +67,13 @@ class OswestryQuestController extends defaultController
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
                             ->where('episno','=',$request->episno)
-                            ->where('entereddate','=',$request->entereddate);
+                            ->where('entereddate','=',$request->entereddate)
+                            ->where('enteredtime','=',$request->enteredtime);
             
-            if($oswestryquest->exists()){
-                // throw new \Exception('Date already exist.', 500);
-                return response('Date already exist.');
-            }
+            // if($oswestryquest->exists()){
+            //     // throw new \Exception('Date already exist.', 500);
+            //     return response('Date already exist.');
+            // }
             
             DB::table('hisdb.phy_oswestryquest')
                 ->insert([
@@ -80,6 +81,7 @@ class OswestryQuestController extends defaultController
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
                     'entereddate' => $request->entereddate,
+                    'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'painIntensity' => $request->painIntensity,
                     'personalCare' => $request->personalCare,
                     'lifting' => $request->lifting,
@@ -236,8 +238,8 @@ class OswestryQuestController extends defaultController
         
         $oswestryquest_obj = DB::table('hisdb.phy_oswestryquest')
                             ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno);
+                            ->where('mrn','=',$request->mrn);
+                            // ->where('episno','=',$request->episno);
         
         if($oswestryquest_obj->exists()){
             $oswestryquest_obj = $oswestryquest_obj->get();
@@ -253,7 +255,12 @@ class OswestryQuestController extends defaultController
                 }else{
                     $date['entereddate'] =  '-';
                 }
-                $date['dt'] = $value->entereddate; // for sorting
+                // $date['dt'] = $value->entereddate; // for sorting
+                if(!empty($value->entereddate)){ // for sorting
+                    $date['dt'] =  Carbon::createFromFormat('Y-m-d', $value->entereddate)->format('d-m-Y').' '.$value->enteredtime;
+                }else{
+                    $date['dt'] =  '-';
+                }
                 $date['adduser'] = $value->adduser;
                 
                 array_push($data,$date);
@@ -273,12 +280,13 @@ class OswestryQuestController extends defaultController
         $mrn = $request->mrn;
         $episno = $request->episno;
         $entereddate = $request->entereddate;
+        $enteredtime = $request->enteredtime;
         if(!$mrn || !$episno || !$entereddate){
             abort(404);
         }
         
         $oswestryquest = DB::table('hisdb.phy_oswestryquest as oq')
-                        ->select('oq.idno','oq.compcode','oq.mrn','oq.episno','oq.entereddate','oq.painIntensity','oq.personalCare','oq.lifting','oq.walking','oq.sitting','oq.standing','oq.sleeping','oq.socialLife','oq.travelling','oq.employHomemaking','oq.totalScore','oq.disabilityLevel','oq.adduser','oq.adddate','oq.upduser','oq.upddate','oq.lastuser','oq.lastupdate','oq.computerid','pm.Name','pm.Newic')
+                        ->select('oq.idno','oq.compcode','oq.mrn','oq.episno','oq.entereddate','oq.enteredtime','oq.painIntensity','oq.personalCare','oq.lifting','oq.walking','oq.sitting','oq.standing','oq.sleeping','oq.socialLife','oq.travelling','oq.employHomemaking','oq.totalScore','oq.disabilityLevel','oq.adduser','oq.adddate','oq.upduser','oq.upddate','oq.lastuser','oq.lastupdate','oq.computerid','pm.Name','pm.Newic')
                         ->leftjoin('hisdb.pat_mast as pm', function ($join){
                             $join = $join->on('pm.MRN','=','oq.mrn');
                             // $join = $join->on('pm.Episno','=','oq.episno');
@@ -288,6 +296,7 @@ class OswestryQuestController extends defaultController
                         ->where('oq.mrn','=',$mrn)
                         ->where('oq.episno','=',$episno)
                         ->where('oq.entereddate','=',$entereddate)
+                        ->where('oq.enteredtime','=',$enteredtime)
                         ->first();
         // dd($oswestryquest);
         

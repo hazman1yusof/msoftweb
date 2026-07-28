@@ -49,9 +49,9 @@
                                 <button type="button" class="btn btn-default" id="new_progress">
                                     <span class="fa fa-plus-square-o"></span> New 
                                 </button>
-                                <button type="button" class="btn btn-default" id="edit_progress">
+                                <!-- <button type="button" class="btn btn-default" id="edit_progress">
                                     <span class="fa fa-edit fa-lg"></span> Edit 
-                                </button>
+                                </button> -->
                                 <button type="button" class="btn btn-default" data-oper='add' id="save_progress">
                                     <span class="fa fa-save fa-lg"></span> Save 
                                 </button>
@@ -358,6 +358,18 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class='col-md-12'>
+                                                <div class="panel panel-info" id="jqGridAddNotesProgressIP_c">
+                                                    <div class="panel-heading text-center">ADDITIONAL NOTES</div>
+                                                    <div class="panel-body">
+                                                        <div class='col-md-12' style="padding:0 0 15px 0">
+                                                            <table id="jqGridAddNotesProgressIP" class="table table-striped"></table>
+                                                            <div id="jqGridPagerAddNotesProgressIP"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -469,6 +481,18 @@
                                                 <table id="jqGridPatMedic" class="table table-striped"></table>
                                                 <div id="jqGridPagerPatMedic"></div>
                                             </div>
+
+                                            <div class='col-md-12'>
+                                                <div class="panel panel-info" id="jqGridAddNotesDrugAdminIP_c">
+                                                    <div class="panel-heading text-center">ADDITIONAL NOTES</div>
+                                                    <div class="panel-body">
+                                                        <div class='col-md-12' style="padding:0 0 15px 0">
+                                                            <table id="jqGridAddNotesDrugAdminIP" class="table table-striped"></table>
+                                                            <div id="jqGridPagerAddNotesDrugAdminIP"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -494,9 +518,9 @@
                                 <button type="button" class="btn btn-default" id="new_treatmentP">
                                     <span class="fa fa-plus-square-o"></span> New 
                                 </button>
-                                <button type="button" class="btn btn-default" id="edit_treatmentP">
+                                <!-- <button type="button" class="btn btn-default" id="edit_treatmentP">
                                     <span class="fa fa-edit fa-lg"></span> Edit 
-                                </button>
+                                </button> -->
                                 <button type="button" class="btn btn-default" data-oper='add' id="save_treatmentP">
                                     <span class="fa fa-save fa-lg"></span> Save 
                                 </button>
@@ -557,6 +581,18 @@
                                                 <label class="col-md-2 control-label" for="treatment_adduser">Entered by</label>
                                                 <div class="col-md-8">
                                                     <input id="treatment_adduser" name="treatment_adduser" type="text" class="form-control input-sm" rdonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class='col-md-12'>
+                                        <div class="panel panel-info" id="jqGridAddNotesTreatmentP_c">
+                                            <div class="panel-heading text-center">ADDITIONAL NOTES</div>
+                                            <div class="panel-body">
+                                                <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <table id="jqGridAddNotesTreatmentP" class="table table-striped"></table>
+                                                    <div id="jqGridPagerAddNotesTreatmentP"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -822,6 +858,18 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class='col-md-12'>
+                                        <div class="panel panel-info" id="jqGridAddNotesCarePlan_c">
+                                            <div class="panel-heading text-center">ADDITIONAL NOTES</div>
+                                            <div class="panel-body">
+                                                <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <table id="jqGridAddNotesCarePlan" class="table table-striped"></table>
+                                                    <div id="jqGridPagerAddNotesCarePlan"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -890,6 +938,18 @@
                                             <div class='col-md-12' style="padding: 0 0 15px 0;">
                                                 <table id="jqGridFitChart" class="table table-striped"></table>
                                                 <div id="jqGridPagerFitChart"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class='col-md-12'>
+                                    <div class="panel panel-info" id="jqGridAddNotesFitChart_c">
+                                        <div class="panel-heading text-center">ADDITIONAL NOTES</div>
+                                        <div class="panel-body">
+                                            <div class='col-md-12' style="padding:0 0 15px 0">
+                                                <table id="jqGridAddNotesFitChart" class="table table-striped"></table>
+                                                <div id="jqGridPagerAddNotesFitChart"></div>
                                             </div>
                                         </div>
                                     </div>

@@ -1,4 +1,3 @@
-
 <div class='col-md-12' style="padding: 0 0 15px 0;">
     <form class='form-horizontal' style='width: 99%;' id='formDietOrder'>
         <div class='col-md-12'>
@@ -13,9 +12,9 @@
                         <button type="button" class="btn btn-default" id="new_dietOrder">
                             <span class="fa fa-plus-square-o"></span> New 
                         </button>
-                        <button type="button" class="btn btn-default" id="edit_dietOrder">
+                        <!-- <button type="button" class="btn btn-default" id="edit_dietOrder">
                             <span class="fa fa-edit fa-lg"></span> Edit 
-                        </button>
+                        </button> -->
                         <button type="button" class="btn btn-default" data-oper='add' id="save_dietOrder">
                             <span class="fa fa-save fa-lg"></span> Save 
                         </button>
@@ -28,8 +27,8 @@
                     <div class='col-md-12'>
                         <div class="panel panel-info">
                             <div class="panel-body">
-                                <input id="mrn_dietOrder" name="mrn_dietOrder" type="hidden">
-                                <input id="episno_dietOrder" name="episno_dietOrder" type="hidden">
+                                <!-- <input id="mrn_dietOrder" name="mrn_dietOrder" type="text">
+                                <input id="episno_dietOrder" name="episno_dietOrder" type="text"> -->
                                 
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="diagprov">Provisional Diagnosis</label>
@@ -39,9 +38,9 @@
                                 </div>
                                 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="diagfinal">Final Diagnosis</label>
+                                    <label class="col-md-3 control-label" for="dietorder_diagnosis">Final Diagnosis</label>
                                     <div class="col-md-6">
-                                        <input name="diagfinal" type="text" class="form-control input-sm" rdonly>
+                                        <input id="dietorder_diagnosis" name="dietorder_diagnosis" type="text" class="form-control input-sm" rdonly>
                                     </div>
                                 </div>
                                 
@@ -209,6 +208,18 @@
                                         <br>
                                         <button type="button" class="btn btn-light" id="preview" style="float: right;">Preview</button>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class='col-md-12'>
+                        <div class="panel panel-info" id="jqGridAddNotesDietOrder_c">
+                            <div class="panel-heading text-center">ADDITIONAL NOTES</div>
+                            <div class="panel-body">
+                                <div class='col-md-12' style="padding:0 0 15px 0">
+                                    <table id="jqGridAddNotesDietOrder" class="table table-striped"></table>
+                                    <div id="jqGridPagerAddNotesDietOrder"></div>
                                 </div>
                             </div>
                         </div>

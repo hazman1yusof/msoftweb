@@ -67,12 +67,13 @@ class PhysioNotesController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno)
-                    ->where('entereddate','=',$request->entereddate);
+                    ->where('entereddate','=',$request->entereddate)
+                    ->where('enteredtime','=',$request->enteredtime);
             
-            if($notes->exists()){
-                // throw new \Exception('Date already exist.', 500);
-                return response('Date already exist.');
-            }
+            // if($notes->exists()){
+            //     // throw new \Exception('Date already exist.', 500);
+            //     return response('Date already exist.');
+            // }
             
             DB::table('hisdb.phy_notes')
                 ->insert([
@@ -80,6 +81,7 @@ class PhysioNotesController extends defaultController
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
                     'entereddate' => $request->entereddate,
+                    'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'notes' => $request->notes,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -203,8 +205,8 @@ class PhysioNotesController extends defaultController
         
         $notes_obj = DB::table('hisdb.phy_notes')
                     ->where('compcode','=',session('compcode'))
-                    ->where('mrn','=',$request->mrn)
-                    ->where('episno','=',$request->episno);
+                    ->where('mrn','=',$request->mrn);
+                    // ->where('episno','=',$request->episno);
         
         if($notes_obj->exists()){
             $notes_obj = $notes_obj->get();
@@ -220,7 +222,12 @@ class PhysioNotesController extends defaultController
                 }else{
                     $date['entereddate'] =  '-';
                 }
-                $date['dt'] = $value->entereddate; // for sorting
+                // $date['dt'] = $value->entereddate; // for sorting
+                if(!empty($value->entereddate)){ // for sorting
+                    $date['dt'] =  Carbon::createFromFormat('Y-m-d', $value->entereddate)->format('d-m-Y').' '.$value->enteredtime;
+                }else{
+                    $date['dt'] =  '-';
+                }
                 $date['adduser'] = $value->adduser;
                 
                 array_push($data,$date);
@@ -240,12 +247,13 @@ class PhysioNotesController extends defaultController
         $mrn = $request->mrn;
         $episno = $request->episno;
         $entereddate = $request->entereddate;
+        $enteredtime = $request->enteredtime;
         if(!$mrn || !$episno || !$entereddate){
             abort(404);
         }
         
         $notes = DB::table('hisdb.phy_notes as nt')
-                ->select('nt.idno','nt.compcode','nt.mrn','nt.episno','nt.entereddate','nt.notes','nt.adduser','nt.adddate','nt.upduser','nt.upddate','nt.lastuser','nt.lastupdate','nt.computerid','pm.Name','pm.Newic')
+                ->select('nt.idno','nt.compcode','nt.mrn','nt.episno','nt.entereddate','nt.enteredtime','nt.notes','nt.adduser','nt.adddate','nt.upduser','nt.upddate','nt.lastuser','nt.lastupdate','nt.computerid','pm.Name','pm.Newic')
                 ->leftjoin('hisdb.pat_mast as pm', function ($join){
                     $join = $join->on('pm.MRN','=','nt.mrn');
                     // $join = $join->on('pm.Episno','=','nt.episno');
@@ -255,6 +263,7 @@ class PhysioNotesController extends defaultController
                 ->where('nt.mrn','=',$mrn)
                 ->where('nt.episno','=',$episno)
                 ->where('nt.entereddate','=',$entereddate)
+                ->where('nt.enteredtime','=',$enteredtime)
                 ->first();
         // dd($notes);
         

@@ -92,11 +92,11 @@ $(document).ready(function (){
         $('#tbl_spinalCord_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
-        if(check_same_usr_edit(data)){
-            button_state_spinalCord('edit');
-        }else{
+        // if(check_same_usr_edit(data)){
+        //     button_state_spinalCord('edit');
+        // }else{
             button_state_spinalCord('add');
-        }
+        // }
         $('#spinalCord_chart').attr('disabled',false);
         
         // getdata_spinalCord();
@@ -240,7 +240,7 @@ $(document).ready(function (){
     ///////////////////////////////////////////////////////////////////////////////////////////////
     
     $("#spinalCord_chart").click(function (){
-        window.open('./spinalCord/spinalcord_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#spinalCord_entereddate").val(), '_blank');
+        window.open('./spinalCord/spinalcord_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#spinalCord_entereddate").val()+'&enteredtime='+$("#spinalCord_enteredtime").val(), '_blank');
     });
     
 });
@@ -390,7 +390,8 @@ function saveForm_spinalCord(callback){
         
     },'json').done(function (data){
         callback(data);
-        button_state_spinalCord('edit');
+        // button_state_spinalCord('edit');
+        button_state_spinalCord('add');
     }).fail(function (data){
         if(data.responseText !== ''){
             // $('#p_error_intake').text(data.responseText);
@@ -437,13 +438,14 @@ function getdata_spinalCord(){
     }).done(function (data){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formSpinalCord",data.spinalcord);
-            button_state_spinalCord('edit');
+            // button_state_spinalCord('edit');
             $('#spinalCord_chart').attr('disabled',false);
         }else{
-            button_state_spinalCord('add');
+            // button_state_spinalCord('add');
             $('#spinalCord_chart').attr('disabled',true);
         }
         
+        button_state_spinalCord('add');
         // textarea_init_spinalCord();
     });
 }

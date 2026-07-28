@@ -53,6 +53,9 @@ class DietOrderController extends defaultController
             
             case 'get_table_dietorder':
                 return $this->get_table_dietorder($request);
+
+            case 'addNotesDietOrder_save':
+                return $this->add_notesDietOrder($request);
             
             default:
                 return 'error happen..';
@@ -68,8 +71,8 @@ class DietOrderController extends defaultController
             DB::table('nursing.dietorder')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn_dietOrder,
-                    'episno' => $request->episno_dietOrder,
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
                     'oral' => $request->oral,
                     'nbm' => $request->nbm,
                     'rtf' => $request->rtf,
@@ -122,14 +125,14 @@ class DietOrderController extends defaultController
         try {
             
             $dietorder = DB::table('nursing.dietorder')
-                        ->where('mrn','=',$request->mrn_dietOrder)
-                        ->where('episno','=',$request->episno_dietOrder)
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
                         ->where('compcode','=',session('compcode'));
             
             if($dietorder->exists()){
                 DB::table('nursing.dietorder')
-                    ->where('mrn','=',$request->mrn_dietOrder)
-                    ->where('episno','=',$request->episno_dietOrder)
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno)
                     ->where('compcode','=',session('compcode'))
                     ->update([
                         'oral' => $request->oral,
@@ -166,8 +169,8 @@ class DietOrderController extends defaultController
                 DB::table('nursing.dietorder')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_dietOrder,
-                        'episno' => $request->episno_dietOrder,
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
                         'oral' => $request->oral,
                         'nbm' => $request->nbm,
                         'rtf' => $request->rtf,
@@ -228,6 +231,12 @@ class DietOrderController extends defaultController
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno);
+
+        $nursactplan_obj = DB::table('nursing.nursactplan_hdr')
+                        ->select('diagnosis')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno);
         
         $responce = new stdClass();
         
@@ -239,6 +248,13 @@ class DietOrderController extends defaultController
         if($episode_obj->exists()){
             $episode_obj = $episode_obj->first();
             $responce->episode = $episode_obj;
+        }
+
+        if($nursactplan_obj->exists()){
+            $nursactplan_obj = $nursactplan_obj->first();
+            
+            $diagnosis_obj = $nursactplan_obj->diagnosis;
+            $responce->diagnosis = $diagnosis_obj;
         }
         
         return json_encode($responce);
@@ -253,7 +269,7 @@ class DietOrderController extends defaultController
         }
 
         $dietorder = DB::table('nursing.dietorder as do')
-                    ->select('do.idno','do.compcode','do.mrn','do.episno','do.lodgerflag','do.lodgervalue','do.nbm','do.rtf','do.rof','do.tpn','do.oral','do.regular_a','do.regular_b','do.soft','do.vegetarian_c','do.western_d','do.highprotein','do.highcalorie','do.highfiber','do.diabetic','do.lowprotein','do.lowfat','do.soft_lodger','do.red1200kcal','do.red1500kcal','do.paed6to12mth','do.paed1to3yr','do.paed4to9yr','do.paedgt10yr','do.disposable','do.remark','do.lastuser','do.lastupdate','do.regular_a_lodger','do.regular_b_lodger','do.vegetarian_c_lodger','do.western_d_lodger','do.highprotein_lodger','do.highcalorie_lodger','do.highfiber_lodger','do.diabetic_lodger','do.lowprotein_lodger','do.lowfat_lodger','do.red1200kcal_lodger','do.red1500kcal_lodger','do.paed6to12mth_lodger','do.paed1to3yr_lodger','do.paed4to9yr_lodger','do.paedgt10yr_lodger','do.remarkkitchen','do.adduser','do.adddate','pm.dob','pm.Name','ep.diagfinal','ep.ward','ep.bed')
+                    ->select('do.idno','do.compcode','do.mrn','do.episno','do.lodgerflag','do.lodgervalue','do.nbm','do.rtf','do.rof','do.tpn','do.oral','do.regular_a','do.regular_b','do.soft','do.vegetarian_c','do.western_d','do.highprotein','do.highcalorie','do.highfiber','do.diabetic','do.lowprotein','do.lowfat','do.soft_lodger','do.red1200kcal','do.red1500kcal','do.paed6to12mth','do.paed1to3yr','do.paed4to9yr','do.paedgt10yr','do.disposable','do.remark','do.lastuser','do.lastupdate','do.regular_a_lodger','do.regular_b_lodger','do.vegetarian_c_lodger','do.western_d_lodger','do.highprotein_lodger','do.highcalorie_lodger','do.highfiber_lodger','do.diabetic_lodger','do.lowprotein_lodger','do.lowfat_lodger','do.red1200kcal_lodger','do.red1500kcal_lodger','do.paed6to12mth_lodger','do.paed1to3yr_lodger','do.paed4to9yr_lodger','do.paedgt10yr_lodger','do.remarkkitchen','do.adduser','do.adddate','pm.dob','pm.Name','ep.diagfinal','ep.ward','ep.bed','n.diagnosis')
                     ->leftJoin('hisdb.pat_mast as pm', function ($join){
                         $join = $join->where('pm.compcode', '=', session('compcode'));
                         $join = $join->on('pm.mrn', '=', 'do.mrn');
@@ -261,6 +277,10 @@ class DietOrderController extends defaultController
                         $join = $join->where('ep.compcode', '=', session('compcode'));
                         $join = $join->on('ep.mrn', '=', 'do.mrn');
                         $join = $join->on('ep.episno', '=', 'do.episno');
+                    })->leftJoin('nursing.nursactplan_hdr as n', function ($join){
+                        $join = $join->where('n.compcode', '=', session('compcode'));
+                        $join = $join->on('n.mrn', '=', 'do.mrn');
+                        $join = $join->on('n.episno', '=', 'do.episno');
                     })->join('hisdb.queue', function($join) use ($request,$sel_epistycode){
                                 $join = $join->on('queue.mrn', '=', 'do.mrn')
                                             ->where('queue.billflag','=',0)
@@ -291,6 +311,37 @@ class DietOrderController extends defaultController
         // dd($dietorder);
         
         return view('hisdb.dietorder.dietorder_preview',compact('dietorder'));
+        
+    }
+
+    public function add_notesDietOrder(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'DIET_ORDER',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
         
     }
     

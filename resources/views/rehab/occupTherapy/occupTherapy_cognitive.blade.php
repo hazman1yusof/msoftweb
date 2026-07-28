@@ -37,7 +37,7 @@
                     top: 9px;
                     z-index: 2;">
                     <button class="ui button" id="new_mmse"><span class="fa fa-plus-square-o"></span>New</button>
-                    <button class="ui button" id="edit_mmse"><span class="fa fa-edit fa-lg"></span>Edit</button>
+                    <!-- <button class="ui button" id="edit_mmse"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
                     <button class="ui button" id="save_mmse"><span class="fa fa-save fa-lg"></span>Save</button>
                     <button class="ui button" id="cancel_mmse"><span class="fa fa-ban fa-lg"></span>Cancel</button>
                     <button class="ui button" id="mmse_chart"><span class="fa fa-print fa-lg"></span>Print</button>
@@ -62,6 +62,7 @@
                                                             <th class="scope">mrn</th>
                                                             <th class="scope">episno</th>
                                                             <th class="scope">Date</th>
+                                                            <th class="scope">datetime</th>
                                                         </tr>
                                                     </thead>
                                                 </table>
@@ -78,6 +79,9 @@
                                                     <div class="field">
                                                         <label for="dateofexam" style="padding-right: 5px;">Date</label>
                                                         <input id="dateofexam" name="dateofexam" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" data-validation="required" data-validation-error-msg-required="Please enter information.">
+                                                    </div>
+                                                    <div class="field" style="display: none;">
+                                                        <input id="mmse_enteredtime" name="enteredtime" type="time">
                                                     </div>
                                                     <div class="field">
                                                         <label for="examiner" style="padding-left: 15px; padding-right: 5px;">Examiner</label>
@@ -347,7 +351,7 @@
                     top: 9px;
                     z-index: 2;">
                     <button class="ui button" id="new_moca"><span class="fa fa-plus-square-o"></span>New</button>
-                    <button class="ui button" id="edit_moca"><span class="fa fa-edit fa-lg"></span>Edit</button>
+                    <!-- <button class="ui button" id="edit_moca"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
                     <button class="ui button" id="save_moca"><span class="fa fa-save fa-lg"></span>Save</button>
                     <button class="ui button" id="cancel_moca"><span class="fa fa-ban fa-lg"></span>Cancel</button>
                     <button class="ui button" id="moca_chart"><span class="fa fa-print fa-lg"></span>Print</button>
@@ -372,6 +376,7 @@
                                                             <th class="scope">mrn</th>
                                                             <th class="scope">episno</th>
                                                             <th class="scope">Date</th>
+                                                            <th class="scope">datetime</th>
                                                         </tr>
                                                     </thead>
                                                 </table>
@@ -388,6 +393,9 @@
                                                     <div class="field">
                                                         <label for="dateAssessment" style="padding-right: 5px;">Date</label>
                                                         <input id="dateAssessment" name="dateAssessment" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" data-validation="required" data-validation-error-msg-required="Please enter information.">
+                                                    </div>
+                                                    <div class="field" style="display: none;">
+                                                        <input id="moca_enteredtime" name="enteredtime" type="time">
                                                     </div>
                                                     <div class="field">
                                                         <label for="education" style="padding-left: 15px; padding-right: 5px;">Education</label>

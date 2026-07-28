@@ -7,7 +7,7 @@
             top: 9px;
             z-index: 2;">
             <button class="ui button" id="new_upperExtremity"><span class="fa fa-plus-square-o"></span>New</button>
-            <button class="ui button" id="edit_upperExtremity"><span class="fa fa-edit fa-lg"></span>Edit</button>
+            <!-- <button class="ui button" id="edit_upperExtremity"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
             <button class="ui button" id="save_upperExtremity"><span class="fa fa-save fa-lg"></span>Save</button>
             <button class="ui button" id="cancel_upperExtremity"><span class="fa fa-ban fa-lg"></span>Cancel</button>
             <button class="ui button" id="upperExtremity_chart"><span class="fa fa-print fa-lg"></span>Print</button>
@@ -28,6 +28,7 @@
                                                 <th class="scope">mrn</th>
                                                 <th class="scope">episno</th>
                                                 <th class="scope">Date</th>
+                                                <th class="scope">datetime</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -47,6 +48,10 @@
                                             <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                 <label>Date</label>
                                                 <input id="dateAssess" name="dateAssess" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" data-validation="required" data-validation-error-msg-required="Please enter information.">
+                                            </div>
+                                            
+                                            <div class="field" style="display: none;">
+                                                <input id="upperExtremity_enteredtime" name="enteredtime" type="time">
                                             </div>
 
                                             <div class="field eight wide column" style="margin:0px; padding: 3px 20px 14px 14px;">
@@ -99,7 +104,7 @@
                                             top: 9px;
                                             z-index: 2;">
                                             <button class="ui button" id="new_rof"><span class="fa fa-plus-square-o"></span>New</button>
-                                            <button class="ui button" id="edit_rof"><span class="fa fa-edit fa-lg"></span>Edit</button>
+                                            <!-- <button class="ui button" id="edit_rof"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
                                             <button class="ui button" id="save_rof"><span class="fa fa-save fa-lg"></span>Save</button>
                                             <button class="ui button" id="cancel_rof"><span class="fa fa-ban fa-lg"></span>Cancel</button>
                                             <!-- <button class="ui button" id="rof_chart"><span class="fa fa-print fa-lg"></span>Print</button> -->
@@ -150,7 +155,7 @@
                                             top: 9px;
                                             z-index: 2;">
                                             <button class="ui button" id="new_hand"><span class="fa fa-plus-square-o"></span>New</button>
-                                            <button class="ui button" id="edit_hand"><span class="fa fa-edit fa-lg"></span>Edit</button>
+                                            <!-- <button class="ui button" id="edit_hand"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
                                             <button class="ui button" id="save_hand"><span class="fa fa-save fa-lg"></span>Save</button>
                                             <button class="ui button" id="cancel_hand"><span class="fa fa-ban fa-lg"></span>Cancel</button>
                                             <!-- <button class="ui button" id="hand_chart"><span class="fa fa-print fa-lg"></span>Print</button> -->
@@ -200,7 +205,7 @@
                                             top: 9px;
                                             z-index: 2;">
                                             <button class="ui button" id="new_strength"><span class="fa fa-plus-square-o"></span>New</button>
-                                            <button class="ui button" id="edit_strength"><span class="fa fa-edit fa-lg"></span>Edit</button>
+                                            <!-- <button class="ui button" id="edit_strength"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
                                             <button class="ui button" id="save_strength"><span class="fa fa-save fa-lg"></span>Save</button>
                                             <button class="ui button" id="cancel_strength"><span class="fa fa-ban fa-lg"></span>Cancel</button>
                                             <!-- <button class="ui button" id="strength_chart"><span class="fa fa-print fa-lg"></span>Print</button> -->
@@ -397,7 +402,7 @@
                                             top: 9px;
                                             z-index: 2;">
                                             <button class="ui button" id="new_sensation"><span class="fa fa-plus-square-o"></span>New</button>
-                                            <button class="ui button" id="edit_sensation"><span class="fa fa-edit fa-lg"></span>Edit</button>
+                                            <!-- <button class="ui button" id="edit_sensation"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
                                             <button class="ui button" id="save_sensation"><span class="fa fa-save fa-lg"></span>Save</button>
                                             <button class="ui button" id="cancel_sensation"><span class="fa fa-ban fa-lg"></span>Cancel</button>
                                             <!-- <button class="ui button" id="sensation_chart"><span class="fa fa-print fa-lg"></span>Print</button> -->
@@ -667,7 +672,7 @@
                                             top: 9px;
                                             z-index: 2;">
                                             <button class="ui button" id="new_prehensive"><span class="fa fa-plus-square-o"></span>New</button>
-                                            <button class="ui button" id="edit_prehensive"><span class="fa fa-edit fa-lg"></span>Edit</button>
+                                            <!-- <button class="ui button" id="edit_prehensive"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
                                             <button class="ui button" id="save_prehensive"><span class="fa fa-save fa-lg"></span>Save</button>
                                             <button class="ui button" id="cancel_prehensive"><span class="fa fa-ban fa-lg"></span>Cancel</button>
                                             <!-- <button class="ui button" id="prehensive_chart"><span class="fa fa-print fa-lg"></span>Print</button> -->
@@ -767,7 +772,7 @@
                                             top: 9px;
                                             z-index: 2;">
                                             <button class="ui button" id="new_skin"><span class="fa fa-plus-square-o"></span>New</button>
-                                            <button class="ui button" id="edit_skin"><span class="fa fa-edit fa-lg"></span>Edit</button>
+                                            <!-- <button class="ui button" id="edit_skin"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
                                             <button class="ui button" id="save_skin"><span class="fa fa-save fa-lg"></span>Save</button>
                                             <button class="ui button" id="cancel_skin"><span class="fa fa-ban fa-lg"></span>Cancel</button>
                                             <!-- <button class="ui button" id="skin_chart"><span class="fa fa-print fa-lg"></span>Print</button> -->
@@ -818,7 +823,7 @@
                                             top: 9px;
                                             z-index: 2;">
                                             <button class="ui button" id="new_edema"><span class="fa fa-plus-square-o"></span>New</button>
-                                            <button class="ui button" id="edit_edema"><span class="fa fa-edit fa-lg"></span>Edit</button>
+                                            <!-- <button class="ui button" id="edit_edema"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
                                             <button class="ui button" id="save_edema"><span class="fa fa-save fa-lg"></span>Save</button>
                                             <button class="ui button" id="cancel_edema"><span class="fa fa-ban fa-lg"></span>Cancel</button>
                                             <!-- <button class="ui button" id="edema_chart"><span class="fa fa-print fa-lg"></span>Print</button> -->
@@ -909,7 +914,7 @@
                                             top: 9px;
                                             z-index: 2;">
                                             <button class="ui button" id="new_functional"><span class="fa fa-plus-square-o"></span>New</button>
-                                            <button class="ui button" id="edit_functional"><span class="fa fa-edit fa-lg"></span>Edit</button>
+                                            <!-- <button class="ui button" id="edit_functional"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
                                             <button class="ui button" id="save_functional"><span class="fa fa-save fa-lg"></span>Save</button>
                                             <button class="ui button" id="cancel_functional"><span class="fa fa-ban fa-lg"></span>Cancel</button>
                                             <!-- <button class="ui button" id="functional_chart"><span class="fa fa-print fa-lg"></span>Print</button> -->

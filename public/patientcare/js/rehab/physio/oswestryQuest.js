@@ -93,11 +93,11 @@ $(document).ready(function (){
         $('#tbl_oswestryQuest_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
-        if(check_same_usr_edit(data)){
-            button_state_oswestryQuest('edit');
-        }else{
+        // if(check_same_usr_edit(data)){
+        //     button_state_oswestryQuest('edit');
+        // }else{
             button_state_oswestryQuest('add');
-        }
+        // }
         $('#oswestryQuest_chart').attr('disabled',false);
         
         $('#formOswestryQuest span#oswestryQuest_disabilityLevel').text('');
@@ -164,7 +164,7 @@ $(document).ready(function (){
     ///////////////////////////////to calculate the total score ends///////////////////////////////
     
     $("#oswestryQuest_chart").click(function (){
-        window.open('./oswestryQuest/oswestryquest_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#oswestryQuest_entereddate").val(), '_blank');
+        window.open('./oswestryQuest/oswestryquest_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#oswestryQuest_entereddate").val()+'&enteredtime='+$("#oswestryQuest_enteredtime").val(), '_blank');
     });
     
 });
@@ -316,7 +316,8 @@ function saveForm_oswestryQuest(callback){
         
     },'json').done(function (data){
         callback(data);
-        button_state_oswestryQuest('edit');
+        // button_state_oswestryQuest('edit');
+        button_state_oswestryQuest('add');
     }).fail(function (data){
         if(data.responseText !== ''){
             // $('#p_error_intake').text(data.responseText);
@@ -364,14 +365,15 @@ function getdata_oswestryQuest(){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formOswestryQuest",data.oswestryquest);
             $('#formOswestryQuest span#oswestryQuest_disabilityLevel').text(data.oswestryquest.disabilityLevel);
-            button_state_oswestryQuest('edit');
+            // button_state_oswestryQuest('edit');
             $('#oswestryQuest_chart').attr('disabled',false);
         }else{
             $('#formOswestryQuest span#oswestryQuest_disabilityLevel').text('');
-            button_state_oswestryQuest('add');
+            // button_state_oswestryQuest('add');
             $('#oswestryQuest_chart').attr('disabled',true);
         }
         
+        button_state_oswestryQuest('add');
         // textarea_init_oswestryQuest();
     });
 }

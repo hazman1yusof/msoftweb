@@ -68,12 +68,13 @@ class PosturalAssessmentController extends defaultController
                                 ->where('compcode','=',session('compcode'))
                                 ->where('mrn','=',$request->mrn)
                                 ->where('episno','=',$request->episno)
-                                ->where('entereddate','=',$request->entereddate);
+                                ->where('entereddate','=',$request->entereddate)
+                                ->where('enteredtime','=',$request->enteredtime);
             
-            if($posturalassessment->exists()){
-                // throw new \Exception('Date already exist.', 500);
-                return response('Date already exist.');
-            }
+            // if($posturalassessment->exists()){
+            //     // throw new \Exception('Date already exist.', 500);
+            //     return response('Date already exist.');
+            // }
             
             DB::table('hisdb.phy_posturalassessment')
                 ->insert([
@@ -81,6 +82,8 @@ class PosturalAssessmentController extends defaultController
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
                     'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
+                    // 'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'FACToeOutL' => $request->FACToeOutL,
                     'FACToeOutR' => $request->FACToeOutR,
                     'FACToeInL' => $request->FACToeInL,
@@ -342,8 +345,8 @@ class PosturalAssessmentController extends defaultController
         
         $posturalassessment_obj = DB::table('hisdb.phy_posturalassessment')
                                 ->where('compcode','=',session('compcode'))
-                                ->where('mrn','=',$request->mrn)
-                                ->where('episno','=',$request->episno);
+                                ->where('mrn','=',$request->mrn);
+                                // ->where('episno','=',$request->episno);
         
         if($posturalassessment_obj->exists()){
             $posturalassessment_obj = $posturalassessment_obj->get();
@@ -359,7 +362,12 @@ class PosturalAssessmentController extends defaultController
                 }else{
                     $date['entereddate'] =  '-';
                 }
-                $date['dt'] = $value->entereddate; // for sorting
+                // $date['dt'] = $value->entereddate; // for sorting
+                if(!empty($value->entereddate)){ // for sorting
+                    $date['dt'] =  Carbon::createFromFormat('Y-m-d', $value->entereddate)->format('d-m-Y').' '.$value->enteredtime;
+                }else{
+                    $date['dt'] =  '-';
+                }
                 $date['adduser'] = $value->adduser;
                 
                 array_push($data,$date);
@@ -379,6 +387,7 @@ class PosturalAssessmentController extends defaultController
         $mrn = $request->mrn;
         $episno = $request->episno;
         $entereddate = $request->entereddate;
+        $enteredtime = $request->enteredtime;
         $type1 = $request->type1;
         $type2 = $request->type2;
         if(!$mrn || !$episno || !$entereddate){
@@ -386,7 +395,7 @@ class PosturalAssessmentController extends defaultController
         }
         
         $posturalassessment = DB::table('hisdb.phy_posturalassessment as pa')
-                            ->select('pa.idno','pa.compcode','pa.mrn','pa.episno','pa.entereddate','pa.FACToeOutL','pa.FACToeOutR','pa.FACToeInL','pa.FACToeInR','pa.FACPronationL','pa.FACPronationR','pa.FACFlatFeetL','pa.FACFlatFeetR','pa.FACHighArchL','pa.FACHighArchR','pa.KHKnockKneesL','pa.KHKnockKneesR','pa.KHBowLegsL','pa.KHBowLegsR','pa.spineScoliosisL','pa.spineScoliosisR','pa.scapulaDeviationL','pa.scapulaDeviationR','pa.shoulderDeviationL','pa.shoulderDeviationR','pa.headTiltL','pa.headTiltR','pa.headRotateL','pa.headRotateR','pa.anteriorPosteriorRmk','pa.ankleDorsiflexL','pa.ankleDorsiflexR','pa.anklePlantarL','pa.anklePlantarR','pa.kneeFlexedL','pa.kneeFlexedR','pa.kneeHyperextendL','pa.kneeHyperextendR','pa.pelvisAnterTransL','pa.pelvisAnterTransR','pa.devSymmetry','pa.tiltAnterior','pa.tiltPosterior','pa.LSLordosis','pa.LSFlat','pa.TSKyphosis','pa.TSFlat','pa.trunkRotation','pa.shoulderForward','pa.HPForward','pa.HPBack','pa.lateralRmk','pa.adduser','pa.adddate','pa.upduser','pa.upddate','pa.lastuser','pa.lastupdate','pa.computerid','pm.Name','pm.Newic','pm.Sex')
+                            ->select('pa.idno','pa.compcode','pa.mrn','pa.episno','pa.entereddate','pa.enteredtime','pa.FACToeOutL','pa.FACToeOutR','pa.FACToeInL','pa.FACToeInR','pa.FACPronationL','pa.FACPronationR','pa.FACFlatFeetL','pa.FACFlatFeetR','pa.FACHighArchL','pa.FACHighArchR','pa.KHKnockKneesL','pa.KHKnockKneesR','pa.KHBowLegsL','pa.KHBowLegsR','pa.spineScoliosisL','pa.spineScoliosisR','pa.scapulaDeviationL','pa.scapulaDeviationR','pa.shoulderDeviationL','pa.shoulderDeviationR','pa.headTiltL','pa.headTiltR','pa.headRotateL','pa.headRotateR','pa.anteriorPosteriorRmk','pa.ankleDorsiflexL','pa.ankleDorsiflexR','pa.anklePlantarL','pa.anklePlantarR','pa.kneeFlexedL','pa.kneeFlexedR','pa.kneeHyperextendL','pa.kneeHyperextendR','pa.pelvisAnterTransL','pa.pelvisAnterTransR','pa.devSymmetry','pa.tiltAnterior','pa.tiltPosterior','pa.LSLordosis','pa.LSFlat','pa.TSKyphosis','pa.TSFlat','pa.trunkRotation','pa.shoulderForward','pa.HPForward','pa.HPBack','pa.lateralRmk','pa.adduser','pa.adddate','pa.upduser','pa.upddate','pa.lastuser','pa.lastupdate','pa.computerid','pm.Name','pm.Newic','pm.Sex')
                             ->leftjoin('hisdb.pat_mast as pm', function ($join){
                                 $join = $join->on('pm.MRN','=','pa.mrn');
                                 // $join = $join->on('pm.Episno','=','pa.episno');
@@ -396,6 +405,7 @@ class PosturalAssessmentController extends defaultController
                             ->where('pa.mrn','=',$mrn)
                             ->where('pa.episno','=',$episno)
                             ->where('pa.entereddate','=',$entereddate)
+                            ->where('pa.enteredtime','=',$enteredtime)
                             ->first();
         // dd($posturalassessment);
         

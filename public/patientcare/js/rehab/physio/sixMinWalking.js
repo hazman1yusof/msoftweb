@@ -90,11 +90,11 @@ $(document).ready(function (){
         $('#tbl_sixMinWalking_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
-        if(check_same_usr_edit(data)){
-            button_state_sixMinWalking('edit');
-        }else{
+        // if(check_same_usr_edit(data)){
+        //     button_state_sixMinWalking('edit');
+        // }else{
             button_state_sixMinWalking('add');
-        }
+        // }
         $('#sixMinWalking_chart').attr('disabled',false);
         
         // getdata_sixMinWalking();
@@ -141,7 +141,7 @@ $(document).ready(function (){
     ///////////////////////////////////////sixMinWalking ends///////////////////////////////////////
     
     $("#sixMinWalking_chart").click(function (){
-        window.open('./sixMinWalking/sixminwalking_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#sixMinWalking_entereddate").val()+'&age='+$("#age_rehabMain").val(), '_blank');
+        window.open('./sixMinWalking/sixminwalking_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#sixMinWalking_entereddate").val()+'&enteredtime='+$("#sixMinWalking_enteredtime").val()+'&age='+$("#age_rehabMain").val(), '_blank');
     });
     
 });
@@ -291,7 +291,8 @@ function saveForm_sixMinWalking(callback){
         
     },'json').done(function (data){
         callback(data);
-        button_state_sixMinWalking('edit');
+        // button_state_sixMinWalking('edit');
+        button_state_sixMinWalking('add');
     }).fail(function (data){
         if(data.responseText !== ''){
             // $('#p_error_intake').text(data.responseText);
@@ -338,10 +339,10 @@ function getdata_sixMinWalking(){
     }).done(function (data){
         if(!$.isEmptyObject(data.sixminwalk)){
             autoinsert_rowdata("#formSixMinWalking",data.sixminwalk);
-            button_state_sixMinWalking('edit');
+            // button_state_sixMinWalking('edit');
             $('#sixMinWalking_chart').attr('disabled',false);
         }else{
-            button_state_sixMinWalking('add');
+            // button_state_sixMinWalking('add');
             $('#sixMinWalking_chart').attr('disabled',true);
         }
         
@@ -357,6 +358,7 @@ function getdata_sixMinWalking(){
         //     gender_F.checked = true;
         // }
         
+        button_state_sixMinWalking('add');
         // textarea_init_sixMinWalking();
     });
 }

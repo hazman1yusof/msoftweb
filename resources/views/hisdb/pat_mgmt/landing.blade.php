@@ -462,7 +462,7 @@
 			
 			@if (Auth::user()->doctor == 1)
 				<script type="text/javascript" src="js/hisdb/nursingED/nursingED.js?v=1.3"></script>
-				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.2"></script>
+				<!-- <script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.2"></script> -->
 				<!-- <script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script> -->
 				<script type="text/javascript" src="js/hisdb/nursingActionPlan/nursingActionPlan.js?v=1.4"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_intake.js?v=1.1"></script>
@@ -484,7 +484,7 @@
 				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnote.js"></script>
 				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnoteref.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.6"></script>
+				<!-- <script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.6"></script> -->
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
 				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js?v=1.6"></script>
@@ -492,7 +492,7 @@
 				<script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script>
 			@elseif (Auth::user()->nurse == 1)
 				<script type="text/javascript" src="js/hisdb/nursingED/nursingED.js?v=1.3"></script>
-				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.2"></script>
+				<!-- <script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.2"></script> -->
 				<!-- <script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script> -->
 				<script type="text/javascript" src="js/hisdb/nursingActionPlan/nursingActionPlan.js?v=1.4"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_intake.js?v=1.1"></script>
@@ -513,7 +513,7 @@
 				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnote.js"></script>
 				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnoteref.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.6"></script>
+				<!-- <script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.6"></script> -->
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
 				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js?v=1.6"></script>

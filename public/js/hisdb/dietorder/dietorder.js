@@ -1,3 +1,17 @@
+$.jgrid.defaults.responsive = true;
+$.jgrid.defaults.styleUI = 'Bootstrap';
+var editedRow = 0;
+
+/////////////////////////////parameter for jqGridAddNotesDietOrder url/////////////////////////////
+var urlParam_AddNotesDietOrder = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','DIET_ORDER'],
+}
 
 $(document).ready(function (){
 	
@@ -74,7 +88,7 @@ $(document).ready(function (){
 			if(!$.isEmptyObject(data.dietorder)){
 				autoinsert_rowdata("#formDietOrder",data.dietorder);
 				autoinsert_rowdata("#formDietOrder",data.episode);
-				button_state_dietOrder('edit');
+				button_state_dietOrder('disableAll');
 				yesnoCheck();
 				feedingCheck();
 				textarea_init_dietorder();
@@ -99,6 +113,116 @@ $(document).ready(function (){
 		
 		window.open('./dietorder/table?action=dietorder_preview&epistycode='+$('#epistycode').val(), '_blank');
 	});
+
+	//////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridDietOrder = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesDietOrder///////////////////////////////////////
+	$("#jqGridAddNotesDietOrder").jqGrid({
+		datatype: "local",
+		editurl: "./dietorder/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesDietOrder",
+		loadComplete: function (){
+			if(addmore_jqgridDietOrder.more == true){$('#jqGridAddNotesDietOrder_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridDietOrder.edit = addmore_jqgridDietOrder.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesDietOrder");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesDietOrder_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addDietOrder = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesDietOrder,#jqGridPagerRefresh_addnoteDietOrder").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesDietOrder_ilsave').click();
+				// addmore_jqgridDietOrder.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridDietOrder.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesDietOrder',urlParam_AddNotesDietOrder,'add_notesDietOrder');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesDietOrder,#jqGridPagerRefresh_addnoteDietOrder").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesDietOrder',urlParam_AddNotesDietOrder,'add_notesDietOrder');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesDietOrder').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./dietorder/form?"+
+				$.param({
+					episno: $('#episno_wardMain').val(),
+					mrn: $('#mrn_wardMain').val(),
+					action: 'addNotesDietOrder_save',
+				});
+			$("#jqGridAddNotesDietOrder").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesDietOrder,#jqGridPagerRefresh_addnoteDietOrder").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesDietOrder/////////////////////////////////////
+	$("#jqGridAddNotesDietOrder").inlineNav('#jqGridPagerAddNotesDietOrder', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addDietOrder
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesDietOrder", {
+		id: "jqGridPagerRefresh_addnoteDietOrder",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesDietOrder", urlParam_AddNotesDietOrder);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
 	
 });
 
@@ -160,6 +284,10 @@ function button_state_dietOrder(state){
 			$("#save_dietOrder,#cancel_dietOrder").attr('disabled',false);
 			$('#edit_dietOrder,#new_dietOrder').attr('disabled',true);
 			break;
+		case 'disableAll':
+			$("#toggle_dietOrder").attr('data-toggle','collapse');
+			$('#new_dietOrder,#save_dietOrder,#cancel_dietOrder,#edit_dietOrder').attr('disabled',true);
+			break;
 	}
 	
 	// if(!moment(gldatepicker_date).isSame(moment(), 'day')){
@@ -203,18 +331,22 @@ function populate_dietOrder(obj,rowdata){
 		if(!$.isEmptyObject(data)){
 			autoinsert_rowdata("#formDietOrder",data.dietorder);
 			autoinsert_rowdata("#formDietOrder",data.episode);
-			button_state_dietOrder('edit');
+			$("#dietorder_diagnosis").val(data.diagnosis);
+			button_state_dietOrder('empty');
 			yesnoCheck();
 			feedingCheck();
 		}else{
 			button_state_dietOrder('add');
+			$("#dietorder_diagnosis").val(data.diagnosis);
 		}
+		$("#dietorder_diagnosis").val(data.diagnosis);
+
 	});
 }
 
 // screen current patient //
 function populate_dietOrder_currpt(obj){
-	emptyFormdata(errorField,"#formDietOrder");
+	// emptyFormdata(errorField,"#formDietOrder");
 	
 	// panel header
 	$('#name_show_dietOrder').text(obj.Name);
@@ -231,6 +363,11 @@ function populate_dietOrder_currpt(obj){
 	// formDietOrder
 	$('#mrn_dietOrder').val(obj.MRN);
 	$("#episno_dietOrder").val(obj.Episno);
+
+	////jqGridAddNotesDietOrder
+	urlParam_AddNotesDietOrder.filterVal[0] = obj.MRN;
+	urlParam_AddNotesDietOrder.filterVal[1] = obj.Episno;
+	urlParam_AddNotesDietOrder.filterVal[2] = 'DIET_ORDER';
 	
 	// var saveParam = {
 	// 	action: 'get_table_dietorder',
@@ -258,6 +395,50 @@ function populate_dietOrder_currpt(obj){
 	// });
 }
 
+function populate_dietOrder_getdata(obj){
+	emptyFormdata(errorField,"#formDietOrder");
+	
+	var saveParam = {
+		action: 'get_table_dietorder',
+	}
+	
+	var postobj = {
+		_token: $('#csrf_token').val(),
+		mrn: $("#mrn_wardMain").val(),
+		episno: $("#episno_wardMain").val(),
+	};
+	
+	$.post("dietorder/form?"+$.param(saveParam), $.param(postobj), function (data){
+		
+	},'json').fail(function (data){
+		alert('there is an error');
+	}).success(function (data){
+		if(!$.isEmptyObject(data)){
+			autoinsert_rowdata("#formDietOrder",data.dietorder);
+			autoinsert_rowdata("#formDietOrder",data.episode);
+			$("#dietorder_diagnosis").val(data.diagnosis);
+			button_state_dietOrder('empty');
+			yesnoCheck();
+			feedingCheck();
+			textarea_init_dietorder();
+		}else{
+			autoinsert_rowdata("#formDietOrder",data.episode);
+			$("#dietorder_diagnosis").val(data.diagnosis);
+			button_state_dietOrder('add');
+			textarea_init_dietorder();
+		}
+
+		$("#dietorder_diagnosis").val(data.diagnosis);
+	});
+
+	////jqGridAddNotesDietOrder
+	urlParam_AddNotesDietOrder.filterVal[0] = $("#mrn_wardMain").val();
+	urlParam_AddNotesDietOrder.filterVal[1] = $("#episno_wardMain").val();
+	urlParam_AddNotesDietOrder.filterVal[2] = 'DIET_ORDER';
+
+}
+
+
 function autoinsert_rowdata(form,rowData){
 	$.each(rowData, function (index, value){
 		var input = $(form+" [name='"+index+"']");
@@ -276,7 +457,9 @@ function autoinsert_rowdata(form,rowData){
 function saveForm_dietOrder(callback){
 	var saveParam = {
 		action: 'save_table_dietOrder',
-		oper: $("#cancel_dietOrder").data('oper')
+		oper: $("#cancel_dietOrder").data('oper'),
+		mrn: $("#mrn_wardMain").val(),
+		episno: $("#episno_wardMain").val(),
 	}
 	var postobj = {
 		_token: $('#csrf_token').val(),

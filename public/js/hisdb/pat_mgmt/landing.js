@@ -296,7 +296,7 @@ grid.on("click.rs.jquery.bootgrid", function (e,c,r){
     if($('#curpat').val() == 'true'){
         if($('#epistycode').val() == 'OP'){
             if($('#user_doctor').val() == '1'){
-                populate_triage_currpt(lastrowdata);
+                // populate_triage_currpt(lastrowdata);
                 populate_antenatal(lastrowdata);
                 populate_paediatric(lastrowdata);
                 populate_nursingnote(lastrowdata);
@@ -308,7 +308,7 @@ grid.on("click.rs.jquery.bootgrid", function (e,c,r){
                 populate_dieteticCareNotes_currpt(lastrowdata);
                 // populate_dietOrder_currpt(lastrowdata);
             }else if($('#user_nurse').val() == '1'){
-                populate_triage_currpt(lastrowdata);
+                // populate_triage_currpt(lastrowdata);
                 populate_nursingnote(lastrowdata);
                 populate_clientProgNote_currpt(lastrowdata);
                 populate_clientProgNoteRef_currpt(lastrowdata);
@@ -331,33 +331,33 @@ grid.on("click.rs.jquery.bootgrid", function (e,c,r){
             
             if($('#user_doctor').val() == '1'){
                 populate_triageED_currpt(lastrowdata);
-                populate_triage_currpt(lastrowdata);
-                // populate_nursAssessment_currpt(lastrowdata);
                 populate_nursingActionPlan(lastrowdata);
-                // populate_header_getdata(lastrowdata);
                 populate_nursingnote(lastrowdata);
-                // populate_invHeader_getdata(lastrowdata);
                 populate_antenatal(lastrowdata);
                 populate_clientProgNote_currpt(lastrowdata);
                 populate_clientProgNoteRef_currpt(lastrowdata);
-                populate_doctorNote_currpt(lastrowdata);
                 populate_requestFor_currpt(lastrowdata);
-                populate_dieteticCareNotes_currpt(lastrowdata);
-                populate_dietOrder_currpt(lastrowdata);
+                // populate_triage_currpt(lastrowdata);
+                // populate_nursAssessment_currpt(lastrowdata);
+                // populate_header_getdata(lastrowdata);
+                // populate_invHeader_getdata(lastrowdata);
+                // populate_doctorNote_currpt(lastrowdata);
+                // populate_dieteticCareNotes_currpt(lastrowdata);
+                // populate_dietOrder_currpt(lastrowdata);
             }else if($('#user_nurse').val() == '1'){
                 populate_triageED_currpt(lastrowdata);
-                populate_triage_currpt(lastrowdata);
-                // populate_nursAssessment_currpt(lastrowdata);
                 populate_nursingActionPlan(lastrowdata);
-                // populate_header_getdata(lastrowdata);
                 populate_nursingnote(lastrowdata);
-                // populate_invHeader_getdata(lastrowdata);
                 populate_clientProgNote_currpt(lastrowdata);
                 populate_clientProgNoteRef_currpt(lastrowdata);
-                populate_doctorNote_currpt(lastrowdata);
                 populate_requestFor_currpt(lastrowdata);
-                populate_dieteticCareNotes_currpt(lastrowdata);
-                populate_dietOrder_currpt(lastrowdata);
+                // populate_triage_currpt(lastrowdata);
+                // populate_nursAssessment_currpt(lastrowdata);
+                // populate_header_getdata(lastrowdata);
+                // populate_invHeader_getdata(lastrowdata);
+                // populate_doctorNote_currpt(lastrowdata);
+                // populate_dieteticCareNotes_currpt(lastrowdata);
+                // populate_dietOrder_currpt(lastrowdata);
             }
             
             if($('#user_billing').val() == '1'){

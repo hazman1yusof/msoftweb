@@ -170,8 +170,8 @@ class OccupTherapyUpperExtremityController extends defaultController
         
         $upperExtremity_obj = DB::table('hisdb.ot_upperextremity')
                             ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno);
+                            ->where('mrn','=',$request->mrn);
+                            // ->where('episno','=',$request->episno);
         
         if($upperExtremity_obj->exists()){
             $upperExtremity_obj = $upperExtremity_obj->get();
@@ -187,6 +187,11 @@ class OccupTherapyUpperExtremityController extends defaultController
                 $date['idno'] = $value->idno;
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
+                if(!empty($value->dateAssess)){ // for sorting
+                    $date['datetime'] =  Carbon::createFromFormat('Y-m-d', $value->dateAssess)->format('d-m-Y').' '.$value->enteredtime;
+                }else{
+                    $date['datetime'] =  '-';
+                }
                 
                 array_push($data,$date);
             }
@@ -212,6 +217,7 @@ class OccupTherapyUpperExtremityController extends defaultController
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'dateAssess' => $request->dateAssess,
+                        'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                         'occupTherapist' => session('username'),
                         'handDominant' => $request->handDominant,
                         'diagnosis' => $request->diagnosis,
@@ -1376,13 +1382,14 @@ class OccupTherapyUpperExtremityController extends defaultController
         $mrn = $request->mrn;
         $episno = $request->episno;
         $dateAssess = $request->dateAssess;
+        $enteredtime = $request->enteredtime;
 
         if(!$mrn || !$episno){
             abort(404);
         }
         
         $upperExtremity = DB::table('hisdb.ot_upperextremity as h')
-                ->select('h.idno','h.mrn','h.episno','h.dateAssess','h.occupTherapist','h.handDominant','h.diagnosis','pm.Name','pm.Newic')
+                ->select('h.idno','h.mrn','h.episno','h.dateAssess','h.enteredtime','h.occupTherapist','h.handDominant','h.diagnosis','pm.Name','pm.Newic')
                 ->leftjoin('hisdb.pat_mast as pm', function ($join){
                     $join = $join->on('pm.MRN','=','h.mrn');
                     // $join = $join->on('pm.Episno','=','h.episno');
@@ -1392,20 +1399,28 @@ class OccupTherapyUpperExtremityController extends defaultController
                 ->where('h.mrn','=',$mrn)
                 ->where('h.episno','=',$episno)
                 ->where('h.dateAssess','=',$dateAssess)
+                ->where('h.enteredtime','=',$enteredtime)
                 ->first();
         // dd($upperExtremity);
             
+        // $rof = DB::table('hisdb.ot_upperextremity_rof as r')
+        //         ->select('r.idno','r.mrn','r.episno','r.daterof','r.dominant','r.idno_rof','r.shoulder_ext','r.shoulder_flex','r.shoulder_addAbd','r.shoulder_intRotation','r.shoulder_extRotation','r.elbow_extFlex','r.forearm_pronation','r.forearm_supination','r.impressions','h.idno','h.dateAssess')
+        //         ->leftjoin('hisdb.ot_upperextremity as h', function ($join){
+        //             $join = $join->on('h.mrn','=','r.mrn');
+        //             $join = $join->on('h.episno','=','r.episno');
+        //             $join = $join->where('h.compcode','=',session('compcode'));
+        //         })
+        //         ->where('r.compcode','=',session('compcode'))
+        //         ->where('r.mrn','=',$mrn)
+        //         ->where('r.episno','=',$episno)
+        //         ->where('h.dateAssess','=',$dateAssess)
+        //         ->where('r.idno_rof','=',$upperExtremity->idno)
+        //         ->get();
+        
         $rof = DB::table('hisdb.ot_upperextremity_rof as r')
-                ->select('r.idno','r.mrn','r.episno','r.daterof','r.dominant','r.idno_rof','r.shoulder_ext','r.shoulder_flex','r.shoulder_addAbd','r.shoulder_intRotation','r.shoulder_extRotation','r.elbow_extFlex','r.forearm_pronation','r.forearm_supination','r.impressions','h.idno','h.dateAssess')
-                ->leftjoin('hisdb.ot_upperextremity as h', function ($join){
-                    $join = $join->on('h.mrn','=','r.mrn');
-                    $join = $join->on('h.episno','=','r.episno');
-                    $join = $join->where('h.compcode','=',session('compcode'));
-                })
                 ->where('r.compcode','=',session('compcode'))
                 ->where('r.mrn','=',$mrn)
                 ->where('r.episno','=',$episno)
-                ->where('h.dateAssess','=',$dateAssess)
                 ->where('r.idno_rof','=',$upperExtremity->idno)
                 ->get();
         
@@ -1417,17 +1432,24 @@ class OccupTherapyUpperExtremityController extends defaultController
                                 ->where('idno_imp','=',$upperExtremity->idno)
                                 ->first();
             
+        // $hand = DB::table('hisdb.ot_upperExtremity_hand as h')
+        //         ->select('h.idno','h.compcode','h.mrn','h.episno','h.datehand','h.dominants','h.idno_hand','h.wrist_flex','h.wrist_ext','h.wrist_ulna','h.thumb_extFlexMP','h.thumb_extFlexIP','h.thumb_extFlexCMC','h.thumb_palmar','h.thumb_tip','h.thumb_base','h.index_MCP','h.index_PIP','h.index_DIP','h.middle_MCP','h.middle_PIP','h.middle_DIP','h.ring_MCP','h.ring_PIP','h.ring_DIP','h.little_MCP','h.little_PIP','h.little_DIP','o.idno as midno','o.dateAssess')
+        //         ->leftjoin('hisdb.ot_upperextremity as o', function ($join){
+        //             $join = $join->on('o.mrn','=','h.mrn');
+        //             $join = $join->on('o.episno','=','h.episno');
+        //             $join = $join->where('o.compcode','=',session('compcode'));
+        //         })
+        //         ->where('h.compcode','=',session('compcode'))
+        //         ->where('h.mrn','=',$mrn)
+        //         ->where('h.episno','=',$episno)
+        //         ->where('o.dateAssess','=',$dateAssess)
+        //         ->where('h.idno_hand','=',$upperExtremity->idno)
+        //         ->get();
+            
         $hand = DB::table('hisdb.ot_upperExtremity_hand as h')
-                ->select('h.idno','h.compcode','h.mrn','h.episno','h.datehand','h.dominants','h.idno_hand','h.wrist_flex','h.wrist_ext','h.wrist_ulna','h.thumb_extFlexMP','h.thumb_extFlexIP','h.thumb_extFlexCMC','h.thumb_palmar','h.thumb_tip','h.thumb_base','h.index_MCP','h.index_PIP','h.index_DIP','h.middle_MCP','h.middle_PIP','h.middle_DIP','h.ring_MCP','h.ring_PIP','h.ring_DIP','h.little_MCP','h.little_PIP','h.little_DIP','o.idno as midno','o.dateAssess')
-                ->leftjoin('hisdb.ot_upperextremity as o', function ($join){
-                    $join = $join->on('o.mrn','=','h.mrn');
-                    $join = $join->on('o.episno','=','h.episno');
-                    $join = $join->where('o.compcode','=',session('compcode'));
-                })
                 ->where('h.compcode','=',session('compcode'))
                 ->where('h.mrn','=',$mrn)
                 ->where('h.episno','=',$episno)
-                ->where('o.dateAssess','=',$dateAssess)
                 ->where('h.idno_hand','=',$upperExtremity->idno)
                 ->get();
         

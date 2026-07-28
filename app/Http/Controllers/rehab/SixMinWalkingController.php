@@ -67,12 +67,13 @@ class SixMinWalkingController extends defaultController
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno)
-                        ->where('entereddate','=',$request->entereddate);
+                        ->where('entereddate','=',$request->entereddate)
+                        ->where('enteredtime','=',$request->enteredtime);
             
-            if($sixminwalk->exists()){
-                // throw new \Exception('Date already exist.', 500);
-                return response('Date already exist.');
-            }
+            // if($sixminwalk->exists()){
+            //     // throw new \Exception('Date already exist.', 500);
+            //     return response('Date already exist.');
+            // }
             
             DB::table('hisdb.phy_sixminwalk')
                 ->insert([
@@ -84,6 +85,7 @@ class SixMinWalkingController extends defaultController
                     // 'walk' => $request->walk,
                     // 'techID' => $request->techID,
                     'entereddate' => $request->entereddate,
+                    'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     // 'gender' => $request->gender,
                     // 'age' => $request->age,
                     // 'race' => $request->race,
@@ -337,8 +339,8 @@ class SixMinWalkingController extends defaultController
         
         $sixminwalk_obj = DB::table('hisdb.phy_sixminwalk')
                         ->where('compcode','=',session('compcode'))
-                        ->where('mrn','=',$request->mrn)
-                        ->where('episno','=',$request->episno);
+                        ->where('mrn','=',$request->mrn);
+                        // ->where('episno','=',$request->episno);
         
         if($sixminwalk_obj->exists()){
             $sixminwalk_obj = $sixminwalk_obj->get();
@@ -354,7 +356,12 @@ class SixMinWalkingController extends defaultController
                 }else{
                     $date['entereddate'] =  '-';
                 }
-                $date['dt'] = $value->entereddate; // for sorting
+                // $date['dt'] = $value->entereddate; // for sorting
+                if(!empty($value->entereddate)){ // for sorting
+                    $date['dt'] =  Carbon::createFromFormat('Y-m-d', $value->entereddate)->format('d-m-Y').' '.$value->enteredtime;
+                }else{
+                    $date['dt'] =  '-';
+                }
                 $date['adduser'] = $value->adduser;
                 
                 array_push($data,$date);
@@ -374,13 +381,14 @@ class SixMinWalkingController extends defaultController
         $mrn = $request->mrn;
         $episno = $request->episno;
         $entereddate = $request->entereddate;
+        $enteredtime = $request->enteredtime;
         $age = $request->age;
         if(!$mrn || !$episno || !$entereddate){
             abort(404);
         }
         
         $sixminwalk = DB::table('hisdb.phy_sixminwalk as s')
-                    ->select('s.idno','s.compcode','s.mrn','s.episno','s.lapCounter','s.patName','s.walk','s.techID','s.entereddate','s.gender','s.age','s.race','s.heightFT','s.heightIN','s.heightCM','s.weightLBS','s.weightKG','s.bpsys1','s.bpdias2','s.medsDose','s.medsTime','s.suppOxygen','s.oxygenFlow','s.oxygenType','s.baselineTime','s.endTestTime','s.baselineHR','s.endTestHR','s.baselineBorgScale','s.endTestBorgScale','s.baselineDyspnea','s.endTestDyspnea','s.baselineFatigue','s.endTestFatigue','s.baselineSpO2','s.endTestSpO2','s.stopPaused','s.reason','s.othSymptoms','s.lapsNo','s.partialLaps','s.lapsTot','s.totDistance','s.predictDistance','s.percentPredicted','s.comments','s.adduser','s.adddate','s.upduser','s.upddate','s.lastuser','s.lastupdate','s.computerid','pm.Name','pm.Newic','pm.Sex','rc.Description as raceDesc')
+                    ->select('s.idno','s.compcode','s.mrn','s.episno','s.lapCounter','s.patName','s.walk','s.techID','s.entereddate','s.enteredtime','s.gender','s.age','s.race','s.heightFT','s.heightIN','s.heightCM','s.weightLBS','s.weightKG','s.bpsys1','s.bpdias2','s.medsDose','s.medsTime','s.suppOxygen','s.oxygenFlow','s.oxygenType','s.baselineTime','s.endTestTime','s.baselineHR','s.endTestHR','s.baselineBorgScale','s.endTestBorgScale','s.baselineDyspnea','s.endTestDyspnea','s.baselineFatigue','s.endTestFatigue','s.baselineSpO2','s.endTestSpO2','s.stopPaused','s.reason','s.othSymptoms','s.lapsNo','s.partialLaps','s.lapsTot','s.totDistance','s.predictDistance','s.percentPredicted','s.comments','s.adduser','s.adddate','s.upduser','s.upddate','s.lastuser','s.lastupdate','s.computerid','pm.Name','pm.Newic','pm.Sex','rc.Description as raceDesc')
                     ->leftjoin('hisdb.pat_mast as pm', function ($join){
                         $join = $join->on('pm.MRN','=','s.mrn');
                         // $join = $join->on('pm.Episno','=','s.episno');
@@ -394,6 +402,7 @@ class SixMinWalkingController extends defaultController
                     ->where('s.mrn','=',$mrn)
                     ->where('s.episno','=',$episno)
                     ->where('s.entereddate','=',$entereddate)
+                    ->where('s.enteredtime','=',$enteredtime)
                     ->first();
         // dd($sixminwalk);
         

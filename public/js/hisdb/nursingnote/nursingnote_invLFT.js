@@ -9,6 +9,17 @@ var urlParam_LFT = {
     filterVal: ['','','',''],
 };
 
+/////////////////////////////parameter for jqGridAddNotesInvChartLFT url/////////////////////////////
+var urlParam_AddNotesInvChartLFT = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','INVCHART_LFT'],
+}
+
 $(document).ready(function(){
     
     var fdl = new faster_detail_load();
@@ -154,6 +165,115 @@ $(document).ready(function(){
         },
     });
     
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridInvChartLFT = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesInvChartLFT///////////////////////////////////////
+	$("#jqGridAddNotesInvChartLFT").jqGrid({
+		datatype: "local",
+		editurl: "./nursingnote/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesInvChartLFT",
+		loadComplete: function (){
+			if(addmore_jqgridInvChartLFT.more == true){$('#jqGridAddNotesInvChartLFT_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridInvChartLFT.edit = addmore_jqgridInvChartLFT.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesInvChartLFT");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesInvChartLFT_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addInvChartLFT = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesInvChartLFT,#jqGridPagerRefresh_addnoteInvChartLFT").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesInvChartLFT_ilsave').click();
+				// addmore_jqgridInvChartLFT.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridInvChartLFT.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesInvChartLFT',urlParam_AddNotesInvChartLFT,'add_notesInvChartLFT');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesInvChartLFT,#jqGridPagerRefresh_addnoteInvChartLFT").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesInvChartLFT',urlParam_AddNotesInvChartLFT,'add_notesInvChartLFT');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesInvChartLFT').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./nursingnote/form?"+
+				$.param({
+					episno: $('#episno_nursNote').val(),
+					mrn: $('#mrn_nursNote').val(),
+					action: 'addNotesInvChartLFT_save',
+				});
+			$("#jqGridAddNotesInvChartLFT").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesInvChartLFT,#jqGridPagerRefresh_addnoteInvChartLFT").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesInvChartLFT/////////////////////////////////////
+	$("#jqGridAddNotesInvChartLFT").inlineNav('#jqGridPagerAddNotesInvChartLFT', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addInvChartLFT
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesInvChartLFT", {
+		id: "jqGridPagerRefresh_addnoteInvChartLFT",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesInvChartLFT", urlParam_AddNotesInvChartLFT);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
 });
 
 var addmore_jqgrid_LFT = { more:false,state:false,edit:false }

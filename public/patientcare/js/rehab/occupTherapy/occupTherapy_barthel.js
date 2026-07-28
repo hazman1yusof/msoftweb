@@ -49,7 +49,7 @@ $(document).ready(function (){
 
     /////////////////////////////////////////print button starts/////////////////////////////////////////
     $("#barthel_chart").click(function (){
-        window.open('./occupTherapy_barthel/barthel_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&dateofAssessment='+$("#dateofAssessment").val(), '_blank');
+        window.open('./occupTherapy_barthel/barthel_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&dateofAssessment='+$("#dateofAssessment").val()+'&timeAssessment='+$("#timeAssessment").val(), '_blank');
     });
 
     // to format number input to two decimal places (0.00)
@@ -113,8 +113,9 @@ $(document).ready(function (){
         }).done(function (data){
             if(!$.isEmptyObject(data)){
                 autoinsert_rowdata("#formOccupTherapyBarthel",data.barthel);
-
-                button_state_barthel('edit');
+                // button_state_barthel('edit');
+                button_state_barthel('add');
+                $("#barthel_chart").attr('disabled',false);
             }else{
                 button_state_barthel('add');
             }
@@ -189,10 +190,11 @@ var datetimeBarthel_tbl = $('#datetimeBarthel_tbl').DataTable({
         { 'data': 'episno' },
         { 'data': 'dateofAssessment', 'width': '10%' },
         // { 'data': 'timeAssessment', 'width': '20%' },
+        { 'data': 'datetime' },
 
     ],
     columnDefs: [
-        { targets: [0, 1, 2], visible: false },
+        { targets: [0, 1, 2, 4], visible: false },
     ],
     order: [[0, 'desc']],
     "drawCallback": function (settings){
@@ -351,7 +353,9 @@ function populate_barthel_getdata(){
     }).done(function (data){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formOccupTherapyBarthel",data.barthel);
-            button_state_barthel('edit');
+            // button_state_barthel('edit');
+            button_state_barthel('add');
+            $("#barthel_chart").attr('disabled',false);
         }else{
             button_state_barthel('add');
         }
@@ -379,7 +383,9 @@ function getdata_barthel(){
         alert('there is an error');
     }).done(function (data){
         if(!$.isEmptyObject(data)){
-            button_state_barthel('edit');
+            // button_state_barthel('edit');
+            button_state_barthel('add');
+            $("#barthel_chart").attr('disabled',false);
             autoinsert_rowdata("#formOccupTherapyBarthel",data.barthel);
         }else{
             button_state_barthel('add');

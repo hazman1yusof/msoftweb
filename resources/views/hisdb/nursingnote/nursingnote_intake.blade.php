@@ -10,9 +10,9 @@
                 <button type="button" class="btn btn-default" id="new_intake">
                     <span class="fa fa-plus-square-o"></span> New 
                 </button>
-                <button type="button" class="btn btn-default" id="edit_intake">
+                <!-- <button type="button" class="btn btn-default" id="edit_intake">
                     <span class="fa fa-edit fa-lg"></span> Edit 
-                </button>
+                </button> -->
                 <button type="button" class="btn btn-default" data-oper='add' id="save_intake">
                     <span class="fa fa-save fa-lg"></span> Save 
                 </button>
@@ -462,6 +462,18 @@
                                     </tr>
                                 </tbody>
                             </table>
+
+                            <div class='col-md-12'>
+                                <div class="panel panel-info" id="jqGridAddNotesIntake1_c">
+                                    <div class="panel-heading text-center" id="addNotesIntake1_title">ADDITIONAL NOTES</div>
+                                    <div class="panel-body">
+                                        <div class='col-md-12' style="padding:0 0 15px 0">
+                                            <table id="jqGridAddNotesIntake1" class="table table-striped"></table>
+                                            <div id="jqGridPagerAddNotesIntake1"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div id="tab-second" class="tab-pane fade">
                             <table class="table table-bordered">
@@ -819,6 +831,18 @@
                                     </tr>
                                 </tbody>
                             </table>
+
+                            <div class='col-md-12'>
+                                <div class="panel panel-info" id="jqGridAddNotesIntake2_c">
+                                    <div class="panel-heading text-center" id="addNotesIntake2_title">ADDITIONAL NOTES</div>
+                                    <div class="panel-body">
+                                        <div class='col-md-12' style="padding:0 0 15px 0">
+                                            <table id="jqGridAddNotesIntake2" class="table table-striped"></table>
+                                            <div id="jqGridPagerAddNotesIntake2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div id="tab-third" class="tab-pane fade">
                             <table class="table table-bordered">
@@ -1270,6 +1294,18 @@
                                     </tr>
                                 </tbody>
                             </table>
+
+                            <div class='col-md-12'>
+                                <div class="panel panel-info" id="jqGridAddNotesIntake3_c">
+                                    <div class="panel-heading text-center" id="addNotesIntake3_title">ADDITIONAL NOTES</div>
+                                    <div class="panel-body">
+                                        <div class='col-md-12' style="padding:0 0 15px 0">
+                                            <table id="jqGridAddNotesIntake3" class="table table-striped"></table>
+                                            <div id="jqGridPagerAddNotesIntake3"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <table style="display: none;">
