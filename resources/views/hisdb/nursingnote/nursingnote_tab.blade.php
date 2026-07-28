@@ -1374,6 +1374,18 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class='col-md-12'>
+                                            <div class="panel panel-info" id="jqGridAddNotesBladder1_c">
+                                                <div class="panel-heading text-center" id="addNotesBladder1_title">ADDITIONAL NOTES</div>
+                                                <div class="panel-body">
+                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                        <table id="jqGridAddNotesBladder1" class="table table-striped"></table>
+                                                        <div id="jqGridPagerAddNotesBladder1"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     
                                     <!-- 2nd shift (3pm-9pm) -->
@@ -1401,6 +1413,18 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class='col-md-12'>
+                                            <div class="panel panel-info" id="jqGridAddNotesBladder2_c">
+                                                <div class="panel-heading text-center" id="addNotesBladder2_title">ADDITIONAL NOTES</div>
+                                                <div class="panel-body">
+                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                        <table id="jqGridAddNotesBladder2" class="table table-striped"></table>
+                                                        <div id="jqGridPagerAddNotesBladder2"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     
                                     <!-- 3rd shift (10pm-7am) -->
@@ -1424,6 +1448,18 @@
                                                         <input id="thirdShift" name="thirdShift" value="3" type="hidden">
                                                         <table id="jqGridBladder3" class="table table-striped"></table>
                                                         <div id="jqGridPagerBladder3"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class='col-md-12'>
+                                            <div class="panel panel-info" id="jqGridAddNotesBladder3_c">
+                                                <div class="panel-heading text-center" id="addNotesBladder3_title">ADDITIONAL NOTES</div>
+                                                <div class="panel-body">
+                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                        <table id="jqGridAddNotesBladder3" class="table table-striped"></table>
+                                                        <div id="jqGridPagerAddNotesBladder3"></div>
                                                     </div>
                                                 </div>
                                             </div>
