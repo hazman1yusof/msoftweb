@@ -264,6 +264,9 @@ class NursingNoteController extends defaultController
             case 'addNotesTreatmentP_save':
                 return $this->add_notesTreatmentP($request);
 
+            case 'addNotesCarePlan_save':
+                return $this->add_notesCarePlan($request);
+
             default:
                 return 'error happen..';
         }
@@ -2671,6 +2674,37 @@ class NursingNoteController extends defaultController
             DB::rollback();
             
             return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+
+    public function add_notesCarePlan(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'CARE_PLAN',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
             
         }
         

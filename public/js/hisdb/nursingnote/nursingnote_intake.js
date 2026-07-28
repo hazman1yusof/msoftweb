@@ -142,23 +142,6 @@ $(document).ready(function (){
             }
         });
 
-        ////jqGridAddNotesIntake1
-        urlParam_AddNotesIntake1.filterVal[0] = data.mrn;
-        urlParam_AddNotesIntake1.filterVal[1] = data.episno;
-        urlParam_AddNotesIntake1.filterVal[2] = 'INTAKE_MORNING';
-        refreshGrid('#jqGridAddNotesIntake1',urlParam_AddNotesIntake1,'add_notesIntake1');
-
-        ////jqGridAddNotesIntake2
-        urlParam_AddNotesIntake2.filterVal[0] = data.mrn;
-        urlParam_AddNotesIntake2.filterVal[1] = data.episno;
-        urlParam_AddNotesIntake2.filterVal[2] = 'INTAKE_EVENING';
-        refreshGrid('#jqGridAddNotesIntake2',urlParam_AddNotesIntake2,'add_notesIntake2');
-
-        ////jqGridAddNotesIntake3
-        urlParam_AddNotesIntake3.filterVal[0] = data.mrn;
-        urlParam_AddNotesIntake3.filterVal[1] = data.episno;
-        urlParam_AddNotesIntake3.filterVal[2] = 'INTAKE_NIGHT';
-        refreshGrid('#jqGridAddNotesIntake3',urlParam_AddNotesIntake3,'add_notesIntake3');
     });
     //////////////////////////////////////intakeoutput ends//////////////////////////////////////
 

@@ -45,6 +45,17 @@ var urlParam_AddNotesTreatmentP = {
 	filterVal: ['','','TREATMENT_AND_PROCEDURE'],
 }
 
+/////////////////////////////parameter for jqGridAddNotesCarePlan url/////////////////////////////
+var urlParam_AddNotesCarePlan = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','CARE_PLAN'],
+}
+
 /////////////////////////parameter for jqGridFitChart url/////////////////////////
 var urlParam_FitChart = {
     action: 'get_table_default',
@@ -732,6 +743,9 @@ $(document).ready(function (){
                     emptyFormdata_div("#formCarePlan",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
                     $('#tbl_careplan_date tbody tr:eq(0)').click(); // to select first row
                 });
+
+                $("#jqGridAddNotesCarePlan").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesCarePlan_c")[0].offsetWidth-$("#jqGridAddNotesCarePlan_c")[0].offsetLeft-30));
+                refreshGrid('#jqGridAddNotesCarePlan',urlParam_AddNotesCarePlan,'add_notesCarePlan');
                 
                 // $('#tbl_careplan_date').DataTable().ajax.reload();
                 break;
@@ -1680,12 +1694,6 @@ $(document).ready(function (){
             }
         });
 
-        ////jqGridAddNotesTreatmentP
-        urlParam_AddNotesTreatmentP.filterVal[0] = data.mrn;
-        urlParam_AddNotesTreatmentP.filterVal[1] = data.episno;
-        urlParam_AddNotesTreatmentP.filterVal[2] = 'TREATMENT_AND_PROCEDURE';
-        refreshGrid('#jqGridAddNotesTreatmentP',urlParam_AddNotesTreatmentP,'add_notesTreatmentP');
-
     });
     
     $('#tbl_investigation tbody').on('click', 'tr', function (){
@@ -1962,6 +1970,116 @@ $(document).ready(function (){
             }
         });
     });
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridCarePlan = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesCarePlan///////////////////////////////////////
+	$("#jqGridAddNotesCarePlan").jqGrid({
+		datatype: "local",
+		editurl: "./nursingnote/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesCarePlan",
+		loadComplete: function (){
+			if(addmore_jqgridCarePlan.more == true){$('#jqGridAddNotesCarePlan_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridCarePlan.edit = addmore_jqgridCarePlan.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesCarePlan");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesCarePlan_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addCarePlan = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesCarePlan,#jqGridPagerRefresh_addnoteCarePlan").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesCarePlan_ilsave').click();
+				// addmore_jqgridCarePlan.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridCarePlan.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesCarePlan',urlParam_AddNotesCarePlan,'add_notesCarePlan');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesCarePlan,#jqGridPagerRefresh_addnoteCarePlan").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesCarePlan',urlParam_AddNotesCarePlan,'add_notesCarePlan');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesCarePlan').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./nursingnote/form?"+
+				$.param({
+					episno: $('#episno_nursNote').val(),
+					mrn: $('#mrn_nursNote').val(),
+					action: 'addNotesCarePlan_save',
+				});
+			$("#jqGridAddNotesCarePlan").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesCarePlan,#jqGridPagerRefresh_addnoteCarePlan").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesCarePlan/////////////////////////////////////
+	$("#jqGridAddNotesCarePlan").inlineNav('#jqGridPagerAddNotesCarePlan', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addCarePlan
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesCarePlan", {
+		id: "jqGridPagerRefresh_addnoteCarePlan",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesCarePlan", urlParam_AddNotesCarePlan);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
     //////////////////////////////////////////careplan ends//////////////////////////////////////////
     
     /////////////////////////////////////////InvChart starts/////////////////////////////////////////
@@ -5139,10 +5257,35 @@ function populate_nursingnote(obj){
 	urlParam_AddNotesProgressIP.filterVal[1] = obj.Episno;
 	urlParam_AddNotesProgressIP.filterVal[2] = 'PROGRESSNOTE_IP';
 
+    ////jqGridAddNotesIntake1
+	urlParam_AddNotesIntake1.filterVal[0] = obj.MRN;
+	urlParam_AddNotesIntake1.filterVal[1] = obj.Episno;
+	urlParam_AddNotesIntake1.filterVal[2] = 'INTAKE_MORNING';
+
+	////jqGridAddNotesIntake2
+	urlParam_AddNotesIntake2.filterVal[0] = obj.MRN;
+	urlParam_AddNotesIntake2.filterVal[1] = obj.Episno;
+	urlParam_AddNotesIntake2.filterVal[2] = 'INTAKE_EVENING';
+
+	////jqGridAddNotesIntake3
+	urlParam_AddNotesIntake3.filterVal[0] = obj.MRN;
+	urlParam_AddNotesIntake3.filterVal[1] = obj.Episno;
+	urlParam_AddNotesIntake3.filterVal[2] = 'INTAKE_NIGHT';
+
     ////jqGridAddNotesDrugAdminIP
 	urlParam_AddNotesDrugAdminIP.filterVal[0] = obj.MRN;
 	urlParam_AddNotesDrugAdminIP.filterVal[1] = obj.Episno;
 	urlParam_AddNotesDrugAdminIP.filterVal[2] = 'DRUGADMIN_IP';
+    
+    ////jqGridAddNotesTreatmentP
+    urlParam_AddNotesTreatmentP.filterVal[0] = obj.MRN;
+    urlParam_AddNotesTreatmentP.filterVal[1] = obj.Episno;
+    urlParam_AddNotesTreatmentP.filterVal[2] = 'TREATMENT_AND_PROCEDURE';
+
+    ////jqGridAddNotesCarePlan
+    urlParam_AddNotesCarePlan.filterVal[0] = obj.MRN;
+    urlParam_AddNotesCarePlan.filterVal[1] = obj.Episno;
+    urlParam_AddNotesCarePlan.filterVal[2] = 'CARE_PLAN';
     // $("#tot_input").val(obj.total_all_i);
     
     // var urlparam_datetime_tbl = {
@@ -5250,6 +5393,7 @@ function populate_treatmentP_getdata(){
             textarea_init_nursingnote();
         }
     });
+
 }
 
 function populate_careplan_getdata(){
