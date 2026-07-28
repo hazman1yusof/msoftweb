@@ -270,6 +270,11 @@ class NursingNoteController extends defaultController
             case 'addNotesFitChart_save':
                 return $this->add_notesFitChart($request);
 
+            case 'addNotesCirculation_save':
+                return $this->add_notesCirculation($request);
+
+            case 'addNotesSlidingScale_save':
+                return $this->add_notesSlidingScale($request);
             default:
                 return 'error happen..';
         }
@@ -3129,6 +3134,37 @@ class NursingNoteController extends defaultController
         
     }
 
+    public function add_notesCirculation(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'CIRCULATION_CHART',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+
     //////////////////////////////////////////SLIDING SCALE CHART//////////////////////////////////////////
 
     public function add_SlidingScale(Request $request){
@@ -3296,6 +3332,37 @@ class NursingNoteController extends defaultController
         // dd($nurs_slidingscale);
         
         return view('hisdb.nursingnote.slidingScale_chart_pdfmake', compact('pat_mast','nurs_slidingscale'));
+        
+    }
+
+    public function add_notesSlidingScale(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'SLIDING_SCALE_CHART',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
         
     }
 
