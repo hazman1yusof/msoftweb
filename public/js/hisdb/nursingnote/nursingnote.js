@@ -34,6 +34,17 @@ var urlParam_AddNotesDrugAdminIP = {
 	filterVal: ['','','DRUGADMIN_IP'],
 }
 
+/////////////////////////////parameter for jqGridAddNotesTreatmentP url/////////////////////////////
+var urlParam_AddNotesTreatmentP = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','TREATMENT_AND_PROCEDURE'],
+}
+
 /////////////////////////parameter for jqGridFitChart url/////////////////////////
 var urlParam_FitChart = {
     action: 'get_table_default',
@@ -700,6 +711,9 @@ $(document).ready(function (){
                     emptyFormdata_div("#formInjection",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
                     $('#tbl_injection tbody tr:eq(0)').click(); // to select first row
                 });
+
+                $("#jqGridAddNotesTreatmentP").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesTreatmentP_c")[0].offsetWidth-$("#jqGridAddNotesTreatmentP_c")[0].offsetLeft-30));
+                refreshGrid('#jqGridAddNotesTreatmentP',urlParam_AddNotesTreatmentP,'add_notesTreatmentP');
                 
                 // $('#tbl_treatmentP').DataTable().ajax.reload();
                 // $('#tbl_investigation').DataTable().ajax.reload();
@@ -1665,6 +1679,13 @@ $(document).ready(function (){
                 textarea_init_nursingnote();
             }
         });
+
+        ////jqGridAddNotesTreatmentP
+        urlParam_AddNotesTreatmentP.filterVal[0] = data.mrn;
+        urlParam_AddNotesTreatmentP.filterVal[1] = data.episno;
+        urlParam_AddNotesTreatmentP.filterVal[2] = 'TREATMENT_AND_PROCEDURE';
+        refreshGrid('#jqGridAddNotesTreatmentP',urlParam_AddNotesTreatmentP,'add_notesTreatmentP');
+
     });
     
     $('#tbl_investigation tbody').on('click', 'tr', function (){
@@ -1780,6 +1801,116 @@ $(document).ready(function (){
             }
         });
     });
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridTreatmentP = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesTreatmentP///////////////////////////////////////
+	$("#jqGridAddNotesTreatmentP").jqGrid({
+		datatype: "local",
+		editurl: "./nursingnote/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesTreatmentP",
+		loadComplete: function (){
+			if(addmore_jqgridTreatmentP.more == true){$('#jqGridAddNotesTreatmentP_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridTreatmentP.edit = addmore_jqgridTreatmentP.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesTreatmentP");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesTreatmentP_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addTreatmentP = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesTreatmentP,#jqGridPagerRefresh_addnoteTreatmentP").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesTreatmentP_ilsave').click();
+				// addmore_jqgridTreatmentP.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridTreatmentP.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesTreatmentP',urlParam_AddNotesTreatmentP,'add_notesTreatmentP');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesTreatmentP,#jqGridPagerRefresh_addnoteTreatmentP").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesTreatmentP',urlParam_AddNotesTreatmentP,'add_notesTreatmentP');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesTreatmentP').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./nursingnote/form?"+
+				$.param({
+					episno: $('#episno_nursNote').val(),
+					mrn: $('#mrn_nursNote').val(),
+					action: 'addNotesTreatmentP_save',
+				});
+			$("#jqGridAddNotesTreatmentP").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesTreatmentP,#jqGridPagerRefresh_addnoteTreatmentP").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesTreatmentP/////////////////////////////////////
+	$("#jqGridAddNotesTreatmentP").inlineNav('#jqGridPagerAddNotesTreatmentP', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addTreatmentP
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesTreatmentP", {
+		id: "jqGridPagerRefresh_addnoteTreatmentP",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesTreatmentP", urlParam_AddNotesTreatmentP);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
     //////////////////////////////////////////treatment ends//////////////////////////////////////////
     
     /////////////////////////////////////////careplan starts/////////////////////////////////////////
