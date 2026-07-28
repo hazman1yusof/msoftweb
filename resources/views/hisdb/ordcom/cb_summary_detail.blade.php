@@ -53,6 +53,8 @@
 
     var username = '{{$username}}';
     var footer = `{!!$footer!!}`;
+    var pres_ = '{{$pres_}}';
+    var psno = '{{$psno}}';
 
     $(document).ready(function () {
         var docDefinition = {
@@ -62,7 +64,7 @@
                         style: 'header_tbl',
                         table: {
                             headerRows: 1,
-                            widths: [50,'*',65,'*'],//panjang standard dia 515
+                            widths: [60,280,60,120],//panjang standard dia 515
                             body: [
                                 [
                                     {text: 'Debtor',bold: true}, 
@@ -85,8 +87,8 @@
                                 [
                                     {text: '',bold: true}, 
                                     {text: ': '+patmast_episode.address2},
-                                    {text: ''}, 
-                                    {text: ''},
+                                    {text: 'P/S No.',bold: true}, 
+                                    {text: ': '+psno},
                                 ],
                                 [
                                     {text: '',bold: true}, 
@@ -164,7 +166,7 @@
                     table: {
                         headerRows: 1,
                         dontBreakRows: true,
-                        widths: [80,180,60,40,60,60],//panjang standard dia 515
+                        widths: [90,180,60,40,60,50],//panjang standard dia 515
                         body: make_body()
                     }
                 },
@@ -269,6 +271,45 @@
                             ];
                             retval.push(arr1);
                             total_inv = parseFloat_(total_inv) + parseFloat_(e_trx.amount);
+                        }
+
+                        if(pres_ == '1'){
+                            let arr1_press_dose = [
+                                {text:'Dose', style: 'body_row', border: [false, false, false, false], margin:[30,0,0,0],fontSize:8},
+                                {text:e_trx.doscode_desc, style: 'body_row', border: [false, false, false, false], colSpan:5, margin:[30,0,0,0],fontSize:8},
+                                {},
+                                {},
+                                {},
+                                {},
+                            ];
+                            retval.push(arr1_press_dose);
+                            let arr1_press_freq = [
+                                {text:'Frequency', style: 'body_row', border: [false, false, false, false], margin:[30,0,0,0],fontSize:8},
+                                {text:e_trx.frequency_desc, style: 'body_row', border: [false, false, false, false], colSpan:5, margin:[30,0,0,0],fontSize:8},
+                                {},
+                                {},
+                                {},
+                                {},
+                            ];
+                            retval.push(arr1_press_freq);
+                            let arr1_press_ins = [
+                                {text:'Instruction', style: 'body_row', border: [false, false, false, false], margin:[30,0,0,0],fontSize:8},
+                                {text:e_trx.addinstruction_desc, style: 'body_row', border: [false, false, false, false], colSpan:5, margin:[30,0,0,0],fontSize:8},
+                                {},
+                                {},
+                                {},
+                                {},
+                            ];
+                            retval.push(arr1_press_ins);
+                            let arr1_press_dind = [
+                                {text:'Drug Indicator', style: 'body_row', border: [false, false, false, false], margin:[30,0,0,0],fontSize:8},
+                                {text:e_trx.drugindicator_desc, style: 'body_row', border: [false, false, false, false], colSpan:5, margin:[30,0,0,0],fontSize:8},
+                                {},
+                                {},
+                                {},
+                                {},
+                            ];
+                            retval.push(arr1_press_dind);
                         }
                     });
                     let arrtot =  [

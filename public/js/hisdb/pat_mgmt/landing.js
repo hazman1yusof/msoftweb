@@ -59,7 +59,7 @@ var grid = $("#grid-command-buttons").bootgrid({
                 var retval = "<button title='Address' type='button' class='btn btn-xs btn-default btn-md command-add' data-row-id=\"" + row.MRN + "\"  name=\"cmd_add" + row.MRN + "\" data-telhp=\"" + row.telhp + "\"data-telh=\"" + row.telh + "\"data-Address1=\"" + row.Address1 + "\"data-Address2=\"" + row.Address2 + "\"data-Address3=\"" + row.Address3 + "\"data-Postcode=\"" + row.Postcode + "\"data-OffAdd1=\"" + row.OffAdd1 + "\"data-OffAdd2=\"" + row.OffAdd2 + "\"data-OffAdd3=\"" + row.OffAdd3 + "\"data-OffPostcode=\"" + row.OffPostcode + "\"data-pAdd1=\"" + row.pAdd1 + "\"data-pAdd2=\"" + row.pAdd2 + "\"data-pAdd3=\"" + row.pAdd3 + "\"data-pPostCode=\"" + row.pPostCode + "\" ><span class=\"glyphicon glyphicon-home\" aria-hidden=\"true\"></span></button>";
                 if($('#curpat').val() == 'false'){
                     if(row.PatStatus == 1 && row.q_epistycode=='IP'){
-                        retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/warded.png' width='16' title='In Patinet'></a>";
+                        retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/warded.png' width='16' title='In Patient'></a>";
                     }else if(row.PatStatus == 1 && row.q_epistycode=='OP'){
                         retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/op.png' width='15' title='Out Patient'></a>";
                     }
@@ -77,10 +77,19 @@ var grid = $("#grid-command-buttons").bootgrid({
                 var birthday = new Date(row.DOB);
                 return (isNaN(birthday)) ? '' : moment().diff(birthday, 'years',false);;
             },
+            "col_disc": function (column,row) {
+                var retval;
+                if(row.ward_dischargedt != null){
+                    retval="&nbsp;<a class=''><img src='img/warddisc.png' width='35' title='In Patient'></a>";
+                }else{
+                    retval="";
+                }
+                return retval;
+            },
             "col_preg": function (column,row) {
                 var retval;
                 if(row.pregnant == 1){
-                    retval="&nbsp;<a class='btn btn-xs btn-default'><img src='img/pregnant.png' width='25' title='In Patinet'></a>";
+                    retval="&nbsp;<a class='btn btn-xs btn-default'><img src='img/pregnant.png' width='25' title='In Patient'></a>";
                 }else{
                     retval="";
                 }
@@ -127,7 +136,6 @@ var grid = $("#grid-command-buttons").bootgrid({
     });
 
 grid.on("loaded.rs.jquery.bootgrid", function(){
-    console.log('loaded');
 
     if(!$("#Scol").length){ //tambah search col kat atas utk search by field
         if(mql.matches){
@@ -254,7 +262,21 @@ grid.on("loaded.rs.jquery.bootgrid", function(){
             $("table#grid-command-buttons tr[data-row-id='"+bootgrid_last_rowid+"']").eq(0).click();
         }
     }else{
-        $("table#grid-command-buttons tr:nth-child(1)").click();
+        if($("#lastrowid").val() != ''){
+            let gotidno = false
+            $("#grid-command-buttons").bootgrid("getCurrentRows").forEach(function(e,i,a){
+                if(e.idno == bootgrid_last_rowid){
+                    gotidno = true;
+                }
+            });
+            if(gotidno){
+                $("table#grid-command-buttons tr[data-row-id='"+$("#lastrowid").val()+"']").eq(0).click();
+            }else{
+                $("table#grid-command-buttons tr:nth-child(1)").click();
+            }
+        }else{
+            $("table#grid-command-buttons tr:nth-child(1)").click();
+        }
     }
     $("#load_from_addupd").data('info','false');
 
@@ -262,7 +284,6 @@ grid.on("loaded.rs.jquery.bootgrid", function(){
         $("#grid-command-buttons-header div.search").css("width","58%").addClass('search2');
         $("#grid-command-buttons-header select.search").css("width","35%").addClass('search2');
         $("#grid-command-buttons-header div.actions.btn-group").css("margin-top","2%").addClass('search2');
-
     }
 });
 
@@ -270,6 +291,7 @@ grid.on("click.rs.jquery.bootgrid", function (e,c,r){
     bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
     let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
     var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
+    $('#lastrowid').val(bootgrid_last_rowid);
     hide_all_panel();
     if($('#curpat').val() == 'true'){
         if($('#epistycode').val() == 'OP'){

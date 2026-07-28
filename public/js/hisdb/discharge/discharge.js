@@ -15,6 +15,16 @@ $(document).ready(function () {
 		enableForm('#form_discharge');
 		rdonly('#form_discharge');
 		// dialog_mrn_edit.on();
+
+		if($('input#ward_discharge_ckb[type=checkbox]').is(':visible')){
+			$('input#ward_discharge_ckb[type=checkbox]').prop('checked', true);
+			$('input#ward_discharge_ckb[type=checkbox]').trigger('change');
+		}
+
+		if($('input#complete_ckb[type=checkbox]').is(':visible')){
+			$('input#complete_ckb[type=checkbox]').prop('checked', true);
+			$('input#complete_ckb[type=checkbox]').trigger('change');
+		}
 	});
 	
 	$("#save_discharge").click(function (){
@@ -23,6 +33,7 @@ $(document).ready(function () {
 			saveForm_discharge(function (){
 				$("#cancel_discharge").data('oper','edit');
 				$("#cancel_discharge").click();
+				$("#grid-command-buttons").bootgrid("reload");
 				// $("#jqGridPagerRefresh").click();
 			});
 		}else{
@@ -65,6 +76,7 @@ $(document).ready(function () {
 				autoinsert_rowdata("#form_discharge",data.episode);
 				button_state_discharge('edit');
 				textarea_init_discharge();
+				discharge_init_chkbox(data.episode);
 			}else{
 				autoinsert_rowdata("#form_discharge",data.episode);
 				button_state_discharge('add');
@@ -86,44 +98,48 @@ $(document).ready(function () {
 
 	$('input#ward_discharge_ckb[type=checkbox]').change(function(){
 		if($(this).is(':checked')){
-			$('#ward_dischargedt').prop("readonly",false);
-			$('#ward_dischargetm').prop("readonly",false);
+			// $('#ward_dischargedt').prop("readonly",false).prop("rdonly",false);
+			// $('#ward_dischargetm').prop("readonly",false).prop("rdonly",false);
 
-			$('#ward_dischargedt').attr("data-validation","required");
-			$('#ward_dischargetm').attr("data-validation","required");
+			// $('#ward_dischargedt').attr("data-validation","required");
+			// $('#ward_dischargetm').attr("data-validation","required");
 
 			$('#ward_dischargedt').val(moment().format('YYYY-MM-DD'));
+			$('#ward_dischargeusr').val($('username_').val());
 			$('#ward_dischargetm').val(moment().format('HH:mm'));
 		}else{
-			$('#ward_dischargedt').prop("readonly",true);
-			$('#ward_dischargetm').prop("readonly",true);
+			// $('#ward_dischargedt').prop("readonly",true).prop("rdonly",true);
+			// $('#ward_dischargetm').prop("readonly",true).prop("rdonly",false);
 
-			$('#ward_dischargedt').attr("data-validation","");
-			$('#ward_dischargetm').attr("data-validation","");
+			// $('#ward_dischargedt').attr("data-validation","");
+			// $('#ward_dischargetm').attr("data-validation","");
 
 			$('#ward_dischargedt').val("");
+			$('#ward_dischargeusr').val("");
 			$('#ward_dischargetm').val("");
 		}
 	});
 
 	$('input#complete_ckb[type=checkbox]').change(function(){
 		if($(this).is(':checked')){
-			$('#complete_notedt').prop("readonly",false);
-			$('#complete_notetm').prop("readonly",false);
+			// $('#complete_notedt').prop("readonly",false).prop("rdonly",false);
+			// $('#complete_notetm').prop("readonly",false).prop("rdonly",false);
 
-			$('#complete_notedt').attr("data-validation","required");
-			$('#complete_notetm').attr("data-validation","required");
+			// $('#complete_notedt').attr("data-validation","required");
+			// $('#complete_notetm').attr("data-validation","required");
 
 			$('#complete_notedt').val(moment().format('YYYY-MM-DD'));
+			$('#complete_noteusr').val($('username_').val());
 			$('#complete_notetm').val(moment().format('HH:mm'));
 		}else{
-			$('#complete_notedt').prop("readonly",true);
-			$('#complete_notetm').prop("readonly",true);
+			// $('#complete_notedt').prop("readonly",true).prop("rdonly",true);
+			// $('#complete_notetm').prop("readonly",true).prop("rdonly",true);
 
-			$('#complete_notedt').attr("data-validation","");
-			$('#complete_notetm').attr("data-validation","");
+			// $('#complete_notedt').attr("data-validation","");
+			// $('#complete_notetm').attr("data-validation","");
 
 			$('#complete_notedt').val("");
+			$('#complete_noteusr').val("");
 			$('#complete_notetm').val("");
 		}
 	});
@@ -346,6 +362,7 @@ button_state_discharge('empty');
 				// autoinsert_rowdata("#form_discharge",data.discharge);
 				autoinsert_rowdata("#form_discharge",data.episode);
 				button_state_discharge('edit');
+				discharge_init_chkbox(data.episode);
 			}else{
 				button_state_discharge('add');
 			}
@@ -463,6 +480,20 @@ button_state_discharge('empty');
 				this.style.height = (40) + 'px';
 			}
 		});
+	}
+
+	function discharge_init_chkbox(episode){
+		if(episode.ward_dischargedt != null){
+			$('#ward_discharge_ckb').hide();
+			$('#complete_ckb').show();
+		}else{
+			$('#ward_discharge_ckb').show();
+			$('#complete_ckb').hide();
+		}
+		$('#ward_dischargedt').prop("readonly",true).prop("rdonly",true);
+		$('#ward_dischargetm').prop("readonly",true).prop("rdonly",true);
+		$('#complete_notedt').prop("readonly",true).prop("rdonly",true);
+		$('#complete_notetm').prop("readonly",true).prop("rdonly",true);
 	}
 
 

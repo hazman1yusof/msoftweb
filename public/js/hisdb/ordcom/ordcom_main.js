@@ -37,6 +37,7 @@ $(document).ready(function(){
 		$("#cyclebill_dtl").attr('href',"./ordcom/table?action=showpdf_detail&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno);
 		$("#cyclebill_summ").attr('href',"./ordcom/table?action=showpdf_summ&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno);
 		$("#phar_label_link").attr('href',"./pat_mast/patlabel?action=pharlabel&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno);
+		$("#phar_prescription_link").attr('href',"./ordcom/table?action=showpdf_detail&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno+"&invcode=50&pres_=1");
 
         $('#ordcom_panel_title').show();
 

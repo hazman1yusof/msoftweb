@@ -83,32 +83,45 @@ class DischargeController extends defaultController
     }
 
     public function discharge_ward_patient(Request $request){ 
-        try {
+        // try {
 
-           $bedalloc_oldidno=DB::table('hisdb.bedalloc')
+        //    // $bedalloc_oldidno=DB::table('hisdb.bedalloc')
+        //    //              ->where('compcode','=',session('compcode'))
+        //    //              ->where('mrn','=',$request->mrn)
+        //    //              ->where('episno','=',$request->episno);
+
+        //    //  if($bedalloc_oldidno->exists()){
+        //    //      $bedalloc_old = DB::table('hisdb.bedalloc')
+        //    //          ->where('idno','=',$bedalloc_oldidno->max('idno'))
+        //    //          ->first();
+
+        //    //      $bed_old = DB::table('hisdb.bed')
+        //    //          ->where('compcode','=',session('compcode'))
+        //    //          ->where('bednum','=',$bedalloc_old->bednum)
+        //    //          ->update([
+        //    //              'occup' => "VACANT"
+        //    //          ]);
+        //    //  }
+
+            $episode = DB::table('hisdb.episode')
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
-                        ->where('episno','=',$request->episno);
+                        ->where('episno','=',$request->episno)
+                        ->first();
 
-            if($bedalloc_oldidno->exists()){
-                $bedalloc_old = DB::table('hisdb.bedalloc')
-                    ->where('idno','=',$bedalloc_oldidno->max('idno'))
-                    ->first();
-
-                $bed_old = DB::table('hisdb.bed')
+            $bed_old = DB::table('hisdb.bed')
                     ->where('compcode','=',session('compcode'))
-                    ->where('bednum','=',$bedalloc_old->bednum)
+                    ->where('bednum','=',$episode->bed)
                     ->update([
                         'occup' => "VACANT"
                     ]);
-            }
 
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
+        //     DB::commit();
+        // } catch (\Exception $e) {
+        //     DB::rollback();
             
-            return response($e->getMessage(), 500);
-        }
+        //     return response($e->getMessage(), 500);
+        // }
     }
 
     public function discharge_patient(Request $request){ 
@@ -126,7 +139,7 @@ class DischargeController extends defaultController
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno);
 
-        try {
+        // try {
 
             // if($pat_mast->exists() && $episode->exists() && $queue->exists()){
             //     $episode->update([
@@ -174,12 +187,12 @@ class DischargeController extends defaultController
                         ->update(['compcode' => 'xx']);
             }
 
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
+        //     DB::commit();
+        // } catch (\Exception $e) {
+        //     DB::rollback();
             
-            return response($e->getMessage(), 500);
-        }
+        //     return response($e->getMessage(), 500);
+        // }
     }
 
     public function add(Request $request){
@@ -351,6 +364,7 @@ class DischargeController extends defaultController
             if($request->ward_discharge_ckb == 1){
                 $this->discharge_ward_patient($request);
             }
+            // dd('here');
 
             if($request->complete_ckb == 1){
                 $this->discharge_patient($request);

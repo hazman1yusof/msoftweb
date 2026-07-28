@@ -5387,6 +5387,12 @@ class OrdcomController extends defaultController
     public function showpdf_detail(Request $request){
         $mrn = $request->mrn;
         $episno = $request->episno;
+        $invcode_ = $request->invcode;
+        $pres_ = 0;
+
+        if(!empty($request->pres_)){
+            $pres_ = 1;
+        }
 
         $patmast_episode = DB::table('hisdb.pat_mast as pm')
                                 ->select('pm.mrn','pm.name','pm.newic','ep.reg_date','ep.episno','ep.reg_time','ep.pay_type','doc.doctorname as doc_name','dm.debtorcode','dm.name as debtorname','dm.address1','dm.address2','dm.address3','dm.address4','dm.contact','epayr.refno')
@@ -5419,8 +5425,14 @@ class OrdcomController extends defaultController
         $patmast_episode = $patmast_episode->first();
         // dd($patmast_episode);
 
+        $select_arr = ['trx.auditno','trx.chgcode','trx.uom','chgm.description','trx.trxdate','trx.quantity','trx.amount','trx.discamt','trx.taxamount','chgm.invgroup','chgm.chgclass','chgc.description as chgc_desc','chgc.classlevel','chgg.description as chgg_desc','chgt.description as chgt_desc'];
+
+        if(!empty($pres_)){
+            $select_arr = array_merge($select_arr, ['dos.dosedesc as doscode_desc','fre.freqdesc as frequency_desc','ins.description as addinstruction_desc','dru.description as drugindicator_desc']);
+        }
+
         $chargetrx = DB::table('hisdb.chargetrx as trx')
-                        ->select('trx.chgcode','trx.uom','chgm.description','trx.trxdate','trx.quantity','trx.amount','trx.discamt','trx.taxamount','chgm.invgroup','chgm.chgclass','chgc.description as chgc_desc','chgc.classlevel','chgg.description as chgg_desc','chgt.description as chgt_desc')
+                        ->select($select_arr)
                         ->where('trx.compcode',session('compcode'))
                         ->where('trx.trxtype','!=','PD')
                         ->where('trx.mrn' ,'=', $request->mrn)
@@ -5447,8 +5459,47 @@ class OrdcomController extends defaultController
                         ->leftjoin('hisdb.chgclass as chgc', function($join) use ($request){
                             $join = $join->where('chgc.compcode', '=', session('compcode'));
                             $join = $join->on('chgc.classcode', '=', 'chgm.chgclass');
-                        })
-                        ->get();
+                        });
+                        // ->get();
+
+        if(!empty($invcode_)){
+            $chargetrx = $chargetrx    
+                        ->where('trx.chggroup',$invcode_);
+
+            if(!empty($pres_)){
+                    $chargetrx = $chargetrx->leftjoin('hisdb.dose as dos', function($join) use ($request){
+                                        $join = $join->where('dos.compcode', '=', session('compcode'));
+                                        $join = $join->on('dos.dosecode', '=', 'trx.doscode');
+                                    });
+
+                    $chargetrx = $chargetrx->leftjoin('hisdb.freq as fre', function($join) use ($request){
+                                        $join = $join->where('fre.compcode', '=', session('compcode'));
+                                        $join = $join->on('fre.freqcode', '=', 'trx.frequency');
+                                    });
+
+                    $chargetrx = $chargetrx->leftjoin('hisdb.instruction as ins', function($join) use ($request){
+                                        $join = $join->where('ins.compcode', '=', session('compcode'));
+                                        $join = $join->on('ins.inscode', '=', 'trx.addinstruction');
+                                    });
+
+                    $chargetrx = $chargetrx->leftjoin('hisdb.drugindicator as dru', function($join) use ($request){
+                                        $join = $join->where('dru.compcode', '=', session('compcode'));
+                                        $join = $join->on('dru.drugindcode', '=', 'trx.drugindicator');
+                                    });
+            }
+        }
+        $chargetrx = $chargetrx->get();
+
+        $psno_ = DB::table('hisdb.prescription')
+                    ->where('compcode',session('compcode'))
+                    ->where('mrn',$mrn)
+                    ->where('episno',$episno);
+
+        if($psno_->exists()){
+            $psno = str_pad($psno_->first()->docref, 9, '0', STR_PAD_LEFT);
+        }else{
+            $psno = '-';
+        }
 
         // dd($chargetrx);
 
@@ -5480,12 +5531,14 @@ class OrdcomController extends defaultController
             $footer = $footer_->description;
         } 
 
-        return view('hisdb.ordcom.cb_summary_detail',compact('patmast_episode','chargetrx','chgclass','invgroup','username','footer','company'));
+        return view('hisdb.ordcom.cb_summary_detail',compact('patmast_episode','chargetrx','chgclass','invgroup','username','footer','company','pres_','psno'));
     }
 
     public function showpdf_summ(Request $request){
         $mrn = $request->mrn;
         $episno = $request->episno;
+        $invcode_ = $request->invcode;
+        $pres_ = 0;
 
         $patmast_episode = DB::table('hisdb.pat_mast as pm')
                                 ->select('pm.mrn','pm.name','pm.newic','ep.reg_date','ep.episno','ep.reg_time','ep.pay_type','doc.doctorname as doc_name','dm.debtorcode','dm.name as debtorname','dm.address1','dm.address2','dm.address3','dm.address4','dm.contact','epayr.refno')
@@ -5517,9 +5570,15 @@ class OrdcomController extends defaultController
 
         $patmast_episode = $patmast_episode->first();
         // dd($patmast_episode);
+        
+        $select_arr = ['trx.auditno','trx.chgcode','trx.uom','trx.billno','chgm.description','trx.trxdate','trx.quantity','trx.amount','trx.discamt','trx.taxamount','chgm.invgroup','chgm.chgclass','chgc.description as chgc_desc','chgc.classlevel','chgg.description as chgg_desc','chgt.description as chgt_desc','doc.doctorname','doc.doctorcode'];
+
+        if(!empty($pres_)){
+            $select_arr = array_merge($select_arr, ['dos.dosedesc as doscode_desc','fre.freqdesc as frequency_desc','ins.description as addinstruction_desc','dru.description as drugindicator_desc']);
+        }
 
         $chargetrx = DB::table('hisdb.chargetrx as trx')
-                        ->select('trx.chgcode','trx.uom','trx.billno','chgm.description','trx.trxdate','trx.quantity','trx.amount','trx.discamt','trx.taxamount','chgm.invgroup','chgm.chgclass','chgc.description as chgc_desc','chgc.classlevel','chgg.description as chgg_desc','chgt.description as chgt_desc','doc.doctorname','doc.doctorcode')
+                        ->select($select_arr)
                         ->where('trx.compcode',session('compcode'))
                         ->where('trx.trxtype','!=','PD')
                         ->where('trx.mrn' ,'=', $request->mrn)
@@ -5550,8 +5609,36 @@ class OrdcomController extends defaultController
                         ->leftjoin('hisdb.chgclass as chgc', function($join) use ($request){
                             $join = $join->where('chgc.compcode', '=', session('compcode'));
                             $join = $join->on('chgc.classcode', '=', 'chgm.chgclass');
-                        })
-                        ->get();
+                        });
+                        // ->get();
+
+        if(!empty($invcode_)){
+            $chargetrx = $chargetrx    
+                        ->where('trx.chggroup',$invcode_);
+
+            if(!empty($pres_)){
+                    $billdet = $billdet->leftjoin('hisdb.dose as dos', function($join) use ($request){
+                                        $join = $join->where('dos.compcode', '=', session('compcode'));
+                                        $join = $join->on('dos.dosecode', '=', 'trx.doscode');
+                                    });
+
+                    $billdet = $billdet->leftjoin('hisdb.freq as fre', function($join) use ($request){
+                                        $join = $join->where('fre.compcode', '=', session('compcode'));
+                                        $join = $join->on('fre.freqcode', '=', 'trx.frequency');
+                                    });
+
+                    $billdet = $billdet->leftjoin('hisdb.instruction as ins', function($join) use ($request){
+                                        $join = $join->where('ins.compcode', '=', session('compcode'));
+                                        $join = $join->on('ins.inscode', '=', 'trx.addinstruction');
+                                    });
+
+                    $billdet = $billdet->leftjoin('hisdb.drugindicator as dru', function($join) use ($request){
+                                        $join = $join->where('dru.compcode', '=', session('compcode'));
+                                        $join = $join->on('dru.drugindcode', '=', 'trx.drugindicator');
+                                    });
+            }
+        }
+        $chargetrx = $chargetrx->get();
 
         // dd($chargetrx);
 
@@ -5583,7 +5670,7 @@ class OrdcomController extends defaultController
             $footer = $footer_->description;
         } 
 
-        return view('hisdb.ordcom.cb_summary_summ',compact('patmast_episode','chargetrx','chgclass','invgroup','username','footer','company'));
+        return view('hisdb.ordcom.cb_summary_summ',compact('patmast_episode','chargetrx','chgclass','invgroup','username','footer','company','pres_'));
     }
 
     public function showpdf_summ_final(Request $request){

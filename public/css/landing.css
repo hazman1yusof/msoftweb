@@ -469,13 +469,18 @@ span.glyphicon.glyphicon-trash{
 }
 div#ordcom_div_cyclebill{
 	position: absolute;
-    right: 30px;
+    right: 0px;
     top: -20px;
 }
 div#ordcom_div_label{
 	position: absolute;
-    right: 30px;
+    right: 0px;
     top: -0px;
+}
+div#ordcom_div_prescription{
+	position: absolute;
+    right: 0px;
+    top: 20px;
 }
 div#ordcom_div_cyclebill > a,div#ordcom_div_label > a{
 	display: inline-block;

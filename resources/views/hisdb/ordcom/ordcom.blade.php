@@ -227,6 +227,10 @@
 					<a class="cyclebill" id="phar_label_link" href="" target="_blank">Pharmacy</a>
 					<br>
 				</div>
+				<div id="ordcom_div_prescription">
+					<a class="cyclebill" id="phar_prescription_link" href="" target="_blank">Prescription</a>
+					<br>
+				</div>
 
 				<li class="active"><a data-toggle="tab" id="ordcom_navtab_phar" href="#tab-phar" aria-expanded="true" data-ord_chgtype='PHAR'>Pharmacy</a></li>
 				<li><a data-toggle="tab" id="ordcom_navtab_disp" href="#tab-disp" data-ord_chgtype='DISP'>Disposable</a></li>

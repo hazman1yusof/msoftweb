@@ -59,7 +59,6 @@
     var footer = `{!!$footer!!}`;
     var pres_ = '{{$pres_}}';
     var psno = '{{$psno}}';
-    console.log(pres_);
 
     $(document).ready(function () {
         var docDefinition = {
