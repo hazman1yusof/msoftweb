@@ -1173,6 +1173,18 @@
                         </div>
                     </div>
                 </div>
+
+                <div class='col-md-12'>
+                    <div class="panel panel-info" id="jqGridAddNotesOthersChart1_c">
+                        <div class="panel-heading text-center">ADDITIONAL NOTES</div>
+                        <div class="panel-body">
+                            <div class='col-md-12' style="padding:0 0 15px 0">
+                                <table id="jqGridAddNotesOthersChart1" class="table table-striped"></table>
+                                <div id="jqGridPagerAddNotesOthersChart1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="tab-othersChart2" class="tab-pane fade">
                 <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
@@ -1257,6 +1269,18 @@
                             
                             <div class="col-md-5" style="padding-top: 20px; text-align: left; color: red;">
                                 <p id="p_error2"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class='col-md-12'>
+                    <div class="panel panel-info" id="jqGridAddNotesOthersChart2_c">
+                        <div class="panel-heading text-center">ADDITIONAL NOTES</div>
+                        <div class="panel-body">
+                            <div class='col-md-12' style="padding:0 0 15px 0">
+                                <table id="jqGridAddNotesOthersChart2" class="table table-striped"></table>
+                                <div id="jqGridPagerAddNotesOthersChart2"></div>
                             </div>
                         </div>
                     </div>

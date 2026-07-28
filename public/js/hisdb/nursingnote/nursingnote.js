@@ -133,6 +133,28 @@ var urlParam_OthersChart = {
     filterVal: ['','',''],
 }
 
+/////////////////////////////parameter for jqGridAddNotesOthersChart1 url/////////////////////////////
+var urlParam_AddNotesOthersChart1 = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','PAD_CHART'],
+}
+
+/////////////////////////////parameter for jqGridAddNotesOthersChart2 url/////////////////////////////
+var urlParam_AddNotesOthersChart2 = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','DRAIN_CHART'],
+}
+
 //////////////////////parameter for bladder shift url//////////////////////
 var urlParam_Bladder = {
     action: 'get_table_default',
@@ -826,6 +848,8 @@ $(document).ready(function (){
                 refreshGrid('#jqGridOthersChart1',urlParam_OthersChart,'add');
                 
                 $("#jqGridOthersChart1").jqGrid('setGridWidth', Math.floor($("#jqGridOthersChart1_c")[0].offsetWidth-$("#jqGridOthersChart1_c")[0].offsetLeft-30));
+                $("#jqGridAddNotesOthersChart1").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesOthersChart1_c")[0].offsetWidth-$("#jqGridAddNotesOthersChart1_c")[0].offsetLeft-30));
+                refreshGrid('#jqGridAddNotesOthersChart1',urlParam_AddNotesOthersChart1,'add_notesOthersChart1');
                 break;
             case 'othersChart2':
                 populate_othersChart2_getdata();
@@ -837,6 +861,8 @@ $(document).ready(function (){
                 refreshGrid('#jqGridOthersChart2',urlParam_OthersChart,'add');
                 
                 $("#jqGridOthersChart2").jqGrid('setGridWidth', Math.floor($("#jqGridOthersChart2_c")[0].offsetWidth-$("#jqGridOthersChart2_c")[0].offsetLeft-30));
+                $("#jqGridAddNotesOthersChart2").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesOthersChart2_c")[0].offsetWidth-$("#jqGridAddNotesOthersChart2_c")[0].offsetLeft-30));
+                refreshGrid('#jqGridAddNotesOthersChart2',urlParam_AddNotesOthersChart2,'add_notesOthersChart2');
                 break;
             case 'bladder':
                 get_total_IO1();
@@ -3738,6 +3764,116 @@ $(document).ready(function (){
         refreshGrid("#jqGridOthersChart1", urlParam_OthersChart);
     });
     ///////////////////////////////////////////end grid///////////////////////////////////////////
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridOthersChart1 = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesOthersChart1///////////////////////////////////////
+	$("#jqGridAddNotesOthersChart1").jqGrid({
+		datatype: "local",
+		editurl: "./nursingnote/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesOthersChart1",
+		loadComplete: function (){
+			if(addmore_jqgridOthersChart1.more == true){$('#jqGridAddNotesOthersChart1_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridOthersChart1.edit = addmore_jqgridOthersChart1.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesOthersChart1");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesOthersChart1_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addOthersChart1 = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesOthersChart1,#jqGridPagerRefresh_addnoteOthersChart1").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesOthersChart1_ilsave').click();
+				// addmore_jqgridOthersChart1.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridOthersChart1.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesOthersChart1',urlParam_AddNotesOthersChart1,'add_notesOthersChart1');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesOthersChart1,#jqGridPagerRefresh_addnoteOthersChart1").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesOthersChart1',urlParam_AddNotesOthersChart1,'add_notesOthersChart1');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesOthersChart1').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./nursingnote/form?"+
+				$.param({
+					episno: $('#episno_nursNote').val(),
+					mrn: $('#mrn_nursNote').val(),
+					action: 'addNotesOthersChart1_save',
+				});
+			$("#jqGridAddNotesOthersChart1").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesOthersChart1,#jqGridPagerRefresh_addnoteOthersChart1").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesOthersChart1/////////////////////////////////////
+	$("#jqGridAddNotesOthersChart1").inlineNav('#jqGridPagerAddNotesOthersChart1', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addOthersChart1
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesOthersChart1", {
+		id: "jqGridPagerRefresh_addnoteOthersChart1",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesOthersChart1", urlParam_AddNotesOthersChart1);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
     ///////////////////////////////////////othersChart1 ends///////////////////////////////////////
     
     //////////////////////////////////////othersChart2 starts//////////////////////////////////////
@@ -3981,6 +4117,117 @@ $(document).ready(function (){
         refreshGrid("#jqGridOthersChart2", urlParam_OthersChart);
     });
     ///////////////////////////////////////////end grid///////////////////////////////////////////
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridOthersChart2 = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesOthersChart2///////////////////////////////////////
+	$("#jqGridAddNotesOthersChart2").jqGrid({
+		datatype: "local",
+		editurl: "./nursingnote/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesOthersChart2",
+		loadComplete: function (){
+			if(addmore_jqgridOthersChart2.more == true){$('#jqGridAddNotesOthersChart2_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridOthersChart2.edit = addmore_jqgridOthersChart2.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesOthersChart2");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesOthersChart2_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addOthersChart2 = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesOthersChart2,#jqGridPagerRefresh_addnoteOthersChart2").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesOthersChart2_ilsave').click();
+				// addmore_jqgridOthersChart2.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridOthersChart2.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesOthersChart2',urlParam_AddNotesOthersChart2,'add_notesOthersChart2');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesOthersChart2,#jqGridPagerRefresh_addnoteOthersChart2").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesOthersChart2',urlParam_AddNotesOthersChart2,'add_notesOthersChart2');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesOthersChart2').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./nursingnote/form?"+
+				$.param({
+					episno: $('#episno_nursNote').val(),
+					mrn: $('#mrn_nursNote').val(),
+					action: 'addNotesOthersChart2_save',
+				});
+			$("#jqGridAddNotesOthersChart2").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesOthersChart2,#jqGridPagerRefresh_addnoteOthersChart2").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesOthersChart2/////////////////////////////////////
+	$("#jqGridAddNotesOthersChart2").inlineNav('#jqGridPagerAddNotesOthersChart2', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addOthersChart2
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesOthersChart2", {
+		id: "jqGridPagerRefresh_addnoteOthersChart2",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesOthersChart2", urlParam_AddNotesOthersChart2);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
+
     ///////////////////////////////////////othersChart2 ends///////////////////////////////////////
     
     //////////////////////////////////////bladder 1 starts//////////////////////////////////////
@@ -5671,6 +5918,16 @@ function populate_nursingnote(obj){
     urlParam_AddNotesSlidingScale.filterVal[0] = obj.MRN;
     urlParam_AddNotesSlidingScale.filterVal[1] = obj.Episno;
     urlParam_AddNotesSlidingScale.filterVal[2] = 'SLIDING_SCALE_CHART';
+
+    ////jqGridAddNotesOthersChart1
+    urlParam_AddNotesOthersChart1.filterVal[0] = obj.MRN;
+    urlParam_AddNotesOthersChart1.filterVal[1] = obj.Episno;
+    urlParam_AddNotesOthersChart1.filterVal[2] = 'PAD_CHART';
+
+    ////jqGridAddNotesOthersChart2
+    urlParam_AddNotesOthersChart2.filterVal[0] = obj.MRN;
+    urlParam_AddNotesOthersChart2.filterVal[1] = obj.Episno;
+    urlParam_AddNotesOthersChart2.filterVal[2] = 'DRAIN_CHART';
     // $("#tot_input").val(obj.total_all_i);
     
     // var urlparam_datetime_tbl = {
