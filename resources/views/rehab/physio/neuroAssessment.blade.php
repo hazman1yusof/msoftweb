@@ -6,7 +6,7 @@
             top: 9px;
             z-index: 2;">
             <button class="ui button" id="new_neuroAssessment"><span class="fa fa-plus-square-o"></span>New</button>
-            <button class="ui button" id="edit_neuroAssessment"><span class="fa fa-edit fa-lg"></span>Edit</button>
+            <!-- <button class="ui button" id="edit_neuroAssessment"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
             <button class="ui button" id="save_neuroAssessment"><span class="fa fa-save fa-lg"></span>Save</button>
             <button class="ui button" id="cancel_neuroAssessment"><span class="fa fa-ban fa-lg"></span>Cancel</button>
             <button class="ui button" id="neuroAssessment_chart"><span class="fa fa-print fa-lg"></span>Print</button>
@@ -50,6 +50,10 @@
                             <label>DATE</label>
                             <div class="field" style="padding-left: 50px;">
                                 <input id="neuroAssessment_entereddate" name="entereddate" type="date" data-validation="required" data-validation-error-msg-required="Please enter information.">
+                            </div>
+                            
+                            <div class="field" style="display: none;">
+                                <input id="neuroAssessment_enteredtime" name="enteredtime" type="time">
                             </div>
                         </div>
                         
