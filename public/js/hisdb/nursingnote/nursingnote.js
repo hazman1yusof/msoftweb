@@ -971,6 +971,8 @@ $(document).ready(function (){
                     $('#datetimegcs_tbl tbody tr:eq(0)').click(); // to select first row
                 });
                 
+                $("#jqGridAddNotesGlasgow").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesGlasgow_c")[0].offsetWidth-$("#jqGridAddNotesGlasgow_c")[0].offsetLeft-30));
+                refreshGrid('#jqGridAddNotesGlasgow',urlParam_AddNotesGlasgow,'add_notesGlasgow');
                 // $('#datetimegcs_tbl').DataTable().ajax.reload();
                 break;
             case 'pivc':
@@ -6326,6 +6328,12 @@ function populate_nursingnote(obj){
     urlParam_AddNotesBladder3.filterVal[0] = obj.MRN;
     urlParam_AddNotesBladder3.filterVal[1] = obj.Episno;
     urlParam_AddNotesBladder3.filterVal[2] = 'BLADDER_THIRD_SHIFT';
+
+    ////jqGridAddNotesGlasgow
+    urlParam_AddNotesGlasgow.filterVal[0] = obj.MRN;
+    urlParam_AddNotesGlasgow.filterVal[1] = obj.Episno;
+    urlParam_AddNotesGlasgow.filterVal[2] = 'GLASGOW_COMA_SCALE';
+
     // $("#tot_input").val(obj.total_all_i);
     
     // var urlparam_datetime_tbl = {
