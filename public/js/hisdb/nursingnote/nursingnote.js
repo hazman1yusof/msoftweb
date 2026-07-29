@@ -1007,6 +1007,8 @@ $(document).ready(function (){
                     $('#tbl_morsefallscale_date tbody tr:eq(0)').click(); // to select first row
                 });
                 
+                $("#jqGridAddNotesMorseFallScale").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesMorseFallScale_c")[0].offsetWidth-$("#jqGridAddNotesMorseFallScale_c")[0].offsetLeft-30));
+                refreshGrid('#jqGridAddNotesMorseFallScale',urlParam_AddNotesMorseFallScale,'add_notesMorseFallScale');
                 // $('#tbl_morsefallscale_date').DataTable().ajax.reload();
                 break;
             case 'thrombo':
@@ -6340,6 +6342,11 @@ function populate_nursingnote(obj){
     urlParam_AddNotesPivc.filterVal[0] = obj.MRN;
     urlParam_AddNotesPivc.filterVal[1] = obj.Episno;
     urlParam_AddNotesPivc.filterVal[2] = 'PIVC';
+
+    ////jqGridAddNotesMorseFallScale
+    urlParam_AddNotesMorseFallScale.filterVal[0] = obj.MRN;
+    urlParam_AddNotesMorseFallScale.filterVal[1] = obj.Episno;
+    urlParam_AddNotesMorseFallScale.filterVal[2] = 'MORSE_FALL_SCALE';
 
     // $("#tot_input").val(obj.total_all_i);
     

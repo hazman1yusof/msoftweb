@@ -49,6 +49,9 @@ class MorseFallScaleController extends defaultController
             
             case 'get_table_morsefallscale':
                 return $this->get_table_morsefallscale($request);
+
+            case 'addNotesMorseFallScale_save':
+                return $this->add_notesMorseFallScale($request);
             
             default:
                 return 'error happen..';
@@ -440,6 +443,37 @@ class MorseFallScaleController extends defaultController
         // dd($morsefallscale);
         
         return view('hisdb.nursingnote.morsefallscale_pdfmake', compact('age','pat_mast','episode','nursactplan','datetime','morsefallscale'));
+        
+    }
+
+    public function add_notesMorseFallScale(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'MORSE_FALL_SCALE',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
         
     }
     

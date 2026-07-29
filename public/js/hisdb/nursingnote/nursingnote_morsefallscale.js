@@ -1,6 +1,16 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
+
+/////////////////////////////parameter for jqGridAddNotesMorseFallScale url/////////////////////////////
+var urlParam_AddNotesMorseFallScale = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','MORSE_FALL_SCALE'],
+}
 
 $(document).ready(function (){
     
@@ -130,6 +140,116 @@ $(document).ready(function (){
     $(".calc_morsefallscale").change(function (){
         calculate_morsefallscale();
     });
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridMorseFallScale = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesMorseFallScale///////////////////////////////////////
+	$("#jqGridAddNotesMorseFallScale").jqGrid({
+		datatype: "local",
+		editurl: "./morsefallscale/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesMorseFallScale",
+		loadComplete: function (){
+			if(addmore_jqgridMorseFallScale.more == true){$('#jqGridAddNotesMorseFallScale_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridMorseFallScale.edit = addmore_jqgridMorseFallScale.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesMorseFallScale");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesMorseFallScale_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addMorseFallScale = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesNursingED,#jqGridPagerRefresh_addnoteNursingED").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesMorseFallScale_ilsave').click();
+				// addmore_jqgridMorseFallScale.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridMorseFallScale.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesMorseFallScale',urlParam_AddNotesMorseFallScale,'add_notesMorseFallScale');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesNursingED,#jqGridPagerRefresh_addnoteNursingED").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesMorseFallScale',urlParam_AddNotesMorseFallScale,'add_notesMorseFallScale');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesMorseFallScale').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./morsefallscale/form?"+
+				$.param({
+					episno: $('#episno_nursNote').val(),
+					mrn: $('#mrn_nursNote').val(),
+					action: 'addNotesMorseFallScale_save',
+				});
+			$("#jqGridAddNotesMorseFallScale").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesNursingED,#jqGridPagerRefresh_addnoteNursingED").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesMorseFallScale/////////////////////////////////////
+	$("#jqGridAddNotesMorseFallScale").inlineNav('#jqGridPagerAddNotesMorseFallScale', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addMorseFallScale
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesMorseFallScale", {
+		id: "jqGridPagerRefresh_addnoteNursingED",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesMorseFallScale", urlParam_AddNotesMorseFallScale);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
     
 });
 
