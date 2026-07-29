@@ -49,6 +49,9 @@ class GlasgowController extends defaultController
             
             case 'get_table_glasgow':
                 return $this->get_table_glasgow($request);
+
+            case 'addNotesGlasgow_save':
+                return $this->add_notesGlasgow($request);
                 
             default:
                 return 'error happen..';
@@ -299,7 +302,7 @@ class GlasgowController extends defaultController
         
     }
 
-     public function glasgow_chart(Request $request){
+    public function glasgow_chart(Request $request){
         
         $mrn = $request->mrn;
         $episno = $request->episno;
@@ -332,6 +335,37 @@ class GlasgowController extends defaultController
                     ->get();
         
         return view('hisdb.nursingnote.bladder_chart_pdfmake', compact('pat_mast','bladder'));
+        
+    }
+
+    public function add_notesGlasgow(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'GLASGOW_COMA_SCALE',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
         
     }
     

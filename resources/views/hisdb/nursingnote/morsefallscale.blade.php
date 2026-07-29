@@ -11,9 +11,9 @@
                 <button type="button" class="btn btn-default" id="new_morsefallscale">
                     <span class="fa fa-plus-square-o"></span> New 
                 </button>
-                <button type="button" class="btn btn-default" id="edit_morsefallscale">
+                <!-- <button type="button" class="btn btn-default" id="edit_morsefallscale">
                     <span class="fa fa-edit fa-lg"></span> Edit 
-                </button>
+                </button> -->
                 <button type="button" class="btn btn-default" data-oper='add' id="save_morsefallscale">
                     <span class="fa fa-save fa-lg"></span> Save 
                 </button>
@@ -25,9 +25,7 @@
                 </button>
             </div>
         </div>
-        
-        <!-- <button class="btn btn-default btn-sm" type="button" id="morsefallscale_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button> -->
-        
+                
         <div class="panel-body" style="padding-right: 0px;">
             <form class='form-horizontal' style='width: 99%;' id='formMorseFallScale'>
                 <div class='col-md-12'>
@@ -247,6 +245,18 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+
+                                        <div class='col-md-12'>
+                                            <div class="panel panel-info" id="jqGridAddNotesMorseFallScale_c">
+                                                <div class="panel-heading text-center">ADDITIONAL NOTES</div>
+                                                <div class="panel-body">
+                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                        <table id="jqGridAddNotesMorseFallScale" class="table table-striped"></table>
+                                                        <div id="jqGridPagerAddNotesMorseFallScale"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

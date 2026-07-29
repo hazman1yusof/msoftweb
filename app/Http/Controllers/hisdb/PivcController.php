@@ -49,6 +49,9 @@ class PivcController extends defaultController
             
             case 'get_table_pivc':
                 return $this->get_table_pivc($request);
+
+            case 'addNotesPivc_save':
+                return $this->add_notesPivc($request);
                 
             default:
                 return 'error happen..';
@@ -92,7 +95,6 @@ class PivcController extends defaultController
         return json_encode($responce);
         
     }
-    
     
     public function add_pivc(Request $request){
         
@@ -172,7 +174,6 @@ class PivcController extends defaultController
         
     }
 
-    
     public function edit_pivc(Request $request){
         
         DB::beginTransaction();
@@ -397,6 +398,37 @@ class PivcController extends defaultController
         // dd($array_report);
 
         return view('hisdb.nursingnote.pivc_chart_pdfmake', compact('pivc','pivc_date','array_report'));
+        
+    }
+
+    public function add_notesPivc(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'PIVC',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
         
     }
     

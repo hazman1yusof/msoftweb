@@ -10,9 +10,9 @@
                 <button type="button" class="btn btn-default" id="new_thrombo">
                     <span class="fa fa-plus-square-o"></span> New 
                 </button>
-                <button type="button" class="btn btn-default" id="edit_thrombo">
+                <!-- <button type="button" class="btn btn-default" id="edit_thrombo">
                     <span class="fa fa-edit fa-lg"></span> Edit 
-                </button>
+                </button> -->
                 <button type="button" class="btn btn-default" data-oper='add' id="save_thrombo">
                     <span class="fa fa-save fa-lg"></span> Save 
                 </button>
@@ -24,9 +24,7 @@
                 </button>
             </div>
         </div>
-        
-        <!-- <button class="btn btn-default btn-sm" type="button" id="thrombo_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button> -->
-        
+                
         <div class="panel-body" style="padding-right: 0px;">               
             <form class='form-horizontal' style='width: 99%;' id='formThrombo'>
             <input id="idno_thrombo" name="idno_thrombo" type="hidden">
@@ -197,6 +195,18 @@
                                             
                                             <label class="control-label" for="remarksThrombo">Remarks</label>
                                             <textarea id="remarksThrombo" name="remarksThrombo" type="text" class="form-control input-sm"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class='col-md-12'>
+                                <div class="panel panel-info" id="jqGridAddNotesThrombo_c">
+                                    <div class="panel-heading text-center">ADDITIONAL NOTES</div>
+                                    <div class="panel-body">
+                                        <div class='col-md-12' style="padding:0 0 15px 0">
+                                            <table id="jqGridAddNotesThrombo" class="table table-striped"></table>
+                                            <div id="jqGridPagerAddNotesThrombo"></div>
                                         </div>
                                     </div>
                                 </div>

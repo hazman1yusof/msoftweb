@@ -58,6 +58,9 @@ class ThrombophlebitisController extends defaultController
             
             case 'addThrombo_del':
                 return $this->del_thrombojqgrid($request);
+
+            case 'addNotesThrombo_save':
+                return $this->add_notesThrombo($request);
             
             default:
                 return 'error happen..';
@@ -409,6 +412,37 @@ class ThrombophlebitisController extends defaultController
         // dd($thromboGrid);
 
         return view('hisdb.nursingnote.thrombo_chart_pdfmake', compact('thrombo','thromboGrid'));
+        
+    }
+
+    public function add_notesThrombo(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'THROMBO',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
         
     }
     
