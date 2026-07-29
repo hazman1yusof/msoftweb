@@ -79,7 +79,7 @@ $(document).ready(function (){
     ////////////////////////////////////print button starts////////////////////////////////////
     
     $("#thrombophlebitis_chart").click(function (){
-        window.open('./thrombophlebitis/thrombophlebitis_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&dateInsert='+$("#dateInsert").val(), '_blank');
+        window.open('./thrombophlebitis/thrombophlebitis_chart?mrn='+$('#mrn_nursNote').val()+'&episno='+$("#episno_nursNote").val()+'&dateInsert='+$("#dateInsert").val(), '_blank');
     });
     /////////////////////////////////////print button ends/////////////////////////////////////
     
