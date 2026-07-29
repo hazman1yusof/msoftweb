@@ -1,4 +1,3 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
@@ -11,6 +10,17 @@ var urlParam_Thrombo = {
 	filterCol: ['mrn','episno','cannulationNo'],
 	filterVal: ['','', $("#idno_thrombo").val()],
 };
+
+/////////////////////////////parameter for jqGridAddNotesThrombo url/////////////////////////////
+var urlParam_AddNotesThrombo = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','THROMBO'],
+}
 
 $(document).ready(function (){
     
@@ -394,6 +404,116 @@ $(document).ready(function (){
     $("#jqGridThrombo_ilcancel").click(function (){
         refreshGrid("#jqGridThrombo", urlParam_Thrombo);
     });
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridThrombo = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesThrombo///////////////////////////////////////
+	$("#jqGridAddNotesThrombo").jqGrid({
+		datatype: "local",
+		editurl: "./thrombophlebitis/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesThrombo",
+		loadComplete: function (){
+			if(addmore_jqgridThrombo.more == true){$('#jqGridAddNotesThrombo_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridThrombo.edit = addmore_jqgridThrombo.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesThrombo");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesThrombo_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addThrombo = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesNursingED,#jqGridPagerRefresh_addnoteNursingED").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesThrombo_ilsave').click();
+				// addmore_jqgridThrombo.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridThrombo.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesThrombo',urlParam_AddNotesThrombo,'add_notesThrombo');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesNursingED,#jqGridPagerRefresh_addnoteNursingED").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesThrombo',urlParam_AddNotesThrombo,'add_notesThrombo');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesThrombo').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./thrombophlebitis/form?"+
+				$.param({
+					episno: $('#episno_nursNote').val(),
+					mrn: $('#mrn_nursNote').val(),
+					action: 'addNotesThrombo_save',
+				});
+			$("#jqGridAddNotesThrombo").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesNursingED,#jqGridPagerRefresh_addnoteNursingED").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesThrombo/////////////////////////////////////
+	$("#jqGridAddNotesThrombo").inlineNav('#jqGridPagerAddNotesThrombo', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addThrombo
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesThrombo", {
+		id: "jqGridPagerRefresh_addnoteNursingED",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesThrombo", urlParam_AddNotesThrombo);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
     
 });
 

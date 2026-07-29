@@ -1026,6 +1026,8 @@ $(document).ready(function (){
                 });
                 
                 $("#jqGridThrombo").jqGrid('setGridWidth', Math.floor($("#jqGridThrombo_c")[0].offsetWidth-$("#jqGridThrombo_c")[0].offsetLeft-30));
+                $("#jqGridAddNotesThrombo").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesThrombo_c")[0].offsetWidth-$("#jqGridAddNotesThrombo_c")[0].offsetLeft-30));
+                refreshGrid('#jqGridAddNotesThrombo',urlParam_AddNotesThrombo,'add_notesThrombo');
                 break;
         }
     });
@@ -6347,6 +6349,11 @@ function populate_nursingnote(obj){
     urlParam_AddNotesMorseFallScale.filterVal[0] = obj.MRN;
     urlParam_AddNotesMorseFallScale.filterVal[1] = obj.Episno;
     urlParam_AddNotesMorseFallScale.filterVal[2] = 'MORSE_FALL_SCALE';
+
+    ////jqGridAddNotesThrombo
+    urlParam_AddNotesThrombo.filterVal[0] = obj.MRN;
+    urlParam_AddNotesThrombo.filterVal[1] = obj.Episno;
+    urlParam_AddNotesThrombo.filterVal[2] = 'THROMBO';
 
     // $("#tot_input").val(obj.total_all_i);
     
