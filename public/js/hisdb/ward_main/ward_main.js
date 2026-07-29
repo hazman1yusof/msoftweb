@@ -221,10 +221,15 @@ $(document).ready(function (){
                 break;
             case 'docNoteRefIP':
                 sticky_clientprognotereftbl(on = true);
-                docalloc_tbl.ajax.url("./clientprogressnoteref/table?"+$.param(docalloc_clientprognoteref)).load(function (data){
-                    emptyFormdata_div("#formClientProgNoteRef",['#mrn_clientProgNoteRef','#episno_clientProgNoteRef','#datetime_clientProgNoteRef','#epistycode_clientProgNoteRef','#refdoctor_clientProgNoteRef']);
-                    $('#docalloc_tbl tbody tr:eq(0)').click(); // to select first row
+                clientprognoteref_date_tbl.ajax.url("./clientprogressnoteref/table?"+$.param(dateParam_clientprognoteref)).load(function (data){
+                    emptyFormdata_div("#formClientProgNoteRef",['#mrn_clientProgNoteRef','#episno_clientProgNoteRef','#datetime_clientProgNoteRef','#epistycode_clientProgNoteRef','#refdoctor_clientProgNoteRef','#clientProgNoteRef_datetaken']);
+                    $('#clientprognoteref_date_tbl tbody tr:eq(0)').click(); // to select first row
                 });
+                
+                // docalloc_tbl.ajax.url("./clientprogressnoteref/table?"+$.param(docalloc_clientprognoteref)).load(function (data){
+                //     emptyFormdata_div("#formClientProgNoteRef",['#mrn_clientProgNoteRef','#episno_clientProgNoteRef','#datetime_clientProgNoteRef','#epistycode_clientProgNoteRef','#refdoctor_clientProgNoteRef']);
+                //     $('#docalloc_tbl tbody tr:eq(0)').click(); // to select first row
+                // });
                 textarea_init_clientProgNoteRef();
                 break;
             // case 'docNotePsyIP':
