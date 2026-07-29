@@ -137,17 +137,29 @@ class MigrationController extends defaultController
                             ->exists();
 
                 if(!$exist){
+
+                    $chgmast = DB::table('hisdb.chgmast')
+                            ->where('compcode','10A')
+                            ->where('chgcode',$obj->chgcode);
+
+                    if($chgmast->exists()){
+                        $chgmast = $chgmast->first();
+                        $uom = $chgmast->uom;
+                    }else{
+                        $uom = null;
+                    }
+
                     DB::table('hisdb.chgprice')
                         ->insert([
                             'lineno_' => $x,
                             'compcode' => '10A',
                             'chgcode' => $obj->chgcode,
-                            'uom' => $obj->chgcode,
-                            'effdate' => $obj->chgcode,
+                            'uom' => $uom,
+                            'effdate' => $obj->effdate,
                             'minamt' => null,
-                            'amt1' => $obj->chgcode,
-                            'amt2' => $obj->chgcode,
-                            'amt3' => $obj->chgcode,
+                            'amt1' => $obj->amt1,
+                            'amt2' => $obj->amt2,
+                            'amt3' => $obj->amt3,
                             'iptax' => 'ES',
                             'optax' => 'ES',
                             'maxamt' => 0,
