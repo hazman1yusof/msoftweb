@@ -1,6 +1,17 @@
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
+/////////////////////////////parameter for jqGridAddNotesPivc url/////////////////////////////
+var urlParam_AddNotesPivc = {
+	action: 'get_table_default',
+	url: 'util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','PIVC'],
+}
+
 $(document).ready(function (){
     
     var fdl = new faster_detail_load();
@@ -134,6 +145,117 @@ $(document).ready(function (){
         });
     });
     /////////////////////////////////////////pivc ends/////////////////////////////////////////
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridPivc = {more:false,state:false,edit:false}
+
+	///////////////////////////////////////jqGridAddNotesPivc///////////////////////////////////////
+	$("#jqGridAddNotesPivc").jqGrid({
+		datatype: "local",
+		editurl: "./pivc/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesPivc",
+		loadComplete: function (){
+			if(addmore_jqgridPivc.more == true){$('#jqGridAddNotesPivc_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridPivc.edit = addmore_jqgridPivc.more = false; // reset
+			
+			// calc_jq_height_onchange("jqGridAddNotesPivc");
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotesPivc_iledit").click();
+		},
+	});
+	
+	/////////////////////////////////myEditOptions/////////////////////////////////
+	var myEditOptions_addPivc = {
+		keys: true,
+		extraparam: {
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete_addnotesPivc,#jqGridPagerRefresh_addnotePivc").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesPivc_ilsave').click();
+				// addmore_jqgridPivc.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridPivc.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesPivc',urlParam_AddNotesPivc,'add_notesPivc');
+			errorField.length = 0;
+			$("#jqGridPagerDelete_addnotesPivc,#jqGridPagerRefresh_addnotePivc").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesPivc',urlParam_AddNotesPivc,'add_notesPivc');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			
+			let data = $('#jqGridAddNotesPivc').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./pivc/form?"+
+				$.param({
+					episno: $('#episno_nursNote').val(),
+					mrn: $('#mrn_nursNote').val(),
+					action: 'addNotesPivc_save',
+				});
+			$("#jqGridAddNotesPivc").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc: function (response){
+			$("#jqGridPagerDelete_addnotesPivc,#jqGridPagerRefresh_addnotePivc").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////jqGridPagerAddNotesPivc/////////////////////////////////////
+	$("#jqGridAddNotesPivc").inlineNav('#jqGridPagerAddNotesPivc', {
+		add: true, edit: false, cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addPivc
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesPivc", {
+		id: "jqGridPagerRefresh_addnotePivc",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesPivc", urlParam_AddNotesPivc);
+		},
+	});
+	//////////////////////////////////////////////end grid//////////////////////////////////////////////
+
     
 });
 

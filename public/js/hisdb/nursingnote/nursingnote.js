@@ -988,7 +988,9 @@ $(document).ready(function (){
                     emptyFormdata_div("#formPivc",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
                     $('#datetimepivc_tbl tbody tr:eq(0)').click(); // to select first row
                 });
-                
+
+                $("#jqGridAddNotesPivc").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesPivc_c")[0].offsetWidth-$("#jqGridAddNotesPivc_c")[0].offsetLeft-30));
+                refreshGrid('#jqGridAddNotesPivc',urlParam_AddNotesPivc,'add_notesPivc');
                 // $('#datetimepivc_tbl').DataTable().ajax.reload();
                 break;
             case 'morsefallscale':
@@ -6333,6 +6335,11 @@ function populate_nursingnote(obj){
     urlParam_AddNotesGlasgow.filterVal[0] = obj.MRN;
     urlParam_AddNotesGlasgow.filterVal[1] = obj.Episno;
     urlParam_AddNotesGlasgow.filterVal[2] = 'GLASGOW_COMA_SCALE';
+
+    ////jqGridAddNotesPivc
+    urlParam_AddNotesPivc.filterVal[0] = obj.MRN;
+    urlParam_AddNotesPivc.filterVal[1] = obj.Episno;
+    urlParam_AddNotesPivc.filterVal[2] = 'PIVC';
 
     // $("#tot_input").val(obj.total_all_i);
     

@@ -10,9 +10,9 @@
                 <button type="button" class="btn btn-default" id="new_pivc">
                     <span class="fa fa-plus-square-o"></span> New 
                 </button>
-                <button type="button" class="btn btn-default" id="edit_pivc">
+                <!-- <button type="button" class="btn btn-default" id="edit_pivc">
                     <span class="fa fa-edit fa-lg"></span> Edit 
-                </button>
+                </button> -->
                 <button type="button" class="btn btn-default" data-oper='add' id="save_pivc">
                     <span class="fa fa-save fa-lg"></span> Save 
                 </button>
@@ -31,7 +31,7 @@
             <form class='form-horizontal' style='width: 99%;' id='formPivc'>
             <input id="idno_pivc" name="idno_pivc" type="hidden">
                 
-                <div class="col-md-4" style="padding: 0 0 0 0;">
+                <div class="col-md-3" style="padding: 0 0 0 0;">
                     <div class="panel panel-info">
                         <div class="panel-body">
                             <table id="datetimepivc_tbl" class="ui celled table" style="width: 100%;">
@@ -49,7 +49,7 @@
                     </div>
                 </div>
 
-                <div class='col-md-8' style="padding-right: 0px;">
+                <div class='col-md-9' style="padding-right: 0px;">
                     <div class="panel panel-info">
                         <div class="panel-heading text-center">PERIPHERAL LINE MAINTENANCE BUNDLE CHECKLIST</div>
                         <div class="panel-body" style="padding: 15px 0px;">
@@ -208,7 +208,18 @@
                                     </div>
                                 </div>
                             </div>
-                        
+
+                            <div class='col-md-12'>
+                                <div class="panel panel-info" id="jqGridAddNotesPivc_c">
+                                    <div class="panel-heading text-center">ADDITIONAL NOTES</div>
+                                    <div class="panel-body">
+                                        <div class='col-md-12' style="padding:0 0 15px 0">
+                                            <table id="jqGridAddNotesPivc" class="table table-striped"></table>
+                                            <div id="jqGridPagerAddNotesPivc"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
