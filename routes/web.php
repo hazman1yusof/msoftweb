@@ -1653,6 +1653,8 @@ Route::post('/test/form','util\TestController@form');
 Route::get('/export_csv','util\ExportController@show');
 Route::get('/export_csv/table','util\ExportController@table');
 
+Route::get('/migration/table','util\MigrationController@table');
+
 Route::get('/exec','util\ExecController@show');
 Route::get('/exec/table','util\ExecController@table');
 
