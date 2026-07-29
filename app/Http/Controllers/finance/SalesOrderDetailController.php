@@ -120,9 +120,12 @@ class SalesOrderDetailController extends defaultController
                 break;
         }
 
+        $sel_arr = ['cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname as generic','cm.brandname','cm.overwrite','cm.uom','uom.convfactor','cm.constype','cm.revcode'];
+        // ,'st.qtyonhand','pt.idno as pt_idno','pt.avgcost','pt.generic'
+
         $table = DB::table('hisdb.chgmast as cm')
                         // ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','pt.generic','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
+                        ->select($sel_arr)
                         ->where('cm.compcode','=',session('compcode'))
                         // ->where('cm.unit', '=', session('unit'))
                         // ->where('cm.active', '1')
@@ -142,21 +145,21 @@ class SalesOrderDetailController extends defaultController
         //                     $join = $join->where('cp.effdate', '<=', $entrydate);
         //                 });
 
-        $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
-                            $join = $join->on('st.itemcode', '=', 'cm.chgcode');
-                            $join = $join->on('st.uomcode', '=', 'cm.uom');
-                            $join = $join->where('st.compcode', '=', session('compcode'));
-                            // $join = $join->where('st.unit', '=', session('unit'));
-                            $join = $join->where('st.deptcode', '=', $deptcode);
-                            $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
-                        });
+        // $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
+        //                     $join = $join->on('st.itemcode', '=', 'cm.chgcode');
+        //                     $join = $join->on('st.uomcode', '=', 'cm.uom');
+        //                     $join = $join->where('st.compcode', '=', session('compcode'));
+        //                     // $join = $join->where('st.unit', '=', session('unit'));
+        //                     $join = $join->where('st.deptcode', '=', $deptcode);
+        //                     $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+        //                 });
 
-        $table = $table->leftjoin('material.product as pt', function($join) use ($deptcode,$entrydate){
-                            $join = $join->where('pt.compcode', '=', session('compcode'));
-                            $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
-                            $join = $join->on('pt.uomcode', '=', 'cm.uom');
-                            // $join = $join->where('pt.unit', '=', session('unit'));
-                        });
+        // $table = $table->leftjoin('material.product as pt', function($join) use ($deptcode,$entrydate){
+        //                     $join = $join->where('pt.compcode', '=', session('compcode'));
+        //                     $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
+        //                     $join = $join->on('pt.uomcode', '=', 'cm.uom');
+        //                     // $join = $join->where('pt.unit', '=', session('unit'));
+        //                 });
 
         // $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
         //                     $join = $join->where('cp.compcode', '=', session('compcode'));
@@ -369,6 +372,36 @@ class SalesOrderDetailController extends defaultController
                 //     // unset($rows[$key]);
                 //     continue;
                 // }
+            }
+
+            $value->qtyonhand = 0;
+            $value->pt_idno = null;
+            $value->avgcost = null;
+
+            if($value->invflag == '1'){
+
+                $product = DB::table('material.product as pt')
+                                ->select('st.qtyonhand','st.idno as st_idno','pt.idno as pt_idno','pt.avgcost','pt.generic')
+                                ->where('pt.compcode', '=', session('compcode'))
+                                ->where('pt.itemcode', '=', $value->chgcode)
+                                ->where('pt.uomcode', '=', $value->uom)
+                                ->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
+                                    $join = $join->on('st.itemcode', '=', 'pt.itemcode');
+                                    $join = $join->on('st.uomcode', '=', 'pt.uomcode');
+                                    $join = $join->where('st.compcode', '=', session('compcode'));
+                                    // $join = $join->where('st.unit', '=', session('unit'));
+                                    $join = $join->where('st.deptcode', '=', $deptcode);
+                                    $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+                                })
+                                ->orderBy('st.idno', 'asc');
+
+                if($product->exists()){
+                    $product = $product->first();
+
+                    $value->qtyonhand = $product->qtyonhand;
+                    $value->pt_idno = $product->pt_idno;
+                    $value->avgcost = $product->avgcost;
+                }
             }
         }
 
