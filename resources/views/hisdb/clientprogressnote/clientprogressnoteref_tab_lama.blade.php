@@ -12,9 +12,9 @@
                     <button type="button" class="btn btn-default" id="new_clientProgNoteRef">
                         <span class="fa fa-plus-square-o"></span> New 
                     </button>
-                    <!-- <button type="button" class="btn btn-default" id="edit_clientProgNoteRef">
+                    <button type="button" class="btn btn-default" id="edit_clientProgNoteRef">
                         <span class="fa fa-edit fa-lg"></span> Edit 
-                    </button> -->
+                    </button>
                     <button type="button" class="btn btn-default" data-oper='add' id="save_clientProgNoteRef">
                         <span class="fa fa-save fa-lg"></span> Save 
                     </button>
@@ -27,7 +27,7 @@
                 <div class='col-md-12' style="padding: 0 0 15px 0;">
                     <div class="col-md-3" style="padding-left: 0px;">
                         <!-- table referral_doctor -->
-                        <div id="docalloc_tbl_sticky" style="padding: 0 0 0 0; display: none;">
+                        <div id="docalloc_tbl_sticky" style="padding: 0 0 0 0;">
                             <div class="panel panel-info" style="margin-top: 10px;">
                                 <div class="panel-body">
                                     <table id="docalloc_tbl" class="ui celled table" style="width: 100%;">
@@ -84,7 +84,7 @@
                                 <div class="panel-body">
                                     <div class="form-inline col-md-12" style="padding-bottom: 15px;">
                                         <label class="control-label" for="datetaken" style="padding-right: 5px;">Date</label>
-                                        <input id="clientProgNoteRef_datetaken" name="datetaken" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>"  rdonly>
+                                        <input id="clientProgNoteRef_datetaken" name="datetaken" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>">
                                         
                                         <label class="control-label" for="timetaken" style="padding-left: 15px; padding-right: 5px;">Time</label>
                                         <input id="clientProgNoteRef_timetaken" name="timetaken" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information.">
@@ -102,18 +102,6 @@
                                     @if(request()->get('epistycode') == 'OP')
                                         @include('hisdb.clientprogressnote.patprescription')
                                     @endif
-                                    
-                                    <div class='col-md-12'>
-                                        <div class="panel panel-info" id="jqGridAddNotesClientProgNoteRef_c">
-                                            <div class="panel-heading text-center">ADDITIONAL NOTES</div>
-                                            <div class="panel-body">
-                                                <div class='col-md-12' style="padding:0 0 15px 0">
-                                                    <table id="jqGridAddNotesClientProgNoteRef" class="table table-striped"></table>
-                                                    <div id="jqGridPagerAddNotesClientProgNoteRef"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </form>

@@ -3,17 +3,6 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
 
-/////////////////////////////parameter for jqGridAddNotesClientProgNoteRef url/////////////////////////////
-var urlParam_AddNotesClientProgNoteRef = {
-    action: 'get_table_default',
-    url: 'util/get_table_default',
-    field: '',
-    table_name: 'nursing.nursaddnote',
-    table_id: 'idno',
-    filterCol: ['mrn','episno','type'],
-    filterVal: ['','','DOCTORNOTEREF_IP'],
-}
-
 $(document).ready(function (){
     
     textarea_init_clientProgNoteRef();
@@ -23,22 +12,21 @@ $(document).ready(function (){
     disableForm('#formClientProgNoteRef');
     
     $("#new_clientProgNoteRef").click(function (){
-        // $('#docalloc_tbl tbody tr').removeClass('active');
+        $('#docalloc_tbl tbody tr').removeClass('active');
         $('#clientprognoteref_date_tbl tbody tr').removeClass('active');
         $('#cancel_clientProgNoteRef').data('oper','add');
         button_state_clientProgNoteRef('wait');
         enableForm('#formClientProgNoteRef');
         rdonly('#formClientProgNoteRef');
         emptyFormdata_div("#formClientProgNoteRef",['#mrn_clientProgNoteRef','#episno_clientProgNoteRef','#datetime_clientProgNoteRef','#epistycode_clientProgNoteRef','#refdoctor_clientProgNoteRef']);
-        $("#clientProgNoteRef_datetaken").val(moment().format('YYYY-MM-DD'));
-        // $('#clientProgNoteRef_datetaken').prop('disabled',false);
+        $('#clientProgNoteRef_datetaken').prop('disabled',false);
     });
     
     $("#edit_clientProgNoteRef").click(function (){
         button_state_clientProgNoteRef('wait');
         enableForm('#formClientProgNoteRef');
         rdonly('#formClientProgNoteRef');
-        // $('#clientProgNoteRef_datetaken').prop('disabled',true);
+        $('#clientProgNoteRef_datetaken').prop('disabled',true);
     });
     
     $("#save_clientProgNoteRef").click(function (){
@@ -67,119 +55,9 @@ $(document).ready(function (){
     $("#cancel_clientProgNoteRef").click(function (){
         disableForm('#formClientProgNoteRef');
         button_state_clientProgNoteRef($(this).data('oper'));
-        // $('#docalloc_tbl tbody tr:eq(0)').click(); // to select first row
+        $('#docalloc_tbl tbody tr:eq(0)').click(); // to select first row
         $('#clientprognoteref_date_tbl tbody tr:eq(0)').click(); // to select first row
     });
-    
-    //////////////////////////////////////parameter for saving url//////////////////////////////////////
-    var addmore_jqgridClientProgNoteRef = {more:false,state:false,edit:false}
-    
-    //////////////////////////////////jqGridAddNotesClientProgNoteRef//////////////////////////////////
-    $("#jqGridAddNotesClientProgNoteRef").jqGrid({
-        datatype: "local",
-        editurl: "./clientprogressnoteref/form",
-        colModel: [
-            { label: 'compcode', name: 'compcode', hidden: true },
-            { label: 'mrn', name: 'mrn', hidden: true },
-            { label: 'episno', name: 'episno', hidden: true },
-            { label: 'id', name: 'idno', width: 10, hidden: true, key: true },
-            { label: 'type', name: 'type', hidden: true },
-            { label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
-            { label: 'Entered by', name: 'adduser', width: 50, hidden: false },
-            { label: 'Date', name: 'adddate', width: 50, hidden: false },
-        ],
-        autowidth: true,
-        multiSort: true,
-        sortname: 'idno',
-        sortorder: 'desc',
-        viewrecords: true,
-        loadonce: false,
-        width: 900,
-        height: 200,
-        rowNum: 30,
-        pager: "#jqGridPagerAddNotesClientProgNoteRef",
-        loadComplete: function (){
-            if(addmore_jqgridClientProgNoteRef.more == true){$('#jqGridAddNotesClientProgNoteRef_iladd').click();}
-            else{
-                $('#jqGrid2').jqGrid('setSelection', "1");
-            }
-            $('.ui-pg-button').prop('disabled',true);
-            addmore_jqgridClientProgNoteRef.edit = addmore_jqgridClientProgNoteRef.more = false; // reset
-            
-            // calc_jq_height_onchange("jqGridAddNotesClientProgNoteRef");
-        },
-        ondblClickRow: function(rowid, iRow, iCol, e){
-            $("#jqGridAddNotesClientProgNoteRef_iledit").click();
-        },
-    });
-    
-    ///////////////////////////////////////////myEditOptions///////////////////////////////////////////
-    var myEditOptions_addClientProgNoteRef = {
-        keys: true,
-        extraparam: {
-            "_token": $("#csrf_token").val()
-        },
-        oneditfunc: function (rowid){
-            $("#jqGridPagerDelete_addnotesClientProgNoteRef,#jqGridPagerRefresh_addnoteClientProgNoteRef").hide();
-            
-            $("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
-                var code = e.keyCode || e.which;
-                if (code == '9')$('#jqGridAddNotesClientProgNoteRef_ilsave').click();
-                // addmore_jqgridClientProgNoteRef.state = true;
-                // $('#jqGrid_ilsave').click();
-            });
-        },
-        aftersavefunc: function (rowid, response, options){
-            // addmore_jqgridClientProgNoteRef.more = true; // only addmore after save inline
-            // state true maksudnyer ada isi, tak kosong
-            refreshGrid('#jqGridAddNotesClientProgNoteRef',urlParam_AddNotesClientProgNoteRef,'add_notesClientProgNoteRef');
-            errorField.length = 0;
-            $("#jqGridPagerDelete_addnotesClientProgNoteRef,#jqGridPagerRefresh_addnoteClientProgNoteRef").show();
-        },
-        errorfunc: function (rowid,response){
-            $('#p_error').text(response.responseText);
-            refreshGrid('#jqGridAddNotesClientProgNoteRef',urlParam_AddNotesClientProgNoteRef,'add_notesClientProgNoteRef');
-        },
-        beforeSaveRow: function (options, rowid){
-            $('#p_error').text('');
-            
-            let data = $('#jqGridAddNotesClientProgNoteRef').jqGrid ('getRowData', rowid);
-            
-            let editurl = "./clientprogressnoteref/form?"+
-                $.param({
-                    episno: $('#episno_clientProgNoteRef').val(),
-                    mrn: $('#mrn_clientProgNoteRef').val(),
-                    action: 'addNotesClientProgNoteRef_save',
-                });
-            $("#jqGridAddNotesClientProgNoteRef").jqGrid('setGridParam', { editurl: editurl });
-        },
-        afterrestorefunc: function (response){
-            $("#jqGridPagerDelete_addnotesClientProgNoteRef,#jqGridPagerRefresh_addnoteClientProgNoteRef").show();
-        },
-        errorTextFormat: function (data){
-            alert(data);
-        }
-    };
-    
-    ////////////////////////////////jqGridPagerAddNotesClientProgNoteRef////////////////////////////////
-    $("#jqGridAddNotesClientProgNoteRef").inlineNav('#jqGridPagerAddNotesClientProgNoteRef', {
-        add: true, edit: false, cancel: true,
-        // to prevent the row being edited/added from being automatically cancelled once the user clicks another row
-        restoreAfterSelect: false,
-        addParams: {
-            addRowParams: myEditOptions_addClientProgNoteRef
-        },
-        // editParams: myEditOptions_edit
-    }).jqGrid('navButtonAdd', "#jqGridPagerAddNotesClientProgNoteRef", {
-        id: "jqGridPagerRefresh_addnoteClientProgNoteRef",
-        caption: "", cursor: "pointer", position: "last",
-        buttonicon: "glyphicon glyphicon-refresh",
-        title: "Refresh Table",
-        onClickButton: function (){
-            refreshGrid("#jqGridAddNotesClientProgNoteRef", urlParam_AddNotesClientProgNoteRef);
-        },
-    });
-    //////////////////////////////////////////////end grid//////////////////////////////////////////////
     
 });
 
@@ -288,11 +166,6 @@ function populate_clientProgNoteRef_currpt(obj){
         doctorcode: '',
     }
     
-    // jqGridAddNotesClientProgNoteRef
-    urlParam_AddNotesClientProgNoteRef.filterVal[0] = obj.MRN;
-    urlParam_AddNotesClientProgNoteRef.filterVal[1] = obj.Episno;
-    urlParam_AddNotesClientProgNoteRef.filterVal[2] = 'DOCTORNOTEREF_IP';
-    
     button_state_clientProgNoteRef('empty');
     
     // clientprognoteref_date_tbl.ajax.url("./clientprogressnoteref/table?"+$.param(dateParam_clientprognoteref)).load(function (data){
@@ -370,10 +243,6 @@ function saveForm_clientProgNoteRef(callback){
     $.post("./clientprogressnoteref/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').fail(function (data){
-        if(data.responseText !== ''){
-            alert(data.responseText);
-        }
-        
         callback(data);
     }).success(function (data){
         callback(data);
@@ -534,7 +403,7 @@ $('#clientprognoteref_date_tbl tbody').on('click', 'tr', function (){
     },'json').done(function (data){
         if(!$.isEmptyObject(data)){
             // if(!emptyobj_(data.episode))autoinsert_rowdata("#formClientProgNoteRef",data.episode);
-            if(!emptyobj_(data.patprogressnoteref))autoinsert_rowdata("#formClientProgNoteRef",data.patprogressnoteref);
+            if(!emptyobj_(data.patprogressnote))autoinsert_rowdata("#formClientProgNoteRef",data.patprogressnote);
             
             textarea_init_clientProgNoteRef();
         }else{

@@ -202,12 +202,11 @@ $(document).ready(function (){
                     refreshGrid('#jqGridPrevObstetrics',urlParam_PrevObstetrics,'add');
                 });
                 refreshGrid('#jqGridAddNotesAntenatal',urlParam_AddNotesAntenatal,'add_notesAntenatal');
-
+                
                 $("#jqGridPrevObstetrics").jqGrid('setGridWidth', Math.floor($("#jqGridWardMain_c")[0].offsetWidth-$("#jqGridWardMain_c")[0].offsetLeft-210));
                 $("#jqGridCurrPregnancy").jqGrid('setGridWidth', Math.floor($("#jqGridWardMain_c")[0].offsetWidth-$("#jqGridWardMain_c")[0].offsetLeft-210));
                 $("#jqGridObstetricsUltrasound").jqGrid('setGridWidth', Math.floor($("#jqGridWardMain_c")[0].offsetWidth-$("#jqGridWardMain_c")[0].offsetLeft-210));
                 $("#jqGridAddNotesAntenatal").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesAntenatal_c")[0].offsetWidth-$("#jqGridAddNotesAntenatal_c")[0].offsetLeft-30));
-
                 break;
             case 'docNoteIP':
                 sticky_clientprognotetbl(on = true);
@@ -222,9 +221,11 @@ $(document).ready(function (){
             case 'docNoteRefIP':
                 sticky_clientprognotereftbl(on = true);
                 clientprognoteref_date_tbl.ajax.url("./clientprogressnoteref/table?"+$.param(dateParam_clientprognoteref)).load(function (data){
-                    emptyFormdata_div("#formClientProgNoteRef",['#mrn_clientProgNoteRef','#episno_clientProgNoteRef','#datetime_clientProgNoteRef','#epistycode_clientProgNoteRef','#refdoctor_clientProgNoteRef','#clientProgNoteRef_datetaken']);
+                    emptyFormdata_div("#formClientProgNoteRef",['#mrn_clientProgNoteRef','#episno_clientProgNoteRef','#datetime_clientProgNoteRef','#epistycode_clientProgNoteRef','#refdoctor_clientProgNoteRef']);
                     $('#clientprognoteref_date_tbl tbody tr:eq(0)').click(); // to select first row
                 });
+                refreshGrid('#jqGridAddNotesClientProgNoteRef',urlParam_AddNotesClientProgNoteRef,'add_notesClientProgNote');
+                $("#jqGridAddNotesClientProgNoteRef").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesClientProgNoteRef_c")[0].offsetWidth-$("#jqGridAddNotesClientProgNoteRef_c")[0].offsetLeft-30));
                 
                 // docalloc_tbl.ajax.url("./clientprogressnoteref/table?"+$.param(docalloc_clientprognoteref)).load(function (data){
                 //     emptyFormdata_div("#formClientProgNoteRef",['#mrn_clientProgNoteRef','#episno_clientProgNoteRef','#datetime_clientProgNoteRef','#epistycode_clientProgNoteRef','#refdoctor_clientProgNoteRef']);
@@ -269,19 +270,19 @@ $(document).ready(function (){
                 // populate_preContrastReqFor_getdata();
                 // populate_consentFormReqFor_getdata();
                 var lastrowdata = getrow_bootgrid();
-
+                
                 var reqForIP_newurl = "./requestfor_iframe?mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno+"&phase=CLINICAL";
                 var reqForIP_cururl = $('iframe#requestfor_main_iframe').attr('src');
-
+                
                 if(reqForIP_cururl != reqForIP_newurl){
                     $('iframe#requestfor_main_iframe').attr('src',reqForIP_newurl);
                 }
-
+                
                 break;
             case 'dietNoteIP':
                 getdata_dietNote();
-               
-	            var urlparam_dietNote_date_tbl = {
+                
+                var urlparam_dietNote_date_tbl = {
                     action: 'get_table_datetimeDietNote',
                     mrn: $("#mrn_wardMain").val(),
                     episno: $("#episno_wardMain").val()
@@ -289,20 +290,19 @@ $(document).ready(function (){
                 
                 dietNote_date_tbl.ajax.url("./dieteticCareNotes/table?"+$.param(urlparam_dietNote_date_tbl)).load(function (data){
                     emptyFormdata_div("#formDieteticCareNotes",['#mrn_wardMain','#episno_wardMain','#idno_dieteticCareNotes']);
-                    $('#dietNote_date_tbl tbody tr:eq(0)').click();  // to select first row
+                    $('#dietNote_date_tbl tbody tr:eq(0)').click(); // to select first row
                 });
-
+                
                 refreshGrid('#jqGridAddNotesDieteticCareNotes',urlParam_AddNotesDieteticCareNotes,'add_notesDieteticCareNotes');
                 $("#jqGridAddNotesDieteticCareNotes").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesDieteticCareNotes_c")[0].offsetWidth-$("#jqGridAddNotesDieteticCareNotes_c")[0].offsetLeft-30));
                 
-                                
                 break;
             case 'dietOrderIP':
-               populate_dietOrder_getdata();
-               refreshGrid('#jqGridAddNotesDietOrder',urlParam_AddNotesDietOrder,'add_notesDietOrder');
-               $("#jqGridAddNotesDietOrder").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesDietOrder_c")[0].offsetWidth-$("#jqGridAddNotesDietOrder_c")[0].offsetLeft-30));
-
-               break;
+                populate_dietOrder_getdata();
+                refreshGrid('#jqGridAddNotesDietOrder',urlParam_AddNotesDietOrder,'add_notesDietOrder');
+                $("#jqGridAddNotesDietOrder").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesDietOrder_c")[0].offsetWidth-$("#jqGridAddNotesDietOrder_c")[0].offsetLeft-30));
+                
+                break;
         }
     });
     
