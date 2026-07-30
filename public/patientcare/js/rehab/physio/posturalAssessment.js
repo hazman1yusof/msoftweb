@@ -12,12 +12,12 @@ $(document).ready(function (){
     disableForm('#formPosturalAssessment');
     
     $("#new_posturalAssessment").click(function (){
-        $("#posturalAssessment_enteredtime").val(moment().format('HH:mm:ss'));
         $('#cancel_posturalAssessment').data('oper','add');
         button_state_posturalAssessment('wait');
         enableForm('#formPosturalAssessment');
         rdonly('#formPosturalAssessment');
-        emptyFormdata_div("#formPosturalAssessment",['#mrn_rehabMain','#episno_rehabMain','#posturalAssessment_enteredtime']);
+        emptyFormdata_div("#formPosturalAssessment",['#mrn_rehabMain','#episno_rehabMain']);
+        $("#posturalAssessment_enteredtime").val(moment().format('HH:mm:ss'));
         document.getElementById("idno_posturalAssessment").value = "";
         // dialog_mrn_edit.on();
     });

@@ -12,12 +12,12 @@ $(document).ready(function (){
     disableForm('#formNeuroAssessment');
     
     $("#new_neuroAssessment").click(function (){
-        $("#neuroAssessment_enteredtime").val(moment().format('HH:mm:ss'));
         $('#cancel_neuroAssessment').data('oper','add');
         button_state_neuroAssessment('wait');
         enableForm('#formNeuroAssessment');
         rdonly('#formNeuroAssessment');
-        emptyFormdata_div("#formNeuroAssessment",['#mrn_rehabMain','#episno_rehabMain','#neuroAssessment_enteredtime']);
+        emptyFormdata_div("#formNeuroAssessment",['#mrn_rehabMain','#episno_rehabMain']);
+        $("#neuroAssessment_enteredtime").val(moment().format('HH:mm:ss'));
         document.getElementById("idno_neuroAssessment").value = "";
         document.getElementById("idno_romaffectedside").value = "";
         document.getElementById("idno_romsoundside").value = "";

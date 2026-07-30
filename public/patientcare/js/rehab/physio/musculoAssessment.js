@@ -12,12 +12,12 @@ $(document).ready(function (){
     disableForm('#formMusculoAssessment');
     
     $("#new_musculoAssessment").click(function (){
-        $("#musculoAssessment_enteredtime").val(moment().format('HH:mm:ss'));
         $('#cancel_musculoAssessment').data('oper','add');
         button_state_musculoAssessment('wait');
         enableForm('#formMusculoAssessment');
         rdonly('#formMusculoAssessment');
-        emptyFormdata_div("#formMusculoAssessment",['#mrn_rehabMain','#episno_rehabMain','#musculoAssessment_enteredtime']);
+        emptyFormdata_div("#formMusculoAssessment",['#mrn_rehabMain','#episno_rehabMain']);
+        $("#musculoAssessment_enteredtime").val(moment().format('HH:mm:ss'));
         document.getElementById("idno_musculoAssessment").value = "";
         document.getElementById("idno_affectedside").value = "";
         document.getElementById("idno_soundside").value = "";

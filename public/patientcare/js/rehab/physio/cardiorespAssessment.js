@@ -12,12 +12,12 @@ $(document).ready(function (){
     disableForm('#formCardiorespAssessment');
     
     $("#new_cardiorespAssessment").click(function (){
-        $("#cardiorespAssessment_enteredtime").val(moment().format('HH:mm:ss'));
         $('#cancel_cardiorespAssessment').data('oper','add');
         button_state_cardiorespAssessment('wait');
         enableForm('#formCardiorespAssessment');
         rdonly('#formCardiorespAssessment');
-        emptyFormdata_div("#formCardiorespAssessment",['#mrn_rehabMain','#episno_rehabMain','#cardiorespAssessment_enteredtime']);
+        emptyFormdata_div("#formCardiorespAssessment",['#mrn_rehabMain','#episno_rehabMain']);
+        $("#cardiorespAssessment_enteredtime").val(moment().format('HH:mm:ss'));
         document.getElementById("idno_cardiorespAssessment").value = "";
         // dialog_mrn_edit.on();
     });
