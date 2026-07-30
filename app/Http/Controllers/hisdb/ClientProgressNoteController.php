@@ -54,7 +54,7 @@ class ClientProgressNoteController extends defaultController
                     default:
                         return 'error happen..';
                 }
-
+            
             case 'save_refLetterClientProgNote':
                 switch($request->oper){
                     case 'add':
@@ -67,10 +67,10 @@ class ClientProgressNoteController extends defaultController
             
             case 'get_table_clientprognote':
                 return $this->get_table_clientprognote($request);
-
+            
             case 'get_table_refLetterClientProgNote':
                 return $this->get_table_refLetterClientProgNote($request);
-
+            
             case 'addNotesClientProgNote_save':
                 return $this->add_notesClientProgNote($request);
             
@@ -253,7 +253,7 @@ class ClientProgressNoteController extends defaultController
         $episode_obj = DB::table('hisdb.episode as e')
                         ->select('e.mrn','e.episno','e.admdoctor','p.datetaken','p.timetaken','p.doctorcode','p.adduser','d.doctorname as docname','doc.doctorname')
                         ->leftJoin('hisdb.patprogressnote as p', function ($join) use ($request){
-                            $join = $join->on('p.doctorcode','=','e.admdoctor');
+                            // $join = $join->on('p.doctorcode','=','e.admdoctor');
                             $join = $join->on('p.mrn','=','e.mrn');
                             $join = $join->on('p.episno','=','e.episno');
                             $join = $join->on('p.compcode','=','e.compcode');
@@ -520,7 +520,7 @@ class ClientProgressNoteController extends defaultController
             //                 ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('Y-m-d'))
             //                 ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('H:i:s'));
         }
-
+        
         if(!empty($request->datetime) && $request->datetime != '-'){
             $patprogressnote_obj = DB::table('hisdb.patprogressnote')
                                     ->select('idno','compcode','mrn','episno','datetaken','timetaken','progressnote','plan','doctorcode','adduser','adddate','upduser','upddate','lastuser','lastupdate','computerid')
@@ -600,7 +600,7 @@ class ClientProgressNoteController extends defaultController
             $pathealthadd_obj = $pathealthadd_obj->first();
             $responce->pathealthadd = $pathealthadd_obj;
         }
-
+        
         if(!empty($request->datetime) && $request->datetime != '-'){
             if($patprogressnote_obj->exists()){
                 $patprogressnote_obj = $patprogressnote_obj->first();
@@ -619,7 +619,7 @@ class ClientProgressNoteController extends defaultController
         return json_encode($responce);
         
     }
-
+    
     public function refLetterClientProgNote_chart(Request $request){
         
         $mrn = $request->mrn;
@@ -658,18 +658,19 @@ class ClientProgressNoteController extends defaultController
         return view('hisdb.clientprogressnote.refLetterClientProgNote_pdfmake',compact('ini_array'));
         
     }
-
+    
     public function add_notesClientProgNote(Request $request){
+        
         DB::beginTransaction();
-       
+        
         try {
-
+            
             DB::table('nursing.nursaddnote')
                 ->insert([
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
-                    'type' => 'DOCTORNOTE_IP',
+                    'type' => 'DOCTORNOTE',
                     'note' => $request->note,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
@@ -677,7 +678,7 @@ class ClientProgressNoteController extends defaultController
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'computerid' => session('computerid'),
                 ]);
-             
+            
             DB::commit();
             
         } catch (\Exception $e) {
@@ -689,4 +690,5 @@ class ClientProgressNoteController extends defaultController
         }
         
     }
+    
 }

@@ -63,7 +63,7 @@
                                 <div class="panel-body">
                                     <div class="form-inline col-md-12" style="padding-bottom: 15px;">
                                         <label class="control-label" for="datetaken" style="padding-right: 5px;">Date</label>
-                                        <input id="clientProgNote_datetaken" name="datetaken" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>">
+                                        <input id="clientProgNote_datetaken" name="datetaken" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>" rdonly>
                                         
                                         <label class="control-label" for="timetaken" style="padding-left: 15px; padding-right: 5px;">Time</label>
                                         <input id="clientProgNote_timetaken" name="timetaken" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information.">

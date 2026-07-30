@@ -10,7 +10,7 @@ var urlParam_AddNotesClientProgNote = {
 	table_name: 'nursing.nursaddnote',
 	table_id: 'idno',
 	filterCol: ['mrn','episno','type'],
-	filterVal: ['','','DOCTORNOTE_IP'],
+	filterVal: ['','','DOCTORNOTE'],
 }
 
 $(document).ready(function (){
@@ -28,14 +28,15 @@ $(document).ready(function (){
 		enableForm('#formClientProgNote');
 		rdonly('#formClientProgNote');
 		emptyFormdata_div("#formClientProgNote",['#mrn_clientProgNote','#episno_clientProgNote','#datetime_clientProgNote','#epistycode_clientProgNote']);
-		$('#clientProgNote_datetaken').prop('disabled',false);
+		$("#clientProgNote_datetaken").val(moment().format('YYYY-MM-DD'));
+		// $('#clientProgNote_datetaken').prop('disabled',false);
 	});
 	
 	$("#edit_clientProgNote").click(function (){
 		button_state_clientProgNote('wait');
 		enableForm('#formClientProgNote');
 		rdonly('#formClientProgNote');
-		$('#clientProgNote_datetaken').prop('disabled',true);
+		// $('#clientProgNote_datetaken').prop('disabled',true);
 	});
 	
 	$("#save_clientProgNote").click(function (){
@@ -401,7 +402,7 @@ function populate_clientProgNote_currpt(obj){
 	////jqGridAddNotesClientProgNote
 	urlParam_AddNotesClientProgNote.filterVal[0] = obj.MRN;
 	urlParam_AddNotesClientProgNote.filterVal[1] = obj.Episno;
-	urlParam_AddNotesClientProgNote.filterVal[2] = 'DOCTORNOTE_IP';
+	urlParam_AddNotesClientProgNote.filterVal[2] = 'DOCTORNOTE';
 	
 	button_state_clientProgNote('empty');
 	
