@@ -413,7 +413,7 @@ function populate_dietOrder_getdata(obj){
 	},'json').fail(function (data){
 		alert('there is an error');
 	}).success(function (data){
-		if(!$.isEmptyObject(data)){
+		if(!$.isEmptyObject(data.dietorder)){
 			autoinsert_rowdata("#formDietOrder",data.dietorder);
 			autoinsert_rowdata("#formDietOrder",data.episode);
 			$("#dietorder_diagnosis").val(data.diagnosis);
@@ -425,6 +425,8 @@ function populate_dietOrder_getdata(obj){
 			autoinsert_rowdata("#formDietOrder",data.episode);
 			$("#dietorder_diagnosis").val(data.diagnosis);
 			button_state_dietOrder('add');
+			yesnoCheck();
+			feedingCheck();
 			textarea_init_dietorder();
 		}
 
