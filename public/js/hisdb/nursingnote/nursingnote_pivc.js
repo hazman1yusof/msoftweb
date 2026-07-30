@@ -24,6 +24,7 @@ $(document).ready(function (){
         enableForm('#formPivc');
         rdonly('#formPivc');
         emptyFormdata_div("#formPivc",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+        $("#practiceDate").val(moment().format('YYYY-MM-DD'));
         document.getElementById("idno_pivc").value = "";
     });
     

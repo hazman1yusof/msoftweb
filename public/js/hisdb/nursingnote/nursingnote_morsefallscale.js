@@ -27,6 +27,7 @@ $(document).ready(function (){
         enableForm('#formMorseFallScale');
         rdonly('#formMorseFallScale');
         emptyFormdata_div("#formMorseFallScale",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar','#morsefallscale_ward','#morsefallscale_diag','#morsefallscale_admdate']);
+        $("#morsefallscale_datetaken").val(moment().format('YYYY-MM-DD'));
         document.getElementById("idno_morsefallscale").value = "";
         $("#morsefallscale_diag").attr("readonly", true);
         // dialog_mrn_edit.on();

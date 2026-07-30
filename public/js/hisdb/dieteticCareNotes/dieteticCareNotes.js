@@ -24,7 +24,7 @@ $(document).ready(function (){
         enableForm('#formDieteticCareNotes');
         rdonly('#formDieteticCareNotes');
         emptyFormdata_div("#formDieteticCareNotes",['#mrn_wardMain','#episno_wardMain']);
-
+        $("#dietNote_datetaken").val(moment().format('YYYY-MM-DD'));
         document.getElementById("idno_dieteticCareNotes").value = "";
     });
     

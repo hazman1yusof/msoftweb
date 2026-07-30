@@ -90,7 +90,7 @@
                                         <div class="panel-body" style="padding: 15px 0px;">
                                             <div class="form-inline col-md-12" style="padding-bottom: 15px;">
                                                 <label class="control-label" for="datetaken" style="padding-right: 5px;">Date</label>
-                                                <input id="datetaken" name="datetaken" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>">
+                                                <input id="datetaken" name="datetaken" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>" rdonly>
                                                 
                                                 <label class="control-label" for="timetaken" style="padding-left: 15px; padding-right: 5px;">Time</label>
                                                 <input id="timetaken" name="timetaken" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information.">
@@ -561,7 +561,7 @@
                                             <div class="form-group">
                                                 <label class="col-md-2 control-label" for="tr_entereddate">Date</label>
                                                 <div class="col-md-3">
-                                                    <input id="tr_entereddate" name="tr_entereddate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>" required>
+                                                    <input id="tr_entereddate" name="tr_entereddate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>" required rdonly>
                                                 </div>
                                                 
                                                 <label class="col-md-1 control-label" for="tr_enteredtime">Time</label>

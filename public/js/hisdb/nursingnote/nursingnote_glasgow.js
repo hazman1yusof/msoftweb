@@ -25,6 +25,7 @@ $(document).ready(function (){
         enableForm('#formGlasgow');
         rdonly('#formGlasgow');
         emptyFormdata_div("#formGlasgow",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+        $("#gcs_date").val(moment().format('YYYY-MM-DD'));
         document.getElementById("idno_glasgow").value = "";
     });
     

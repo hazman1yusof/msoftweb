@@ -53,7 +53,7 @@
                         <div class="panel-body" style="padding: 15px 0px;">
                             <div class="form-inline col-md-12" style="padding-bottom: 15px;">
                                 <label class="control-label" for="gcs_date" style="padding-right: 5px;">Date</label>
-                                <input id="gcs_date" name="gcs_date" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>">
+                                <input id="gcs_date" name="gcs_date" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>" rdonly>
                                 
                                 <label class="control-label" for="gcs_time" style="padding-left: 15px; padding-right: 5px;">Time</label>
                                 <input id="gcs_time" name="gcs_time" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information.">

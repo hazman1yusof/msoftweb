@@ -214,6 +214,8 @@ $(document).ready(function (){
         enableForm('#formProgress');
         rdonly('#formProgress');
         emptyFormdata_div("#formProgress",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+        $("#datetaken").val(moment().format('YYYY-MM-DD'));
+
         document.getElementById("idno_progress").value = "";
         // dialog_mrn_edit.on();
     });
@@ -264,6 +266,7 @@ $(document).ready(function (){
         enableForm('#formTreatmentP');
         rdonly('#formTreatmentP');
         emptyFormdata_div("#formTreatmentP",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+        $("#tr_entereddate").val(moment().format('YYYY-MM-DD'));
         document.getElementById("tr_idno").value = "";
         document.getElementById("tr_adduser").value = "";
         // dialog_mrn_edit.on();

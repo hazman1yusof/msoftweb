@@ -50,6 +50,8 @@ $(document).ready(function (){
         enableForm('#formIntake');
         rdonly('#formIntake');
         emptyFormdata_div("#formIntake",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+		$("#recorddate_intake").val(moment().format('YYYY-MM-DD'));
+
         document.getElementById("idno_intake").value = "";
         // dialog_mrn_edit.on();
     });

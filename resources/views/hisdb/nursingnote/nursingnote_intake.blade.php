@@ -49,7 +49,7 @@
                     </div>
                     <div class="form-inline col-md-12" style="padding-bottom: 15px;">
                         <label class="control-label" for="recorddate" style="padding-right: 5px;">Date</label>
-                        <input id="recorddate_intake" name="recorddate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>">
+                        <input id="recorddate_intake" name="recorddate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>" rdonly>
                         
                         <button class="btn btn-default btn-sm" type="button" id="doctornote_iograph" style="float: right; margin-right: 20px;">Preview</button>
                     </div>

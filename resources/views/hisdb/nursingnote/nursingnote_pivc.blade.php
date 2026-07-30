@@ -57,7 +57,7 @@
                             <div class="form-inline col-md-12" style="padding-bottom: 15px;">
 
                                 <label class="control-label" for="practiceDate" style="padding-right: 5px;">Date: </label>
-                                <input id="practiceDate" name="practiceDate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter date." value="<?php echo date("Y-m-d"); ?>">
+                                <input id="practiceDate" name="practiceDate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter date." value="<?php echo date("Y-m-d"); ?>" rdonly>
 
                                 <label class="control-label" for="consultant" style="padding-right: 5px;padding-left: 25px">Consultant: </label>
                                 <input type="text" id="consultant" name="consultant" class="form-control input-sm" size="50">
