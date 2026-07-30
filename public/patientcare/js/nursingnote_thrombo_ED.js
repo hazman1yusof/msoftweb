@@ -36,6 +36,7 @@ $(document).ready(function (){
         enableForm('#formThrombo_ED');
         rdonly('#formThrombo_ED');
         emptyFormdata_div("#formThrombo_ED",['#mrn_emergencyMain','#episno_emergencyMain','#doctor_nursNote','#ordcomtt_phar']);
+        $("#formThrombo_ED :input[name='dateInsert']").val(moment().format('YYYY-MM-DD'));
         document.getElementById("idno_thrombo").value = "";
     });
     
@@ -43,7 +44,7 @@ $(document).ready(function (){
         button_state_thrombo_ED('wait');
         enableForm('#formThrombo_ED');
         rdonly('#formThrombo_ED');
-        $("#formThrombo_ED :input[name='dateInsert']").attr("readonly", true);
+        // $("#formThrombo_ED :input[name='dateInsert']").attr("readonly", true);
     });
     
     $("#save_thrombo_ED").click(function (){

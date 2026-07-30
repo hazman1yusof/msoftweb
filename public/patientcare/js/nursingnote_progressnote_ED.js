@@ -24,6 +24,8 @@ $(document).ready(function (){
         enableForm('#formProgress_ED');
         rdonly('#formProgress_ED');
         emptyFormdata_div("#formProgress_ED",['#mrn_emergencyMain','#episno_emergencyMain','#doctor_nursNote','#ordcomtt_phar']);
+        $("#formProgress_ED :input[name='datetaken']").val(moment().format('YYYY-MM-DD'));
+
         document.getElementById("idno_progress_ED").value = "";
     });
     
@@ -31,7 +33,7 @@ $(document).ready(function (){
         button_state_progress_ED('wait');
         enableForm('#formProgress_ED');
         rdonly('#formProgress_ED');
-        $("#formProgress_ED :input[name='datetaken'],#formProgress_ED :input[name='timetaken']").attr("readonly", true);
+        // $("#formProgress_ED :input[name='datetaken'],#formProgress_ED :input[name='timetaken']").attr("readonly", true);
     });
 
     $("#save_progress_ED").click(function (){
