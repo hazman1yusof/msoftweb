@@ -32,16 +32,30 @@
                 pageSize: 'A4',
                 // pageOrientation: 'landscape',
                 content: [
+                    // {
+                    //     image: 'letterhead', width: 500, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                    // },
                     {
-                        image: 'letterhead', width: 500, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        columnGap: 10,
+                        columns: [
+                            { image: 'letterhead', width: 180, style: 'tableHeader', alignment: 'left' },
+                            {
+                                text: [
+                                    { text: '\n IMSC/REHAB/NPA/001/VER0.1/REV04', alignment: 'right' },
+                                    { text: '\n DATE:19/07/2022', alignment: 'right' },
+                                    { text: '\n\n\n \u200B\t\u200B\t PERKESO ASSESSMENT', bold: true, alignment: 'left' },
+                                ], width: '*'
+                            }
+                        ]
                     },
+                    { canvas: [ { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 } ] },
+                    // {
+                    //     text: 'PERKESO ASSESSMENT\n',
+                    //     style: 'header',
+                    //     alignment: 'center',
+                    // },
                     {
-                        text: 'PHYSIOTHERAPY ASSESSMENT\n',
-                        style: 'header',
-                        alignment: 'center',
-                    },
-                    {
-                        text: 'PATIENT INFORMATION\n',
+                        text: '\nPATIENT INFORMATION\n',
                         style: 'subheader',
                         alignment: 'center',
                     },
@@ -56,7 +70,8 @@
                                     {
                                         text: [
                                             { text: 'NAME:', bold: true },
-                                            { text: `\u200B\t{!!$patrehabperkeso->Name!!}` },
+                                            { text: `\u200B\t{!!$patrehabperkeso->Name!!}`, bold: true },
+                                            { text: '\u200B\t({{$patrehabperkeso->Newic}})', bold: true },
                                         ], colSpan: 2, alignment: 'left'
                                     },{},
                                 ],
@@ -2401,7 +2416,7 @@
                 },
                 images: {
                     letterhead: {
-                        url: "{{asset('/img/logo/IMSCletterhead.png')}}",
+                        url: "{{asset('/img/logo/imsclogo.png')}}",
                         headers: {
                             myheader: '123',
                             myotherheader: 'abc',

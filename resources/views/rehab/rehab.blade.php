@@ -186,26 +186,26 @@
     <!-- <script type="text/javascript" src="{{ asset('patientcare/js/transaction_diet.js') }}"></script> -->
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/rehabMain/rehabMain.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/transaction_phys.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/physiotherapy/physioterapy.js?v=1.6') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/physiotherapy/physioterapy_ncase.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/rehab_main.js?v=1.6') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/physiotherapy/physioterapy.js?v=1.7') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/physiotherapy/physioterapy_ncase.js?v=1.3') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/rehab_main.js?v=1.7') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/physio.js?v=1.5') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/neurorobotic/neurorobotic.js?v=1.1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/sixMinWalking.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/bergBalanceTest.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/musculoAssessment.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/posturalAssessment.js?v=1.3') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/oswestryQuest.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/cardiorespAssessment.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/neuroAssessment.js?v=1.4') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/motorScale.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/spinalCord.js?v=1.3') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/physioNotes.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/sixMinWalking.js?v=1.3') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/bergBalanceTest.js?v=1.3') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/musculoAssessment.js?v=1.3') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/posturalAssessment.js?v=1.4') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/oswestryQuest.js?v=1.3') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/cardiorespAssessment.js?v=1.3') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/neuroAssessment.js?v=1.5') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/motorScale.js?v=1.3') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/spinalCord.js?v=1.4') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio/physioNotes.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy.js?v=1.1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_cognitive.js?v=1.1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_barthel.js?v=1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_upperExtremity.js?v=1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_notes.js?v=1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_cognitive.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_barthel.js?v=1.1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_upperExtremity.js?v=1.1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_notes.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/speechTherapy/speechTherapy.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/psychotherapy/psychotherapy.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/dietitian/dietitian.js?v=1.1') }}"></script>

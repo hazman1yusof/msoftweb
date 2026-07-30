@@ -274,8 +274,21 @@ $(document).ready(function () {
                 // 	$('#checkbox_completed').prop('disabled',false);
                 // 	$('#checkbox_completed').prop('checked', false);
                 // }
+                
+                // to load first tab
+                var urlparam_tbl_phys_ncase = {
+                    action: 'get_datetime_phys_ncase',
+                    mrn: $("#mrn_rehabMain").val(),
+                    episno: $("#episno_rehabMain").val()
+                }
+                
+                tbl_phys_ncase_date.ajax.url("./ptcare_phys/table?"+$.param(urlparam_tbl_phys_ncase)).load(function (data){
+                    emptyFormdata_div("#formphys_ncase",['#mrn_rehabMain','#episno_rehabMain']);
+                    $('#tbl_phys_ncase_date tbody tr:eq(0)').click(); // to select first row
+                });
+                
+                // $('#tbl_phys_ncase_date').DataTable().ajax.reload();
                 getdata_physio();
-
             },
             ondblClickRow: function (rowid, iRow, iCol, e){
             },
@@ -312,6 +325,18 @@ $(document).ready(function () {
         
         switch(tab){
             case 'rehabilitation':
+                var urlparam_tbl_phys_ncase = {
+                    action: 'get_datetime_phys_ncase',
+                    mrn: $("#mrn_rehabMain").val(),
+                    episno: $("#episno_rehabMain").val()
+                }
+                
+                tbl_phys_ncase_date.ajax.url("./ptcare_phys/table?"+$.param(urlparam_tbl_phys_ncase)).load(function (data){
+                    emptyFormdata_div("#formphys_ncase",['#mrn_rehabMain','#episno_rehabMain']);
+                    $('#tbl_phys_ncase_date tbody tr:eq(0)').click(); // to select first row
+                });
+                
+                // $('#tbl_phys_ncase_date').DataTable().ajax.reload();
                 getdata_physio();
                 break;
             case 'neurorobotic':

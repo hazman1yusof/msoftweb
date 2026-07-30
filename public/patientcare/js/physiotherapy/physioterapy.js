@@ -189,8 +189,8 @@ $(document).ready(function () {
 
 	// button_state_phys('empty');
 
-	$('#phys_date_tbl tbody').on('click', 'tr', function () { 
-	    var data = phys_date_tbl.row( this ).data();
+	$('#phys_date_tbl tbody').on('click', 'tr', function () {
+		var data = phys_date_tbl.row( this ).data();
 
 		if(data == undefined){
 			return;
@@ -239,8 +239,72 @@ $(document).ready(function () {
 
 	});
 	
+	$('#tbl_phys_ncase_date tbody').on('click', 'tr', function (){
+		var data = tbl_phys_ncase_date.row( this ).data();
+		
+		if(data == undefined){
+			return;
+		}
+		
+		// to highlight selected row
+		if($(this).hasClass('selected')) {
+			$(this).removeClass('selected');
+		}else {
+			tbl_phys_ncase_date.$('tr.selected').removeClass('selected');
+			$(this).addClass('selected');
+		}
+		
+		emptyFormdata_div("#formphys_ncase",['#mrn_rehabMain','#episno_rehabMain']);
+		$('#tbl_phys_ncase_date tbody tr').removeClass('active');
+		$(this).addClass('active');
+		
+		// if(check_same_usr_edit(data)){
+		//     button_state_phys_ncase('edit');
+		// }else{
+			button_state_phys_ncase('add');
+		// }
+		$('#perkeso_chart').attr('disabled',false);
+		
+		// getdata_physio();
+		$("#idno_phys_ncase").val(data.idno);
+		$("#datetime_phys_ncase").val(data.recdatetime);
+		
+		var urlParam = {
+			action: 'get_table_phys_ncase',
+		}
+		
+		var postobj = {
+			_token: $('#csrf_token').val(),
+			idno: data.idno,
+			mrn: data.mrn,
+			episno: data.episno,
+			entereddate: data.entereddate,
+			enteredtime: data.enteredtime,
+		};
+		
+		$.post("./ptcare_phys/form?"+$.param(urlParam), $.param(postobj), function (data){
+			
+		},'json').fail(function (data){
+			alert('there is an error');
+		}).done(function (data){
+			if(!$.isEmptyObject(data.patrehab_ncase)){
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.patrehab_ncase);
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.pat_physio);
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.neuroassessment);
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.romaffectedside);
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.romsoundside);
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.musclepower);
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.patrehabperkeso);
+				// button_state_phys_ncase('edit');
+			}else{
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.pat_physio);
+				// button_state_phys_ncase('add');
+			}
+		});
+	});
+	
 	$("#perkeso_chart").click(function (){
-		window.open('./ptcare_phys/rehabperkeso_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&type1=BB_PERKESO'+'&type2=BF_PERKESO', '_blank');
+		window.open('./ptcare_phys/rehabperkeso_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&entereddate='+$("#phys_ncase_entereddate").val()+'&enteredtime='+$("#phys_ncase_enteredtime").val()+'&type1=BB_PERKESO'+'&type2=BF_PERKESO', '_blank');
 	});
 });
 
@@ -308,13 +372,15 @@ function getdata_physio(){
 			autoinsert_rowdata_phys_ncase("#formphys_ncase",data.romsoundside);
 			autoinsert_rowdata_phys_ncase("#formphys_ncase",data.musclepower);
 			autoinsert_rowdata_phys_ncase("#formphys_ncase",data.patrehabperkeso);
-			button_state_phys_ncase('edit');
+			// button_state_phys_ncase('edit');
 			$('#perkeso_chart').attr('disabled',false);
 		}else{
 			autoinsert_rowdata_phys_ncase("#formphys_ncase",data.pat_physio);
-			button_state_phys_ncase('add');
+			// button_state_phys_ncase('add');
 			$('#perkeso_chart').attr('disabled',true);
 		}
+		
+		button_state_phys_ncase('add');
 	});
 }
 
@@ -368,6 +434,28 @@ var phys_date_tbl = $('#phys_date_tbl').DataTable({
     		}
     	}
     }
+});
+
+var tbl_phys_ncase_date = $('#tbl_phys_ncase_date').DataTable({
+	"ajax": "",
+	"sDom": "",
+	"paging": false,
+	"columns": [
+		{ 'data': 'idno' },
+		{ 'data': 'mrn' },
+		{ 'data': 'episno' },
+		{ 'data': 'entereddate', 'width': '25%' },
+		{ 'data': 'recdatetime' },
+		{ 'data': 'adduser', 'width': '50%' },
+		{ 'data': 'enteredtime' },
+	],
+	columnDefs: [
+		{ targets: [0, 1, 2, 4, 6], visible: false },
+	],
+	order: [[4, 'desc']],
+	"drawCallback": function (settings){
+		$(this).find('tbody tr')[0].click();
+	}
 });
 
 function empty_currphys(){

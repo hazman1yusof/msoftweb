@@ -28,6 +28,9 @@ class physioController extends defaultController
             case 'get_table_date_phys': // for table date and doctor name
                 return $this->get_table_date_phys($request);
             
+            case 'get_datetime_phys_ncase':
+                return $this->get_datetime_phys_ncase($request);
+            
             default:
                 return 'error happen..';
         }
@@ -93,116 +96,119 @@ class physioController extends defaultController
                 $episode->update(['reff_diet' => null]);
             }
             // dd($request->episno_rehabMain);
+            
             DB::table('hisdb.patrehabncase')
                 ->insert([
-                    'ques1' => $request->ques1,
-                    'ques2' => $request->ques2,
-                    'ques3' => $request->ques3,
-                    'ques4' => $request->ques4,
-                    'ques5' => $request->ques5,
-                    'ques6' => $request->ques6,
-                    'ques7' => $request->ques7,
-                    'ques8' => $request->ques8,
-                    'ques9' => $request->ques9,
-                    'ques10' => $request->ques10,
-                    'ques11' => $request->ques11,
-                    'ques12' => $request->ques12,
-                    'ques13' => $request->ques13,
-                    'ques14' => $request->ques14,
-                    'ques15' => $request->ques15,
-                    'ques16' => $request->ques16,
-                    'ques17' => $request->ques17,
-                    'ques18' => $request->ques18,
-                    'ques19' => $request->ques19,
-                    'ques20' => $request->ques20,
-                    'ques21' => $request->ques21,
-                    'ques22' => $request->ques22,
-                    'ques23' => $request->ques23,
-                    'ques24' => $request->ques24,
-                    'quesdet1' => $request->quesdet1,
-                    'quesdet2' => $request->quesdet2,
-                    'quesdet3' => $request->quesdet3,
-                    'quesdet4' => $request->quesdet4,
-                    'quesdet5' => $request->quesdet5,
-                    'quesdet6' => $request->quesdet6,
-                    'quesdet7' => $request->quesdet7,
-                    'quesdet8' => $request->quesdet8,
-                    'quesdet9' => $request->quesdet9,
-                    'quesdet10' => $request->quesdet10,
-                    'quesdet11' => $request->quesdet11,
-                    'quesdet12' => $request->quesdet12,
-                    'quesdet13' => $request->quesdet13,
-                    'quesdet14' => $request->quesdet14,
-                    'quesdet15' => $request->quesdet15,
-                    'quesdet16' => $request->quesdet16,
-                    'quesdet17' => $request->quesdet17,
-                    'quesdet18' => $request->quesdet18,
-                    'quesdet19' => $request->quesdet19,
-                    'quesdet20' => $request->quesdet20,
-                    'quesdet21' => $request->quesdet21,
-                    'quesdet22' => $request->quesdet22,
-                    'quesdet23' => $request->quesdet23,
-                    'quesdet24' => $request->quesdet24,
-                    'presenthistory' => $request->presenthistory,
-                    'pasthistory' => $request->pasthistory,
-                    'mh' => $request->mh,
-                    'sh' => $request->sh,
-                    'investigation' => $request->investigation,
-                    'function_' => $request->function_,
-                    'drmgmt' => $request->drmgmt,
-                    'test' => $request->test,
-                    'neuro' => $request->neuro,
-                    'analysis' => $request->analysis,
-                    'long_' => $request->long_,
-                    'evaluation' => $request->evaluation,
-                    'category' => $request->category,
-                    'risk' => $request->risk,
-                    'history' => $request->history,
-                    'posassmt' => $request->posassmt,
-                    'electrodg' => $request->electrodg,
-                    'protocol' => $request->protocol,
-                    'equipment' => $request->equipment,
-                    'recommendation' => $request->recommendation,
-                    'vas_ncase' => $request->vas_ncase,
-                    'aggr_ncase' => $request->aggr_ncase,
-                    'easing_ncase' => $request->easing_ncase,
-                    'pain_ncase' => $request->pain_ncase,
-                    'behaviour_ncase' => $request->behaviour_ncase,
-                    'irritability_ncase' => $request->irritability_ncase,
-                    'severity_ncase' => $request->severity_ncase,
+                    // 'ques1' => $request->ques1,
+                    // 'ques2' => $request->ques2,
+                    // 'ques3' => $request->ques3,
+                    // 'ques4' => $request->ques4,
+                    // 'ques5' => $request->ques5,
+                    // 'ques6' => $request->ques6,
+                    // 'ques7' => $request->ques7,
+                    // 'ques8' => $request->ques8,
+                    // 'ques9' => $request->ques9,
+                    // 'ques10' => $request->ques10,
+                    // 'ques11' => $request->ques11,
+                    // 'ques12' => $request->ques12,
+                    // 'ques13' => $request->ques13,
+                    // 'ques14' => $request->ques14,
+                    // 'ques15' => $request->ques15,
+                    // 'ques16' => $request->ques16,
+                    // 'ques17' => $request->ques17,
+                    // 'ques18' => $request->ques18,
+                    // 'ques19' => $request->ques19,
+                    // 'ques20' => $request->ques20,
+                    // 'ques21' => $request->ques21,
+                    // 'ques22' => $request->ques22,
+                    // 'ques23' => $request->ques23,
+                    // 'ques24' => $request->ques24,
+                    // 'quesdet1' => $request->quesdet1,
+                    // 'quesdet2' => $request->quesdet2,
+                    // 'quesdet3' => $request->quesdet3,
+                    // 'quesdet4' => $request->quesdet4,
+                    // 'quesdet5' => $request->quesdet5,
+                    // 'quesdet6' => $request->quesdet6,
+                    // 'quesdet7' => $request->quesdet7,
+                    // 'quesdet8' => $request->quesdet8,
+                    // 'quesdet9' => $request->quesdet9,
+                    // 'quesdet10' => $request->quesdet10,
+                    // 'quesdet11' => $request->quesdet11,
+                    // 'quesdet12' => $request->quesdet12,
+                    // 'quesdet13' => $request->quesdet13,
+                    // 'quesdet14' => $request->quesdet14,
+                    // 'quesdet15' => $request->quesdet15,
+                    // 'quesdet16' => $request->quesdet16,
+                    // 'quesdet17' => $request->quesdet17,
+                    // 'quesdet18' => $request->quesdet18,
+                    // 'quesdet19' => $request->quesdet19,
+                    // 'quesdet20' => $request->quesdet20,
+                    // 'quesdet21' => $request->quesdet21,
+                    // 'quesdet22' => $request->quesdet22,
+                    // 'quesdet23' => $request->quesdet23,
+                    // 'quesdet24' => $request->quesdet24,
+                    // 'presenthistory' => $request->presenthistory,
+                    // 'pasthistory' => $request->pasthistory,
+                    // 'mh' => $request->mh,
+                    // 'sh' => $request->sh,
+                    // 'investigation' => $request->investigation,
+                    // 'function_' => $request->function_,
+                    // 'drmgmt' => $request->drmgmt,
+                    // 'test' => $request->test,
+                    // 'neuro' => $request->neuro,
+                    // 'analysis' => $request->analysis,
+                    // 'long_' => $request->long_,
+                    // 'evaluation' => $request->evaluation,
+                    // 'category' => $request->category,
+                    // 'risk' => $request->risk,
+                    // 'history' => $request->history,
+                    // 'posassmt' => $request->posassmt,
+                    // 'electrodg' => $request->electrodg,
+                    // 'protocol' => $request->protocol,
+                    // 'equipment' => $request->equipment,
+                    // 'recommendation' => $request->recommendation,
+                    // 'vas_ncase' => $request->vas_ncase,
+                    // 'aggr_ncase' => $request->aggr_ncase,
+                    // 'easing_ncase' => $request->easing_ncase,
+                    // 'pain_ncase' => $request->pain_ncase,
+                    // 'behaviour_ncase' => $request->behaviour_ncase,
+                    // 'irritability_ncase' => $request->irritability_ncase,
+                    // 'severity_ncase' => $request->severity_ncase,
                     'addNotes' => $request->addNotes,
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn_rehabMain,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
                 ]);
             
-            DB::table('hisdb.patrehab')
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'mrn' => $request->mrn_rehabMain,
-                    'episno' => $request->episno_rehabMain,
-                    'category' => $request->category,
-                    'complain' => $request->complain,
-                    'genobserv' => $request->genobserv,
-                    'localobserv' => $request->localobserv,
-                    'rom' => $request->rom,
-                    'mmt' => $request->mmt,
-                    'palpation' => $request->palpation,
-                    'plan_' => $request->plan_,
-                    'reassesment' => $request->reassesment,
-                    'vas' => $request->vas,
-                    'aggr' => $request->aggr,
-                    'easing' => $request->easing,
-                    'pain' => $request->pain,
-                    'behaviour' => $request->behaviour,
-                    'irritability' => $request->irritability,
-                    'severity' => $request->severity,
-                    'recorddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'adduser'  => session('username'),
-                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                ]);
+            // DB::table('hisdb.patrehab')
+            //     ->insert([
+            //         'compcode' => session('compcode'),
+            //         'mrn' => $request->mrn_rehabMain,
+            //         'episno' => $request->episno_rehabMain,
+            //         'category' => $request->category,
+            //         'complain' => $request->complain,
+            //         'genobserv' => $request->genobserv,
+            //         'localobserv' => $request->localobserv,
+            //         'rom' => $request->rom,
+            //         'mmt' => $request->mmt,
+            //         'palpation' => $request->palpation,
+            //         'plan_' => $request->plan_,
+            //         'reassesment' => $request->reassesment,
+            //         'vas' => $request->vas,
+            //         'aggr' => $request->aggr,
+            //         'easing' => $request->easing,
+            //         'pain' => $request->pain,
+            //         'behaviour' => $request->behaviour,
+            //         'irritability' => $request->irritability,
+            //         'severity' => $request->severity,
+            //         'recorddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            //         'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
+            //         'adduser'  => session('username'),
+            //         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //     ]);
             
             // $pat_physio = DB::table('hisdb.pat_physio')
             //             ->where('mrn','=',$request->mrn_rehabMain)
@@ -255,7 +261,8 @@ class physioController extends defaultController
                     'mrn' => $request->mrn_rehabMain,
                     'episno' => $request->episno_rehabMain,
                     'type' => $request->type,
-                    // 'entereddate' => $request->entereddate,
+                    'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
                     // 'objective' => $request->objective,
                     'painscore' => $request->painscore,
                     'painscore2' => $request->painscore2,
@@ -359,7 +366,8 @@ class physioController extends defaultController
                     'mrn' => $request->mrn_rehabMain,
                     'episno' => $request->episno_rehabMain,
                     'type' => $request->type,
-                    // 'entereddate' => $request->entereddate,
+                    'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
                     'romAffectedSide' => $request->romAffectedSide,
                     'aShlderFlxInitP' => $request->aShlderFlxInitP,
                     'aShlderFlxInitA' => $request->aShlderFlxInitA,
@@ -530,7 +538,8 @@ class physioController extends defaultController
                     'mrn' => $request->mrn_rehabMain,
                     'episno' => $request->episno_rehabMain,
                     'type' => $request->type,
-                    // 'entereddate' => $request->entereddate,
+                    'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
                     'romSoundSide' => $request->romSoundSide,
                     'sShlderFlxInitP' => $request->sShlderFlxInitP,
                     'sShlderFlxInitA' => $request->sShlderFlxInitA,
@@ -702,7 +711,8 @@ class physioController extends defaultController
                     'mrn' => $request->mrn_rehabMain,
                     'episno' => $request->episno_rehabMain,
                     'type' => $request->type,
-                    // 'entereddate' => $request->entereddate,
+                    'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
                     'affectedSide' => $request->affectedSide,
                     'aShlderFlxInit' => $request->aShlderFlxInit,
                     // 'aShlderFlxProg' => $request->aShlderFlxProg,
@@ -876,6 +886,8 @@ class physioController extends defaultController
                     'mrn' => $request->mrn_rehabMain,
                     'episno' => $request->episno_rehabMain,
                     'type' => $request->type,
+                    'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
                     'diagnosis' => $request->diagnosis,
                     'incomeSource' => $request->incomeSource,
                     'totDependents' => $request->totDependents,
@@ -2342,9 +2354,59 @@ class physioController extends defaultController
     
     public function get_table_phys_ncase(Request $request){
         
-        $patrehab_ncase_obj = DB::table('hisdb.patrehabncase')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn);
+        if(!empty($request->entereddate) && $request->entereddate != '-'){
+            $patrehab_ncase_obj = DB::table('hisdb.patrehabncase')
+                                ->where('compcode','=',session('compcode'))
+                                // ->where('idno','=',$request->idno);
+                                ->where('mrn','=',$request->mrn)
+                                ->where('entereddate','=',Carbon::createFromFormat('d-m-Y', $request->entereddate)->format('Y-m-d'))
+                                ->where('enteredtime','=',$request->enteredtime);
+            
+            $neuroassessment_obj = DB::table('hisdb.phy_neuroassessment')
+                                    ->where('compcode','=',session('compcode'))
+                                    // ->where('idno','=',$request->idno)
+                                    ->where('mrn','=',$request->mrn)
+                                    ->where('episno','=',$request->episno)
+                                    ->where('entereddate','=',Carbon::createFromFormat('d-m-Y', $request->entereddate)->format('Y-m-d'))
+                                    ->where('enteredtime','=',$request->enteredtime)
+                                    ->where('type','=','perkeso');
+            
+            $romaffectedside_obj = DB::table('hisdb.phy_romaffectedside')
+                                    ->where('compcode','=',session('compcode'))
+                                    // ->where('idno','=',$request->idno)
+                                    ->where('mrn','=',$request->mrn)
+                                    ->where('episno','=',$request->episno)
+                                    ->where('entereddate','=',Carbon::createFromFormat('d-m-Y', $request->entereddate)->format('Y-m-d'))
+                                    ->where('enteredtime','=',$request->enteredtime)
+                                    ->where('type','=','perkeso');
+            
+            $romsoundside_obj = DB::table('hisdb.phy_romsoundside')
+                                ->where('compcode','=',session('compcode'))
+                                // ->where('idno','=',$request->idno)
+                                ->where('mrn','=',$request->mrn)
+                                ->where('episno','=',$request->episno)
+                                ->where('entereddate','=',Carbon::createFromFormat('d-m-Y', $request->entereddate)->format('Y-m-d'))
+                                ->where('enteredtime','=',$request->enteredtime)
+                                ->where('type','=','perkeso');
+            
+            $musclepower_obj = DB::table('hisdb.phy_musclepower')
+                                ->where('compcode','=',session('compcode'))
+                                // ->where('idno','=',$request->idno)
+                                ->where('mrn','=',$request->mrn)
+                                ->where('episno','=',$request->episno)
+                                ->where('entereddate','=',Carbon::createFromFormat('d-m-Y', $request->entereddate)->format('Y-m-d'))
+                                ->where('enteredtime','=',$request->enteredtime)
+                                ->where('type','=','perkeso');
+            
+            $patrehabperkeso_obj = DB::table('hisdb.patrehabperkeso')
+                                    ->where('compcode','=',session('compcode'))
+                                    // ->where('idno','=',$request->idno)
+                                    ->where('mrn','=',$request->mrn)
+                                    ->where('episno','=',$request->episno)
+                                    ->where('entereddate','=',Carbon::createFromFormat('d-m-Y', $request->entereddate)->format('Y-m-d'))
+                                    ->where('enteredtime','=',$request->enteredtime)
+                                    ->where('type','=','perkeso');
+        }
         
         $pat_physio_obj = DB::table('hisdb.pat_physio')
                         ->select('compcode','mrn','episno','req_date','clinic_diag','findings','treatment as phy_treatment','tr_physio','tr_occuptherapy','tr_respiphysio','tr_neuro','tr_splint','tr_speech','remarks','doctorname as phy_doctorname','adduser','adddate','upduser','upddate','lastuser as phy_lastuser','lastupdate','computerid')
@@ -2352,41 +2414,38 @@ class physioController extends defaultController
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno);
         
-        $neuroassessment_obj = DB::table('hisdb.phy_neuroassessment')
-                                ->where('compcode','=',session('compcode'))
-                                ->where('mrn','=',$request->mrn)
-                                ->where('episno','=',$request->episno)
-                                ->where('type','=','perkeso');
-        
-        $romaffectedside_obj = DB::table('hisdb.phy_romaffectedside')
-                                ->where('compcode','=',session('compcode'))
-                                ->where('mrn','=',$request->mrn)
-                                ->where('episno','=',$request->episno)
-                                ->where('type','=','perkeso');
-        
-        $romsoundside_obj = DB::table('hisdb.phy_romsoundside')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno)
-                            ->where('type','=','perkeso');
-        
-        $musclepower_obj = DB::table('hisdb.phy_musclepower')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno)
-                            ->where('type','=','perkeso');
-        
-        $patrehabperkeso_obj = DB::table('hisdb.patrehabperkeso')
-                                ->where('compcode','=',session('compcode'))
-                                ->where('mrn','=',$request->mrn)
-                                ->where('episno','=',$request->episno)
-                                ->where('type','=','perkeso');
-        
         $responce = new stdClass();
         
-        if($patrehab_ncase_obj->exists()){
-            $patrehab_ncase_obj = $patrehab_ncase_obj->first();
-            $responce->patrehab_ncase = $patrehab_ncase_obj;
+        if(!empty($request->entereddate) && $request->entereddate != '-'){
+            if($patrehab_ncase_obj->exists()){
+                $patrehab_ncase_obj = $patrehab_ncase_obj->first();
+                $responce->patrehab_ncase = $patrehab_ncase_obj;
+            }
+            
+            if($neuroassessment_obj->exists()){
+                $neuroassessment_obj = $neuroassessment_obj->first();
+                $responce->neuroassessment = $neuroassessment_obj;
+            }
+            
+            if($romaffectedside_obj->exists()){
+                $romaffectedside_obj = $romaffectedside_obj->first();
+                $responce->romaffectedside = $romaffectedside_obj;
+            }
+            
+            if($romsoundside_obj->exists()){
+                $romsoundside_obj = $romsoundside_obj->first();
+                $responce->romsoundside = $romsoundside_obj;
+            }
+            
+            if($musclepower_obj->exists()){
+                $musclepower_obj = $musclepower_obj->first();
+                $responce->musclepower = $musclepower_obj;
+            }
+            
+            if($patrehabperkeso_obj->exists()){
+                $patrehabperkeso_obj = $patrehabperkeso_obj->first();
+                $responce->patrehabperkeso = $patrehabperkeso_obj;
+            }
         }
         
         if($pat_physio_obj->exists()){
@@ -2394,29 +2453,48 @@ class physioController extends defaultController
             $responce->pat_physio = $pat_physio_obj;
         }
         
-        if($neuroassessment_obj->exists()){
-            $neuroassessment_obj = $neuroassessment_obj->first();
-            $responce->neuroassessment = $neuroassessment_obj;
-        }
+        return json_encode($responce);
         
-        if($romaffectedside_obj->exists()){
-            $romaffectedside_obj = $romaffectedside_obj->first();
-            $responce->romaffectedside = $romaffectedside_obj;
-        }
+    }
+    
+    public function get_datetime_phys_ncase(Request $request){
         
-        if($romsoundside_obj->exists()){
-            $romsoundside_obj = $romsoundside_obj->first();
-            $responce->romsoundside = $romsoundside_obj;
-        }
+        $responce = new stdClass();
         
-        if($musclepower_obj->exists()){
-            $musclepower_obj = $musclepower_obj->first();
-            $responce->musclepower = $musclepower_obj;
-        }
+        $patrehabperkeso_obj = DB::table('hisdb.patrehabperkeso')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('mrn','=',$request->mrn);
+                                // ->where('episno','=',$request->episno);
         
         if($patrehabperkeso_obj->exists()){
-            $patrehabperkeso_obj = $patrehabperkeso_obj->first();
-            $responce->patrehabperkeso = $patrehabperkeso_obj;
+            $patrehabperkeso_obj = $patrehabperkeso_obj->get();
+            
+            $data = [];
+            
+            foreach($patrehabperkeso_obj as $key => $value){
+                $date['idno'] = $value->idno;
+                $date['mrn'] = $value->mrn;
+                $date['episno'] = $value->episno;
+                if(!empty($value->entereddate)){
+                    $date['entereddate'] =  Carbon::createFromFormat('Y-m-d', $value->entereddate)->format('d-m-Y');
+                }else{
+                    $date['entereddate'] =  '-';
+                }
+                // $date['recdatetime'] = $value->entereddate; // for sorting
+                if(!empty($value->entereddate)){ // for sorting
+                    $date['recdatetime'] =  Carbon::createFromFormat('Y-m-d', $value->entereddate)->format('d-m-Y').' '.$value->enteredtime;
+                }else{
+                    $date['recdatetime'] =  '-';
+                }
+                $date['enteredtime'] = $value->enteredtime;
+                $date['adduser'] = $value->adduser;
+                
+                array_push($data,$date);
+            }
+            
+            $responce->data = $data;
+        }else{
+            $responce->data = [];
         }
         
         return json_encode($responce);
@@ -2427,7 +2505,8 @@ class physioController extends defaultController
         
         $mrn = $request->mrn;
         $episno = $request->episno;
-        // $entereddate = $request->entereddate;
+        $entereddate = $request->entereddate;
+        $enteredtime = $request->enteredtime;
         $type1 = $request->type1;
         $type2 = $request->type2;
         if(!$mrn || !$episno){
@@ -2435,7 +2514,7 @@ class physioController extends defaultController
         }
         
         $patrehabperkeso = DB::table('hisdb.patrehabperkeso as rp')
-                            ->select('rp.idno','rp.compcode','rp.mrn','rp.episno','rp.type','rp.diagnosis','rp.incomeSource','rp.totDependents','rp.eduLevel','rp.dateTCA','rp.typeTCA','rp.TCA','rp.dateMC','rp.MC','rp.employmentStat','rp.workInfo','rp.employmentHist','rp.communityMobility','rp.workView','rp.workIndustry','rp.OBmotivation','rp.subjective','rp.patComplaint','rp.patHX','rp.initialDate','rp.progressDate','rp.finalDate','rp.initialComplaint','rp.progressComplaint','rp.finalComplaint','rp.patExpectation','rp.familyExpectation','rp.objective','rp.barthelIndexInit','rp.barthelIndexProg','rp.barthelIndexFin','rp.barthelIndexRemarks','rp.bergBalanceInit','rp.bergBalanceProg','rp.bergBalanceFin','rp.bergBalanceRemarks','rp.sixMinWalkInit','rp.sixMinWalkProg','rp.sixMinWalkFin','rp.sixMinWalkRemarks','rp.impressionST','rp.jawInit','rp.jawFin','rp.lipsInit','rp.lipsFin','rp.softPalateInit','rp.softPalateFin','rp.voiceInit','rp.voiceFin','rp.tongueInit','rp.tongueFin','rp.oromotorCmtInit','rp.oromotorCmtFin','rp.MPTInit','rp.MPTFin','rp.loudInit','rp.loudFin','rp.pitchInit','rp.pitchFin','rp.articltInit','rp.articltFin','rp.speechCmtInit','rp.speechCmtFin','rp.spontaneousInit','rp.spontaneousFin','rp.auditoryInit','rp.auditoryFin','rp.repeatInit','rp.repeatFin','rp.namingInit','rp.namingFin','rp.aphasiaInit','rp.aphasiaFin','rp.languageCmtInit','rp.languageCmtFin','rp.oralInit','rp.oralFin','rp.pharyngealInit','rp.pharyngealFin','rp.manageInit','rp.manageFin','rp.finding','rp.intervention','rp.finding1','rp.intervention1','rp.finding2','rp.intervention2','rp.finding3','rp.intervention3','rp.finding4','rp.intervention4','rp.finding5','rp.intervention5','rp.finding6','rp.intervention6','rp.rehabPlansInit','rp.rehabPlansProg','rp.rehabPlansFin','rp.limitInit','rp.limitProg','rp.limitFin','rp.improvementInit','rp.improvementProg','rp.improvementFin','rp.recommendInit','rp.recommendProg','rp.recommendFin','rp.therapistNameInit1','rp.therapistNameProg1','rp.therapistNameFin1','rp.therapistNameInit2','rp.therapistNameProg2','rp.therapistNameFin2','rp.therapistNameInit3','rp.therapistNameProg3','rp.therapistNameFin3','rp.summaryInitRmk','rp.summaryInitial','rp.summaryFinalRmk','rp.summaryFinal','rp.adduser','rp.adddate','rp.upduser','rp.upddate','rp.lastuser','rp.lastupdate','rp.computerid','pm.Name','pm.Newic')
+                            ->select('rp.idno','rp.compcode','rp.mrn','rp.episno','rp.type','rp.entereddate','rp.enteredtime','rp.diagnosis','rp.incomeSource','rp.totDependents','rp.eduLevel','rp.dateTCA','rp.typeTCA','rp.TCA','rp.dateMC','rp.MC','rp.employmentStat','rp.workInfo','rp.employmentHist','rp.communityMobility','rp.workView','rp.workIndustry','rp.OBmotivation','rp.subjective','rp.patComplaint','rp.patHX','rp.initialDate','rp.progressDate','rp.finalDate','rp.initialComplaint','rp.progressComplaint','rp.finalComplaint','rp.patExpectation','rp.familyExpectation','rp.objective','rp.barthelIndexInit','rp.barthelIndexProg','rp.barthelIndexFin','rp.barthelIndexRemarks','rp.bergBalanceInit','rp.bergBalanceProg','rp.bergBalanceFin','rp.bergBalanceRemarks','rp.sixMinWalkInit','rp.sixMinWalkProg','rp.sixMinWalkFin','rp.sixMinWalkRemarks','rp.impressionST','rp.jawInit','rp.jawFin','rp.lipsInit','rp.lipsFin','rp.softPalateInit','rp.softPalateFin','rp.voiceInit','rp.voiceFin','rp.tongueInit','rp.tongueFin','rp.oromotorCmtInit','rp.oromotorCmtFin','rp.MPTInit','rp.MPTFin','rp.loudInit','rp.loudFin','rp.pitchInit','rp.pitchFin','rp.articltInit','rp.articltFin','rp.speechCmtInit','rp.speechCmtFin','rp.spontaneousInit','rp.spontaneousFin','rp.auditoryInit','rp.auditoryFin','rp.repeatInit','rp.repeatFin','rp.namingInit','rp.namingFin','rp.aphasiaInit','rp.aphasiaFin','rp.languageCmtInit','rp.languageCmtFin','rp.oralInit','rp.oralFin','rp.pharyngealInit','rp.pharyngealFin','rp.manageInit','rp.manageFin','rp.finding','rp.intervention','rp.finding1','rp.intervention1','rp.finding2','rp.intervention2','rp.finding3','rp.intervention3','rp.finding4','rp.intervention4','rp.finding5','rp.intervention5','rp.finding6','rp.intervention6','rp.rehabPlansInit','rp.rehabPlansProg','rp.rehabPlansFin','rp.limitInit','rp.limitProg','rp.limitFin','rp.improvementInit','rp.improvementProg','rp.improvementFin','rp.recommendInit','rp.recommendProg','rp.recommendFin','rp.therapistNameInit1','rp.therapistNameProg1','rp.therapistNameFin1','rp.therapistNameInit2','rp.therapistNameProg2','rp.therapistNameFin2','rp.therapistNameInit3','rp.therapistNameProg3','rp.therapistNameFin3','rp.summaryInitRmk','rp.summaryInitial','rp.summaryFinalRmk','rp.summaryFinal','rp.adduser','rp.adddate','rp.upduser','rp.upddate','rp.lastuser','rp.lastupdate','rp.computerid','pm.Name','pm.Newic')
                             ->leftjoin('hisdb.pat_mast as pm', function ($join){
                                 $join = $join->on('pm.MRN','=','rp.mrn');
                                 // $join = $join->on('pm.Episno','=','rp.episno');
@@ -2444,7 +2523,8 @@ class physioController extends defaultController
                             ->where('rp.compcode','=',session('compcode'))
                             ->where('rp.mrn','=',$mrn)
                             ->where('rp.episno','=',$episno)
-                            // ->where('rp.entereddate','=',$entereddate)
+                            ->where('rp.entereddate','=',$entereddate)
+                            ->where('rp.enteredtime','=',$enteredtime)
                             ->where('rp.type','=','perkeso')
                             ->first();
         // dd($patrehabperkeso);
@@ -2453,7 +2533,8 @@ class physioController extends defaultController
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$mrn)
                             ->where('episno','=',$episno)
-                            // ->where('entereddate','=',$entereddate)
+                            ->where('entereddate','=',$entereddate)
+                            ->where('enteredtime','=',$enteredtime)
                             ->where('type','=','perkeso')
                             ->first();
         
@@ -2461,7 +2542,8 @@ class physioController extends defaultController
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$mrn)
                             ->where('episno','=',$episno)
-                            // ->where('entereddate','=',$entereddate)
+                            ->where('entereddate','=',$entereddate)
+                            ->where('enteredtime','=',$enteredtime)
                             ->where('type','=','perkeso')
                             ->first();
         
@@ -2469,7 +2551,8 @@ class physioController extends defaultController
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$mrn)
                         ->where('episno','=',$episno)
-                        // ->where('entereddate','=',$entereddate)
+                        ->where('entereddate','=',$entereddate)
+                        ->where('enteredtime','=',$enteredtime)
                         ->where('type','=','perkeso')
                         ->first();
         
@@ -2477,7 +2560,8 @@ class physioController extends defaultController
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$mrn)
                         ->where('episno','=',$episno)
-                        // ->where('entereddate','=',$entereddate)
+                        ->where('entereddate','=',$entereddate)
+                        ->where('enteredtime','=',$enteredtime)
                         ->where('type','=','perkeso')
                         ->first();
         
@@ -2485,26 +2569,27 @@ class physioController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->first();
         
-        $attachment_files1 = $this->get_attachment_files1($mrn,$episno,$type1);
-        $attachment_files2 = $this->get_attachment_files2($mrn,$episno,$type2);
+        $attachment_files1 = $this->get_attachment_files1($mrn,$episno,$entereddate,$type1);
+        $attachment_files2 = $this->get_attachment_files2($mrn,$episno,$entereddate,$type2);
         // dd($attachment_files);
         
         return view('patientcare.rehabPerkesoChart_pdfmake',compact('patrehabperkeso','neuroassessment','romaffectedside','romsoundside','musclepower','company','attachment_files1','attachment_files2'));
         
     }
     
-    public function get_attachment_files1($mrn,$episno,$type1){
+    public function get_attachment_files1($mrn,$episno,$entereddate,$type1){
         
         $mrn = $mrn;
         $episno = $episno;
-        // $entereddate = $entereddate;
+        $entereddate = $entereddate;
         $type = $type1;
         
         // $foxitpath1 = "C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\FoxitPDFReader.exe";
         // $foxitpath2 = "C:\Program Files (x86)\Foxit Software\Foxit Reader\FoxitReader.exe";
         
         // $foxitpath = "C:\laragon\www\pdf\open.bat  > /dev/null";
-        $filename = $type."_".$mrn."_".$episno.".pdf"; // sebab tak perlu entereddate
+        $filename = $type."_".$mrn."_".$episno."_".$entereddate.".pdf";
+        // $filename = $type."_".$mrn."_".$episno.".pdf"; // sebab tak perlu entereddate
         $blankpath = 'blank/'.$type.'.pdf';
         $filepath = public_path().'/uploads/ftp/'.$filename;
         $ftppath = "/patientcare_upload/pdf/".$filename;
@@ -2535,18 +2620,19 @@ class physioController extends defaultController
         
     }
     
-    public function get_attachment_files2($mrn,$episno,$type2){
+    public function get_attachment_files2($mrn,$episno,$entereddate,$type2){
         
         $mrn = $mrn;
         $episno = $episno;
-        // $entereddate = $entereddate;
+        $entereddate = $entereddate;
         $type = $type2;
         
         // $foxitpath1 = "C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\FoxitPDFReader.exe";
         // $foxitpath2 = "C:\Program Files (x86)\Foxit Software\Foxit Reader\FoxitReader.exe";
         
         // $foxitpath = "C:\laragon\www\pdf\open.bat  > /dev/null";
-        $filename = $type."_".$mrn."_".$episno.".pdf"; // sebab tak perlu entereddate
+        $filename = $type."_".$mrn."_".$episno."_".$entereddate.".pdf";
+        // $filename = $type."_".$mrn."_".$episno.".pdf"; // sebab tak perlu entereddate
         $blankpath = 'blank/'.$type.'.pdf';
         $filepath = public_path().'/uploads/ftp/'.$filename;
         $ftppath = "/patientcare_upload/pdf/".$filename;

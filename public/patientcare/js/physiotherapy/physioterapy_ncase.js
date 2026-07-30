@@ -8,12 +8,15 @@ $(document).ready(function () {
 		button_state_phys_ncase('wait');
 		enableForm('#formphys_ncase');
 		rdonly('#formphys_ncase');
-
+		
 		enableForm('#formphys');
 		rdonly('#formphys');
-
+		
+		emptyFormdata_div("#formphys_ncase",['#mrn_rehabMain','#episno_rehabMain']);
+		$("#phys_ncase_entereddate").val(moment().format('YYYY-MM-DD'));
+		$("#phys_ncase_enteredtime").val(moment().format('HH:mm:ss'));
 	});
-
+	
 	$("#edit_phys_ncase").click(function(){
 		$('#stats_rehab,#stats_physio').text('ATTEND');
 		button_state_phys_ncase('wait');
@@ -40,11 +43,11 @@ $(document).ready(function () {
 		
 		if( $('#formphys_ncase').isValid({requiredFields: ''}, conf, true) ) {
 			saveForm_phys_ncase(function(){
-
 				$("#cancel_phys_ncase").data('oper','edit');
 				$("#cancel_phys_ncase").click();
 				$('#stats_rehab,#stats_physio').text('SEEN');
-				button_state_phys_ncase('edit');
+				// button_state_phys_ncase('edit');
+				button_state_phys_ncase('add');
 				var dateParam_phys={
 					action:'get_table_date_phys',
 					type:$("input[type=radio][name=pastcurr]:checked").val(),
@@ -71,7 +74,7 @@ $(document).ready(function () {
 		disableForm('#formphys');
 		button_state_phys_ncase($(this).data('oper'));
 		// dialog_mrn_edit.off();
-
+		$('#tbl_phys_ncase_date').DataTable().ajax.reload();
 	});
 	
 	button_state_phys_ncase('empty');
@@ -105,6 +108,8 @@ $(document).ready(function () {
 	$('a.ui.card.bodydia_perkeso').click(function (){
 		let mrn = $('#mrn_rehabMain').val();
 		let episno = $('#episno_rehabMain').val();
+		let entereddate = $('#phys_ncase_entereddate').val();
+		let enteredtime = $('#phys_ncase_enteredtime').val();
 		let type = $(this).data('type');
 		let istablet = $(window).width() <= 1024;
 		
@@ -118,7 +123,7 @@ $(document).ready(function () {
 				let url = $('#urltodiagram').val() + filename;
 				var win = window.open(url, '_blank');
 			}else{
-				var win = window.open('http://localhost:8443/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&type='+type+'&from=rehab', '_blank');
+				var win = window.open('http://localhost:8443/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&entereddate='+entereddate+enteredtime+'&type='+type+'&from=rehab', '_blank');
 			}
 			
 			if(win){
@@ -132,17 +137,19 @@ $(document).ready(function () {
 });
 
 function saveForm_phys_ncase(callback){
-	var saveParam={
-        action:'save_table_phys_ncase',
-        oper:$("#cancel_phys_ncase").data('oper')
-    }
-
-    var postobj={
-    	mrn_rehabMain:$('#mrn_rehabMain').val(),
-    	episno_rehabMain:$('#episno_rehabMain').val(),
-    	_token : $('#_token').val(),
-    };
-
+	var saveParam = {
+		action: 'save_table_phys_ncase',
+		oper: $("#cancel_phys_ncase").data('oper')
+	}
+	
+	var postobj = {
+		mrn_rehabMain: $('#mrn_rehabMain').val(),
+		episno_rehabMain: $('#episno_rehabMain').val(),
+		entereddate: $('#phys_ncase_entereddate').val(),
+		enteredtime: $('#phys_ncase_enteredtime').val(),
+		_token: $('#_token').val(),
+	};
+	
 	var values = $("#formphys_ncase").serializeArray();
 	var values2 = $("#formphys").serializeArray();
 

@@ -298,7 +298,7 @@
                                         </div>
                                     </div>
                                     
-                                    <div class="four wide column">
+                                    <div class="six wide column">
                                         <div class="ui form">
                                             <div class="field">
                                                 <label>Pain Score</label>
