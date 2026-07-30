@@ -234,7 +234,7 @@ class DoctorNoteApptController extends defaultController
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
-                    'type' => 'DOCTOR NOTE APPT',
+                    'type' => 'DOCTORNOTE',
                     'note' => $request->note,
                     'adduser'  => $doctorcode,
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
@@ -271,7 +271,7 @@ class DoctorNoteApptController extends defaultController
         }
         
         $episode_obj = DB::table('hisdb.episode as e')
-                    ->select('e.mrn','e.episno','e.admdoctor','p.datetaken','p.timetaken','p.adduser','d.doctorname')
+                    ->select('e.mrn','e.episno','e.admdoctor','p.datetaken','p.timetaken','p.adduser','d.doctorname as docname','doc.doctorname')
                     ->leftJoin('hisdb.patprogressnote as p', function ($join) use ($request){
                         $join = $join->on('p.mrn', '=', 'e.mrn');
                         $join = $join->on('p.episno', '=', 'e.episno');
@@ -279,6 +279,10 @@ class DoctorNoteApptController extends defaultController
                     })->leftJoin('hisdb.doctor as d', function ($join) use ($request){
                         $join = $join->on('d.doctorcode', '=', 'e.admdoctor');
                         $join = $join->on('d.compcode', '=', 'e.compcode');
+                    })
+                    ->leftJoin('hisdb.doctor as doc', function ($join) use ($request){
+                        $join = $join->on('doc.doctorcode','=','p.doctorcode');
+                        $join = $join->on('doc.compcode','=','p.compcode');
                     })
                     ->where('e.compcode','=',session('compcode'))
                     ->where('e.mrn','=',$request->mrn)
@@ -320,7 +324,7 @@ class DoctorNoteApptController extends defaultController
         $responce = new stdClass();
         
         $episode_obj = DB::table('hisdb.episode as e')
-                        ->select('e.mrn','e.episno','e.admdoctor','p.datetaken','p.timetaken','p.adduser','p.adddate','d.doctorname')
+                        ->select('e.mrn','e.episno','e.admdoctor','p.datetaken','p.timetaken','p.adduser','p.adddate','d.doctorname as docname','doc.doctorname')
                         ->join('hisdb.patprogressnote as p', function ($join) use ($request){
                             $join = $join->on('p.mrn', '=', 'e.mrn');
                             $join = $join->on('p.episno', '=', 'e.episno');
@@ -329,6 +333,10 @@ class DoctorNoteApptController extends defaultController
                         })->leftJoin('hisdb.doctor as d', function ($join) use ($request){
                             $join = $join->on('d.doctorcode', '=', 'e.admdoctor');
                             $join = $join->on('d.compcode', '=', 'e.compcode');
+                        })
+                        ->leftJoin('hisdb.doctor as doc', function ($join) use ($request){
+                            $join = $join->on('doc.doctorcode','=','p.doctorcode');
+                            $join = $join->on('doc.compcode','=','p.compcode');
                         })
                         ->where('e.compcode','=',session('compcode'))
                         ->where('e.mrn','=',$request->mrn)

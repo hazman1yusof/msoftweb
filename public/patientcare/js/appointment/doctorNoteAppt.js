@@ -22,7 +22,7 @@ var urlParam_AddNotesAppt = {
     table_name: 'nursing.nursaddnote',
     table_id: 'idno',
     filterCol: ['mrn','episno','type'],
-    filterVal: ['','','DOCTOR NOTE APPT'],
+    filterVal: ['','','DOCTORNOTE'],
 }
 
 $(document).ready(function (){
@@ -352,7 +352,7 @@ function populate_currDoctorNoteAppt(obj){
     
     urlParam_AddNotesAppt.filterVal[0] = obj.MRN;
     urlParam_AddNotesAppt.filterVal[1] = obj.Episno;
-    urlParam_AddNotesAppt.filterVal[2] = 'DOCTOR NOTE APPT';
+    urlParam_AddNotesAppt.filterVal[2] = 'DOCTORNOTE';
     
     doctornote_docNoteAppt = {
         action: 'get_table_doctorNoteAppt',
@@ -539,7 +539,7 @@ $('#docNoteAppt_date_tbl tbody').on('click', 'tr', function (){
     
     urlParam_AddNotesAppt.filterVal[0] = data.mrn;
     urlParam_AddNotesAppt.filterVal[1] = data.episno;
-    urlParam_AddNotesAppt.filterVal[2] = 'DOCTOR NOTE APPT';
+    urlParam_AddNotesAppt.filterVal[2] = 'DOCTORNOTE';
     
     $('#mrn_doctorNoteAppt_past').val(data.mrn);
     $('#episno_doctorNoteAppt_past').val(data.episno);
