@@ -43,9 +43,9 @@
                             <div class='ui grid' style="padding: 5px 3px 3px 2px;">
                                 <div class="sixteen wide column" style="padding: 10px 0px 0px 3px;">
                                     <div class="inline fields">
-                                        <div class="field">
+                                        <div class="field disabled">
                                             <label for="datetaken" style="padding-right: 5px;">Date</label>
-                                            <input id="datetaken" name="datetaken" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" data-validation="required" data-validation-error-msg-required="Please enter information.">
+                                            <input id="datetaken" name="datetaken" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" data-validation="required" data-validation-error-msg-required="Please enter information." readonly>
                                         </div>
                                         <div class="field">
                                             <label for="timetaken" style="padding-left: 15px; padding-right: 5px;">Time</label>

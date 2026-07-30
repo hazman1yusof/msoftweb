@@ -45,12 +45,13 @@
                             <div class="ui segments">
                                 <div class="ui secondary segment">CATHETER INSERTION</div>
                                     <div class="inline fields">
-                                        <div class="field" style="padding: 20px 0px 0px 20px;">
-                                            <label for="dateInsert">Date</label>
-                                            <input id="dateInsert_ED" name="dateInsert" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" data-validation="required" data-validation-error-msg-required="Please enter date.">
-
-                                                <label for="timeInsert" style="padding-right: 5px;padding-left: 5px">Time</label>
-                                            <input id="timeInsert_ED" name="timeInsert" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter time.">
+                                        <div class="field disabled">
+                                            <label for="dateInsert" style="padding-right: 10px;padding-left: 10px;padding-top: 10px;">Date</label>
+                                            <input id="dateInsert_ED" name="dateInsert" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" data-validation="required" data-validation-error-msg-required="Please enter information." readonly>
+                                        </div>
+                                        <div class="field">
+                                            <label for="timeInsert" style="padding-left: 15px; padding-right: 5px;">Time</label>
+                                            <input id="timeInsert_ED" name="timeInsert" type="time" class="form-control input-sm"  data-validation="required" data-validation-error-msg-required="Please enter information.">
                                         </div>
                                     </div>
 
