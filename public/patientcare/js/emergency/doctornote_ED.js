@@ -100,6 +100,24 @@ $(document).ready(function (){
 	$('#icdcode').change(function (){
 		$('#diagfinal').val($('#icdcode').val());
 	});
+
+	$("#dialog_medc")
+		.dialog({
+			width: 9/10 * $(window).width(),
+			modal: true,
+			autoOpen: false,
+			open: function (event, ui){
+				epno_medc_init();
+			},
+			close: function (event, ui){
+				
+			},
+		});
+	
+	$("#doctornote_medc").click(function (){
+		// oper_refletter = 'add';
+		$("#dialog_medc").dialog("open");
+	});
 	
 	//////////////////////////////////////parameter for saving url//////////////////////////////////////
 	var addmore_jqgrid = {more:false,state:false,edit:false}

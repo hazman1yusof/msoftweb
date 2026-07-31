@@ -65,14 +65,14 @@
                     <input id="doctorname_doctorNote" name="doctorname_doctorNote" type="hidden">-->
                     
                     <div class='ui grid'>
-                        <div class="eight wide column">
+                        <div class="seven wide column">
                             <div class="field">
                                 <label>Referred From</label>
                                 <input id="referredFrom" name="referredFrom" type="text" rdonly>
                             </div>
                         </div>
                         
-                        <div class="seven wide column">
+                        <div class="eight wide column">
                             <div class="inline fields">
                                 <div class="field">
                                     <label>Added Date</label>
@@ -86,6 +86,10 @@
                                     <label>Added by</label>
                                     <input id="adduser" name="adduser" type="text" rdonly>
                                 </div>
+
+                                @if(Auth::user()->doctor == '1')
+                                    <button class="ui green button" type="button" id="doctornote_medc">MC Letter</button>
+                                @endif
                             </div>
                         </div>
                         

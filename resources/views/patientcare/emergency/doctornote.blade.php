@@ -177,6 +177,8 @@
     </div>
 </div>
 
+@include('patientcare.emergency.medicalLetterED')
+
 @section('css')
     <link rel="stylesheet" href="{{asset('patientcare/css/doctornote.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" crossorigin="anonymous">
@@ -216,6 +218,7 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/emergency/transaction_diet.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/emergency/transaction_phys.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/emergency/doctornote_ED.js?v=1.6') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/emergency/medicalLetterED.js?v=1.6') }}"></script>
 
     <script type="text/javascript" src="{{ asset('patientcare/js/emergency/nursing/nursing.js?v=1.3') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/nursingnote.js?v=1.3') }}"></script>
