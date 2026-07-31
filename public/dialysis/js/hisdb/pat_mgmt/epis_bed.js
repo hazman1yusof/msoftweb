@@ -55,9 +55,19 @@ $(document).ready(function () {
 		pager: "#jqGridPager_bed",
 		onSelectRow:function(rowid, selected){
 			// populate_bed(selrowData("#jqGrid_bed"));
+			$("#jqGrid_bed").data('lastselrow',rowid);
 		},
 		loadComplete: function(){
 			$('#jqGrid_bed_ilsave,#jqGrid_bed_ilcancel').hide();
+
+			if ($("#jqGrid_bed").data('lastselrow') == '-1' || $("#jqGrid_bed").data('lastselrow') == undefined) { 
+				$("#jqGrid_bed").setSelection($("#jqGrid_bed").getDataIDs()[0]);
+			}else{
+				$("#jqGrid_bed").setSelection($("#jqGrid_bed").data('lastselrow'));
+				delay(function(){
+					$('#jqGrid_bed tr#'+$("#jqGrid_bed").data('lastselrow')).focus();
+				}, 300 );
+			}
 
 			let reccount = $('#jqGrid_bed').jqGrid('getGridParam', 'reccount');
 			if(reccount>0){

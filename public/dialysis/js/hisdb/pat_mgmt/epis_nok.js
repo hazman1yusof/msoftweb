@@ -57,9 +57,19 @@ $(document).ready(function () {
 		pager: "#jqGridPager_nok",
 		onSelectRow:function(rowid, selected){
 			populate_nok(selrowData("#jqGrid_nok"));
+			$("#jqGrid_nok").data('lastselrow',rowid);
 		},
 		loadComplete: function(){
 			$('#jqGrid_nok_ilsave,#jqGrid_nok_ilcancel').hide();
+
+			if ($("#jqGrid_nok").data('lastselrow') == '-1' || $("#jqGrid_nok").data('lastselrow') == undefined) { 
+				$("#jqGrid_nok").setSelection($("#jqGrid_nok").getDataIDs()[0]);
+			}else{
+				$("#jqGrid_nok").setSelection($("#jqGrid_nok").data('lastselrow'));
+				delay(function(){
+					$('#jqGrid_nok tr#'+$("#jqGrid_nok").data('lastselrow')).focus();
+				}, 300 );
+			}
 
 			let reccount = $('#jqGrid_nok').jqGrid('getGridParam', 'reccount');
 			if(reccount>0){
@@ -172,7 +182,7 @@ $(document).ready(function () {
 			tel_o_ext : $("#nok_ext").val()
 	    };
 
-	    $.post( "episode/save_nok", $.param(postobj) , function( data ) {
+	    $.post( "./episode/save_nok", $.param(postobj) , function( data ) {
 	        
 	    },'json').fail(function(data) {
 	        // alert('there is an error');
