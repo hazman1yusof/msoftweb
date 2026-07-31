@@ -77,6 +77,9 @@ class DoctornoteEDController extends defaultController
             
             case 'uploadfile_userfile':
                 return $this->uploadfile_userfile($request);
+
+            case 'save_mc':
+                return $this->save_mc($request);
             
             default:
                 return 'error happen..';
@@ -1249,5 +1252,132 @@ class DoctornoteEDController extends defaultController
         return $events = $this->getEvent($emergency);
         
     }
+
+    public function save_mc(Request $request){
+
+        DB::beginTransaction();
+        try {
+
+            $pat_mast = DB::table('hisdb.pat_mast')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn',$request->mrn)
+                        ->first();
+
+            $idno = DB::table('hisdb.patmc')
+                ->insertGetId([  
+                    'compcode' => session('compcode'),
+                    'datefrom' => $request->datefrom ,
+                    'dateto' => $request->dateto ,
+                    'mrn' => $request->mrn ,
+                    'episno' => $request->episno ,
+                    'patfrom' => $pat_mast->Name ,
+                    'mccnt' => $request->mccnt ,
+                    'serialno' => $request->serialno ,
+                    'dateresume' => $request->dateresume ,
+                    'datereexam' => $request->datereexam ,
+                    'printeddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'printedby' => strtoupper(session('username')),
+                    'adduser' => strtoupper(session('username')),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            DB::commit();
+            $responce = new stdClass();
+            $responce->res = 'SUCCESS';
+            $responce->idno = $idno;
+            return json_encode($responce);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            $responce = new stdClass();
+            $responce->res = 'ERROR';
+
+            return response(json_encode($responce), 500);
+        }
+    }
+
+    public function show_mc(Request $request){   
+        $patmc = DB::table('hisdb.patmc as mc')
+                        ->select('mc.idno','mc.compcode','mc.datefrom','mc.dateto','mc.dateresume','mc.datereexam','mc.mrn','mc.episno','pm.newic','mc.patfrom','mc.mccnt','mc.adduser','mc.adddate','mc.serialno','mc.printeddate','mc.printedby','pm.sex')
+                        ->leftJoin('hisdb.pat_mast as pm', function($join) use ($request){
+                                $join = $join->on('pm.MRN', '=', 'mc.MRN')
+                                                ->where('pm.compcode','=',session('compcode'));
+                            })
+                        ->where('mc.idno',$request->idno)
+                        ->first();
+
+        if(empty($patmc->sex) || $patmc->sex=='M'){
+            $sex='he';
+        }else{
+            $sex='she';
+        }
+
+        $ini_array = [
+            'compcode' => $patmc->compcode,
+            'datefrom' => (!empty($patmc->datefrom))?Carbon::createFromFormat('Y-m-d', $patmc->datefrom)->format('d-m-Y'):'',
+            'dateto' => (!empty($patmc->dateto))?Carbon::createFromFormat('Y-m-d', $patmc->dateto)->format('d-m-Y'):'',
+            'dateresume' => (!empty($patmc->dateresume))?Carbon::createFromFormat('Y-m-d', $patmc->dateresume)->format('d-m-Y'):'',
+            'datereexam' => (!empty($patmc->datereexam))?Carbon::createFromFormat('Y-m-d', $patmc->datereexam)->format('d-m-Y'):'',
+            'mrn' => $patmc->mrn,
+            'episno' => $patmc->episno,
+            'newic' => $patmc->newic,
+            'patfrom' => $patmc->patfrom,
+            'mccnt' => ltrim($patmc->mccnt, '0'),
+            'adduser' => $patmc->adduser,
+            'adddate' => (!empty($patmc->adddate))?Carbon::createFromFormat('Y-m-d H:i:s', $patmc->adddate)->format('d-m-Y'):'',
+            'serialno' => str_pad($patmc->idno, 6, "0", STR_PAD_LEFT),
+            'printeddate' => (!empty($patmc->printeddate))?Carbon::createFromFormat('Y-m-d', $patmc->printeddate)->format('d-m-Y'):'',
+            'printedby' => $patmc->printedby,
+            'sex' => $sex
+        ];
+
+        if(true){
+            return view('patientcare.emergency.mymc',compact('ini_array'));
+        }else{
+            abort(403, 'MC not found');
+        }
+
+    }
+
+    public function mc_list(Request $request){
+        $patmc = DB::table('hisdb.patmc')
+                    ->where('compcode',session('compcode'))
+                    ->where('mrn',$request->mrn)
+                    ->get();
+
+        $responce = new stdClass();
+        $responce->data = $patmc;
+
+        return json_encode($responce);
+    }
+
+    public function mc_last_serialno(Request $request){
+        $patmc = DB::table('hisdb.patmc')
+                    ->where('compcode',session('compcode'))
+                    ->where('mrn',$request->mrn)
+                    ->orderBy('idno','desc')
+                    ->first();
+
+        $responce = new stdClass();
+        $responce->data = $patmc;
+
+        return json_encode($responce);
+    }
+
+    public function get_serialno(Request $request){
+        $responce = new stdClass();
+        $responce->serialno = '1';
+
+        $patmc = DB::table('hisdb.patmc')
+                        ->where('compcode',session('compcode'));
+
+        if($patmc->exists()){
+            $responce->serialno = $patmc->max('idno');
+        }
+
+        return json_encode($responce);
+    }
+
     
 }
