@@ -2095,8 +2095,10 @@ class MusculoAssessmentController extends defaultController
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
-        
-        $attachment_files = $this->get_attachment_files($mrn,$episno,$entereddate,$type);
+
+        $timestamp = Carbon::createFromFormat('Y-m-d H:i:s', $entereddate.' '.$enteredtime, 'Asia/Kuala_Lumpur')->timestamp;
+
+        $attachment_files = $this->get_attachment_files($mrn,$episno,$timestamp,$type);
         // dd($attachment_files);
         
         return view('rehab.physio.musculoAssessmentChart_pdfmake',compact('musculoassessment','romaffectedside','romsoundside','musclepower','company','attachment_files'));
