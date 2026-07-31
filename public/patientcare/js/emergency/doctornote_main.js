@@ -140,6 +140,9 @@ $(document).ready(function () {
 				// 	return false;
 				// }
 				$('button#timer_stop').click();
+				$('#_patName').val(selrowData('#jqGrid').Name);
+				$('#_MRN').val(selrowData('#jqGrid').MRN);
+				$('#_Episno').val(selrowData('#jqGrid').Episno);
 				urlParam_trans.mrn = selrowData('#jqGrid').MRN;
 				urlParam_trans.episno = selrowData('#jqGrid').Episno;
 				urlParam_trans_diet.mrn = selrowData('#jqGrid').MRN;
@@ -258,6 +261,9 @@ $(document).ready(function () {
 				// }
 				// empty_userfile();
 				$('button#timer_stop').click();
+				$('#_patName').val(selrowData('#jqGrid').Name);
+				$('#_MRN').val(selrowData('#jqGrid').MRN);
+				$('#_Episno').val(selrowData('#jqGrid').Episno);
     			$('#emergencyMain_tab .menu .item').tab('change tab','nursing_ed');
 				urlParam_trans.mrn = selrowData('#jqGrid').MRN;
 				urlParam_trans.episno = selrowData('#jqGrid').Episno;

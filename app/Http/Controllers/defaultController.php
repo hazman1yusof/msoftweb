@@ -433,6 +433,8 @@ abstract class defaultController extends Controller{
     public function defaultAdd(Request $request){
 
         DB::enableQueryLog();
+        DB::beginTransaction();
+        
         if(!empty($request->fixPost)){
             $field = $this->fixPost2($request->field);
             $idno = $request[$request->idnoUse];
@@ -450,8 +452,6 @@ abstract class defaultController extends Controller{
             )){
                 throw new \Exception($request->table_id.' '.$request[$request->table_id].' already exist', 500);
             };
-
-            DB::beginTransaction();
 
             $table = DB::table($request->table_name);
 

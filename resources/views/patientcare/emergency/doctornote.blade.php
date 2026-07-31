@@ -57,6 +57,9 @@
 
     <input type="hidden" id="curr_user" value="{{ Auth::user()->username }}">
     <input type="hidden" id="user_groupid" value="{{Auth::user()->groupid}}">
+    <input type="hidden" id="_patName" value="">
+    <input type="hidden" id="_MRN" value="">
+    <input type="hidden" id="_Episno" value="">
 
     <div class="ui stackable two column grid">
         <div class="five wide tablet five wide computer column" id="calendar_div">

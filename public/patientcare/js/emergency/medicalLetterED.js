@@ -112,31 +112,33 @@ function epno_medc_btnstate(state){
 }
 
 function epno_medc_init(){
-    let bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
-    let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
-    var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
+    // let bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
+    // let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
+    // var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
 
-    mc_last_serialno(lastrowdata);
+    mc_last_serialno();
     emptyFormdata_div('#form_medc',['#form_medc input[name="name"]','#form_medc input[name="serialno"]']);
     epno_medc_btnstate('default');
-    $('#form_medc input[name="name"]').val(lastrowdata.Name);
+    $('#form_medc input[name="name"]').val($('#_patName').val());
 }
 
 function save_medc(){
-    if($('#form_medc').valid()){
+    // if($('#form_medc').valid()){
+
+    if($('#form_medc').isValid({requiredFields: ''}, conf, true)){
         epno_medc_btnstate('all_disabled');
 
-        let bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
-        let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
-        var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
+        // let bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
+        // let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
+        // var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
 
         var _token = $('#csrf_token').val();
         let serializedForm = $("#form_medc").serializeArray();
         let obj = {
             'action': 'save_mc',
             'debtorcode':$('#hid_epis_payer').val(),
-            'mrn':lastrowdata.MRN,
-            'episno': lastrowdata.Episno,
+            'mrn':$('#_MRN').val(),
+            'episno': $('#_Episno').val(),
             '_token': _token,
         };
         

@@ -41,11 +41,13 @@ class DoctorController extends defaultController
                     ]);
                 }
 
-                // DB::table('sysdb.users')
-                //         ->where('compcode',session('compcode'))
-                //         ->where('username',$request->doctorcode)
-                        
-                        
+                $users = DB::table('sysdb.users')
+                            ->where('compcode',session('compcode'))
+                            ->where('username',$request->doctorcode);
+
+                if($users->exists()){
+                    return response('User already Exists', 500);
+                }
 
                 return $this->defaultAdd($request);
             case 'edit':
