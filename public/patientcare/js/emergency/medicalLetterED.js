@@ -7,7 +7,7 @@ $(document).ready(function () {
 
         var rowdata = getrow_bootgrid();
 
-        mclist_table.ajax.url( "./ptcare_doctornoteED/table?action=mc_list&mrn="+rowdata.MRN).load();
+        mclist_table.ajax.url( "./pat_enq/table?action=mc_list&mrn="+rowdata.MRN).load();
         $('#mclist_table').css('width','100%');
     });
 
@@ -81,7 +81,7 @@ $(document).ready(function () {
 
     $('#mclist_table tbody').on('dblclick', 'tr', function () {
         var data = mclist_table.row( this ).data();
-        window.open("./ptcare_doctornoteED/table?action=show_mc&idno="+data.idno);
+        window.open("./pat_enq/table?action=show_mc&idno="+data.idno);
     });
 });
 
@@ -140,14 +140,14 @@ function save_medc(){
             '_token': _token,
         };
         
-        $.post('./ptcare_doctornoteED/form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+        $.post('./pat_enq/form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
             
         },'json').fail(function(data) {
             alert('ERROR');
             epno_medc_btnstate('default');
         }).done(function(data){
             epno_medc_btnstate('default');
-            window.open("./ptcare_doctornoteED/table?action=show_mc&idno="+data.idno);
+            window.open("./pat_enq/table?action=show_mc&idno="+data.idno);
         });
     }
 }
@@ -155,7 +155,7 @@ function save_medc(){
 function mc_last_serialno(lastrowdata){
     var param={
         action:'get_serialno',
-        url: './ptcare_doctornoteED/table'
+        url: './pat_enq/table'
     }
     $.get( param.url+"?"+$.param(param), function( data ) {
         
