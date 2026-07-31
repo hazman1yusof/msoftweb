@@ -103,7 +103,7 @@
 				</div>
 			</div>
 			
-			<div class="form-group">
+			<div class="form-group" style="display: none;">
 				<label class="col-md-2 control-label" for="doctorcode">Doctor ID</label>
 				<div class="col-md-4">
 					<div class='input-group'>

@@ -209,6 +209,7 @@ $(document).ready(function (){
                 $("#jqGridAddNotesAntenatal").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesAntenatal_c")[0].offsetWidth-$("#jqGridAddNotesAntenatal_c")[0].offsetLeft-30));
                 break;
             case 'docNoteIP':
+                check_doctor();
                 sticky_clientprognotetbl(on = true);
                 clientprognote_date_tbl.ajax.url("./clientprogressnote/table?"+$.param(dateParam_clientprognote)).load(function (data){
                     emptyFormdata_div("#formClientProgNote",['#mrn_clientProgNote','#episno_clientProgNote','#datetime_clientProgNote','#epistycode_clientProgNote']);
@@ -219,6 +220,7 @@ $(document).ready(function (){
                 // textarea_init_clientProgNote();
                 break;
             case 'docNoteRefIP':
+                check_doctorref();
                 sticky_clientprognotereftbl(on = true);
                 clientprognoteref_date_tbl.ajax.url("./clientprogressnoteref/table?"+$.param(dateParam_clientprognoteref)).load(function (data){
                     emptyFormdata_div("#formClientProgNoteRef",['#mrn_clientProgNoteRef','#episno_clientProgNoteRef','#datetime_clientProgNoteRef','#epistycode_clientProgNoteRef','#refdoctor_clientProgNoteRef']);

@@ -37,14 +37,14 @@ class UserMaintenanceController extends defaultController
     
     public function duplicate($check,$mode,$idno){
         if($mode == 'add'){
-            $users = DB::table('users')
+            $users = DB::table('sysdb.users')
                     ->where('compcode',session('compcode'))
                     ->where('username',$check)
                     ->exists();
             
             return $users;
         }else if($mode == 'edit'){
-            $users = DB::table('users')
+            $users = DB::table('sysdb.users')
                     ->where('compcode',session('compcode'))
                     ->where('username',$check)
                     ->where('id','!=',$idno)
@@ -61,14 +61,14 @@ class UserMaintenanceController extends defaultController
         }
         
         if($mode == 'add'){
-            $users = DB::table('users')
+            $users = DB::table('sysdb.users')
                     ->where('compcode',session('compcode'))
                     ->where('doctorcode',$doctorcode)
                     ->exists();
             
             return $users;
         }else if($mode == 'edit'){
-            $users = DB::table('users')
+            $users = DB::table('sysdb.users')
                     ->where('compcode',session('compcode'))
                     ->where('doctorcode',$doctorcode)
                     ->where('id','!=',$idno)
@@ -84,14 +84,14 @@ class UserMaintenanceController extends defaultController
         }
         
         if($mode == 'add'){
-            $users = DB::table('users')
+            $users = DB::table('sysdb.users')
                     ->where('compcode',session('compcode'))
                     ->where('email',$email)
                     ->exists();
             
             return $users;
         }else if($mode == 'edit'){
-            $users = DB::table('users')
+            $users = DB::table('sysdb.users')
                     ->where('compcode',session('compcode'))
                     ->where('email',$email)
                     ->where('id','!=',$idno)
@@ -109,7 +109,7 @@ class UserMaintenanceController extends defaultController
 
         DB::beginTransaction();
         try {
-            DB::table('users')
+            DB::table('sysdb.users')
                 ->where('compcode',session('compcode'))
                 ->where('username',session('username'))
                 ->update([

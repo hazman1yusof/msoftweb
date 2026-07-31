@@ -68,12 +68,12 @@ $(document).ready(function (){
 				if(oper!='view'){
 					dialog_txndept.on();
 					dialog_deptcode.on();
-					dialog_doctorcode.on();
+					// dialog_doctorcode.on();
 				}
 				if(oper!='add'){
 					setColor();
 					dialog_txndept.check(errorField);
-					dialog_doctorcode.check(errorField);
+					// dialog_doctorcode.check(errorField);
 					// dialog_deptcode.check(errorField);
 				}
 			},
@@ -82,7 +82,7 @@ $(document).ready(function (){
 				
 				dialog_txndept.off();
 				dialog_deptcode.off();
-				dialog_doctorcode.off();
+				// dialog_doctorcode.off();
 				
 				if(oper=='view'){
 					$(this).dialog("option", "buttons",butt1);
@@ -326,37 +326,37 @@ $(document).ready(function (){
 	);
 	dialog_deptcode.makedialog();
 	
-	var dialog_doctorcode = new ordialog(
-		'doctorcode','hisdb.doctor','#doctorcode',errorField,
-		{
-			colModel: [
-				{ label: 'Doctor ID', name: 'doctorcode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				{ label: 'Doctor Name', name: 'doctorname', width: 400, classes: 'pointer', canSearch: true, or_search: true },
-			],
-			urlParam: {
-				filterCol: ['compcode','recstatus'],
-				filterVal: ['session.compcode','ACTIVE']
-			},
-			ondblClickRow: function (){
-			},
-			gridComplete: function (obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-					$('#'+obj.dialogname).dialog('close');
-				}
-			}
-		},{
-			title: "Select Transaction Department",
-			open: function (){
-				dialog_doctorcode.urlParam.filterCol= ['compcode','recstatus'],
-				dialog_doctorcode.urlParam.filterVal= ['session.compcode','ACTIVE']
-			}
-		},'urlParam', 'radio', 'tab'
-	);
-	dialog_doctorcode.makedialog();
+	// var dialog_doctorcode = new ordialog(
+	// 	'doctorcode','hisdb.doctor','#doctorcode',errorField,
+	// 	{
+	// 		colModel: [
+	// 			{ label: 'Doctor ID', name: 'doctorcode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+	// 			{ label: 'Doctor Name', name: 'doctorname', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+	// 		],
+	// 		urlParam: {
+	// 			filterCol: ['compcode','recstatus'],
+	// 			filterVal: ['session.compcode','ACTIVE']
+	// 		},
+	// 		ondblClickRow: function (){
+	// 		},
+	// 		gridComplete: function (obj){
+	// 			var gridname = '#'+obj.gridname;
+	// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+	// 				$(gridname+' tr#1').click();
+	// 				$(gridname+' tr#1').dblclick();
+	// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+	// 				$('#'+obj.dialogname).dialog('close');
+	// 			}
+	// 		}
+	// 	},{
+	// 		title: "Select Transaction Department",
+	// 		open: function (){
+	// 			dialog_doctorcode.urlParam.filterCol= ['compcode','recstatus'],
+	// 			dialog_doctorcode.urlParam.filterVal= ['session.compcode','ACTIVE']
+	// 		}
+	// 	},'urlParam', 'radio', 'tab'
+	// );
+	// dialog_doctorcode.makedialog();
 	
 	// function savecolor(){
 	// 	var bg_leave = $('#bg_leave').val();
