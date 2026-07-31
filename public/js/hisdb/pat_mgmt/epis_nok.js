@@ -182,7 +182,7 @@ $(document).ready(function () {
 			tel_o_ext : $("#nok_ext").val()
 	    };
 
-	    $.post( "/episode/save_nok", $.param(postobj) , function( data ) {
+	    $.post( "./episode/save_nok", $.param(postobj) , function( data ) {
 	        
 	    },'json').fail(function(data) {
 	        // alert('there is an error');

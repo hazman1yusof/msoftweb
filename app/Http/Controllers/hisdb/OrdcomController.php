@@ -551,6 +551,8 @@ class OrdcomController extends defaultController
             //         $this->crtgltran($chargetrx_obj,$updinv);
             //     }
             // }
+
+            $this->add_patmedication($request);
             
             DB::commit();
 
@@ -5955,7 +5957,7 @@ class OrdcomController extends defaultController
         }
     }
 
-    public  function add_psno($chggroup,$mrn,$episno){
+    public function add_psno($chggroup,$mrn,$episno){
         $phar_invcode = DB::table('sysdb.sysparam')
                             ->where('compcode',session('compcode'))
                             ->where('source','OE')
@@ -6001,7 +6003,73 @@ class OrdcomController extends defaultController
                 // 'frequency' => ,
                 // 'addinstruction' => ,
             ]);
+    }
 
+    public function add_patmedication(Request $request){
+
+        $chargetrx_obj = DB::table('hisdb.chargetrx as trx')
+                        ->select('trx.auditno', 'trx.mrn', 'trx.episno', 'trx.chgcode', 'trx.quantity', 'trx.uom', 'trx.doscode', 'trx.frequency', 'trx.ftxtdosage', 'trx.addinstruction', 'trx.drugindicator', 'cm.description', 'cm.uom', 'dos.dosedesc as doscode_desc', 'fre.freqdesc as frequency_desc', 'ins.description as addinstruction_desc', 'dru.description as drugindicator_desc','fre.convfactor as freq_convfactor')
+                        ->leftjoin('hisdb.chgmast as cm', function($join) use ($request){
+                            $join = $join->on('cm.chgcode', '=', 'trx.chgcode')
+                                        ->on('cm.uom','=','trx.uom')
+                                        ->where('cm.compcode','=',session('compcode'));
+                        })
+                        ->leftjoin('hisdb.dose as dos', function($join) use ($request){
+                            $join = $join->on('dos.dosecode', '=', 'trx.doscode')
+                                        ->where('dos.compcode','=',session('compcode'));
+                        })
+                        ->leftjoin('hisdb.freq as fre', function($join) use ($request){
+                            $join = $join->on('fre.freqcode', '=', 'trx.frequency')
+                                        ->where('fre.compcode','=',session('compcode'));
+                        })
+                        ->leftjoin('hisdb.instruction as ins', function($join) use ($request){
+                            $join = $join->on('ins.inscode', '=', 'trx.addinstruction')
+                                        ->where('ins.compcode','=',session('compcode'));
+                        })
+                        ->leftjoin('hisdb.drugindicator as dru', function($join) use ($request){
+                            $join = $join->on('dru.drugindcode', '=', 'trx.drugindicator')
+                                        ->where('dru.compcode','=',session('compcode'));
+                        })
+                        ->where('trx.mrn' ,'=', $request->mrn)
+                        ->where('trx.episno' ,'=', $request->episno)
+                        ->where('trx.compcode','=',session('compcode'))
+                        ->where('trx.chggroup', '50')
+                        ->where('trx.recstatus','<>','DELETE')
+                        ->orderBy('trx.adddate', 'desc');
+
+        if($chargetrx_obj->exists()){
+            $chargetrx_obj = $chargetrx_obj->get();
+
+            foreach ($chargetrx_obj as $obj) {
+                $patmedication = DB::table('hisdb.patmedication')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('mrn' ,'=', $request->mrn)
+                                ->where('episno' ,'=', $request->episno)
+                                ->where('chgcode' ,'=', $obj->chgcode)
+                                ->where('auditno' ,'=', $obj->auditno);
+
+                if(!$patmedication->exists()){
+                    for ($i=0; $i < $obj->freq_convfactor; $i++) { 
+                        DB::table('hisdb.patmedication')
+                            ->insert([
+                                'compcode' => session('compcode'),
+                                'mrn' => $request->mrn,
+                                'episno' => $request->episno,
+                                'auditno' => $obj->auditno,
+                                'chgcode' => $obj->chgcode,
+                                'entereddate' => null,
+                                'enteredtime' => null,
+                                'failure' => null,
+                                'remarks' => null,
+                                'qty' => 1,
+                                'enteredby' => null,
+                                'adduser'  => 'SYSTEM',
+                                'adddate'  => Carbon::now("Asia/Kuala_Lumpur")
+                            ]);
+                    }
+                }
+            }
+        }
     }
 
 }

@@ -47,6 +47,9 @@ class NursingNoteController extends defaultController
             case 'get_invcat': // Investigation - DataTable
                 return $this->get_invcat($request);
             
+            case 'get_table_drug':
+                return $this->get_table_drug($request);
+            
             default:
                 return 'error happen..';
         }
@@ -2115,23 +2118,55 @@ class NursingNoteController extends defaultController
         DB::beginTransaction();
         
         try {
-            
-            DB::table('hisdb.patmedication')
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'mrn' => $request->mrn,
-                    'episno' => $request->episno,
-                    'auditno' => $request->auditno,
-                    'chgcode' => $request->chgcode,
-                    'entereddate' => $request->entereddate,
-                    'enteredtime' => $request->enteredtime,
-                    'failure' => $request->failure,
-                    'remarks' => $request->remarks,
-                    'qty' => $request->qty,
-                    'enteredby' => session('username'),
-                    'adduser'  => session('username'),
-                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
+
+            $patmedication = DB::table('hisdb.patmedication')
+                ->where('compcode',session('compcode'))
+                ->where('mrn',$request->mrn)
+                ->where('episno',$request->episno)
+                ->where('chgcode',$request->chgcode)
+                ->where('auditno',$request->auditno)
+                ->where('idno',$request->idno);
+
+            if(Carbon::hasFormat($request->entereddate, 'd-m-Y')){
+                $request->entereddate = Carbon::createFromFormat('d-m-Y', $request->entereddate)->format('Y-m-d');
+            }
+
+            if($patmedication->exists()){
+                DB::table('hisdb.patmedication')
+                    ->where('compcode',session('compcode'))
+                    ->where('mrn',$request->mrn)
+                    ->where('episno',$request->episno)
+                    ->where('chgcode',$request->chgcode)
+                    ->where('auditno',$request->auditno)
+                    ->where('idno',$request->idno)
+                    ->update([
+                        'entereddate' => $request->entereddate,
+                        'enteredtime' => $request->enteredtime,
+                        'failure' => $request->failure,
+                        'remarks' => $request->remarks,
+                        'qty' => $request->qty,
+                        'enteredby' => session('username'),
+                        'upduser'  => session('username'),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+            }else{
+                DB::table('hisdb.patmedication')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'auditno' => $request->auditno,
+                        'chgcode' => $request->chgcode,
+                        'entereddate' => $request->entereddate,
+                        'enteredtime' => $request->enteredtime,
+                        'failure' => $request->failure,
+                        'remarks' => $request->remarks,
+                        'qty' => $request->qty,
+                        'enteredby' => session('username'),
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+            }
             
             DB::commit();
             
@@ -2153,20 +2188,37 @@ class NursingNoteController extends defaultController
                             ->where('mrn','=',$request->mrn)
                             ->where('episno','=',$request->episno)
                             ->where('auditno','=',$request->auditno)
-                            ->where('chgcode','=',$request->chgcode);
+                            ->where('chgcode','=',$request->chgcode)
+                            ->orderBy('idno', 'asc');
         
         $responce = new stdClass();
         
         if($patmedication_obj->exists()){
+
+            $patmedication_get = $patmedication_obj->get();
+            $x=1;
+            foreach ($patmedication_get as $obj) {
+                $obj->no = $x;
+                $x++;
+
+                if($obj->entereddate == null){
+                   $obj->entereddate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'); 
+                }
+                if($obj->enteredtime == null){
+                   $obj->enteredtime = Carbon::now("Asia/Kuala_Lumpur")->format('H:i:s'); 
+                }
+                if($obj->enteredby == null){
+                   $obj->enteredby = session('username');
+                }
+            }
+
             $total_qty = $patmedication_obj->sum('qty');
             $responce->total_qty = $total_qty;
             
-            $patmedication_obj = $patmedication_obj->first();
-            $responce->patmedication = $patmedication_obj;
+            $responce->rows = $patmedication_get;
         }
         
         return json_encode($responce);
-        
     }
 
     public function add_notesDrugAdminIP(Request $request){

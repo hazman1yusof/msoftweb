@@ -551,9 +551,9 @@
 	@endif
 	
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/patlabel.js?v=1.2"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_doctor.js"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js?v=1.1"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_payer.js"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_doctor.js?v=1"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js?v=1.2"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_payer.js?v=1.3"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_coverage.js?v=1.1"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_deposit.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_nok.js"></script>

@@ -14,13 +14,12 @@ var urlParam_AddNotesProgressIP = {
 
 /////////////////////////parameter for jqGridPatMedic url/////////////////////////
 var urlParam_PatMedic = {
-    action: 'get_table_default',
-    url: 'util/get_table_default',
-    field: '',
-    table_name: 'hisdb.patmedication',
-    table_id: 'idno',
-    filterCol: ['mrn','episno','auditno','chgcode'],
-    filterVal: ['','','',''],
+    action: 'get_table_drug',
+    url: 'nursingnote/table',
+    mrn: null,
+    episno: null,
+    auditno: null,
+    chgcode: null,
 }
 
 /////////////////////////////parameter for jqGridAddNotesDrugAdminIP url/////////////////////////////
@@ -1409,10 +1408,10 @@ $(document).ready(function (){
         get_total_qty();
         
         // jqGridPatMedic
-        urlParam_PatMedic.filterVal[0] = data.mrn;
-        urlParam_PatMedic.filterVal[1] = data.episno;
-        urlParam_PatMedic.filterVal[2] = data.auditno;
-        urlParam_PatMedic.filterVal[3] = data.chgcode;
+        urlParam_PatMedic.mrn = data.mrn;
+        urlParam_PatMedic.episno = data.episno;
+        urlParam_PatMedic.auditno = data.auditno;
+        urlParam_PatMedic.chgcode = data.chgcode;
         refreshGrid('#jqGridPatMedic',urlParam_PatMedic,'add');
         
         // var saveParam={
@@ -1452,6 +1451,8 @@ $(document).ready(function (){
         datatype: "local",
         editurl: "./nursingnote/form",
         colModel: [
+            { label: 'idno', name: 'idno', width: 10, hidden: true, key: true },
+            { label: 'No.', name: 'no', width: 10 },
             { label: 'Date', name: 'entereddate', width: 50, classes: 'wrap', editable: true,
                 formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
                 editoptions: {
@@ -1491,7 +1492,6 @@ $(document).ready(function (){
             },
             { label: 'Quantity', name: 'qty', width: 35, editable: true, editrules: { required: true } },
             { label: 'Entered<br>By', name: 'enteredby', width: 35, editable: false },
-            { label: 'idno', name: 'idno', width: 10, hidden: true, key: true },
             { label: 'compcode', name: 'compcode', hidden: true },
             { label: 'mrn', name: 'mrn', hidden: true },
             { label: 'episno', name: 'episno', hidden: true },
@@ -1574,6 +1574,7 @@ $(document).ready(function (){
                     episno: $('#episno_nursNote').val(),
                     auditno: $('#trx_auditno').val(),
                     chgcode: $('#trx_chgcode').val(),
+                    idno: data.idno,
                     action: 'patMedic_save',
                 });
             $("#jqGridPatMedic").jqGrid('setGridParam', { editurl: editurl });
@@ -1589,13 +1590,14 @@ $(document).ready(function (){
     ////////////////////////jqGridPagerPatMedic////////////////////////
     $("#jqGridPatMedic").inlineNav('#jqGridPagerPatMedic', {
         add: true,
-        edit: false,
+        edit: true,
         cancel: true,
         // to prevent the row being edited/added from being automatically cancelled once the user clicks another row
         restoreAfterSelect: false,
         addParams: {
             addRowParams: myEditOptions_add_PatMedic
         },
+        editParams: myEditOptions_add_PatMedic
     }).jqGrid('navButtonAdd', "#jqGridPagerPatMedic", {
         id: "jqGridPagerRefresh_patMedic",
         caption: "", cursor: "pointer", position: "last",

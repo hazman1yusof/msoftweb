@@ -181,7 +181,7 @@ $(document).ready(function () {
 			status : doc_status
 	    };
 
-	    $.post( "/episode/save_doc", $.param(postobj) , function( data ) {
+	    $.post( "./episode/save_doc", $.param(postobj) , function( data ) {
 	        
 	    },'json').fail(function(data) {
 	        // alert('there is an error');
