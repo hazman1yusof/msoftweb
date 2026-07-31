@@ -207,8 +207,6 @@ function button_state_clientProgNoteRef(state){
     //     $('#new_clientProgNoteRef,#save_clientProgNoteRef,#cancel_clientProgNoteRef,#edit_clientProgNoteRef').attr('disabled',true);
     //     return 0;
     // }
-
-    check_doctor();
     
     switch(state){
         case 'empty':
@@ -499,7 +497,7 @@ $('#clientprognoteref_date_tbl tbody').on('click', 'tr', function (){
     // }else
     
     if(data == undefined){
-        button_state_clientProgNoteRef('add');
+        // button_state_clientProgNoteRef('add');
         
         return false;
     }
@@ -569,7 +567,7 @@ function check_same_usr_edit(data){
     return same;
 }
 
-function check_doctor(){
+function check_doctorref(){
 	var urlparam = {
 		action: 'check_doctor',
 		mrn: $('#mrn_clientProgNoteRef').val(),

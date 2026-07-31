@@ -298,7 +298,7 @@ function button_state_clientProgNote(state){
 	// 	return 0;
 	// }
 
-	check_doctor();
+	// check_doctor();
 	
 	switch(state){
 		case 'empty':
@@ -659,7 +659,7 @@ $('#clientprognote_date_tbl tbody').on('click', 'tr', function (){
 	// }else
 	
 	if(data == undefined){
-		button_state_clientProgNote('add');
+		// button_state_clientProgNote('add');
 		
 		return false;
 	}
@@ -747,8 +747,11 @@ function check_doctor(){
 	}).done(function (data){
 		if(!$.isEmptyObject(data)){
 			if($('#isdoctor').val() != '1' || data.admdoctor != $('#username_').val()){
-				$('#new_clientProgNote,#save_clientProgNote,#cancel_clientProgNote,#edit_clientProgNote').attr('disabled',true);
+				button_state_clientProgNote('empty');
 				$('#error_clientProgNote').text("You are not registered as the admission doctor.");
+			}else{
+				button_state_clientProgNote('add');
+				$('#error_clientProgNote').text("");
 			}
 		}
 	});

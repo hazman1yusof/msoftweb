@@ -40,6 +40,13 @@ class DoctorController extends defaultController
                         'adddate' => Carbon::now('Asia/Kuala_Lumpur')
                     ]);
                 }
+
+                // DB::table('sysdb.users')
+                //         ->where('compcode',session('compcode'))
+                //         ->where('username',$request->doctorcode)
+                        
+                        
+
                 return $this->defaultAdd($request);
             case 'edit':
                 $got = DB::table('hisdb.apptresrc')->where('resourcecode','=',$request->doctorcode)->exists();

@@ -470,25 +470,30 @@ class ClientProgressNoteRefController extends defaultController
     public function check_doctor(Request $request){
         
         $responce = new stdClass();
+        $responce->refdoctor = '-';
         
         $doctorcode_obj = DB::table('hisdb.doctor')
-                        ->select('doctorcode')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('loginid','=',session('username'))
-                        ->first();
-        
-        $refdoctor_obj = DB::table('hisdb.docalloc')
-                        ->select('DoctorCode')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('mrn','=',$request->mrn)
-                        ->where('episno','=',$request->episno)
-                        ->where('DoctorCode','=',$doctorcode_obj->doctorcode);
-        
-        if($refdoctor_obj->exists()){
-            $refdoctor_obj = $refdoctor_obj->first()->DoctorCode;
-            $responce->refdoctor = $refdoctor_obj;
+                                ->select('doctorcode')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('loginid','=',session('username'));
+
+        if($doctorcode_obj->exists()){
+            $doctorcode_obj = $doctorcode_obj->first();
+
+            $refdoctor_obj = DB::table('hisdb.docalloc')
+                            ->select('DoctorCode')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('AllocNo','=','1')
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno)
+                            ->where('DoctorCode','=',$doctorcode_obj->doctorcode);
+            
+            if($refdoctor_obj->exists()){
+                $refdoctor_obj = $refdoctor_obj->first()->DoctorCode;
+                $responce->refdoctor = $refdoctor_obj;
+            }
+            
         }
-        
         return json_encode($responce);
         
     }
