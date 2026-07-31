@@ -149,6 +149,7 @@ $(document).ready(function (){
         let enteredtime = $('#neuroAssessment_enteredtime').val();
         let type = $(this).data('type');
         let istablet = $(window).width() <= 1024;
+        let timestamp = moment(entereddate+' '+enteredtime,  'YYYY-MM-DD HH:mm:ss').unix();
         
         if(mrn.trim() == '' || type.trim() == ''){
             alert('Please choose Patient First');
@@ -162,7 +163,7 @@ $(document).ready(function (){
                 let url = $('#urltodiagram').val() + filename;
                 var win = window.open(url, '_blank');
             }else{
-                var win = window.open('http://localhost:8443/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&entereddate='+entereddate+enteredtime+'&type='+type+'&from=neuroAssessment', '_blank');
+                var win = window.open('http://localhost:8443/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&entereddate='+timestamp+'&type='+type+'&from=neuroAssessment', '_blank');
             }
             
             if(win){
