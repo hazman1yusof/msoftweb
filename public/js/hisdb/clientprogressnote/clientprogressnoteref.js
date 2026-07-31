@@ -201,12 +201,14 @@ conf = {
 
 button_state_clientProgNoteRef('empty');
 function button_state_clientProgNoteRef(state){
-    if($('#isdoctor').val() != '1'){
-        $("#toggle_clientProgNoteRef").removeAttr('data-toggle');
-        $('#cancel_clientProgNoteRef').data('oper','add');
-        $('#new_clientProgNoteRef,#save_clientProgNoteRef,#cancel_clientProgNoteRef,#edit_clientProgNoteRef').attr('disabled',true);
-        return 0;
-    }
+    // if($('#isdoctor').val() != '1'){
+    //     $("#toggle_clientProgNoteRef").removeAttr('data-toggle');
+    //     $('#cancel_clientProgNoteRef').data('oper','add');
+    //     $('#new_clientProgNoteRef,#save_clientProgNoteRef,#cancel_clientProgNoteRef,#edit_clientProgNoteRef').attr('disabled',true);
+    //     return 0;
+    // }
+
+    check_doctor();
     
     switch(state){
         case 'empty':
@@ -565,6 +567,33 @@ function check_same_usr_edit(data){
     }
     
     return same;
+}
+
+function check_doctor(){
+	var urlparam = {
+		action: 'check_doctor',
+		mrn: $('#mrn_clientProgNoteRef').val(),
+		episno: $("#episno_clientProgNoteRef").val(),
+		
+	}
+	
+	var postobj = {
+		_token: $('#csrf_token').val(),
+	};
+	
+	$.get("./clientprogressnoteref/table?"+$.param(urlparam), $.param(postobj), function (data){
+		
+	},'json').fail(function (data){
+		alert('there is an error');
+	}).done(function (data){
+		if(!$.isEmptyObject(data)){
+            console.log(data.refdoctor);
+			if($('#isdoctor').val() != '1' || data.refdoctor != $('#username_').val()){
+				$('#new_clientProgNote,#save_clientProgNote,#cancel_clientProgNote,#edit_clientProgNote').attr('disabled',true);
+				$('#error_clientProgNote').text("You are not registered as the admission doctor.");
+			}
+		}
+	});
 }
 
 function sticky_clientprognotereftbl(on){

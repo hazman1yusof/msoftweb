@@ -38,6 +38,9 @@ class ClientProgressNoteRefController extends defaultController
             case 'get_table_clientprognoteref':
                 return $this->get_table_clientprognoteref($request);
             
+            case 'check_doctor':
+                return $this->check_doctor($request);
+            
             default:
                 return 'error happen..';
         }
@@ -461,6 +464,32 @@ class ClientProgressNoteRefController extends defaultController
             return response($e->getMessage(), 500);
             
         }
+        
+    }
+    
+    public function check_doctor(Request $request){
+        
+        $responce = new stdClass();
+        
+        $doctorcode_obj = DB::table('hisdb.doctor')
+                        ->select('doctorcode')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('loginid','=',session('username'))
+                        ->first();
+        
+        $refdoctor_obj = DB::table('hisdb.docalloc')
+                        ->select('DoctorCode')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->where('DoctorCode','=',$doctorcode_obj->doctorcode);
+        
+        if($refdoctor_obj->exists()){
+            $refdoctor_obj = $refdoctor_obj->first()->DoctorCode;
+            $responce->refdoctor = $refdoctor_obj;
+        }
+        
+        return json_encode($responce);
         
     }
     

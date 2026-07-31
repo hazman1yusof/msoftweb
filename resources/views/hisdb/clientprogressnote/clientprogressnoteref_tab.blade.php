@@ -25,6 +25,10 @@
             </div>
             <div class="panel-body">
                 <div class='col-md-12' style="padding: 0 0 15px 0;">
+                    <div class="col-md-12" style="padding-top: 20px; text-align: left; color: red;">
+                        <p id="error_clientProgNoteRef"></p>
+                    </div>
+                    
                     <div class="col-md-3" style="padding-left: 0px;">
                         <!-- table referral_doctor -->
                         <div id="docalloc_tbl_sticky" style="padding: 0 0 0 0; display: none;">
