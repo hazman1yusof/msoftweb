@@ -697,8 +697,8 @@ class ClientProgressNoteController extends defaultController
     public function check_doctor(Request $request){
         
         $responce = new stdClass();
-
-        $refdoctor_obj = DB::table('hisdb.docalloc')
+        
+        $admdoctor_obj = DB::table('hisdb.docalloc')
                         ->select('DoctorCode')
                         ->where('compcode','=',session('compcode'))
                         ->where('AllocNo','=','1')
@@ -706,13 +706,13 @@ class ClientProgressNoteController extends defaultController
                         ->where('episno','=',$request->episno)
                         ->where('DoctorCode','=',session('username'));
         
-        if($refdoctor_obj->exists()){
-            $refdoctor_obj = $refdoctor_obj->first()->DoctorCode;
-            $responce->admdoctor = $refdoctor_obj;
+        if($admdoctor_obj->exists()){
+            $admdoctor_obj = $admdoctor_obj->first()->DoctorCode;
+            $responce->admdoctor = $admdoctor_obj;
         }else{
             $responce->admdoctor = '-';
         }
-
+        
         return json_encode($responce);
         
     }

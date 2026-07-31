@@ -269,7 +269,24 @@ $(document).ready(function (){
 		},
 	});
 	//////////////////////////////////////////////end grid//////////////////////////////////////////////
-
+	
+	$("#dialog_medc_ClientProgNote")
+		.dialog({
+			width: 9/10 * $(window).width(),
+			modal: true,
+			autoOpen: false,
+			open: function (event, ui){
+				epno_medc_init();
+			},
+			close: function (event, ui){
+				
+			},
+		});
+	
+	$("#clientProgNote_medc").click(function (){
+		// oper_refletter = 'add';
+		$("#dialog_medc_ClientProgNote").dialog("open");
+	});
 	
 });
 
@@ -297,7 +314,7 @@ function button_state_clientProgNote(state){
 	// 	$('#new_clientProgNote,#save_clientProgNote,#cancel_clientProgNote,#edit_clientProgNote').attr('disabled',true);
 	// 	return 0;
 	// }
-
+	
 	// check_doctor();
 	
 	switch(state){
@@ -387,6 +404,7 @@ function populate_clientProgNote_currpt(obj){
 	$('#preg_clientProgNote').val(obj.pregnant);
 	$('#ic_clientProgNote').val(obj.Newic);
 	$('#doctorname_clientProgNote').val(obj.q_doctorname);
+	$('#error_clientProgNote').text("");
 	
 	doctornote_clientprognote = {
 		action: 'get_table_clientprognote',
@@ -733,7 +751,6 @@ function check_doctor(){
 		action: 'check_doctor',
 		mrn: $('#mrn_clientProgNote').val(),
 		episno: $("#episno_clientProgNote").val(),
-		
 	}
 	
 	var postobj = {

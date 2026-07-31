@@ -220,7 +220,7 @@ $(document).ready(function (){
                 // textarea_init_clientProgNote();
                 break;
             case 'docNoteRefIP':
-                check_doctorref();
+                check_doctorRef();
                 sticky_clientprognotereftbl(on = true);
                 clientprognoteref_date_tbl.ajax.url("./clientprogressnoteref/table?"+$.param(dateParam_clientprognoteref)).load(function (data){
                     emptyFormdata_div("#formClientProgNoteRef",['#mrn_clientProgNoteRef','#episno_clientProgNoteRef','#datetime_clientProgNoteRef','#epistycode_clientProgNoteRef','#refdoctor_clientProgNoteRef']);

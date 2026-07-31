@@ -181,6 +181,24 @@ $(document).ready(function (){
     });
     //////////////////////////////////////////////end grid//////////////////////////////////////////////
     
+    $("#dialog_medc_ClientProgNote")
+        .dialog({
+            width: 9/10 * $(window).width(),
+            modal: true,
+            autoOpen: false,
+            open: function (event, ui){
+                epno_medc_init();
+            },
+            close: function (event, ui){
+                
+            },
+        });
+    
+    $("#clientProgNoteRef_medc").click(function (){
+        // oper_refletter = 'add';
+        $("#dialog_medc_ClientProgNote").dialog("open");
+    });
+    
 });
 
 var errorField = [];
@@ -266,6 +284,7 @@ function populate_clientProgNoteRef_currpt(obj){
     $('#preg_clientProgNoteRef').val(obj.pregnant);
     $('#ic_clientProgNoteRef').val(obj.Newic);
     $('#doctorname_clientProgNoteRef').val(obj.q_doctorname);
+    $('#error_clientProgNoteRef').text("");
     
     doctornote_clientprognoteref = {
         action: 'get_table_clientprognoteref',
@@ -567,31 +586,32 @@ function check_same_usr_edit(data){
     return same;
 }
 
-function check_doctorref(){
-	var urlparam = {
-		action: 'check_doctor',
-		mrn: $('#mrn_clientProgNoteRef').val(),
-		episno: $("#episno_clientProgNoteRef").val(),
-		
-	}
-	
-	var postobj = {
-		_token: $('#csrf_token').val(),
-	};
-	
-	$.get("./clientprogressnoteref/table?"+$.param(urlparam), $.param(postobj), function (data){
-		
-	},'json').fail(function (data){
-		alert('there is an error');
-	}).done(function (data){
-		if(!$.isEmptyObject(data)){
-            console.log(data.refdoctor);
-			if($('#isdoctor').val() != '1' || data.refdoctor != $('#username_').val()){
-				$('#new_clientProgNote,#save_clientProgNote,#cancel_clientProgNote,#edit_clientProgNote').attr('disabled',true);
-				$('#error_clientProgNote').text("You are not registered as the admission doctor.");
-			}
-		}
-	});
+function check_doctorRef(){
+    var urlparam = {
+        action: 'check_doctorRef',
+        mrn: $('#mrn_clientProgNoteRef').val(),
+        episno: $("#episno_clientProgNoteRef").val(),
+    }
+    
+    var postobj = {
+        _token: $('#csrf_token').val(),
+    };
+    
+    $.get("./clientprogressnoteref/table?"+$.param(urlparam), $.param(postobj), function (data){
+        
+    },'json').fail(function (data){
+        alert('there is an error');
+    }).done(function (data){
+        if(!$.isEmptyObject(data)){
+            if($('#isdoctor').val() != '1' || data.refdoctor != $('#username_').val()){
+                button_state_clientProgNoteRef('empty');
+                $('#error_clientProgNoteRef').text("You are not registered as the referral doctor.");
+            }else{
+                button_state_clientProgNoteRef('add');
+                $('#error_clientProgNoteRef').text("");
+            }
+        }
+    });
 }
 
 function sticky_clientprognotereftbl(on){
