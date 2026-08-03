@@ -64,7 +64,7 @@
                                                     <input type="date" class="form-control" id="musculoAssessment_entereddate" name="entereddate" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                                 </div>
                                                 
-                                                <div class="field">
+                                                <div class="field" style="display: none;">
                                                     <input id="musculoAssessment_enteredtime" name="enteredtime" type="time">
                                                 </div>
                                             </div>
