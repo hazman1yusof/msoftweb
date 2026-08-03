@@ -146,7 +146,7 @@ $(document).ready(function (){
 
     $("#jqGridThrombo").jqGrid({
 		datatype: "local",
-		editurl: "thrombophlebitis/form",
+		editurl: "./thrombophlebitis/form",
 		colModel: [
             { label: 'Flushing<br>Done', name: 'flushingDone', width: 100, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
 				editoptions: {

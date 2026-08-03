@@ -125,7 +125,7 @@ $(document).ready(function (){
 	///////////////////////////////////////////jqGridAddNotes///////////////////////////////////////////
 	$("#jqGridAddNotes").jqGrid({
 		datatype: "local",
-		editurl: "/ptcare_doctornoteED/form",
+		editurl: "./ptcare_doctornoteED/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'mrn', name: 'mrn', hidden: true },
@@ -193,7 +193,7 @@ $(document).ready(function (){
 			
 			let data = $('#jqGridAddNotes').jqGrid('getRowData', rowid);
 			
-			let editurl = "/ptcare_doctornoteED/form?"+
+			let editurl = "./ptcare_doctornoteED/form?"+
 				$.param({
 					_token: $('#_token').val(),
 					episno: $('#episno_emergencyMain_past').val(),

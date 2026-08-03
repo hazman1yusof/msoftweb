@@ -102,7 +102,7 @@ $(document).ready(function (){
 	///////////////////////////////////////////jqGridAddNotesPreop///////////////////////////////////////////
 	$("#jqGridAddNotesPreop").jqGrid({
 		datatype: "local",
-		editurl: "/preoperative/form",
+		editurl: "./preoperative/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'mrn', name: 'mrn', hidden: true },
@@ -169,7 +169,7 @@ $(document).ready(function (){
 			
 			let data = $('#jqGridAddNotesPreop').jqGrid('getRowData', rowid);
 			
-			let editurl = "/preoperative/form?"+
+			let editurl = "./preoperative/form?"+
 				$.param({
 					_token: $('#_token').val(),
 					episno: $('#episno_otMain').val(),

@@ -115,7 +115,7 @@ $(document).ready(function (){
 	///////////////////////////////////////////jqGridAddNotesEndoStomach///////////////////////////////////////////
 	$("#jqGridAddNotesEndoStomach").jqGrid({
 		datatype: "local",
-		editurl: "/endoscopyNotes/form",
+		editurl: "./endoscopyNotes/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'mrn', name: 'mrn', hidden: true },
@@ -182,7 +182,7 @@ $(document).ready(function (){
 			
 			let data = $('#jqGridAddNotesEndoStomach').jqGrid('getRowData', rowid);
 			
-			let editurl = "/endoscopyNotes/form?"+
+			let editurl = "./endoscopyNotes/form?"+
 				$.param({
 					_token: $('#_token').val(),
 					episno: $('#episno_otMain').val(),
