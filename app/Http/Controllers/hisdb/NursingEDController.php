@@ -142,9 +142,9 @@ class NursingEDController extends defaultController
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'lastuser'  => $request->lastuser,
                     'lastupdate'  => $request->lastupdate,
-                    'nursesign' => $request->nursesign,
-                    'eduser' => $request->eduser,
-                    'warduser' => $request->warduser,
+                    'nursesign' => session('username'),
+                    'eduser' => session('username'),
+                    'warduser' => session('username'),
                     'ed_notes' => $request->ed_notes,
                 ]);
             

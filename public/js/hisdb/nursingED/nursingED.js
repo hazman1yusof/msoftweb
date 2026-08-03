@@ -31,7 +31,7 @@ $(document).ready(function (){
 		button_state_tiED('wait');
 		enableForm('#formTriageInfoED');
 		rdonly('#formTriageInfoED');
-		$("#admwardtime").attr("readonly", true);
+		$("#admwardtime, #nursesign, #eduser, #warduser").attr("readonly", true);
 	});
 	
 	$("#save_tiED").click(function (){
