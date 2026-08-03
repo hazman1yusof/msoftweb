@@ -92,6 +92,10 @@
                                         
                                         <label class="control-label" for="timetaken" style="padding-left: 15px; padding-right: 5px;">Time</label>
                                         <input id="clientProgNoteRef_timetaken" name="timetaken" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information.">
+                                        
+                                        @if(Auth::user()->doctor == '1')
+                                            <button class="btn btn-default btn-sm" type="button" id="clientProgNoteRef_medc" style="float: right; margin-right: 20px;">MC Letter</button>
+                                        @endif
                                     </div>
                                     
                                     <div class='col-md-12'>

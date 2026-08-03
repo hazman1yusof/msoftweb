@@ -152,6 +152,7 @@
     
 @include('hisdb.pat_mgmt.pat_mgmt_iframe',['phase' => 'semantic'])
 @include('patientcare.itemselector')
+@include('patientcare.emergency.medicalLetterED')
 @endsection
 
 @section('css')

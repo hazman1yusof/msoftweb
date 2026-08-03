@@ -295,7 +295,9 @@ class CardiorespAssessmentController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->first();
         
-        $attachment_files = $this->get_attachment_files($mrn,$episno,$entereddate,$type);
+        $timestamp = Carbon::createFromFormat('Y-m-d H:i:s', $entereddate.' '.$enteredtime, 'Asia/Kuala_Lumpur')->timestamp;
+        
+        $attachment_files = $this->get_attachment_files($mrn,$episno,$timestamp,$type);
         // dd($attachment_files);
         
         return view('rehab.physio.cardiorespAssessmentChart_pdfmake',compact('cardiorespassessment','company','attachment_files'));

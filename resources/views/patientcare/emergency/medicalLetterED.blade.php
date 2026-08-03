@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-12" style="padding: 10px 0px;">
             <div class="btn-group" role="group" aria-label="..." style="float:right;">
-                <button class="ui button" id="btn_epno_mclt">MC List</button>
+                <!-- <button class="ui button" id="btn_epno_mclt">MC List</button> -->
                 <button class="ui button" id="btn_epno_gomc">MC</button>
                 <button class="ui button" id="btn_epno_save">Save</button>
                 <button class="ui button" id="btn_epno_canl">Cancel</button>

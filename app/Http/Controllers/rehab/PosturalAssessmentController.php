@@ -413,8 +413,10 @@ class PosturalAssessmentController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->first();
         
-        $attachment_files1 = $this->get_attachment_files1($mrn,$episno,$entereddate,$type1);
-        $attachment_files2 = $this->get_attachment_files2($mrn,$episno,$entereddate,$type2);
+        $timestamp = Carbon::createFromFormat('Y-m-d H:i:s', $entereddate.' '.$enteredtime, 'Asia/Kuala_Lumpur')->timestamp;
+        
+        $attachment_files1 = $this->get_attachment_files1($mrn,$episno,$timestamp,$type1);
+        $attachment_files2 = $this->get_attachment_files2($mrn,$episno,$timestamp,$type2);
         // dd($attachment_files);
         
         return view('rehab.physio.posturalAssessmentChart_pdfmake',compact('posturalassessment','company','attachment_files1','attachment_files2'));

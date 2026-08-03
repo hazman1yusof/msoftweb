@@ -235,6 +235,24 @@ $(document).ready(function (){
     });
     /////////////////////////////////////////////////end grid/////////////////////////////////////////////////
     
+    $("#dialog_medc")
+        .dialog({
+            width: 9/10 * $(window).width(),
+            modal: true,
+            autoOpen: false,
+            open: function (event, ui){
+                epno_medc_init();
+            },
+            close: function (event, ui){
+                
+            },
+        });
+    
+    $("#doctornote_medc").click(function (){
+        // oper_refletter = 'add';
+        $("#dialog_medc").dialog("open");
+    });
+    
 });
 
 var errorField = [];

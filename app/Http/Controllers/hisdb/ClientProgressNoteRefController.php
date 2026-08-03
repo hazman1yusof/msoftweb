@@ -38,8 +38,8 @@ class ClientProgressNoteRefController extends defaultController
             case 'get_table_clientprognoteref':
                 return $this->get_table_clientprognoteref($request);
             
-            case 'check_doctor':
-                return $this->check_doctor($request);
+            case 'check_doctorRef':
+                return $this->check_doctorRef($request);
             
             default:
                 return 'error happen..';
@@ -467,23 +467,23 @@ class ClientProgressNoteRefController extends defaultController
         
     }
     
-    public function check_doctor(Request $request){
+    public function check_doctorRef(Request $request){
         
         $responce = new stdClass();
-        $responce->refdoctor = '-';
+        // $responce->refdoctor = '-';
         
         $doctorcode_obj = DB::table('hisdb.doctor')
-                                ->select('doctorcode')
-                                ->where('compcode','=',session('compcode'))
-                                ->where('loginid','=',session('username'));
-
+                        ->select('doctorcode')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('loginid','=',session('username'));
+        
         if($doctorcode_obj->exists()){
             $doctorcode_obj = $doctorcode_obj->first();
-
+            
             $refdoctor_obj = DB::table('hisdb.docalloc')
                             ->select('DoctorCode')
                             ->where('compcode','=',session('compcode'))
-                            ->where('AllocNo','=','1')
+                            ->where('AllocNo','!=','1')
                             ->where('mrn','=',$request->mrn)
                             ->where('episno','=',$request->episno)
                             ->where('DoctorCode','=',$doctorcode_obj->doctorcode);
@@ -491,9 +491,11 @@ class ClientProgressNoteRefController extends defaultController
             if($refdoctor_obj->exists()){
                 $refdoctor_obj = $refdoctor_obj->first()->DoctorCode;
                 $responce->refdoctor = $refdoctor_obj;
+            }else{
+                $responce->refdoctor = '-';
             }
-            
         }
+        
         return json_encode($responce);
         
     }

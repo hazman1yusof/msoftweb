@@ -649,7 +649,7 @@
                                         <div class="form-group row">
                                             <label for="nursesign" class="col-sm-4 col-form-label">Nurse's Signature:</label>
                                             <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="nursesign" name="nursesign">
+                                                <input type="text" class="form-control" id="nursesign" name="nursesign" rdonly>
                                             </div>
                                         </div>								
                                     </div>
@@ -886,13 +886,13 @@
                                             <div class="col-3" style="margin-left: 250px;">
                                                 <label for="eduser" class="col-sm-1 col-form-label">A&E Staff:</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" class="form-control" id="eduser" name="eduser">
+                                                    <input type="text" class="form-control" id="eduser" name="eduser" rdonly>
                                                 </div>
                                             </div>
                                             <div class="col-3">
                                                 <label for="warduser" class="col-sm-1 col-form-label">Ward Staff:</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" class="form-control" id="warduser" name="warduser">
+                                                    <input type="text" class="form-control" id="warduser" name="warduser" rdonly>
                                                 </div>
                                             </div>
                                             <div class="col-3"></div>

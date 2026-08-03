@@ -968,7 +968,7 @@
 
                                 <div class="four wide column" style="left: 1070px;">
                                     <div class="ui form">
-                                        <div class="inline field">
+                                        <div class="inline field disabled">
                                             <label>Nurse's Signature: </label>
                                             <input type="text" name="nursesign" id="nursesign" style="text-transform: uppercase;">
                                         </div>
@@ -1210,7 +1210,7 @@
                                 </div>
                                 <div class="four wide column">
                                     <div class="ui form">
-                                        <div class="inline field">
+                                        <div class="inline field disabled">
                                             <label>A&E Staff: </label>
                                             <input type="text" name="eduser" id="eduser" style="text-transform: uppercase;">
                                         </div>
@@ -1218,7 +1218,7 @@
                                 </div>
                                 <div class="four wide column">
                                     <div class="ui form">
-                                        <div class="inline field">
+                                        <div class="inline field disabled">
                                             <label>Ward Staff: </label>
                                             <input type="text" name="warduser" id="warduser">
                                         </div>
