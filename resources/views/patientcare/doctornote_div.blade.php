@@ -87,7 +87,13 @@
                     <input id="ic_doctorNote" name="ic_doctorNote" type="hidden">
                     <input id="doctorname_doctorNote" name="doctorname_doctorNote" type="hidden">
                     
-                    <div class='ui grid'>
+                    <div class="field" style="position: absolute; right: 0;">
+                        @if(Auth::user()->doctor == '1')
+                            <button class="ui green button" type="button" id="doctornotepsy_medc">MC Letter</button>
+                        @endif
+                    </div>
+                    
+                    <div class='ui grid' style="margin-top: 35px;">
                         <div class="eight wide column">
                             <div class="field">
                                 <label>Chief Complaint</label>

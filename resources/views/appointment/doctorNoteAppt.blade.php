@@ -65,7 +65,7 @@
                     <input id="doctorname_doctorNoteAppt" name="doctorname_doctorNoteAppt" type="hidden">
                     
                     <div class='ui grid'>
-                        <div class="seven wide column">
+                        <div class="sixteen wide column">
                             <div class="inline fields">
                                 <div class="field">
                                     <label>Date</label>
@@ -74,6 +74,12 @@
                                 <div class="field">
                                     <label>Time</label>
                                     <input id="timetaken_doctorNoteAppt" name="timetaken" type="time">
+                                </div>
+                                
+                                <div class="field" style="position: absolute; right: 0;">
+                                    @if(Auth::user()->doctor == '1')
+                                        <button class="ui green button" type="button" id="doctornote_medc">MC Letter</button>
+                                    @endif
                                 </div>
                             </div>
                         </div>
