@@ -49,9 +49,43 @@ class DoctorController extends defaultController
                     return response('User already Exists', 500);
                 }
 
+                $request['loginid'] = $request->doctorcode;
+
+                DB::table('sysdb.users')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'username' => $request->doctorcode,
+                        'password' => $request->doctorcode,
+                        'name' => $request->doctorname,
+                        'dept' => 'MRS',
+                        'designation' => 'DOCTOR',
+                        'groupid' => 'MEDICSOFT',
+                        'programmenu' => 'MAIN',
+                        'priceview' => 0,
+                        'editpkgpat' => 0,
+                        'recstatus' => 'ACTIVE',
+                        'adduser' => 'SYSTEM',
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'PHColor' => '#FFFFFF',
+                        'ALcolor' => '#FFFFFF',
+                        'DiscPTcolor' => '#FFFFFF',
+                        'CancelPTcolor' => '#FFFFFF',
+                        'CurrentPTcolor' => '#FFFFFF',
+                        'mrn' => 0,
+                        'nurse' => 0,
+                        'doctor' => 1,
+                        'billing' => 0,
+                        'register' => 0,
+                        'viewallcenter' => 0,
+                        'xray' => 0,
+                        'phar' => 0,
+                        'doctorcode' => $request->doctorcode
+                    ]);
                 return $this->defaultAdd($request);
+                break;
             case 'edit':
                 $got = DB::table('hisdb.apptresrc')->where('resourcecode','=',$request->doctorcode)->exists();
+                $request['loginid'] = $request->doctorcode;
                 
                 if($request->appointment == '1' && !$got){
                     DB::table('hisdb.apptresrc')->insert([
@@ -128,6 +162,7 @@ class DoctorController extends defaultController
                 }
 
                 return $this->defaultEdit($request);
+                break;
             case 'del':
                 $got = DB::table('hisdb.apptresrc')->where('resourcecode','=',$request->doctorcode)->first();
                 if($got != null){
@@ -140,6 +175,7 @@ class DoctorController extends defaultController
                         ]);
                 }
                 return $this->defaultDel($request);
+                break;
             default:
                 return 'error happen..';
         }
