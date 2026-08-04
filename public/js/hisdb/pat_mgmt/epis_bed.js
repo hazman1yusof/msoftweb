@@ -40,7 +40,10 @@ $(document).ready(function () {
             { label: 'Ward', name: 'ward' , width: 2 },
             { label: 'Room', name: 'room' , width: 1 },
             { label: 'Bed no', name: 'bednum', width: 2 },
-            { label: 'name', name: 'name', hidden: true }
+            { label: 'name', name: 'name', hidden: true },
+            { label: 'astatus', name: 'astatus', hidden: true },
+            { label: 'isolate', name: 'isolate', hidden: true },
+            { label: 'lodgerno', name: 'lodgerno', hidden: true },
 		],
 		autowidth: true,
 		multiSort: true,
@@ -54,7 +57,7 @@ $(document).ready(function () {
 		sortorder: 'desc',
 		pager: "#jqGridPager_bed",
 		onSelectRow:function(rowid, selected){
-			// populate_bed(selrowData("#jqGrid_bed"));
+			populate_bed(selrowData("#jqGrid_bed"));
 			$("#jqGrid_bed").data('lastselrow',rowid);
 		},
 		loadComplete: function(){
@@ -251,13 +254,14 @@ $(document).ready(function () {
 	}
 
 	function populate_bed(obj){
-		$("#doc_no").val(obj.da_allocno);
-		$("#doc_doctorcode").val(obj.da_doctorcode);
-		$("#doc_doctorname").val(obj.d_doctorname);
-		$("#doc_discipline").val(obj.d_disciplinecode);
-		$("#doc_date").val(obj.da_asdate);
-		$("#doc_time").val(obj.da_astime);
-		$("#doc_status").val(obj.da_astatus);
+		$('#bed_date').val(obj.asdate);
+		$('#bed_time').val(obj.astime);
+		$('#bed_bednum').val(obj.bednum);
+		$('#bed_room').val(obj.room);
+		$('#bed_ward').val(obj.ward);
+		$('#bed_status').val(obj.astatus);
+		$('#bed_isolate').val(obj.isolate);
+		$('#bed_lodger').val(obj.lodgerno);
 	}
 
 });
