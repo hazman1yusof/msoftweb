@@ -6050,11 +6050,11 @@ class OrdcomController extends defaultController
 
                 if(!$patmedication->exists()){
                     for ($i=0; $i < $obj->freq_convfactor; $i++) { 
-                        if($obj->dos_convfactor == null){
-                            $dos_convfactor = 1;
-                        }else{
-                            $dos_convfactor = $obj->dos_convfactor;
-                        }
+                        // if($obj->dos_convfactor == null){
+                        //     $dos_convfactor = 1;
+                        // }else{
+                        //     $dos_convfactor = $obj->dos_convfactor;
+                        // }
 
                         DB::table('hisdb.patmedication')
                             ->insert([
@@ -6067,7 +6067,7 @@ class OrdcomController extends defaultController
                                 'enteredtime' => null,
                                 'failure' => null,
                                 'remarks' => null,
-                                'qty' => $dos_convfactor,
+                                'qty' => null,
                                 'enteredby' => null,
                                 'adduser'  => 'SYSTEM',
                                 'adddate'  => Carbon::now("Asia/Kuala_Lumpur")

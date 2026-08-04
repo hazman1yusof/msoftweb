@@ -33,7 +33,9 @@ $(document).ready(function () {
 		field:'',
 		table_name:'hisdb.dose',
 		table_id:'dosecode',
-		sort_idno: true
+		sort_idno: true,
+		filterCol:['compcode'],
+		filterVal:['session.compcode'],
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////

@@ -224,6 +224,11 @@ Route::get('/instruction','setup\InstructionController@show');
 Route::get('/instruction/table','setup\InstructionController@table');
 Route::post('/instruction/form','setup\InstructionController@form');
 
+//// Drug Indicator setup ///
+Route::get('/drugindicator','setup\drugindicatorController@show');
+Route::get('/drugindicator/table','setup\drugindicatorController@table');
+Route::post('/drugindicator/form','setup\drugindicatorController@form');
+
 //// Compcode setup page ///
 Route::get('/compcode','setup\CompcodeController@show');
 Route::get('/compcode/table','setup\CompcodeController@table');
