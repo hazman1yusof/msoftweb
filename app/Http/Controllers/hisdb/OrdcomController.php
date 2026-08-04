@@ -5397,7 +5397,7 @@ class OrdcomController extends defaultController
         }
 
         $patmast_episode = DB::table('hisdb.pat_mast as pm')
-                                ->select('pm.mrn','pm.name','pm.newic','ep.reg_date','ep.episno','ep.reg_time','ep.pay_type','doc.doctorname as doc_name','dm.debtorcode','dm.name as debtorname','dm.address1','dm.address2','dm.address3','dm.address4','dm.contact','epayr.refno')
+                                ->select('pm.mrn','pm.name','pm.newic','ep.reg_date','ep.episno','ep.reg_time','ep.pay_type','doc.doctorname as doc_name','dm.debtorcode','dm.name as debtorname','dm.address1','dm.address2','dm.address3','dm.address4','dm.contact','epayr.refno','pm.Address1','pm.Address2','pm.Address3','pm.telhp')
                                 ->where('pm.compcode',session('compcode'))
                                 ->where('pm.mrn',$mrn)
                                 ->join('hisdb.episode as ep', function($join) use ($request){
