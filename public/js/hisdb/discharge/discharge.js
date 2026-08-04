@@ -53,6 +53,8 @@ $(document).ready(function () {
 	});
 
 	$("#jqGrid_discharge_panel").on("shown.bs.collapse", function (){
+        $('#discharge_panel_title').show();
+
 		var saveParam = {
 			action: 'get_table_discharge',
 		}
@@ -92,6 +94,7 @@ $(document).ready(function () {
 	});
 	
 	$("#jqGrid_discharge_panel").on("hide.bs.collapse", function (){
+        $('#discharge_panel_title').hide();
 		button_state_discharge('empty');
 		disableForm('#form_discharge');
 	});

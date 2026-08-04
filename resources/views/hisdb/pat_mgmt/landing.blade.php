@@ -191,8 +191,6 @@
 				</thead>
 
 			</table>
-
-
 		</div>
 		
 		@include('hisdb.pat_mgmt.mdl_patient')
@@ -544,7 +542,7 @@
 				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_pkg.js"></script>
 			@endif
 			
-			<script type="text/javascript" src="js/hisdb/discharge/discharge.js"></script>
+			<script type="text/javascript" src="js/hisdb/discharge/discharge.js?v=1.1"></script>
 			<script type="text/javascript" src="js/hisdb/ward_main/ward_main.js?v=1.1"></script>
 		@endif
 		

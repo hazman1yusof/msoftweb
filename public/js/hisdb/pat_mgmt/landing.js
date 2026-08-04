@@ -326,6 +326,8 @@ grid.on("click.rs.jquery.bootgrid", function (e,c,r){
             if(lastrowdata.PatStatus == 1 ){
                 populate_endConsult_currpt(lastrowdata);
             }
+
+            populate_discharge_currpt(lastrowdata);
         }else if($('#epistycode').val() == 'IP' || $('#epistycode').val() == 'DP'){
             populate_wardMain(lastrowdata);
             
