@@ -42,7 +42,7 @@ $(document).ready(function () {
     var addmore_jqgrid={more:false,state:false,edit:false}
     $("#jqGrid").jqGrid({
         datatype: "local",
-        editurl: "/drugindicator/form",
+        editurl: "./drugindicator/form",
          colModel: [
             {label: 'Compcode', name: 'compcode', width: 90 , hidden: true},
             { label: 'idno', name: 'idno', width: 5,hidden:true, key:true},
@@ -159,7 +159,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-            let editurl = "/drugindicator/form?"+
+            let editurl = "./drugindicator/form?"+
                 $.param({
                     action: 'drugindicator_save',
                 });
@@ -214,7 +214,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-            let editurl = "/drugindicator/form?"+
+            let editurl = "./drugindicator/form?"+
                 $.param({
                     action: 'drugindicator_save',
                 });
@@ -263,7 +263,7 @@ $(document).ready(function () {
                                 drugindcode: $('#drugindcode').val(),
                                 idno: selrowData('#jqGrid').idno,
                             }
-                            $.post( "/drugindicator/form?"+$.param(param),{oper:'del'}, function( data ){
+                            $.post( "./drugindicator/form?"+$.param(param),{oper:'del'}, function( data ){
                             }).fail(function (data) {
                                 //////////////////errorText(dialog,data.responseText);
                             }).done(function (data) {
