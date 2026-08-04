@@ -98,7 +98,7 @@ $(document).ready(function (){
 	///////////////////////////////////////////jqGridAddNotesAdmHandoverED///////////////////////////////////////////
 	$("#jqGridAddNotesAdmHandoverED").jqGrid({
 		datatype: "local",
-		editurl: "/ptcare_admhandover/form",
+		editurl: "./ptcare_admhandover/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'mrn', name: 'mrn', hidden: true },
@@ -165,7 +165,7 @@ $(document).ready(function (){
 			
 			let data = $('#jqGridAddNotesAdmHandoverED').jqGrid('getRowData', rowid);
 			
-			let editurl = "/ptcare_admhandover/form?"+
+			let editurl = "./ptcare_admhandover/form?"+
 				$.param({
 					_token: $('#_token').val(),
 					episno: $('#episno_emergencyMain').val(),

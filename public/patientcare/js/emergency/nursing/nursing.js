@@ -158,7 +158,7 @@ $(document).ready(function () {
 	///////////////////////////////////////////jqGridAddNotesNursingED///////////////////////////////////////////
 	$("#jqGridAddNotesNursingED").jqGrid({
 		datatype: "local",
-		editurl: "/ptcare_nursing/form",
+		editurl: "./ptcare_nursing/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'mrn', name: 'mrn', hidden: true },
@@ -225,7 +225,7 @@ $(document).ready(function () {
 			
 			let data = $('#jqGridAddNotesNursingED').jqGrid('getRowData', rowid);
 			
-			let editurl = "/ptcare_nursing/form?"+
+			let editurl = "./ptcare_nursing/form?"+
 				$.param({
 					_token: $('#_token').val(),
 					episno: $('#episno_emergencyMain').val(),
@@ -253,39 +253,7 @@ $(document).ready(function () {
 			addRowParams: myEditOptions_addNursingED
 		},
 		// editParams: myEditOptions_edit
-	})
-	// .jqGrid('navButtonAdd', "#jqGridPagerAddNotesNursingED", {
-	// 	id: "jqGridPagerDelete",
-	// 	caption: "", cursor: "pointer", position: "last",
-	// 	buttonicon: "glyphicon glyphicon-trash",
-	// 	title: "Delete Selected Row",
-	// 	onClickButton: function (){
-	// 		selRowId = $("#jqGridAddNotesNursingED").jqGrid('getGridParam', 'selrow');
-	// 		if(!selRowId){
-	// 			alert('Please select row');
-	// 		}else{
-	// 			var result = confirm("Are you sure you want to delete this row?");
-	// 			if(result == true){
-	// 				param = {
-	// 					_token: $("#csrf_token").val(),
-	// 					action: 'addNotes_save',
-	// 					idno: selrowData('#jqGridAddNotesNursingED').idno,
-	// 				}
-					
-	// 				$.post("/doctornote/form?"+$.param(param), {oper:'del'}, function (data){
-						
-	// 				}).fail(function (data){
-	// 					//////////////////errorText(dialog,data.responseText);
-	// 				}).done(function (data){
-	// 					refreshGrid("#jqGridAddNotesNursingED", urlParam_AddNotesNursingED);
-	// 				});
-	// 			}else{
-	// 				$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
-	// 			}
-	// 		}
-	// 	},
-	// })
-	.jqGrid('navButtonAdd', "#jqGridPagerAddNotesNursingED", {
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesNursingED", {
 		id: "jqGridPagerRefresh_addnotes",
 		caption: "", cursor: "pointer", position: "last",
 		buttonicon: "glyphicon glyphicon-refresh",

@@ -226,7 +226,7 @@ $(document).ready(function (){
 	///////////////////////////////////////////jqGridAddNotesOperTeam///////////////////////////////////////////
 	$("#jqGridAddNotesOperTeam").jqGrid({
 		datatype: "local",
-		editurl: "/oper_team/form",
+		editurl: "./oper_team/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'mrn', name: 'mrn', hidden: true },
@@ -293,7 +293,7 @@ $(document).ready(function (){
 			
 			let data = $('#jqGridAddNotesOperTeam').jqGrid('getRowData', rowid);
 			
-			let editurl = "/oper_team/form?"+
+			let editurl = "./oper_team/form?"+
 				$.param({
 					_token: $('#_token').val(),
 					episno: $('#episno_otMain').val(),

@@ -576,7 +576,7 @@ $(document).ready(function (){
 	///////////////////////////////////////////jqGridAddNotesOtSwab///////////////////////////////////////////
 	$("#jqGridAddNotesOtSwab").jqGrid({
 		datatype: "local",
-		editurl: "/otswab/form",
+		editurl: "./otswab/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'mrn', name: 'mrn', hidden: true },
@@ -643,7 +643,7 @@ $(document).ready(function (){
 			
 			let data = $('#jqGridAddNotesOtSwab').jqGrid('getRowData', rowid);
 			
-			let editurl = "/otswab/form?"+
+			let editurl = "./otswab/form?"+
 				$.param({
 					_token: $('#_token').val(),
 					episno: $('#episno_otMain').val(),

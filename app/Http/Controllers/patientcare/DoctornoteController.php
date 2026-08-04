@@ -788,7 +788,7 @@ class DoctornoteController extends defaultController
         }
         
         $episode_obj = DB::table('hisdb.episode as e')
-                    ->select('e.mrn','e.episno','p.recordtime','p.adddate','p.adduser','e.admdoctor','d.doctorname')
+                    ->select('e.mrn','e.episno','p.recordtime','p.adddate','p.adduser','e.admdoctor','d.doctorname as docname','doc.doctorname')
                     ->leftJoin('hisdb.pathealth as p', function ($join) use ($request){
                         $join = $join->on('p.mrn', '=', 'e.mrn');
                         $join = $join->on('p.episno', '=', 'e.episno');
@@ -796,6 +796,10 @@ class DoctornoteController extends defaultController
                     })->leftJoin('hisdb.doctor as d', function ($join) use ($request){
                         $join = $join->on('d.doctorcode', '=', 'e.admdoctor');
                         $join = $join->on('d.compcode', '=', 'e.compcode');
+                    })
+                    ->leftJoin('hisdb.doctor as doc', function ($join) use ($request){
+                        $join = $join->on('doc.doctorcode','=','p.doctorcode');
+                        $join = $join->on('doc.compcode','=','p.compcode');
                     })
                     ->where('e.compcode','=',session('compcode'))
                     ->where('e.mrn','=',$request->mrn)
@@ -837,7 +841,7 @@ class DoctornoteController extends defaultController
         $responce = new stdClass();
         
         $episode_obj = DB::table('hisdb.episode as e')
-                        ->select('e.mrn','e.episno','p.recordtime','p.recorddate','p.adddate','p.adduser','e.admdoctor','d.doctorname')
+                        ->select('e.mrn','e.episno','p.recordtime','p.recorddate','p.adddate','p.adduser','e.admdoctor','d.doctorname as docname','doc.doctorname')
                         ->join('hisdb.pathealth as p', function ($join) use ($request){
                             $join = $join->on('p.mrn', '=', 'e.mrn');
                             $join = $join->on('p.episno', '=', 'e.episno');
@@ -846,6 +850,10 @@ class DoctornoteController extends defaultController
                         })->leftJoin('hisdb.doctor as d', function ($join) use ($request){
                             $join = $join->on('d.doctorcode', '=', 'e.admdoctor');
                             $join = $join->on('d.compcode', '=', 'e.compcode');
+                        })
+                        ->leftJoin('hisdb.doctor as doc', function ($join) use ($request){
+                            $join = $join->on('doc.doctorcode','=','p.doctorcode');
+                            $join = $join->on('doc.compcode','=','p.compcode');
                         })
                         ->where('e.compcode','=',session('compcode'))
                         ->where('e.mrn','=',$request->mrn)

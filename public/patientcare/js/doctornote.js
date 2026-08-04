@@ -447,7 +447,7 @@ $(document).ready(function (){
 	///////////////////////////////////////////jqGridAddNotes///////////////////////////////////////////
 	$("#jqGridAddNotes").jqGrid({
 		datatype: "local",
-		editurl: "/ptcare_doctornote/form",
+		editurl: "./ptcare_doctornote/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'mrn', name: 'mrn', hidden: true },
@@ -514,7 +514,7 @@ $(document).ready(function (){
 			
 			let data = $('#jqGridAddNotes').jqGrid('getRowData', rowid);
 			
-			let editurl = "/ptcare_doctornote/form?"+
+			let editurl = "./ptcare_doctornote/form?"+
 				$.param({
 					_token: $('#_token').val(),
 					episno: $('#episno_doctorNote_past').val(),
@@ -561,7 +561,7 @@ $(document).ready(function (){
 	// 					idno: selrowData('#jqGridAddNotes').idno,
 	// 				}
 					
-	// 				$.post("/ptcare_doctornote/form?"+$.param(param), {oper:'del'}, function (data){
+	// 				$.post("./ptcare_doctornote/form?"+$.param(param), {oper:'del'}, function (data){
 						
 	// 				}).fail(function (data){
 	// 					//////////////////errorText(dialog,data.responseText);

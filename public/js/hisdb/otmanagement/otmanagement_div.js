@@ -118,7 +118,7 @@ $(document).ready(function (){
 	///////////////////////////////////////////jqGridAddNotesOperRec///////////////////////////////////////////
 	$("#jqGridAddNotesOperRec").jqGrid({
 		datatype: "local",
-		editurl: "/otmanagement_div/form",
+		editurl: "./otmanagement_div/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'mrn', name: 'mrn', hidden: true },
@@ -185,7 +185,7 @@ $(document).ready(function (){
 			
 			let data = $('#jqGridAddNotesOperRec').jqGrid('getRowData', rowid);
 			
-			let editurl = "/otmanagement_div/form?"+
+			let editurl = "./otmanagement_div/form?"+
 				$.param({
 					_token: $('#_token').val(),
 					episno: $('#episno_otMain').val(),

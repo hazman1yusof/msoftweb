@@ -28,7 +28,7 @@ $(document).ready(function(){
     
     $("#jqGridInvChart_UFEME").jqGrid({
         datatype: "local",
-        editurl: "nursingnote/form",
+        editurl: "./nursingnote/form",
         colModel: [
             { label: 'inv_code', name: 'inv_code', width: 30, classes: 'wrap', hidden: true },
             { label: 'inv_cat', name: 'inv_cat', width: 30, classes: 'wrap', hidden: true },

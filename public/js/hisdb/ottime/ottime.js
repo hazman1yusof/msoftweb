@@ -91,7 +91,7 @@ $(document).ready(function (){
 	///////////////////////////////////////////jqGridAddNotesOtTime///////////////////////////////////////////
 	$("#jqGridAddNotesOtTime").jqGrid({
 		datatype: "local",
-		editurl: "/ottime/form",
+		editurl: "./ottime/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'mrn', name: 'mrn', hidden: true },
@@ -158,7 +158,7 @@ $(document).ready(function (){
 			
 			let data = $('#jqGridAddNotesOtTime').jqGrid('getRowData', rowid);
 			
-			let editurl = "/ottime/form?"+
+			let editurl = "./ottime/form?"+
 				$.param({
 					_token: $('#_token').val(),
 					episno: $('#episno_otMain').val(),
