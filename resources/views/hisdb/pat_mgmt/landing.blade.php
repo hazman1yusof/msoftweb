@@ -458,7 +458,7 @@
 		@endif
 		
 		@if (request()->get('epistycode') == 'IP' || request()->get('epistycode') == 'DP')
-			<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script>
+			<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js?v=1.1"></script>
 			
 			@if (Auth::user()->doctor == 1)
 				<script type="text/javascript" src="js/hisdb/nursingED/nursingED.js?v=1.3"></script>
