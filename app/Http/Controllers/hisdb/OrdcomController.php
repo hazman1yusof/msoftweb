@@ -6008,7 +6008,7 @@ class OrdcomController extends defaultController
     public function add_patmedication(Request $request){
 
         $chargetrx_obj = DB::table('hisdb.chargetrx as trx')
-                        ->select('trx.auditno', 'trx.mrn', 'trx.episno', 'trx.chgcode', 'trx.quantity', 'trx.uom', 'trx.doscode', 'trx.frequency', 'trx.ftxtdosage', 'trx.addinstruction', 'trx.drugindicator', 'cm.description', 'cm.uom', 'dos.dosedesc as doscode_desc', 'fre.freqdesc as frequency_desc', 'ins.description as addinstruction_desc', 'dru.description as drugindicator_desc','fre.convfactor as freq_convfactor')
+                        ->select('trx.auditno', 'trx.mrn', 'trx.episno', 'trx.chgcode', 'trx.quantity', 'trx.uom', 'trx.doscode', 'trx.frequency', 'trx.ftxtdosage', 'trx.addinstruction', 'trx.drugindicator', 'cm.description', 'cm.uom', 'dos.dosedesc as doscode_desc', 'fre.freqdesc as frequency_desc', 'ins.description as addinstruction_desc', 'dru.description as drugindicator_desc','fre.convfactor as freq_convfactor','dos.convfactor as dos_convfactor')
                         ->leftjoin('hisdb.chgmast as cm', function($join) use ($request){
                             $join = $join->on('cm.chgcode', '=', 'trx.chgcode')
                                         ->on('cm.uom','=','trx.uom')
@@ -6050,6 +6050,12 @@ class OrdcomController extends defaultController
 
                 if(!$patmedication->exists()){
                     for ($i=0; $i < $obj->freq_convfactor; $i++) { 
+                        if($obj->dos_convfactor == null){
+                            $dos_convfactor = 1;
+                        }else{
+                            $dos_convfactor = $obj->dos_convfactor;
+                        }
+
                         DB::table('hisdb.patmedication')
                             ->insert([
                                 'compcode' => session('compcode'),
@@ -6061,7 +6067,7 @@ class OrdcomController extends defaultController
                                 'enteredtime' => null,
                                 'failure' => null,
                                 'remarks' => null,
-                                'qty' => 1,
+                                'qty' => $dos_convfactor,
                                 'enteredby' => null,
                                 'adduser'  => 'SYSTEM',
                                 'adddate'  => Carbon::now("Asia/Kuala_Lumpur")

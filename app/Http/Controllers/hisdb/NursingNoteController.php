@@ -2203,12 +2203,16 @@ class NursingNoteController extends defaultController
 
                 if($obj->entereddate == null){
                    $obj->entereddate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'); 
+                   $obj->entereddate = ''; 
+
                 }
                 if($obj->enteredtime == null){
                    $obj->enteredtime = Carbon::now("Asia/Kuala_Lumpur")->format('H:i:s'); 
+                   $obj->enteredtime = ''; 
                 }
                 if($obj->enteredby == null){
                    $obj->enteredby = session('username');
+                   $obj->enteredby = ''; 
                 }
             }
 
