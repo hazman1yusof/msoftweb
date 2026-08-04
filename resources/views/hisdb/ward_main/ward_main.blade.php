@@ -53,6 +53,7 @@
                     <li><a data-toggle="tab" id="navtab_reqForIP" href="#tab-reqForIP" data-type='reqForIP'>Request For</a></li>
                     <li><a data-toggle="tab" id="navtab_dietNoteIP" href="#tab-dietNoteIP" data-type='dietNoteIP'>Dietetic<br>Care Notes</a></li>
                     <li><a data-toggle="tab" id="navtab_dietOrderIP" href="#tab-dietOrderIP" data-type='dietOrderIP'>Diet Order</a></li>
+                    <li><a data-toggle="tab" id="navtab_userfile_div" href="#tab-userfile_div" data-type='userfile_div'>Document Imaging</a></li>
                 </ul>
                 <div class="tab-content" style="padding: 10px 5px;">
                     <input id="mrn_wardMain" name="mrn_wardMain" type="hidden">
@@ -91,6 +92,9 @@
                     </div>
                     <div id="tab-dietOrderIP" class="tab-pane fade">
                         @include('hisdb.dietorder.dietorder_tab')
+                    </div>
+                    <div id="tab-userfile_div" class="tab-pane fade">
+                        @include('patientcare.userfile_div')
                     </div>
                 </div>
             </div>

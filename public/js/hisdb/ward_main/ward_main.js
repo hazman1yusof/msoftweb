@@ -299,6 +299,20 @@ $(document).ready(function (){
                 $("#jqGridAddNotesDieteticCareNotes").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesDieteticCareNotes_c")[0].offsetWidth-$("#jqGridAddNotesDieteticCareNotes_c")[0].offsetLeft-30));
                 
                 break;
+            case 'userfile_div':
+                
+                let param_docImaging = {
+                    mrn: $("#mrn_wardMain").val(),
+                    episno: $("#episno_wardMain").val(),
+                }
+                
+                let newurl_docImaging = './userfile_iframe'+"?"+$.param(param_docImaging);
+                let cururl_docImaging = $('iframe#userfile_iframe').attr('src');
+                
+                if(newurl_docImaging != cururl_docImaging){
+                    $("iframe#userfile_iframe").attr('src',newurl_docImaging);
+                }
+                break;
             case 'dietOrderIP':
                 populate_dietOrder_getdata();
                 refreshGrid('#jqGridAddNotesDietOrder',urlParam_AddNotesDietOrder,'add_notesDietOrder');

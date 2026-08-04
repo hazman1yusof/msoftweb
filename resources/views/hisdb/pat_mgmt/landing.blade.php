@@ -545,7 +545,7 @@
 			@endif
 			
 			<script type="text/javascript" src="js/hisdb/discharge/discharge.js"></script>
-			<script type="text/javascript" src="js/hisdb/ward_main/ward_main.js"></script>
+			<script type="text/javascript" src="js/hisdb/ward_main/ward_main.js?v=1.1"></script>
 		@endif
 		
 	@endif
