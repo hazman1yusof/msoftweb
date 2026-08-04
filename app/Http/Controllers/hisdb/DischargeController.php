@@ -388,7 +388,7 @@ class DischargeController extends defaultController
     public function get_table_discharge(Request $request){
         
         $episode_obj = DB::table('hisdb.episode as e')
-                    ->select('e.reg_date','e.reg_by','e.reg_time','e.dischargedate','e.dischargeuser','e.dischargetime','e.diagfinal','e.patologist','e.clinicalnote','e.phyexam','e.diagprov','e.treatment','e.summary','e.followup','e.status_discWell','e.status_discImproved','e.status_discAOR','e.status_discExpired','e.status_discAbsconded','e.status_discTransferred','e.medondischg','e.medcert','e.adduser as reg_by','e.lastuser','e.lastupdate','e.bedtype','bt.description as bedtype_desc','e.ward_dischargedt','e.ward_dischargetm','e.ward_dischargeusr','e.complete_notedt','e.complete_notetm','e.complete_noteusr')
+                    ->select('e.reg_date','e.reg_by','e.reg_time','e.dischargedate','e.dischargeuser','e.dischargetime','e.diagfinal','e.patologist','e.clinicalnote','e.phyexam','e.diagprov','e.treatment','e.summary','e.followup','e.status_discWell','e.status_discImproved','e.status_discAOR','e.status_discExpired','e.status_discAbsconded','e.status_discTransferred','e.medondischg','e.medcert','e.adduser as reg_by','e.lastuser','e.lastupdate','e.bedtype','bt.description as bedtype_desc','e.bed','e.ward','e.room','e.ward_dischargedt','e.ward_dischargetm','e.ward_dischargeusr','e.complete_notedt','e.complete_notetm','e.complete_noteusr')
                     ->where('e.compcode','=',session('compcode'))
                     ->where('e.mrn','=',$request->mrn)
                     ->where('e.episno','=',$request->episno)
