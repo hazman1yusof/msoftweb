@@ -20,6 +20,7 @@ var grid = $("#grid-command-buttons").bootgrid({
         {    
             Stext = $('.search-field').val();
             Scol = $('#Scol').val();
+            table_status_search =  $('input:radio[name=table_status_search]:checked').val();
 
             if(Stext.trim() != ''){
 
@@ -41,12 +42,17 @@ var grid = $("#grid-command-buttons").bootgrid({
                 lastidno = $("#lastidno").val();
             }
 
+            if(table_status_search!='all'){
+                _page = 1;
+            }
+
             return {
                 lastMrn:lastMrn,
                 lastidno:lastidno,
                 page: _page,
                 searchCol:_searchCol,
                 searchVal:_searchVal,
+                table_status_search:table_status_search,
                 table_name:'hisdb.pat_mast',
                 field:'*',
                 _token: $('#csrf_token').val(),
@@ -158,6 +164,18 @@ grid.on("loaded.rs.jquery.bootgrid", function(){
                     <option value='telhp'>Handphone</option>
                     <option value='doctor'>Doctor</option>
                 </select>`);
+        }
+
+        if($('#curpat').val() == 'true'){
+            $(".actionBar").prepend(`
+                <label style="padding-right: 15px;">Status :</label>
+                <label style="padding-right: 15px;"><input type="radio" name="table_status_search" value="disc"> Discharge</label>
+                <label style="padding-right: 15px;"><input type="radio" name="table_status_search" value="all" checked> All</label>`);
+
+            $('input:radio[name=table_status_search]').off('change');
+            $('input:radio[name=table_status_search]').on('change',function(){
+                $("#grid-command-buttons").bootgrid('reload');
+            });
         }
     }
 

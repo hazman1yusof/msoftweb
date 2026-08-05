@@ -172,15 +172,15 @@
                     <th data-column-id="Episno" data-type="numeric" data-width="5%">Episode</th>
                     <th data-style="dropDownItem" data-column-id="Name" data-formatter="col_name" data-width="15%" data-css-class="wrap-text">Name</th>
                     @if (request()->get('curpat') == 'true')
-                    <th data-column-id="payername" data-width="15%" data-css-class="wrap-text">Payer</th>
+                    <th data-column-id="payername" data-width="13%" data-css-class="wrap-text">Payer</th>
+                    <th data-column-id="q_doctorname" data-width="13%" data-css-class="wrap-text">Doctor</th>
+	                    @if (request()->get('epistycode') == 'IP')
+	                    <th data-column-id="ward" data-width="6%">Ward</th>
+	                    <th data-column-id="ward_dischargedt" data-width="9%" data-formatter="col_disc">Discharge</th>
+	                    <th data-column-id="bednum" data-width="4%">Bed No.</th>
+	                	<th data-column-id="pregnant" data-formatter="col_preg" data-width="4%"></th>
+						@endif
 					@endif
-                    <th data-column-id="q_doctorname" data-width="15%" data-css-class="wrap-text">Doctor</th>
-                    @if (request()->get('epistycode') == 'IP')
-                    <th data-column-id="ward" data-width="6%">Ward</th>
-                    <th data-column-id="ward_dischargedt" data-width="5%" data-formatter="col_disc">Discharge</th>
-                    <th data-column-id="bednum" data-width="4%">Bed No.</th>
-					@endif
-                	<th data-column-id="pregnant" data-formatter="col_preg" data-width="4%"></th>
                     <th data-column-id="Newic" data-width="8%">New IC</th>
                     <th data-column-id="telhp" data-width="8%">H/P</th>
                     <th data-column-id="DOB" data-formatter="col_dob" data-width="6%">DOB</th>
@@ -189,7 +189,6 @@
 					<th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="7%"> </th>
 				</tr>
 				</thead>
-
 			</table>
 		</div>
 		
@@ -557,7 +556,7 @@
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_emr.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/textfield_modal.js"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js?v=1.10"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js?v=1.11"></script>
 	
 	</div>
 
