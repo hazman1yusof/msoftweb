@@ -29,6 +29,8 @@ class MigrationController extends defaultController
                 return $this->chgmast_migrate($request);
             case 'chgprice_migrate':
                 return $this->chgprice_migrate($request);
+            case 'docapptsession':
+                return $this->docapptsession($request);
             default:
                 return 'error happen..';
         }
@@ -190,5 +192,83 @@ class MigrationController extends defaultController
 
             dd('Error'.$e);
         }
+    }
+
+    public function docapptsession(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $doctor = DB::table('hisdb.doctor')
+                    ->where('compcode',session('compcode'))
+                    ->get();
+
+            foreach ($doctor as $obj) {
+                $apptresrc = DB::table('hisdb.apptresrc')
+                                ->where('compcode',session('compcode'))
+                                ->where('resourcecode',$obj->doctorcode);
+
+                if(!$apptresrc->exists()){
+                    DB::table('hisdb.apptresrc')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'resourcecode' => $obj->doctorcode,
+                            'description' => $obj->doctorname,
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now(),
+                            'recstatus' => 'ACTIVE',
+                            'TYPE' => 'DOC',
+                            'intervaltime' => 30.00
+                        ]);
+                }else{
+                    DB::table('hisdb.apptresrc')
+                        ->where('compcode',session('compcode'))
+                        ->where('resourcecode',$obj->doctorcode)
+                        ->update([
+                            'description' => $obj->doctorname,
+                            'recstatus' => 'ACTIVE',
+                            'TYPE' => 'DOC',
+                            'intervaltime' => 30.00
+                        ]);
+                }
+
+
+                $apptsession = DB::table('hisdb.apptsession')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('doctorcode',$obj->doctorcode);
+
+                $days = ['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY'];
+                $timefr1 = '08:00:00';
+                $timeto1 = '12:00:00';
+                $timefr2 = '14:00:00';
+                $timeto2 = '17:00:00';
+
+                if(!$apptsession->exists()){
+
+                    foreach ($days as $day) {
+                        DB::table('hisdb.apptsession')
+                            ->insert([
+                                'compcode' => session('compcode'),
+                                'adduser' => session('username'),
+                                'adddate' => Carbon::now(),
+                                'recstatus' =>'A',
+                                'doctorcode' => $obj->doctorcode,
+                                'days' => $day,
+                                'timefr1' => $timefr1,
+                                'timeto1' => $timeto1,
+                                'timefr2' => $timefr2,
+                                'timeto2' => $timeto2,
+                                'status' => 'True',
+                            ]);
+                    }
+                }
+            }  
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }       
     }
 }
