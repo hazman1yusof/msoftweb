@@ -26,9 +26,9 @@
             <div class="panel-body">
                 <div class='col-md-12' style="padding: 0 0 15px 0;">
                     <div class="col-md-12" style="padding-top: 20px; text-align: left; color: red;">
-                        <!-- <p id="error_clientProgNoteRef"></p> -->
+                        <p id="error_clientProgNoteRef"></p>
                         
-                        <input id="error_clientProgNoteRef" type="text" style="width: 350px; text-transform: none; border: none; color: red;" value="You are not registered as the referral doctor." rdonly>
+                        <!-- <input id="error_clientProgNoteRef" type="text" style="width: 350px; text-transform: none; border: none; color: red;" value="You are not registered as the referral doctor." rdonly> -->
                     </div>
                     
                     <div class="col-md-3" style="padding-left: 0px;">

@@ -694,11 +694,11 @@ $('#clientprognote_date_tbl tbody').on('click', 'tr', function (){
 	$('#clientprognote_date_tbl tbody tr').removeClass('active');
 	$(this).addClass('active');
 	
-	if(check_same_usr_edit(data)){
-		button_state_clientProgNote('edit');
-	}else{
-		button_state_clientProgNote('add');
-	}
+	// if(check_same_usr_edit(data)){
+	// 	button_state_clientProgNote('edit');
+	// }else{
+	// 	button_state_clientProgNote('add');
+	// }
 	
 	$('#mrn_clientProgNote').val(data.mrn);
 	$("#episno_clientProgNote").val(data.episno);
@@ -766,9 +766,11 @@ function check_doctor(){
 			if($('#isdoctor').val() != '1' || data.admdoctor != $('#username_').val()){
 				button_state_clientProgNote('empty');
 				$('#error_clientProgNote').text("You are not registered as the admission doctor.");
+				$('#error_clientProgNote').show();
 			}else{
 				button_state_clientProgNote('add');
 				$('#error_clientProgNote').text("");
+				$('#error_clientProgNote').hide();
 			}
 		}
 	});
