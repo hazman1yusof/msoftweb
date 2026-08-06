@@ -12,6 +12,7 @@ use DateTime;
 use App\Exports\ChargeMasterExport;
 use App\Exports\PackageDetailExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str; 
 
 class ChargeMasterController extends defaultController
 {
@@ -860,8 +861,11 @@ class ChargeMasterController extends defaultController
                     ->select('chgcode','description')
                     ->where('compcode',session('compcode'))
                     ->where('recstatus','=','ACTIVE')
-                    ->where('unit','=',session('unit'))
                     ->whereBetween('chgcode',[$itemcodefrom,$itemcodeto.'%']);
+
+        if($request->Sunit != 'ALL'){
+            $product = $product->where('unit','=',$request->Sunit);
+        }
 
         // if(!in_array(strtoupper($groupcode), ['ASSET','OTHERS'])){
         //     $product = $product->where('p.unit','=',session('unit'));
@@ -875,6 +879,7 @@ class ChargeMasterController extends defaultController
 
         foreach ($product as $key => $value) {
             $value->chgcode = str_replace(' ', '', $value->chgcode);
+            $value->description = Str::ascii($value->description);
         }
 
         // dd($product);

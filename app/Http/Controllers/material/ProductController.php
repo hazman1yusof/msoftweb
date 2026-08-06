@@ -735,7 +735,7 @@ class ProductController extends defaultController
         $product = DB::table('material.product as p')
                     ->select('itemcode','description')
                     ->where('p.compcode',session('compcode'))
-                    // ->where('p.recstatus','=','ACTIVE')
+                    ->where('p.recstatus','=','ACTIVE')
                     ->where('p.Class','=',$Class)
                     ->where('p.groupcode','=',$groupcode)
                     ->whereBetween('p.itemcode',[$itemcodefrom,$itemcodeto.'%']);

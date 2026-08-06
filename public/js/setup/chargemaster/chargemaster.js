@@ -3478,7 +3478,7 @@ $(document).ready(function () {
     });
 
     $('#barcode_print').click(function(){
-	    window.open('./chargemaster/table?action=print_barcode&itemcodefrom='+$('#itemcode_from_barcode').val()+'&itemcodeto='+$('#itemcode_to_barcode').val()+'&pages='+$('#barcode_pages').val());
+	    window.open('./chargemaster/table?action=print_barcode&itemcodefrom='+$('#itemcode_from_barcode').val()+'&itemcodeto='+$('#itemcode_to_barcode').val()+'&pages='+$('#barcode_pages').val()+'&Sunit='+$('#Sunit').val());
     });
 
 	var itemcode_from_barcode = new ordialog(
@@ -3508,8 +3508,12 @@ $(document).ready(function () {
 		},{
 			title:"Select Item From",
 			open: function(){
+				var Sunit = $('#Sunit').val();
+				if($('#Sunit').val() == 'ALL'){
+					Sunit = null;
+				}
 				itemcode_from_barcode.urlParam.filterCol=['recstatus','compcode','unit'];//,'sector'
-				itemcode_from_barcode.urlParam.filterVal=['ACTIVE','session.compcode',$('#Sunit').val()];//, 'session.unit'
+				itemcode_from_barcode.urlParam.filterVal=['ACTIVE','session.compcode',Sunit];//, 'session.unit'
 			},
 			close: function(obj_){
 			},
@@ -3551,8 +3555,12 @@ $(document).ready(function () {
 		},{
 			title:"Select Item To",
 			open: function(){
+				var Sunit = $('#Sunit').val();
+				if($('#Sunit').val() == 'ALL'){
+					Sunit = null;
+				}
 				itemcode_to_barcode.urlParam.filterCol=['recstatus','compcode','unit'];//,'sector'
-				itemcode_to_barcode.urlParam.filterVal=['ACTIVE','session.compcode',$('#Sunit').val()];//, 'session.unit'
+				itemcode_to_barcode.urlParam.filterVal=['ACTIVE','session.compcode',Sunit];//, 'session.unit'
 			},
 			close: function(obj_){
 			},

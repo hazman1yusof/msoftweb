@@ -24,7 +24,7 @@
 
     var count = {{$pages}};
     var itemcodes = [@foreach($product as $p_)'{{$p_->itemcode}}',@endforeach];
-    var desc = [@foreach($product as $p_)'{{$p_->description}}',@endforeach];
+    var desc = [@foreach($product as $p_)'{!!$p_->description!!}',@endforeach];
 
     @foreach($product as $p_)
         JsBarcode("#_{{$p_->itemcode}}", "{{$p_->itemcode}}", {

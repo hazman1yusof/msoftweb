@@ -24,7 +24,7 @@
 
     var count = {{$pages}};
     var chgcodes = [@foreach($product as $p_)'{{$p_->chgcode}}',@endforeach];
-    var desc = [@foreach($product as $p_)'{{$p_->description}}',@endforeach];
+    var desc = [@foreach($product as $p_)'{!!$p_->description!!}',@endforeach];
 
     @foreach($product as $p_)
         JsBarcode("#_{{$p_->chgcode}}", "{{$p_->chgcode}}", {
@@ -57,11 +57,11 @@
                     content.push({
                       svg: $('svg#_'+chgcodes[x]).get(0).outerHTML,
                       width: 160,
-                      height: 42,
+                      height: 32,
                       margin:[0,0,0,0],alignment:'center'
                     });
                     content.push({
-                        text:chgcodes[x],alignment:'center',margin:[0,1,0,0]
+                        text:chgcodes[x],alignment:'center',fontSize: 7,bold:true,margin:[0,1,0,0]
                     });
                     content.push({
                         text:desc[x],alignment:'center',fontSize: 7,margin:[0,-1,0,0]
