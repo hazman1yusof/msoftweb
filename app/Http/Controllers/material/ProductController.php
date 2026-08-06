@@ -41,7 +41,11 @@ class ProductController extends defaultController
             $pricelabel = ['Price 1','Price 2','Price 3'];
         }
 
-        return view('material.product.product',compact('unit_used','pricelabel'));
+        $Sunit = DB::table('sysdb.sector')
+                        ->where('compcode',session('compcode'))
+                        ->get();
+
+        return view('material.product.product',compact('unit_used','pricelabel','Sunit'));
     }
 
     public function form(Request $request)
@@ -99,7 +103,8 @@ class ProductController extends defaultController
 
     public function get_table_product(Request $request){
         $groupcode = $request->filterVal[0];
-        $Class = $request->filterVal[1];
+        // $Class = $request->filterVal[1];
+        $Class = $request->Class;
 
         $table = DB::table('material.product as p')
                     ->select( 'p.unit as unit',
@@ -154,15 +159,20 @@ class ProductController extends defaultController
                     ->where('p.groupcode','=',$groupcode);
 
         if(!in_array(strtoupper($groupcode), ['ASSET','OTHERS'])){
-            $table = $table->where('p.unit','=',session('unit'));
+            if($request->Sunit != 'ALL'){
+                // $table = $table->where('p.unit','=',session('unit'));
+                $table = $table->where('p.unit',$request->Sunit);
+            }
         }
 
-        $table = $table->leftjoin('hisdb.chgmast as cm', function($join) use ($groupcode){
+        $table = $table->leftjoin('hisdb.chgmast as cm', function($join) use ($groupcode,$request){
                             $join = $join->where('cm.compcode', '=', 'p.compcode');
                             $join = $join->on('cm.chgcode', '=', 'p.itemcode');
                             $join = $join->on('cm.uom', '=', 'p.uomcode');
                             if(!in_array(strtoupper($groupcode), ['ASSET','OTHERS'])){
-                                $join = $join->where('cm.unit','=',session('unit'));
+                                if($request->Sunit != 'ALL'){
+                                    $join = $join->where('p.unit',$request->Sunit);
+                                }
                             }
                         });
 

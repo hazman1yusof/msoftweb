@@ -65,7 +65,6 @@
 								</div>
 								<span class="help-block"></span>
 							</div>
-
 						</div>
 
 					  	<div class="col-md-1" id="div_product_infront_asset" style="width: fit-content;display:none">
@@ -81,6 +80,33 @@
 							<a class='form-control btn btn-primary' id="btn_product_infront_others"><span class='fa fa-ellipsis-h'></span></a>
 					  	</div>
 		            </div>
+				</div>
+
+				<div class='col-md-12' style="padding:0 0 15px 0;">
+					<div class="col-md-2">
+						<label class="control-label" for="Class2_">Product Class</label>  
+				  		<select id='Class2_' name='Class2_' class="form-control input-sm" tabindex="1">
+				  			<option @if(strtolower(Request::get('Class')) == 'pharmacy')selected @endif >Pharmacy</option>
+				  			<option @if(strtolower(Request::get('Class')) == 'non-pharmacy')selected @endif >Non-Pharmacy</option>
+				  			<option @if(strtolower(Request::get('Class')) == 'asset')selected @endif >Asset</option>
+				  			<option @if(strtolower(Request::get('Class')) == 'consignment')selected @endif >Consignment</option>
+				  			<option @if(strtolower(Request::get('Class')) == 'others')selected @endif >Others</option>
+				  		</select>
+	              	</div>
+
+					<div class="col-md-2">
+						<label class="control-label" for="Sunit">Unit</label>  
+				  		<select id='Sunit' name='Sunit' class="form-control input-sm">
+							<option value="ALL">ALL</option>
+							@foreach($Sunit as $unit_)
+								@if($unit_->sectorcode == session('unit'))
+								<option value="{{$unit_->sectorcode}}" selected>{{$unit_->sectorcode}}</option>
+								@else
+								<option value="{{$unit_->sectorcode}}">{{$unit_->sectorcode}}</option>
+								@endif
+							@endforeach
+				  		</select>
+	              	</div>
 				</div>
 			</fieldset> 
 		</form>

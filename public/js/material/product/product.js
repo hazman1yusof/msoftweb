@@ -971,9 +971,27 @@ $(document).ready(function () {
 	var urlParam={
 		action:'get_table_product',
 		url:'./product/table',
+		Class: $('#Class2_').val(),
+		Sunit: $('#Sunit').val(),
 		filterCol:['groupcode', 'Class'],
 		filterVal:[$('#groupcode2').val(), $('#Class2').val()]
 	}
+
+	$('#Class2_').change(function(){
+		$('#Class2').val($(this).val());
+		urlParam.Class = $(this).val()
+		refreshGrid("#jqGrid",urlParam);
+	});
+	
+	$('#Sunit').change(function(){
+		urlParam.Sunit = $(this).val();
+		if($(this).val() == 'ALL'){
+			urlParam2.filterVal[1] = '';
+		}else{
+			urlParam2.filterVal[1] = $(this).val();
+		}
+		refreshGrid("#jqGrid",urlParam);
+	});
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam={

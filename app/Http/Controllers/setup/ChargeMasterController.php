@@ -51,6 +51,8 @@ class ChargeMasterController extends defaultController
         switch($request->action){
             case 'maintable':
                 return $this->maintable($request);
+            case 'print_barcode':
+                return $this->print_barcode($request);
             default:
                 return 'error happen..';
         }
@@ -833,4 +835,39 @@ class ChargeMasterController extends defaultController
         }
     }
 
+    public function print_barcode(Request $request){
+        $pages = $request->pages;
+        $itemcodefrom = $request->itemcodefrom;
+        if(empty($itemcodefrom)){
+            $itemcodefrom = '%';
+        }
+        $itemcodeto = $request->itemcodeto;
+        $groupcode = $request->groupcode;
+        $Class = $request->Class;
+
+        $product = DB::table('hisdb.chgmast')
+                    ->select('chgcode','description')
+                    ->where('compcode',session('compcode'))
+                    ->where('recstatus','=','ACTIVE')
+                    ->where('unit','=',session('unit'))
+                    ->whereBetween('chgcode',[$itemcodefrom,$itemcodeto.'%']);
+
+        // if(!in_array(strtoupper($groupcode), ['ASSET','OTHERS'])){
+        //     $product = $product->where('p.unit','=',session('unit'));
+        // }
+
+        // dd($this->getQueries($product));
+
+        $product = $product->get();
+
+        $product = $product->unique('chgcode');
+
+        foreach ($product as $key => $value) {
+            $value->chgcode = str_replace(' ', '', $value->chgcode);
+        }
+
+        // dd($product);
+
+        return view('material.product.print_barcode_chgmast',compact('product','pages'));
+    }
 }

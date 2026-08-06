@@ -129,6 +129,7 @@ span.error_pkgmast {
 				<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #518351;" id='pdfgen_excel'>
 					<span class='fa fa-print'></span> Charge Price List 
 				</a>
+				<a class='pull-right pointer text-primary' id='print_barcode' style="padding-right: 5px;"> Print Barcode</a>
 			</div>
 		    <div class="panel-body">
 		    	<div class='col-md-12' style="padding:0 0 15px 0">
@@ -574,6 +575,35 @@ span.error_pkgmast {
 				<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
 			</div>
 		</div>	 -->
+	</div>
+
+	<div id="dialog_barcode" title="Print barcode Form" >
+		<div class="panel-body" style="position: relative;">
+			<div class="col-md-12">
+			  	<label class="control-label" for="itemcode_from_barcode">Item Code From</label>  
+	  			<div class='input-group'>
+					<input id="itemcode_from_barcode" name="itemcode_from_barcode" type="text" class="form-control input-sm text-uppercase">
+					<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+	  			</div>
+					<span class="help-block"></span>
+			</div>
+			<div class="col-md-12">
+			  	<label class="control-label" for="itemcode_to_barcode">Item Code To</label>  
+	  			<div class='input-group'>
+					<input id="itemcode_to_barcode" name="itemcode_to_barcode" type="text" class="form-control input-sm text-uppercase" >
+					<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+	  			</div>
+					<span class="help-block"></span>
+			</div>
+			<div class="col-md-9">
+			  	<label class="control-label" for="barcode_pages">Count</label>  
+				<input id="barcode_pages" name="barcode_pages" type="number" maxlength="2" class="form-control input-sm text-uppercase" value="1">
+			</div>
+			<div class="col-md-3">
+			  	<label class="control-label" for="">&nbsp;</label>  
+				<button class="btn btn-primary" id="barcode_print">Print</button>
+			</div>
+		</div>
 	</div>
 
 @endsection
