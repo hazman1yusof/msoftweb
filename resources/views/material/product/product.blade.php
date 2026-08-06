@@ -143,8 +143,8 @@
 		</div>
 	</div>
 
-	<input id="Class2" name="Class" type="hidden" value="{{ $_GET['Class'] }}">
-	<input id="groupcode2" name="groupcode" type="hidden" value="{{ $_GET['groupcode'] }}">
+	<input id="Class2" name="Class" type="text" value="{{ $_GET['Class'] }}">
+	<input id="groupcode2" name="groupcode" type="text" value="{{ $_GET['groupcode'] }}">
 
 	<div id="dialogForm" title="Add Form" >
 		<div class='col-md-12' id="formdataSearch_div">

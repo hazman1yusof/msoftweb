@@ -374,6 +374,7 @@ button_state_discharge('empty');
 
 	// screen current patient //
 	function populate_discharge_currpt(obj){
+		console.log(obj);
 		emptyFormdata(null,"#form_discharge");
 		
 		// panel header

@@ -218,6 +218,7 @@ $(document).ready(function () {
 		url:'./chargemaster/table',
 		field:'',
 		fixPost:'true',
+		Sunit: $('#Sunit').val(),
 		table_name:['hisdb.chgmast AS cm', 'hisdb.chgclass AS cc', 'hisdb.chggroup AS cg', 'hisdb.chgtype AS ct'],
 		table_id:'chgcode',
 		join_type:['LEFT JOIN', 'LEFT JOIN', 'LEFT JOIN'],
@@ -226,6 +227,16 @@ $(document).ready(function () {
 		filterCol:['cm.compcode'],
 		filterVal:['session.compcode']
 	}
+
+	$('#Sunit').change(function(){
+		urlParam.Sunit = $(this).val();
+		if($(this).val() == 'ALL'){
+			urlParam2.filterVal[1] = '';
+		}else{
+			urlParam2.filterVal[1] = $(this).val();
+		}
+		refreshGrid("#jqGrid",urlParam);
+	});
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam={
@@ -3479,7 +3490,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode','unit'],
-				filterVal:['ACTIVE','session.compcode','session.unit']
+				filterVal:['ACTIVE','session.compcode',$('#Sunit').val()]
 			},
 			sortname:'chgcode',
 			sortorder:'asc',
@@ -3498,7 +3509,7 @@ $(document).ready(function () {
 			title:"Select Item From",
 			open: function(){
 				itemcode_from_barcode.urlParam.filterCol=['recstatus','compcode','unit'];//,'sector'
-				itemcode_from_barcode.urlParam.filterVal=['ACTIVE','session.compcode','session.unit'];//, 'session.unit'
+				itemcode_from_barcode.urlParam.filterVal=['ACTIVE','session.compcode',$('#Sunit').val()];//, 'session.unit'
 			},
 			close: function(obj_){
 			},
@@ -3522,7 +3533,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode','unit'],
-				filterVal:['session.compcode','session.unit']
+				filterVal:['session.compcode',$('#Sunit').val()]
 			},
 			sortname:'chgcode',
 			sortorder:'asc',
@@ -3541,7 +3552,7 @@ $(document).ready(function () {
 			title:"Select Item To",
 			open: function(){
 				itemcode_to_barcode.urlParam.filterCol=['recstatus','compcode','unit'];//,'sector'
-				itemcode_to_barcode.urlParam.filterVal=['ACTIVE','session.compcode','session.unit'];//, 'session.unit'
+				itemcode_to_barcode.urlParam.filterVal=['ACTIVE','session.compcode',$('#Sunit').val()];//, 'session.unit'
 			},
 			close: function(obj_){
 			},

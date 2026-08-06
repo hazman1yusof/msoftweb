@@ -121,6 +121,22 @@ span.error_pkgmast {
 						</div>
 		            </div>
 				</div>
+
+				<div class='col-md-12' style="padding:0 0 15px 0;">
+					<div class="col-md-2">
+						<label class="control-label" for="Sunit">Unit</label>  
+				  		<select id='Sunit' name='Sunit' class="form-control input-sm">
+							<option value="ALL">ALL</option>
+							@foreach($Sunit as $unit_)
+								@if($unit_->sectorcode == session('unit'))
+								<option value="{{$unit_->sectorcode}}" selected>{{$unit_->sectorcode}}</option>
+								@else
+								<option value="{{$unit_->sectorcode}}">{{$unit_->sectorcode}}</option>
+								@endif
+							@endforeach
+				  		</select>
+	              	</div>
+				</div>
 			</fieldset> 
 		</form>
 

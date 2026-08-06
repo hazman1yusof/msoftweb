@@ -57,11 +57,11 @@
                     content.push({
                       svg: $('svg#_'+itemcodes[x]).get(0).outerHTML,
                       width: 160,
-                      height: 42,
+                      height: 32,
                       margin:[0,0,0,0],alignment:'center'
                     });
                     content.push({
-                        text:itemcodes[x],alignment:'center',margin:[0,1,0,0]
+                        text:itemcodes[x],alignment:'center',fontSize: 7,bold:true,margin:[0,1,0,0]
                     });
                     content.push({
                         text:desc[x],alignment:'center',fontSize: 7,margin:[0,-1,0,0]

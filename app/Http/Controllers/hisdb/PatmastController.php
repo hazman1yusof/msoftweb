@@ -247,7 +247,7 @@ class PatmastController extends defaultController
                 $table_status_search = 'all';
             }
 
-            $select_array = ['pat_mast.idno','pat_mast.CompCode','pat_mast.MRN','queue.Episno','pat_mast.Name','pat_mast.Call_Name','pat_mast.addtype','pat_mast.Address1','pat_mast.Address2','pat_mast.Address3','pat_mast.Postcode','pat_mast.citycode','pat_mast.AreaCode','pat_mast.StateCode','pat_mast.CountryCode','pat_mast.telh','pat_mast.telhp','pat_mast.telo','pat_mast.Tel_O_Ext','pat_mast.ptel','pat_mast.ptel_hp','pat_mast.ID_Type','pat_mast.idnumber','pat_mast.Newic','pat_mast.Oldic','pat_mast.icolor','pat_mast.Sex','pat_mast.DOB','pat_mast.Religion','pat_mast.AllergyCode1','pat_mast.AllergyCode2','pat_mast.Century','pat_mast.Citizencode','pat_mast.OccupCode','pat_mast.Staffid','pat_mast.MaritalCode','pat_mast.LanguageCode','pat_mast.TitleCode','pat_mast.RaceCode','pat_mast.bloodgrp','pat_mast.Accum_chg','pat_mast.Accum_Paid','pat_mast.first_visit_date','pat_mast.last_visit_date','pat_mast.last_episno','pat_mast.PatStatus','pat_mast.Confidential','pat_mast.Active','pat_mast.FirstIpEpisNo','pat_mast.FirstOpEpisNo','pat_mast.AddUser','pat_mast.AddDate','pat_mast.Lastupdate','pat_mast.LastUser','pat_mast.OffAdd1','pat_mast.OffAdd2','pat_mast.OffAdd3','pat_mast.OffPostcode','pat_mast.MRFolder','pat_mast.MRLoc','pat_mast.MRActive','pat_mast.OldMrn','pat_mast.NewMrn','pat_mast.Remarks','pat_mast.RelateCode','pat_mast.ChildNo','pat_mast.CorpComp','pat_mast.Email','pat_mast.Email_official','pat_mast.CurrentEpis','pat_mast.NameSndx','pat_mast.BirthPlace','pat_mast.TngID','pat_mast.PatientImage','pat_mast.pAdd1','pat_mast.pAdd2','pat_mast.pAdd3','pat_mast.pPostCode','pat_mast.DeptCode','pat_mast.DeceasedDate','pat_mast.PatientCat','pat_mast.PatType','pat_mast.PatClass','pat_mast.upduser','pat_mast.upddate','pat_mast.recstatus','pat_mast.loginid','pat_mast.pat_category','pat_mast.idnumber_exp','pat_mast.PatientImage','queue.epistycode as q_epistycode', 'queue.reg_date', 'queue.QueueNo','episode.idno as e_idno','episode.bed as bednum','episode.newcaseP','episode.followupP','pat_mast.iPesakit','doctor.doctorname as q_doctorname','epispayer.payercode','debtormast.name as payername','episode.billtype','episode.epistycode','episode.ward','episode.ward_dischargedt','episode.ward_dischargetm','episode.ward_dischargeusr','episode.complete_notedt','episode.complete_notetm','episode.complete_noteusr'];
+            $select_array = ['pat_mast.idno as p_idno','pat_mast.CompCode','pat_mast.MRN','queue.Episno','pat_mast.Name','pat_mast.Call_Name','pat_mast.addtype','pat_mast.Address1','pat_mast.Address2','pat_mast.Address3','pat_mast.Postcode','pat_mast.citycode','pat_mast.AreaCode','pat_mast.StateCode','pat_mast.CountryCode','pat_mast.telh','pat_mast.telhp','pat_mast.telo','pat_mast.Tel_O_Ext','pat_mast.ptel','pat_mast.ptel_hp','pat_mast.ID_Type','pat_mast.idnumber','pat_mast.Newic','pat_mast.Oldic','pat_mast.icolor','pat_mast.Sex','pat_mast.DOB','pat_mast.Religion','pat_mast.AllergyCode1','pat_mast.AllergyCode2','pat_mast.Century','pat_mast.Citizencode','pat_mast.OccupCode','pat_mast.Staffid','pat_mast.MaritalCode','pat_mast.LanguageCode','pat_mast.TitleCode','pat_mast.RaceCode','pat_mast.bloodgrp','pat_mast.Accum_chg','pat_mast.Accum_Paid','pat_mast.first_visit_date','pat_mast.last_visit_date','pat_mast.last_episno','pat_mast.PatStatus','pat_mast.Confidential','pat_mast.Active','pat_mast.FirstIpEpisNo','pat_mast.FirstOpEpisNo','pat_mast.AddUser','pat_mast.AddDate','pat_mast.Lastupdate','pat_mast.LastUser','pat_mast.OffAdd1','pat_mast.OffAdd2','pat_mast.OffAdd3','pat_mast.OffPostcode','pat_mast.MRFolder','pat_mast.MRLoc','pat_mast.MRActive','pat_mast.OldMrn','pat_mast.NewMrn','pat_mast.Remarks','pat_mast.RelateCode','pat_mast.ChildNo','pat_mast.CorpComp','pat_mast.Email','pat_mast.Email_official','pat_mast.CurrentEpis','pat_mast.NameSndx','pat_mast.BirthPlace','pat_mast.TngID','pat_mast.PatientImage','pat_mast.pAdd1','pat_mast.pAdd2','pat_mast.pAdd3','pat_mast.pPostCode','pat_mast.DeptCode','pat_mast.DeceasedDate','pat_mast.PatientCat','pat_mast.PatType','pat_mast.PatClass','pat_mast.upduser','pat_mast.upddate','pat_mast.recstatus','pat_mast.loginid','pat_mast.pat_category','pat_mast.idnumber_exp','pat_mast.PatientImage','queue.epistycode as q_epistycode', 'queue.reg_date', 'queue.QueueNo','episode.idno','episode.bed as bednum','episode.newcaseP','episode.followupP','pat_mast.iPesakit','doctor.doctorname as q_doctorname','epispayer.payercode','debtormast.name as payername','episode.billtype','episode.epistycode','episode.ward','episode.ward_dischargedt','episode.ward_dischargetm','episode.ward_dischargeusr','episode.complete_notedt','episode.complete_notetm','episode.complete_noteusr'];
 
             // ,'bed.ward as ward'
 
@@ -385,7 +385,7 @@ class PatmastController extends defaultController
                 // if($episode->exists()){
                 //     $totamount = $this->get_ordcom_totamount($value->MRN,$value->Episno);
                 //     $episode = $episode->first();
-                if(!empty($value->e_idno)){
+                if(!empty($value->idno)){
                     if($value->newcaseP == 1 || $value->followupP == 1){
                         $value->pregnant = 1;
                     }else{
@@ -397,8 +397,6 @@ class PatmastController extends defaultController
                 //     $value->regdept = $episode->regdept;
                 //     $value->totamount = $totamount;
                 // }
-
-
             }
 
             $responce = new stdClass();
@@ -1265,7 +1263,9 @@ class PatmastController extends defaultController
         try {
 
             //////////where//////////
-            $table = $table->where('idno','=',$request->idno);
+            $table = $table
+                        ->where('compcode','=',session('compcode'))
+                        ->where('MRN','=',$request->MRN);
             $user = $table->first();
 
 
@@ -1283,12 +1283,14 @@ class PatmastController extends defaultController
             // }
 
             $bed_mrn = DB::table('hisdb.bed')
+                        ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->MRN)
                         ->update([
                             'name' => strtoupper($request->Name)
                         ]);
 
             $queue_mrn = DB::table('hisdb.queue')
+                        ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->MRN)
                         ->update([
                             'name' => strtoupper($request->Name)
@@ -1298,12 +1300,14 @@ class PatmastController extends defaultController
                 if($request->src_from == 'apptbook'){
 
                     $old_apptbook = DB::table('hisdb.apptbook')
+                        ->where('compcode','=',session('compcode'))
                         ->where('idno','=',$request->src_idno)
                         ->first();
 
                     $title = strtoupper(str_pad($mrn, 7, "0", STR_PAD_LEFT).' - '.$request->Name.' - '.$request->telhp.' - '.$old_apptbook->case_code.' - '.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30));
 
                     DB::table('hisdb.apptbook')
+                        ->where('compcode','=',session('compcode'))
                         ->where('idno','=',$request->src_idno)
                         ->update([
                             'mrn' => $mrn,
@@ -1344,7 +1348,9 @@ class PatmastController extends defaultController
 
         try {
 
-            $table = $table->where('idno','=',$request->idno);
+            $table = $table
+                        ->where('compcode','=',session('compcode'))
+                        ->where('MRN','=',$request->MRN);
             $table->update([
                 'deluser' => session('username'),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),

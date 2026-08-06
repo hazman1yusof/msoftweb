@@ -7,6 +7,7 @@ use App\Http\Controllers\defaultController;
 use stdClass;
 use DB;
 use Carbon\Carbon;
+use Illuminate\Support\Str; 
 
 class ProductController extends defaultController
 {   
@@ -734,13 +735,15 @@ class ProductController extends defaultController
         $product = DB::table('material.product as p')
                     ->select('itemcode','description')
                     ->where('p.compcode',session('compcode'))
-                    ->where('p.recstatus','=','ACTIVE')
+                    // ->where('p.recstatus','=','ACTIVE')
                     ->where('p.Class','=',$Class)
                     ->where('p.groupcode','=',$groupcode)
                     ->whereBetween('p.itemcode',[$itemcodefrom,$itemcodeto.'%']);
 
         if(!in_array(strtoupper($groupcode), ['ASSET','OTHERS'])){
-            $product = $product->where('p.unit','=',session('unit'));
+            if($request->Sunit != 'ALL'){
+                $product = $product->where('p.unit','=',$request->Sunit);
+            }
         }
 
         // dd($this->getQueries($product));
@@ -751,6 +754,7 @@ class ProductController extends defaultController
 
         foreach ($product as $key => $value) {
             $value->itemcode = str_replace(' ', '', $value->itemcode);
+            $value->description = Str::ascii($value->description);
         }
 
         // dd($product);

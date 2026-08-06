@@ -42,7 +42,9 @@ $(document).ready(function () {
 
 		},
 		close: function( event, ui ) {
-
+			$('#itemcode_from_barcode').val('');
+			$('#itemcode_to_barcode').val('');
+			removeValidationClass(['#itemcode_from_barcode','#itemcode_to_barcode']);
 		}
 	  });
 
@@ -51,7 +53,7 @@ $(document).ready(function () {
     });
 
     $('#barcode_print').click(function(){
-	    window.open('./product/table?action=print_barcode&itemcodefrom='+$('#itemcode_from_barcode').val()+'&itemcodeto='+$('#itemcode_to_barcode').val()+'&pages='+$('#barcode_pages').val()+'&groupcode='+gc2+'&Class='+Class2);
+	    window.open('./product/table?action=print_barcode&itemcodefrom='+$('#itemcode_from_barcode').val()+'&itemcodeto='+$('#itemcode_to_barcode').val()+'&pages='+$('#barcode_pages').val()+'&groupcode='+$('#groupcode2').val()+'&Class='+$('#Class2').val()+'&Sunit='+$('#Sunit').val());
     });
 
 	var itemcode_from_barcode = new ordialog(
@@ -60,10 +62,11 @@ $(document).ready(function () {
 			colModel:[
 				{label:'Item Code',name:'itemcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+				{label:'Unit',name:'unit',width:50,classes:'pointer'},
 			],
 			urlParam: {
 				filterCol:['groupcode', 'Class','recstatus','compcode','unit'],
-				filterVal:[gc2, Class2,'ACTIVE','session.compcode',unit_used]
+				filterVal:[$('#groupcode2').val(), $('#Class2').val(),'ACTIVE','session.compcode',$('#Sunit').val()]
 			},
 			sortname:'itemcode',
 			sortorder:'asc',
@@ -81,8 +84,13 @@ $(document).ready(function () {
 		},{
 			title:"Select Item From",
 			open: function(){
+				var Sunit = $('#Sunit').val();
+				if($('#Sunit').val() == 'ALL'){
+					Sunit = null;
+				}
+
 				itemcode_from_barcode.urlParam.filterCol=['groupcode', 'Class','recstatus','compcode','unit'];//,'sector'
-				itemcode_from_barcode.urlParam.filterVal=[gc2, Class2,'ACTIVE','session.compcode',unit_used];//, 'session.unit'
+				itemcode_from_barcode.urlParam.filterVal=[$('#groupcode2').val(), $('#Class2').val(),'ACTIVE','session.compcode',Sunit];//, 'session.unit'
 			},
 			close: function(obj_){
 			},
@@ -103,10 +111,11 @@ $(document).ready(function () {
 			colModel:[
 				{label:'Item Code',name:'itemcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+				{label:'Unit',name:'unit',width:50,classes:'pointer'},
 			],
 			urlParam: {
 				filterCol:['groupcode', 'Class','recstatus','compcode','unit'],
-				filterVal:[gc2, Class2,'ACTIVE','session.compcode',unit_used]
+				filterVal:[$('#groupcode2').val(), $('#Class2').val(),'ACTIVE','session.compcode',$('#Sunit').val()]
 			},
 			sortname:'itemcode',
 			sortorder:'asc',
@@ -124,8 +133,13 @@ $(document).ready(function () {
 		},{
 			title:"Select Item To",
 			open: function(){
+				var Sunit = $('#Sunit').val();
+				if($('#Sunit').val() == 'ALL'){
+					Sunit = null;
+				}
+
 				itemcode_to_barcode.urlParam.filterCol=['groupcode', 'Class','recstatus','compcode','unit'];//,'sector'
-				itemcode_to_barcode.urlParam.filterVal=[gc2, Class2,'ACTIVE','session.compcode',unit_used];//, 'session.unit'
+				itemcode_to_barcode.urlParam.filterVal=[$('#groupcode2').val(), $('#Class2').val(),'ACTIVE','session.compcode',Sunit];//, 'session.unit'
 			},
 			close: function(obj_){
 			},
@@ -151,7 +165,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['groupcode', 'Class','recstatus','compcode'],
-				filterVal:[gc2, Class2,'ACTIVE','session.compcode']
+				filterVal:[$('#groupcode2').val(), $('#Class2').val(),'ACTIVE','session.compcode']
 			},
 			sortname:'idno',
 			sortorder:'desc',
@@ -179,7 +193,7 @@ $(document).ready(function () {
 				var gc2 = $('#groupcode2').val();
 				var Class2 = $('#Class2').val();
 				dialog_itemcode.urlParam.filterCol = ['groupcode', 'Class','recstatus','compcode'];
-				dialog_itemcode.urlParam.filterVal = [ gc2, Class2,'ACTIVE','session.compcode'];
+				dialog_itemcode.urlParam.filterVal = [ $('#groupcode2').val(), $('#Class2').val(),'ACTIVE','session.compcode'];
 
 				$('#Dcol_itemcodesearch input[type="radio"][value="productcat"]').on('click',dialog_cat_selection_event);
 				$('#Dcol_itemcodesearch input[type="radio"]:not([value="productcat"])').on('click',function(){
@@ -979,6 +993,16 @@ $(document).ready(function () {
 
 	$('#Class2_').change(function(){
 		$('#Class2').val($(this).val());
+		if(['pharmacy','non-pharmacy'].includes($(this).val().toLowerCase())){
+			$('#groupcode2').val('Stock');
+		}else if($(this).val().toLowerCase() == 'consignment'){
+			$('#groupcode2').val('Stock');
+		}else if($(this).val().toLowerCase() == 'asset'){
+			$('#groupcode2').val('Asset');
+		}else if($(this).val().toLowerCase() == 'others'){
+			$('#groupcode2').val('Others');
+		}
+
 		urlParam.Class = $(this).val()
 		refreshGrid("#jqGrid",urlParam);
 	});
