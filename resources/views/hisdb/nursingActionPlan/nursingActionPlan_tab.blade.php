@@ -27,9 +27,9 @@
                 <div class="panel-body" style="padding-right: 0px;">
                     <form class='form-horizontal' style='width: 99%;' id='formHeader'>
                         <div class="form-group">
-                            <label class="col-md-1 control-label" for="reg_date">Date of Admission</label>
+                            <label class="col-md-1 control-label" for="reg_dateNursActPlan">Date of Admission</label>
                             <div class="col-md-2">
-                                <input id="reg_date" name="reg_date" type="date" class="form-control input-sm" rdonly>
+                                <input id="reg_dateNursActPlan" name="reg_date" type="date" class="form-control input-sm" rdonly>
                             </div>
                             
                             <label class="col-md-1 control-label" for="diagnosis">Diagnosis</label>

@@ -3137,7 +3137,7 @@ function populate_nursingActionPlan(obj){
     $("#ward_nursActionPlan").val(obj.ward);
     $("#bednum_nursActionPlan").val(obj.bednum);
     $("#age_nursActionPlan").val(dob_age(obj.DOB));
-    $("#reg_date").val(obj.reg_date);
+    $("#reg_dateNursActPlan").val(obj.reg_date);
 
     ////jqGridAddNotesNursActPlanTreatment
 	urlParam_AddNotesNursActPlanTreatment.filterVal[0] = obj.MRN;
