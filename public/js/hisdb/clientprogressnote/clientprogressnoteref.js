@@ -605,11 +605,11 @@ function check_doctorRef(){
         if(!$.isEmptyObject(data)){
             if($('#isdoctor').val() != '1' || data.refdoctor != $('#username_').val()){
                 button_state_clientProgNoteRef('empty');
-                $('#error_clientProgNoteRef').text("You are not registered as the referral doctor.");
+                $('#error_clientProgNoteRef').val("You are not registered as the referral doctor.");
                 $('#error_clientProgNoteRef').show();
             }else{
                 button_state_clientProgNoteRef('add');
-                $('#error_clientProgNoteRef').text("");
+                $('#error_clientProgNoteRef').val("");
                 $('#error_clientProgNoteRef').hide();
             }
         }
