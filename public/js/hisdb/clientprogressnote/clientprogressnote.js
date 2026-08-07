@@ -694,11 +694,11 @@ $('#clientprognote_date_tbl tbody').on('click', 'tr', function (){
 	$('#clientprognote_date_tbl tbody tr').removeClass('active');
 	$(this).addClass('active');
 	
-	// if(check_same_usr_edit(data)){
-	// 	button_state_clientProgNote('edit');
-	// }else{
-	// 	button_state_clientProgNote('add');
-	// }
+	if(check_same_usr_edit(data)){
+		button_state_clientProgNote('edit');
+	}else{
+		button_state_clientProgNote('add');
+	}
 	
 	$('#mrn_clientProgNote').val(data.mrn);
 	$("#episno_clientProgNote").val(data.episno);

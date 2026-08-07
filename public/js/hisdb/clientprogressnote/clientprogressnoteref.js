@@ -533,11 +533,11 @@ $('#clientprognoteref_date_tbl tbody').on('click', 'tr', function (){
     $('#clientprognoteref_date_tbl tbody tr').removeClass('active');
     $(this).addClass('active');
     
-    // if(check_same_usr_edit(data)){
-    //     button_state_clientProgNoteRef('edit');
-    // }else{
-    //     button_state_clientProgNoteRef('add');
-    // }
+    if(check_same_usr_edit(data)){
+        button_state_clientProgNoteRef('edit');
+    }else{
+        button_state_clientProgNoteRef('add');
+    }
     
     $('#mrn_clientProgNoteRef').val(data.mrn);
     $("#episno_clientProgNoteRef").val(data.episno);
