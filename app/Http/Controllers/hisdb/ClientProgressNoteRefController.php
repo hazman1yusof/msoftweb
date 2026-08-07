@@ -199,8 +199,8 @@ class ClientProgressNoteRefController extends defaultController
             $patprogressnoteref = DB::table('hisdb.patprogressnoteref')
                                 ->where('mrn','=',$request->mrn_clientProgNoteRef)
                                 ->where('episno','=',$request->episno_clientProgNoteRef)
-                                ->where('datetaken','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->datetime_clientProgNoteRef)->format('Y-m-d'))
-                                ->where('timetaken','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->datetime_clientProgNoteRef)->format('H:i:s'))
+                                ->where('datetaken','=',Carbon::createFromFormat('Y-m-d H:i:s', $request->datetime_clientProgNoteRef)->format('Y-m-d'))
+                                ->where('timetaken','=',Carbon::createFromFormat('Y-m-d H:i:s', $request->datetime_clientProgNoteRef)->format('H:i:s'))
                                 ->where('compcode','=',session('compcode'))
                                 ->where('doctorcode','=',$request->refdoctor_clientProgNoteRef);
             
@@ -378,7 +378,7 @@ class ClientProgressNoteRefController extends defaultController
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
                 if(!empty($value->datetaken)){ // for sorting - easier in 24H
-                    $date['recdatetime'] =  Carbon::createFromFormat('Y-m-d', $value->datetaken)->format('d-m-Y').' '.$value->timetaken;
+                    $date['recdatetime'] =  $value->datetaken.' '.$value->timetaken;
                 }else{
                     $date['recdatetime'] =  '-';
                 }
@@ -414,8 +414,8 @@ class ClientProgressNoteRefController extends defaultController
                                     ->where('compcode','=',session('compcode'))
                                     ->where('mrn','=',$request->mrn)
                                     ->where('episno','=',$request->episno)
-                                    ->where('datetaken','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->datetime)->format('Y-m-d'))
-                                    ->where('timetaken','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->datetime)->format('H:i:s'));
+                                    ->where('datetaken','=',Carbon::createFromFormat('Y-m-d H:i:s', $request->datetime)->format('Y-m-d'))
+                                    ->where('timetaken','=',Carbon::createFromFormat('Y-m-d H:i:s', $request->datetime)->format('H:i:s'));
                                     // ->where('doctorcode','=',$request->doctorcode);
         }
         

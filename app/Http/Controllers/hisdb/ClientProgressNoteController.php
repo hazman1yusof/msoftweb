@@ -153,8 +153,8 @@ class ClientProgressNoteController extends defaultController
             $patprogressnote = DB::table('hisdb.patprogressnote')
                                 ->where('mrn','=',$request->mrn_clientProgNote)
                                 ->where('episno','=',$request->episno_clientProgNote)
-                                ->where('datetaken','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->datetime_clientProgNote)->format('Y-m-d'))
-                                ->where('timetaken','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->datetime_clientProgNote)->format('H:i:s'))
+                                ->where('datetaken','=',Carbon::createFromFormat('Y-m-d H:i:s', $request->datetime_clientProgNote)->format('Y-m-d'))
+                                ->where('timetaken','=',Carbon::createFromFormat('Y-m-d H:i:s', $request->datetime_clientProgNote)->format('H:i:s'))
                                 ->where('compcode','=',session('compcode'));
             
             // $doctorcode_obj = DB::table('hisdb.doctor')
@@ -286,7 +286,7 @@ class ClientProgressNoteController extends defaultController
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
                 if(!empty($value->datetaken)){ // for sorting - easier in 24H
-                    $date['recdatetime'] =  Carbon::createFromFormat('Y-m-d', $value->datetaken)->format('d-m-Y').' '.$value->timetaken;
+                    $date['recdatetime'] =  $value->datetaken.' '.$value->timetaken;
                 }else{
                     $date['recdatetime'] =  '-';
                 }
@@ -321,8 +321,8 @@ class ClientProgressNoteController extends defaultController
                                     ->where('compcode','=',session('compcode'))
                                     ->where('mrn','=',$request->mrn)
                                     ->where('episno','=',$request->episno)
-                                    ->where('datetaken','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->datetime)->format('Y-m-d'))
-                                    ->where('timetaken','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->datetime)->format('H:i:s'));
+                                    ->where('datetaken','=',Carbon::createFromFormat('Y-m-d H:i:s', $request->datetime)->format('Y-m-d'))
+                                    ->where('timetaken','=',Carbon::createFromFormat('Y-m-d H:i:s', $request->datetime)->format('H:i:s'));
         }
         
         // if($episode_obj->exists()){
@@ -530,8 +530,8 @@ class ClientProgressNoteController extends defaultController
                                     ->where('compcode','=',session('compcode'))
                                     ->where('mrn','=',$request->mrn)
                                     ->where('episno','=',$request->episno)
-                                    ->where('datetaken','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->datetime)->format('Y-m-d'))
-                                    ->where('timetaken','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->datetime)->format('H:i:s'));
+                                    ->where('datetaken','=',Carbon::createFromFormat('Y-m-d H:i:s', $request->datetime)->format('Y-m-d'))
+                                    ->where('timetaken','=',Carbon::createFromFormat('Y-m-d H:i:s', $request->datetime)->format('H:i:s'));
         }
         
         $episdiag_obj = DB::table('hisdb.episdiag')
