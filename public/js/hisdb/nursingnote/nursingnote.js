@@ -536,8 +536,8 @@ $(document).ready(function (){
         },
         buttons: [{
             text: "Print Chart", click: function (){
-                window.open('./nursingnote/invChart_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
-                // window.location='./nursingnote/invChart_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val();
+                window.open('./nursingnote/invChart_chart?mrn='+$('#mrn_nursNote').val()+'&episno='+$("#episno_nursNote").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
+                // window.location='./nursingnote/invChart_chart?mrn='+$('#mrn_nursNote').val()+'&episno='+$("#episno_nursNote").val();
             }
         },{
             text: "Cancel", click: function (){
@@ -564,8 +564,8 @@ $(document).ready(function (){
         },
         buttons: [{
             text: "Print Chart", click: function (){
-                window.open('./nursingnote/morsefallscale_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&datefr='+$("#morsefallscale_datefr").val()+'&dateto='+$("#morsefallscale_dateto").val()+'&age='+$("#age_nursNote").val(), '_blank');
-                // window.location='./nursingnote/morsefallscale_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val();
+                window.open('./nursingnote/morsefallscale_chart?mrn='+$('#mrn_nursNote').val()+'&episno='+$("#episno_nursNote").val()+'&datefr='+$("#morsefallscale_datefr").val()+'&dateto='+$("#morsefallscale_dateto").val()+'&age='+$("#age_nursNote").val(), '_blank');
+                // window.location='./nursingnote/morsefallscale_chart?mrn='+$('#mrn_nursNote').val()+'&episno='+$("#episno_nursNote").val();
             }
         },{
             text: "Cancel", click: function (){
@@ -581,27 +581,27 @@ $(document).ready(function (){
     });
     
     $("#fitchart_chart").click(function (){
-        window.open('./nursingnote/fitchart_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+        window.open('./nursingnote/fitchart_chart?mrn='+$('#mrn_nursNote').val()+'&episno='+$("#episno_nursNote").val(), '_blank');
     });
     
     $("#circulation_chart").click(function (){
-        window.open('./nursingnote/circulation_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&age='+$("#age_nursNote").val(), '_blank');
+        window.open('./nursingnote/circulation_chart?mrn='+$('#mrn_nursNote').val()+'&episno='+$("#episno_nursNote").val()+'&age='+$("#age_nursNote").val(), '_blank');
     });
     
     $("#slidingScale_chart").click(function (){
-        window.open('./nursingnote/slidingScale_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+        window.open('./nursingnote/slidingScale_chart?mrn='+$('#mrn_nursNote').val()+'&episno='+$("#episno_nursNote").val(), '_blank');
     });
     
     $("#othersChart1_chart").click(function (){
-        window.open('./nursingnote/othersChart_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&tabtitle='+$("#othersChart1_tabtitle").val(), '_blank');
+        window.open('./nursingnote/othersChart_chart?mrn='+$('#mrn_nursNote').val()+'&episno='+$("#episno_nursNote").val()+'&tabtitle='+$("#othersChart1_tabtitle").val(), '_blank');
     });
     
     $("#othersChart2_chart").click(function (){
-        window.open('./nursingnote/othersChart_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&tabtitle='+$("#othersChart2_tabtitle").val(), '_blank');
+        window.open('./nursingnote/othersChart_chart?mrn='+$('#mrn_nursNote').val()+'&episno='+$("#episno_nursNote").val()+'&tabtitle='+$("#othersChart2_tabtitle").val(), '_blank');
     });
     
     $("#bladder_chart").click(function (){
-        window.open('./nursingnote/bladder_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+        window.open('./nursingnote/bladder_chart?mrn='+$('#mrn_nursNote').val()+'&episno='+$("#episno_nursNote").val(), '_blank');
     });
     
     $("#morsefallscale_chart").click(function (){
