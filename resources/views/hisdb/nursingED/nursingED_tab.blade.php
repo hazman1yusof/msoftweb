@@ -52,7 +52,7 @@
                                     <div class="form-group">
                                         <label class="col-md-2 control-label" for="reg_date">Date</label>
                                         <div class="col-md-4">
-                                            <input id="reg_date" name="reg_date" type="date" class="form-control input-sm" rdonly>
+                                            <input id="reg_dateNursED" name="reg_date" type="date" class="form-control input-sm" rdonly>
                                         </div>
                                     </div>
                                     

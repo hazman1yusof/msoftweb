@@ -381,7 +381,7 @@ function populate_formNursingED(obj,rowdata){
 	$("#mrn_tiED").val(obj.a_mrn);
 	$("#episno_tiED").val(obj.a_Episno);
 	$("#age_show_triageED").val(dob_age(obj.DOB));
-	$("#reg_date").val(obj.reg_date);
+	$("#reg_dateNursED").val(obj.reg_date);
 	tri_color_setED('empty');
 	changeTextInputColor('empty');
 	
@@ -407,6 +407,7 @@ function populate_triageED_currpt(obj){
 	$("#mrn_tiED").val(obj.MRN);
 	$("#episno_tiED").val(obj.Episno);
     $("#age_show_triageED").val(dob_age(obj.DOB));
+	$("#reg_dateNursED").val(obj.reg_date);
 
 	////jqGridAddNotesNursingED
 	urlParam_AddNotesNursingED.filterVal[0] = obj.MRN;

@@ -75,27 +75,25 @@ $(document).ready(function (){
                     episno_nursActionPlan: $("#episno_wardMain").val(),
                 };
                 
-                $.post("nursingActionPlan/form?"+$.param(saveParam), $.param(postobj), function (data){
+                $.post("./nursingActionPlan/form?"+$.param(saveParam), $.param(postobj), function (data){
                     
                 },'json').fail(function (data){
                     alert('there is an error');
                 }).success(function (data){
-                    if(!$.isEmptyObject(data.header)){
-                        // autoinsert_rowdata("#formHeader",data.episode);
-                        autoinsert_rowdata("#formHeader",data.header);
+                     if(!emptyobj_(data.header)){
+                        if(!emptyobj_(data.header))autoinsert_rowdata("#formHeader",data.header);
+                        if(!emptyobj_(data.episode))autoinsert_rowdata("#formHeader",data.episode);
                         button_state_header('empty');
-                        // textarea_init_nursingActionPlan();
+                        
                     }else{
-                        // autoinsert_rowdata("#formHeader",data.episode);
-                        // autoinsert_rowdata("#formHeader",data.header);
                         button_state_header('add');
-                        // textarea_init_nursingActionPlan();
-                        emptyFormdata(errorField,'#formHeader');
+                        if(!emptyobj_(data.episode))autoinsert_rowdata("#formHeader",data.episode);
                     }
                     
                     // autoinsert_rowdata("#formHeader",data.episode);
                     // button_state_header('empty');
                     textarea_init_nursingActionPlan();
+
                 });
                 
                 // populate_header_getdata();

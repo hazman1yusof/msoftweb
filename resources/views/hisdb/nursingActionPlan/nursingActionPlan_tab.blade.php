@@ -27,7 +27,7 @@
                 <div class="panel-body" style="padding-right: 0px;">
                     <form class='form-horizontal' style='width: 99%;' id='formHeader'>
                         <div class="form-group">
-                            <label class="col-md-1 control-label" for="reg_dateNursActPlan">Date of Admission</label>
+                            <label class="col-md-1 control-label" for="reg_date">Date of Admission</label>
                             <div class="col-md-2">
                                 <input id="reg_dateNursActPlan" name="reg_date" type="date" class="form-control input-sm" rdonly>
                             </div>
@@ -41,7 +41,7 @@
                             <div class="col-md-2">
                                 <div class="input-group">
                                     <input type="text" class="form-control input-sm" id="icd" name="icd">
-                                    <a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+                                    <a class="input-group-addon btn btn-primary" id="icdbtn"><span class='fa fa-ellipsis-h'></span></a>
                                 </div>
                                 <!-- <span class='help-block'></span> -->
                             </div>

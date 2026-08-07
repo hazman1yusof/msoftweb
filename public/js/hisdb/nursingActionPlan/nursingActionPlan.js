@@ -166,7 +166,10 @@ $(document).ready(function (){
     /////////////////////////////////////header starts/////////////////////////////////////
     disableForm('#formHeader');
 
+    $('#icdbtn').hide();
+
     $("#new_header").click(function (){
+        $('#icdbtn').show();
         button_state_header('wait');
         enableForm('#formHeader');
         rdonly('#formHeader');
@@ -189,10 +192,12 @@ $(document).ready(function (){
             enableForm('#formHeader');
             rdonly('#formHeader');
         }
+        $('#icdbtn').hide();
     });
     
     $("#cancel_header").click(function (){
         disableForm('#formHeader');
+        $('#icdbtn').hide();
         button_state_header($(this).data('oper'));
 
     });
@@ -288,6 +293,7 @@ $(document).ready(function (){
         let type = $(this).data('type');
         let id = $(this).attr('id');
         $("#jqGridNursActionPlan_panel").data('curtype',id);
+        
         switch(type){
             
             case 'treatment':
