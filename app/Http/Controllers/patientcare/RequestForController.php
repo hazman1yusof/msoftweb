@@ -473,8 +473,7 @@ class RequestForController extends defaultController
                             ->select('bpsys_stand as vs_bp_sys1','bpdias_stand as vs_bp_dias2','spo2 as vs_spo','hr as vs_pulse','gxt as vs_gxt','temp_ as vs_temperature','weight as vs_weight','height as vs_height','respiration as vs_respiration')
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno)
-                            ->where('epistycode','=','OP');
+                            ->where('episno','=',$request->episno);
         
         $nurshistory_obj = DB::table('nursing.nurshistory')
                             ->where('compcode','=',session('compcode'))
