@@ -188,14 +188,22 @@
                                                   <div class="ui basic label">mmOL</div>
                                                 </div>
                                             </div>
-
+                                            
                                             <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
-                                                <label>Pain Score</label>
+                                                <label>SpO2</label>
                                                 <div class="ui right labeled input">
-                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_painscore" name="vs_painscore">
-                                                  <div class="ui basic label">/10</div>
+                                                    <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_spo" name="vs_spo">
+                                                    <div class="ui basic label">%</div>
                                                 </div>
                                             </div>
+                                            
+                                            <!-- <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
+                                                <label>Pain Score</label>
+                                                <div class="ui right labeled input">
+                                                    <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_painscore" name="vs_painscore">
+                                                    <div class="ui basic label">/10</div>
+                                                </div>
+                                            </div> -->
                                         </div>
 
                                     </div>
