@@ -310,7 +310,7 @@ fieldset.mycss {
 .paneldiv{
 	/* padding-top: 5px !important; */
 	overflow-y: auto;
-	height: calc(100vh - 80px);
+	height: calc(100vh - 60px);
 }
 .paneldiv2{
 	/* padding-top: 5px !important; */
