@@ -438,7 +438,7 @@ class PatmastController extends defaultController
                 foreach ($count as $key => $value) {
                     $occur_ar = $this->index_of_occurance($key,$searchCol_array);
 
-                    $table_patm = $table_patm->orWhere(function ($table_patm) use ($request,$searchCol_array,$occur_ar) {
+                    $table_patm = $table_patm->where(function ($table_patm) use ($request,$searchCol_array,$occur_ar) {
                         foreach ($searchCol_array as $key => $value) {
                             $found = array_search($key,$occur_ar);
                             if($found !== false){
