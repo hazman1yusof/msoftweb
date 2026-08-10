@@ -475,6 +475,12 @@ class RequestForController extends defaultController
                             ->where('mrn','=',$request->mrn)
                             ->where('episno','=',$request->episno);
         
+        $nursassessment_obj = DB::table('nursing.nursassessment')
+                            ->select('vs_bp_sys1 as vs_bp_sys1','vs_bp_dias2 as vs_bp_dias2','spo2 as vs_spo','vs_pulse as vs_pulse','vs_gxt as vs_gxt','vs_temperature as vs_temperature','vs_weight as vs_weight','vs_height as vs_height','vs_respiration as vs_respiration')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno);
+        
         $nurshistory_obj = DB::table('nursing.nurshistory')
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn);
@@ -499,6 +505,11 @@ class RequestForController extends defaultController
         if($nurshandover_obj->exists()){
             $nurshandover_obj = $nurshandover_obj->first();
             $responce->nurshandover = $nurshandover_obj;
+        }
+        
+        if($nursassessment_obj->exists()){
+            $nursassessment_obj = $nursassessment_obj->first();
+            $responce->nursassessment = $nursassessment_obj;
         }
         
         if($nurshistory_obj->exists()){
