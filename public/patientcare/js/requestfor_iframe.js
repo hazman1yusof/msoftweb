@@ -1114,8 +1114,14 @@ function populate_otbookReqFor_getdata(){
     },'json').done(function (data){
         if(!$.isEmptyObject(data.pat_otbook)){
             autoinsert_rowdata("#formOTBookReqFor",data.pat_otbook);
-            autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            // autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
             autoinsert_rowdata("#formOTBookReqFor",data.nurshistory);
+            
+            if(!emptyobj_(data.nurshandover)){
+                autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            }else{
+                autoinsert_rowdata("#formOTBookReqFor",data.nursassessment);
+            }
             
             if(!emptyobj_(data.pat_otbook.ot_doctorname)){
                 $("#otReqFor_doctorname").val(data.pat_otbook.ot_doctorname);
@@ -1125,10 +1131,16 @@ function populate_otbookReqFor_getdata(){
             
             button_state_otbookReqFor('edit');
         }else{
-            autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            // autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
             autoinsert_rowdata("#formOTBookReqFor",data.nurshistory);
             // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
             $("#otReqFor_doctorname").val($('#doctorname_requestFor').val());
+            
+            if(!emptyobj_(data.nurshandover)){
+                autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            }else{
+                autoinsert_rowdata("#formOTBookReqFor",data.nursassessment);
+            }
             
             button_state_otbookReqFor('add');
         }
@@ -1159,8 +1171,14 @@ function get_default_otbookReqFor(){
     },'json').done(function (data){
         if(!$.isEmptyObject(data.pat_otbook)){
             autoinsert_rowdata("#formOTBookReqFor",data.pat_otbook);
-            autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            // autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
             autoinsert_rowdata("#formOTBookReqFor",data.nurshistory);
+            
+            if(!emptyobj_(data.nurshandover)){
+                autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            }else{
+                autoinsert_rowdata("#formOTBookReqFor",data.nursassessment);
+            }
             
             if(!emptyobj_(data.pat_otbook.ot_doctorname)){
                 $("#otReqFor_doctorname").val(data.pat_otbook.ot_doctorname);
@@ -1168,10 +1186,16 @@ function get_default_otbookReqFor(){
                 $("#otReqFor_doctorname").val($('#doctorname_requestFor').val());
             }
         }else{
-            autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            // autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
             autoinsert_rowdata("#formOTBookReqFor",data.nurshistory);
             // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
             $("#otReqFor_doctorname").val($('#doctorname_requestFor').val());
+            
+            if(!emptyobj_(data.nurshandover)){
+                autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            }else{
+                autoinsert_rowdata("#formOTBookReqFor",data.nursassessment);
+            }
         }
         
         if(!emptyobj_(data.iPesakit))$("#otReqFor_iPesakit").val(data.iPesakit);
