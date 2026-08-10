@@ -34,12 +34,12 @@ $(document).ready(function (){
     var radbuts_card_noninv = new checkradiobutton(['card_chkty','card_type']);
 
     if($('#_mrn').val() != undefined){
+        $('#mrn_requestFor').val($('#_mrn').val());
+        $('#episno_requestFor').val($('#_episno').val());
         $('#requestFor .top.menu .item').tab('change tab','otbookReqFor');
         populate_otbookReqFor_getdata();
         populate_radClinicReqFor_getdata();
         textarea_init_otbookReqFor();
-        $('#mrn_requestFor').val($('#_mrn').val());
-        $('#episno_requestFor').val($('#_episno').val());
     }
     
     ////////////////////////////////////////////otbook starts////////////////////////////////////////////
@@ -1585,7 +1585,7 @@ function populate_referralLetterReqfor_getdata(){
         }
 
         if(!$.isEmptyObject(data.referralLetter_freetextReqfor)){
-            autoinsert_rowdata("#formreferralLetter_freetextReqfor",data.referralLetterReqfor);
+            autoinsert_rowdata("#formreferralLetter_freetextReqfor",data.referralLetter_freetextReqfor);
 
             button_state_referralLetter_freetextReqfor('edit');
         }else{
@@ -2776,7 +2776,6 @@ function session_field(){
 }
 
 window.message_parent_wardbook = function (data){ // inside the iframe
-    console.log(data);
     $('#ReqFor_bed').val(data.bednum);
     $('#ReqFor_ward').val(data.ward);
     $('#ReqFor_room').val(data.room);

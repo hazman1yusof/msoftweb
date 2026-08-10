@@ -155,5 +155,5 @@
 @endsection
 
 @section('js')
-<script type="text/javascript" src="{{asset('patientcare/js/requestfor_iframe.js')}}"></script>
+<script type="text/javascript" src="{{asset('patientcare/js/requestfor_iframe.js?v=1.1')}}"></script>
 @endsection

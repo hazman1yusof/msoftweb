@@ -277,6 +277,12 @@ $(document).ready(function (){
                 if(reqForIP_cururl != reqForIP_newurl){
                     $('iframe#requestfor_main_iframe').attr('src',reqForIP_newurl);
                 }
+
+                if(reqForIP_cururl != null){
+                    if(typeof $('iframe#requestfor_main_iframe')[0].contentWindow.populate_otbookReqFor_getdata === 'function'){
+                        $('iframe#requestfor_main_iframe')[0].contentWindow.populate_otbookReqFor_getdata();
+                    }
+                }
                 
                 break;
             case 'dietNoteIP':
