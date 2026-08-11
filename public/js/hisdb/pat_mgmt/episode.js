@@ -145,8 +145,53 @@ function get_epis_other_data(episno){
             $('#txt_epis_room').val(bed.room);
             $('#txt_epis_bedtype').val(bed.bedtype);
         }
+
+        if(data.outstand != null){
+            $('#mdl_outstand_alert').data('auth','false');
+            $('#outstand_alert_span_rm').text(data.outstand.outstand_alert_span_rm);
+            $('#outstand_alert_span_sex').text(data.outstand.outstand_alert_span_sex);
+            $('#mdl_outstand_alert').modal('show');
+        }
     });
 }
+
+$('#outstand_alert_yes').click(function(){
+    $('#mdl_outstand_alert_auth').modal('show');
+});
+
+$('#outstand_alert_auth').click(function(){
+    let obj_param = {
+           action:'outstand_alert_auth',
+           username:$('#username_alert_auth').val(),
+           password:$('#password_alert_auth').val()
+       };
+
+    $.get( "pat_mast/get_entry?"+$.param(obj_param), function( data ) {
+        
+    },'json').done(function(data) {
+        if(data.auth != null){
+            $('#mdl_outstand_alert').data('auth','true');
+            $('#mdl_outstand_alert_auth').modal('hide');
+            $('#mdl_outstand_alert').modal('hide');
+        }else{
+            alert('username or password incorrect');
+        }
+    });
+});
+
+$("#mdl_outstand_alert_auth").on('hidden.bs.modal', function () {
+    var auth = $('#mdl_outstand_alert').data('auth');
+    if(auth == 'false'){
+        $('#mdl_outstand_alert').modal('show');
+    }
+});
+
+$("#mdl_outstand_alert").on('hidden.bs.modal', function () {
+    var auth = $('#mdl_outstand_alert').data('auth');
+    if(auth == 'false'){
+        $('#editEpisode').modal('hide');
+    }
+});
 
 function get_billtype_default(mrn){
     let obj_param = {
@@ -1077,7 +1122,7 @@ function refno_class(){
 
 }
 
-$("#mdl_item_selector,#mdl_epis_pay_mode,#mdl_reference,#mdl_new_gl,#mdl_bill_type,#mdl_new_panel,#mdl_glet").on('show.bs.modal', function () {
+$("#mdl_item_selector,#mdl_epis_pay_mode,#mdl_reference,#mdl_new_gl,#mdl_bill_type,#mdl_new_panel,#mdl_glet,#mdl_outstand_alert,#mdl_outstand_alert_auth").on('show.bs.modal', function () {
     $(this).eq(0).css('z-index','120');
 });
 

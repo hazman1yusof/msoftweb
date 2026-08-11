@@ -1617,3 +1617,56 @@
         </div>
     </form>
 </div>
+
+<div id="mdl_outstand_alert" class="modal fade" role="dialog" title="title" style="display: none; z-index: 121;background-color: rgba(0, 0, 0, 0.3);" data-backdrop="false">
+    <div class="modal-dialog" style="width: 50%; height: 50%; margin: auto;">
+        <!-- Modal content-->
+        <div class="modal-content" style="border: 3px solid darkred;margin-top:30px;min-height: initial !important;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" >Alert!</h4>
+            </div>
+            <div class="modal-body" style="text-align: center;font-weight: 600;">
+                This patient already has an outstanding amount of RM <span id="outstand_alert_span_rm">-</span></br>
+                <span id="outstand_alert_span_sex">His</span> account is suspended</br>
+                Please ask the patient to pay the extending </br>
+                or refer to the CREDIT CONTROL department</br>
+                </br></br>
+                Do you want to continue admit?</br>
+            </div>
+            <div class="modal-footer">
+                <button id="outstand_alert_yes" type="button" class="btn btn-primary" data-modal-target="#mdl_outstand_alert_auth">Yes</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="mdl_outstand_alert_auth" class="modal fade" role="dialog" title="title" style="display: none; z-index: 121;background-color: rgba(0, 0, 0, 0.3);" data-backdrop="false">
+    <div class="modal-dialog" style="width: 50%; height: 50%; margin: auto;">
+        <!-- Modal content-->
+        <div class="modal-content" style="border: 3px solid darkred;margin-top:30px;min-height: initial !important;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" >Authorization</h4>
+            </div>
+            <div class="modal-body" style="text-align: center;font-weight: 600;">
+                <div class="row">
+                    <div class='col-md-12'>
+                        <label class="control-label" for="username_alert_auth">Username</label>
+                        <input id="username_alert_auth" name="username_alert_auth" type="text" class="form-control input-sm">
+                    </div>
+                    
+                    <div class='col-md-12'>
+                        <label class="control-label" for="password_alert_auth">Password</label>
+                        <input id="password_alert_auth" name="password_alert_auth" type="password" class="form-control input-sm" autocomplete="new-password">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="outstand_alert_auth" type="button" class="btn btn-primary">Authorize</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

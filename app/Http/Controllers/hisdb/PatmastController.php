@@ -1005,12 +1005,12 @@ class PatmastController extends defaultController
                     ->where('Episno','=',$request->episno)
                     ->first();
 
-                if($request->epistycode=='IP'){
-                    $patmast = DB::table('hisdb.pat_mast')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->first();
+                $patmast = DB::table('hisdb.pat_mast')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$request->mrn)
+                        ->first();
 
+                if($request->epistycode=='IP'){
                     $bed = DB::table('hisdb.bed')
                             ->where('compcode','=',session('compcode'))
                             ->where('occup','=','RESERVE')
@@ -1025,10 +1025,46 @@ class PatmastController extends defaultController
 
                 }
 
+                $dbacthdr = DB::table('debtor.dbacthdr')
+                                ->where('compcode',session('compcode'))
+                                ->where('source','PB')
+                                ->whereIn('trantype',['IN','DN','RC','RD','RT','CN'])
+                                ->where('recstatus','POSTED')
+                                ->where('payercode',str_pad($request->mrn, 7, "0", STR_PAD_LEFT))
+                                ->where('outamount','>',0);
+
+                if($dbacthdr->exists()){
+                    $responce2 = new stdClass();
+
+                    $responce2->outstand_alert_span_sex = 'Her';
+                    $responce2->outstand_alert_span_rm = $dbacthdr->get()->sum('outamount');
+
+                    if($patmast->Sex =='M'){
+                        $responce2->outstand_alert_span_sex = 'His';
+                    }
+
+                    $responce->outstand = $responce2;
+                }
+
                 $responce->episode = $episode;
                 $responce->epispayer = $epispayer;
                 return json_encode($responce);
 
+
+                break;
+
+            case 'outstand_alert_auth':
+
+                $users = DB::table('sysdb.users')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('username',$request->username)
+                            ->where('password',$request->password);
+
+                if($users->exists()){
+                    $responce->auth = $users->first();
+                }
+
+                return json_encode($responce);
 
                 break;
 

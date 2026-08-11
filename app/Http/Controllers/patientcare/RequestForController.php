@@ -1533,12 +1533,38 @@ class RequestForController extends defaultController
         //                     ->where('compcode','=',session('compcode'))
         //                     ->where('mrn','=',$request->mrn)
         //                     ->where('episno','=',$request->episno);
+
+        $pat_mast = DB::table('hisdb.pat_mast')
+                        ->select('Name')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn',$request->mrn)
+                        ->first();
         
         $responce = new stdClass();
         
         if($pat_mri_obj->exists()){
             $pat_mri_obj = $pat_mri_obj->first();
+            $pat_mri_obj->mri_patientname = $pat_mast->Name;
             $responce->pat_mri = $pat_mri_obj;
+        }else{
+
+            $episode = DB::table('hisdb.episode as e')
+                            ->select('doc.doctorname')
+                            ->leftJoin('hisdb.doctor as doc', function($join){
+                                $join = $join->where('doc.compcode','=',session('compcode'))
+                                                ->on('doc.doctorcode', '=', 'e.admdoctor');
+                            })
+                            ->where('e.compcode',session('compcode'))
+                            ->where('e.mrn',$request->mrn)
+                            ->where('e.episno',$request->episno)
+                            ->first();
+
+            $responce2 = new stdClass();
+            $responce2->mri_doctorname = $episode->doctorname;
+            $responce2->mri_patientname = $pat_mast->Name;
+
+            $responce->pat_mri_default = $responce2;
+
         }
         
         // if(!empty($request->recorddate) && $request->recorddate != '-'){
@@ -1587,9 +1613,9 @@ class RequestForController extends defaultController
                         'tr_speech' => $request->tr_speech,
                         'remarks' => $request->remarks,
                         'doctorname' => strtoupper($request->phy_doctorname),
-                        'upduser'  => strtoupper($request->phy_lastuser),
+                        'upduser'  => session('username'),
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser' => strtoupper($request->phy_lastuser),
+                        'lastuser' => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'computerid' => session('computerid'),
                     ]);
@@ -1611,9 +1637,9 @@ class RequestForController extends defaultController
                         'tr_speech' => $request->tr_speech,
                         'remarks' => $request->remarks,
                         'doctorname' => strtoupper($request->phy_doctorname),
-                        'adduser'  => strtoupper($request->phy_lastuser),
+                        'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser' => strtoupper($request->phy_lastuser),
+                        'lastuser' => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'computerid' => session('computerid'),
                     ]);
@@ -1625,7 +1651,7 @@ class RequestForController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'reff_physio' => '1',
-                    'lastuser'  => strtoupper($request->phy_lastuser),
+                    'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
 
@@ -1668,9 +1694,9 @@ class RequestForController extends defaultController
                         'tr_speech' => $request->tr_speech,
                         'remarks' => $request->remarks,
                         'doctorname' => strtoupper($request->phy_doctorname),
-                        'upduser'  => strtoupper($request->phy_lastuser),
+                        'upduser'  => session('username'),
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser' => strtoupper($request->phy_lastuser),
+                        'lastuser' => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'computerid' => session('computerid'),
                     ]);
@@ -1692,9 +1718,9 @@ class RequestForController extends defaultController
                         'tr_speech' => $request->tr_speech,
                         'remarks' => $request->remarks,
                         'doctorname' => strtoupper($request->phy_doctorname),
-                        'adduser'  => strtoupper($request->phy_lastuser),
+                        'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser' => strtoupper($request->phy_lastuser),
+                        'lastuser' => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'computerid' => session('computerid'),
                     ]);
@@ -1706,7 +1732,7 @@ class RequestForController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'reff_physio' => '1',
-                    'lastuser'  => strtoupper($request->phy_lastuser),
+                    'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
 
@@ -1799,9 +1825,9 @@ class RequestForController extends defaultController
                     'others_name' => $request->others_name,
                     'solution' => $request->solution,
                     'doctorname' => strtoupper($request->dressing_doctorname),
-                    'adduser'  => strtoupper($request->dressing_lastuser),
+                    'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'lastuser' => strtoupper($request->dressing_lastuser),
+                    'lastuser' => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
                 ]);
@@ -1812,7 +1838,7 @@ class RequestForController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'reff_ed' => '1',
-                    'lastuser'  => strtoupper($request->dressing_lastuser),
+                    'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
             
@@ -1849,9 +1875,9 @@ class RequestForController extends defaultController
                         'others_name' => $request->others_name,
                         'solution' => $request->solution,
                         'doctorname' => strtoupper($request->dressing_doctorname),
-                        'upduser'  => strtoupper($request->dressing_lastuser),
+                        'upduser'  => session('username'),
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser' => strtoupper($request->dressing_lastuser),
+                        'lastuser' => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'computerid' => session('computerid'),
                     ]);
@@ -1868,9 +1894,9 @@ class RequestForController extends defaultController
                         'others_name' => $request->others_name,
                         'solution' => $request->solution,
                         'doctorname' => strtoupper($request->dressing_doctorname),
-                        'adduser'  => strtoupper($request->dressing_lastuser),
+                        'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser' => strtoupper($request->dressing_lastuser),
+                        'lastuser' => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'computerid' => session('computerid'),
                     ]);
@@ -1882,7 +1908,7 @@ class RequestForController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'reff_ed' => '1',
-                    'lastuser'  => strtoupper($request->dressing_lastuser),
+                    'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
             
@@ -1912,12 +1938,28 @@ class RequestForController extends defaultController
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
                             ->where('episno','=',$request->episno);
+
+        $pat_mast = DB::table('hisdb.pat_mast')
+                            ->select('Name','Newic')
+                            ->where('compcode',session('compcode'))
+                            ->where('mrn',$request->mrn)
+                            ->first();
         
         $responce = new stdClass();
         
         if($pat_dressing_obj->exists()){
             $pat_dressing_obj = $pat_dressing_obj->first();
+            $pat_dressing_obj->dressing_patientname = $pat_mast->Name;
+            $pat_dressing_obj->patientnric = $pat_mast->Newic;
+
             $responce->pat_dressing = $pat_dressing_obj;
+        }else{
+
+            $responce2 = new stdClass();
+            $responce2->dressing_patientname = $pat_mast->Name;
+            $responce2->patientnric = $pat_mast->Newic;
+
+            $responce->pat_dressing_default = $responce2;
         }
         
         return json_encode($responce);

@@ -146,12 +146,12 @@ $(document).ready(function (){
     
     $("#new_mriReqFor").click(function (){
         radbuts_mriReqFor.reset();
-        get_default_mriReqFor();
+        // get_default_mriReqFor();
         $('#cancel_mriReqFor').data('oper','add');
         button_state_mriReqFor('wait');
         enableForm('#formMRIReqFor');
         rdonly('#formMRIReqFor');
-        emptyFormdata_div("#formMRIReqFor",['#mrn_requestFor','#episno_requestFor',"#mriReqFor_lastuser"]);
+        emptyFormdata_div("#formMRIReqFor",['#mrn_requestFor','#episno_requestFor',"#mriReqFor_lastuser","#mriReqFor_doctorname","#mriReqFor_patientname"]);
     });
     
     $("#edit_mriReqFor").click(function (){
@@ -1344,15 +1344,13 @@ function populate_mriReqFor_getdata(){
             // }else{
                 button_state_mriReqFor('edit');
             // }
-        }else{
-            // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
-            $("#mriReqFor_doctorname").val($('#doctorname_requestFor').val());
-            
+        }else if(!$.isEmptyObject(data.pat_mri_default)){
+            autoinsert_rowdata("#formMRIReqFor",data.pat_mri_default);
             button_state_mriReqFor('add');
         }
         
-        if(!emptyobj_(data.mri_weight))$("#mriReqFor_weight").val(data.mri_weight);
-        $("#mriReqFor_patientname").val($('#ptname_requestFor').val());
+        // if(!emptyobj_(data.mri_weight))$("#mriReqFor_weight").val(data.mri_weight);
+        // $("#mriReqFor_patientname").val($('#ptname_requestFor').val());
         // textarea_init_mriReqFor();
     });
 }
@@ -1493,16 +1491,20 @@ function populate_dressingReqFor_getdata(){
     $.get("./ptcare_requestfor/table?"+$.param(saveParam), $.param(postobj), function (data){
         
     },'json').done(function (data){
-        if(!$.isEmptyObject(data)){
+        if(!$.isEmptyObject(data.pat_dressing)){
             autoinsert_rowdata("#formDressingReqFor",data.pat_dressing);
             
             button_state_dressingReqFor('edit');
+        }else if(!$.isEmptyObject(data.pat_dressing_default)){
+            autoinsert_rowdata("#formDressingReqFor",data.pat_dressing_default);
+
+            button_state_dressingReqFor('add');
         }else{
             button_state_dressingReqFor('add');
         }
         
-        $("#dressingReqFor_patientname").val($('#ptname_requestFor').val());
-        $("#ReqFor_patientnric").val($('#ic_requestFor').val());
+        // $("#dressingReqFor_patientname").val($('#ptname_requestFor').val());
+        // $("#ReqFor_patientnric").val($('#ic_requestFor').val());
         // $("#dressingReqFor_doctorname").val($('#doctorname_requestFor').val());
         // textarea_init_dressingReqFor();
     });
