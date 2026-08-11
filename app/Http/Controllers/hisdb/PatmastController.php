@@ -1025,13 +1025,18 @@ class PatmastController extends defaultController
 
                 }
 
-                $dbacthdr = DB::table('debtor.dbacthdr')
-                                ->where('compcode',session('compcode'))
-                                ->where('source','PB')
-                                ->whereIn('trantype',['IN','DN','RC','RD','RT','CN'])
-                                ->where('recstatus','POSTED')
-                                ->where('payercode',str_pad($request->mrn, 7, "0", STR_PAD_LEFT))
-                                ->where('outamount','>',0);
+                $dbacthdr = DB::table('debtor.dbacthdr as db')
+                                ->leftJoin('debtor.debtormast as dbm', function($join){
+                                        $join = $join->where('dbm.compcode',session('compcode'));
+                                        $join = $join->whereIn('dbm.debtortype',['PT','PR']);
+                                        $join = $join->on('dbm.debtorcode','db.payercode');
+                                })
+                                ->where('db.compcode',session('compcode'))
+                                ->where('db.source','PB')
+                                ->whereIn('db.trantype',['IN','DN','RC','RD','RT','CN'])
+                                ->where('db.recstatus','POSTED')
+                                ->where('db.payercode',str_pad($request->mrn, 7, "0", STR_PAD_LEFT))
+                                ->where('db.outamount','>',0);
 
                 if($dbacthdr->exists()){
                     $responce2 = new stdClass();

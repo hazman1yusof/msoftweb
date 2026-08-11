@@ -24,7 +24,7 @@
                     <div class="form-group">
                     </div>
                     
-                    <div class="form-group">
+                    <div class="form-group" id="ttl_top_div">
                         <div class="col-sm-1">
                             <small for="txt_epis_no">MRN</small>
                             <input class="form-control input-sm" id="txt_epis_mrn" name="txt_epis_mrn" placeholder="" type="text" readonly>
