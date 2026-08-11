@@ -59,7 +59,7 @@
             <div class="three wide column" style="position: absolute;
                         left: 10px;
                         top: 30px;">
-                <table id="docnote_date_tbl" class="ui celled table" style="min-width: 310px;">
+                <table id="docnote_date_tbl" class="ui celled table" style="min-width: 270px;">
                     <thead>
                         <tr>
                             <th class="scope">mrn</th>
@@ -74,7 +74,7 @@
                 </table>
             </div>
             <div class="ui grid">
-                <form id="formDoctorNote" class="right floated ui form twelve wide column">
+                <form id="formDoctorNote" class="right floated ui form twelve wide column" style="padding-left: 0;">
                     <input id="mrn_doctorNote" name="mrn_doctorNote" type="hidden">
                     <input id="episno_doctorNote" name="episno_doctorNote" type="hidden">
                     <input id="age_doctorNote" name="age_doctorNote" type="hidden">
@@ -94,14 +94,14 @@
                     </div>
                     
                     <div class='ui grid' style="margin-top: 35px;">
-                        <div class="eight wide column">
+                        <div class="seven wide column">
                             <div class="field">
                                 <label>Chief Complaint</label>
                                 <input id="complain" name="complain" type="text" data-validation="required" data-validation-error-msg-required="Please enter Chief Complaint">
                             </div>
                         </div>
                         
-                        <div class="seven wide column">
+                        <div class="seven wide column" style="padding-left: 0;">
                             <div class="inline fields">
                                 <div class="field">
                                     <label>Added Date</label>
@@ -118,7 +118,7 @@
                             </div>
                         </div>
                         
-                        <div class="twelve wide column">
+                        <div class="eleven wide column">
                             <div class="ui segments">
                                 <div class="ui secondary segment">CLINICAL NOTE</div>
                                 <div class="ui segment">
@@ -318,7 +318,7 @@
                             </div>
                         </div>
                         
-                        <div class="four wide column">
+                        <div class="five wide column">
                             <div class="ui segments">
                                 <div class="ui secondary segment">Vital Sign</div>
                                 <div class="ui segment">
