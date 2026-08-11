@@ -95,7 +95,7 @@
                             </div>
                         </div>
                         
-                        <div class="twelve wide column">
+                        <div class="eleven wide column">
                             <div class="ui segments">
                                 <div class="ui secondary segment">CLINICAL NOTE</div>
                                 <div class="ui segment">
@@ -254,7 +254,7 @@
                             </div>
                         </div>
                         
-                        <div class="four wide column">
+                        <div class="five wide column">
                             <div class="ui segments">
                                 <div class="ui secondary segment">Vital Sign</div>
                                 <div class="ui segment">
