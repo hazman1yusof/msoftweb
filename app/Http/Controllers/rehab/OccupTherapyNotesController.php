@@ -84,7 +84,8 @@ class OccupTherapyNotesController extends defaultController
                 }else{
                     $date['datetime'] =  '-';
                 }
-                
+                $date['adduser'] = $value->adduser;
+
                 array_push($data,$date);
             }
             

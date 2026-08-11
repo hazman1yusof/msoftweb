@@ -17,7 +17,7 @@
         <div class="ui grid">
             <div class="sixteen wide column">
                 <div class="ui grid">
-                    <div class='three wide column' style="padding: 3px 3px 3px 3px;">
+                    <div class='four wide column' style="padding: 3px 3px 3px 3px;">
                         <div class="ui segments">
                             <div class="ui segment">
                                 <div class="ui grid">
@@ -29,6 +29,7 @@
                                                 <th class="scope">episno</th>
                                                 <th class="scope">Date</th>
                                                 <th class="scope">datetime</th>
+                                                <th class="scope">Entered By</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -37,7 +38,7 @@
                         </div>
                     </div>
 
-                    <div class='thirteen wide column' style="padding: 3px 3px 3px 3px;">
+                    <div class='twelve wide column' style="padding: 3px 3px 3px 3px;">
                         <form id="formOccupTherapyUpperExtremity" class="floated ui form sixteen wide column">
                             <input id="idno_upperExtremity" name="idno_upperExtremity" type="hidden">
                             <div class="ui segment">

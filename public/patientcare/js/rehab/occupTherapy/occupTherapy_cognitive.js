@@ -352,6 +352,7 @@ var datetimeMMSE_tbl = $('#datetimeMMSE_tbl').DataTable({
         { 'data': 'episno' },
         { 'data': 'dateofexam', 'width': '10%' },
         { 'data': 'datetime' },
+        { 'data': 'adduser', 'width': '50%' },
     ],
     columnDefs: [
         { targets: [0, 1, 2, 4], visible: false },
@@ -374,6 +375,7 @@ var datetimeMOCA_tbl = $('#datetimeMOCA_tbl').DataTable({
         { 'data': 'episno' },
         { 'data': 'dateAssessment', 'width': '10%' },
         { 'data': 'datetime' },
+        { 'data': 'adduser', 'width': '50%' },
     ],
     columnDefs: [
         { targets: [0, 1, 2, 4], visible: false },
