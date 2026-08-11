@@ -191,6 +191,7 @@ var datetimeBarthel_tbl = $('#datetimeBarthel_tbl').DataTable({
         { 'data': 'dateofAssessment', 'width': '10%' },
         // { 'data': 'timeAssessment', 'width': '20%' },
         { 'data': 'datetime' },
+        { 'data': 'adduser', 'width': '50%' },
 
     ],
     columnDefs: [

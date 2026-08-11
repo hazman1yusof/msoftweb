@@ -1024,6 +1024,7 @@ var datetimeUpperExtremity_tbl = $('#datetimeUpperExtremity_tbl').DataTable({
         { 'data': 'episno' },
         { 'data': 'dateAssess', 'width': '10%' },
         { 'data': 'datetime' },
+        { 'data': 'adduser', 'width': '50%' },
     ],
     columnDefs: [
         { targets: [0, 1, 2, 4], visible: false },

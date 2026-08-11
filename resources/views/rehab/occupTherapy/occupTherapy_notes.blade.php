@@ -32,6 +32,7 @@
                                                     <th class="scope">episno</th>
                                                     <th class="scope">Date</th>
                                                     <th class="scope">datetime</th>
+                                                    <th class="scope">Entered By</th>
                                                 </tr>
                                             </thead>
                                         </table>

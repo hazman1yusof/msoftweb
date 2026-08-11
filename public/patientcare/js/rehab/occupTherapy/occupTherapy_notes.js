@@ -129,11 +129,12 @@ var datetimeNotes_tbl = $('#datetimeNotes_tbl').DataTable({
     "sDom": "",
     "paging": false,
     "columns": [
-        { 'data': 'idno', 'width': '5%' },
+        { 'data': 'idno' },
         { 'data': 'mrn' },
         { 'data': 'episno' },
         { 'data': 'dateNotes', 'width': '10%' },
         { 'data': 'datetime' },
+        { 'data': 'adduser', 'width': '50%' },
 
     ],
     columnDefs: [
