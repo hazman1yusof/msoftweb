@@ -318,7 +318,7 @@
                             </div>
                         </div>
                         
-                        <div class="five wide column">
+                        <div class="five wide column" style="padding-left: 0px;">
                             <div class="ui segments">
                                 <div class="ui secondary segment">Vital Sign</div>
                                 <div class="ui segment">
