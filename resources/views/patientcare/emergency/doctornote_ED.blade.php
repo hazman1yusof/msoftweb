@@ -64,8 +64,14 @@
                     <input id="ic_doctorNote" name="ic_doctorNote" type="hidden">
                     <input id="doctorname_doctorNote" name="doctorname_doctorNote" type="hidden">-->
                     
-                    <div class='ui grid'>
-                        <div class="six wide column">
+                    <div class="field" style="position: absolute; right: 0;">
+                        @if(Auth::user()->doctor == '1')
+                            <button class="ui green button" type="button" id="doctornote_medc">MC Letter</button>
+                        @endif
+                    </div>
+
+                    <div class='ui grid' style="margin-top: 35px;">
+                        <div class="eight wide column">
                             <div class="field">
                                 <label>Referred From</label>
                                 <input id="referredFrom" name="referredFrom" type="text" rdonly>
@@ -85,12 +91,6 @@
                                 <div class="field">
                                     <label>Added by</label>
                                     <input id="adduser" name="adduser" type="text" rdonly>
-                                </div>
-
-                                 <div class="field">
-                                    @if(Auth::user()->doctor == '1')
-                                        <button class="ui green button" type="button" id="doctornote_medc">MC Letter</button>
-                                    @endif
                                 </div>
                             </div>
                         </div>
