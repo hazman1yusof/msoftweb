@@ -188,6 +188,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/appointment/appointment.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/emergency/medicalLetterED.js?v=1.6') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/userfile.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{asset('patientcare/js/requestfor_iframe.js')}}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/transaction.js') }}"></script>

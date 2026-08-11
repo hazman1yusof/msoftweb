@@ -31,7 +31,7 @@ $(document).ready(function () {
     //     let href = $(e.target).eq(0).attr('href');
     // });
 
-    $('#form_medc [name=datefrom]').on('blur',function(){
+    $('#form_medc [name=datefrom]').on('change',function(){
         let mccnt=$('#form_medc [name=mccnt]').val();
         let datefrom=$('#form_medc [name=datefrom]').val();
 
@@ -46,7 +46,9 @@ $(document).ready(function () {
         let datefrom=$('#form_medc [name=datefrom]').val();
 
         let dateto = moment(datefrom).add(mccnt-1, "days");
+        let dateresume = moment(datefrom).add(mccnt, "days");
         $('#form_medc [name=dateto]').val(moment(dateto).format('YYYY-MM-DD'));
+        $('#form_medc [name=dateresume]').val(moment(dateresume).format('YYYY-MM-DD'));
     });
 
     var mclist_table = $('#mclist_table').DataTable({
@@ -111,15 +113,18 @@ function epno_medc_btnstate(state){
     }
 }
 
-function epno_medc_init(){
+function epno_medc_init(patname = $('#_patName').val(),mrn = $('#_MRN').val(),episno = $('#_Episno').val()){
     // let bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
     // let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
     // var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
 
+    $('#medletter_mrn').val(mrn);
+    $('#medletter_episno').val(episno);
+
     mc_last_serialno();
     emptyFormdata_div('#form_medc',['#form_medc input[name="name"]','#form_medc input[name="serialno"]']);
     epno_medc_btnstate('default');
-    $('#form_medc input[name="name"]').val($('#_patName').val());
+    $('#form_medc input[name="name"]').val(patname);
 }
 
 function save_medc(){
@@ -137,8 +142,8 @@ function save_medc(){
         let obj = {
             'action': 'save_mc',
             'debtorcode':$('#hid_epis_payer').val(),
-            'mrn':$('#_MRN').val(),
-            'episno': $('#_Episno').val(),
+            'mrn':$('#medletter_mrn').val(),
+            'episno': $('#medletter_episno').val(),
             '_token': _token,
         };
         

@@ -241,7 +241,7 @@ $(document).ready(function (){
             modal: true,
             autoOpen: false,
             open: function (event, ui){
-                epno_medc_init();
+                epno_medc_init($('#ptname_doctorNoteAppt').val(),$('#mrn_doctorNoteAppt').val(),$("#episno_doctorNoteAppt").val());
             },
             close: function (event, ui){
                 

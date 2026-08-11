@@ -333,7 +333,7 @@ class PatEnqController extends defaultController
             DB::rollback();
 
             $responce = new stdClass();
-            $responce->res = 'ERROR';
+            $responce->res = $e->getMessage();
 
             return response(json_encode($responce), 500);
         }
