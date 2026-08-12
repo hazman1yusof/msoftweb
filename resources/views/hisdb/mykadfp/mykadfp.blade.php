@@ -179,6 +179,6 @@
 @endsection
 
 @section('scripts')
-		<script src="js/hisdb/mykadfp/mykadFP.js"></script>
+		<script src="js/hisdb/mykadfp/mykadFP.js?v=1.1"></script>
 		<script src="plugins/printthis/printThis.js"></script>
 @endsection

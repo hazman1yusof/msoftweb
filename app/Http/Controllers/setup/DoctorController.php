@@ -84,6 +84,8 @@ class DoctorController extends defaultController
                 return $this->defaultAdd($request);
                 break;
             case 'edit':
+                $old_doctor = DB::table('hisdb.doctor')->where('idno','=',$request->idno)->first();
+
                 $users = DB::table('sysdb.users')
                             ->where('compcode',session('compcode'))
                             ->where('username',$request->loginid)
@@ -93,6 +95,8 @@ class DoctorController extends defaultController
                     
                     return response('loginid already Exists', 500);
                 }else{
+
+                    
 
                     $users = DB::table('sysdb.users')
                             ->where('compcode',session('compcode'))
@@ -157,7 +161,6 @@ class DoctorController extends defaultController
                         ]);
                 }
 
-                $old_doctor = DB::table('hisdb.doctor')->where('idno','=',$request->idno)->first();
                 $apptbook = DB::table('hisdb.apptbook')
                         ->where('loccode','=',$request->doctorcode)
                         ->where('recstatus','=',"ACTIVE")

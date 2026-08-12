@@ -52,7 +52,7 @@ $(document).ready(function () {
 		}).modal('show');
 
 		$.ajaxSetup({async: false,crossDomain:true});
-		$.get( "http://localhost/mycard/public/read_mykad", function( data ) {
+		$.get( "https://localhost:8080/mycard/public/read_mykad", function( data ) {
 			
 		},'json')
 		  .done(function( data ) {
@@ -133,7 +133,7 @@ $(document).ready(function () {
 		    hideDuration : 200,}
 		}).modal('show');
 
-		$.get( "http://mycard.test/read_mykid", function( data ) {
+		$.get( "https://localhost:8080/read_mykid", function( data ) {
 			
 		},'json')
 		  .done(function( data ) {
