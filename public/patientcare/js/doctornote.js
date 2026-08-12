@@ -45,6 +45,7 @@ $(document).ready(function (){
 		enableForm('#formDoctorNote');
 		rdonly('#formDoctorNote');
 		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
+		$('#recordtime').val(moment().format('HH:mm'));
 		// dialog_mrn_edit.on();
 	});
 	
@@ -588,6 +589,8 @@ $(document).ready(function (){
 	//////////////////////////////////////////body diagram starts//////////////////////////////////////////
 	$('a.ui.card.bodydia_doctornote').click(function (){
 		let mrn = $('#mrn_doctorNote').val();
+		let episno = $('#episno_doctorNote').val();
+		let enteredtime = $('#recordtime').val();
 		let type = $(this).data('type');
 		let istablet = $(window).width() <= 1024;
 		
@@ -601,7 +604,7 @@ $(document).ready(function (){
 				let url = $('#urltodiagram').val() + filename;
 				var win = window.open(url, '_blank');
 			}else{
-				var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno=&type='+type+'&from=doctornote', '_blank');
+				var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&enteredtime='+enteredtime+'&type='+type+'&from=doctornote', '_blank');
 			}
 			
 			if(win){
