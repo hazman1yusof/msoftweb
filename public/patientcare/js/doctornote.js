@@ -45,6 +45,7 @@ $(document).ready(function (){
 		enableForm('#formDoctorNote');
 		rdonly('#formDoctorNote');
 		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
+		$('#adddate').val(moment().format('YYYY-MM-DD'));
 		$('#recordtime').val(moment().format('HH:mm'));
 		// dialog_mrn_edit.on();
 	});
@@ -590,9 +591,11 @@ $(document).ready(function (){
 	$('a.ui.card.bodydia_doctornote').click(function (){
 		let mrn = $('#mrn_doctorNote').val();
 		let episno = $('#episno_doctorNote').val();
+		let entereddate = $('#adddate').val();
 		let enteredtime = $('#recordtime').val();
 		let type = $(this).data('type');
 		let istablet = $(window).width() <= 1024;
+		let timestamp = moment(entereddate+' '+enteredtime,  'YYYY-MM-DD HH:mm:ss').unix();
 		
 		if(mrn.trim() == '' || type.trim() == ''){
 			alert('Please choose Patient First');
@@ -604,7 +607,7 @@ $(document).ready(function (){
 				let url = $('#urltodiagram').val() + filename;
 				var win = window.open(url, '_blank');
 			}else{
-				var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&enteredtime='+enteredtime+'&type='+type+'&from=doctornote', '_blank');
+				var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&entereddate='+timestamp+'&type='+type+'&from=doctornote', '_blank');
 			}
 			
 			if(win){
