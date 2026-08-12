@@ -163,7 +163,7 @@ $(document).ready(function (){
                 let url = $('#urltodiagram').val() + filename;
                 var win = window.open(url, '_blank');
             }else{
-                var win = window.open('http://localhost:8443/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&entereddate='+timestamp+'&type='+type+'&from=neuroAssessment', '_blank');
+                var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&entereddate='+timestamp+'&type='+type+'&from=neuroAssessment', '_blank');
             }
             
             if(win){
