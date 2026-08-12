@@ -241,6 +241,7 @@ class RequestForController extends defaultController
                         'room' => $request->ReqFor_room,
                         'epistycode' => 'IP',
                         'chggroup' => 'IP',
+                        'reg_date' => Carbon::now("Asia/Kuala_Lumpur"),
                         'lastuser'  => strtoupper($request->ot_lastuser),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
@@ -1069,6 +1070,7 @@ class RequestForController extends defaultController
                     'deptcode' =>'RAD',
                     'epistycode' => 'OP',
                     'chggroup' => 'OP',
+                    'reg_date' => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
@@ -1782,6 +1784,7 @@ class RequestForController extends defaultController
                     'deptcode' =>'PHY',
                     'epistycode' => 'OP',
                     'chggroup' => 'OP',
+                    'reg_date' => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);

@@ -170,7 +170,7 @@ class radiologyController extends defaultController
         
         $table_patm = $table_patm->join('hisdb.episode', function ($join) use ($request){
                     $join = $join->on('episode.mrn','=','pat_mast.MRN');
-                    $join = $join->where('episode.epistycode','=','OP');
+                    // $join = $join->where('episode.epistycode','=','OP');
                     // $join = $join->whereIn('episode.regdept',['A&E','PHY','XRAY','DIET']);
                     // $join = $join->whereIn('episode.regdept',['RAD']);
                     // $join = $join->where(
@@ -184,6 +184,7 @@ class radiologyController extends defaultController
         
         $table_patm = $table_patm->join('hisdb.queue', function ($join) use ($request){
                     // $join = $join->on('queue.deptcode','=','episode.regdept');
+                    $join = $join->where('queue.reg_date','=',$request->filterVal[0]);
                     $join = $join->on('queue.mrn','=','episode.mrn');
                     $join = $join->on('queue.episno','=','episode.episno');
                     $join = $join->where('queue.deptcode','=','RAD');
@@ -200,8 +201,8 @@ class radiologyController extends defaultController
                     $join = $join->where('racecode.compcode','=',session('compcode'));
         });
         
-        $table_patm = $table_patm->where('pat_mast.compcode','=',session('compcode'))
-                                ->where('episode.reg_date','=',$request->filterVal[0]);
+        $table_patm = $table_patm->where('pat_mast.compcode','=',session('compcode'));
+                                // ->where('episode.reg_date','=',$request->filterVal[0]);
         
         if(!empty($request->sidx)){
             $table_patm = $table_patm->orderBy($request->sidx,$request->sord);
@@ -209,6 +210,8 @@ class radiologyController extends defaultController
             $table_patm = $table_patm->orderBy('episode.reg_time','desc');
         }
         
+        // dd($this->getQueries($table_patm));
+
         //////////paginate//////////
         $paginate = $table_patm->paginate($request->rows);
         
@@ -513,20 +516,20 @@ class radiologyController extends defaultController
                     ->where('episode.compcode','=',session('compcode'))
                     // ->whereIn('episode.regdept',['A&E','PHY','XRAY','DIET'])
                     // ->whereIn('episode.regdept',['RAD'])
-                    ->join('hisdb.queue', function ($join){
+                    ->join('hisdb.queue', function ($join) use ($request){
                         // $join = $join->on('queue.deptcode','=','episode.regdept');
                         $join = $join->on('queue.mrn','=','episode.mrn');
                         $join = $join->on('queue.episno','=','episode.episno');
                         $join = $join->where('queue.deptcode','=','RAD');
                         $join = $join->where('queue.compcode','=',session('compcode'));
-                    })
-                    ->whereRaw(
-                        "(episode.reg_date >= ? AND episode.reg_date <= ?)",
+                        $join = $join->whereRaw(
+                        "(queue.reg_date >= ? AND queue.reg_date <= ?)",
                         [
                             $request->start,
                             $request->end
-                        ])
-                        ->where('episode.epistycode','=','OP')
+                        ]);
+                    })
+                        // ->where('episode.epistycode','=','OP')
                         // ->whereIn('episode.episstatus',[null,'C','B'])
                         // ->whereNull('episode.episstatus')
                         // ->orWhere('episode.episstatus','!=','C')
@@ -538,6 +541,8 @@ class radiologyController extends defaultController
                             }
                         )
                     ->get();
+
+        // dd($this->getQueries($emergency));
         
         return $events = $this->getEvent($emergency);
     }

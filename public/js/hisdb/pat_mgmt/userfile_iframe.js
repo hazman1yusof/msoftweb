@@ -127,7 +127,6 @@ function preview_load_data(){
 
 function make_preview_image(i,filepath){
     var ext = filepath.split('.').pop().toLowerCase();
-    console.log(ext);
     var imageExtensions = [
         'jpg', 'jpeg', 'jpe', 'jif', 'jfif', 'jfi', // JPEG formats
         'png',                                      // PNG

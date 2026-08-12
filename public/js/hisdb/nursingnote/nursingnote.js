@@ -5777,8 +5777,7 @@ var invChart_tbl = $('#invChart_file').DataTable({
         { targets: [0,1,2,3], visible: false },
         { targets: 5, 
             createdCell: function (td, cellData, rowData, row, col){
-                console.log(rowData)
-                $(td).html(`<a class="ui circular blue2 button right floated invChart_allAttach" href="../hisweb/uploads/`+rowData.path+`" target="_blank">OPEN</a>`);
+                $(td).html(`<a class="ui circular blue2 button right floated invChart_allAttach" href="./uploads/`+rowData.path+`" target="_blank">OPEN</a>`);
             }
         }
     ],
