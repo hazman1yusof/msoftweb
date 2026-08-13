@@ -5,6 +5,22 @@ var urlParam_epno_coverage = {
 	episno:null,
 }
 
+var errorField_nok = [];
+var	conf_nok = {
+	modules : 'logic',
+	language: {
+		requiredFields: 'You have not answered all required fields'
+	},
+	onValidate: function ($form) {
+		if (errorField_nok.length > 0) {
+			return {
+				element: $(errorField_nok[0]),
+				message: ''
+			}
+		}
+	},
+};
+
 $(document).ready(function () {
 
 	var errorField_epno_coverage = [];
@@ -218,7 +234,7 @@ $(document).ready(function () {
 	    },'json').fail(function(data) {
 	        // alert('there is an error');
 	        callback();
-	    }).success(function(data){
+	    }).done(function(data){
 	        callback();
 	    });
 	}

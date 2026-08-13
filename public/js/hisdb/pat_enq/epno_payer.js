@@ -444,7 +444,6 @@ function refno_class(){
             });
         }
     });
-
 }
 
 function autoinsert_rowdata_gl(selrowdata){

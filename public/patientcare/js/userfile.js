@@ -121,7 +121,7 @@ function preview_load_data(){
 
 function make_preview_image(i,filepath){
     var ext = filepath.split('.').pop().toLowerCase();
-    console.log(ext);
+
     var imageExtensions = [
         'jpg', 'jpeg', 'jpe', 'jif', 'jfif', 'jfi', // JPEG formats
         'png',                                      // PNG
@@ -132,7 +132,6 @@ function make_preview_image(i,filepath){
         'svg', 'svgz',                              // SVG Vector
         'heic', 'heif'                              // Apple HEIF
     ];
-
     var msWordExtensions = [
       "docx", // Office Open XML Document
       "doc",  // Binary Word Document
@@ -174,6 +173,33 @@ function make_preview_image(i,filepath){
       "cfg",  // Configuration File
       "ini",  // Initialization File
       "tsv"   // Tab-Separated Values
+    ];
+    var audioFileExtensions = [
+      "mp3",  // MPEG Audio Layer III
+      "wav",  // Waveform Audio File
+      "aac",  // Advanced Audio Coding
+      "flac", // Free Lossless Audio Codec
+      "ogg",  // Ogg Vorbis Audio
+      "m4a",  // MPEG-4 Audio
+      "wma",  // Windows Media Audio
+      "aiff", // Audio Interchange File Format
+      "alac", // Apple Lossless Audio Codec
+      "opus"  // Opus Audio Codec
+    ];
+
+    var videoFileExtensions = [
+      "mp4",  // MPEG-4 Video
+      "mkv",  // Matroska Video
+      "avi",  // Audio Video Interleave
+      "mov",  // QuickTime Movie
+      "wmv",  // Windows Media Video
+      "flv",  // Flash Video
+      "webm", // WebM Video
+      "m4v",  // iTunes Video
+      "3gp",  // 3GPP Multimedia
+      "mpeg", // MPEG Video
+      "mpg",  // MPEG Video
+      "ts"    // MPEG Transport Stream
     ];
 
     let return_value='';
@@ -221,6 +247,26 @@ function make_preview_image(i,filepath){
         return_value =  `
             <div class="imgcontainer" style="position:relative;width:fit-content" >
                 <img src="./attachment_upload/thumbnail/text/notepad">
+                  <a class="small circular orange ui icon button btn" target="_blank" href="./uploads/`+filepath+`" syle="position: absolute;top: 20%;left: 20%;">
+                      <i class='search icon' ></i>
+                  </a>
+            </div>`; 
+
+
+    }else if ($.inArray(ext, audioFileExtensions) !== -1){
+        return_value =  `
+            <div class="imgcontainer" style="position:relative;width:fit-content" >
+                <img src="./attachment_upload/thumbnail/audio">
+                  <a class="small circular orange ui icon button btn" target="_blank" href="./uploads/`+filepath+`" syle="position: absolute;top: 20%;left: 20%;">
+                      <i class='search icon' ></i>
+                  </a>
+            </div>`; 
+
+
+    }else if ($.inArray(ext, videoFileExtensions) !== -1){
+        return_value =  `
+            <div class="imgcontainer" style="position:relative;width:fit-content" >
+                <img src="./attachment_upload/thumbnail/video">
                   <a class="small circular orange ui icon button btn" target="_blank" href="./uploads/`+filepath+`" syle="position: absolute;top: 20%;left: 20%;">
                       <i class='search icon' ></i>
                   </a>

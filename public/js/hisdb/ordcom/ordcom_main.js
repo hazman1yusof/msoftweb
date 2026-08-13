@@ -16,7 +16,9 @@ var conf_ordco = {
 };
 
 function getrow_bootgrid_(){
-	if($('#ordcom_phase').val() == '2'){
+	if($('#ordcom_phase').val() == '3'){
+		return pat_mast_data;
+	}else if($('#ordcom_phase').val() == '2'){
 		return selrowData('#jqGrid');
 	}else{
 		return getrow_bootgrid();

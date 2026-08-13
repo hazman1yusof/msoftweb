@@ -6078,4 +6078,125 @@ class OrdcomController extends defaultController
         }
     }
 
+    public function ordcom_iframe(Request $request){
+        $mrn = ltrim($request->mrn, '0');
+        $episno = $request->episno;
+        $phase = $request->phase;
+
+        if(empty($mrn) || empty($episno)){
+           abort(403,'No MRN or Episno'); 
+        }
+
+        $pat_mast = DB::table('hisdb.pat_mast')
+                        ->where('compcode',session('compcode'))
+                        ->where('MRN',$mrn);
+
+        if(!$pat_mast->exists()){
+           abort(403,'MRN does not Exists'); 
+        }
+
+        $pat_mast_data = $pat_mast->first();
+
+        $dob = $pat_mast_data->DOB;
+        $age = Carbon::parse($dob)->age;
+        $pat_mast_data->age = $age;
+
+        $episode = DB::table('hisdb.episode as epi')
+                        ->select('epi.idno','epi.compcode','epi.mrn','epi.episno','epi.admsrccode','epi.epistycode','epi.case_code','epi.ward','epi.bedtype','epi.room','epi.bed','epi.admdoctor','epi.attndoctor','epi.refdoctor','epi.prescribedays','epi.pay_type','epi.pyrmode','epi.climitauthid','epi.crnumber','epi.depositreq','epi.deposit','epi.pkgcode','epi.billtype','epi.remarks','epi.episstatus','epi.episactive','epi.adddate','epi.adduser','epi.reg_by','epi.reg_date','epi.reg_time','epi.dischargedate','epi.dischargeuser','epi.dischargetime','epi.dischargedest','epi.allocdoc','epi.allocbed','epi.allocnok','epi.allocpayer','epi.allocicd','epi.lastupdate','epi.lastuser','epi.lasttime','epi.procedure','epi.dischargediag','epi.lodgerno','epi.regdept','epi.diet1','epi.diet2','epi.diet3','epi.diet4','epi.diet5','epi.glauthid','epi.treatment','epi.diagcode','epi.complain','epi.diagfinal','epi.clinicalnote','epi.conversion','epi.newcaseP','epi.newcaseNP','epi.followupP','epi.followupNP','epi.bed2','epi.bed3','epi.bed4','epi.bed5','epi.bed6','epi.bed7','epi.bed8','epi.bed9','epi.bed10','epi.diagprov','epi.visitcase','epi.PkgAutoNo','epi.AgreementID','epi.AdminFees','epi.EDDept','epi.dischargestatus','epi.procode','epi.treatcode','epi.payer','epi.doctorstatus','epi.reff_rehab','epi.reff_physio','epi.reff_diet','epi.reff_ed','epi.reff_rad','epi.stats_rehab','epi.stats_physio','epi.stats_diet','epi.dry_weight','epi.duration_hd','epi.lastarrivaldate','epi.lastarrivaltime','epi.lastarrivalno','epi.picdoctor','epi.nurse_stat','epi.computerid','epi.patologist','epi.phyexam','epi.summary','epi.followup','epi.status_discWell','epi.status_discImproved','epi.status_discAOR','epi.status_discExpired','epi.status_discAbsconded','epi.status_discTransferred','epi.medondischg','epi.medcert','doc.doctorname')
+                        ->leftJoin('hisdb.doctor as doc', function($join){
+                                $join = $join->where('doc.compcode','=',session('compcode'))
+                                                ->on('doc.doctorcode', '=', 'epi.admdoctor');
+                            })
+                        ->where('epi.compcode',session('compcode'))
+                        ->where('epi.mrn',$mrn)
+                        ->where('epi.episno',$episno);
+
+        if(!$episode->exists()){
+           abort(403,'Episode does not Exists'); 
+        }
+
+        $episode_data = $episode->first();
+        if($episode_data->newcaseP == 1 || $episode_data->followupP == 1){
+            $episode_data->pregnant = 1;
+        }else{
+            $episode_data->pregnant = 0;
+        }
+
+        $dept = DB::table('sysdb.department')->where('deptcode','=',session('deptcode'))->where('compcode',session('compcode'))->first();
+        $btype = DB::table('sysdb.sysparam')->where('source','=','OP')->where('trantype','=','BILLTYPE')->where('compcode',session('compcode'))->first();
+        $btype_ = DB::table('hisdb.billtymst')->where('compcode','=',session('compcode'))->where('billtype','=',$btype->pvalue1)->first();
+
+        $data_send = [
+                'userdeptcode' => $dept->deptcode,
+                'userdeptdesc' => $dept->description,
+                'billtype_def_code' => $btype_->billtype,
+                'billtype_def_desc' => $btype_->description,
+            ];
+
+        $ordcomtt_phar = DB::table('sysdb.sysparam')
+                    ->where('compcode',session('compcode'))
+                    ->where('source','=','OE')
+                    ->where('trantype','=','PHAR')->first();
+        $ordcomtt_disp = DB::table('sysdb.sysparam')
+                    ->where('compcode',session('compcode'))
+                    ->where('source','=','OE')
+                    ->where('trantype','=','DISP')->first();
+        $ordcomtt_rad = DB::table('sysdb.sysparam')
+                    ->where('compcode',session('compcode'))
+                    ->where('source','=','OE')
+                    ->where('trantype','=','RAD')->first();
+        $ordcomtt_lab = DB::table('sysdb.sysparam')
+                    ->where('compcode',session('compcode'))
+                    ->where('source','=','OE')
+                    ->where('trantype','=','LAB')->first();
+        $ordcomtt_phys = DB::table('sysdb.sysparam')
+                    ->where('compcode',session('compcode'))
+                    ->where('source','=','OE')
+                    ->where('trantype','=','PHYSIOTERAPHY')->first();
+        $ordcomtt_rehab = DB::table('sysdb.sysparam')
+                    ->where('compcode',session('compcode'))
+                    ->where('source','=','OE')
+                    ->where('trantype','=','REHABILITATION')->first();
+        $ordcomtt_diet = DB::table('sysdb.sysparam')
+                    ->where('compcode',session('compcode'))
+                    ->where('source','=','OE')
+                    ->where('trantype','=','DIETATIC')->first();
+        $ordcomtt_dfee = DB::table('sysdb.sysparam')
+                    ->where('compcode',session('compcode'))
+                    ->where('source','=','OE')
+                    ->where('trantype','=','DOCTORFEES')->first();
+        $ordcomtt_oth = DB::table('sysdb.sysparam')
+                    ->where('compcode',session('compcode'))
+                    ->where('source','=','OE')
+                    ->where('trantype','=','OTH')->first();
+        $ordcomtt_pkg = DB::table('sysdb.sysparam')
+                    ->where('compcode',session('compcode'))
+                    ->where('source','=','OE')
+                    ->where('trantype','=','PKG')->first();
+
+        $data_send['ordcomtt_phar'] = $ordcomtt_phar->pvalue1;
+        $data_send['ordcomtt_disp'] = $ordcomtt_disp->pvalue1;
+        $data_send['ordcomtt_rad'] = $ordcomtt_rad->pvalue1;
+        $data_send['ordcomtt_lab'] = $ordcomtt_lab->pvalue1;
+        $data_send['ordcomtt_phys'] = $ordcomtt_phys->pvalue1;
+        $data_send['ordcomtt_rehab'] = $ordcomtt_rehab->pvalue1;
+        $data_send['ordcomtt_diet'] = $ordcomtt_diet->pvalue1;
+        $data_send['ordcomtt_dfee'] = $ordcomtt_dfee->pvalue1;
+        $data_send['ordcomtt_oth'] = $ordcomtt_oth->pvalue1;
+        $data_send['ordcomtt_pkg'] = $ordcomtt_pkg->pvalue1;
+
+        $data_send['phardept_dflt'] = $ordcomtt_phar->pvalue2;
+        $data_send['dispdept_dflt'] = $ordcomtt_disp->pvalue2;
+        $data_send['labdept_dflt'] = $ordcomtt_lab->pvalue2;
+        $data_send['raddept_dflt'] = $ordcomtt_rad->pvalue2;
+        $data_send['physdept_dflt'] = $ordcomtt_phys->pvalue2;
+        $data_send['rehabdept_dflt'] = $ordcomtt_rehab->pvalue2;
+        $data_send['dfeedept_dflt'] = $ordcomtt_dfee->pvalue2;
+        $data_send['dietdept_dflt'] = $ordcomtt_diet->pvalue2;
+        $data_send['pkgdept_dflt'] = $dept->deptcode;
+        $data_send['othdept_dflt'] = $ordcomtt_disp->pvalue2;    
+
+        return view('hisdb.ordcom.ordcom_iframe',$data_send,compact('mrn','episno','pat_mast_data','episode_data'));
+    }
+
 }

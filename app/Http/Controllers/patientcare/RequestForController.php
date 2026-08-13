@@ -346,8 +346,7 @@ class RequestForController extends defaultController
             
             return response('Error DB rollback!'.$e, 500);
             
-        }
-        
+        }        
     }
     
     public function edit_otbook(Request $request){

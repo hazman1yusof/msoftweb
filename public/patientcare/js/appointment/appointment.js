@@ -196,7 +196,7 @@ $(document).ready(function () {
 				empty_transaction_diet();
 				empty_transaction_phys();
 				empty_dietcarenote();
-				empty_userfile();
+				// empty_userfile();
 				empty_currphys();
 				empty_formNursing();
 				
@@ -310,7 +310,7 @@ $(document).ready(function () {
 				empty_transaction_diet();
 				empty_transaction_phys();
 				empty_dietcarenote();
-				empty_userfile();
+				// empty_userfile();
 				empty_currphys();
 				empty_formNursing();
 				

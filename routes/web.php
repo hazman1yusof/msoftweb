@@ -1524,6 +1524,7 @@ Route::post('/dischgsummary/form','hisdb\DischgSummaryController@form');
 Route::get('/ordcom','hisdb\OrdcomController@show');
 Route::get('/ordcom/table','hisdb\OrdcomController@table');
 Route::post('/ordcom/form','hisdb\OrdcomController@form');
+Route::get('/ordcom_iframe','hisdb\OrdcomController@ordcom_iframe');
 
 //// Discharge page IP ///
 Route::get('/discharge','hisdb\DischargeController@show');

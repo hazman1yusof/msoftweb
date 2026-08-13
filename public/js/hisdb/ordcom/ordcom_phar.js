@@ -1771,6 +1771,9 @@ function write_detail_phar(span,value,rowid){
 		var lastrowdata = getrow_bootgrid_();
 		$('#jqgrid_detail_phar_'+rowid+' span.label_d').text('');
 		$('#jqgrid_detail_phar_docname_'+rowid).text(lastrowdata.q_doctorname);
+		if(lastrowdata.q_doctorname == null){
+			$('#jqgrid_detail_phar_docname_'+rowid).text(lastrowdata.doctorname);
+		}
 	}else if(Array.isArray(span)){
 		span.forEach(function(e,i){
 			let textval = e.value;
