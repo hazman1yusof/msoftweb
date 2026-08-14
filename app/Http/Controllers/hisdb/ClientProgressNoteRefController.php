@@ -481,8 +481,8 @@ class ClientProgressNoteRefController extends defaultController
             $doctorcode_obj = $doctorcode_obj->first();
             
             $refdoctor_obj = DB::table('hisdb.docalloc as d')
-                            ->select('d.DoctorCode','u.username')
-                            ->leftJoin('sysdb.users as u', function ($join) use ($request){
+                            ->select('d.DoctorCode','u.loginid')
+                            ->leftJoin('hisdb.doctor as u', function ($join) use ($request){
                                 $join = $join->on('u.doctorcode','=','d.doctorcode');
                                 $join = $join->on('u.compcode','=','d.compcode');
                             })
@@ -494,7 +494,7 @@ class ClientProgressNoteRefController extends defaultController
             
             if($refdoctor_obj->exists()){
                 // $refdoctor_obj = $refdoctor_obj->first()->DoctorCode;
-                $refdoctor_obj = $refdoctor_obj->first()->username;
+                $refdoctor_obj = $refdoctor_obj->first()->loginid;
                 $responce->refdoctor = $refdoctor_obj;
             }else{
                 $responce->refdoctor = '-';

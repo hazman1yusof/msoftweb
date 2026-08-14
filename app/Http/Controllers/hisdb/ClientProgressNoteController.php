@@ -715,8 +715,8 @@ class ClientProgressNoteController extends defaultController
             $doctorcode_obj = $doctorcode_obj->first();
             
             $admdoctor_obj = DB::table('hisdb.episode as e')
-                            ->select('e.admdoctor','u.username')
-                            ->leftJoin('sysdb.users as u', function ($join) use ($request){
+                            ->select('e.admdoctor','u.loginid')
+                            ->leftJoin('hisdb.doctor as u', function ($join) use ($request){
                                 $join = $join->on('u.doctorcode','=','e.admdoctor');
                                 $join = $join->on('u.compcode','=','e.compcode');
                             })
@@ -728,7 +728,7 @@ class ClientProgressNoteController extends defaultController
             
             if($admdoctor_obj->exists()){
                 // $admdoctor_obj = $admdoctor_obj->first()->DoctorCode;
-                $admdoctor_obj = $admdoctor_obj->first()->username;
+                $admdoctor_obj = $admdoctor_obj->first()->loginid;
                 $responce->admdoctor = $admdoctor_obj;
             }else{
                 $responce->admdoctor = '-';
