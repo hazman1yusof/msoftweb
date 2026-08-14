@@ -698,19 +698,41 @@ class ClientProgressNoteController extends defaultController
         
         $responce = new stdClass();
         
-        $admdoctor_obj = DB::table('hisdb.docalloc')
-                        ->select('DoctorCode')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('AllocNo','=','1')
-                        ->where('mrn','=',$request->mrn)
-                        ->where('episno','=',$request->episno)
-                        ->where('DoctorCode','=',session('username'));
+        // $admdoctor_obj = DB::table('hisdb.docalloc')
+        //                 ->select('DoctorCode')
+        //                 ->where('compcode','=',session('compcode'))
+        //                 ->where('AllocNo','=','1')
+        //                 ->where('mrn','=',$request->mrn)
+        //                 ->where('episno','=',$request->episno)
+        //                 ->where('DoctorCode','=',session('username'));
         
-        if($admdoctor_obj->exists()){
-            $admdoctor_obj = $admdoctor_obj->first()->DoctorCode;
-            $responce->admdoctor = $admdoctor_obj;
-        }else{
-            $responce->admdoctor = '-';
+        $doctorcode_obj = DB::table('hisdb.doctor')
+                        ->select('doctorcode')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('loginid','=',session('username'));
+        
+        if($doctorcode_obj->exists()){
+            $doctorcode_obj = $doctorcode_obj->first();
+            
+            $admdoctor_obj = DB::table('hisdb.episode as e')
+                            ->select('e.admdoctor','u.username')
+                            ->leftJoin('sysdb.users as u', function ($join) use ($request){
+                                $join = $join->on('u.doctorcode','=','e.admdoctor');
+                                $join = $join->on('u.compcode','=','e.compcode');
+                            })
+                            ->where('e.compcode','=',session('compcode'))
+                            // ->where('AllocNo','=','1')
+                            ->where('e.mrn','=',$request->mrn)
+                            ->where('e.episno','=',$request->episno)
+                            ->where('e.admdoctor','=',$doctorcode_obj->doctorcode);
+            
+            if($admdoctor_obj->exists()){
+                // $admdoctor_obj = $admdoctor_obj->first()->DoctorCode;
+                $admdoctor_obj = $admdoctor_obj->first()->username;
+                $responce->admdoctor = $admdoctor_obj;
+            }else{
+                $responce->admdoctor = '-';
+            }
         }
         
         return json_encode($responce);

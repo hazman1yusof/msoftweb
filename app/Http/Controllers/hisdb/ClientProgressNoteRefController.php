@@ -480,16 +480,21 @@ class ClientProgressNoteRefController extends defaultController
         if($doctorcode_obj->exists()){
             $doctorcode_obj = $doctorcode_obj->first();
             
-            $refdoctor_obj = DB::table('hisdb.docalloc')
-                            ->select('DoctorCode')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('AllocNo','!=','1')
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno)
-                            ->where('DoctorCode','=',$doctorcode_obj->doctorcode);
+            $refdoctor_obj = DB::table('hisdb.docalloc as d')
+                            ->select('d.DoctorCode','u.username')
+                            ->leftJoin('sysdb.users as u', function ($join) use ($request){
+                                $join = $join->on('u.doctorcode','=','d.doctorcode');
+                                $join = $join->on('u.compcode','=','d.compcode');
+                            })
+                            ->where('d.compcode','=',session('compcode'))
+                            // ->where('AllocNo','!=','1')
+                            ->where('d.mrn','=',$request->mrn)
+                            ->where('d.episno','=',$request->episno)
+                            ->where('d.DoctorCode','=',$doctorcode_obj->doctorcode);
             
             if($refdoctor_obj->exists()){
-                $refdoctor_obj = $refdoctor_obj->first()->DoctorCode;
+                // $refdoctor_obj = $refdoctor_obj->first()->DoctorCode;
+                $refdoctor_obj = $refdoctor_obj->first()->username;
                 $responce->refdoctor = $refdoctor_obj;
             }else{
                 $responce->refdoctor = '-';
