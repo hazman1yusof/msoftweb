@@ -72,12 +72,14 @@ $(document).ready(function () {
 				}, 300 );
 			}
 
-			let reccount = $('#jqGrid_bed').jqGrid('getGridParam', 'reccount');
-			if(reccount>0){
-				button_state_bed('add');
-			}else{
-				button_state_bed('empty');
-			}
+			// let reccount = $('#jqGrid_bed').jqGrid('getGridParam', 'reccount');
+			// if(reccount>0){
+			// 	button_state_bed('add');
+			// }else{
+			// 	button_state_bed('empty');
+			// }
+
+			button_state_bed('add');
 
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
