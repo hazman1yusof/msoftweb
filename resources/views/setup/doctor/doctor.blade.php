@@ -153,7 +153,7 @@ i.fa {
 							<label class="col-md-2 control-label" for="specialitycode">Speciality</label>  
 							<div class="col-md-4">
 								<div class='input-group'>
-									<input id="specialitycode" name="specialitycode" type="text" class="form-control input-sm text-uppercase" />
+									<input id="specialitycode" name="specialitycode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value"/>
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
@@ -164,7 +164,7 @@ i.fa {
 							<label class="col-md-2 control-label" for="disciplinecode">Discipline</label>  
 							<div class="col-md-4">
 								<div class='input-group'>
-									<input id="disciplinecode" name="disciplinecode" type="text" class="form-control input-sm text-uppercase" />
+									<input id="disciplinecode" name="disciplinecode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value"/>
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
@@ -173,7 +173,7 @@ i.fa {
 							<label class="col-md-2 control-label" for="creditorcode">Creditor</label>  
 							<div class="col-md-4">
 								<div class='input-group'>
-									<input id="creditorcode" name="creditorcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value"/>
+									<input id="creditorcode" name="creditorcode" type="text" class="form-control input-sm text-uppercase" />
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
