@@ -233,6 +233,16 @@ span.input-group-addon > strong, span.input-group-addon > label{
 						<span class="input-group-addon">%</span>
 					</div>
 				</div>
+
+				<label class="col-md-2 control-label" for="discchgcode">Discount Charge Code</label>  
+				<div class="col-md-3">
+					<div class='input-group'>
+						<input id="discchgcode" name="discchgcode" type="text" class="form-control input-sm uppercase" data-validation="required">
+						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+					</div>
+					<span class="help-block"></span>
+				</div>
+
 			</div> 
 
 			<div class="form-group">
@@ -366,7 +376,7 @@ span.input-group-addon > strong, span.input-group-addon > label{
 				<label class="col-md-2 control-label" for="svc_discchgcode">Disc Chg Code</label>  
 				<div class="col-md-3">
 					<div class='input-group'>
-						<input id="svc_discchgcode" name="svc_discchgcode" type="text" class="form-control input-sm uppercase">
+						<input id="svc_discchgcode" name="svc_discchgcode" type="text" class="form-control input-sm uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					</div>
 					<span class="help-block"></span>

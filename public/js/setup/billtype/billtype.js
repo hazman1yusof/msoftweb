@@ -38,6 +38,15 @@ $(document).ready(function () {
 			mycurrency.formatOff();
 			mycurrency.check0value(errorField);
 			radbuts.check();
+
+			if($('#percent_').val() == '100' && $('#amount').val() == 0){
+				if($("#formdata :input[name='discchgcode']").val() == ''){
+					text_error1("#formdata :input[name='discchgcode']");
+					alert("Please insert Discount Charge Code");
+					return 0;
+				}
+			}
+
 			if ($('#formdata').isValid({ requiredFields: '' }, conf, true)) {
 				saveFormdata("#jqGrid", "#dialogForm", "#formdata", oper, saveParam, urlParam);
 			} else {
@@ -91,11 +100,15 @@ $(document).ready(function () {
 						break;
 				}
 				if (oper != 'view') {
+					dialog_discChargeCode_main.on();
 				}
 				if (oper != 'add') {
+					dialog_discChargeCode_main.check(errorField);
 				}
 			},
 			close: function (event, ui) {
+				remove_error("#formdata :input[name='discchgcode']");
+				dialog_discChargeCode_main.off();
 				emptyFormdata(errorField, '#formdata');
 				parent_close_disabled(false);
 				$('.my-alert').detach();
@@ -165,7 +178,7 @@ $(document).ready(function () {
 			{ label: 'Amount', name: 'amount', width: 40, classes: 'wrap', align: 'right', formatter: 'currency'  },
 			{ label: 'Percentage', name: 'percent_', width: 40, classes: 'wrap', align: 'right', formatter: formatter1, unformat: unformat1 },
 			{ label: 'All Service', name: 'service', width: 40, classes: 'wrap', formatter: formatter, unformat: unformat },
-			{ label: 'discchgcode', name: 'discchgcode', width: 90, hidden: true },
+			{ label: 'Discount Charge Code', name: 'discchgcode', width: 40 },
 			{ label: 'ttacode', name: 'ttacode', width: 90, hidden: true },
 			{ label: 'discrate', name: 'discrate', width: 90, hidden: true },
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true, classes: 'wrap' },
@@ -432,6 +445,39 @@ $(document).ready(function () {
 		},'urlParam', 'radio', 'tab'
 	);
 	dialog_ChgGroup.makedialog();
+
+	var dialog_discChargeCode_main = new ordialog(
+		'discchgcode','hisdb.chgmast',"#formdata :input[name='discchgcode']",errorField,
+		{	colModel:[
+				{label:'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function () {
+				$('#amount').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#svc_percent_').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}		
+		},{
+			title:"Select Charge Code",
+			open: function(){
+				dialog_discChargeCode_main.urlParam.filterCol=['compcode','recstatus'],
+				dialog_discChargeCode_main.urlParam.filterVal=['session.compcode','ACTIVE']
+			}
+		},'urlParam', 'radio', 'tab', false
+	);
+	dialog_discChargeCode_main.makedialog();
 
 	var dialog_discChargeCode = new ordialog(
 		'svc_discchgcode','hisdb.chgmast',"#Fsvc :input[name='svc_discchgcode']",errorField,

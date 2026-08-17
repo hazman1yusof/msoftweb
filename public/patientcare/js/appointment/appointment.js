@@ -246,6 +246,8 @@ $(document).ready(function () {
 				{ label: 'stats_physio', name: 'stats_physio', hidden: true },
 				{ label: 'stats_diet', name: 'stats_diet', hidden: true },
 				{ label: ' ', name: ' ' ,formatter: formatter_btn, width: 70},
+				{ label: 'billtype', name: 'billtype', hidden: true },
+				{ label: 'billtypeDesc', name: 'billtypeDesc', hidden: true },
 
 			],
 			autowidth: true,

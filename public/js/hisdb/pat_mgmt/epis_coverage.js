@@ -136,8 +136,11 @@ $(document).ready(function () {
 		$('#name_epno_coverage').val(lastrowdata.Name);
 
 		$("#mdl_reference").data('from','payer');
-    	$("#refno_epno_coverage_btn").off('click',btn_refno_info_onclick);
-		$("#refno_epno_coverage_btn").on('click',btn_refno_info_onclick);
+
+		if($('#ordcom_phase').val() != '2'){
+	    	$("#refno_epno_coverage_btn").off('click',btn_refno_info_onclick);
+			$("#refno_epno_coverage_btn").on('click',btn_refno_info_onclick);
+		}
 	});
 
 	var epno_coverage_payercode = new ordialog(
