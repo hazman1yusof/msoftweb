@@ -13,7 +13,7 @@
 		
 		<i class="arrow fa fa-angle-double-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#jqGridTriageInfoED_panel"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#jqGridTriageInfoED_panel"></i>
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 25px;">
+		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 25px;">
 			<h5>Emergency Nursing Assessment</h5>
 		</div>
 		
@@ -22,7 +22,7 @@
 			style="position: absolute; 
 					padding: 0 0 0 0; 
 					right: 40px; 
-					top: 25px; display:none">
+					top: 25px;">
 			<button type="button" class="btn btn-default" id="new_tiED">
 				<span class="fa fa-plus-square-o"></span> New 
 			</button>
@@ -33,7 +33,7 @@
 				<span class="fa fa-save fa-lg"></span> Save 
 			</button>
 			<button type="button" class="btn btn-default" id="cancel_tiED">
-				<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
+				<span class="fa fa-ban fa-lg" aria-hidden="true"></span> Cancel 
 			</button>
 		</div>
 	</div>
@@ -58,11 +58,11 @@
 									
 									<label class="col-md-3 control-label" for="triagecolor">Triage Color Zone</label>
 									<div class="col-md-3">
-										<!-- <div class='input-group'> -->
+										<div class='input-group'>
 											<input name="triagecolor" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please select color zone.">
-											<!-- <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 										</div>
-										<span class="help-block"></span> -->
+										<span class="help-block"></span>
 									</div>
 								</div>
 								

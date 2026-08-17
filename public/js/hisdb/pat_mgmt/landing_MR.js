@@ -277,7 +277,7 @@ grid.on("click.rs.jquery.bootgrid", function (e,c,r){
     if($('#curpat').val() == 'true'){
         if($('#epistycode').val() == 'OP'){
             if($('#user_doctor').val() == '1'){
-                populate_triage_currpt(lastrowdata);
+                // populate_triage_currpt(lastrowdata);
                 populate_antenatal(lastrowdata);
                 populate_paediatric(lastrowdata);
                 populate_nursingnote(lastrowdata);
@@ -289,7 +289,7 @@ grid.on("click.rs.jquery.bootgrid", function (e,c,r){
                 populate_dieteticCareNotes_currpt(lastrowdata);
                 // populate_dietOrder_currpt(lastrowdata);
             }else if($('#user_nurse').val() == '1'){
-                populate_triage_currpt(lastrowdata);
+                // populate_triage_currpt(lastrowdata);
                 populate_nursingnote(lastrowdata);
                 populate_clientProgNote_currpt(lastrowdata);
                 populate_clientProgNoteRef_currpt(lastrowdata);
@@ -308,36 +308,18 @@ grid.on("click.rs.jquery.bootgrid", function (e,c,r){
                 populate_endConsult_currpt(lastrowdata);
             }
         }else if($('#epistycode').val() == 'IP' || $('#epistycode').val() == 'DP'){
-            if($('#user_doctor').val() == '1'){
+                // populate_ward_main_MR(lastrowdata);
                 populate_triageED_currpt(lastrowdata);
-                populate_triage_currpt(lastrowdata);
-                // populate_nursAssessment_currpt(lastrowdata);
+                // populate_triage_currpt(lastrowdata);
                 populate_nursingActionPlan(lastrowdata);
-                // populate_header_getdata(lastrowdata);
                 populate_nursingnote(lastrowdata);
-                // populate_invHeader_getdata(lastrowdata);
                 populate_antenatal(lastrowdata);
                 populate_clientProgNote_currpt(lastrowdata);
                 populate_clientProgNoteRef_currpt(lastrowdata);
-                populate_doctorNote_currpt(lastrowdata);
+                // populate_doctorNote_currpt(lastrowdata);
                 populate_requestFor_currpt(lastrowdata);
-                populate_dieteticCareNotes_currpt(lastrowdata);
-                populate_dietOrder_currpt(lastrowdata);
-            }else if($('#user_nurse').val() == '1'){
-                populate_triageED_currpt(lastrowdata);
-                populate_triage_currpt(lastrowdata);
-                // populate_nursAssessment_currpt(lastrowdata);
-                populate_nursingActionPlan(lastrowdata);
-                // populate_header_getdata(lastrowdata);
-                populate_nursingnote(lastrowdata);
-                // populate_invHeader_getdata(lastrowdata);
-                populate_clientProgNote_currpt(lastrowdata);
-                populate_clientProgNoteRef_currpt(lastrowdata);
-                populate_doctorNote_currpt(lastrowdata);
-                populate_requestFor_currpt(lastrowdata);
-                populate_dieteticCareNotes_currpt(lastrowdata);
-                populate_dietOrder_currpt(lastrowdata);
-            }
+                // populate_dieteticCareNotes_currpt(lastrowdata);
+                // populate_dietOrder_currpt(lastrowdata);
             
             if($('#user_billing').val() == '1'){
                 populate_ordcom_currpt(lastrowdata);
@@ -348,13 +330,13 @@ grid.on("click.rs.jquery.bootgrid", function (e,c,r){
             // }
         }
         
-        if(lastrowdata.pregnant == 1){
-            $('#antenatal_row,#jqGridAntenatal_c').show();
-            $('#nursing_row,#jqGridTriageInfo_c').hide();
-        }else{
-            $('#nursing_row,#jqGridTriageInfo_c').show();
-            $('#antenatal_row,#jqGridAntenatal_c').hide();
-        }
+        // if(lastrowdata.pregnant == 1){
+        //     $('#antenatal_row,#jqGridAntenatal_c').show();
+        //     $('#nursing_row,#jqGridTriageInfo_c').hide();
+        // }else{
+        //     $('#nursing_row,#jqGridTriageInfo_c').show();
+        //     $('#antenatal_row,#jqGridAntenatal_c').hide();
+        // }
         
         // if((lastrowdata.ward == null || lastrowdata.ward == "") && (lastrowdata.bednum == null || lastrowdata.bednum == "")){
         //     $('#progressnote_row,#jqGridProgress_c').hide();
