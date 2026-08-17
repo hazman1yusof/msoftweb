@@ -452,6 +452,7 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
+				{label:'Generic',name:'brandname',width:400,classes:'pointer',canSearch:true},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -485,6 +486,7 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
+				{label:'Generic',name:'brandname',width:400,classes:'pointer',canSearch:true},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
