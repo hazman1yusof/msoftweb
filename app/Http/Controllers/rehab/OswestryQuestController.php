@@ -257,7 +257,7 @@ class OswestryQuestController extends defaultController
                 }
                 // $date['dt'] = $value->entereddate; // for sorting
                 if(!empty($value->entereddate)){ // for sorting
-                    $date['dt'] =  Carbon::createFromFormat('Y-m-d', $value->entereddate)->format('d-m-Y').' '.$value->enteredtime;
+                    $date['dt'] =  $value->entereddate.' '.$value->enteredtime;
                 }else{
                     $date['dt'] =  '-';
                 }
