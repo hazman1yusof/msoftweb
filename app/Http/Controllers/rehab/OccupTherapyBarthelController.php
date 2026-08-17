@@ -85,7 +85,7 @@ class OccupTherapyBarthelController extends defaultController
                 //     $date['timeAssessment'] =  '-';
                 // }
                 if(!empty($value->dateofAssessment)){ // for sorting
-                    $date['datetime'] =  Carbon::createFromFormat('Y-m-d', $value->dateofAssessment)->format('d-m-Y').' '.$value->timeAssessment;
+                    $date['datetime'] =  $value->dateofAssessment.' '.$value->timeAssessment;
                 }else{
                     $date['datetime'] =  '-';
                 }

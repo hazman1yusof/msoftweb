@@ -103,7 +103,7 @@ class OccupTherapyCognitiveController extends defaultController
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
                 if(!empty($value->dateofexam)){ // for sorting
-                    $date['datetime'] =  Carbon::createFromFormat('Y-m-d', $value->dateofexam)->format('d-m-Y').' '.$value->enteredtime;
+                    $date['datetime'] =  $value->dateofexam.' '.$value->enteredtime;
                 }else{
                     $date['datetime'] =  '-';
                 }
@@ -146,7 +146,7 @@ class OccupTherapyCognitiveController extends defaultController
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
                 if(!empty($value->dateAssessment)){ // for sorting
-                    $date['datetime'] =  Carbon::createFromFormat('Y-m-d', $value->dateAssessment)->format('d-m-Y').' '.$value->enteredtime;
+                    $date['datetime'] =  $value->dateAssessment.' '.$value->enteredtime;
                 }else{
                     $date['datetime'] =  '-';
                 }
