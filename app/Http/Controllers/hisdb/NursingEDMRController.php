@@ -8,7 +8,7 @@ use DB;
 use Carbon\Carbon;
 use App\Http\Controllers\defaultController;
 
-class NursingEDMRController extends defaultController
+class NursingEDController extends defaultController
 {
     
     var $table;
@@ -22,7 +22,7 @@ class NursingEDMRController extends defaultController
     
     public function show(Request $request)
     {
-        return view('hisdb.nursingED.nursingED');
+        return view('hisdb.nursingED_MR.nursingED_MR');
     }
     
     public function form(Request $request)
@@ -41,6 +41,9 @@ class NursingEDMRController extends defaultController
             
             case 'get_table_triageED':
                 return $this->get_table_triageED($request);
+
+            case 'addNotesNursingED_save':
+                return $this->add_notesNursingED($request);
             
             default:
                 return 'error happen..';
@@ -139,9 +142,10 @@ class NursingEDMRController extends defaultController
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'lastuser'  => $request->lastuser,
                     'lastupdate'  => $request->lastupdate,
-                    'nursesign' => $request->nursesign,
-                    'eduser' => $request->eduser,
-                    'warduser' => $request->warduser,
+                    'nursesign' => session('username'),
+                    'eduser' => session('username'),
+                    'warduser' => session('username'),
+                    'ed_notes' => $request->ed_notes,
                 ]);
             
             DB::table('nursing.nurshistory')
@@ -371,6 +375,7 @@ class NursingEDMRController extends defaultController
                         'nursesign' => $request->nursesign,
                         'eduser' => $request->eduser,
                         'warduser' => $request->warduser,
+                        'ed_notes' => $request->ed_notes,
                     ]);
             }else{
                 $nursassessment_triageinfo
@@ -453,6 +458,7 @@ class NursingEDMRController extends defaultController
                         'nursesign' => $request->nursesign,
                         'eduser' => $request->eduser,
                         'warduser' => $request->warduser,
+                        'ed_notes' => $request->ed_notes,
                     ]);
             }
             
@@ -727,4 +733,34 @@ class NursingEDMRController extends defaultController
         
     }
     
+    public function add_notesNursingED(Request $request){
+        DB::beginTransaction();
+       
+        try {
+
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'NURSING_ED',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+             
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
 }

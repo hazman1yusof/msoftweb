@@ -188,7 +188,7 @@ class OccupTherapyUpperExtremityController extends defaultController
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
                 if(!empty($value->dateAssess)){ // for sorting
-                    $date['datetime'] =  Carbon::createFromFormat('Y-m-d', $value->dateAssess)->format('d-m-Y').' '.$value->enteredtime;
+                    $date['datetime'] =  $value->dateAssess.' '.$value->enteredtime;
                 }else{
                     $date['datetime'] =  '-';
                 }

@@ -2482,7 +2482,7 @@ class physioController extends defaultController
                 }
                 // $date['recdatetime'] = $value->entereddate; // for sorting
                 if(!empty($value->entereddate)){ // for sorting
-                    $date['recdatetime'] =  Carbon::createFromFormat('Y-m-d', $value->entereddate)->format('d-m-Y').' '.$value->enteredtime;
+                    $date['recdatetime'] =  $value->entereddate.' '.$value->enteredtime;
                 }else{
                     $date['recdatetime'] =  '-';
                 }

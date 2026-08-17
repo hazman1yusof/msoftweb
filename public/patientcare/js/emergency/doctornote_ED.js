@@ -278,7 +278,7 @@ $(document).ready(function (){
 		
 		if(mrn.trim() == '' || type.trim() == ''){
 			alert('Please choose Patient First');
-		}else if($('#save_doctorNote').prop('disabled')){
+		}else if($('#adddate').val()=='' || $('#recordtime').val()==''){
 			alert('Edit this patient first');
 		}else{
 			if(istablet){

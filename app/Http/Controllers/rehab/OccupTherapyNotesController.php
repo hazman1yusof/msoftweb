@@ -80,7 +80,7 @@ class OccupTherapyNotesController extends defaultController
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
                 if(!empty($value->dateNotes)){ // for sorting
-                    $date['datetime'] =  Carbon::createFromFormat('Y-m-d', $value->dateNotes)->format('d-m-Y').' '.$value->enteredtime;
+                    $date['datetime'] =  $value->dateNotes.' '.$value->enteredtime;
                 }else{
                     $date['datetime'] =  '-';
                 }
