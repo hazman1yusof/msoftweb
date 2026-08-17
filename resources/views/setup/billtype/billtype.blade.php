@@ -237,7 +237,7 @@ span.input-group-addon > strong, span.input-group-addon > label{
 				<label class="col-md-2 control-label" for="discchgcode">Discount Charge Code</label>  
 				<div class="col-md-3">
 					<div class='input-group'>
-						<input id="discchgcode" name="discchgcode" type="text" class="form-control input-sm uppercase" data-validation="required">
+						<input id="discchgcode" name="discchgcode" type="text" class="form-control input-sm uppercase">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					</div>
 					<span class="help-block"></span>

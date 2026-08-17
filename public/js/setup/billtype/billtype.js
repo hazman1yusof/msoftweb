@@ -39,7 +39,8 @@ $(document).ready(function () {
 			mycurrency.check0value(errorField);
 			radbuts.check();
 
-			if($('#percent_').val() == '100' && $('#amount').val() == 0){
+			if(parseInt($('#percent_').val()) == 100 && ret_parsefloat($('#amount').val()) == 0){
+			}else{
 				if($("#formdata :input[name='discchgcode']").val() == ''){
 					text_error1("#formdata :input[name='discchgcode']");
 					alert("Please insert Discount Charge Code");
