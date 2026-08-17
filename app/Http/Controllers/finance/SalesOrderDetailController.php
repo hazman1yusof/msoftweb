@@ -3048,6 +3048,7 @@ class SalesOrderDetailController extends defaultController
                     $billtysvc_obj = new stdClass();
                     $billtysvc_obj->chggroup = $value->chggroup;
                     $billtysvc_obj->svc = $value;
+                    $billtysvc_obj->item = [];
 
                     $billtyitem = DB::table('hisdb.billtyitem')
                                     ->where('compcode','=',session('compcode'))
@@ -3079,7 +3080,7 @@ class SalesOrderDetailController extends defaultController
                 if($svc_obj->chggroup == $loop_item->chggroup){
                     $billtype_amt_percent->amount = (empty($svc_obj->svc->amount))?0:$svc_obj->svc->amount;
                     $billtype_amt_percent->percent_ = (empty($svc_obj->svc->percent_))?0:$svc_obj->svc->percent_;
-
+                    
                     if(count($svc_obj->item) > 0){
                         foreach ($svc_obj->item as $key_item => $item_obj){
                             if($item_obj->chgcode == $loop_item->chgcode){
