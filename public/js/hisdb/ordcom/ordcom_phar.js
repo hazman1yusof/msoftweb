@@ -99,7 +99,7 @@ $(document).ready(function(){
 				formatter:totamountFormatter_phar,
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
-			{label: 'Dosage', name: 'remark', hidden: true },
+			{ label: 'Dosage', name: 'remark', hidden: true },
 			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
 			{ label: 'doscode', name: 'doscode', width: 80, classes: 'wrap', hidden: true },
 			{ label: 'drugindicator', name: 'drugindicator', width: 80, classes: 'wrap', hidden: true },
@@ -748,7 +748,9 @@ function calculate_line_totgst_and_totamt_phar(event) {
 		rate = 0;
 	}
 
-	var discamt = calc_discamt_main($('#jqGrid_ordcom_c #ordcomtt_phar').val(),$("#jqGrid_phar #"+id_optid+"_chgcode").val(),unitprce,quantity);
+	var billty_discamt = ret_parsefloat($("#jqGrid_phar #"+id_optid+"_chgcode").data('billty_discamt')).toFixed(2);
+
+	var discamt = -1 * ret_parsefloat(billty_discamt * quantity).toFixed(2);
 	var amount = (unitprce*quantity);
 
 	let taxamount = (amount + discamt) * rate / 100;
@@ -851,6 +853,7 @@ var dialog_chgcode_phar = new ordialog(
 			{label: 'billty_amount',name:'billty_amount',hidden:true},
 			{label: 'billty_percent',name:'billty_percent',hidden:true},
 			{label: 'convfactor',name:'convfactor',hidden:true},
+			{label: 'billty_discamt',name:'billty_discamt',hidden:true},
 			
 		],
 		sortname: 'cm.uom',
@@ -910,6 +913,7 @@ var dialog_chgcode_phar = new ordialog(
 			$("#jqGrid_phar #"+id_optid+"_taxcode").val(data['taxcode']);
 			$("#jqGrid_phar #"+id_optid+"_tax_rate").val(data['rate']);
 			$("#jqGrid_phar #"+id_optid+"_convfactor_uom").val(data['convfactor']);
+			$("#jqGrid_phar #"+id_optid+"_chgcode").data('billty_discamt',data['billty_discamt']);
 
 			dialog_chgcode_phar.urlParam.uom = data['uom'];
 

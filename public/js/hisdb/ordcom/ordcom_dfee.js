@@ -527,14 +527,16 @@ function calculate_line_totgst_and_totamt_dfee(event) {
 		rate = 0;
 	}
 
-	var disamt = calc_discamt_main($('#ordcomtt_dfee').val(),$("#jqGrid_dfee #"+id_optid+"_chgcode").val(),unitprce,quantity);
+	var billty_discamt = ret_parsefloat($("#jqGrid_dfee #"+id_optid+"_chgcode").data('billty_discamt')).toFixed(2);
+
+	var discamt = -1 * ret_parsefloat(billty_discamt * quantity).toFixed(2);
 	var amount = (unitprce*quantity);
 
-	let taxamount = (amount + disamt) * rate / 100;
+	let taxamount = (amount + discamt) * rate / 100;
 
-	var totamount = amount + disamt + taxamount;
+	var totamount = amount + discamt + taxamount;
 
-	$("#"+id_optid+"_discamt").val(disamt);
+	$("#"+id_optid+"_discamt").val(discamt);
 	$("#"+id_optid+"_amount").val(amount);
 	$("#"+id_optid+"_taxamount").val(taxamount);
 	$("#"+id_optid+"_totamount").val(totamount);
@@ -573,6 +575,7 @@ var dialog_chgcode_dfee = new ordialog(
 			{label: 'deptcode',name:'deptcode',hidden:true},
 			{label: 'doctorcode',name:'doctorcode',hidden:true},
 			{label: 'doctorname',name:'doctorname',hidden:true},
+			{label: 'billty_discamt',name:'billty_discamt',hidden:true},
 			
 		],
 		urlParam: {
@@ -645,6 +648,7 @@ var dialog_chgcode_dfee = new ordialog(
 			$("#jqGrid_dfee #"+id_optid+"_cost_price").val(data['avgcost']);
 			$("#jqGrid_dfee #"+id_optid+"_billtypeperct").val(data['billty_percent']);
 			$("#jqGrid_dfee #"+id_optid+"_billtypeamt").val(data['billty_amount']);
+			$("#jqGrid_dfee #"+id_optid+"_chgcode").data('billty_discamt',data['billty_discamt']);
 
 			if(data['overwrite'] == '1'){
 				$("#jqGrid_dfee #"+id_optid+"_unitprce").prop('readonly',false);

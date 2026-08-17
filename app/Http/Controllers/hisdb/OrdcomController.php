@@ -4129,7 +4129,8 @@ class OrdcomController extends defaultController
             $disc = [];
 
             foreach ($chargetrx_obj as $key => $chargetrx) {
-                $net_amout = $chargetrx->amount + $chargetrx->taxamount + $chargetrx->discamt;
+                // $net_amout = $chargetrx->amount + $chargetrx->taxamount + $chargetrx->discamt;
+                $net_amout = $chargetrx->amount;
                 if($chargetrx->taxamount != 0){
                     $gst = $this->handle_gst($gst,$chargetrx->taxamount);
                 }
@@ -4249,7 +4250,6 @@ class OrdcomController extends defaultController
 
                     $grpbal = $grpbal - $boleh_ditolak;
                 }
-                
             }
 
             if($boleh_ditolak > 0){
@@ -4335,7 +4335,6 @@ class OrdcomController extends defaultController
                             'invno' => $invno,
                             'billtime' => Carbon::now("Asia/Kuala_Lumpur"),
                         ]);
-
             }
 
             if($baki_turun == 0){
@@ -4595,6 +4594,13 @@ class OrdcomController extends defaultController
 
         foreach ($disc as $key => $value) {
             $recno = $this->recno('OE','IN');
+
+            $chgmast = DB::table("hisdb.chgmast")
+                    ->where('compcode','=',session('compcode'))
+                    ->where('chgcode','=',$value->code)
+                    ->first();
+
+            $invgroup = $this->get_invgroup($chgmast,null);
 
             DB::table("hisdb.chargetrx")
                 ->insertGetId([

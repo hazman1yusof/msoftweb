@@ -652,7 +652,9 @@ function calculate_line_totgst_and_totamt_pkg(event) {
 		rate = 0;
 	}
 
-	var discamt = calc_discamt_main($('#ordcomtt_pkg').val(),$("#jqGrid_pkg #"+id_optid+"_chgcode").val(),unitprce,quantity);
+	var billty_discamt = ret_parsefloat($("#jqGrid_pkg #"+id_optid+"_chgcode").data('billty_discamt')).toFixed(2);
+
+	var discamt = -1 * ret_parsefloat(billty_discamt * quantity).toFixed(2);
 	var amount = (unitprce*quantity);
 
 	let taxamount = (amount + discamt) * rate / 100;
@@ -753,6 +755,7 @@ var dialog_chgcode_pkg = new ordialog(
 			{label: 'billty_amount',name:'billty_amount',hidden:true},
 			{label: 'billty_percent',name:'billty_percent',hidden:true},
 			{label: 'convfactor',name:'convfactor',hidden:true},
+			{label: 'billty_discamt',name:'billty_discamt',hidden:true},
 			
 		],
 		sortname: 'cm.uom',
@@ -803,6 +806,7 @@ var dialog_chgcode_pkg = new ordialog(
 			$("#jqGrid_pkg #"+id_optid+"_taxcode").val(data['taxcode']);
 			$("#jqGrid_pkg #"+id_optid+"_tax_rate").val(data['rate']);
 			$("#jqGrid_pkg #"+id_optid+"_convfactor_uom").val(data['convfactor']);
+			$("#jqGrid_pkg #"+id_optid+"_chgcode").data('billty_discamt',data['billty_discamt']);
 
 			dialog_chgcode_pkg.urlParam.uom = data['uom'];
 

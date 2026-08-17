@@ -374,6 +374,8 @@ class SalesOrderDetailController extends defaultController
                 // }
             }
 
+            $value->billty_discamt = ((100 - floatval($value->billty_percent)) / 100 )* floatval( $chgprice_obj->price);
+
             $value->qtyonhand = 0;
             $value->pt_idno = null;
             $value->avgcost = null;

@@ -164,7 +164,7 @@
                     table: {
                         headerRows: 1,
                         dontBreakRows: true,
-                        widths: [250,60,60,60,50],//panjang standard dia 515
+                        widths: [250,60,60,60,60],//panjang standard dia 515
                         body: make_body()
                     }
                 },
@@ -234,8 +234,8 @@
                 {text:'Description',bold: true, style: 'body_ttl',alignment: 'left',border: [false, true, false, true]},
                 {text:'Amount (RM)',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
                 {text:'Discount (RM)',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
+                {text:'Tax Amt (RM)',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
                 {text:'Payable Amt (RM)',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
-                {text:'Tax Amt (RM)',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]}
             ],
 
             [
@@ -273,8 +273,8 @@
                         {text:e_inv.pdescription, style: 'body_row', border: [false, false, false, false]},
                         {text:myparseFloat(total_inv),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
                         {text:myparseFloat(total_disc),alignment: 'right', style: 'body_row',border: [false, false, false, false]},
-                        {text:myparseFloat(total_amt),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
                         {text:myparseFloat(total_tax),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+                        {text:myparseFloat(total_amt),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
                     ];
 
                     if(e_inv.doctorcode != ''){
@@ -282,8 +282,8 @@
                             {text:e_inv.pdescription+'\n\u200B\t -'+e_inv.doctorname, style: 'body_row', border: [false, false, false, false]},
                             {text:myparseFloat(total_inv),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
                             {text:myparseFloat(total_disc),alignment: 'right', style: 'body_row',border: [false, false, false, false]},
-                            {text:myparseFloat(total_amt),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
                             {text:myparseFloat(total_tax),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+                            {text:myparseFloat(total_amt),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
                         ];
                     }
 
@@ -295,9 +295,9 @@
             let arrsub =  [
                     {text:'', margin:[0,8,0,0], border: [false, false, false, false]},
                     {text:'', margin:[0,8,0,0], border: [false, false, false, false]},
+                    {text:'', margin:[0,8,0,0], border: [false, false, false, false]},
                     {text:'Sub-Total', margin:[0,8,0,0], border: [false, false, false, false]},
                     {text:myparseFloat(total_sub),alignment: 'right', margin:[0,8,0,0], border: [false, false, false, false]},
-                    {text:'', margin:[0,8,0,0], border: [false, false, false, false]},
                 ];
             retval.push(arrsub);
             total_sum = parseFloat_(total_sum) + parseFloat_(total_sub);
@@ -309,32 +309,32 @@
                 {text:'TOTAL BILL AMOUNT', margin:[0,10,0,0], colSpan:3, border: [false, false, false, false]},
                 {},
                 {},
-                {text:myparseFloat(total_sum),alignment: 'right', margin:[0,10,0,0], border: [false, false, false, false]},
                 {text:'',alignment: 'right', margin:[0,10,0,0], border: [false, false, false, false]},
+                {text:myparseFloat(total_sum),alignment: 'right', margin:[0,10,0,0], border: [false, false, false, false]},
             ];
         retval.push(arr_sum);
         let arr_round =  [
                 {text:'ROUNDING ADJUSTMENT', colSpan:3, border: [false, false, false, false]},
                 {},
                 {},
-                {text:myparseFloat(total_round),alignment: 'right', border: [false, false, false, false]},
                 {text:'',alignment: 'right', border: [false, false, false, false]},
+                {text:myparseFloat(total_round),alignment: 'right', border: [false, false, false, false]},
             ];
         retval.push(arr_round);
         let arr_depo =  [
                 {text:'DEPOSIT/PAYMENT PAID', colSpan:3, border: [false, false, false, false]},
                 {},
                 {},
-                {text:myparseFloat(total_depo),alignment: 'right', border: [false, false, false, false]},
                 {text:'',alignment: 'right', border: [false, false, false, false]},
+                {text:myparseFloat(total_depo),alignment: 'right', border: [false, false, false, false]},
             ];
         retval.push(arr_depo);
         let arr_all =  [
                 {text:'TOTAL AMOUNT TO BE PAID/(REFUND)', colSpan:3, border: [false, false, false, false]},
                 {},
                 {},
-                {text:myparseFloat(total_all),alignment: 'right', border: [false, false, false, false]},
                 {text:'',alignment: 'right', border: [false, false, false, false]},
+                {text:myparseFloat(total_all),alignment: 'right', border: [false, false, false, false]},
             ];
         retval.push(arr_all);
 

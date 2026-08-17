@@ -245,7 +245,7 @@
                 style: 'tableExample',
                 table: {
                     headerRows: 1,
-                    widths: [90,200,80,40,80],//panjang standard dia 515
+                    widths: [60,100,60,30,63,43,43,63],//panjang standard dia 515
                     body: make_body(e_ep.payercode)
                 }
             };
@@ -296,7 +296,10 @@
                 {text:'Description',bold: true, style: 'body_ttl',alignment: 'left',border: [false, true, false, true]},
                 {text:'Trans Date',bold: true, style: 'body_ttl',alignment: 'left',border: [false, true, false, true]},
                 {text:'Qty',bold: true, style: 'body_ttl',alignment: 'left',border: [false, true, false, true]},
-                {text:'Amount (RM)',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
+                {text:'Amount',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
+                {text:'Discount',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
+                {text:'Tax',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
+                {text:'Net Amt (RM)',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
             ]
         ];
 
@@ -310,6 +313,9 @@
                     {},
                     {},
                     {text:'', margin:[0,8,0,0], border: [false, false, false, false]},
+                    {text:'',alignment: 'right', margin:[0,10,0,0], border: [false, false, false, false]},
+                    {text:'',alignment: 'right', margin:[0,10,0,0], border: [false, false, false, false]},
+                    {text:'',alignment: 'right', margin:[0,10,0,0], border: [false, false, false, false]},
                     {text:'',alignment: 'right', margin:[0,10,0,0], border: [false, false, false, false]},
                 ];
             retval.push(arrsub_h);
@@ -326,14 +332,20 @@
                                     {text:dateFormatter(e_trx.trxdate), style: 'body_row', border: [false, false, false, false]},
                                     {text:e_trx.quantity, style: 'body_row', border: [false, false, false, false]},
                                     {text:myparseFloat(e_trx.net_amount),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+                                    {text:myparseFloat(e_trx.discamt),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+                                    {text:myparseFloat(e_trx.taxamount),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+                                    {text:myparseFloat(parseFloat_(e_trx.net_amount)+parseFloat_(e_trx.discamt)+parseFloat_(e_trx.taxamount)),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
                                 ];
                                 retval.push(arr1);
-                                total_inv = parseFloat_(total_inv) + parseFloat_(e_trx.net_amount);
+                                total_inv = parseFloat_(total_inv) + parseFloat_(e_trx.net_amount) + parseFloat_(e_trx.discamt) + parseFloat_(e_trx.taxamount);
 
                                 if(e_trx.mm_desc != ''){
                                     let arr1_mma = [
                                         {text:e_trx.mmacode, style: 'body_row', border: [false, false, false, false], margin:[10,0,0,0]},
-                                        {text:' - '+e_trx.mm_desc, style: 'body_row', border: [false, false, false, false], colSpan:4},
+                                        {text:' - '+e_trx.mm_desc, style: 'body_row', border: [false, false, false, false], colSpan:7},
+                                        {},
+                                        {},
+                                        {},
                                         {},
                                         {},
                                         {},
@@ -344,7 +356,10 @@
                                 if(pres_ == '1'){
                                     let arr1_press_dose = [
                                         {text:'Dose', style: 'body_row', border: [false, false, false, false], margin:[30,0,0,0],fontSize:8},
-                                        {text:e_trx.doscode_desc, style: 'body_row', border: [false, false, false, false], colSpan:4, margin:[30,0,0,0],fontSize:8},
+                                        {text:e_trx.doscode_desc, style: 'body_row', border: [false, false, false, false], colSpan:7, margin:[30,0,0,0],fontSize:8},
+                                        {},
+                                        {},
+                                        {},
                                         {},
                                         {},
                                         {},
@@ -352,7 +367,10 @@
                                     retval.push(arr1_press_dose);
                                     let arr1_press_freq = [
                                         {text:'Frequency', style: 'body_row', border: [false, false, false, false], margin:[30,0,0,0],fontSize:8},
-                                        {text:e_trx.frequency_desc, style: 'body_row', border: [false, false, false, false], colSpan:4, margin:[30,0,0,0],fontSize:8},
+                                        {text:e_trx.frequency_desc, style: 'body_row', border: [false, false, false, false], colSpan:7, margin:[30,0,0,0],fontSize:8},
+                                        {},
+                                        {},
+                                        {},
                                         {},
                                         {},
                                         {},
@@ -360,7 +378,10 @@
                                     retval.push(arr1_press_freq);
                                     let arr1_press_ins = [
                                         {text:'Instruction', style: 'body_row', border: [false, false, false, false], margin:[30,0,0,0],fontSize:8},
-                                        {text:e_trx.addinstruction_desc, style: 'body_row', border: [false, false, false, false], colSpan:4, margin:[30,0,0,0],fontSize:8},
+                                        {text:e_trx.addinstruction_desc, style: 'body_row', border: [false, false, false, false], colSpan:7, margin:[30,0,0,0],fontSize:8},
+                                        {},
+                                        {},
+                                        {},
                                         {},
                                         {},
                                         {},
@@ -368,7 +389,10 @@
                                     retval.push(arr1_press_ins);
                                     let arr1_press_dind = [
                                         {text:'Drug Indicator', style: 'body_row', border: [false, false, false, false], margin:[30,0,0,0],fontSize:8},
-                                        {text:e_trx.drugindicator_desc, style: 'body_row', border: [false, false, false, false], colSpan:4, margin:[30,0,0,0],fontSize:8},
+                                        {text:e_trx.drugindicator_desc, style: 'body_row', border: [false, false, false, false], colSpan:7, margin:[30,0,0,0],fontSize:8},
+                                        {},
+                                        {},
+                                        {},
                                         {},
                                         {},
                                         {},
@@ -382,14 +406,20 @@
                             {text:'',style: 'body_row_2', border: [false, false, false, false]},
                             {text:e_inv.pdescription, style: 'body_row_2', border: [false, false, false, false]},
                             {text:'',style: 'body_row_2', border: [false, false, false, false]},
-                            {text:'', style: 'body_row_2',border: [false, false, false, false]},
+                            {text:'',style: 'body_row_2', border: [false, false, false, false]},
+                            {text:'',style: 'body_row_2', border: [false, false, false, false]},
+                            {text:'',style: 'body_row_2', border: [false, false, false, false]},
+                            {text:'',style: 'body_row_2', border: [false, false, false, false]},
                             {text:myparseFloat(total_inv),alignment: 'right', style: 'body_row_2', border: [false, false, false, false]},
                         ];
                     if(parseFloat_(total_inv) > 0){
                         if(e_inv.doctorcode != ''){
                             arrtot2 =  [
                                 {text:e_inv.doctorcode, style: 'body_row', border: [false, false, false, false]},
-                                {text:e_inv.doc_bd_name, style: 'body_row', border: [false, false, false, false],colSpan:4},
+                                {text:e_inv.doc_bd_name, style: 'body_row', border: [false, false, false, false],colSpan:7},
+                                {},
+                                {},
+                                {},
                                 {},
                                 {},
                                 {},
@@ -406,6 +436,9 @@
                     {text:'', margin:[0,8,0,0], border: [false, false, false, false]},
                     {text:'', margin:[0,8,0,0], border: [false, false, false, false]},
                     {text:'', margin:[0,8,0,0], border: [false, false, false, false]},
+                    {text:'', margin:[0,8,0,0], border: [false, false, false, false]},
+                    {text:'', margin:[0,8,0,0], border: [false, false, false, false]},
+                    {text:'', margin:[0,8,0,0], border: [false, false, false, false]},
                     {text:'Sub-Total', margin:[0,8,0,0],alignment: 'right', border: [false, false, false, false]},
                     {text:myparseFloat(total_sub),alignment: 'right', margin:[0,8,0,0], border: [false, false, false, false]},
                 ];
@@ -415,7 +448,10 @@
         total_all = parseFloat_(total_sum)-parseFloat_(total_depo);
 
         let arr_sum =  [
-                {text:'TOTAL BILL AMOUNT', margin:[0,8,0,0], colSpan:3, border: [false, false, false, false]},
+                {text:'TOTAL BILL AMOUNT', margin:[0,8,0,0], colSpan:6, border: [false, false, false, false]},
+                {},
+                {},
+                {},
                 {},
                 {},
                 {text:'',alignment: 'right', margin:[0,8,0,0], border: [false, false, false, false]},
@@ -423,7 +459,10 @@
             ];
         retval.push(arr_sum);
         let arr_depo =  [
-                {text:'DEPOSIT/PAYMENT PAID', colSpan:3, border: [false, false, false, false]},
+                {text:'DEPOSIT/PAYMENT PAID', colSpan:6, border: [false, false, false, false]},
+                {},
+                {},
+                {},
                 {},
                 {},
                 {text:'',alignment: 'right', border: [false, false, false, false]},
@@ -431,15 +470,16 @@
             ];
         retval.push(arr_depo);
         let arr_all =  [
-                {text:'TOTAL AMOUNT TO BE PAID/(REFUND)', colSpan:3, border: [false, false, false, false]},
+                {text:'TOTAL AMOUNT TO BE PAID/(REFUND)', colSpan:6, border: [false, false, false, false]},
+                {},
+                {},
+                {},
                 {},
                 {},
                 {text:'',alignment: 'right', border: [false, false, false, false]},
                 {text:myparseFloat(total_all),alignment: 'right', border: [false, false, false, false]},
             ];
         retval.push(arr_all);
-
-        console.log(retval);
 
         return retval;
     }

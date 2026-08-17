@@ -90,7 +90,7 @@ $(document).ready(function(){
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
 			{ label: 'Discount<br>Amount', name: 'discamt', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
-				formatter:abscurrency,unformat:abscurrency_unformat,
+				// formatter:abscurrency,unformat:abscurrency_unformat,
 				editrules:{required: true},editoptions:{readonly: "readonly"}},
 			// { label: 'Bill Type <br>%', name: 'billtypeperct', width: 100, align: 'right', classes: 'wrap txnum', hidden: true},
 			// { label: 'Bill Type <br>Amount ', name: 'billtypeamt', width: 100, align: 'right', classes: 'wrap txnum', hidden: true},
@@ -99,7 +99,7 @@ $(document).ready(function(){
 				formatter:totamountFormatter_rad,
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
-			{label: 'Dosage', name: 'remark', hidden: true },
+			{ label: 'Dosage', name: 'remark', hidden: true },
 			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
 			{ label: 'drugindicator', name: 'drugindicator', width: 80, classes: 'wrap', hidden: true },
 			{ label: 'frequency', name: 'frequency', width: 80, classes: 'wrap', hidden: true },
@@ -610,7 +610,9 @@ function calculate_line_totgst_and_totamt_rad(event) {
 		rate = 0;
 	}
 
-	var discamt = calc_discamt_main($('#ordcomtt_rad').val(),$("#jqGrid_rad #"+id_optid+"_chgcode").val(),unitprce,quantity);
+	var billty_discamt = ret_parsefloat($("#jqGrid_rad #"+id_optid+"_chgcode").data('billty_discamt')).toFixed(2);
+
+	var discamt = -1 * ret_parsefloat(billty_discamt * quantity).toFixed(2);
 	var amount = (unitprce*quantity);
 
 	let taxamount = (amount + discamt) * rate / 100;
@@ -711,6 +713,7 @@ var dialog_chgcode_rad = new ordialog(
 			{label: 'billty_amount',name:'billty_amount',hidden:true},
 			{label: 'billty_percent',name:'billty_percent',hidden:true},
 			{label: 'convfactor',name:'convfactor',hidden:true},
+			{label: 'billty_discamt',name:'billty_discamt',hidden:true},
 			
 		],
 		sortname: 'cm.uom',
@@ -761,6 +764,7 @@ var dialog_chgcode_rad = new ordialog(
 			$("#jqGrid_rad #"+id_optid+"_taxcode").val(data['taxcode']);
 			$("#jqGrid_rad #"+id_optid+"_tax_rate").val(data['rate']);
 			$("#jqGrid_rad #"+id_optid+"_convfactor_uom").val(data['convfactor']);
+			$("#jqGrid_rad #"+id_optid+"_chgcode").data('billty_discamt',data['billty_discamt']);
 
 			dialog_chgcode_rad.urlParam.uom = data['uom'];
 
