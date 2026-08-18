@@ -1395,10 +1395,15 @@ class OrdcomController extends defaultController
                                 ->where('chgcode','=',$chargetrx_lama->chgcode)
                                 ->first();
 
-                        if($chgmast_lama->invflag != '0'){
-                            $this->delivdspdt($chargetrx_lama);
-                        }
-                        $this->delgltran($chargetrx_lama);
+                        DB::table("hisdb.chargetrx")
+                                    ->where('compcode','=',session('compcode'))
+                                    ->where('id','=',$my_obj->id)
+                                    ->delete();
+
+                        // if($chgmast_lama->invflag != '0'){
+                        //     $this->delivdspdt($chargetrx_lama);
+                        // }
+                        // $this->delgltran($chargetrx_lama);
                         
 
                         //pindah yang lama ke billsumlog sebelum update
@@ -1996,14 +2001,14 @@ class OrdcomController extends defaultController
                             ->where('uomcode','=',$pkgdet->uom);
             
             if($product->exists()){
-                $ivdspdt = DB::table('material.ivdspdt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$chargetrx_obj->auditno);
+                // $ivdspdt = DB::table('material.ivdspdt')
+                //     ->where('compcode','=',session('compcode'))
+                //     ->where('recno','=',$chargetrx_obj->auditno);
                 
-                if($updinv == 1){
-                    $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
-                    $this->crtgltran($chargetrx_obj,$updinv);
-                }
+                // if($updinv == 1){
+                //     $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
+                //     $this->crtgltran($chargetrx_obj,$updinv);
+                // }
             }
     }
 
@@ -2064,15 +2069,15 @@ class OrdcomController extends defaultController
                 ->where('recno','=',$chargetrx_obj->auditno);
 
             if($ivdspdt->exists()){
-                if($updinv == 1){
-                    $this->updivdspdt($chargetrx_obj);
-                    $this->updgltran($chargetrx_obj,$updinv);
-                }
-            }else{
-                if($updinv == 1){
-                    $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
-                    $this->crtgltran($chargetrx_obj,$updinv);
-                }
+            //     if($updinv == 1){
+            //         $this->updivdspdt($chargetrx_obj);
+            //         $this->updgltran($chargetrx_obj,$updinv);
+            //     }
+            // }else{
+            //     if($updinv == 1){
+            //         $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
+            //         $this->crtgltran($chargetrx_obj,$updinv);
+            //     }
             }
         }
     }
@@ -2137,15 +2142,15 @@ class OrdcomController extends defaultController
                 ->where('recno','=',$chargetrx_obj->auditno);
 
             if($ivdspdt->exists()){
-                if($updinv == 1){
-                    $this->updivdspdt($chargetrx_obj);
-                    $this->updgltran($chargetrx_obj,$updinv);
-                }
-            }else{
-                if($updinv == 1){
-                    $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
-                    $this->crtgltran($chargetrx_obj,$updinv);
-                }
+            //     if($updinv == 1){
+            //         $this->updivdspdt($chargetrx_obj);
+            //         $this->updgltran($chargetrx_obj,$updinv);
+            //     }
+            // }else{
+            //     if($updinv == 1){
+            //         $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
+            //         $this->crtgltran($chargetrx_obj,$updinv);
+            //     }
             }
         }
     }

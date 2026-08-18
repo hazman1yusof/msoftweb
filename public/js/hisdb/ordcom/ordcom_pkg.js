@@ -282,7 +282,7 @@ var myEditOptions_pkg = {
 	    "_token": $("#csrf_token").val()
     },
 	oneditfunc: function (rowid) {
-		set_userdeptcode('pkg');
+		// set_userdeptcode('pkg');
 		errorField.length=0;
 		myfail_msg_pkg.clear_fail();
 		$("#jqGrid_pkg input[name='trxdate']").val(moment().format('YYYY-MM-DD'));
@@ -302,7 +302,7 @@ var myEditOptions_pkg = {
 	        }
 	    );
 
-		dialog_deptcode_pkg.on();
+		// dialog_deptcode_pkg.on();
 		dialog_chgcode_pkg.on();
 		dialog_uomcode_pkg.on();
 		// dialog_uom_recv_pkg.on();

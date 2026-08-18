@@ -214,7 +214,7 @@ class ChargeMasterController extends defaultController
 
     public function maintable(Request $request){
         $table = DB::table('hisdb.chgmast AS cm')
-                    ->select( 'cm.idno','cm.compcode','cm.unit','cm.chgcode','cm.description','cm.brandname','cm.revcode','cm.uom','cm.packqty','cm.invflag','cm.overwrite','cm.buom','cm.adduser','cm.adddate','cm.lastuser','cm.lastupdate','cm.upduser','cm.upddate','cm.deluser','cm.deldate','cm.recstatus','cm.lastfield','cm.doctorstat','cm.chgtype','cm.chggroup','cm.qflag','cm.costcode','cm.chgflag','cm.ipacccode','cm.opacccode','cm.revdept','cm.chgclass','cm.costdept','cm.invgroup','cm.apprccode','cm.appracct','cm.active','cm.constype','cm.dosage','cm.druggrcode','cm.subgroup','cm.stockcode','cm.seqno','cm.instruction','cm.freqcode','cm.durationcode','cm.strength','cm.durqty','cm.freqqty','cm.doseqty','cm.dosecode','cm.barcode','cm.computerid','cm.ipaddress','cm.lastcomputerid','cm.lastipaddress','cc.description as cc_description','cg.description as cg_description','ct.description as ct_description','p.uomcode as uom_product')
+                    ->select( 'cm.idno','cm.compcode','cm.unit','cm.chgcode','cm.description','cm.brandname','cm.revcode','cm.uom','cm.packqty','cm.invflag','cm.overwrite','cm.autopull','cm.addchg','cm.buom','cm.adduser','cm.adddate','cm.lastuser','cm.lastupdate','cm.upduser','cm.upddate','cm.deluser','cm.deldate','cm.recstatus','cm.lastfield','cm.doctorstat','cm.chgtype','cm.chggroup','cm.qflag','cm.costcode','cm.chgflag','cm.ipacccode','cm.opacccode','cm.revdept','cm.chgclass','cm.costdept','cm.invgroup','cm.apprccode','cm.appracct','cm.active','cm.constype','cm.dosage','cm.druggrcode','cm.subgroup','cm.stockcode','cm.seqno','cm.instruction','cm.freqcode','cm.durationcode','cm.strength','cm.durqty','cm.freqqty','cm.doseqty','cm.dosecode','cm.barcode','cm.computerid','cm.ipaddress','cm.lastcomputerid','cm.lastipaddress','cc.description as cc_description','cg.description as cg_description','ct.description as ct_description','p.uomcode as uom_product')
                     ->where('cm.compcode','=',session('compcode'));
                     // ->where('cm.unit','=',session('unit'));
 
@@ -395,6 +395,8 @@ class ChargeMasterController extends defaultController
                     'seqno' => $request->seqno,
                     'overwrite' => $request->overwrite, 
                     'doctorstat' => $request->doctorstat, 
+                    'autopull' => $request->autopull, 
+                    'addchg' => $request->addchg, 
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'computerid' => session('computerid'),
@@ -437,6 +439,14 @@ class ChargeMasterController extends defaultController
                         'lastuser' => session('username'), 
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
+
+                    DB::table('hisdb.pkgmast')
+                            ->where('pkgcode', $chgprice->chgcode)
+                            // ->where('effectDate', $chgprice->effdate)
+                            ->update([
+                                'autopull' => $request->autopull, 
+                                'addchg' => $request->addchg, 
+                            ]);
                 
             }else{
                 
@@ -475,6 +485,8 @@ class ChargeMasterController extends defaultController
                     'seqno' => $request->seqno,
                     'overwrite' => $request->overwrite, 
                     'doctorstat' => $request->doctorstat,
+                    'autopull' => $request->autopull, 
+                    'addchg' => $request->addchg, 
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastcomputerid' => session('computerid'),
@@ -780,7 +792,7 @@ class ChargeMasterController extends defaultController
             //                 ->orderBy('cp.effdate','desc');
 
             $chgprice = DB::table('hisdb.chgprice as cp')
-                            ->select('cp.autopull','cp.addchg','cm.chgcode','cm.description','cp.effdate','cp.amt1')
+                            ->select('cm.autopull','cm.addchg','cm.chgcode','cm.description','cp.effdate','cp.amt1')
                             ->join('hisdb.chgmast as cm', function($join) use ($request){
                                     $join = $join->where('cm.compcode', '=', session('compcode'));
                                     $join = $join->on('cm.chgcode', '=', 'cp.chgcode');

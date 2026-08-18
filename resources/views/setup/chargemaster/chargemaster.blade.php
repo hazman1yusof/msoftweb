@@ -525,6 +525,20 @@ span.error_pkgmast {
 						</div>
 					</div>
 
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="autopull">Auto Pull</label>  
+						<div class="col-md-3">
+							<label class="radio-inline"><input type="radio" name="autopull" value='1' >Yes</label>
+							<label class="radio-inline"><input type="radio" name="autopull" value='0' checked>No</label>
+						</div>
+
+						<label class="col-md-2 control-label" for="addchg">Charge if more</label>  
+						<div class="col-md-3">
+							<label class="radio-inline"><input type="radio" name="addchg" value='1' >Yes</label>
+							<label class="radio-inline"><input type="radio" name="addchg" value='0' checked>No</label>
+						</div>
+					</div>
+
 					<hr>
 					
 					<div class="form-group">

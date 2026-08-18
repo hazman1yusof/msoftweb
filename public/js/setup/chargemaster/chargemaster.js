@@ -301,6 +301,8 @@ $(document).ready(function () {
 			{ label: 'seqno', name: 'seqno', hidden:true},
 			{ label: 'overwrite', name: 'overwrite', hidden:true},
 			{ label: 'doctorstat', name: 'doctorstat', hidden:true},
+			{ label: 'autopull', name: 'autopull', hidden:true},
+			{ label: 'addchg', name: 'addchg', hidden:true},
 			{ label: 'Upd User', name: 'upduser', width: 80,hidden:true}, 
 			{ label: 'Upd Date', name: 'upddate', width: 90,hidden:true},
 			{ label: 'Status', name:'recstatus', width:30, classes:'wrap', hidden:false,
