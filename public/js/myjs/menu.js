@@ -150,7 +150,7 @@ var Menu = function () {
 			$("#announcement").append(data.res);
 
         }).done(function() {
-			$("#myCarousel").carousel({interval: 5000});
+			$("#myCarousel").carousel({interval: 2000});
 		});
 	}
 
