@@ -116,9 +116,11 @@ $(document).ready(function () {
 		
 		if(mrn.trim() == '' || type.trim() == ''){
 			alert('Please choose Patient First');
-		}else if($('#save_phys_ncase').prop('disabled')){
-			alert('Edit this patient first');
-		}else{
+		}
+		// else if($('#save_phys_ncase').prop('disabled')){
+		// 	alert('Edit this patient first');
+		// }
+		else{
 			if(istablet){
 				let filename = type+'_'+mrn+'_.pdf';
 				let url = $('#urltodiagram').val() + filename;

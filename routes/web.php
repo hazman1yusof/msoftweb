@@ -2056,11 +2056,6 @@ Route::post('/discharge_MR/form','hisdb\DischargeMRController@form');
 Route::get('/discharge_MR/showpdf','hisdb\DischargeMRController@showpdf');
 
 ////////// EMERGENCY MR //////////////////////
-Route::get('/ptcare_doctornote_MR','patientcare\DoctornoteMRController@index');
-Route::get('/ptcare_doctornote_MR/table','patientcare\DoctornoteMRController@table');
-Route::post('/ptcare_doctornote_MR/form','patientcare\DoctornoteMRController@form');
-Route::post('/ptcare_doctornote_MR_transaction_save', "patientcare\DoctornoteMRController@transaction_save");
-
 Route::get('/ptcare_nursing_MR','patientcare\NursingMRController@show');
 Route::get('/ptcare_nursing_MR/table','patientcare\NursingMRController@table');
 Route::post('/ptcare_nursing_MR/form','patientcare\NursingMRController@form');
@@ -2128,3 +2123,33 @@ Route::get('/preoperative_MR_IP/get_entry','hisdb\PreoperativeMRIPController@get
 // Route::get('/otmanagement_div','hisdb\OTManagement_divController@show');
 // Route::get('/otmanagement_div/table','hisdb\OTManagement_divController@table');
 // Route::post('/otmanagement_div/form','hisdb\OTManagement_divController@form');
+
+//////////////////////CLINIC APPT//////////////////////
+Route::get('/appointment_MR','appointment\AppointmentMRController@index');
+Route::get('/appointment_MR/table','appointment\AppointmentMRController@table');
+Route::post('/appointment_MR/form','appointment\AppointmentMRController@form');
+
+Route::get('/ptcare_nursingAppt_MR','patientcare\NursingApptMRController@show');
+Route::get('/ptcare_nursingAppt_MR/table','patientcare\NursingApptMRController@table');
+Route::post('/ptcare_nursingAppt_MR/form','patientcare\NursingApptMRController@form');
+
+Route::get('/doctorNoteAppt_MR','appointment\DoctorNoteApptMRController@index');
+Route::get('/doctorNoteAppt_MR/table','appointment\DoctorNoteApptMRController@table');
+Route::post('/doctorNoteAppt_MR/form','appointment\DoctorNoteApptMRController@form');
+
+Route::get('/ptcare_doctornote_MR','patientcare\DoctornoteMRController@index');
+Route::get('/ptcare_doctornote_MR/table','patientcare\DoctornoteMRController@table');
+Route::post('/ptcare_doctornote_MR/form','patientcare\DoctornoteMRController@form');
+Route::post('/ptcare_doctornote_MR_transaction_save', "patientcare\DoctornoteMRController@transaction_save");
+
+Route::get('/ptcare_requestfor_MR','patientcare\RequestForMRController@show');
+Route::get('/ptcare_requestfor_MR/table','patientcare\RequestForMRController@table');
+Route::post('/ptcare_requestfor_MR/form','patientcare\RequestForMRController@form');
+
+Route::get('/ptcare_admhandoverAppt_MR','patientcare\AdmHandoverApptMRController@show');
+Route::get('/ptcare_admhandoverAppt_MR/table','patientcare\AdmHandoverApptMRController@table');
+Route::post('/ptcare_admhandoverAppt_MR/form','patientcare\AdmHandoverApptMRController@form');
+
+Route::get('/ptcare_dieteticCareNotes_MR','patientcare\DieteticCareNotesMRController@show');
+Route::get('/ptcare_dieteticCareNotes_MR/table','patientcare\DieteticCareNotesMRController@table');
+Route::post('/ptcare_dieteticCareNotes_MR/form','patientcare\DieteticCareNotesMRController@form');

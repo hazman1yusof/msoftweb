@@ -141,9 +141,11 @@ $(document).ready(function (){
         
         if(mrn.trim() == '' || type.trim() == ''){
             alert('Please choose Patient First');
-        }else if($('#save_cardiorespAssessment').prop('disabled')){
-            alert('Edit this patient first');
-        }else if(entereddate == ''){
+        }
+        // else if($('#save_cardiorespAssessment').prop('disabled')){
+        //     alert('Edit this patient first');
+        // }
+        else if(entereddate == ''){
             alert('Please enter date first');
         }else{
             if(istablet){
