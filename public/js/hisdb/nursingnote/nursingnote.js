@@ -6254,6 +6254,11 @@ function populate_nursingnote(obj){
 	urlParam_AddNotesInvChartABGVBG.filterVal[1] = obj.Episno;
 	urlParam_AddNotesInvChartABGVBG.filterVal[2] = 'INVCHART_ABGVBG';
 
+    ////jqGridAddNotesInvChartUFEME
+	urlParam_AddNotesInvChartUFEME.filterVal[0] = obj.MRN;
+	urlParam_AddNotesInvChartUFEME.filterVal[1] = obj.Episno;
+	urlParam_AddNotesInvChartUFEME.filterVal[2] = 'INVCHART_UFEME';
+
     ////jqGridAddNotesInvChartCE
 	urlParam_AddNotesInvChartCE.filterVal[0] = obj.MRN;
 	urlParam_AddNotesInvChartCE.filterVal[1] = obj.Episno;
