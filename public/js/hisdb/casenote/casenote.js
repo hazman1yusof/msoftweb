@@ -221,19 +221,19 @@ $(document).ready(function (){
 			var epistycode = $(this).data('epistycode');
 			var regdept = $(this).data('regdept');
 			
-			if(regdept == 'A&E'){
-				// Emergency
-			
-			}else if(regdept == 'PHY'){
-				// Rehabilitation
-			
-			}else{
-				// TH2, EYE, BEACON
-				// Appointment clinic
-				window.open('./appointment_MR?epistycode='+epistycode+'&curpat=true&PatClass=HIS&mrn='+mrn+'&episno='+episno, '_blank');
-			}
-			
-			if(epistycode == 'IP'){
+			if(epistycode == 'OP'){
+				if(regdept == 'A&E'){
+					// Emergency
+				
+				}else if(regdept == 'PHY'){
+					// Rehabilitation
+				
+				}else{
+					// TH2, EYE, BEACON
+					// Appointment clinic
+					window.open('./appointment_MR?epistycode='+epistycode+'&curpat=true&PatClass=HIS&mrn='+mrn+'&episno='+episno, '_blank');
+				}
+			}else if(epistycode == 'IP'){
 				window.open('./pat_mast_MR?epistycode='+epistycode+'&curpat=true&PatClass=HIS&mrn='+mrn+'&episno='+episno, '_blank');
 			}
 		});
