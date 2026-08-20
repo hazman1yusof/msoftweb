@@ -120,18 +120,19 @@
     
     <script src="js/hisdb/casenote/casenote.js"></script>
     <script src="js/hisdb/pat_mgmt/pat_nok_MR.js"></script>
-	<script src="js/hisdb/pat_mgmt/pat_emr_MR.js"></script>
-	<script src="js/hisdb/pat_mgmt/textfield_modal_MR.js"></script>
-	<script src="js/hisdb/pat_mgmt/landing_MR.js?v=1.10"></script>
+    <script src="js/hisdb/pat_mgmt/pat_emr_MR.js"></script>
+    <script src="js/hisdb/pat_mgmt/textfield_modal_MR.js"></script>
+    <script src="js/hisdb/pat_mgmt/landing_MR.js?v=1.10"></script>
+    <script src="patientcare/js/appointment_MR/appointment_MR.js?v=1.2"></script>
     <script src="js/myjs/modal-fix.js"></script>
-	<script src="js/hisdb/pat_mgmt/biodata_MR.js?v=1.1"></script>
+    <script src="js/hisdb/pat_mgmt/biodata_MR.js?v=1.1"></script>
     <script>$.fn.modal.Constructor.prototype.enforceFocus = function() {};</script>
     <script src="plugins/jquery-ui-1.12.1/jquery-ui.min.js"></script>
-	<script src="plugins/form-validator/jquery.form-validator.min.js"></script>
-	
-	<script src="plugins/flot/jquery.flot.js"></script>
-	<script src="plugins/flot/jquery.flot.errorbars.js"></script>
-	<script src="plugins/flot/jquery.flot.navigate.js"></script>
-	<script src="plugins/flot/jquery.flot.crosshair.js"></script>
-	<script src="plugins/flot/jquery.flot.symbol.js"></script>
+    <script src="plugins/form-validator/jquery.form-validator.min.js"></script>
+    
+    <script src="plugins/flot/jquery.flot.js"></script>
+    <script src="plugins/flot/jquery.flot.errorbars.js"></script>
+    <script src="plugins/flot/jquery.flot.navigate.js"></script>
+    <script src="plugins/flot/jquery.flot.crosshair.js"></script>
+    <script src="plugins/flot/jquery.flot.symbol.js"></script>
 @endsection

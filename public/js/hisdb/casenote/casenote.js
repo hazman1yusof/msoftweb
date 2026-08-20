@@ -229,8 +229,8 @@ $(document).ready(function (){
 			
 			}else{
 				// TH2, EYE, BEACON
-				// Appointment
-			
+				// Appointment clinic
+				window.open('./appointment_MR?epistycode='+epistycode+'&curpat=true&PatClass=HIS&mrn='+mrn+'&episno='+episno, '_blank');
 			}
 			
 			if(epistycode == 'IP'){
@@ -270,8 +270,8 @@ $(document).ready(function (){
 				{ label: 'DOB', name: 'DOB', width: 200, classes: 'pointer', canSearch: true, or_search: true, formatter: dateFormatter, unformat: dateUNFormatter },
 			],
 			urlParam: {
-				filterCol: ['compcode','recstatus','ACTIVE'],
-				filterVal: ['session.compcode','ACTIVE','1']
+				filterCol: ['compcode'],
+				filterVal: ['session.compcode']
 			},
 			ondblClickRow: function (){
 				let data = selrowData('#' + patient_search.gridname).MRN;
@@ -319,8 +319,8 @@ $(document).ready(function (){
 		},{
 			title: "Select MRN",
 			open: function (){
-				patient_search.urlParam.filterCol = ['compcode','recstatus','ACTIVE'];
-				patient_search.urlParam.filterVal = ['session.compcode','ACTIVE','1'];
+				patient_search.urlParam.filterCol = ['compcode'];
+				patient_search.urlParam.filterVal = ['session.compcode'];
 
 				$("input[type='radio'][name='dcolr']").click(function (){
 					if($("input[name='dcolr']:checked").val() == 'DOB'){
