@@ -1929,6 +1929,10 @@ Route::get('/dialysis_enquiry_order/table','dialysis\enquiryController@table');
 Route::post('/ukmsc_analytic','ukmsc\ukmsc_analyticController@table');
 
 ////////////////////////////////////MEDICAL RECORDS//////////////////////////////////////////////////
+
+/////////////////////document imaging////////////////////
+Route::get('/userfile_iframe_MR','hisdb\PatmastMRController@userfile_iframe');
+
 ////////patmast medical record////////////
 Route::get('/pat_mast_MR','hisdb\PatmastMRController@show');
 Route::get('/pat_mast_MR/get_entry','hisdb\PatmastMRController@get_entry');
