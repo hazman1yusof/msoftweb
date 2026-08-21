@@ -35,6 +35,9 @@ class ClientProgressNoteMRController extends defaultController
             case 'get_table_clientprognote':
                 return $this->get_table_clientprognote($request);
             
+            case 'check_doctor':
+                return $this->check_doctor($request);
+            
             default:
                 return 'error happen..';
         }
@@ -54,7 +57,7 @@ class ClientProgressNoteMRController extends defaultController
                     default:
                         return 'error happen..';
                 }
-
+            
             case 'save_refLetterClientProgNote':
                 switch($request->oper){
                     case 'add':
@@ -67,9 +70,12 @@ class ClientProgressNoteMRController extends defaultController
             
             case 'get_table_clientprognote':
                 return $this->get_table_clientprognote($request);
-
+            
             case 'get_table_refLetterClientProgNote':
                 return $this->get_table_refLetterClientProgNote($request);
+            
+            case 'addNotesClientProgNote_save':
+                return $this->add_notesClientProgNote($request);
             
             default:
                 return 'error happen..';
@@ -147,8 +153,8 @@ class ClientProgressNoteMRController extends defaultController
             $patprogressnote = DB::table('hisdb.patprogressnote')
                                 ->where('mrn','=',$request->mrn_clientProgNote)
                                 ->where('episno','=',$request->episno_clientProgNote)
-                                ->where('datetaken','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->datetime_clientProgNote)->format('Y-m-d'))
-                                ->where('timetaken','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->datetime_clientProgNote)->format('H:i:s'))
+                                ->where('datetaken','=',Carbon::createFromFormat('Y-m-d H:i:s', $request->datetime_clientProgNote)->format('Y-m-d'))
+                                ->where('timetaken','=',Carbon::createFromFormat('Y-m-d H:i:s', $request->datetime_clientProgNote)->format('H:i:s'))
                                 ->where('compcode','=',session('compcode'));
             
             // $doctorcode_obj = DB::table('hisdb.doctor')
@@ -250,7 +256,7 @@ class ClientProgressNoteMRController extends defaultController
         $episode_obj = DB::table('hisdb.episode as e')
                         ->select('e.mrn','e.episno','e.admdoctor','p.datetaken','p.timetaken','p.doctorcode','p.adduser','d.doctorname as docname','doc.doctorname')
                         ->leftJoin('hisdb.patprogressnote as p', function ($join) use ($request){
-                            $join = $join->on('p.doctorcode','=','e.admdoctor');
+                            // $join = $join->on('p.doctorcode','=','e.admdoctor');
                             $join = $join->on('p.mrn','=','e.mrn');
                             $join = $join->on('p.episno','=','e.episno');
                             $join = $join->on('p.compcode','=','e.compcode');
@@ -280,7 +286,7 @@ class ClientProgressNoteMRController extends defaultController
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
                 if(!empty($value->datetaken)){ // for sorting - easier in 24H
-                    $date['recdatetime'] =  Carbon::createFromFormat('Y-m-d', $value->datetaken)->format('d-m-Y').' '.$value->timetaken;
+                    $date['recdatetime'] =  $value->datetaken.' '.$value->timetaken;
                 }else{
                     $date['recdatetime'] =  '-';
                 }
@@ -315,8 +321,8 @@ class ClientProgressNoteMRController extends defaultController
                                     ->where('compcode','=',session('compcode'))
                                     ->where('mrn','=',$request->mrn)
                                     ->where('episno','=',$request->episno)
-                                    ->where('datetaken','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->datetime)->format('Y-m-d'))
-                                    ->where('timetaken','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->datetime)->format('H:i:s'));
+                                    ->where('datetaken','=',Carbon::createFromFormat('Y-m-d H:i:s', $request->datetime)->format('Y-m-d'))
+                                    ->where('timetaken','=',Carbon::createFromFormat('Y-m-d H:i:s', $request->datetime)->format('H:i:s'));
         }
         
         // if($episode_obj->exists()){
@@ -517,15 +523,15 @@ class ClientProgressNoteMRController extends defaultController
             //                 ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('Y-m-d'))
             //                 ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('H:i:s'));
         }
-
+        
         if(!empty($request->datetime) && $request->datetime != '-'){
             $patprogressnote_obj = DB::table('hisdb.patprogressnote')
                                     ->select('idno','compcode','mrn','episno','datetaken','timetaken','progressnote','plan','doctorcode','adduser','adddate','upduser','upddate','lastuser','lastupdate','computerid')
                                     ->where('compcode','=',session('compcode'))
                                     ->where('mrn','=',$request->mrn)
                                     ->where('episno','=',$request->episno)
-                                    ->where('datetaken','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->datetime)->format('Y-m-d'))
-                                    ->where('timetaken','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->datetime)->format('H:i:s'));
+                                    ->where('datetaken','=',Carbon::createFromFormat('Y-m-d H:i:s', $request->datetime)->format('Y-m-d'))
+                                    ->where('timetaken','=',Carbon::createFromFormat('Y-m-d H:i:s', $request->datetime)->format('H:i:s'));
         }
         
         $episdiag_obj = DB::table('hisdb.episdiag')
@@ -597,7 +603,7 @@ class ClientProgressNoteMRController extends defaultController
             $pathealthadd_obj = $pathealthadd_obj->first();
             $responce->pathealthadd = $pathealthadd_obj;
         }
-
+        
         if(!empty($request->datetime) && $request->datetime != '-'){
             if($patprogressnote_obj->exists()){
                 $patprogressnote_obj = $patprogressnote_obj->first();
@@ -616,7 +622,7 @@ class ClientProgressNoteMRController extends defaultController
         return json_encode($responce);
         
     }
-
+    
     public function refLetterClientProgNote_chart(Request $request){
         
         $mrn = $request->mrn;
@@ -655,4 +661,82 @@ class ClientProgressNoteMRController extends defaultController
         return view('hisdb.clientprogressnote.refLetterClientProgNote_pdfmake',compact('ini_array'));
         
     }
+    
+    public function add_notesClientProgNote(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'DOCTORNOTE',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+    
+    public function check_doctor(Request $request){
+        
+        $responce = new stdClass();
+        
+        // $admdoctor_obj = DB::table('hisdb.docalloc')
+        //                 ->select('DoctorCode')
+        //                 ->where('compcode','=',session('compcode'))
+        //                 ->where('AllocNo','=','1')
+        //                 ->where('mrn','=',$request->mrn)
+        //                 ->where('episno','=',$request->episno)
+        //                 ->where('DoctorCode','=',session('username'));
+        
+        $doctorcode_obj = DB::table('hisdb.doctor')
+                        ->select('doctorcode')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('loginid','=',session('username'));
+        
+        if($doctorcode_obj->exists()){
+            $doctorcode_obj = $doctorcode_obj->first();
+            
+            $admdoctor_obj = DB::table('hisdb.episode as e')
+                            ->select('e.admdoctor','u.loginid')
+                            ->leftJoin('hisdb.doctor as u', function ($join) use ($request){
+                                $join = $join->on('u.doctorcode','=','e.admdoctor');
+                                $join = $join->on('u.compcode','=','e.compcode');
+                            })
+                            ->where('e.compcode','=',session('compcode'))
+                            // ->where('AllocNo','=','1')
+                            ->where('e.mrn','=',$request->mrn)
+                            ->where('e.episno','=',$request->episno)
+                            ->where('e.admdoctor','=',$doctorcode_obj->doctorcode);
+            
+            if($admdoctor_obj->exists()){
+                // $admdoctor_obj = $admdoctor_obj->first()->DoctorCode;
+                $admdoctor_obj = $admdoctor_obj->first()->loginid;
+                $responce->admdoctor = $admdoctor_obj;
+            }else{
+                $responce->admdoctor = '-';
+            }
+        }
+        
+        return json_encode($responce);
+        
+    }
+    
 }

@@ -1,0 +1,115 @@
+
+<!-- <div class="panel-body paneldiv" style="overflow-y: auto;"> -->
+    <div class='col-md-12'>
+        <div class="panel panel-default">
+            <div class="panel-heading text-center" style="position: sticky; top: 0px; z-index: 3;">DOCTOR NOTE (REFERRAL)</div>
+            <div class="panel-body">
+                <div class='col-md-12' style="padding: 0 0 15px 0;">
+                    <div class="col-md-12" style="padding-top: 20px; text-align: left; color: red;">
+                        <!-- <p id="error_clientProgNoteRef"></p> -->
+                        
+                        <!-- <input id="error_clientProgNoteRef" type="text" style="width: 350px; text-transform: none; border: none; color: red;" value="You are not registered as the referral doctor." rdonly> -->
+                    </div>
+                    
+                    <div class="col-md-3" style="padding-left: 0px;">
+                        <!-- table referral_doctor -->
+                        <div id="docalloc_tbl_sticky" style="padding: 0 0 0 0; display: none;">
+                            <div class="panel panel-info" style="margin-top: 10px;">
+                                <div class="panel-body">
+                                    <table id="docalloc_tbl" class="ui celled table" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th class="scope">mrn</th>
+                                                <th class="scope">episno</th>
+                                                <th class="scope">AllocNo</th>
+                                                <th class="scope">Doctor</th>
+                                                <th class="scope">DoctorCode</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- table doctornote_date -->
+                        <div id="clientprognoteref_date_tbl_sticky" style="padding: 0 0 0 0;">
+                            <div class="panel panel-info" style="margin-top: 10px;">
+                                <div class="panel-body">
+                                    <table id="clientprognoteref_date_tbl" class="ui celled table" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th class="scope">mrn</th>
+                                                <th class="scope">episno</th>
+                                                <th class="scope">Date/Time</th>
+                                                <th class="scope">recdatetime</th>
+                                                <th class="scope">adduser</th>
+                                                <th class="scope">Doctor</th>
+                                                <th class="scope">doctorcode</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-9" style="padding: 0 0 0 5px; float: right;">
+                        <form class='form-horizontal' style='width: 99%;' id='formClientProgNoteRef'>
+                            <input id="mrn_clientProgNoteRef" name="mrn_clientProgNoteRef" type="hidden">
+                            <input id="episno_clientProgNoteRef" name="episno_clientProgNoteRef" type="hidden">
+                            <input id="age_clientProgNoteRef" name="age_clientProgNoteRef" type="hidden">
+                            <input id="datetime_clientProgNoteRef" name="datetime_clientProgNoteRef" type="hidden">
+                            <input id="ptname_clientProgNoteRef" name="ptname_clientProgNoteRef" type="hidden">
+                            <input id="preg_clientProgNoteRef" name="preg_clientProgNoteRef" type="hidden">
+                            <input id="ic_clientProgNoteRef" name="ic_clientProgNoteRef" type="hidden">
+                            <input id="doctorname_clientProgNoteRef" name="doctorname_clientProgNoteRef" type="hidden">
+                            <input id="refdoctor_clientProgNoteRef" name="refdoctor_clientProgNoteRef" type="hidden">
+                            <input id="epistycode_clientProgNoteRef" name="epistycode_clientProgNoteRef" type="hidden" value="{{request()->get('epistycode')}}">
+                            
+                            <div class="panel panel-info">
+                                <div class="panel-body">
+                                    <div class="form-inline col-md-12" style="padding-bottom: 15px;">
+                                        <label class="control-label" for="datetaken" style="padding-right: 5px;">Date</label>
+                                        <input id="clientProgNoteRef_datetaken" name="datetaken" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>"  rdonly>
+                                        
+                                        <label class="control-label" for="timetaken" style="padding-left: 15px; padding-right: 5px;">Time</label>
+                                        <input id="clientProgNoteRef_timetaken" name="timetaken" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information.">
+                                        
+                                        <!-- @if(Auth::user()->doctor == '1')
+                                            <button class="btn btn-default btn-sm" type="button" id="clientProgNoteRef_medc" style="float: right; margin-right: 20px;">MC Letter</button>
+                                        @endif -->
+                                    </div>
+                                    
+                                    <div class='col-md-12'>
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading text-center">CLIENT'S PROGRESS NOTES</div>
+                                            <div class="panel-body">
+                                                <textarea id="clientProgNoteRef_progressnote" name="progressnote" type="text" class="form-control input-sm"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    @if(request()->get('epistycode') == 'OP')
+                                        @include('hisdb.clientprogressnote.patprescription')
+                                    @endif
+                                    
+                                    <div class='col-md-12'>
+                                        <div class="panel panel-info" id="jqGridAddNotesClientProgNoteRef_c">
+                                            <div class="panel-heading text-center">ADDITIONAL NOTES</div>
+                                            <div class="panel-body">
+                                                <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <table id="jqGridAddNotesClientProgNoteRef" class="table table-striped"></table>
+                                                    <div id="jqGridPagerAddNotesClientProgNoteRef"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- </div> -->

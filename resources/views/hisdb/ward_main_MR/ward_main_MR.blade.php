@@ -68,6 +68,30 @@
                     <div id="tab-EDAssmtIP" class="active in tab-pane fade">
                         @include('hisdb.nursingED_MR.nursingED_tab_MR')
                     </div>
+                    <div id="tab-nursActionIP" class="tab-pane fade">
+                        @include('hisdb.nursingActionPlan_MR.nursingActionPlan_tab_MR')
+                    </div>
+                    <div id="tab-nursNoteIP" class="tab-pane fade">
+                        @include('hisdb.nursingnote_MR.nursingnote_tab_MR')
+                    </div>
+                    <div id="tab-antenatalIP" class="tab-pane fade">
+                        @include('hisdb.antenatal_MR.antenatal_tab_MR')
+                    </div>
+                    <div id="tab-docNoteIP" class="tab-pane fade">
+                        @include('hisdb.clientprogressnote_MR.clientprogressnote_tab_MR')
+                    </div>
+                    <div id="tab-docNoteRefIP" class="tab-pane fade">
+                        @include('hisdb.clientprogressnote_MR.clientprogressnoteref_tab_MR')
+                    </div>
+                    <div id="tab-dietNoteIP" class="tab-pane fade">
+                        @include('hisdb.dieteticCareNotes_MR.dieteticCareNotes_tab_MR')
+                    </div>
+                    <div id="tab-dietOrderIP" class="tab-pane fade">
+                        @include('hisdb.dietorder_MR.dietorder_tab_MR')
+                    </div>
+                    <div id="tab-userfile_div" class="tab-pane fade">
+                        @include('patientcare.userfile_div_MR')
+                    </div>
                 </div>
             </div>
         </div>

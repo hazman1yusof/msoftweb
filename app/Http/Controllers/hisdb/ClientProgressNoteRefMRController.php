@@ -38,6 +38,9 @@ class ClientProgressNoteRefMRController extends defaultController
             case 'get_table_clientprognoteref':
                 return $this->get_table_clientprognoteref($request);
             
+            case 'check_doctorRef':
+                return $this->check_doctorRef($request);
+            
             default:
                 return 'error happen..';
         }
@@ -61,6 +64,9 @@ class ClientProgressNoteRefMRController extends defaultController
             case 'get_table_clientprognoteref':
                 return $this->get_table_clientprognoteref($request);
             
+            case 'addNotesClientProgNoteRef_save':
+                return $this->add_notesClientProgNoteRef($request);
+            
             default:
                 return 'error happen..';
         }
@@ -82,13 +88,77 @@ class ClientProgressNoteRefMRController extends defaultController
                 $doctorcode = $doctorcode_obj->first()->doctorcode;
             }
             
+            $docalloc_obj = DB::table('hisdb.docalloc')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn_clientProgNoteRef)
+                            ->where('episno','=',$request->episno_clientProgNoteRef)
+                            ->where('DoctorCode','=',$doctorcode);
+            
+            if(!$docalloc_obj->exists()){
+                return response('Please update doctor list first.');
+            }
+            
             if($request->epistycode_clientProgNoteRef == 'OP'){
                 $plan = $request->plan;
             }else if($request->epistycode_clientProgNoteRef == 'IP'){
                 $plan = null;
             }
             
-            DB::table('hisdb.patprogressnote')
+            DB::table('hisdb.patprogressnoteref')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn_clientProgNoteRef,
+                    'episno' => $request->episno_clientProgNoteRef,
+                    // 'datetaken' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'datetaken' => $request->datetaken,
+                    // 'timetaken' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'timetaken' => $request->timetaken,
+                    'progressnote' => $request->progressnote,
+                    'plan' => $plan,
+                    'doctorcode'  => $doctorcode,
+                    // 'doctorcode'  => $request->refdoctor_clientProgNoteRef,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function add_lama(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            $doctorcode_obj = DB::table('hisdb.doctor')
+                            ->select('doctorcode')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('loginid','=',session('username'));
+            
+            $doctorcode = null;
+            if($doctorcode_obj->exists()){
+                $doctorcode = $doctorcode_obj->first()->doctorcode;
+            }
+            
+            if($request->epistycode_clientProgNoteRef == 'OP'){
+                $plan = $request->plan;
+            }else if($request->epistycode_clientProgNoteRef == 'IP'){
+                $plan = null;
+            }
+            
+            DB::table('hisdb.patprogressnoteref')
                 ->insert([
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn_clientProgNoteRef,
@@ -126,11 +196,11 @@ class ClientProgressNoteRefMRController extends defaultController
         
         try {
             
-            $patprogressnote = DB::table('hisdb.patprogressnote')
+            $patprogressnoteref = DB::table('hisdb.patprogressnoteref')
                                 ->where('mrn','=',$request->mrn_clientProgNoteRef)
                                 ->where('episno','=',$request->episno_clientProgNoteRef)
-                                ->where('datetaken','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->datetime_clientProgNoteRef)->format('Y-m-d'))
-                                ->where('timetaken','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->datetime_clientProgNoteRef)->format('H:i:s'))
+                                ->where('datetaken','=',Carbon::createFromFormat('Y-m-d H:i:s', $request->datetime_clientProgNoteRef)->format('Y-m-d'))
+                                ->where('timetaken','=',Carbon::createFromFormat('Y-m-d H:i:s', $request->datetime_clientProgNoteRef)->format('H:i:s'))
                                 ->where('compcode','=',session('compcode'))
                                 ->where('doctorcode','=',$request->refdoctor_clientProgNoteRef);
             
@@ -150,8 +220,8 @@ class ClientProgressNoteRefMRController extends defaultController
                 $plan = null;
             }
             
-            if($patprogressnote->exists()){
-                $patprogressnote
+            if($patprogressnoteref->exists()){
+                $patprogressnoteref
                     ->update([
                         // 'datetaken' => $request->datetaken,
                         'timetaken' => $request->timetaken,
@@ -164,7 +234,7 @@ class ClientProgressNoteRefMRController extends defaultController
                         'computerid' => session('computerid'),
                     ]);
             }else{
-                DB::table('hisdb.patprogressnote')
+                DB::table('hisdb.patprogressnoteref')
                     ->insert([
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn_clientProgNoteRef,
@@ -266,25 +336,25 @@ class ClientProgressNoteRefMRController extends defaultController
         
         $responce = new stdClass();
         
-        $patprogressnote_obj = DB::table('hisdb.patprogressnote')
+        $patprogressnoteref_obj = DB::table('hisdb.patprogressnoteref')
                                 ->select('mrn','episno','datetaken','timetaken','adduser')
                                 ->where('compcode','=',session('compcode'))
                                 ->where('mrn','=',$request->mrn)
-                                ->where('episno','=',$request->episno)
-                                ->where('doctorcode','=',$request->doctorcode);
+                                ->where('episno','=',$request->episno);
+                                // ->where('doctorcode','=',$request->doctorcode);
         
-        if(!$patprogressnote_obj->exists()){
+        if(!$patprogressnoteref_obj->exists()){
             $responce->data = [];
             return json_encode($responce);
         }
         
         $episode_obj = DB::table('hisdb.episode as e')
                         ->select('e.mrn','e.episno','e.admdoctor','p.datetaken','p.timetaken','p.doctorcode','p.adduser','d.doctorname')
-                        ->leftJoin('hisdb.patprogressnote as p', function ($join) use ($request){
+                        ->leftJoin('hisdb.patprogressnoteref as p', function ($join) use ($request){
                             $join = $join->on('p.mrn','=','e.mrn');
                             $join = $join->on('p.episno','=','e.episno');
                             $join = $join->on('p.compcode','=','e.compcode');
-                            $join = $join->where('p.doctorcode','=',$request->doctorcode);
+                            // $join = $join->where('p.doctorcode','=',$request->doctorcode);
                         })->leftJoin('hisdb.doctor as d', function ($join) use ($request){
                             $join = $join->on('d.doctorcode','=','p.doctorcode');
                             $join = $join->on('d.compcode','=','p.compcode');
@@ -308,7 +378,7 @@ class ClientProgressNoteRefMRController extends defaultController
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
                 if(!empty($value->datetaken)){ // for sorting - easier in 24H
-                    $date['recdatetime'] =  Carbon::createFromFormat('Y-m-d', $value->datetaken)->format('d-m-Y').' '.$value->timetaken;
+                    $date['recdatetime'] =  $value->datetaken.' '.$value->timetaken;
                 }else{
                     $date['recdatetime'] =  '-';
                 }
@@ -339,14 +409,14 @@ class ClientProgressNoteRefMRController extends defaultController
         //                 ->where('episno','=',$request->episno);
         
         if(!empty($request->datetime) && $request->datetime != '-'){
-            $patprogressnote_obj = DB::table('hisdb.patprogressnote')
+            $patprogressnoteref_obj = DB::table('hisdb.patprogressnoteref')
                                     ->select('idno','compcode','mrn','episno','datetaken','timetaken','progressnote','plan','doctorcode','adduser','adddate','upduser','upddate','lastuser','lastupdate','computerid')
                                     ->where('compcode','=',session('compcode'))
                                     ->where('mrn','=',$request->mrn)
                                     ->where('episno','=',$request->episno)
-                                    ->where('datetaken','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->datetime)->format('Y-m-d'))
-                                    ->where('timetaken','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->datetime)->format('H:i:s'))
-                                    ->where('doctorcode','=',$request->doctorcode);
+                                    ->where('datetaken','=',Carbon::createFromFormat('Y-m-d H:i:s', $request->datetime)->format('Y-m-d'))
+                                    ->where('timetaken','=',Carbon::createFromFormat('Y-m-d H:i:s', $request->datetime)->format('H:i:s'));
+                                    // ->where('doctorcode','=',$request->doctorcode);
         }
         
         // if($episode_obj->exists()){
@@ -355,9 +425,79 @@ class ClientProgressNoteRefMRController extends defaultController
         // }
         
         if(!empty($request->datetime) && $request->datetime != '-'){
-            if($patprogressnote_obj->exists()){
-                $patprogressnote_obj = $patprogressnote_obj->first();
-                $responce->patprogressnote = $patprogressnote_obj;
+            if($patprogressnoteref_obj->exists()){
+                $patprogressnoteref_obj = $patprogressnoteref_obj->first();
+                $responce->patprogressnoteref = $patprogressnoteref_obj;
+            }
+        }
+        
+        return json_encode($responce);
+        
+    }
+    
+    public function add_notesClientProgNoteRef(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nursaddnote')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'type' => 'DOCTORNOTEREF_IP',
+                    'note' => $request->note,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+    
+    public function check_doctorRef(Request $request){
+        
+        $responce = new stdClass();
+        // $responce->refdoctor = '-';
+        
+        $doctorcode_obj = DB::table('hisdb.doctor')
+                        ->select('doctorcode')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('loginid','=',session('username'));
+        
+        if($doctorcode_obj->exists()){
+            $doctorcode_obj = $doctorcode_obj->first();
+            
+            $refdoctor_obj = DB::table('hisdb.docalloc as d')
+                            ->select('d.DoctorCode','u.loginid')
+                            ->leftJoin('hisdb.doctor as u', function ($join) use ($request){
+                                $join = $join->on('u.doctorcode','=','d.doctorcode');
+                                $join = $join->on('u.compcode','=','d.compcode');
+                            })
+                            ->where('d.compcode','=',session('compcode'))
+                            // ->where('AllocNo','!=','1')
+                            ->where('d.mrn','=',$request->mrn)
+                            ->where('d.episno','=',$request->episno)
+                            ->where('d.DoctorCode','=',$doctorcode_obj->doctorcode);
+            
+            if($refdoctor_obj->exists()){
+                // $refdoctor_obj = $refdoctor_obj->first()->DoctorCode;
+                $refdoctor_obj = $refdoctor_obj->first()->loginid;
+                $responce->refdoctor = $refdoctor_obj;
+            }else{
+                $responce->refdoctor = '-';
             }
         }
         

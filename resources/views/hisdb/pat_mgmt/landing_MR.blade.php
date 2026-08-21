@@ -25,6 +25,39 @@
 		#Dtext_chgcode_dfee {
 			margin-left: 10px;
 	    }
+		/* change the colour of second navtab dalam nursing */
+		/* 1. Default (Inactive) Tabs background */
+		.nav-tabs-second > li > a {
+			background-color: #f0f0f0;
+			color: #555555;
+			height: 70px;
+		}
+		
+		/* 2. Hover and Focus states for Inactive Tabs */
+		.nav-tabs-second > li > a:hover,
+		.nav-tabs-second > li > a:focus {
+			background-color: #e0e0e0 !important;
+			color: #333333;
+		}
+		
+		/* 3. Active Tab background (the currently selected tab) */
+		.nav-tabs-second > li.active > a,
+		.nav-tabs-second > li.active > a:hover,
+		.nav-tabs-second > li.active > a:focus {
+			background-color: #007bff !important;
+			color: #ffffff !important;
+			border: 1px solid #007bff; /* Keeps borders cohesive */
+		}
+		
+		/* 4. Optional: Background of the entire tab bar row */
+		.nav-tabs-second {
+			background-color: #ffffff;
+		}
+		/* change colour of second navtab ends */
+
+		.wrap-text{
+			white-space: break-spaces !important;;
+		}
 	</style>
 
 </head>
@@ -218,6 +251,10 @@
 				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 					@include('hisdb.ward_main_MR.ward_main_MR')
 				</div>
+
+				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+					@include('hisdb.ordcom_MR.ordcom_MR',['phase' => '1'])
+				</div>
 			@endif
 			
 		@endif
@@ -275,10 +312,7 @@
 		};
 	</script>
 	
-	@if (request()->get('curpat') == 'true')
-		
-		<!-- <script type="text/javascript" src="js/hisdb/discharge_MR/discharge_MR.js"></script> -->
-		
+	@if (request()->get('curpat') == 'true')		
 		@if (request()->get('epistycode') == 'OP')
 			@if (Auth::user()->doctor == 1)
 				<script type="text/javascript" src="js/hisdb/nursing_MR/nursing_MR.js?v=1.2"></script>
@@ -357,9 +391,7 @@
 				<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script>
 				<script type="text/javascript" src="js/hisdb/ward_main_MR/ward_main_MR.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/nursingED_MR/nursingED_MR.js?v=1.3"></script>
-				<!-- <script type="text/javascript" src="js/hisdb/nursing_MR/nursing_MR.js?v=1.2"></script> -->
-				<!-- <script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script> -->
-				<!-- <script type="text/javascript" src="js/hisdb/nursingActionPlan_MR/nursingActionPlan_MR.js?v=1.4"></script>
+				<script type="text/javascript" src="js/hisdb/nursingActionPlan_MR/nursingActionPlan_MR.js?v=1.4"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_intake_MR.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_MR.js?v=2.4"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_invFBC_MR.js?v=1.1"></script>
@@ -378,11 +410,6 @@
 				<script type="text/javascript" src="js/hisdb/antenatal_MR/antenatal_MR.js"></script>
 				<script type="text/javascript" src="js/hisdb/clientprogressnote_MR/clientprogressnote_MR.js"></script>
 				<script type="text/javascript" src="js/hisdb/clientprogressnote_MR/clientprogressnoteref_MR.js"></script>
-				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote_MR/doctornote_MR.js?v=1.6"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote_MR/doctornote_medc_MR.js"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote_MR/doctornote_bpgraph_MR.js"></script>
-				<script type="text/javascript" src="js/hisdb/requestfor_MR/requestfor_MR.js?v=1.6"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes_MR/dieteticCareNotes_MR.js"></script>
 				<script type="text/javascript" src="js/hisdb/dietorder_MR/dietorder_MR.js?v=2"></script>
 				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_main_MR.js?v=1.3"></script>
@@ -396,7 +423,17 @@
 				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_diet_MR.js"></script>
 				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_oth_MR.js"></script>
 				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_pkg_MR.js"></script>
-				<script type="text/javascript" src="js/hisdb/discharge_MR/discharge_MR.js"></script>
+				<!-- <script type="text/javascript" src="js/hisdb/discharge_MR/discharge_MR.js"></script> -->
+
+				<!-- <script type="text/javascript" src="js/hisdb/nursing_MR/nursing_MR.js?v=1.2"></script> -->
+				<!-- <script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script> -->
+				
+				<!--<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote_MR/doctornote_MR.js?v=1.6"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote_MR/doctornote_medc_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote_MR/doctornote_bpgraph_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/requestfor_MR/requestfor_MR.js?v=1.6"></script>
+				
 				<script type="text/javascript" src="js/hisdb/otmanagement_MR_IP/otmanagement_main_MR_IP.js"></script>
 				<script type="text/javascript" src="js/hisdb/otmanagement_MR_IP/otmanagement_div_MR_IP.js?v=1.2"></script>		 -->
 		@endif
