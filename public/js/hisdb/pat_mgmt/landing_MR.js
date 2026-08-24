@@ -308,24 +308,25 @@ grid.on("click.rs.jquery.bootgrid", function (e,c,r){
                 populate_endConsult_currpt(lastrowdata);
             }
         }else if($('#epistycode').val() == 'IP' || $('#epistycode').val() == 'DP'){
-                // populate_ward_main_MR(lastrowdata);
+                populate_wardMain(lastrowdata);
                 populate_triageED_currpt(lastrowdata);
-                // populate_triage_currpt(lastrowdata);
                 populate_nursingActionPlan(lastrowdata);
                 populate_nursingnote(lastrowdata);
                 populate_antenatal(lastrowdata);
                 populate_clientProgNote_currpt(lastrowdata);
                 populate_clientProgNoteRef_currpt(lastrowdata);
-                // populate_doctorNote_currpt(lastrowdata);
-                populate_requestFor_currpt(lastrowdata);
-                // populate_dieteticCareNotes_currpt(lastrowdata);
-                // populate_dietOrder_currpt(lastrowdata);
+                populate_dieteticCareNotes_currpt(lastrowdata);
+                populate_dietOrder_currpt(lastrowdata);
+                
+                // populate_triage_currpt(lastrowdata);
+                // // populate_doctorNote_currpt(lastrowdata);
+                // populate_requestFor_currpt(lastrowdata);
             
             if($('#user_billing').val() == '1'){
                 populate_ordcom_currpt(lastrowdata);
             }
             
-            populate_discharge_currpt(lastrowdata);
+            // populate_discharge_currpt(lastrowdata);
             // if(lastrowdata.PatStatus == 1 ){
             // }
         }

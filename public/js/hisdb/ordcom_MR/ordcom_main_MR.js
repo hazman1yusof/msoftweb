@@ -16,16 +16,27 @@ var conf_ordco = {
 };
 
 function getrow_bootgrid_(){
-	if($('#ordcom_phase').val() == '2'){
+	if($('#ordcom_phase').val() == '3'){
+		return pat_mast_data;
+	}else if($('#ordcom_phase').val() == '2'){
 		return selrowData('#jqGrid');
 	}else{
 		return getrow_bootgrid();
 	}
 }
 
+function getrow_offset_(){
+	if($('#ordcom_phase').val() == '3'){
+		return pat_mast_data;
+	}else if($('#ordcom_phase').val() == '2'){
+		return 12
+	}else{
+		return 32
+	}
+}
+
 $(document).ready(function(){
 	$("#jqGrid_ordcom_panel").on("shown.bs.collapse", function(){
-		$('#jqGrid_phar_pagerDelete, #jqGrid_phar_pagerRefresh, #jqGrid_phar_pagerFinalBill, #jqGrid_disp_pagerDelete, #jqGrid_disp_pagerRefresh, #jqGrid_disp_pagerFinalBill, #jqGrid_rad_pagerDelete, #jqGrid_rad_pagerRefresh, #jqGrid_rad_pagerFinalBill, #jqGrid_dfee_pagerDelete, #jqGrid_dfee_pagerRefresh, #jqGrid_dfee_pagerFinalBill, #jqGrid_phys_pagerDelete, #jqGrid_phys_pagerRefresh, #jqGrid_phys_pagerFinalBill, #jqGrid_rehab_pagerDelete, #jqGrid_rehab_pagerRefresh, #jqGrid_rehab_pagerFinalBill, #jqGrid_diet_pagerDelete, #jqGrid_diet_pagerRefresh, #jqGrid_diet_pagerFinalBill, #jqGrid_oth_pagerDelete, #jqGrid_oth_pagerRefresh, #jqGrid_oth_pagerFinalBill, #jqGrid_pkg_pagerDelete, #jqGrid_pkg_pagerRefresh, #jqGrid_pkg_pagerFinalBill, #jqGrid_lab_pagerDelete, #jqGrid_lab_pagerRefresh, #jqGrid_lab_pagerFinalBill').hide();
 		var lastrowdata = getrow_bootgrid_();
 		get_billtype();
 		get_ordcom_totamount();
@@ -34,10 +45,13 @@ $(document).ready(function(){
 			$('a#ordcom_navtab_phar').tab('show');
 		}
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
-		$("#jqGrid_phar").jqGrid('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
-		$("#cyclebill_dtl").attr('href',"./ordcom/table?action=showpdf_detail&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno);
-		$("#cyclebill_summ").attr('href',"./ordcom/table?action=showpdf_summ&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno);
-		$("#phar_label_link").attr('href',"./pat_mast/patlabel?action=pharlabel&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno);
+		$("#jqGrid_phar").jqGrid('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
+		$("#cyclebill_dtl").attr('href',"./ordcom_MR/table?action=showpdf_detail&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno);
+		$("#cyclebill_summ").attr('href',"./ordcom_MR/table?action=showpdf_summ&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno);
+		$("#phar_label_link").attr('href',"./pat_mast_MR/patlabel?action=pharlabel&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno);
+		$("#phar_prescription_link").attr('href',"./ordcom_MR/table?action=showpdf_detail&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno+"&invcode=50&pres_=1");
+
+        $('#ordcom_panel_title').show();
 
 		// if($('#isdoctor').val() != '1'){
         // 	let bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
@@ -48,51 +62,54 @@ $(document).ready(function(){
 		// }
 	});
 
-	$("#jqGrid_ordcom_panel").on("hide.bs.collapse", function(){
-		$('span#cyclebill_invno').html('');
+	$("#jqGrid_ordcom_panel").on("hidden.bs.collapse", function(){
+		if($(this).attr('aria-expanded') == 'false'){
+			$('span#cyclebill_invno').html('');
+	        $('#ordcom_panel_title').hide();
+		}
 	});
 
 	$('.nav-tabs a').on('shown.bs.tab', function(e){
 		let ordcomtype = $(this).data('ord_chgtype');
 		switch(ordcomtype){
 			case 'PHAR':
-				$("#jqGrid_phar").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
+				$("#jqGrid_phar").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
 				refreshGrid('#jqGrid_phar',urlParam_phar,'add');
 				break;
 			case 'DISP':
-				$("#jqGrid_disp").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
+				$("#jqGrid_disp").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
 				refreshGrid('#jqGrid_disp',urlParam_disp,'add');
 				break;
 			case 'LAB':
-				$("#jqGrid_lab").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
+				$("#jqGrid_lab").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
 				refreshGrid('#jqGrid_lab',urlParam_lab,'add');
 				break;
 			case 'RAD':
-				$("#jqGrid_rad").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
+				$("#jqGrid_rad").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
 				refreshGrid('#jqGrid_rad',urlParam_rad,'add');
 				break;
 			case 'DFEE':
-				$("#jqGrid_dfee").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
+				$("#jqGrid_dfee").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
 				refreshGrid('#jqGrid_dfee',urlParam_dfee,'add');
 				break;
 			case 'PHYS':
-				$("#jqGrid_phys").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
+				$("#jqGrid_phys").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
 				refreshGrid('#jqGrid_phys',urlParam_phys,'add');
 				break;
 			case 'REHAB':
-				$("#jqGrid_rehab").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
+				$("#jqGrid_rehab").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
 				refreshGrid('#jqGrid_rehab',urlParam_rehab,'add');
 				break;
 			case 'DIET':
-				$("#jqGrid_diet").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
+				$("#jqGrid_diet").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
 				refreshGrid('#jqGrid_diet',urlParam_diet,'add');
 				break;
 			case 'OTH':
-				$("#jqGrid_oth").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
+				$("#jqGrid_oth").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
 				refreshGrid('#jqGrid_oth',urlParam_oth,'add');
 				break;
 			case 'PKG':
-				$("#jqGrid_pkg").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
+				$("#jqGrid_pkg").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
 				refreshGrid('#jqGrid_pkg',urlParam_pkg,'add');
 				break;
 		}
@@ -104,7 +121,7 @@ function populate_ordcom_currpt(obj){
 	//panel header	
 	$('#name_show_ordcom').text(if_none(obj.Name));
 	$('#mrn_show_ordcom').text(if_none(("0000000" + obj.MRN).slice(-7)));
-	$('#billtype_show_ordcom').text(if_none($('#billtype_def_desc').val()));
+	$('#billtype_show_ordcom').text(if_none(obj.billtypeDesc));
 	$('#sex_show_ordcom').text(if_none(obj.Sex).toUpperCase());
 	$('#dob_show_ordcom').text(dob_chg(obj.DOB));
 	$('#age_show_ordcom').text(dob_age(obj.DOB)+' (YRS)');
@@ -262,7 +279,7 @@ function get_ordcom_totamount(){
 	var lastrowdata = getrow_bootgrid_();
 
 	var param={
-		url:"./ordcom/table",
+		url:"./ordcom_MR/table",
 		action: 'get_ordcom_totamount',
 		mrn:lastrowdata.MRN,
 		episno:lastrowdata.Episno
@@ -331,7 +348,7 @@ function set_userdeptcode(tab){
 function final_bill(grid,param){
 	if (confirm("Are you sure to run final bill for this patient?") == true) {
 		var lastrowdata = getrow_bootgrid_();
-		var url = "./ordcom/table?action=final_bill_invoice&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno;
+		var url = "./ordcom_MR/table?action=final_bill_invoice&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno;
 		let urlparam = {	
 			action: 'final_bill',
 		};
@@ -342,17 +359,22 @@ function final_bill(grid,param){
 			episno: lastrowdata.Episno
 		};
 
-		$.post( "./ordcom/form?"+$.param(urlparam),urlobj, function( data ){	
+		$.post( "./ordcom_MR/form?"+$.param(urlparam),urlobj, function( data ){	
 		}).fail(function (data) {
 			$('#tabcoverage').collapse('hide');
 			refreshGrid(grid, param);
 		}).done(function (data) {
-			$('#tabcoverage').collapse('hide');
-			$("#grid-command-buttons").bootgrid('reload');
-			window.scrollTo(0,0);
-			$('#jqGrid_ordcom_panel').collapse('hide');
-			// refreshGrid(grid, param);
-			window.open(url, '_blank').focus();
+			if($('#ordcom_phase').val() == '2'){
+				window.open(url, '_blank').focus();
+				get_ordcom_totamount();
+			}else{
+				$('#tabcoverage').collapse('hide');
+				$("#grid-command-buttons").bootgrid('reload');
+				window.scrollTo(0,0);
+				$('#jqGrid_ordcom_panel').collapse('hide');
+				// refreshGrid(grid, param);
+				window.open(url, '_blank').focus();
+			}
 		});	
 	}
 }

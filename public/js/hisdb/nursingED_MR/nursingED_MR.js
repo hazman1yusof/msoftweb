@@ -21,37 +21,6 @@ $(document).ready(function (){
 	
 	disableForm('#formTriageInfoED');
 	
-	$("#new_tiED").click(function (){
-		button_state_tiED('wait');
-		enableForm('#formTriageInfoED');
-		rdonly('#formTriageInfoED');
-	});
-	
-	$("#edit_tiED").click(function (){
-		button_state_tiED('wait');
-		enableForm('#formTriageInfoED');
-		rdonly('#formTriageInfoED');
-		$("#admwardtime, #nursesign, #eduser, #warduser").attr("readonly", true);
-	});
-	
-	$("#save_tiED").click(function (){
-		disableForm('#formTriageInfoED');
-		if($('#formTriageInfoED').isValid({requiredFields: ''}, conf, true)){
-            saveForm_tiED(function (){
-                $("#cancel_tiED").data('oper','edit');
-                $("#cancel_tiED").click();
-            });
-		}else{
-			enableForm('#formTriageInfoED');
-			rdonly('#formTriageInfoED');
-		}
-	});
-	
-	$("#cancel_tiED").click(function (){
-		disableForm('#formTriageInfoED');
-		button_state_tiED($(this).data('oper'));
-	});
-	
 	// to format number input to two decimal places (0.00)
 	$(".floatNumberField").change(function (){
 		$(this).val(parseFloat($(this).val()).toFixed(2));
@@ -61,7 +30,7 @@ $(document).ready(function (){
 	$("#drugs_remarks").on("keyup blur", function (){
 		$("#allergydrugs").prop("checked", this.value !== "");
 	});
-	
+
 	$("#food_remarks").on("keyup blur", function (){
 		$("#allergyfood").prop("checked", this.value !== "");
 	});
@@ -69,26 +38,8 @@ $(document).ready(function (){
 	$("#others_remarks").on("keyup blur", function (){
 		$("#allergyothers").prop("checked", this.value !== "");
 	});
-	
 	// to autocheck the checkbox bila fill in textarea ends
 	
-	$("#jqGridTriageInfoED_panel").on("show.bs.collapse", function (){
-	});
-	
-	$("#jqGridTriageInfoED_panel").on("hide.bs.collapse", function (){
-		button_state_tiED('empty');
-		disableForm('#formTriageInfoED');
-		$("#jqGridTriageInfoED_panel > div").scrollTop(0);
-	});
-	
-	$('#jqGridTriageInfoED_panel').on('shown.bs.collapse', function (){
-		SmoothScrollTo("#jqGridTriageInfoED_panel", 500);
-		populate_triageED_currpt_getdata();
-	});
-	
-	$('#jqGridTriageInfoED_panel').on('hidden.bs.collapse', function (){
-	});
-
 	function glasgow_coma_scale(){
 		var score = 0;
 		$(".calc:checked").each(function(){
@@ -101,7 +52,6 @@ $(document).ready(function (){
 			glasgow_coma_scale()
 		});
 	});
-
 
 	$(".changeTextInputColorBP").on('change',function (){
 		var age = $('#age_show_triageED').val();
@@ -146,7 +96,7 @@ $(document).ready(function (){
 	///////////////////////////////////////jqGridAddNotesNursingED///////////////////////////////////////
 	$("#jqGridAddNotesNursingED").jqGrid({
 		datatype: "local",
-		editurl: "./nursingED/form",
+		editurl: "./nursingED_MR/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'mrn', name: 'mrn', hidden: true },
@@ -181,64 +131,12 @@ $(document).ready(function (){
 			$("#jqGridAddNotesNursingED_iledit").click();
 		},
 	});
-	
-	/////////////////////////////////myEditOptions/////////////////////////////////
-	var myEditOptions_addNursingED = {
-		keys: true,
-		extraparam: {
-			"_token": $("#csrf_token").val()
-		},
-		oneditfunc: function (rowid){
-			$("#jqGridPagerDelete_addnotesNursingED,#jqGridPagerRefresh_addnoteNursingED").hide();
-			
-			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
-				var code = e.keyCode || e.which;
-				if (code == '9')$('#jqGridAddNotesNursingED_ilsave').click();
-				// addmore_jqgridNursingED.state = true;
-				// $('#jqGrid_ilsave').click();
-			});
-		},
-		aftersavefunc: function (rowid, response, options){
-			// addmore_jqgridNursingED.more = true; // only addmore after save inline
-			// state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGridAddNotesNursingED',urlParam_AddNotesNursingED,'add_notesNursingED');
-			errorField.length = 0;
-			$("#jqGridPagerDelete_addnotesNursingED,#jqGridPagerRefresh_addnoteNursingED").show();
-		},
-		errorfunc: function (rowid,response){
-			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGridAddNotesNursingED',urlParam_AddNotesNursingED,'add_notesNursingED');
-		},
-		beforeSaveRow: function (options, rowid){
-			$('#p_error').text('');
-			
-			let data = $('#jqGridAddNotesNursingED').jqGrid ('getRowData', rowid);
-			
-			let editurl = "./nursingED/form?"+
-				$.param({
-					episno: $('#episno_tiED').val(),
-					mrn: $('#mrn_tiED').val(),
-					action: 'addNotesNursingED_save',
-				});
-			$("#jqGridAddNotesNursingED").jqGrid('setGridParam', { editurl: editurl });
-		},
-		afterrestorefunc: function (response){
-			$("#jqGridPagerDelete_addnotesNursingED,#jqGridPagerRefresh_addnoteNursingED").show();
-		},
-		errorTextFormat: function (data){
-			alert(data);
-		}
-	};
-	
+
 	/////////////////////////////////////jqGridPagerAddNotesNursingED/////////////////////////////////////
 	$("#jqGridAddNotesNursingED").inlineNav('#jqGridPagerAddNotesNursingED', {
-		add: true, edit: false, cancel: true,
+		add: false, edit: false, cancel: false, save: false,
 		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
-		addParams: {
-			addRowParams: myEditOptions_addNursingED
-		},
-		// editParams: myEditOptions_edit
 	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesNursingED", {
 		id: "jqGridPagerRefresh_addnoteNursingED",
 		caption: "", cursor: "pointer", position: "last",
@@ -313,39 +211,6 @@ conf = {
 	},
 };
 
-button_state_tiED('empty');
-function button_state_tiED(state){
-	switch(state){
-		case 'empty':
-			$("#toggle_tiED").removeAttr('data-toggle');
-			$('#cancel_tiED').data('oper','add');
-			$('#new_tiED,#save_tiED,#cancel_tiED,#edit_tiED').attr('disabled',true);
-			break;
-		case 'add':
-			$("#toggle_tiED").attr('data-toggle','collapse');
-			$('#cancel_tiED').data('oper','add');
-			$("#new_tiED").attr('disabled',false);
-			$('#save_tiED,#cancel_tiED,#edit_tiED').attr('disabled',true);
-			break;
-		case 'edit':
-			$("#toggle_tiED").attr('data-toggle','collapse');
-			$('#cancel_tiED').data('oper','edit');
-			$("#edit_tiED").attr('disabled',false);
-			$('#save_tiED,#cancel_tiED,#new_tiED').attr('disabled',true);
-			break;
-		case 'wait':
-			dialog_tri_colED.on();
-			$("#toggle_tiED").attr('data-toggle','collapse');
-			$("#save_tiED,#cancel_tiED").attr('disabled',false);
-			$('#edit_tiED,#new_tiED').attr('disabled',true);
-			break;
-		case 'disableAll':
-			$("#toggle_tiED").attr('data-toggle','collapse');
-			$('#new_tiED,#save_tiED,#cancel_tiED,#edit_tiED').attr('disabled',true);
-			break;
-	}
-}
-
 // screen emergency //
 function populate_formNursingED(obj,rowdata){
 	// panel header
@@ -359,9 +224,7 @@ function populate_formNursingED(obj,rowdata){
 	$('#occupation_show_triageED').text(if_none(obj.occupation));
 	$('#citizenship_show_triageED').text(obj.citizen);
 	$('#area_show_triageED').text(obj.area);
-	
-	button_state_tiED('add');
-	
+		
 	// formTriageInfoED
 	$("#mrn_tiED").val(obj.a_mrn);
 	$("#episno_tiED").val(obj.a_Episno);
@@ -375,7 +238,6 @@ function populate_formNursingED(obj,rowdata){
 // screen current patient //
 function populate_triageED_currpt(obj){
 	$("#jqGridTriageInfoED_panel").collapse('hide');
-	button_state_tiED('empty');
 	
 	// panel header
 	$('#name_show_triageED').text(obj.Name);
@@ -424,7 +286,7 @@ function populate_triageED_currpt_getdata(){
 		epistycode: $("#epistycode").val()
 	};
 	
-	$.post("./nursingED/form?"+$.param(urlparam), $.param(postobj), function (data){
+	$.post("./nursingED_MR/form?"+$.param(urlparam), $.param(postobj), function (data){
 		
 	},'json').fail(function (data){
 		alert('there is an error');
@@ -436,14 +298,12 @@ function populate_triageED_currpt_getdata(){
 			if(!emptyobj_(data.triage_gen))$('#formTriageInfoED span#adduser').text(data.triage_gen.adduser);
 			if(!emptyobj_(data.triage_nurshistory))autoinsert_rowdata("#formTriageInfoED",data.triage_nurshistory);
 			refreshGrid('#jqGridAddNotesNursingED',urlParam_AddNotesNursingED,'add_notes');
-			button_state_tiED('empty');
 			textare_init_triageED();
 			dialog_tri_colED.check('errorField');
 			tri_color_setED();
 			changeTextInputColor();
 			
 		}else{
-			button_state_tiED('add');
 			refreshGrid('#jqGridAddNotesNursingED',urlParam_AddNotesNursingED,'add_notes');
 			$('#formTriageInfoED span#adduser').text('');
 			if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfoED",data.triage_regdate);
@@ -475,126 +335,10 @@ function empty_formNursingED(){
 	$('#sex_show_tiED').text('');
 	$('#age_show_tiED').text('');
 	$('#race_show_tiED').text('');
-	button_state_tiED('empty');
-	// $("#cancel_tiED, #cancel_ad, #cancel_tpa").click();
 	
 	disableForm('#formTriageInfoED');
 	emptyFormdata(errorField,'#formTriageInfoED')
 	dialog_tri_colED.off();
-}
-
-function saveForm_tiED(callback){
-	var saveParam = {
-		action: 'save_table_ti',
-		oper: $("#cancel_tiED").data('oper')
-	}
-	
-	var postobj = {
-		_token: $('#csrf_token').val(),
-	};
-	
-	values = $("#formTriageInfoED").serializeArray();
-	
-	values = values.concat(
-		$('#formTriageInfoED input[type=checkbox]:not(:checked)').map(
-			function (){
-				return {"name": this.name, "value": 0}
-			}).get()
-	);
-	
-	values = values.concat(
-		$('#formTriageInfoED input[type=checkbox]:checked').map(
-			function (){
-				return {"name": this.name, "value": 1}
-			}).get()
-	);
-	
-	values = values.concat(
-		$('#formTriageInfoED input[type=radio]:checked').map(
-			function (){
-				return {"name": this.name, "value": this.value}
-			}).get()
-	);
-	
-	values = values.concat(
-		$('#formTriageInfoED select').map(
-			function (){
-				return {"name": this.name, "value": this.value}
-			}).get()
-	);
-	
-	// values = values.concat(
-	// 	$('#formTriageInfoED input[type=radio]:checked').map(
-	// 		function (){
-	// 			return {"name": this.name, "value": this.value}
-	// 		}).get()
-	// );
-	
-	$.post("./nursingED/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
-		
-	},'json').fail(function (data){
-		// alert('there is an error');
-		callback();
-	}).success(function (data){
-		callback();
-	});
-}
-
-function saveForm_tiED(callback){
-	var saveParam = {
-		action: 'save_table_triage',
-		oper: $("#cancel_tiED").data('oper')
-	}
-	
-	var postobj = {
-		_token: $('#csrf_token').val(),
-	};
-	
-	values = $("#formTriageInfoED").serializeArray();
-	
-	values = values.concat(
-		$('#formTriageInfoED input[type=checkbox]:not(:checked)').map(
-			function (){
-				return {"name": this.name, "value": 0}
-			}).get()
-	);
-	
-	values = values.concat(
-		$('#formTriageInfoED input[type=checkbox]:checked').map(
-			function (){
-				return {"name": this.name, "value": 1}
-			}).get()
-	);
-	
-	values = values.concat(
-		$('#formTriageInfoED input[type=radio]:checked').map(
-			function (){
-				return {"name": this.name, "value": this.value}
-			}).get()
-	);
-	
-	values = values.concat(
-		$('#formTriageInfoED select').map(
-			function (){
-				return {"name": this.name, "value": this.value}
-			}).get()
-	);
-	
-	// values = values.concat(
-	// 	$('#formTriageInfoED input[type=radio]:checked').map(
-	// 		function (){
-	// 			return {"name": this.name, "value": this.value}
-	// 		}).get()
-	// );
-	
-	$.post("./nursingED/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
-		
-	},'json').fail(function (data){
-		// alert('there is an error');
-		callback();
-	}).success(function (data){
-		callback();
-	});
 }
 
 var dialog_tri_colED = new ordialog(
@@ -716,14 +460,4 @@ function textare_init_triageED(){
 		}
 	});
 }
-
-// function calc_jq_height_onchange(jqgrid){
-// 	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
-// 	if(scrollHeight<50){
-// 		scrollHeight = 50;
-// 	}else if(scrollHeight>300){
-// 		scrollHeight = scrollHeight - 50;
-// 	}
-// 	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
-// }
 

@@ -111,7 +111,7 @@ class GlasgowMRController extends defaultController
         
     }
 
-     public function glasgow_chart(Request $request){
+    public function glasgow_chart(Request $request){
         
         $mrn = $request->mrn;
         $episno = $request->episno;
@@ -146,6 +146,5 @@ class GlasgowMRController extends defaultController
         return view('hisdb.nursingnote_MR.bladder_chart_pdfmake', compact('pat_mast','bladder'));
         
     }
-    
-    
+
 }

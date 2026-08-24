@@ -221,19 +221,19 @@ $(document).ready(function (){
 			var epistycode = $(this).data('epistycode');
 			var regdept = $(this).data('regdept');
 			
-			if(regdept == 'A&E'){
-				// Emergency
-			
-			}else if(regdept == 'PHY'){
-				// Rehabilitation
-			
-			}else{
-				// TH2, EYE, BEACON
-				// Appointment
-			
-			}
-			
-			if(epistycode == 'IP'){
+			if(epistycode == 'OP'){
+				if(regdept == 'A&E'){
+					// Emergency
+				
+				}else if(regdept == 'PHY'){
+					// Rehabilitation
+				
+				}else{
+					// TH2, EYE, BEACON
+					// Appointment clinic
+					window.open('./appointment_MR?epistycode='+epistycode+'&curpat=true&PatClass=HIS&mrn='+mrn+'&episno='+episno, '_blank');
+				}
+			}else if(epistycode == 'IP'){
 				window.open('./pat_mast_MR?epistycode='+epistycode+'&curpat=true&PatClass=HIS&mrn='+mrn+'&episno='+episno, '_blank');
 			}
 		});
@@ -270,8 +270,8 @@ $(document).ready(function (){
 				{ label: 'DOB', name: 'DOB', width: 200, classes: 'pointer', canSearch: true, or_search: true, formatter: dateFormatter, unformat: dateUNFormatter },
 			],
 			urlParam: {
-				filterCol: ['compcode','recstatus','ACTIVE'],
-				filterVal: ['session.compcode','ACTIVE','1']
+				filterCol: ['compcode'],
+				filterVal: ['session.compcode']
 			},
 			ondblClickRow: function (){
 				let data = selrowData('#' + patient_search.gridname).MRN;
@@ -319,8 +319,8 @@ $(document).ready(function (){
 		},{
 			title: "Select MRN",
 			open: function (){
-				patient_search.urlParam.filterCol = ['compcode','recstatus','ACTIVE'];
-				patient_search.urlParam.filterVal = ['session.compcode','ACTIVE','1'];
+				patient_search.urlParam.filterCol = ['compcode'];
+				patient_search.urlParam.filterVal = ['session.compcode'];
 
 				$("input[type='radio'][name='dcolr']").click(function (){
 					if($("input[name='dcolr']:checked").val() == 'DOB'){

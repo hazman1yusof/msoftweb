@@ -197,7 +197,7 @@ $(document).ready(function () {
 
 	$("#jqGrid_ordcom").jqGrid({
 		datatype: "local",
-		editurl: "./ordcom/form",
+		editurl: "./ordcom_MR/form",
 		colModel: [
 			{ label: 'auditno', name: 'auditno', hidden:true},
 			{ label: 'compcode', name: 'compcode', hidden:true},
@@ -375,7 +375,7 @@ $(document).ready(function () {
 
 			mycurrency2.formatOff();
 
-			let editurl = "./ordcom/form?"+
+			let editurl = "./ordcom_MR/form?"+
 				$.param({
 					_token: $("#csrf_token").val(),	
 					mrn: $('#mrn_ordcom').val(),
@@ -430,7 +430,7 @@ $(document).ready(function () {
 								// cheqno: $('#cheqno').val(),	
 								// mrn: selrowData('#jqGrid_ordcom').mrn,	
 							}	
-							$.post( "./ordcom/form?"+$.param(param),{oper:'del_ordcom',"_token": $("#_token").val()}, function( data ){	
+							$.post( "./ordcom_MR/form?"+$.param(param),{oper:'del_ordcom',"_token": $("#_token").val()}, function( data ){	
 							}).fail(function (data) {	
 								$('#p_error').text(data.responseText);	
 							}).done(function (data) {	
@@ -481,7 +481,7 @@ $(document).ready(function () {
 				mrn: selrowData('#jqGrid').mrn,	
 				
 			}	
-			$.post( "./ordcom/form?"+$.param(param),{oper:'edit_all_ordcom',dataobj:jqGrid_ordcom_data}, function( data ){	
+			$.post( "./ordcom_MR/form?"+$.param(param),{oper:'edit_all_ordcom',dataobj:jqGrid_ordcom_data}, function( data ){	
 			}).fail(function(data) {	
 				$('#p_error').text(data.responseText);	
 				////errorText(dialog,data.responseText);	
@@ -559,7 +559,7 @@ function hideatdialogForm(hide,saveallrow){
 	
 var urlParam_ordcom={
 	action:'ordcom_table',
-	url:'./ordcom/table',
+	url:'./ordcom_MR/table',
 	mrn:'',
 	episno:''
 	// field: '',
@@ -662,7 +662,7 @@ function ordcom_chgcode_selecter(c_optid,c_id){
     var chgcode_table = null;
 
     chgcode_table = $('#chgcode_table').DataTable( {
-        "ajax": "ordcom/table?action=chgcode_table",
+        "ajax": "ordcom_MR/table?action=chgcode_table",
         "paging":true,
         "pageLength": 10,
         "columns": [
