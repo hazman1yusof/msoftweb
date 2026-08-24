@@ -1,7 +1,7 @@
 
 var urlParam_dfee={
 	action:'ordcom_table',
-	url:'./ordcom/table',
+	url:'./ordcom_MR/table',
 	chggroup: $('#ordcomtt_dfee').val(),
 	mrn:'',
 	episno:''
@@ -14,7 +14,7 @@ $(document).ready(function(){
 
 	$("#jqGrid_dfee").jqGrid({
 		datatype: "local",
-		editurl: "ordcom/form",
+		editurl: "ordcom_MR/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'TT', name: 'trxtype', width: 30, classes: 'wrap'},
@@ -159,7 +159,9 @@ $(document).ready(function(){
     });
 	
 	$("#jqGrid_dfee").inlineNav('#jqGrid_dfee_pager', {
-		add: false, edit: false, cancel: false, save:false, 
+		add: false,
+		edit: false,
+		cancel: false, save:false,
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
 		addParams: {
@@ -168,57 +170,13 @@ $(document).ready(function(){
 		editParams: myEditOptions_edit_dfee,
 			
 	}).jqGrid('navButtonAdd', "#jqGrid_dfee_pager", {	
-		id: "jqGrid_dfee_pagerDelete",	
-		caption: "", cursor: "pointer", position: "last",	
-		buttonicon: "glyphicon glyphicon-trash",	
-		title: "Delete Selected Row",	
-		onClickButton: function () {	
-			selRowId = $("#jqGrid_dfee").jqGrid('getGridParam', 'selrow');	
-			// if (!selRowId) {	
-			// 	bootbox.alert('Please select row');	
-			// } else {	
-			// 	bootbox.confirm({	
-			// 		message: "Are you sure you want to delete this row?",	
-			// 		buttons: {	
-			// 			confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }	
-			// 		},	
-			// 		callback: function (result) {	
-			// 			if (result == true) {	
-			// 				// param = {	
-			// 				// 	_token: $("#_token").val(),	
-			// 				// 	action: 'saveForm_ordcom',	
-			// 				// 	// cheqno: $('#cheqno').val(),	
-			// 				// 	// mrn: selrowData('#jqGrid_dfee').mrn,	
-			// 				// }	
-			// 				// $.post( "./ordcom/form?"+$.param(param),{oper:'del_ordcom',"_token": $("#_token").val()}, function( data ){	
-			// 				// }).fail(function (data) {	
-			// 				// 	$('#p_error').text(data.responseText);	
-			// 				// }).done(function (data) {	
-			// 				// 	refreshGrid("#jqGrid_dfee", urlParam_dfee);	
-			// 				// });	
-			// 			}else{	
-			// 				$("#jqGridPagerDelete,#jqGridPagerRefresh").show();	
-			// 			}	
-			// 		}	
-			// 	});	
-			// }	
-		},	
-	}).jqGrid('navButtonAdd', "#jqGrid_dfee_pager", {	
 		id: "jqGrid_dfee_pagerRefresh",	
 		caption: "", cursor: "pointer", position: "last",	
 		buttonicon: "glyphicon glyphicon-refresh",	
 		title: "Refresh Table",	
 		onClickButton: function () {
 			refreshGrid("#jqGrid_dfee", urlParam_dfee);	
-		},	
-	}).jqGrid('navButtonAdd', "#jqGrid_dfee_pager", {	
-		id: "jqGrid_dfee_pagerFinalBill",	
-		caption: "Final Bill", cursor: "pointer", position: "last",
-		buttonicon: "",	
-		title: "Final Bill",	
-		onClickButton: function () {
-			final_bill("#jqGrid_dfee", urlParam_dfee);
-		},	
+		},
 	});
 
 });
@@ -302,9 +260,9 @@ var myEditOptions_dfee = {
 			return false;
 		}
 
-		let rowdata = getrow_bootgrid();
+		let rowdata = getrow_bootgrid_();
 
-		let editurl = "./ordcom/form?"+
+		let editurl = "./ordcom_MR/form?"+
 			$.param({
 				action: 'order_entry',
 				mrn: rowdata.MRN,
@@ -445,9 +403,9 @@ var myEditOptions_edit_dfee = {
 			return false;
 		}
 
-		let rowdata = getrow_bootgrid();
+		let rowdata = getrow_bootgrid_();
 
-		let editurl = "./ordcom/form?"+
+		let editurl = "./ordcom_MR/form?"+
 			$.param({
 				action: 'order_entry',
 				mrn: rowdata.MRN,
@@ -525,14 +483,16 @@ function calculate_line_totgst_and_totamt_dfee(event) {
 		rate = 0;
 	}
 
-	var disamt = calc_discamt_main($('#ordcomtt_dfee').val(),$("#jqGrid_dfee #"+id_optid+"_chgcode").val(),unitprce,quantity);
+	var billty_discamt = ret_parsefloat($("#jqGrid_dfee #"+id_optid+"_chgcode").data('billty_discamt')).toFixed(2);
+
+	var discamt = -1 * ret_parsefloat(billty_discamt * quantity).toFixed(2);
 	var amount = (unitprce*quantity);
 
-	let taxamount = (amount + disamt) * rate / 100;
+	let taxamount = (amount + discamt) * rate / 100;
 
-	var totamount = amount + disamt + taxamount;
+	var totamount = amount + discamt + taxamount;
 
-	$("#"+id_optid+"_discamt").val(disamt);
+	$("#"+id_optid+"_discamt").val(discamt);
 	$("#"+id_optid+"_amount").val(amount);
 	$("#"+id_optid+"_taxamount").val(taxamount);
 	$("#"+id_optid+"_totamount").val(totamount);
@@ -571,12 +531,13 @@ var dialog_chgcode_dfee = new ordialog(
 			{label: 'deptcode',name:'deptcode',hidden:true},
 			{label: 'doctorcode',name:'doctorcode',hidden:true},
 			{label: 'doctorname',name:'doctorname',hidden:true},
+			{label: 'billty_discamt',name:'billty_discamt',hidden:true},
 			
 		],
 		urlParam: {
-				url:"./ordcom/table",
+				url:"./ordcom_MR/table",
 				action: 'get_itemcode_price',
-				url_chk: './ordcom/table',
+				url_chk: './ordcom_MR/table',
 				action_chk: 'get_itemcode_price_check',
 				entrydate : moment().format('YYYY-MM-DD'),
 				billtype : $('#billtype_def_code').val(),
@@ -585,6 +546,8 @@ var dialog_chgcode_dfee = new ordialog(
 				price : 'PRICE2',
 				filterCol : ['cm.chggroup'],
 				filterVal : [$('#ordcomtt_dfee').val()],
+				mrn : urlParam_dfee.mrn,
+				episno : urlParam_dfee.episno,
 			},
 		ondblClickRow:function(event){
 			if(event.type == 'keydown'){
@@ -641,6 +604,7 @@ var dialog_chgcode_dfee = new ordialog(
 			$("#jqGrid_dfee #"+id_optid+"_cost_price").val(data['avgcost']);
 			$("#jqGrid_dfee #"+id_optid+"_billtypeperct").val(data['billty_percent']);
 			$("#jqGrid_dfee #"+id_optid+"_billtypeamt").val(data['billty_amount']);
+			$("#jqGrid_dfee #"+id_optid+"_chgcode").data('billty_discamt',data['billty_discamt']);
 
 			if(data['overwrite'] == '1'){
 				$("#jqGrid_dfee #"+id_optid+"_unitprce").prop('readonly',false);
@@ -675,9 +639,9 @@ var dialog_chgcode_dfee = new ordialog(
 		title:"Select Item For Doctor Fees",
 		open:function(obj_){
 			let id_optid = obj_.id_optid;
-			dialog_chgcode_dfee.urlParam.url = "./ordcom/table";
+			dialog_chgcode_dfee.urlParam.url = "./ordcom_MR/table";
 			dialog_chgcode_dfee.urlParam.action = 'get_itemcode_price';
-			dialog_chgcode_dfee.urlParam.url_chk = "./ordcom/table";
+			dialog_chgcode_dfee.urlParam.url_chk = "./ordcom_MR/table";
 			dialog_chgcode_dfee.urlParam.action_chk = "get_itemcode_price_check";
 			dialog_chgcode_dfee.urlParam.deptcode = $("#jqGrid_dfee input[name='deptcode']").val();
 			dialog_chgcode_dfee.urlParam.dfee = 'dfee';
@@ -687,6 +651,8 @@ var dialog_chgcode_dfee = new ordialog(
 			dialog_chgcode_dfee.urlParam.chgcode = $("#jqGrid_dfee input[name='chgcode']").val();
 			dialog_chgcode_dfee.urlParam.filterCol = ['cm.chggroup'];
 			dialog_chgcode_dfee.urlParam.filterVal = [$('#ordcomtt_dfee').val()];
+			dialog_chgcode_dfee.urlParam.mrn = urlParam_dfee.mrn;
+			dialog_chgcode_dfee.urlParam.episno = urlParam_dfee.episno;
 		},
 		close: function(obj_){
 			let id_optid = obj_.id_optid;

@@ -1,7 +1,7 @@
 
 var urlParam_lab={
 	action:'ordcom_table',
-	url:'./ordcom/table',
+	url:'./ordcom_MR/table',
 	chggroup: $('#ordcomtt_lab').val(),
 	mrn:'',
 	episno:''
@@ -14,7 +14,7 @@ $(document).ready(function(){
 
 	$("#jqGrid_lab").jqGrid({
 		datatype: "local",
-		editurl: "ordcom/form",
+		editurl: "ordcom_MR/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'TT', name: 'trxtype', width: 30, classes: 'wrap'},
@@ -174,7 +174,9 @@ $(document).ready(function(){
 	jqgrid_label_align_right("#jqGrid_lab");
 	
 	$("#jqGrid_lab").inlineNav('#jqGrid_lab_pager', {
-		add: false, edit: false, cancel: false, save:false, 
+		add: false,
+		edit: false,
+		cancel: false, save: false,
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
 		addParams: {
@@ -183,53 +185,13 @@ $(document).ready(function(){
 		editParams: myEditOptions_lab_edit,
 			
 	}).jqGrid('navButtonAdd', "#jqGrid_lab_pager", {	
-		id: "jqGrid_lab_pagerDelete",	
-		caption: "", cursor: "pointer", position: "last",	
-		buttonicon: "glyphicon glyphicon-trash",	
-		title: "Delete Selected Row",	
-		onClickButton: function () {	
-			selRowId = $("#jqGrid_lab").jqGrid('getGridParam', 'selrow');	
-			if (!selRowId) {	
-				alert('Please select row');
-			} else {
-
-				if (confirm("Are you sure you want to delete this row?") == true) {
-				    let urlparam = {	
-						action: 'order_entry',	
-						oper: 'del',	
-					};
-					let urlobj={
-						oper:'del',
-						_token: $("#csrf_token").val(),
-						id: selrowData('#jqGrid_lab').id
-					};
-					$.post( "./ordcom/form?"+$.param(urlparam),urlobj, function( data ){	
-					}).fail(function (data) {	
-						refreshGrid("#jqGrid_lab", urlParam_lab);	
-					}).done(function (data) {	
-						refreshGrid("#jqGrid_lab", urlParam_lab);	
-					});	
-				}else{
-					$("#jqGridPagerDelete,#jqGridPagerRefresh").show();	
-				}
-			}	
-		},	
-	}).jqGrid('navButtonAdd', "#jqGrid_lab_pager", {	
 		id: "jqGrid_lab_pagerRefresh",	
 		caption: "", cursor: "pointer", position: "last",	
 		buttonicon: "glyphicon glyphicon-refresh",	
 		title: "Refresh Table",	
 		onClickButton: function () {
 			refreshGrid("#jqGrid_lab", urlParam_lab);	
-		},	
-	}).jqGrid('navButtonAdd', "#jqGrid_lab_pager", {	
-		id: "jqGrid_lab_pagerFinalBill",	
-		caption: "Final Bill", cursor: "pointer", position: "last",
-		buttonicon: "",	
-		title: "Final Bill",	
-		onClickButton: function () {
-			final_bill("#jqGrid_lab", urlParam_lab);
-		},	
+		},
 	});
 
 });
@@ -323,9 +285,9 @@ var myEditOptions_lab = {
 			return false;
 		}
 
-		let rowdata = getrow_bootgrid();
+		let rowdata = getrow_bootgrid_();
 
-		let editurl = "./ordcom/form?"+
+		let editurl = "./ordcom_MR/form?"+
 			$.param({
 				action: 'order_entry',
 				mrn: rowdata.MRN,
@@ -505,9 +467,9 @@ var myEditOptions_lab_edit = {
 			return false;
 		}
 
-		let rowdata = getrow_bootgrid();
+		let rowdata = getrow_bootgrid_();
 
-		let editurl = "./ordcom/form?"+
+		let editurl = "./ordcom_MR/form?"+
 			$.param({
 				action: 'order_entry',
 				mrn: rowdata.MRN,
@@ -610,7 +572,9 @@ function calculate_line_totgst_and_totamt_lab(event) {
 		rate = 0;
 	}
 
-	var discamt = calc_discamt_main($('#ordcomtt_lab').val(),$("#jqGrid_lab #"+id_optid+"_chgcode").val(),unitprce,quantity);
+	var billty_discamt = ret_parsefloat($("#jqGrid_lab #"+id_optid+"_chgcode").data('billty_discamt')).toFixed(2);
+
+	var discamt = -1 * ret_parsefloat(billty_discamt * quantity).toFixed(2);
 	var amount = (unitprce*quantity);
 
 	let taxamount = (amount + discamt) * rate / 100;
@@ -711,6 +675,7 @@ var dialog_chgcode_lab = new ordialog(
 			{label: 'billty_amount',name:'billty_amount',hidden:true},
 			{label: 'billty_percent',name:'billty_percent',hidden:true},
 			{label: 'convfactor',name:'convfactor',hidden:true},
+			{label: 'billty_discamt',name:'billty_discamt',hidden:true},
 			
 		],
 		sortname: 'cm.uom',
@@ -726,6 +691,8 @@ var dialog_chgcode_lab = new ordialog(
 				deptcode : $("#labdept_dflt").val(),
 				filterCol : ['cm.chggroup'],
 				filterVal : [$('#ordcomtt_lab').val()],
+				mrn : urlParam_lab.mrn,
+				episno : urlParam_lab.episno,
 			},
 		ondblClickRow:function(event){
 			if(event.type == 'keydown'){
@@ -759,6 +726,7 @@ var dialog_chgcode_lab = new ordialog(
 			$("#jqGrid_lab #"+id_optid+"_taxcode").val(data['taxcode']);
 			$("#jqGrid_lab #"+id_optid+"_tax_rate").val(data['rate']);
 			$("#jqGrid_lab #"+id_optid+"_convfactor_uom").val(data['convfactor']);
+			$("#jqGrid_lab #"+id_optid+"_chgcode").data('billty_discamt',data['billty_discamt']);
 
 			dialog_chgcode_lab.urlParam.uom = data['uom'];
 
@@ -835,7 +803,7 @@ var dialog_chgcode_lab = new ordialog(
 			let id_optid = obj_.id_optid;
 			dialog_chgcode_lab.urlParam.url = "./SalesOrderDetail/table";
 			dialog_chgcode_lab.urlParam.action = 'get_itemcode_price';
-			dialog_chgcode_lab.urlParam.url_chk = "./ordcom/table";
+			dialog_chgcode_lab.urlParam.url_chk = "./ordcom_MR/table";
 			dialog_chgcode_lab.urlParam.action_chk = "get_itemcode_price_check";
 			dialog_chgcode_lab.urlParam.deptcode = $("#jqGrid_lab input[name='deptcode']").val();
 			dialog_chgcode_lab.urlParam.price = 'PRICE2';
@@ -844,6 +812,8 @@ var dialog_chgcode_lab = new ordialog(
 			dialog_chgcode_lab.urlParam.chgcode = $("#jqGrid_lab input[name='chgcode']").val();
 			dialog_chgcode_lab.urlParam.filterCol = ['cm.chggroup'];
 			dialog_chgcode_lab.urlParam.filterVal = [$('#ordcomtt_lab').val()];
+			dialog_chgcode_lab.urlParam.mrn = urlParam_lab.mrn;
+			dialog_chgcode_lab.urlParam.episno = urlParam_lab.episno;
 		},
 		close: function(obj){
 			$("#jqGrid_lab input[name='quantity']").focus().select();
@@ -997,8 +967,8 @@ var dialog_uom_recv_lab = new ordialog(
 			{label:'qtyonhand',name:'qtyonhand',hidden:true},
 		],
 		urlParam: {
-					url:"./ordcom/table",
-					url_chk:"./ordcom/table",
+					url:"./ordcom_MR/table",
+					url_chk:"./ordcom_MR/table",
 					action: 'get_itemcode_uom_recv',
 					action_chk: 'get_itemcode_uom_recv_check',
 					entrydate : moment().format('YYYY-MM-DD'),
@@ -1051,9 +1021,9 @@ var dialog_uom_recv_lab = new ordialog(
 	},{
 		title:"Select UOM Code For Item",
 		open:function(obj_){
-			dialog_uom_recv_lab.urlParam.url = "./ordcom/table";
+			dialog_uom_recv_lab.urlParam.url = "./ordcom_MR/table";
 			dialog_uom_recv_lab.urlParam.action = 'get_itemcode_uom_recv';
-			dialog_uom_recv_lab.urlParam.url_chk = "./ordcom/table";
+			dialog_uom_recv_lab.urlParam.url_chk = "./ordcom_MR/table";
 			dialog_uom_recv_lab.urlParam.action_chk = "get_itemcode_uom_recv_check";
 			dialog_uom_recv_lab.urlParam.entrydate = $("#jqGrid_lab input[name='trxdate']").val();
 			dialog_uom_recv_lab.urlParam.chgcode = $("#jqGrid_lab input[name='chgcode']").val();

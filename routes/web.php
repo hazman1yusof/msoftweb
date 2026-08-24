@@ -2052,6 +2052,7 @@ Route::post('/dietorder_MR/form','hisdb\DietOrderMRController@form');
 Route::get('/ordcom_MR','hisdb\OrdcomMRController@show');
 Route::get('/ordcom_MR/table','hisdb\OrdcomMRController@table');
 Route::post('/ordcom_MR/form','hisdb\OrdcomMRController@form');
+Route::get('/ordcom_iframe_MR','hisdb\OrdcomMRController@ordcom_iframe_MR');
 
 //// Discharge page OP MR ///
 Route::get('/discharge_MR','hisdb\DischargeMRController@show');

@@ -317,15 +317,14 @@ grid.on("click.rs.jquery.bootgrid", function (e,c,r){
                 populate_clientProgNoteRef_currpt(lastrowdata);
                 populate_dieteticCareNotes_currpt(lastrowdata);
                 populate_dietOrder_currpt(lastrowdata);
-                populate_ordcom_currpt(lastrowdata);
                 
                 // populate_triage_currpt(lastrowdata);
                 // // populate_doctorNote_currpt(lastrowdata);
                 // populate_requestFor_currpt(lastrowdata);
             
-            // if($('#user_billing').val() == '1'){
-            //     
-            // }
+            if($('#user_billing').val() == '1'){
+                populate_ordcom_currpt(lastrowdata);
+            }
             
             // populate_discharge_currpt(lastrowdata);
             // if(lastrowdata.PatStatus == 1 ){

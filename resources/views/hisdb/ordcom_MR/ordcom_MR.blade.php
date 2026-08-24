@@ -11,18 +11,20 @@
 			<span class="fa fa-plus-square-o"></span> Order
 		</button> -->
 	</div>
-	<div class="panel-heading clearfix collapsed position" id="toggle_ordcom" @if($phase != '2') data-toggle="collapse" data-target="#jqGrid_ordcom_panel" @endif>
-		<b>NAME: <span id="name_show_ordcom"></span></b><br>
-		MRN: <span id="mrn_show_ordcom"></span>
-		BILL TYPE: <span id="billtype_show_ordcom"></span>
-		SEX: <span id="sex_show_ordcom"></span>
-		DOB: <span id="dob_show_ordcom"></span>
-		AGE: <span id="age_show_ordcom"></span>
-		RACE: <span id="race_show_ordcom"></span>
-		RELIGION: <span id="religion_show_ordcom"></span><br>
-		OCCUPATION: <span id="occupation_show_ordcom"></span>
-		CITIZENSHIP: <span id="citizenship_show_ordcom"></span>
-		AREA: <span id="area_show_ordcom"></span>
+	<div class="panel-heading clearfix collapsed position" id="toggle_ordcom" style="height: 75px;" @if($phase != '2') data-toggle="collapse" data-target="#jqGrid_ordcom_panel" @endif>
+		<span id="ordcom_panel_title" style="display: none;">
+			<b>NAME: <span id="name_show_ordcom"></span></b><br>
+			MRN: <span id="mrn_show_ordcom"></span>
+			BILL TYPE: <span id="billtype_show_ordcom"></span>
+			SEX: <span id="sex_show_ordcom"></span>
+			DOB: <span id="dob_show_ordcom"></span>
+			AGE: <span id="age_show_ordcom"></span>
+			RACE: <span id="race_show_ordcom"></span>
+			RELIGION: <span id="religion_show_ordcom"></span><br>
+			OCCUPATION: <span id="occupation_show_ordcom"></span>
+			CITIZENSHIP: <span id="citizenship_show_ordcom"></span>
+			AREA: <span id="area_show_ordcom"></span>
+		</span>
 		
 		@if($phase == '2')
 			<input type="hidden" id="ordcom_phase" value="2">
@@ -41,7 +43,7 @@
 		</div>				
 	</div>
 	<div id="jqGrid_ordcom_panel" class="panel-collapse collapse">
-		<div class="panel-body paneldiv" id="jqGrid_ordcom_c" style="padding-top: 0px;">
+		<div class="panel-body paneldiv" id="jqGrid_ordcom_c" style="padding-top: 0px; width: 100%; padding: 0px 10px !important;">
 	    	<input type="hidden" id="mrn_ordcom" name="mrn_ordcom">
 	    	<input type="hidden" id="episno_ordcom" name="episno_ordcom">
 			<input type="hidden" id="ordcom_deptcode_hide" value="{{Auth::user()->deptcode}}">
@@ -82,134 +84,114 @@
                 </div>
 
                 <div id="tabcoverage" class="panel-collapse collapse">
-                <div class="panel-body">
-                    <div class="col-xs-12">
-                        <div id="jqGrid_epno_coverage_c">
-                            <div class='col-md-12' style="padding:0 0 15px 0">
-                                <table id="jqGrid_epno_coverage" class="table table-striped"></table>
-                                <div id="jqGridPager_epno_coverage"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <form class="col-xs-12" id="form_epno_coverage" autocomplete="off" style="padding-top: 15px;">
-                        <div class="form-group">
-                            <div class="col-md-5" style="position: absolute;right: 18px;top: -10px; display:none">
-                                <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-                                id="btn_grp_edit_epno_coverage">
-                                    <button type="button" class="btn btn-default" id="add_epno_coverage">
-                                        <span class="fa fa-plus-square-o fa-lg"></span> Add
-                                    </button>
-                                    <button type="button" class="btn btn-default" id="edit_epno_coverage">
-                                        <span class="fa fa-edit fa-lg"></span> Edit
-                                    </button>
-                                    <button type="button" class="btn btn-default" id="save_epno_coverage">
-                                        <span class="fa fa-save fa-lg"></span> Save
-                                    </button>
-                                    <button type="button" class="btn btn-default" id="cancel_epno_coverage" >
-                                        <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <input id="idno_epno_coverage" name="idno" type="hidden">
-
-                        <div class="form-group">
-                            <div class="col-xs-7">
-                                <small for="name">Name</small>
-                                <input id="name_epno_coverage" name="name" type="text" class="form-control" data-validation="required" readonly>
-                            </div>
-                            <div class="col-xs-5">
-	                            <div class="col-xs-4" >
-	                                <small for="lineno_epno_coverage">Payer No</small>
-	                                <input id="lineno_epno_coverage" name="lineno" type="text" class="form-control" readonly>
-	                            </div>
-	                            <div class="col-xs-3" style="padding:0px 5px">
-	                                <small for="">MRN</small>
-	                                <input id="mrn_epno_coverage" name="mrn" type="text" class="form-control" data-validation="required" readonly>
-	                            </div>
-	                            <div class="col-xs-3" style="padding:0px 5px">
-	                                <small for="">Episode</small>
-	                                <input id="episno_epno_coverage" name="episno" type="text" class="form-control" data-validation="required" readonly>
-	                            </div>
-	                            <div class="col-xs-2" style="padding:0px 5px">
-	                                <small for="">Type</small>
-	                                <input id="epistycode_epno_coverage" name="epistycode" type="text" class="form-control" data-validation="required" readonly>
+	                <div class="panel-body">
+	                    <div class="col-xs-12">
+	                        <div id="jqGrid_epno_coverage_c">
+	                            <div class='col-md-12' style="padding:0 0 15px 0">
+	                                <table id="jqGrid_epno_coverage" class="table table-striped"></table>
+	                                <div id="jqGridPager_epno_coverage"></div>
 	                            </div>
 	                        </div>
-                        </div>
+	                    </div>
+	                    <form class="col-xs-12" id="form_epno_coverage" autocomplete="off" style="padding-top: 15px;">
+	                        <div class="form-group"></div>
 
-                        <div class="form-group">
-                            <div class="col-xs-4">
-                                <small for="payercode_epno_coverage">Payer Code</small>
-                                <!-- <div class='input-group'> -->
-                                    <input id="payercode_epno_coverage" name="payercode" type="text" class="form-control uppercase" data-validation="required" >
-                                    <!-- <a class='input-group-addon btn btn-info'><span class='fa fa-ellipsis-h'></span></a>
-                                </div> -->
-                            </div>
+	                        <input id="idno_epno_coverage" name="idno" type="hidden">
 
-                            <div class="col-xs-8">
-                                <small for="billtype_epno_coverage">&nbsp;</small>
-                                <input id="payercode_desc_epno_coverage" name="payercode_desc" type="text" class="form-control" readonly>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <div class="col-xs-2">
-                                <small for="allgroup_epno_coverage">All Group</small>
-                                <select name="allgroup" id="allgroup_epno_coverage" class="form-control">
-                                  <option value="1">Yes</option>
-                                  <option value="0">No</option>
-                                </select>
-                            </div>
-                            <div class="col-xs-2">
-                                <small for="allgroup_epno_coverage">&nbsp;</small>
-                                <button type="button" id="except_epno_coverage" class="btn btn-default" style="display: block;">Coverage</button>
-                            </div>
+	                        <div class="form-group">
+	                            <div class="col-xs-7">
+	                                <small for="name">Name</small>
+	                                <input id="name_epno_coverage" name="name" type="text" class="form-control" data-validation="required" readonly>
+	                            </div>
+	                            <div class="col-xs-5">
+		                            <div class="col-xs-4" >
+		                                <small for="lineno_epno_coverage">Payer No</small>
+		                                <input id="lineno_epno_coverage" name="lineno" type="text" class="form-control" readonly>
+		                            </div>
+		                            <div class="col-xs-3" style="padding:0px 5px">
+		                                <small for="">MRN</small>
+		                                <input id="mrn_epno_coverage" name="mrn" type="text" class="form-control" data-validation="required" readonly>
+		                            </div>
+		                            <div class="col-xs-3" style="padding:0px 5px">
+		                                <small for="">Episode</small>
+		                                <input id="episno_epno_coverage" name="episno" type="text" class="form-control" data-validation="required" readonly>
+		                            </div>
+		                            <div class="col-xs-2" style="padding:0px 5px">
+		                                <small for="">Type</small>
+		                                <input id="epistycode_epno_coverage" name="epistycode" type="text" class="form-control" data-validation="required" readonly>
+		                            </div>
+		                        </div>
+	                        </div>
 
-                            <div class="col-xs-4">
-                                <small for="pyrlmtamt_epno_coverage">Limit Amount</small>
-                                <input id="pyrlmtamt_epno_coverage" name="pyrlmtamt" type="text" class="form-control">
-                            </div>
+	                        <div class="form-group">
+	                            <div class="col-xs-4">
+	                                <small for="payercode_epno_coverage">Payer Code</small>
+	                                <div class='input-group'>
+	                                    <input id="payercode_epno_coverage" name="payercode" type="text" class="form-control uppercase" data-validation="required" >
+	                                </div>
+	                            </div>
 
-                            <div class="col-xs-4">
-                                <small for="pay_type_epno_coverage">Fin Class</small>
-                                <input id="pay_type_epno_coverage" name="pay_type" type="text" class="form-control">
-                            </div>
-                        </div>
+	                            <div class="col-xs-8">
+	                                <small for="billtype_epno_coverage">&nbsp;</small>
+	                                <input id="payercode_desc_epno_coverage" name="payercode_desc" type="text" class="form-control" readonly>
+	                            </div>
+	                        </div>
+	                        
+	                        <div class="form-group">
+	                            <div class="col-xs-2">
+	                                <small for="allgroup_epno_coverage">All Group</small>
+	                                <select name="allgroup" id="allgroup_epno_coverage" class="form-control">
+	                                  <option value="1">Yes</option>
+	                                  <option value="0">No</option>
+	                                </select>
+	                            </div>
+	                            <div class="col-xs-2">
+	                                <small for="allgroup_epno_coverage">&nbsp;</small>
+	                                <button type="button" id="except_epno_coverage" class="btn btn-default" style="display: block;">Coverage</button>
+	                            </div>
 
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <small for="refno_epno_coverage">Reference No</small>
-                                <!-- <div class='input-group'> -->
-                                    <input id="refno_epno_coverage" name="refno" type="text" class="form-control uppercase">
-                                    <!-- <a class='input-group-addon btn btn-info' id="refno_epno_coverage_btn"><span class='fa fa-ellipsis-h'></span></a>
-                                </div> -->
-                                <span class="help-block"></span>
-                            </div>
-                            <div class="col-xs-6">
-                                <small for="ourrefno_epno_coverage">Our Reference</small>
-                                <input id="ourrefno_epno_coverage" name="ourrefno" type="text" class="form-control" readonly>
-                            </div>
-                        </div>
+	                            <div class="col-xs-4">
+	                                <small for="pyrlmtamt_epno_coverage">Limit Amount</small>
+	                                <input id="pyrlmtamt_epno_coverage" name="pyrlmtamt" type="text" class="form-control">
+	                            </div>
 
-                        <!-- <div class="form-group">
-                            <div class="col-xs-4">
-                                <small for="computerid_epno_coverage">Computer ID</small>
-                                <input id="computerid_epno_coverage" name="computerid" type="text" class="form-control" readonly>
-                            </div>
-                            <div class="col-xs-4">
-                                <small for="lastuser_epno_coverage">Last User</small>
-                                <input id="lastuser_epno_coverage" name="lastuser" type="text" class="form-control" readonly>
-                            </div>
-                            <div class="col-xs-4">
-                                <small for="lastupdate_epno_coverage">Last Update</small>
-                                <input id="lastupdate_epno_coverage" name="lastupdate" type="text" class="form-control" readonly>
-                            </div>
-                        </div> -->
+	                            <div class="col-xs-4">
+	                                <small for="pay_type_epno_coverage">Fin Class</small>
+	                                <input id="pay_type_epno_coverage" name="pay_type" type="text" class="form-control">
+	                            </div>
+	                        </div>
 
-                    </form>
-                </div>
+	                        <div class="form-group">
+	                            <div class="col-xs-6">
+	                                <small for="refno_epno_coverage">Reference No</small>
+	                                <div class='input-group'>
+	                                    <input id="refno_epno_coverage" name="refno" type="text" class="form-control uppercase">
+	                                </div>
+	                                <span class="help-block"></span>
+	                            </div>
+	                            <div class="col-xs-6">
+	                                <small for="ourrefno_epno_coverage">Our Reference</small>
+	                                <input id="ourrefno_epno_coverage" name="ourrefno" type="text" class="form-control" readonly>
+	                            </div>
+	                        </div>
+
+	                        <!-- <div class="form-group">
+	                            <div class="col-xs-4">
+	                                <small for="computerid_epno_coverage">Computer ID</small>
+	                                <input id="computerid_epno_coverage" name="computerid" type="text" class="form-control" readonly>
+	                            </div>
+	                            <div class="col-xs-4">
+	                                <small for="lastuser_epno_coverage">Last User</small>
+	                                <input id="lastuser_epno_coverage" name="lastuser" type="text" class="form-control" readonly>
+	                            </div>
+	                            <div class="col-xs-4">
+	                                <small for="lastupdate_epno_coverage">Last Update</small>
+	                                <input id="lastupdate_epno_coverage" name="lastupdate" type="text" class="form-control" readonly>
+	                            </div>
+	                        </div> -->
+
+	                    </form>
+	                </div>
                 </div>
             </div>
 
@@ -223,6 +205,10 @@
 				<div id="ordcom_div_label">
 					<span><b>Label : </b></span>
 					<a class="cyclebill" id="phar_label_link" href="" target="_blank">Pharmacy</a>
+					<br>
+				</div>
+				<div id="ordcom_div_prescription">
+					<a class="cyclebill" id="phar_prescription_link" href="" target="_blank">Prescription</a>
 					<br>
 				</div>
 

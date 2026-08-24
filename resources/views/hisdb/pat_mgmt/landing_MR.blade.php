@@ -252,9 +252,11 @@
 					@include('hisdb.ward_main_MR.ward_main_MR')
 				</div>
 
-				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-					@include('hisdb.ordcom_MR.ordcom_MR',['phase' => '1'])
-				</div>
+				@if (Auth::user()->billing == 1)
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.ordcom_MR.ordcom_MR',['phase' => '1'])
+					</div>
+				@endif
 			@endif
 			
 		@endif
@@ -412,17 +414,21 @@
 				<script type="text/javascript" src="js/hisdb/clientprogressnote_MR/clientprogressnoteref_MR.js"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes_MR/dieteticCareNotes_MR.js"></script>
 				<script type="text/javascript" src="js/hisdb/dietorder_MR/dietorder_MR.js?v=2"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_main_MR.js?v=1.3"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_phar_MR.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_disp_MR.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_lab_MR.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_rad_MR.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_dfee_MR.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_phys_MR.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_rehab_MR.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_diet_MR.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_oth_MR.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_pkg_MR.js"></script>
+				
+				
+				@if (Auth::user()->billing == 1)
+					<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_main_MR.js?v=1.3"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_phar_MR.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_disp_MR.js?v=1.1"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_lab_MR.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_rad_MR.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_dfee_MR.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_phys_MR.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_rehab_MR.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_diet_MR.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_oth_MR.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_pkg_MR.js"></script>
+				@endif
 				<!-- <script type="text/javascript" src="js/hisdb/discharge_MR/discharge_MR.js"></script> -->
 
 				<!-- <script type="text/javascript" src="js/hisdb/nursing_MR/nursing_MR.js?v=1.2"></script> -->
@@ -432,10 +438,7 @@
 				<script type="text/javascript" src="js/hisdb/doctornote_MR/doctornote_MR.js?v=1.6"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote_MR/doctornote_medc_MR.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote_MR/doctornote_bpgraph_MR.js"></script>
-				<script type="text/javascript" src="js/hisdb/requestfor_MR/requestfor_MR.js?v=1.6"></script>
-				
-				<script type="text/javascript" src="js/hisdb/otmanagement_MR_IP/otmanagement_main_MR_IP.js"></script>
-				<script type="text/javascript" src="js/hisdb/otmanagement_MR_IP/otmanagement_div_MR_IP.js?v=1.2"></script>		 -->
+				<script type="text/javascript" src="js/hisdb/requestfor_MR/requestfor_MR.js?v=1.6"></script>-->	 
 		@endif
 		
 	@endif
