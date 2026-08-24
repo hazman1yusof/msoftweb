@@ -64,7 +64,7 @@ $(document).ready(function (){
             alert('there is an error');
         }).success(function (data){
             if(!$.isEmptyObject(data)){
-                autoinsert_rowdata("#formGlasgow",data.glasgow_MR);
+                autoinsert_rowdata("#formGlasgow",data.glasgow);
                 $("#gcs_date").val(data.date);
                 
                 button_state_glasgow('edit');
@@ -223,7 +223,7 @@ function populate_glasgow_getdata(){
         alert('there is an error');
     }).success(function (data){
         if(!$.isEmptyObject(data)){
-            autoinsert_rowdata("#formGlasgow",data.glasgow_MR);
+            autoinsert_rowdata("#formGlasgow",data.glasgow);
             $("#gcs_date").val(data.date);
             
             button_state_glasgow('edit');

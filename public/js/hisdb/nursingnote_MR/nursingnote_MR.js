@@ -4535,6 +4535,7 @@ function populate_nursingnote(obj){
     $("#jqGridNursNote_panel").collapse('hide');
     emptyFormdata(errorField,"#formProgress");
     emptyFormdata(errorField,"#formIntake");
+    emptyFormdata(errorField,"#formGlasgow");
     emptyFormdata(errorField,"#formPivc");
     
     // panel header
