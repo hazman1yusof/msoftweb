@@ -511,6 +511,281 @@ class PatmastMRController extends defaultController
         }
     }
 
+    public function post_entry_lama(Request $request){  //get_patient_list 
+
+        // $mrn_range = $this->mrn_range($request);
+
+        if($request->curpat == 'true'){
+
+            $isdoctor = Auth::user()->doctor;
+            $request->rows = $request->rowCount;
+
+            $sel_epistycode = $request->epistycode;
+
+            $select_array = ['pat_mast.idno','pat_mast.CompCode','pat_mast.MRN','queue.Episno','pat_mast.Name','pat_mast.Call_Name','pat_mast.addtype','pat_mast.Address1','pat_mast.Address2','pat_mast.Address3','pat_mast.Postcode','pat_mast.citycode','pat_mast.AreaCode','pat_mast.StateCode','pat_mast.CountryCode','pat_mast.telh','pat_mast.telhp','pat_mast.telo','pat_mast.Tel_O_Ext','pat_mast.ptel','pat_mast.ptel_hp','pat_mast.ID_Type','pat_mast.idnumber','pat_mast.Newic','pat_mast.Oldic','pat_mast.icolor','pat_mast.Sex','pat_mast.DOB','pat_mast.Religion','pat_mast.AllergyCode1','pat_mast.AllergyCode2','pat_mast.Century','pat_mast.Citizencode','pat_mast.OccupCode','pat_mast.Staffid','pat_mast.MaritalCode','pat_mast.LanguageCode','pat_mast.TitleCode','pat_mast.RaceCode','pat_mast.bloodgrp','pat_mast.Accum_chg','pat_mast.Accum_Paid','pat_mast.first_visit_date','pat_mast.last_visit_date','pat_mast.last_episno','pat_mast.PatStatus','pat_mast.Confidential','pat_mast.Active','pat_mast.FirstIpEpisNo','pat_mast.FirstOpEpisNo','pat_mast.AddUser','pat_mast.AddDate','pat_mast.Lastupdate','pat_mast.LastUser','pat_mast.OffAdd1','pat_mast.OffAdd2','pat_mast.OffAdd3','pat_mast.OffPostcode','pat_mast.MRFolder','pat_mast.MRLoc','pat_mast.MRActive','pat_mast.OldMrn','pat_mast.NewMrn','pat_mast.Remarks','pat_mast.RelateCode','pat_mast.ChildNo','pat_mast.CorpComp','pat_mast.Email','pat_mast.Email_official','pat_mast.CurrentEpis','pat_mast.NameSndx','pat_mast.BirthPlace','pat_mast.TngID','pat_mast.PatientImage','pat_mast.pAdd1','pat_mast.pAdd2','pat_mast.pAdd3','pat_mast.pPostCode','pat_mast.DeptCode','pat_mast.DeceasedDate','pat_mast.PatientCat','pat_mast.PatType','pat_mast.PatClass','pat_mast.upduser','pat_mast.upddate','pat_mast.recstatus','pat_mast.loginid','pat_mast.pat_category','pat_mast.idnumber_exp','pat_mast.PatientImage','queue.epistycode as q_epistycode', 'queue.reg_date', 'queue.QueueNo','episode.idno as e_idno','episode.bed as bednum','episode.newcaseP','episode.followupP','pat_mast.iPesakit','doctor.doctorname as q_doctorname','epispayer.payercode','debtormast.name as payername','episode.billtype','episode.epistycode','episode.ward'];
+
+            // ,'bed.ward as ward'
+
+            if($sel_epistycode == 'IP'){
+                // array_push($select_array, 'bedalloc.ward','bedalloc.bednum');
+            }
+
+            $table_patm = DB::table('hisdb.queue') //ambil dari patmast balik
+                        ->select($select_array)
+                                ->where('queue.compcode','=',session('compcode'))
+                                // ->where('queue.billflag','=',0)
+                                ->where('queue.deptcode','=',"ALL")
+                                ->where('queue.epistycode','=',$sel_epistycode);
+                                // ->whereIn('queue.epistycode', ['IP','DP']);
+
+            if(isset($request->mrn)){
+                $table_patm = $table_patm->where('pat_mast.MRN', $request->mrn);
+            }
+            if(isset($request->episno)){
+                $table_patm = $table_patm->where('pat_mast.Episno', $request->episno);
+            }
+            
+            $table_patm = $table_patm->join('hisdb.pat_mast', function($join){
+                                $join = $join->where('pat_mast.compcode','=',session('compcode'))
+                                                ->on('queue.mrn', '=', 'pat_mast.MRN');
+                                                // ->where('pat_mast.Active','=','1')
+                                                // ->whereBetween('pat_mast.MRN',$mrn_range);
+                                            
+                            })
+                            ->leftJoin('hisdb.epispayer', function($join) use ($request){
+                                $join = $join->where('epispayer.compcode','=',session('compcode'))
+                                                ->on('epispayer.mrn', '=', 'pat_mast.MRN')
+                                                ->on('epispayer.episno','=','pat_mast.Episno')
+                                                ->where('epispayer.lineno','=','1');
+                            })
+                            ->leftJoin('hisdb.episode', function($join) use ($request){
+                                $join = $join->on('episode.mrn', '=', 'queue.MRN')
+                                                ->on('episode.episno','=','queue.Episno')
+                                                ->where('episode.compcode','=',session('compcode'));
+                            })
+                            // ->leftJoin('hisdb.bed', function($join) use ($request){
+                            //     $join = $join->where('bed.compcode','=',session('compcode'))
+                            //                     ->on('bed.bednum','=','episode.bed');
+                            // })
+                            ->leftJoin('debtor.debtormast', function($join) use ($request){
+                                $join = $join->where('debtormast.compcode','=',session('compcode'))
+                                                ->on('debtormast.debtorcode', '=', 'epispayer.payercode');
+                            });
+                            // ->leftJoin('hisdb.racecode', function($join) use ($request){
+                            //     $join = $join->on('racecode.Code', '=', 'pat_mast.RaceCode')
+                            //                     ->where('racecode.compcode','=',session('compcode'));
+                            // })
+                            // ->leftJoin('hisdb.religion', function($join) use ($request){
+                            //     $join = $join->on('religion.Code', '=', 'pat_mast.Religion')
+                            //                     ->where('religion.compcode','=',session('compcode'));
+                            // })
+                            // ->leftJoin('hisdb.occupation', function($join) use ($request){
+                            //     $join = $join->on('occupation.occupcode', '=', 'pat_mast.OccupCode')
+                            //                     ->where('occupation.compcode','=',session('compcode'));
+                            // })
+                            // ->leftJoin('hisdb.citizen', function($join) use ($request){
+                            //     $join = $join->on('citizen.Code', '=', 'pat_mast.Citizencode')
+                            //                     ->where('citizen.compcode','=',session('compcode'));
+                            // })
+                            // ->leftJoin('hisdb.areacode', function($join) use ($request){
+                            //     $join = $join->on('areacode.areacode', '=', 'pat_mast.AreaCode')
+                            //                     ->where('areacode.compcode','=',session('compcode'));
+                            // });
+
+            // if($isdoctor){
+            //     if(empty(Auth::user()->doctorcode)){
+            //         $table_patm = $table_patm->leftJoin('hisdb.doctor', function($join) use ($request){
+            //                     $join = $join->on('doctor.doctorcode', '=', 'queue.admdoctor')
+            //                                 ->where('doctor.compcode','=',session('compcode'));
+            //                 });
+            //     }else{
+            //         $table_patm = $table_patm->join('hisdb.doctor', function($join) use ($request){
+            //                         $join = $join->on('doctor.doctorcode', '=', 'queue.admdoctor')
+            //                                     ->where('queue.admdoctor', '=', Auth::user()->doctorcode)
+            //                                     ->where('doctor.compcode','=',session('compcode'));
+            //                     });
+            //     }
+            // }else{
+                $table_patm = $table_patm->leftJoin('hisdb.doctor', function($join) use ($request){
+                                $join = $join->on('doctor.doctorcode', '=', 'queue.admdoctor')
+                                            ->where('doctor.compcode','=',session('compcode'));
+                            });
+            // }
+
+
+                            
+            // if($sel_epistycode == 'IP'){
+            //     $table_patm = $table_patm->leftJoin('hisdb.bedalloc', function($join) use ($request){
+            //                     $join = $join->on('bedalloc.mrn', '=', 'pat_mast.MRN')
+            //                                 ->on('bedalloc.episno', '=', 'pat_mast.Episno')
+            //                                 ->where('bedalloc.astatus', '=', 'OCCUPIED')
+            //                                 ->where('bedalloc.compcode','=',session('compcode'));
+            //                 });
+            // }
+                            // ->leftJoin('hisdb.doctor','doctor.doctorcode','=','queue.admdoctor')
+                            // ->leftJoin('hisdb.racecode','racecode.Code','=','pat_mast.RaceCode')
+                            // ->leftJoin('hisdb.religion','religion.Code','=','pat_mast.Religion')
+                            // ->leftJoin('hisdb.occupation','occupation.occupcode','=','pat_mast.OccupCode')
+                            // ->leftJoin('hisdb.citizen','citizen.Code','=','pat_mast.Citizencode')
+                            // ->leftJoin('hisdb.areacode','areacode.areacode','=','pat_mast.AreaCode')
+            // dump($table_patm->get());
+            // dd($table_patm->paginate());
+
+            if(!empty($request->searchCol) && $request->searchCol[0]!='doctor'){
+                $table_patm = $table_patm->where('pat_mast.'.$request->searchCol[0],'like',$request->searchVal[0]);
+            }
+
+           if(!empty($request->sort)){
+                foreach ($request->sort as $key => $value) {
+                    $table_patm = $table_patm->orderBy($key, $value);
+                }
+            }else{
+                $table_patm = $table_patm->orderBy('queue.idno', 'DESC');
+            }
+
+            $paginate_patm = $table_patm->paginate($request->rows);
+
+
+            foreach ($paginate_patm->items() as $key => $value) {
+                // foreach ($paginate->items() as $key2 => $value2) {
+                //     if($value->MRN == $value2->mrn){
+                //         $value->q_doctorname = $value2->doctorname;
+                //         $value->q_epistycode = $value2->epistycode;
+                //     }
+                // }
+
+                // $episode = DB::table('hisdb.episode')
+                //             ->select('newcaseP','newcaseNP','followupP','followupNP','billtype','regdept')
+                //             ->where('compcode',session('compcode'))
+                //             ->where('mrn','=',$value->MRN)
+                //             ->where('episno','=',$value->Episno);
+
+                // if($episode->exists()){
+                //     $totamount = $this->get_ordcom_totamount($value->MRN,$value->Episno);
+                //     $episode = $episode->first();
+                if(!empty($value->e_idno)){
+                    if($value->newcaseP == 1 || $value->followupP == 1){
+                        $value->pregnant = 1;
+                    }else{
+                        $value->pregnant = 0;
+                    }
+                }
+
+                //     $value->billtype = $episode->billtype;
+                //     $value->regdept = $episode->regdept;
+                //     $value->totamount = $totamount;
+                // }
+
+
+            }
+
+            $responce = new stdClass();
+            $responce->current = $paginate_patm->currentPage();
+            $responce->lastPage = $paginate_patm->lastPage();
+            $responce->total = $paginate_patm->total();
+            $responce->rowCount = $request->rowCount;
+            $responce->rows = $paginate_patm->items();
+            $responce->query = $this->getQueries($table_patm);
+            
+            return json_encode($responce);
+
+        }else{
+
+            // SELECT COUNT(*) FROM 'pat_mast' WHERE idno <= 62863
+            // if(!empty($request->lastidno)){
+                // $count_ = DB::table('hisdb.pat_mast')
+                //             ->where('idno','<=','62863')
+                //             ->count();
+            // }
+            // dd($count_);
+
+            // SELECT * FROM pat_mast WHERE idno = 62863
+            // $lastrow = DB::table('hisdb.pat_mast')
+            //                 ->where('idno','<=','62863');
+
+            // SELECT * FROM pat_mast LIMIT 10 OFFSET 62814  
+            // $lastrow = DB::table('hisdb.pat_mast')
+            //                 ->where('idno','<=','62863');
+
+            $table_patm = DB::table('hisdb.pat_mast');
+            // dd($table_patm->limit(10)->offset(intval($count_) - 10)->get());
+
+            if(!empty($request->searchCol)){
+                $searchCol_array = $request->searchCol;
+                $count = array_count_values($searchCol_array);
+
+                foreach ($count as $key => $value) {
+                    $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+                    $table_patm = $table_patm->orWhere(function ($table_patm) use ($request,$searchCol_array,$occur_ar) {
+                        foreach ($searchCol_array as $key => $value) {
+                            $found = array_search($key,$occur_ar);
+                            if($found !== false){
+                                $table_patm->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                            }
+                        }
+                    });
+                }
+            }
+
+            // $table_patm = $table_patm
+            //             ->where('Active','=','1')
+            //             ->where('compcode','=',session('compcode'))
+            //             ->whereBetween('MRN',$mrn_range);
+
+
+            if(!empty($request->sort)){
+                foreach ($request->sort as $key => $value) {
+                    $table_patm = $table_patm->orderBy($key, $value);
+                }
+            }else{
+                $table_patm = $table_patm->orderBy('idno', 'DESC');
+            }
+
+            $request->page = $request->current;
+
+            //////////paginate/////////
+            $paginate = $table_patm->paginate($request->rowCount);
+
+            // foreach ($paginate->items() as $key => $value) {
+            //     // if($value->PatStatus==1){
+            //     //     // $queue = DB::table('hisdb.queue')
+            //     //     //             ->select(['queue.mrn','doctor.doctorname','queue.epistycode'])
+            //     //     //             ->leftJoin('hisdb.doctor','doctor.doctorcode','=','queue.admdoctor')
+            //     //     //             ->where('queue.mrn','=',$value->MRN)
+            //     //     //             ->where('queue.episno','=',$value->Episno)
+            //     //     //             ->where('queue.deptcode','=',"ALL");
+            //     //     $episode = DB::table('hisdb.episode')
+            //     //                 ->select(['episode.mrn','doctor.doctorname','episode.epistycode'])
+            //     //                 ->leftJoin('hisdb.doctor','doctor.doctorcode','=','episode.admdoctor')
+            //     //                 ->where('episode.mrn','=',$value->MRN)
+            //     //                 ->where('episode.episno','=',$value->Episno)
+            //     //                 ->where('episode.compcode','=',session('compcode'));
+
+
+            //     //     if($episode->exists()){
+            //     //         $episode = $episode->first();
+            //     //     // dump($episode->epistycode);
+            //     //         $value->q_epistycode = $episode->epistycode;
+            //     //         $value->q_doctorname = $episode->doctorname;
+            //     //     }
+            //     // }
+            // }
+
+            $responce = new stdClass();
+            $responce->current = $paginate->currentPage();
+            $responce->lastPage = $paginate->lastPage();
+            $responce->total = $paginate->total();
+            $responce->rowCount = $request->rowCount;
+            $responce->rows = $paginate->items();
+            $responce->sql = $table_patm->toSql();
+            $responce->sql_bind = $table_patm->getBindings();
+
+            return json_encode($responce);
+
+        }
+    }
+
     public function get_entry(Request $request){   
         $responce = new stdClass();
 
