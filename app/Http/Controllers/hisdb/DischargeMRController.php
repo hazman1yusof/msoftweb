@@ -68,7 +68,7 @@ class DischargeMRController extends defaultController
         
                 switch($request->oper){
                     case 'add':
-                        return $this->add($request);
+                        return $this->edit($request);
                     case 'edit':
                         return $this->edit($request);
                     default:
@@ -80,6 +80,48 @@ class DischargeMRController extends defaultController
             default:
                 return 'error happen..';
         }
+    }
+
+    public function discharge_ward_patient(Request $request){ 
+        // try {
+
+        //    // $bedalloc_oldidno=DB::table('hisdb.bedalloc')
+        //    //              ->where('compcode','=',session('compcode'))
+        //    //              ->where('mrn','=',$request->mrn)
+        //    //              ->where('episno','=',$request->episno);
+
+        //    //  if($bedalloc_oldidno->exists()){
+        //    //      $bedalloc_old = DB::table('hisdb.bedalloc')
+        //    //          ->where('idno','=',$bedalloc_oldidno->max('idno'))
+        //    //          ->first();
+
+        //    //      $bed_old = DB::table('hisdb.bed')
+        //    //          ->where('compcode','=',session('compcode'))
+        //    //          ->where('bednum','=',$bedalloc_old->bednum)
+        //    //          ->update([
+        //    //              'occup' => "VACANT"
+        //    //          ]);
+        //    //  }
+
+            $episode = DB::table('hisdb.episode')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->first();
+
+            $bed_old = DB::table('hisdb.bed')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('bednum','=',$episode->bed)
+                    ->update([
+                        'occup' => "VACANT"
+                    ]);
+
+        //     DB::commit();
+        // } catch (\Exception $e) {
+        //     DB::rollback();
+            
+        //     return response($e->getMessage(), 500);
+        // }
     }
 
     public function discharge_patient(Request $request){ 
@@ -97,7 +139,7 @@ class DischargeMRController extends defaultController
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno);
 
-        try {
+        // try {
 
             // if($pat_mast->exists() && $episode->exists() && $queue->exists()){
             //     $episode->update([
@@ -142,16 +184,15 @@ class DischargeMRController extends defaultController
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno)
-                        ->update(['Billflag' => 1]);
+                        ->update(['compcode' => 'xx']);
             }
 
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
+        //     DB::commit();
+        // } catch (\Exception $e) {
+        //     DB::rollback();
             
-            return response($e->getMessage(), 500);
-        }
-
+        //     return response($e->getMessage(), 500);
+        // }
     }
 
     public function add(Request $request){
@@ -171,6 +212,12 @@ class DischargeMRController extends defaultController
                     'dischargedate' => $request->dischargedate,
                     'dischargeuser' => session('username'),
                     'dischargetime' => $request->dischargetime,
+                    'ward_dischargedt' => $request->dischargedate,
+                    'ward_dischargeusr' => session('username'),
+                    'ward_dischargetm' => $request->dischargetime,
+                    'complete_notedt' => $request->dischargedate,
+                    'complete_noteusr' => session('username'),
+                    'complete_notetm' => $request->dischargetime,
                     'diagfinal' => $request->diagfinal,
                     'patologist' => $request->patologist,
                     'clinicalnote' => $request->clinicalnote,
@@ -202,7 +249,6 @@ class DischargeMRController extends defaultController
             return response('Error DB rollback!'.$e, 500);
             
         }
-        
     }
     
     public function edit(Request $request){
@@ -215,6 +261,25 @@ class DischargeMRController extends defaultController
                         ->where('mrn','=',$request->mrn_discharge)
                         ->where('episno','=',$request->episno_discharge)
                         ->where('compcode','=',session('compcode'));
+
+            $ward_dischargedt = null;
+            $ward_dischargeusr = null;
+            $ward_dischargetm = null;
+            $complete_notedt = null;
+            $complete_noteusr = null;
+            $complete_notetm = null;
+
+            if($request->ward_discharge_ckb == 1){
+                $ward_dischargedt = $request->ward_dischargedt;
+                $ward_dischargeusr = session('username');
+                $ward_dischargetm = $request->ward_dischargetm;
+            }
+
+            if($request->complete_ckb == 1){
+                $complete_notedt = $request->complete_notedt;
+                $complete_noteusr = session('username');
+                $complete_notetm = $request->complete_notetm;
+            }
             
             if($discharge->exists()){
                 DB::table('hisdb.episode')
@@ -228,6 +293,12 @@ class DischargeMRController extends defaultController
                         'dischargedate' => $request->dischargedate,
                         'dischargeuser' => session('username'),
                         'dischargetime' => $request->dischargetime,
+                        'ward_dischargedt' => $ward_dischargedt,
+                        'ward_dischargeusr' => $ward_dischargeusr,
+                        'ward_dischargetm' => $ward_dischargetm,
+                        'complete_notedt' => $complete_notedt,
+                        'complete_noteusr' => $complete_noteusr,
+                        'complete_notetm' => $complete_notetm,
                         'diagfinal' => $request->diagfinal,
                         'patologist' => $request->patologist,
                         'clinicalnote' => $request->clinicalnote,
@@ -261,6 +332,12 @@ class DischargeMRController extends defaultController
                         'dischargedate' => $request->dischargedate,
                         'dischargeuser' => session('username'),
                         'dischargetime' => $request->dischargetime,
+                        'ward_dischargedt' => $ward_dischargedt,
+                        'ward_dischargeusr' => $ward_dischargeusr,
+                        'ward_dischargetm' => $ward_dischargetm,
+                        'complete_notedt' => $complete_notedt,
+                        'complete_noteusr' => $complete_noteusr,
+                        'complete_notetm' => $complete_notetm,
                         'diagfinal' => $request->diagfinal,
                         'patologist' => $request->patologist,
                         'clinicalnote' => $request->clinicalnote,
@@ -283,8 +360,17 @@ class DischargeMRController extends defaultController
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }
+
+            if($request->ward_discharge_ckb == 1){
+                $this->discharge_ward_patient($request);
+            }
+            // dd('here');
+
+            if($request->complete_ckb == 1){
+                $this->discharge_patient($request);
+            }
             
-            $queries = DB::getQueryLog();
+            // $queries = DB::getQueryLog();
             // dump($queries);
 
             DB::commit();
@@ -302,7 +388,7 @@ class DischargeMRController extends defaultController
     public function get_table_discharge(Request $request){
         
         $episode_obj = DB::table('hisdb.episode as e')
-                    ->select('e.reg_date','e.reg_by','e.reg_time','e.dischargedate','e.dischargeuser','e.dischargetime','e.diagfinal','e.patologist','e.clinicalnote','e.phyexam','e.diagprov','e.treatment','e.summary','e.followup','e.status_discWell','e.status_discImproved','e.status_discAOR','e.status_discExpired','e.status_discAbsconded','e.status_discTransferred','e.medondischg','e.medcert','e.adduser as reg_by','e.lastuser','e.lastupdate','e.bedtype','bt.bedtype')
+                    ->select('e.reg_date','e.reg_by','e.reg_time','e.dischargedate','e.dischargeuser','e.dischargetime','e.diagfinal','e.patologist','e.clinicalnote','e.phyexam','e.diagprov','e.treatment','e.summary','e.followup','e.status_discWell','e.status_discImproved','e.status_discAOR','e.status_discExpired','e.status_discAbsconded','e.status_discTransferred','e.medondischg','e.medcert','e.adduser as reg_by','e.lastuser','e.lastupdate','e.bedtype','bt.description as bedtype_desc','e.bed','e.ward','e.room','e.ward_dischargedt','e.ward_dischargetm','e.ward_dischargeusr','e.complete_notedt','e.complete_notetm','e.complete_noteusr')
                     ->where('e.compcode','=',session('compcode'))
                     ->where('e.mrn','=',$request->mrn)
                     ->where('e.episno','=',$request->episno)
@@ -315,6 +401,13 @@ class DischargeMRController extends defaultController
             $responce->episode = $episode_obj;
             $responce->reg_by = $episode_obj;
 
+            if($episode_obj->ward_dischargedt != null){
+                $episode_obj->ward_discharge_ckb = 1;
+            }
+
+            if($episode_obj->complete_notedt != null){
+                $episode_obj->complete_ckb = 1;
+            }
         }
         
         return json_encode($responce);
@@ -351,7 +444,7 @@ class DischargeMRController extends defaultController
             ->where('compcode','=',session('compcode'))
             ->first();
 
-        return view('hisdb.discharge.discharge_pdfmake',compact('discharge'));
+        return view('hisdb.discharge_MR.discharge_pdfmake',compact('discharge'));
         
     }
 }
