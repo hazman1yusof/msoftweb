@@ -339,3 +339,6 @@ div#authdtl_alert_div{
   	margin: 25px 0px;
   }
 }
+.carousel-control.left, .carousel-control.right{
+	background-image: none !important;
+}

@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="plugins/jasny-bootstrap/css/jasny-bootstrap.min.css"> 
 	<link rel="stylesheet" href="plugins/jquery-ui-1.11.4.custom/jquery-ui.css">
   <link rel="stylesheet" href="{{ asset('plugins/css/trirand/ui.jqgrid-bootstrap.css') }}" />
-	<link rel="stylesheet" href="css/container.css?v=1.2">
+	<link rel="stylesheet" href="css/container.css?v=1.3">
 
 	<script type="text/javascript">
 
