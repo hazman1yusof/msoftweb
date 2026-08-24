@@ -164,6 +164,8 @@ class stockBalance_basic_xlsExport implements FromView, WithEvents, WithColumnWi
                     ->orderBy('s.itemcode', 'ASC')
                     ->get();
 
+        // dd($this->getQueries($stockloc));
+
         $isi = 0;
         foreach ($stockloc as $obj) {
             $loop = $loop + 1;

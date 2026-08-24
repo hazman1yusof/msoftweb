@@ -258,6 +258,8 @@ $(document).ready(function () {
 				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
 				$('#showpkgcode').text("");//tukar kat depan tu
 				$('#showpkgdesc').text("");
+				$('#showautopull').text("");
+				$('#showaddchg').text("");
 				refreshGrid("#jqGrid4",null,"kosongkan");
 			}, 500 );
 		});
@@ -266,6 +268,8 @@ $(document).ready(function () {
 			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
 			$('#showpkgcode').text("");//tukar kat depan tu
 			$('#showpkgdesc').text("");
+			$('#showautopull').text("");
+			$('#showaddchg').text("");
 			refreshGrid("#jqGrid4",null,"kosongkan");
 		});
 	}
@@ -324,21 +328,32 @@ $(document).ready(function () {
 			urlParam2.filterVal[3]=selrowData("#jqGrid").uom;
 			refreshGrid("#jqGrid3",urlParam2);
 
-			$("#jqGrid4_c,#jqGridPkg3_c,#click_row").hide();
+			$("#jqGrid4_c,#jqGridPkg3_c,.click_row").hide();
 			if(selrowData('#jqGrid').chgtype == 'pkg' || selrowData('#jqGrid').chgtype == 'PKG' ){
 				refreshGrid("#jqGridPkg3",urlParam2);
 				$("#jqGridPkg3_c").show();
 				$("#jqGrid3_c").hide();
+
+				$('#pkg_fieldset').show();
 				// hideatdialogForm_jqGrid4(true);
 
 			} else {
+				$('#pkg_fieldset').hide();
 				refreshGrid("#jqGrid3",urlParam2);
 				$("#jqGrid3_c").show();
-				$("#jqGrid4_c,#jqGridPkg3_c,#click_row").hide();
+				$("#jqGrid4_c,#jqGridPkg3_c,.click_row").hide();
 			}
 
 			$('#showpkgcode').text(selrowData("#jqGrid").chgcode);//tukar kat depan tu
 			$('#showpkgdesc').text(selrowData("#jqGrid").description);
+
+			$('#showautopull,#showaddchg').text('No');
+			if(selrowData("#jqGrid").autopull == 1){
+				$('#showautopull').text('Yes');
+			}
+			if(selrowData("#jqGrid").addchg == 1){
+				$('#showaddchg').text('Yes');
+			}
 
 			$('#pkgcode').val(selrowData("#jqGrid").chgcode);
 			$('#description').val(selrowData("#jqGrid").description);
@@ -1804,7 +1819,7 @@ $(document).ready(function () {
 			// $("#formdata4 [name='addchg'][value='"+rowdata.addchg+"']").prop('checked', true);
 
 			refreshGrid("#jqGrid4",urlParam4);
-			$("#jqGrid4_c,#click_row").show();
+			$("#jqGrid4_c,.click_row").show();
 			hideatdialogForm_jqGrid4(true);
 		},
 		gridComplete: function(){
@@ -2130,7 +2145,7 @@ $(document).ready(function () {
 				hideatdialogForm_jqGrid4(false);
 			}
 
-			calc_jq_height_onchange("jqGrid4",true);
+			calc_jq_height_onchange("jqGrid4",true,400,true);
 		},
 		beforeSubmit: function(postdata, rowid){ 
 			// dialog_deptcodedtl.check(errorField);
@@ -3409,7 +3424,7 @@ $(document).ready(function () {
 	//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	$("#jqGrid4_c,#jqGridPkg3_c,#click_row").hide();
+	$("#jqGrid4_c,#jqGridPkg3_c,.click_row").hide();
 
 	$("#jqGrid3_panel").on("show.bs.collapse", function(){
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));

@@ -8,5 +8,6 @@ return [
   'ISDEMO' => env('ISDEMO'),
   'PYTHON_SERVER' => env('PYTHON_SERVER'),
   'DB_HOST_PYSERVER' => env('DB_HOST_PYSERVER'),
-  'APP_FOR' => env('APP_FOR')
+  'APP_FOR' => env('APP_FOR'),
+  'STIRLING_PDF_URL' => env('STIRLING_PDF_URL')
 ];

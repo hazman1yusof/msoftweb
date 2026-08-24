@@ -428,6 +428,11 @@ Route::get('/bedmanagement/table','setup\BedManagementController@table');
 Route::post('/bedmanagement/form','setup\BedManagementController@form');
 Route::get('/bedmanagement/statistic','setup\BedManagementController@statistic');
 
+//// Stringling PDF page ///
+Route::get('/stringling','stringling\StringlingMainController@show');
+Route::get('/stringling/table','stringling\StringlingMainController@table');
+Route::post('/stringling/form','stringling\StringlingMainController@form');
+
 ////////////////////////////////inventory setup///////////////////////////////////////////////////////////
 
 //// quotation setup page ///

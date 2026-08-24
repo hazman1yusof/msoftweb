@@ -313,7 +313,8 @@ class NursingNoteController extends defaultController
         $nurs_invest_file = DB::table('nursing.nurs_invest_file')
                             ->where('compcode',session('compcode'))
                             ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno);
+                            ->where('episno','=',$request->episno)
+                            ->whereNull('type');
         
         if($nurs_invest_file->exists()){
             $nurs_invest_file = $nurs_invest_file->get();

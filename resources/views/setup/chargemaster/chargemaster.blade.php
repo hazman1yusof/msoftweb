@@ -201,13 +201,21 @@ span.error_pkgmast {
   			</div>
 		</div>
 
-		<div class='click_row' id="click_row">
+		<div class='click_row'>
 			<label class="control-label">Package Code</label>
 			<span id="showpkgcode" style="display: block;">&nbsp</span>
 		</div>
-		<div class='click_row' id="click_row" style="width: 350px;">
+		<div class='click_row' style="width: 350px;">
 			<label class="control-label">Description</label>
 			<span id="showpkgdesc" style="display: block; white-space: nowrap;">&nbsp</span>
+		</div>
+		<div class='click_row'>
+			<label class="control-label">Auto Pull</label>
+			<span id="showautopull" style="display: block;">&nbsp</span>
+		</div>
+		<div class='click_row'>
+			<label class="control-label">Additional Charges</label>
+			<span id="showaddchg" style="display: block;">&nbsp</span>
 		</div>
 
 		<div class="panel-group">
@@ -471,6 +479,24 @@ span.error_pkgmast {
 
 					<hr>
 
+					<fieldset class="scheduler-border" id="pkg_fieldset" style="display:hidden">
+						<legend class="scheduler-border">Package</legend>
+
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="autopull">Auto Pull</label>  
+							<div class="col-md-3">
+								<label class="radio-inline"><input type="radio" name="autopull" value='1' >Yes</label>
+								<label class="radio-inline"><input type="radio" name="autopull" value='0' checked>No</label>
+							</div>
+
+							<label class="col-md-2 control-label" for="addchg">Charge if more</label>  
+							<div class="col-md-3">
+								<label class="radio-inline"><input type="radio" name="addchg" value='1' >Yes</label>
+								<label class="radio-inline"><input type="radio" name="addchg" value='0' checked>No</label>
+							</div>
+						</div>
+					</fieldset>
+
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="invgroup">Inv. Group</label>
 						<div class="col-md-3">
@@ -522,20 +548,6 @@ span.error_pkgmast {
 						<div class="col-md-3">
 							<label class="radio-inline"><input type="radio" name="doctorstat" value='1' checked>Yes</label>
 							<label class="radio-inline"><input type="radio" name="doctorstat" value='0' >No</label>
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="autopull">Auto Pull</label>  
-						<div class="col-md-3">
-							<label class="radio-inline"><input type="radio" name="autopull" value='1' >Yes</label>
-							<label class="radio-inline"><input type="radio" name="autopull" value='0' checked>No</label>
-						</div>
-
-						<label class="col-md-2 control-label" for="addchg">Charge if more</label>  
-						<div class="col-md-3">
-							<label class="radio-inline"><input type="radio" name="addchg" value='1' >Yes</label>
-							<label class="radio-inline"><input type="radio" name="addchg" value='0' checked>No</label>
 						</div>
 					</div>
 
