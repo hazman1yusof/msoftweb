@@ -257,6 +257,10 @@
 						@include('hisdb.ordcom_MR.ordcom_MR',['phase' => '1'])
 					</div>
 				@endif
+
+				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+					@include('hisdb.discharge_MR.discharge_MR',['type' => "IP",'type_desc' => "In Patient"])
+				</div>
 			@endif
 			
 		@endif
@@ -415,7 +419,6 @@
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes_MR/dieteticCareNotes_MR.js"></script>
 				<script type="text/javascript" src="js/hisdb/dietorder_MR/dietorder_MR.js?v=2"></script>
 				
-				
 				@if (Auth::user()->billing == 1)
 					<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_main_MR.js?v=1.3"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_phar_MR.js"></script>
@@ -429,7 +432,8 @@
 					<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_oth_MR.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom_MR/ordcom_pkg_MR.js"></script>
 				@endif
-				<!-- <script type="text/javascript" src="js/hisdb/discharge_MR/discharge_MR.js"></script> -->
+				
+				<script type="text/javascript" src="js/hisdb/discharge_MR/discharge_MR.js"></script>
 
 				<!-- <script type="text/javascript" src="js/hisdb/nursing_MR/nursing_MR.js?v=1.2"></script> -->
 				<!-- <script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script> -->
