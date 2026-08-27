@@ -1,0 +1,2809 @@
+
+$.jgrid.defaults.responsive = true;
+$.jgrid.defaults.styleUI = 'Bootstrap';
+
+disableForm('#formConsentFormReqFor');
+disableForm('#formPreContrastReqFor');
+disableForm('#formDressingReqFor');
+disableForm('#formPhysioReqFor');
+disableForm('#formMRIReqFor');
+disableForm('#formRadClinicReqFor');
+disableForm('#formOTBookReqFor');
+disableForm('#formRequestFor');
+disableForm('#formreferralLetterReqfor');
+disableForm('#formcard_noninv');
+disableForm('#formfollowupReqfor');
+
+$(document).ready(function (){
+    $(".preloader").fadeOut();
+
+    // $("button.refreshbtn_requestFor").click(function (){
+    //     empty_requestFor_ptcare();
+    //     populate_requestFor_ptcare(selrowData('#jqGrid'));
+    // });
+    
+    // $('.menu .item').tab();
+    
+    var fdl = new faster_detail_load();
+    var radbuts_otbookReqFor = new checkradiobutton(['req_type']);
+    var radbuts_consentFormReqFor = new checkradiobutton(['guardianType','guardianSignType','guardianSignTypeDoc']);
+    var radbuts_preContrastReqFor = new checkradiobutton(['hisAllergy','feverAllergic','prevReactContrast','prevReactDrug','asthma','heartDisease','veryOldYoung','poorCondition','dehydrated','seriousMedCondition','prevContrastExam','consentProcedure']);
+    var radbuts_mriReqFor = new checkradiobutton(['cardiacpacemaker','pros_valve','intraocular','cochlear_imp','neurotransm','bonegrowth','druginfuse','surg_clips','jointlimb_pros','shrapnel','oper_3mth','prev_mri','claustrophobia','dental_imp','frmgnetic_imp','pregnancy','allergy_drug']);
+    var radbuts_radClinicReqFor = new checkradiobutton(['pt_condition','rad_pregnant']);
+    var radbuts_referralLetterReqfor = new checkradiobutton(['refto','refprio','reffro']);
+    var radbuts_card_noninv = new checkradiobutton(['card_chkty','card_type']);
+
+    if($('#_mrn').val() != undefined){
+        $('#mrn_requestFor').val($('#_mrn').val());
+        $('#episno_requestFor').val($('#_episno').val());
+        $('#requestFor .top.menu .item').tab('change tab','otbookReqFor');
+        populate_otbookReqFor_getdata();
+        populate_radClinicReqFor_getdata();
+        textarea_init_otbookReqFor();
+    }
+    
+    ////////////////////////////////////////////otbook starts////////////////////////////////////////////
+    
+    $("#new_otbookReqFor").click(function (){
+        radbuts_otbookReqFor.reset();
+        get_default_otbookReqFor();
+        $('#cancel_otbookReqFor').data('oper','add');
+        button_state_otbookReqFor('wait');
+        enableForm('#formOTBookReqFor');
+        rdonly('#formOTBookReqFor');
+
+        emptyFormdata_div("#formOTBookReqFor",['#mrn_requestFor','#episno_requestFor','#otReqFor_doctorname','#op_date','#otReqFor_diagnosedby','#otReqFor_lastuser']);
+
+        $('#ReqFor_allergydrugs,#ReqFor_drugs_remarks,#ReqFor_allergyplaster,#ReqFor_plaster_remarks,#ReqFor_allergyfood,#ReqFor_food_remarks,#ReqFor_allergyenvironment,#ReqFor_environment_remarks,#ReqFor_allergyothers,#ReqFor_others_remarks,#ReqFor_allergyunknown,#ReqFor_unknown_remarks,#ReqFor_allergynone,#ReqFor_none_remarks').prop('disabled',true);
+
+        $('#formOTBookReqFor input[type=radio][name=req_type][value=WARD]').prop('checked',true);
+        toggle_reqfor_reqtype();
+    });
+    
+    $("#edit_otbookReqFor").click(function (){
+        radbuts_otbookReqFor.reset();
+        button_state_otbookReqFor('wait');
+        enableForm('#formOTBookReqFor');
+        rdonly('#formOTBookReqFor');
+
+        emptyFormdata_div("#formOTBookReqFor",['#mrn_requestFor','#episno_requestFor','#otReqFor_doctorname','#op_date','#otReqFor_diagnosedby','#otReqFor_lastuser']);
+        $('#ReqFor_allergydrugs,#ReqFor_drugs_remarks,#ReqFor_allergyplaster,#ReqFor_plaster_remarks,#ReqFor_allergyfood,#ReqFor_food_remarks,#ReqFor_allergyenvironment,#ReqFor_environment_remarks,#ReqFor_allergyothers,#ReqFor_others_remarks,#ReqFor_allergyunknown,#ReqFor_unknown_remarks,#ReqFor_allergynone,#ReqFor_none_remarks').prop('disabled',true);
+    });
+    
+    $("#save_otbookReqFor").click(function (){
+        // disableForm('#formOTBookReqFor');
+        if(radbuts_otbookReqFor.check())return false;
+        if($('#formOTBookReqFor').isValid({requiredFields: ''}, conf, true)){
+            saveForm_otbookReqFor(function (data){
+                // emptyFormdata_div("#formOTBookReqFor",['#mrn_requestFor','#episno_requestFor']);
+                // disableForm('#formOTBookReqFor');
+                $('#cancel_otbookReqFor').data('oper','edit');
+                $("#cancel_otbookReqFor").click();
+                populate_otbookReqFor_getdata();
+                $('#refresh_main').click();
+                SmoothScrollToTop();
+            });
+        }else{
+            // $("#cancel_otbookReqFor").click();
+        }
+    });
+    
+    $("#cancel_otbookReqFor").click(function (){
+        radbuts_otbookReqFor.reset();
+        // emptyFormdata_div("#formOTBookReqFor",['#mrn_requestFor','#episno_requestFor']);
+        disableForm('#formOTBookReqFor');
+        button_state_otbookReqFor($(this).data('oper'));
+    });
+    //////////////////////////////////////////////otbook ends//////////////////////////////////////////////
+    
+    ///////////////////////////////////////////radClinic starts///////////////////////////////////////////
+    
+    $("#new_radClinicReqFor").click(function (){
+        radbuts_radClinicReqFor.reset();
+        get_default_radClinicReqFor();
+        $('#cancel_radClinicReqFor').data('oper','add');
+        button_state_radClinicReqFor('wait');
+        enableForm('#formRadClinicReqFor');
+        rdonly('#formRadClinicReqFor');
+        emptyFormdata_div("#formRadClinicReqFor",['#mrn_requestFor','#episno_requestFor','#radClinicReqFor_enterby']);
+        // $('#ReqFor_clinicaldata').prop('disabled',true);
+    });
+    
+    $("#edit_radClinicReqFor").click(function (){
+        radbuts_radClinicReqFor.reset();
+        button_state_radClinicReqFor('wait');
+        enableForm('#formRadClinicReqFor');
+        rdonly('#formRadClinicReqFor');
+        // $('#ReqFor_clinicaldata').prop('disabled',true);
+    });
+    
+    $("#save_radClinicReqFor").click(function (){
+        if(radbuts_radClinicReqFor.check())return false;
+        disableForm('#formRadClinicReqFor');
+        if($('#formRadClinicReqFor').isValid({requiredFields: ''}, conf, true)){
+            saveForm_radClinicReqFor(function (data){
+                // emptyFormdata_div("#formRadClinicReqFor",['#mrn_requestFor','#episno_requestFor']);
+                // disableForm('#formRadClinicReqFor');
+                $('#cancel_radClinicReqFor').data('oper','edit');
+                $("#cancel_radClinicReqFor").click();
+                populate_radClinicReqFor_getdata();
+            });
+        }else{
+            enableForm('#formRadClinicReqFor');
+            rdonly('#formRadClinicReqFor');
+        }
+    });
+    
+    $("#cancel_radClinicReqFor").click(function (){
+        radbuts_radClinicReqFor.reset();
+        // emptyFormdata_div("#formRadClinicReqFor",['#mrn_requestFor','#episno_requestFor']);
+        disableForm('#formRadClinicReqFor');
+        button_state_radClinicReqFor($(this).data('oper'));
+    });
+    ////////////////////////////////////////////radClinic ends////////////////////////////////////////////
+    
+    //////////////////////////////////////////////mri starts//////////////////////////////////////////////
+    
+    $("#new_mriReqFor").click(function (){
+        radbuts_mriReqFor.reset();
+        // get_default_mriReqFor();
+        $('#cancel_mriReqFor').data('oper','add');
+        button_state_mriReqFor('wait');
+        enableForm('#formMRIReqFor');
+        rdonly('#formMRIReqFor');
+        emptyFormdata_div("#formMRIReqFor",['#mrn_requestFor','#episno_requestFor',"#mriReqFor_lastuser","#mriReqFor_doctorname","#mriReqFor_patientname"]);
+    });
+    
+    $("#edit_mriReqFor").click(function (){
+        radbuts_mriReqFor.reset();
+        button_state_mriReqFor('wait');
+        enableForm('#formMRIReqFor');
+        rdonly('#formMRIReqFor');
+    });
+    
+    $("#save_mriReqFor").click(function (){
+        if(radbuts_mriReqFor.check())return false;
+        disableForm('#formMRIReqFor');
+        if($('#formMRIReqFor').isValid({requiredFields: ''}, conf, true)){
+            saveForm_mriReqFor(function (data){
+                // emptyFormdata_div("#formMRIReqFor",['#mrn_requestFor','#episno_requestFor']);
+                // disableForm('#formMRIReqFor');
+                $('#cancel_mriReqFor').data('oper','edit');
+                $("#cancel_mriReqFor").click();
+                populate_mriReqFor_getdata();
+            });
+        }else{
+            enableForm('#formMRIReqFor');
+            rdonly('#formMRIReqFor');
+        }
+    });
+    
+    $("#cancel_mriReqFor").click(function (){
+        radbuts_mriReqFor.reset();
+        // emptyFormdata_div("#formMRIReqFor",['#mrn_requestFor','#episno_requestFor']);
+        disableForm('#formMRIReqFor');
+        button_state_mriReqFor($(this).data('oper'));
+    });
+    
+    $("#accept_mriReqFor").click(function (){
+        radiographer_acceptReqFor();
+    });
+    ///////////////////////////////////////////////mri ends///////////////////////////////////////////////
+    
+    ////////////////////////////////////////////physio starts////////////////////////////////////////////
+    
+    $("#new_physioReqFor").click(function (){
+        $('#cancel_physioReqFor').data('oper','add');
+        button_state_physioReqFor('wait');
+        enableForm('#formPhysioReqFor');
+        rdonly('#formPhysioReqFor');
+        emptyFormdata_div("#formPhysioReqFor",['#mrn_requestFor','#episno_requestFor','#phyReqFor_doctorname']);
+    });
+    
+    $("#edit_physioReqFor").click(function (){
+        button_state_physioReqFor('wait');
+        enableForm('#formPhysioReqFor');
+        rdonly('#formPhysioReqFor');
+    });
+    
+    $("#save_physioReqFor").click(function (){
+        checked = $("#ReqFor_treatment input[type=checkbox]:checked").length;
+        
+        if(!checked){
+            $('#p_error_ReqForTreatment').text("You must check at least one checkbox.");
+            // alert("You must check at least one checkbox.");
+            // return false;
+        }else{
+            disableForm('#formPhysioReqFor');
+            if($('#formPhysioReqFor').isValid({requiredFields: ''}, conf, true)){
+                saveForm_physioReqFor(function (data){
+                    // emptyFormdata_div("#formPhysioReqFor",['#mrn_requestFor','#episno_requestFor']);
+                    // disableForm('#formPhysioReqFor');
+                    $('#cancel_physioReqFor').data('oper','edit');
+                    $("#cancel_physioReqFor").click();
+                    populate_physioReqFor_getdata();
+                    $('#p_error_ReqForTreatment').text("");
+                });
+            }else{
+                enableForm('#formPhysioReqFor');
+                rdonly('#formPhysioReqFor');
+            }
+        }
+    });
+    
+    $("#cancel_physioReqFor").click(function (){
+        // emptyFormdata_div("#formPhysioReqFor",['#mrn_requestFor','#episno_requestFor']);
+        disableForm('#formPhysioReqFor');
+        button_state_physioReqFor($(this).data('oper'));
+        $('#p_error_ReqForTreatment').text("");
+    });
+    /////////////////////////////////////////////physio ends/////////////////////////////////////////////
+    
+    ///////////////////////////////////////////dressing starts///////////////////////////////////////////
+    
+    $("#new_dressingReqFor").click(function (){
+        $('#cancel_dressingReqFor').data('oper','add');
+        button_state_dressingReqFor('wait');
+        enableForm('#formDressingReqFor');
+        rdonly('#formDressingReqFor');
+        emptyFormdata_div("#formDressingReqFor",['#mrn_requestFor','#episno_requestFor','#dressingReqFor_patientname','#ReqFor_patientnric','#dressingReqFor_doctorname']);
+    });
+    
+    $("#edit_dressingReqFor").click(function (){
+        button_state_dressingReqFor('wait');
+        enableForm('#formDressingReqFor');
+        rdonly('#formDressingReqFor');
+    });
+    
+    $("#save_dressingReqFor").click(function (){
+        disableForm('#formDressingReqFor');
+        if($('#formDressingReqFor').isValid({requiredFields: ''}, conf, true)){
+            saveForm_dressingReqFor(function (data){
+                // emptyFormdata_div("#formDressingReqFor",['#mrn_requestFor','#episno_requestFor']);
+                // disableForm('#formDressingReqFor');
+                $('#cancel_dressingReqFor').data('oper','edit');
+                $("#cancel_dressingReqFor").click();
+                populate_dressingReqFor_getdata();
+            });
+        }else{
+            enableForm('#formDressingReqFor');
+            rdonly('#formDressingReqFor');
+        }
+    });
+    
+    $("#cancel_dressingReqFor").click(function (){
+        // emptyFormdata_div("#formDressingReqFor",['#mrn_requestFor','#episno_requestFor']);
+        disableForm('#formDressingReqFor');
+        button_state_dressingReqFor($(this).data('oper'));
+    });
+    ////////////////////////////////////////////dressing ends////////////////////////////////////////////
+    
+    ///////////////////////////////////////////preContrast starts///////////////////////////////////////////
+    
+    $("#new_preContrastReqFor").click(function (){
+        radbuts_preContrastReqFor.reset();
+        $('#cancel_preContrastReqFor').data('oper','add');
+        button_state_preContrastReqFor('wait');
+        enableForm('#formPreContrastReqFor');
+        rdonly('#formPreContrastReqFor');
+        emptyFormdata_div("#formPreContrastReqFor",['#mrn_requestFor','#episno_requestFor','#req_enterby']);
+    });
+    
+    $("#edit_preContrastReqFor").click(function (){
+        radbuts_preContrastReqFor.reset();
+        button_state_preContrastReqFor('wait');
+        enableForm('#formPreContrastReqFor');
+        rdonly('#formPreContrastReqFor');
+    });
+    
+    $("#save_preContrastReqFor").click(function (){
+        if(radbuts_preContrastReqFor.check())return false;
+        disableForm('#formPreContrastReqFor');
+        if($('#formPreContrastReqFor').isValid({requiredFields: ''}, conf, true)){
+            saveForm_preContrastReqFor(function (data){
+                // emptyFormdata_div("#formPreContrastReqFor",['#mrn_requestFor','#episno_requestFor']);
+                // disableForm('#formPreContrastReqFor');
+                $('#cancel_preContrastReqFor').data('oper','edit');
+                $("#cancel_preContrastReqFor").click();
+                populate_preContrastReqFor_getdata();
+            });
+        }else{
+            enableForm('#formPreContrastReqFor');
+            rdonly('#formPreContrastReqFor');
+        }
+    });
+    
+    $("#cancel_preContrastReqFor").click(function (){
+        radbuts_preContrastReqFor.reset();
+        // emptyFormdata_div("#formPreContrastReqFor",['#mrn_requestFor','#episno_requestFor']);
+        disableForm('#formPreContrastReqFor');
+        button_state_preContrastReqFor($(this).data('oper'));
+    });
+    ////////////////////////////////////////////preContrast ends////////////////////////////////////////////
+    
+    ///////////////////////////////////////////consentForm starts///////////////////////////////////////////
+    
+    $("#new_consentFormReqFor").click(function (){
+        radbuts_consentFormReqFor.reset();
+        $('#cancel_consentFormReqFor').data('oper','add');
+        button_state_consentFormReqFor('wait');
+        enableForm('#formConsentFormReqFor');
+        rdonly('#formConsentFormReqFor');
+        emptyFormdata_div("#formConsentFormReqFor",['#mrn_requestFor','#episno_requestFor']);
+    });
+    
+    $("#edit_consentFormReqFor").click(function (){
+        radbuts_consentFormReqFor.reset();
+        button_state_consentFormReqFor('wait');
+        enableForm('#formConsentFormReqFor');
+        rdonly('#formConsentFormReqFor');
+    });
+    
+    $("#save_consentFormReqFor").click(function (){
+        if(radbuts_consentFormReqFor.check())return false;
+        disableForm('#formConsentFormReqFor');
+        if($('#formConsentFormReqFor').isValid({requiredFields: ''}, conf, true)){
+            saveForm_consentFormReqFor(function (data){
+                // emptyFormdata_div("#formConsentFormReqFor",['#mrn_requestFor','#episno_requestFor']);
+                // disableForm('#formConsentFormReqFor');
+                $('#cancel_consentFormReqFor').data('oper','edit');
+                $("#cancel_consentFormReqFor").click();
+                populate_consentFormReqFor_getdata();
+            });
+        }else{
+            enableForm('#formConsentFormReqFor');
+            rdonly('#formConsentFormReqFor');
+        }
+    });
+    
+    $("#cancel_consentFormReqFor").click(function (){
+        radbuts_consentFormReqFor.reset();
+        // emptyFormdata_div("#formConsentFormReqFor",['#mrn_requestFor','#episno_requestFor']);
+        disableForm('#formConsentFormReqFor');
+        button_state_consentFormReqFor($(this).data('oper'));
+    });
+    ////////////////////////////////////////////consentForm ends////////////////////////////////////////////
+    
+    ///////////////////////////////////////////referralletter starts///////////////////////////////////////////
+    
+    $("#new_referralLetterReqfor").click(function (){
+        radbuts_referralLetterReqfor.reset();
+        $('#cancel_referralLetterReqfor').data('oper','add');
+        button_state_referralLetterReqfor('wait');
+        enableForm('#formreferralLetterReqfor');
+        rdonly('#formreferralLetterReqfor');
+        emptyFormdata_div("#formreferralLetterReqfor",['#mrn_requestFor','#episno_requestFor','#refpatname','#refnewic','#reffno','#refage','#refsex','#refdate','#reftime','#refname','#refdept']);
+    });
+    
+    $("#edit_referralLetterReqfor").click(function (){
+        radbuts_referralLetterReqfor.reset();
+        button_state_referralLetterReqfor('wait');
+        enableForm('#formreferralLetterReqfor');
+        rdonly('#formreferralLetterReqfor');
+    });
+    
+    $("#save_referralLetterReqfor").click(function (){
+        if(radbuts_referralLetterReqfor.check())return false;
+        disableForm('#formreferralLetterReqfor');
+        if($('#formreferralLetterReqfor').isValid({requiredFields: ''}, conf, true)){
+            saveForm_referralLetterReqfor(function (data){
+                // emptyFormdata_div("#formConsentFormReqFor",['#mrn_requestFor','#episno_requestFor']);
+                // disableForm('#formConsentFormReqFor');
+                $('#cancel_referralLetterReqfor').data('oper','edit');
+                $("#cancel_referralLetterReqfor").click();
+                populate_referralLetterReqfor_getdata();
+            });
+        }else{
+            enableForm('#formreferralLetterReqfor');
+            rdonly('#formreferralLetterReqfor');
+        }
+    });
+    
+    $("#cancel_referralLetterReqfor").click(function (){
+        radbuts_referralLetterReqfor.reset();
+        // emptyFormdata_div("#formConsentFormReqFor",['#mrn_requestFor','#episno_requestFor']);
+        disableForm('#formreferralLetterReqfor');
+        button_state_referralLetterReqfor($(this).data('oper'));
+    });
+    ////////////////////////////////////////////referralletter ends////////////////////////////////////////////
+
+    ///////////////////////////////////////////referralletter_freetext starts///////////////////////////////////////////
+    
+    $("#new_referralLetter_freetextReqfor").click(function (){
+        $('#cancel_referralLetter_freetextReqfor').data('oper','add');
+        button_state_referralLetter_freetextReqfor('wait');
+        enableForm('#formreferralLetter_freetextReqfor');
+        rdonly('#formreferralLetter_freetextReqfor');
+        emptyFormdata_div("#formreferralLetter_freetextReqfor",['#mrn_requestFor','#episno_requestFor']);
+    });
+    
+    $("#edit_referralLetter_freetextReqfor").click(function (){
+        button_state_referralLetter_freetextReqfor('wait');
+        enableForm('#formreferralLetter_freetextReqfor');
+        rdonly('#formreferralLetter_freetextReqfor');
+    });
+    
+    $("#save_referralLetter_freetextReqfor").click(function (){
+        disableForm('#formreferralLetter_freetextReqfor');
+        if($('#formreferralLetter_freetextReqfor').isValid({requiredFields: ''}, conf, true)){
+            saveForm_referralLetter_freetextReqfor(function (data){
+                // emptyFormdata_div("#formConsentFormReqFor",['#mrn_requestFor','#episno_requestFor']);
+                // disableForm('#formConsentFormReqFor');
+                $('#cancel_referralLetter_freetextReqfor').data('oper','edit');
+                $("#cancel_referralLetter_freetextReqfor").click();
+                populate_referralLetterReqfor_getdata();
+            });
+        }else{
+            enableForm('#formreferralLetter_freetextReqfor');
+            rdonly('#formreferralLetter_freetextReqfor');
+        }
+    });
+    
+    $("#cancel_referralLetter_freetextReqfor").click(function (){
+        // emptyFormdata_div("#formConsentFormReqFor",['#mrn_requestFor','#episno_requestFor']);
+        disableForm('#formreferralLetter_freetextReqfor');
+        button_state_referralLetter_freetextReqfor($(this).data('oper'));
+    });
+    ////////////////////////////////////////////referralletter ends////////////////////////////////////////////
+    
+    ///////////////////////////////////////////cardiology starts///////////////////////////////////////////
+    
+    $("#new_card_noninv").click(function (){
+        radbuts_card_noninv.reset();
+        $('#cancel_card_noninv').data('oper','add');
+        button_state_card_noninv('wait');
+        enableForm('#formcard_noninv');
+        rdonly('#formcard_noninv');
+        emptyFormdata_div("#formcard_noninv",['#mrn_requestFor','#episno_requestFor','#card_patname','#card_newic','#card_telhp','#card_age','#card_sex','#card_addr','#card_docname','#card_wardclinic','#card_date','#card_adduser','#card_apptdate']);
+    });
+    
+    $("#edit_card_noninv").click(function (){
+        radbuts_card_noninv.reset();
+        button_state_card_noninv('wait');
+        enableForm('#formcard_noninv');
+        rdonly('#formcard_noninv');
+    });
+    
+    $("#save_card_noninv").click(function (){
+        if(radbuts_card_noninv.check())return false;
+        disableForm('#formcard_noninv');
+        if($('#formcard_noninv').isValid({requiredFields: ''}, conf, true)){
+            saveForm_card_noninv(function (data){
+                // emptyFormdata_div("#formConsentFormReqFor",['#mrn_requestFor','#episno_requestFor']);
+                // disableForm('#formConsentFormReqFor');
+                $('#cancel_card_noninv').data('oper','edit');
+                $("#cancel_card_noninv").click();
+                populate_card_noninv_getdata();
+            });
+        }else{
+            enableForm('#formcard_noninv');
+            rdonly('#formcard_noninv');
+        }
+    });
+    
+    $("#cancel_card_noninv").click(function (){
+        radbuts_card_noninv.reset();
+        // emptyFormdata_div("#formConsentFormReqFor",['#mrn_requestFor','#episno_requestFor']);
+        disableForm('#formcard_noninv');
+        button_state_card_noninv($(this).data('oper'));
+    });
+    ////////////////////////////////////////////cardiology ends////////////////////////////////////////////
+
+    ///////////////////////////////////////////followup starts///////////////////////////////////////////
+    
+    $("#new_followupReqfor").click(function (){
+        $('#cancel_followupReqfor').data('oper','add');
+        button_state_followupReqfor('wait');
+        enableForm('#formfollowupReqfor');
+        rdonly('#formfollowupReqfor');
+        emptyFormdata_div("#formfollowupReqfor",['#mrn_requestFor','#episno_requestFor','#remarkfup']);
+        dialog_doctor_fup.on();
+    });
+    
+    $("#edit_followupReqfor").click(function (){
+        button_state_followupReqfor('wait');
+        enableForm('#formfollowupReqfor');
+        rdonly('#formfollowupReqfor');
+        dialog_doctor_fup.on();
+    });
+    
+    $("#save_followupReqfor").click(function (){
+        disableForm('#formfollowupReqfor');
+        if($('#formfollowupReqfor').isValid({requiredFields: ''}, conf, true)){
+            saveForm_followupReqfor(function (data){
+                // emptyFormdata_div("#formConsentFormReqFor",['#mrn_requestFor','#episno_requestFor']);
+                // disableForm('#formConsentFormReqFor');
+                $('#cancel_followupReqfor').data('oper','edit');
+                $("#cancel_followupReqfor").click();
+                populate_followupReqfor_getdata();
+            });
+        }else{
+            enableForm('#formfollowupReqfor');
+            rdonly('#formfollowupReqfor');
+        }
+    });
+    
+    $("#cancel_followupReqfor").click(function (){
+        // emptyFormdata_div("#formConsentFormReqFor",['#mrn_requestFor','#episno_requestFor']);
+        disableForm('#formfollowupReqfor');
+        button_state_followupReqfor($(this).data('oper'));
+        dialog_doctor_fup.off();
+    });
+    ////////////////////////////////////////////followup ends////////////////////////////////////////////
+    
+    /////////////////////////////////////////print button starts/////////////////////////////////////////
+    $("#otbookReqFor_chart").click(function (){
+        window.open('./doctornote/otbook_chart?mrn='+$('#mrn_requestFor').val()+'&episno='+$("#episno_requestFor").val(), '_blank');
+    });
+    
+    $("#radClinicReqFor_chart").click(function (){
+        window.open('./doctornote/radClinic_chart?mrn='+$('#mrn_requestFor').val()+'&episno='+$("#episno_requestFor").val()+'&age='+$("#age_requestFor").val(), '_blank');
+    });
+    
+    $("#mriReqFor_chart").click(function (){
+        window.open('./doctornote/mri_chart?mrn='+$('#mrn_requestFor').val()+'&episno='+$("#episno_requestFor").val(), '_blank');
+    });
+    
+    $("#physioReqFor_chart").click(function (){
+        window.open('./doctornote/physio_chart?mrn='+$('#mrn_requestFor').val()+'&episno='+$("#episno_requestFor").val(), '_blank');
+    });
+    
+    $("#dressingReqFor_chart").click(function (){
+        window.open('./doctornote/dressing_chart?mrn='+$('#mrn_requestFor').val()+'&episno='+$("#episno_requestFor").val(), '_blank');
+    });
+
+    $("#preContrastReqFor_chart").click(function (){
+        window.open('./doctornote/preContrast_chart?mrn='+$('#mrn_requestFor').val()+'&episno='+$("#episno_requestFor").val()+'&age='+$("#age_requestFor").val(), '_blank');
+    });
+
+    $("#consentFormReqFor_chart").click(function (){
+        window.open('./doctornote/consentForm_chart?mrn='+$('#mrn_requestFor').val()+'&episno='+$("#episno_requestFor").val(), '_blank');
+    });
+
+    $("#referralLetterReqfor_chart").click(function (){
+        window.open('./ptcare_requestfor/table?action=referralLetter_print&mrn='+$('#mrn_requestFor').val()+'&episno='+$("#episno_requestFor").val(), '_blank');
+    });
+
+    $("#card_noninv_chart").click(function (){
+        window.open('./ptcare_requestfor/table?action=card_noninv_print&mrn='+$('#mrn_requestFor').val()+'&episno='+$("#episno_requestFor").val(), '_blank');
+    });
+
+    $("#referralLetter_freetextReqfor_chart").click(function (){
+        window.open('./ptcare_requestfor/table?action=referralLetter_freetext_print&mrn='+$('#mrn_requestFor').val()+'&episno='+$("#episno_requestFor").val(), '_blank');
+    });
+    //////////////////////////////////////////print button ends//////////////////////////////////////////
+    
+    $('#requestFor .top.menu .item').tab({'onVisible': function (){
+        let tab = $(this).data('tab');
+        // console.log(tab);
+        
+        switch(tab){
+            case 'otbookReqFor':
+                populate_otbookReqFor_getdata();
+                // textarea_init_otbookReqFor();
+                break;
+            case 'radReqFor':
+                $('#radiology .top.menu .item').tab('change tab','radClinicReqFor');
+                populate_radClinicReqFor_getdata();
+                break;
+            case 'physioReqFor':
+                populate_physioReqFor_getdata();
+                // textarea_init_physioReqFor();
+                break;
+            case 'dressingReqFor':
+                populate_dressingReqFor_getdata();
+                // textarea_init_dressingReqFor();
+                break;
+            case 'referral_letter_reqfor':
+                populate_referralLetterReqfor_getdata();
+                break;
+            case 'card_noninv_reqfor':
+                populate_card_noninv_getdata();
+                break;
+            case 'followup_reqfor':
+                populate_followupReqfor_getdata();
+                break;
+        }
+    }});
+    
+    $('#radiology .top.menu .item').tab({'onVisible': function (){
+        let tab = $(this).data('tab');
+        // console.log(tab);
+        
+        switch(tab){
+            case 'radClinicReqFor':
+                populate_radClinicReqFor_getdata();
+                // textarea_init_radClinicReqFor();
+                break;
+            case 'mriReqFor':
+                populate_mriReqFor_getdata();
+                // textarea_init_mriReqFor();
+                break;
+            case 'preContrastReqFor':
+                populate_preContrastReqFor_getdata();
+                break;
+            case 'consentReqFor':
+                populate_consentFormReqFor_getdata();
+                break;
+        }
+    }});
+    
+    var accomodation_table = $('#accomodation_table').DataTable({
+        "ajax": "pat_mast/get_entry?action=accomodation_table",
+        "paging": false,
+        "columns": [
+            {'data': 'desc_bt'},
+            {'data': 'bednum'},
+            {'data': 'desc_d'},
+            {'data': 'room'},
+            {'data': 'occup'},
+            {'data': 'bedtype'},
+            {'data': 'ward'},
+        ],
+        order: [[5, 'asc'],[6, 'asc']],
+        columnDefs: [{
+            targets: [0,5,6],
+            visible: false
+        }],
+        rowGroup: {
+            dataSrc: ["desc_bt"],
+            startRender: function (rows, group){
+                return group + `<i class="arrow fa fa-angle-double-down"></i>`;
+            }
+        },
+        "createdRow": function (row, data, dataIndex){
+            $(row).addClass(data['desc_bt']);
+            if(data.occup != 'VACANT'){
+                $(row).addClass('disabled red');
+            }
+        },
+        "initComplete": function (settings, json){
+            let opt_bt = opt_ward = "";
+            
+            $('input[type="radio"][name="search_bed"]').on('click', function (){
+                let seltype = $(this).data('seltype');
+                if(seltype == 'bt'){
+                    $("#search_bed_select_bed_dept").show();
+                    $("#search_bed_select_ward").hide();
+                }else{
+                    $("#search_bed_select_bed_dept").hide();
+                    $("#search_bed_select_ward").show();
+                }
+            });
+            
+            $("select[name='search_bed_select']").on('change', function (){
+                // accomodation_table.columns($(this).data('dtbid')).search(this.value).draw();
+                accomodation_table.search(this.value).draw();
+            });
+        }
+    });
+    
+    $('#accomodation_table tbody').on('click', 'tr', function (){
+        let rowdata = accomodation_table.row(this).data();
+        $('#ReqFor_bed').val(rowdata.bednum);
+        $('#ReqFor_ward').val(rowdata.ward);
+        $('#ReqFor_room').val(rowdata.room);
+        $('#ReqFor_bedtype').val(rowdata.bedtype);
+        $('#accomodation_table tbody tr').removeClass('blue');
+        $(this).addClass('blue');
+    });
+
+    var dialog_doctor_fup = new ordialog(
+        'dialog_doctor_fup', ['hisdb.apptresrc AS a', 'hisdb.doctor AS d'], "input[name='docnamefup']", 'errorField',
+        {
+            colModel: [
+                { label: 'Resource Code', name: 'resourcecode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+                { label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true, checked: true },
+                { label: 'Interval Time', name: 'intervaltime', width: 400, classes: 'pointer', hidden:false},
+                { label: 'source', name: 'source', hidden:true},
+            ],
+            urlParam: {
+                url:"./ptcare_requestfor/table",
+                action: 'get_doctor_fup'
+            },
+            ondblClickRow: function () {
+                let data = selrowData('#' + dialog_doctor_fup.gridname);
+
+                $('#docnamefup').val(data.description);
+                $('#doctorcodefup').val(data.resourcecode);
+
+                session_field.addSessionInterval(data.intervaltime,JSON.parse(data.source));
+            }
+        },{
+            title: "Select Doctor",
+            open: function () {
+                dialog_doctor_fup.urlParam.url = "./ptcare_requestfor/table";
+                dialog_doctor_fup.urlParam.action = "get_doctor_fup";
+            }
+        }, 'none'
+    );
+    dialog_doctor_fup.makedialog(false);
+        
+    if($('#doctorcodefup')){
+        session_field.init();
+        $('#datefup').change(function(){
+            session_field.clear().ready().set();
+        });
+    }
+
+});
+
+var errorField = [];
+conf = {
+    modules: 'logic',
+    language: {
+        requiredFields: 'You have not answered all required fields'
+    }
+};
+
+button_state_otbookReqFor('empty');
+function button_state_otbookReqFor(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_requestFor").removeAttr('data-toggle');
+            $('#cancel_otbookReqFor').data('oper','add');
+            $('#new_otbookReqFor,#save_otbookReqFor,#cancel_otbookReqFor,#edit_otbookReqFor,#otbookReqFor_chart').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_otbookReqFor').data('oper','add');
+            $("#new_otbookReqFor").attr('disabled',false);
+            $('#save_otbookReqFor,#cancel_otbookReqFor,#edit_otbookReqFor').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_otbookReqFor').data('oper','edit');
+            $("#edit_otbookReqFor,#otbookReqFor_chart").attr('disabled',false);
+            $('#save_otbookReqFor,#cancel_otbookReqFor,#new_otbookReqFor').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $("#save_otbookReqFor,#cancel_otbookReqFor").attr('disabled',false);
+            $('#edit_otbookReqFor,#new_otbookReqFor').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_radClinicReqFor('empty');
+function button_state_radClinicReqFor(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_requestFor").removeAttr('data-toggle');
+            $('#cancel_radClinicReqFor').data('oper','add');
+            $('#new_radClinicReqFor,#save_radClinicReqFor,#cancel_radClinicReqFor,#edit_radClinicReqFor,#radClinicReqFor_chart').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_radClinicReqFor').data('oper','add');
+            $("#new_radClinicReqFor").attr('disabled',false);
+            $('#save_radClinicReqFor,#cancel_radClinicReqFor,#edit_radClinicReqFor').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_radClinicReqFor').data('oper','edit');
+            $("#edit_radClinicReqFor,#radClinicReqFor_chart").attr('disabled',false);
+            $('#save_radClinicReqFor,#cancel_radClinicReqFor,#new_radClinicReqFor').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $("#save_radClinicReqFor,#cancel_radClinicReqFor").attr('disabled',false);
+            $('#edit_radClinicReqFor,#new_radClinicReqFor').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_mriReqFor('empty');
+function button_state_mriReqFor(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_requestFor").removeAttr('data-toggle');
+            $('#cancel_mriReqFor').data('oper','add');
+            $('#new_mriReqFor,#save_mriReqFor,#cancel_mriReqFor,#edit_mriReqFor,#accept_mriReqFor,#mriReqFor_chart').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_mriReqFor').data('oper','add');
+            $("#new_mriReqFor").attr('disabled',false);
+            $('#save_mriReqFor,#cancel_mriReqFor,#edit_mriReqFor,#accept_mriReqFor').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_mriReqFor').data('oper','edit');
+            $("#edit_mriReqFor,#accept_mriReqFor,#mriReqFor_chart").attr('disabled',false);
+            $('#save_mriReqFor,#cancel_mriReqFor,#new_mriReqFor').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $("#save_mriReqFor,#cancel_mriReqFor").attr('disabled',false);
+            $('#edit_mriReqFor,#new_mriReqFor,#accept_mriReqFor').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_physioReqFor('empty');
+function button_state_physioReqFor(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_requestFor").removeAttr('data-toggle');
+            $('#cancel_physioReqFor').data('oper','add');
+            $('#new_physioReqFor,#save_physioReqFor,#cancel_physioReqFor,#edit_physioReqFor,#physioReqFor_chart').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_physioReqFor').data('oper','add');
+            $("#new_physioReqFor").attr('disabled',false);
+            $('#save_physioReqFor,#cancel_physioReqFor,#edit_physioReqFor').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_physioReqFor').data('oper','edit');
+            $("#edit_physioReqFor,#physioReqFor_chart").attr('disabled',false);
+            $('#save_physioReqFor,#cancel_physioReqFor,#new_physioReqFor').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $("#save_physioReqFor,#cancel_physioReqFor").attr('disabled',false);
+            $('#edit_physioReqFor,#new_physioReqFor').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_dressingReqFor('empty');
+function button_state_dressingReqFor(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_requestFor").removeAttr('data-toggle');
+            $('#cancel_dressingReqFor').data('oper','add');
+            $('#new_dressingReqFor,#save_dressingReqFor,#cancel_dressingReqFor,#edit_dressingReqFor,#dressingReqFor_chart').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_dressingReqFor').data('oper','add');
+            $("#new_dressingReqFor").attr('disabled',false);
+            $('#save_dressingReqFor,#cancel_dressingReqFor,#edit_dressingReqFor').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_dressingReqFor').data('oper','edit');
+            $("#edit_dressingReqFor,#dressingReqFor_chart").attr('disabled',false);
+            $('#save_dressingReqFor,#cancel_dressingReqFor,#new_dressingReqFor').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $("#save_dressingReqFor,#cancel_dressingReqFor").attr('disabled',false);
+            $('#edit_dressingReqFor,#new_dressingReqFor').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_preContrastReqFor('empty');
+function button_state_preContrastReqFor(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_requestFor").removeAttr('data-toggle');
+            $('#cancel_preContrastReqFor').data('oper','add');
+            $('#new_preContrastReqFor,#save_preContrastReqFor,#cancel_preContrastReqFor,#edit_preContrastReqFor,#preContrastReqFor_chart').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_preContrastReqFor').data('oper','add');
+            $("#new_preContrastReqFor").attr('disabled',false);
+            $('#save_preContrastReqFor,#cancel_preContrastReqFor,#edit_preContrastReqFor').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_preContrastReqFor').data('oper','edit');
+            $("#edit_preContrastReqFor,#preContrastReqFor_chart").attr('disabled',false);
+            $('#save_preContrastReqFor,#cancel_preContrastReqFor,#new_preContrastReqFor').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $("#save_preContrastReqFor,#cancel_preContrastReqFor").attr('disabled',false);
+            $('#edit_preContrastReqFor,#new_preContrastReqFor').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_consentFormReqFor('empty');
+function button_state_consentFormReqFor(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_requestFor").removeAttr('data-toggle');
+            $('#cancel_consentFormReqFor').data('oper','add');
+            $('#new_consentFormReqFor,#save_consentFormReqFor,#cancel_consentFormReqFor,#edit_consentFormReqFor,#consentFormReqFor_chart').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_consentFormReqFor').data('oper','add');
+            $("#new_consentFormReqFor").attr('disabled',false);
+            $('#save_consentFormReqFor,#cancel_consentFormReqFor,#edit_consentFormReqFor').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_consentFormReqFor').data('oper','edit');
+            $("#edit_consentFormReqFor,#consentFormReqFor_chart").attr('disabled',false);
+            $('#save_consentFormReqFor,#cancel_consentFormReqFor,#new_consentFormReqFor').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $("#save_consentFormReqFor,#cancel_consentFormReqFor").attr('disabled',false);
+            $('#edit_consentFormReqFor,#new_consentFormReqFor').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_referralLetterReqfor('empty');
+function button_state_referralLetterReqfor(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_requestFor").removeAttr('data-toggle');
+            $('#cancel_referralLetterReqfor').data('oper','add');
+            $('#new_referralLetterReqfor,#save_referralLetterReqfor,#cancel_referralLetterReqfor,#edit_referralLetterReqfor,#referralLetterReqfor_chart').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_referralLetterReqfor').data('oper','add');
+            $("#new_referralLetterReqfor").attr('disabled',false);
+            $('#save_referralLetterReqfor,#cancel_referralLetterReqfor,#edit_referralLetterReqforr,#referralLetterReqfor_chart').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_referralLetterReqfor').data('oper','edit');
+            $("#edit_referralLetterReqfor,#referralLetterReqfor_chart").attr('disabled',false);
+            $('#save_referralLetterReqfor,#cancel_referralLetterReqfor,#new_referralLetterReqfor').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $("#save_referralLetterReqfor,#cancel_referralLetterReqfor").attr('disabled',false);
+            $('#edit_referralLetterReqfor,#new_referralLetterReqfor,#referralLetterReqfor_chart').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_referralLetter_freetextReqfor('empty');
+function button_state_referralLetter_freetextReqfor(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_requestFor").removeAttr('data-toggle');
+            $('#cancel_referralLetter_freetextReqfor').data('oper','add');
+            $('#new_referralLetter_freetextReqfor,#save_referralLetter_freetextReqfor,#cancel_referralLetter_freetextReqfor,#edit_referralLetter_freetextReqfor,#referralLetter_freetextReqfor_chart').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_referralLetter_freetextReqfor').data('oper','add');
+            $("#new_referralLetter_freetextReqfor").attr('disabled',false);
+            $('#save_referralLetter_freetextReqfor,#cancel_referralLetter_freetextReqfor,#edit_referralLetter_freetextReqforr,#referralLetter_freetextReqfor_chart').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_referralLetter_freetextReqfor').data('oper','edit');
+            $("#edit_referralLetter_freetextReqfor,#referralLetter_freetextReqfor_chart").attr('disabled',false);
+            $('#save_referralLetter_freetextReqfor,#cancel_referralLetter_freetextReqfor,#new_referralLetter_freetextReqfor').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $("#save_referralLetter_freetextReqfor,#cancel_referralLetter_freetextReqfor").attr('disabled',false);
+            $('#edit_referralLetter_freetextReqfor,#new_referralLetter_freetextReqfor,#referralLetter_freetextReqfor_chart').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_card_noninv('empty');
+function button_state_card_noninv(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_requestFor").removeAttr('data-toggle');
+            $('#cancel_card_noninv').data('oper','add');
+            $('#new_card_noninv,#save_card_noninv,#cancel_card_noninv,#edit_card_noninv,#card_noninv_chart').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_card_noninv').data('oper','add');
+            $("#new_card_noninv").attr('disabled',false);
+            $('#save_card_noninv,#cancel_card_noninv,#edit_card_noninv,#card_noninv_chart').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_card_noninv').data('oper','edit');
+            $("#edit_card_noninv,#card_noninv_chart").attr('disabled',false);
+            $('#save_card_noninv,#cancel_card_noninv,#new_card_noninv').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $("#save_card_noninv,#cancel_card_noninv").attr('disabled',false);
+            $('#edit_card_noninv,#new_card_noninv,#card_noninv_chart').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_followupReqfor('empty');
+function button_state_followupReqfor(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_requestFor").removeAttr('data-toggle');
+            $('#cancel_followupReqfor').data('oper','add');
+            $('#new_followupReqfor,#save_followupReqfor,#cancel_followupReqfor,#edit_followupReqfor').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_followupReqfor').data('oper','add');
+            $("#new_followupReqfor").attr('disabled',false);
+            $('#save_followupReqfor,#cancel_followupReqfor,#edit_followupReqfor').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_followupReqfor').data('oper','edit');
+            $("#edit_followupReqfor").attr('disabled',false);
+            $('#save_followupReqfor,#cancel_followupReqfor,#new_followupReqfor').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $("#save_followupReqfor,#cancel_followupReqfor").attr('disabled',false);
+            $('#edit_followupReqfor,#new_followupReqfor').attr('disabled',true);
+            break;
+    }
+}
+
+function empty_requestFor_ptcare(obj){
+    emptyFormdata(errorField,"#formRequestFor");
+    
+    // panel header
+    $('#name_show_requestFor').text('');
+    $('#mrn_show_requestFor').text('');
+    $('#sex_show_requestFor').text('');
+    $('#dob_show_requestFor').text('');
+    $('#age_show_requestFor').text('');
+    $('#race_show_requestFor').text('');
+    $('#religion_show_requestFor').text('');
+    $('#occupation_show_requestFor').text('');
+    $('#citizenship_show_requestFor').text('');
+    $('#area_show_requestFor').text('');
+    
+    // formRequestFor
+    $('#mrn_requestFor').val('');
+    $("#episno_requestFor").val('');
+    $('#ptname_requestFor').val('');
+    $('#preg_requestFor').val('');
+    $('#ic_requestFor').val('');
+    $('#doctorname_requestFor').val('');
+}
+
+function populate_requestFor_ptcare(obj){
+    emptyFormdata(errorField,"#formRequestFor");
+    
+    // panel header
+    $('#name_show_requestFor').text(obj.Name);
+    $('#mrn_show_requestFor').text(("0000000" + obj.MRN).slice(-7));
+    $('#sex_show_requestFor').text(if_none(obj.Sex).toUpperCase());
+    $('#dob_show_requestFor').text(dob_chg(obj.DOB));
+    $('#age_show_requestFor').text(dob_age(obj.DOB)+' (YRS)');
+    $('#race_show_requestFor').text(if_none(obj.raceDesc).toUpperCase());
+    $('#religion_show_requestFor').text(if_none(obj.religion).toUpperCase());
+    $('#occupation_show_requestFor').text(if_none(obj.OccupCode).toUpperCase());
+    $('#citizenship_show_requestFor').text(if_none(obj.Citizencode).toUpperCase());
+    $('#area_show_requestFor').text(if_none(obj.AreaCode).toUpperCase());
+    
+    // formRequestFor
+    $('#mrn_requestFor').val(obj.MRN);
+    $("#episno_requestFor").val(obj.Episno);
+    $("#age_requestFor").val(dob_age(obj.DOB));
+    $('#ptname_requestFor').val(obj.Name);
+    $('#preg_requestFor').val(obj.pregnant);
+    $('#ic_requestFor').val(obj.Newic);
+    $('#doctorname_requestFor').val(obj.doctorname);
+    
+    $("#tab_requestFor").collapse('hide');
+}
+
+function populate_otbookReqFor_getdata(){
+    emptyFormdata(errorField,"#formOTBookReqFor",["#mrn_requestFor","#episno_requestFor"]);
+    
+    var saveParam = {
+        action: 'get_table_otbook',
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // idno: $("#idno_otbook").val(),
+        mrn: $("#mrn_requestFor").val(),
+        episno: $("#episno_requestFor").val()
+    };
+    
+    $.get("./ptcare_requestfor/table?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').done(function (data){
+        if(!$.isEmptyObject(data.pat_otbook)){
+            autoinsert_rowdata("#formOTBookReqFor",data.pat_otbook);
+            // autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            autoinsert_rowdata("#formOTBookReqFor",data.nurshistory);
+            
+            if(!emptyobj_(data.nurshandover)){
+                autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            }else{
+                autoinsert_rowdata("#formOTBookReqFor",data.nursassessment);
+            }
+            
+            if(!emptyobj_(data.pat_otbook.ot_doctorname)){
+                $("#otReqFor_doctorname").val(data.pat_otbook.ot_doctorname);
+            }else{
+                $("#otReqFor_doctorname").val($('#doctorname_requestFor').val());
+            }
+            
+            button_state_otbookReqFor('edit');
+        }else{
+            // autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            autoinsert_rowdata("#formOTBookReqFor",data.nurshistory);
+            // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+            $("#otReqFor_doctorname").val($('#doctorname_requestFor').val());
+            
+            if(!emptyobj_(data.nurshandover)){
+                autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            }else{
+                autoinsert_rowdata("#formOTBookReqFor",data.nursassessment);
+            }
+            
+            button_state_otbookReqFor('add');
+        }
+        
+        if(!emptyobj_(data.iPesakit))$("#otReqFor_iPesakit").val(data.iPesakit);
+        
+        // textarea_init_otbookReqFor();
+        toggle_reqfor_reqtype();
+    });
+}
+
+function get_default_otbookReqFor(){
+    emptyFormdata(errorField,"#formOTBookReqFor",["#mrn_requestFor","#episno_requestFor"]);
+    
+    var saveParam = {
+        action: 'get_table_otbook',
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // idno: $("#idno_otbook").val(),
+        mrn: $("#mrn_requestFor").val(),
+        episno: $("#episno_requestFor").val()
+    };
+    
+    $.get("./ptcare_requestfor/table?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').done(function (data){
+        if(!$.isEmptyObject(data.pat_otbook)){
+            autoinsert_rowdata("#formOTBookReqFor",data.pat_otbook);
+            // autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            autoinsert_rowdata("#formOTBookReqFor",data.nurshistory);
+            
+            if(!emptyobj_(data.nurshandover)){
+                autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            }else{
+                autoinsert_rowdata("#formOTBookReqFor",data.nursassessment);
+            }
+            
+            if(!emptyobj_(data.pat_otbook.ot_doctorname)){
+                $("#otReqFor_doctorname").val(data.pat_otbook.ot_doctorname);
+            }else{
+                $("#otReqFor_doctorname").val($('#doctorname_requestFor').val());
+            }
+        }else{
+            // autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            autoinsert_rowdata("#formOTBookReqFor",data.nurshistory);
+            // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+            $("#otReqFor_doctorname").val($('#doctorname_requestFor').val());
+            
+            if(!emptyobj_(data.nurshandover)){
+                autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            }else{
+                autoinsert_rowdata("#formOTBookReqFor",data.nursassessment);
+            }
+        }
+        
+        if(!emptyobj_(data.iPesakit))$("#otReqFor_iPesakit").val(data.iPesakit);
+        
+        // textarea_init_otbookReqFor();
+        toggle_reqfor_reqtype();
+    });
+}
+
+function populate_radClinicReqFor_getdata(){
+    emptyFormdata(errorField,"#formRadClinicReqFor",["#mrn_requestFor","#episno_requestFor",'#radClinicReqFor_enterby']);
+    
+    var saveParam = {
+        action: 'get_table_radClinic',
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // idno: $("#idno_radClinic").val(),
+        mrn: $("#mrn_requestFor").val(),
+        episno: $("#episno_requestFor").val(),
+        // recorddate: $("#recorddate_doctorNote").val(),
+    };
+    
+    $.get("./ptcare_requestfor/table?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').done(function (data){
+        if(!$.isEmptyObject(data)){
+            if(!$.isEmptyObject(data.pat_radiology)){
+                autoinsert_rowdata("#formRadClinicReqFor",data.pat_radiology);
+
+                if(data.pat_radiology.sex_radClinic == 'F'){
+                    $('#formRadClinicReqFor input[name=LMP]').attr('type','date');
+                    $('#formRadClinicReqFor input[name=LMP]').parent('div.inline.field').show();
+                }else{
+                    $('#formRadClinicReqFor input[name=LMP]').attr('type','hidden');
+                    $('#formRadClinicReqFor input[name=LMP]').parent('div.inline.field').hide();
+                }
+                
+                button_state_radClinicReqFor('edit');
+            }else if(!$.isEmptyObject(data.pat_radiology_default)){
+                autoinsert_rowdata("#formRadClinicReqFor",data.pat_radiology_default);
+
+
+                if(data.pat_radiology_default.sex_radClinic == 'F'){
+                    $('#formRadClinicReqFor input[name=LMP]').attr('type','date');
+                    $('#formRadClinicReqFor input[name=LMP]').parent('div.inline.field').show();
+                }else{
+                    $('#formRadClinicReqFor input[name=LMP]').attr('type','hidden');
+                    $('#formRadClinicReqFor input[name=LMP]').parent('div.inline.field').hide();
+                }
+
+                button_state_radClinicReqFor('add');
+            }
+            
+            if(!emptyobj_(data.rad_weight))$("#radReqFor_weight").val(data.rad_weight);
+            // $("#radReqFor_pregnant").val($('#preg_requestFor').val());
+            if(!emptyobj_(data.rad_allergy))$("#radReqFor_allergy").val(data.rad_allergy);
+            // $("#radClinicReqFor_doctorname").val($('#doctorname_requestFor').val());
+            if(!emptyobj_(data.iPesakit))$("#radReqFor_iPesakit").val(data.iPesakit);
+            
+            pregnant = document.getElementById("pregnantReqFor");
+            not_pregnant = document.getElementById("not_pregnantReqFor");
+            if(data.pregnant == 1){
+                pregnant.checked = true;
+            }else{
+                not_pregnant.checked = true;
+            }
+            
+            // textarea_init_radClinicReqFor();
+        }
+    });
+}
+
+function get_default_radClinicReqFor(){
+    emptyFormdata(errorField,"#formRadClinicReqFor",["#mrn_requestFor","#episno_requestFor",'#radClinicReqFor_enterby']);
+    
+    var saveParam = {
+        action: 'get_table_radClinic',
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // idno: $("#idno_radClinic").val(),
+        mrn: $("#mrn_requestFor").val(),
+        episno: $("#episno_requestFor").val(),
+        // recorddate: $("#recorddate_doctorNote").val(),
+    };
+    
+    $.get("./ptcare_requestfor/table?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').done(function (data){
+        if(!$.isEmptyObject(data)){
+            autoinsert_rowdata("#formRadClinicReqFor",data.pat_radiology);
+        }else{
+            
+        }
+        
+        if(!emptyobj_(data.rad_weight))$("#radReqFor_weight").val(data.rad_weight);
+        // $("#radReqFor_pregnant").val($('#preg_requestFor').val());
+        if(!emptyobj_(data.rad_allergy))$("#radReqFor_allergy").val(data.rad_allergy);
+        // $("#radClinicReqFor_doctorname").val($('#doctorname_requestFor').val());
+        if(!emptyobj_(data.iPesakit))$("#radReqFor_iPesakit").val(data.iPesakit);
+        
+        pregnant = document.getElementById("pregnantReqFor");
+        not_pregnant = document.getElementById("not_pregnantReqFor");
+        if(data.pregnant == 1){
+            pregnant.checked = true;
+        }else{
+            not_pregnant.checked = true;
+        }
+        
+        // textarea_init_radClinicReqFor();
+    });
+}
+
+function populate_mriReqFor_getdata(){
+    emptyFormdata(errorField,"#formMRIReqFor",["#mrn_requestFor","#episno_requestFor","#mriReqFor_lastuser"]);
+    
+    var saveParam = {
+        action: 'get_table_mri',
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // idno: $("#idno_mri").val(),
+        mrn: $("#mrn_requestFor").val(),
+        episno: $("#episno_requestFor").val(),
+        // recorddate: $("#recorddate_doctorNote").val(),
+    };
+    
+    $.get("./ptcare_requestfor/table?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').done(function (data){
+        if(!$.isEmptyObject(data.pat_mri)){
+            autoinsert_rowdata("#formMRIReqFor",data.pat_mri);
+            
+            if(!emptyobj_(data.pat_mri.mri_doctorname)){
+                $("#mriReqFor_doctorname").val(data.pat_mri.mri_doctorname);
+            }else{
+                $("#mriReqFor_doctorname").val($('#doctorname_requestFor').val());
+            }
+            
+            // if(!emptyobj_(data.pat_mri.radiographer)){
+            //     button_state_mriReqFor('empty');
+            // }else{
+                button_state_mriReqFor('edit');
+            // }
+        }else if(!$.isEmptyObject(data.pat_mri_default)){
+            autoinsert_rowdata("#formMRIReqFor",data.pat_mri_default);
+            button_state_mriReqFor('add');
+        }
+        
+        // if(!emptyobj_(data.mri_weight))$("#mriReqFor_weight").val(data.mri_weight);
+        // $("#mriReqFor_patientname").val($('#ptname_requestFor').val());
+        // textarea_init_mriReqFor();
+    });
+}
+
+function get_default_mriReqFor(){
+    emptyFormdata(errorField,"#formMRIReqFor",["#mrn_requestFor","#episno_requestFor","#mriReqFor_lastuser"]);
+    
+    var saveParam = {
+        action: 'get_table_mri',
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // idno: $("#idno_mri").val(),
+        mrn: $("#mrn_requestFor").val(),
+        episno: $("#episno_requestFor").val(),
+        // recorddate: $("#recorddate_doctorNote").val(),
+    };
+    
+    $.get("./ptcare_requestfor/table?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').done(function (data){
+        if(!$.isEmptyObject(data)){
+            autoinsert_rowdata("#formMRIReqFor",data.pat_mri);
+            
+            if(!emptyobj_(data.pat_mri.mri_doctorname)){
+                $("#mriReqFor_doctorname").val(data.pat_mri.mri_doctorname);
+            }else{
+                $("#mriReqFor_doctorname").val($('#doctorname_requestFor').val());
+            }
+        }else{
+            // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+            $("#mriReqFor_doctorname").val($('#doctorname_requestFor').val());
+        }
+        
+        if(!emptyobj_(data.mri_weight))$("#mriReqFor_weight").val(data.mri_weight);
+        $("#mriReqFor_patientname").val($('#ptname_requestFor').val());
+        // textarea_init_mriReqFor();
+    });
+}
+
+function radiographer_acceptReqFor(){
+    // bootbox.confirm({
+    //     message: "Are you sure you want to accept?",
+    //     buttons: { confirm: { label: 'Yes', className: 'btn-success' }, cancel: { label: 'No', className: 'btn-danger' } },
+    //     callback: function (result){
+    //         if(result == true){
+    //             var saveParam = {
+    //                 action: 'accept_mri',
+    //                 mrn: $('#mrn_requestFor').val(),
+    //                 episno: $("#episno_requestFor").val(),
+    //             }
+                
+    //             var postobj = {
+    //                 _token: $('#_token').val(),
+    //             };
+                
+    //             $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj), function (data){
+                    
+    //             },'json').done(function (data){
+    //                 callback(data);
+    //             });
+    //         }else{
+                
+    //         }
+    //     }
+    // });
+    
+    var result = confirm("Are you sure you want to accept?");
+    if(result == true){
+        var saveParam = {
+            action: 'accept_mri',
+            mrn: $('#mrn_requestFor').val(),
+            episno: $("#episno_requestFor").val(),
+        }
+        
+        var postobj = {
+            _token: $('#_token').val(),
+        };
+        
+        $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj), function (data){
+            
+        },'json').done(function (data){
+            // callback(data);
+            button_state_mriReqFor('empty');
+            get_default_mriReqFor();
+        });
+    }else{
+        
+    }
+}
+
+function populate_physioReqFor_getdata(){
+    emptyFormdata(errorField,"#formPhysioReqFor",["#mrn_requestFor","#episno_requestFor"]);
+    
+    var saveParam = {
+        action: 'get_table_physio',
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // idno: $("#idno_physio").val(),
+        mrn: $("#mrn_requestFor").val(),
+        episno: $("#episno_requestFor").val()
+    };
+    
+    $.get("./ptcare_requestfor/table?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').done(function (data){
+        if(!$.isEmptyObject(data)){
+            autoinsert_rowdata("#formPhysioReqFor",data.pat_physio);
+            
+            button_state_physioReqFor('edit');
+        }else{
+            button_state_physioReqFor('add');
+        }
+        
+        // $("#phyReqFor_doctorname").val($('#doctorname_requestFor').val());
+        $('#p_error_ReqForTreatment').text("");
+        // textarea_init_physioReqFor();
+    });
+}
+
+function populate_dressingReqFor_getdata(){
+    emptyFormdata(errorField,"#formDressingReqFor",["#mrn_requestFor","#episno_requestFor"]);
+    
+    var saveParam = {
+        action: 'get_table_dressing',
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // idno: $("#idno_dressing").val(),
+        mrn: $("#mrn_requestFor").val(),
+        episno: $("#episno_requestFor").val()
+    };
+    
+    $.get("./ptcare_requestfor/table?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').done(function (data){
+        if(!$.isEmptyObject(data.pat_dressing)){
+            autoinsert_rowdata("#formDressingReqFor",data.pat_dressing);
+            
+            button_state_dressingReqFor('edit');
+        }else if(!$.isEmptyObject(data.pat_dressing_default)){
+            autoinsert_rowdata("#formDressingReqFor",data.pat_dressing_default);
+
+            button_state_dressingReqFor('add');
+        }else{
+            button_state_dressingReqFor('add');
+        }
+        
+        // $("#dressingReqFor_patientname").val($('#ptname_requestFor').val());
+        // $("#ReqFor_patientnric").val($('#ic_requestFor').val());
+        // $("#dressingReqFor_doctorname").val($('#doctorname_requestFor').val());
+        // textarea_init_dressingReqFor();
+    });
+}
+
+function populate_preContrastReqFor_getdata(){
+    disableForm('#formPreContrastReqFor');
+    emptyFormdata(errorField,"#formPreContrastReqFor",["#mrn_requestFor","#episno_requestFor"]);
+    
+    var saveParam = {
+        action: 'get_table_preContrast',
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        mrn: $("#mrn_requestFor").val(),
+        episno: $("#episno_requestFor").val()
+    };
+    
+    $.get("./ptcare_requestfor/table?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').done(function (data){
+        if(!$.isEmptyObject(data.pat_preContrast)){
+            autoinsert_rowdata("#formPreContrastReqFor",data.pat_preContrast);
+            
+            if(data.pat_preContrast_default.sex_precon == 'F'){
+                $('#formPreContrastReqFor input[name=LMP]').attr('type','date');
+            }else{
+                $('#formPreContrastReqFor input[name=LMP]').attr('type','hidden');
+            }
+            button_state_preContrastReqFor('edit');
+            
+        }else if(!$.isEmptyObject(data.pat_preContrast_default)){
+            autoinsert_rowdata("#formPreContrastReqFor",data.pat_preContrast_default);
+
+            if(data.pat_preContrast_default.sex_precon == 'F'){
+                $('#formPreContrastReqFor input[name=LMP]').attr('type','date');
+            }else{
+                $('#formPreContrastReqFor input[name=LMP]').attr('type','hidden');
+            }
+            button_state_preContrastReqFor('add');
+        }
+        
+        textarea_init_preContrastReqFor();
+    });
+}
+
+function populate_consentFormReqFor_getdata(){
+    disableForm('#formConsentFormReqFor');
+    emptyFormdata(errorField,"#formConsentFormReqFor",["#mrn_requestFor","#episno_requestFor"]);
+    
+    var saveParam = {
+        action: 'get_table_consentForm',
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        mrn: $("#mrn_requestFor").val(),
+        episno: $("#episno_requestFor").val()
+    };
+    
+    $.get("./ptcare_requestfor/table?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').done(function (data){
+        if(!$.isEmptyObject(data)){
+            autoinsert_rowdata("#formConsentFormReqFor",data.pat_consentForm);
+            
+            button_state_consentFormReqFor('edit');
+        }else{
+            button_state_consentFormReqFor('add');
+        }
+
+        $("#req_patientName").val($('#ptname_requestFor').val());
+        textarea_init_consentFormReqFor();
+    });
+}
+
+function populate_referralLetterReqfor_getdata(){
+    disableForm('#formreferralLetterReqfor');
+    emptyFormdata(errorField,"#formreferralLetterReqfor",["#mrn_requestFor","#episno_requestFor"]);
+    
+    var saveParam = {
+        action: 'save_referralLetter',
+    }
+    
+    var postobj = {
+        action: 'get_table_referralLetterReqfor',
+        _token: $('#_token').val(),
+        mrn: $("#mrn_requestFor").val(),
+        episno: $("#episno_requestFor").val()
+    };
+    
+    $.get("./ptcare_requestfor/table?"+$.param(postobj), function (data){
+        
+    },'json').done(function (data){
+        if(!$.isEmptyObject(data.referralLetterReqfor)){
+            autoinsert_rowdata("#formreferralLetterReqfor",data.referralLetterReqfor);
+            
+            button_state_referralLetterReqfor('edit');
+        }else if(!$.isEmptyObject(data.referralLetterReqfor_default)){
+            autoinsert_rowdata("#formreferralLetterReqfor",data.referralLetterReqfor_default);
+
+            button_state_referralLetterReqfor('add');
+        }
+
+        if(!$.isEmptyObject(data.referralLetter_freetextReqfor)){
+            autoinsert_rowdata("#formreferralLetter_freetextReqfor",data.referralLetter_freetextReqfor);
+
+            button_state_referralLetter_freetextReqfor('edit');
+        }else{
+
+            button_state_referralLetter_freetextReqfor('add');
+        }
+    });
+}
+
+function populate_card_noninv_getdata(){
+    disableForm('#formcard_noninv');
+    emptyFormdata(errorField,"#formcard_noninv",["#mrn_requestFor","#episno_requestFor"]);
+    
+    var saveParam = {
+        action: 'save_card_noninv',
+    }
+    
+    var postobj = {
+        action: 'get_table_card_noninv',
+        _token: $('#_token').val(),
+        mrn: $("#mrn_requestFor").val(),
+        episno: $("#episno_requestFor").val()
+    };
+    
+    $.get("./ptcare_requestfor/table?"+$.param(postobj), function (data){
+        
+    },'json').done(function (data){
+        if(!$.isEmptyObject(data.card_noninv_obj)){
+            autoinsert_rowdata("#formcard_noninv",data.card_noninv_obj);
+            
+            button_state_card_noninv('edit');
+        }else if(!$.isEmptyObject(data.card_noninv_obj_default)){
+            autoinsert_rowdata("#formcard_noninv",data.card_noninv_obj_default);
+
+            button_state_card_noninv('add');
+        }
+    });
+}
+
+function populate_followupReqfor_getdata(){
+    disableForm('#formfollowupReqfor');
+    emptyFormdata(errorField,"#formfollowupReqfor",["#mrn_requestFor","#episno_requestFor"]);
+    
+    var saveParam = {
+        action: 'save_followupReqfor',
+    }
+    
+    var postobj = {
+        action: 'get_table_followupReqfor',
+        _token: $('#_token').val(),
+        mrn: $("#mrn_requestFor").val(),
+        episno: $("#episno_requestFor").val()
+    };
+    
+    $.get("./ptcare_requestfor/table?"+$.param(postobj), function (data){
+        
+    },'json').done(function (data){
+        if(!$.isEmptyObject(data.followupReqfor_obj)){
+            autoinsert_rowdata("#formfollowupReqfor",data.followupReqfor_obj);
+            
+            button_state_followupReqfor('edit');
+        }else if(!$.isEmptyObject(data.followupReqfor_obj_default)){
+            autoinsert_rowdata("#formfollowupReqfor",data.followupReqfor_obj_default);
+
+            button_state_followupReqfor('add');
+        }
+    });
+}
+
+function autoinsert_rowdata(form,rowData){
+    $.each(rowData, function (index, value){
+        var input = $(form+" [name='"+index+"']");
+        if(input.is("[type=radio]")){
+            $(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+        }else if(input.is("[type=checkbox]")){
+            if(value == 1){
+                $(form+" [name='"+index+"']").prop('checked', true);
+            }
+        }else if(input.is("textarea")){
+            if(value !== null){
+                let newval = value.replaceAll("</br>",'\n');
+                input.val(newval);
+            }
+        }else{
+            input.val(value);
+        }
+    });
+}
+
+function saveForm_otbookReqFor(callback){
+    if(document.getElementById("req_type_ward").checked){
+        var result = confirm("This patient will be transfer to ward : "+$('#ReqFor_bed').val()+"");
+    }else if(document.getElementById("req_type_ot").checked){
+        var result = confirm("This patient will be transfer to OT selected below");
+    }
+
+    if(result != true){
+        return 0;
+    }
+    
+    var saveParam = {
+        action: 'save_otbook',
+        oper: $("#cancel_otbookReqFor").data('oper'),
+        mrn: $('#mrn_requestFor').val(),
+        episno: $("#episno_requestFor").val(),
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formOTBookReqFor").serializeArray();
+    
+    values = values.concat(
+        $('#formOTBookReqFor input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formOTBookReqFor input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formOTBookReqFor input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formOTBookReqFor select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values.push({
+        name: 'op_date',
+        value: $('#formOTBookReqFor input[name=op_date]').val()
+    })
+    values.push({
+        name: 'oper_type',
+        value: $('#formOTBookReqFor input[name=oper_type]').val()
+    })
+    values.push({
+        name: 'oper_type2',
+        value: $('#formOTBookReqFor input[name=oper_type2]').val()
+    })
+    values.push({
+        name: 'oper_type3',
+        value: $('#formOTBookReqFor input[name=oper_type3]').val()
+    })
+    values.push({
+        name: 'oper_type4',
+        value: $('#formOTBookReqFor input[name=oper_type4]').val()
+    })
+    values.push({
+        name: 'oper_type5',
+        value: $('#formOTBookReqFor input[name=oper_type5]').val()
+    })
+    values.push({
+        name: 'ot_diagnosis',
+        value: $('#formOTBookReqFor textarea[name=ot_diagnosis]').val()
+    })
+    values.push({
+        name: 'ot_diagnosedby',
+        value: $('#formOTBookReqFor input[name=ot_diagnosedby]').val()
+    })
+    values.push({
+        name: 'ot_remarks',
+        value: $('#formOTBookReqFor textarea[name=ot_remarks]').val()
+    })
+    values.push({
+        name: 'ot_doctorname',
+        value: $('#formOTBookReqFor input[name=ot_doctorname]').val()
+    })
+    values.push({
+        name: 'ot_lastuser',
+        value: $('#formOTBookReqFor input[name=ot_lastuser]').val()
+    })
+    
+    $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+    }).fail(function (data){
+        callback(data);
+    });
+}
+
+function saveForm_radClinicReqFor(callback){
+    var saveParam = {
+        action: 'save_radClinic',
+        oper: $("#cancel_radClinicReqFor").data('oper'),
+        mrn: $('#mrn_requestFor').val(),
+        episno: $("#episno_requestFor").val(),
+        // recorddate: $("#recorddate_doctorNote").val(),
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formRadClinicReqFor").serializeArray();
+    
+    values = values.concat(
+        $('#formRadClinicReqFor input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formRadClinicReqFor input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formRadClinicReqFor input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formRadClinicReqFor select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values.push({
+        name: 'rad_weight',
+        value: $('#formRadClinicReqFor input[name=rad_weight]').val()
+    })
+    values.push({
+        name: 'rad_allergy',
+        value: $('#formRadClinicReqFor textarea[name=rad_allergy]').val()
+    })
+    values.push({
+        name: 'xray_date',
+        value: $('#formRadClinicReqFor input[name=xray_date]').val()
+    })
+    values.push({
+        name: 'xray_remark',
+        value: $('#formRadClinicReqFor textarea[name=xray_remark]').val()
+    })
+    values.push({
+        name: 'mri_date',
+        value: $('#formRadClinicReqFor input[name=mri_date]').val()
+    })
+    values.push({
+        name: 'mri_remark',
+        value: $('#formRadClinicReqFor textarea[name=mri_remark]').val()
+    })
+    values.push({
+        name: 'angio_date',
+        value: $('#formRadClinicReqFor input[name=angio_date]').val()
+    })
+    values.push({
+        name: 'angio_remark',
+        value: $('#formRadClinicReqFor textarea[name=angio_remark]').val()
+    })
+    values.push({
+        name: 'ultrasound_date',
+        value: $('#formRadClinicReqFor input[name=ultrasound_date]').val()
+    })
+    values.push({
+        name: 'ultrasound_remark',
+        value: $('#formRadClinicReqFor textarea[name=ultrasound_remark]').val()
+    })
+    values.push({
+        name: 'ct_date',
+        value: $('#formRadClinicReqFor input[name=ct_date]').val()
+    })
+    values.push({
+        name: 'ct_remark',
+        value: $('#formRadClinicReqFor textarea[name=ct_remark]').val()
+    })
+    values.push({
+        name: 'fluroscopy_date',
+        value: $('#formRadClinicReqFor input[name=fluroscopy_date]').val()
+    })
+    values.push({
+        name: 'fluroscopy_remark',
+        value: $('#formRadClinicReqFor textarea[name=fluroscopy_remark]').val()
+    })
+    values.push({
+        name: 'mammogram_date',
+        value: $('#formRadClinicReqFor input[name=mammogram_date]').val()
+    })
+    values.push({
+        name: 'mammogram_remark',
+        value: $('#formRadClinicReqFor textarea[name=mammogram_remark]').val()
+    })
+    values.push({
+        name: 'bmd_date',
+        value: $('#formRadClinicReqFor input[name=bmd_date]').val()
+    })
+    values.push({
+        name: 'bmd_remark',
+        value: $('#formRadClinicReqFor textarea[name=bmd_remark]').val()
+    })
+    values.push({
+        name: 'clinicaldata',
+        value: $('#formRadClinicReqFor textarea[name=clinicaldata]').val()
+    })
+    values.push({
+        name: 'radClinic_doctorname',
+        value: $('#formRadClinicReqFor input[name=radClinic_doctorname]').val()
+    })
+    values.push({
+        name: 'rad_note',
+        value: $('#formRadClinicReqFor textarea[name=rad_note]').val()
+    })
+    values.push({
+        name: 'radClinic_radiologist',
+        value: $('#formRadClinicReqFor input[name=radClinic_radiologist]').val()
+    })
+    
+    $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+    }).fail(function (data){
+        callback(data);
+    });
+}
+
+function saveForm_mriReqFor(callback){
+    var saveParam = {
+        action: 'save_mri',
+        oper: $("#cancel_mriReqFor").data('oper'),
+        mrn: $('#mrn_requestFor').val(),
+        episno: $("#episno_requestFor").val(),
+        // recorddate: $("#recorddate_doctorNote").val(),
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formMRIReqFor").serializeArray();
+    
+    values = values.concat(
+        $('#formMRIReqFor input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formMRIReqFor input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formMRIReqFor input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formMRIReqFor select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values.push({
+        name: 'mri_weight',
+        value: $('#formMRIReqFor input[name=mri_weight]').val()
+    })
+    values.push({
+        name: 'mri_entereddate',
+        value: $('#formMRIReqFor input[name=mri_entereddate]').val()
+    })
+    values.push({
+        name: 'prosvalve_rmk',
+        value: $('#formMRIReqFor textarea[name=prosvalve_rmk]').val()
+    })
+    values.push({
+        name: 'oper3mth_remark',
+        value: $('#formMRIReqFor textarea[name=oper3mth_remark]').val()
+    })
+    values.push({
+        name: 'bloodurea',
+        value: $('#formMRIReqFor input[name=bloodurea]').val()
+    })
+    values.push({
+        name: 'serum_creatinine',
+        value: $('#formMRIReqFor input[name=serum_creatinine]').val()
+    })
+    values.push({
+        name: 'mri_doctorname',
+        value: $('#formMRIReqFor input[name=mri_doctorname]').val()
+    })
+    values.push({
+        name: 'mri_radiologist',
+        value: $('#formMRIReqFor input[name=mri_radiologist]').val()
+    })
+    values.push({
+        name: 'radiographer',
+        value: $('#formMRIReqFor input[name=radiographer]').val()
+    })
+    values.push({
+        name: 'mri_lastuser',
+        value: $('#formMRIReqFor input[name=mri_lastuser]').val()
+    })
+    
+    $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+    }).fail(function (data){
+        callback(data);
+    });
+}
+
+function saveForm_physioReqFor(callback){
+    var saveParam = {
+        action: 'save_physio',
+        oper: $("#cancel_physioReqFor").data('oper'),
+        mrn: $('#mrn_requestFor').val(),
+        episno: $("#episno_requestFor").val(),
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formPhysioReqFor").serializeArray();
+    
+    values = values.concat(
+        $('#formPhysioReqFor input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formPhysioReqFor input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formPhysioReqFor input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formPhysioReqFor select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values.push({
+        name: 'req_date',
+        value: $('#formPhysioReqFor input[name=req_date]').val()
+    })
+    values.push({
+        name: 'clinic_diag',
+        value: $('#formPhysioReqFor textarea[name=clinic_diag]').val()
+    })
+    values.push({
+        name: 'findings',
+        value: $('#formPhysioReqFor textarea[name=findings]').val()
+    })
+    values.push({
+        name: 'phy_treatment',
+        value: $('#formPhysioReqFor textarea[name=phy_treatment]').val()
+    })
+    values.push({
+        name: 'phy_doctorname',
+        value: $('#formPhysioReqFor input[name=phy_doctorname]').val()
+    })
+    values.push({
+        name: 'phy_lastuser',
+        value: $('#formPhysioReqFor input[name=phy_lastuser]').val()
+    })
+    
+    $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+    }).fail(function (data){
+        callback(data);
+    });
+}
+
+function saveForm_dressingReqFor(callback){
+    var saveParam = {
+        action: 'save_dressing',
+        oper: $("#cancel_dressingReqFor").data('oper'),
+        mrn: $('#mrn_requestFor').val(),
+        episno: $("#episno_requestFor").val(),
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formDressingReqFor").serializeArray();
+    
+    values = values.concat(
+        $('#formDressingReqFor input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formDressingReqFor input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formDressingReqFor input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formDressingReqFor select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values.push({
+        name: 'od_dressing',
+        value: $('#formDressingReqFor input[name=od_dressing]').val()
+    })
+    values.push({
+        name: 'bd_dressing',
+        value: $('#formDressingReqFor input[name=bd_dressing]').val()
+    })
+    values.push({
+        name: 'eod_dressing',
+        value: $('#formDressingReqFor input[name=eod_dressing]').val()
+    })
+    values.push({
+        name: 'others_dressing',
+        value: $('#formDressingReqFor input[name=others_dressing]').val()
+    })
+    values.push({
+        name: 'others_name',
+        value: $('#formDressingReqFor input[name=others_name]').val()
+    })
+    values.push({
+        name: 'solution',
+        value: $('#formDressingReqFor textarea[name=solution]').val()
+    })
+    values.push({
+        name: 'dressing_doctorname',
+        value: $('#formDressingReqFor input[name=dressing_doctorname]').val()
+    })
+    values.push({
+        name: 'dressing_lastuser',
+        value: $('#formDressingReqFor input[name=dressing_lastuser]').val()
+    })
+    
+    $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+    }).fail(function (data){
+        callback(data);
+    });
+}
+
+function saveForm_preContrastReqFor(callback){
+    var saveParam = {
+        action: 'save_preContrast',
+        oper: $("#cancel_preContrastReqFor").data('oper'),
+        mrn: $('#mrn_requestFor').val(),
+        episno: $("#episno_requestFor").val(),
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formPreContrastReqFor").serializeArray();
+    
+    values = values.concat(
+        $('#formPreContrastReqFor input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formPreContrastReqFor input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formPreContrastReqFor input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formPreContrastReqFor select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+    }).fail(function (data){
+        callback(data);
+    });
+}
+
+function saveForm_consentFormReqFor(callback){
+    var saveParam = {
+        action: 'save_consentForm',
+        oper: $("#cancel_consentFormReqFor").data('oper'),
+        mrn: $('#mrn_requestFor').val(),
+        episno: $("#episno_requestFor").val(),
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formConsentFormReqFor").serializeArray();
+    
+    values = values.concat(
+        $('#formConsentFormReqFor input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formConsentFormReqFor input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formConsentFormReqFor input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formConsentFormReqFor select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+    }).fail(function (data){
+        callback(data);
+    });
+}
+
+function saveForm_referralLetterReqfor(callback){
+    var saveParam = {
+        action: 'save_referralLetter',
+        oper: $("#cancel_referralLetterReqfor").data('oper'),
+        mrn: $('#mrn_requestFor').val(),
+        episno: $("#episno_requestFor").val(),
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formreferralLetterReqfor").serializeArray();
+    
+    values = values.concat(
+        $('#formreferralLetterReqfor input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formreferralLetterReqfor input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formreferralLetterReqfor input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formreferralLetterReqfor select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+    }).fail(function (data){
+        alert('error');
+        // callback(data);
+    });
+}
+
+function saveForm_referralLetter_freetextReqfor(callback){
+    var saveParam = {
+        action: 'save_referralLetter_freetext',
+        oper: $("#cancel_referralLetter_freetextReqfor").data('oper'),
+        mrn: $('#mrn_requestFor').val(),
+        episno: $("#episno_requestFor").val(),
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formreferralLetter_freetextReqfor").serializeArray();
+    
+    $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+    }).fail(function (data){
+        alert('error');
+        // callback(data);
+    });
+}
+
+function saveForm_card_noninv(callback){
+    var saveParam = {
+        action: 'save_card_noninv',
+        oper: $("#cancel_card_noninv").data('oper'),
+        mrn: $('#mrn_requestFor').val(),
+        episno: $("#episno_requestFor").val(),
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formcard_noninv").serializeArray();
+    
+    values = values.concat(
+        $('#formcard_noninv input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formcard_noninv input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formcard_noninv input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formcard_noninv select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+    }).fail(function (data){
+        alert('error');
+        // callback(data);
+    });
+}
+
+function saveForm_followupReqfor(callback){
+    var saveParam = {
+        action: 'save_followupReqfor',
+        oper: $("#cancel_followupReqfor").data('oper'),
+        mrn: $('#mrn_requestFor').val(),
+        episno: $("#episno_requestFor").val(),
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formfollowupReqfor").serializeArray();
+    
+    values = values.concat(
+        $('#formfollowupReqfor input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formfollowupReqfor input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formfollowupReqfor input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formfollowupReqfor select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+    }).fail(function (data){
+        alert('error');
+        // callback(data);
+    });
+}
+
+$('#tab_requestFor').on('shown.bs.collapse', function (){
+    SmoothScrollTo("#tab_requestFor", 500);
+    
+    // let curtype = $(this).data('curtype');
+    // $('#requestFor.menu a#'+curtype).tab('show');
+    
+    $('#requestFor .top.menu .item').tab('change tab','otbookReqFor');
+    populate_otbookReqFor_getdata();
+    populate_radClinicReqFor_getdata();
+    // populate_mriReqFor_getdata();
+    // populate_physioReqFor_getdata();
+    // populate_dressingReqFor_getdata();
+    // populate_preContrastReqFor_getdata();
+    // populate_consentFormReqFor_getdata();
+});
+
+$("#tab_requestFor").on("hide.bs.collapse", function (){
+    // button_state_requestFor('empty');
+    disableForm('#formRequestFor');
+    disableForm('#formOTBookReqFor');
+    disableForm('#formRadClinicReqFor');
+    disableForm('#formMRIReqFor');
+    disableForm('#formPhysioReqFor');
+    disableForm('#formDressingReqFor');
+    disableForm('#formPreContrastReqFor');
+    disableForm('#formConsentFormReqFor');
+});
+
+function textarea_init_otbookReqFor(){
+    $('textarea#otReqFor_diagnosis,textarea#otReqFor_remarks').each(function (){
+        if(this.value.trim() == ''){
+            this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }else{
+            this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }
+    }).off().on('input', function (){
+        if(this.scrollHeight > 40){
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        }else{
+            this.style.height = (40) + 'px';
+        }
+    });
+}
+
+function textarea_init_radClinicReqFor(){
+    $('textarea#radReqFor_allergy,textarea#ReqFor_xray_remark,textarea#ReqFor_mri_remark,textarea#ReqFor_angio_remark,textarea#ReqFor_ultrasound_remark,textarea#ReqFor_ct_remark,textarea#ReqFor_fluroscopy_remark,textarea#ReqFor_mammogram_remark,textarea#ReqFor_bmd_remark,textarea#ReqFor_clinicaldata,textarea#ReqFor_rad_note').each(function (){
+        if(this.value.trim() == ''){
+            this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }else{
+            this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }
+    }).off().on('input', function (){
+        if(this.scrollHeight > 40){
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        }else{
+            this.style.height = (40) + 'px';
+        }
+    });
+}
+
+function textarea_init_mriReqFor(){
+    $('textarea#ReqFor_prosvalve_rmk,textarea#ReqFor_oper3mth_remark').each(function (){
+        if(this.value.trim() == ''){
+            this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }else{
+            this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }
+    }).off().on('input', function (){
+        if(this.scrollHeight > 40){
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        }else{
+            this.style.height = (40) + 'px';
+        }
+    });
+}
+
+function textarea_init_physioReqFor(){
+    $('textarea#ReqFor_clinic_diag,textarea#ReqFor_findings,textarea#phyReqFor_treatment').each(function (){
+        if(this.value.trim() == ''){
+            this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }else{
+            this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }
+    }).off().on('input', function (){
+        if(this.scrollHeight > 40){
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        }else{
+            this.style.height = (40) + 'px';
+        }
+    });
+}
+
+function textarea_init_dressingReqFor(){
+    $('textarea#ReqFor_solution').each(function (){
+        if(this.value.trim() == ''){
+            this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }else{
+            this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }
+    }).off().on('input', function (){
+        if(this.scrollHeight > 40){
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        }else{
+            this.style.height = (40) + 'px';
+        }
+    });
+}
+
+function textarea_init_preContrastReqFor(){
+    $('textarea#req_examination').each(function (){
+        if(this.value.trim() == ''){
+            this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }else{
+            this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }
+    }).off().on('input', function (){
+        if(this.scrollHeight > 40){
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        }else{
+            this.style.height = (40) + 'px';
+        }
+    });
+}
+
+function textarea_init_consentFormReqFor(){
+    $('textarea#req_address').each(function (){
+        if(this.value.trim() == ''){
+            this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }else{
+            this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }
+    }).off().on('input', function (){
+        if(this.scrollHeight > 40){
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        }else{
+            this.style.height = (40) + 'px';
+        }
+    });
+}
+
+$("#formOTBookReqFor input[name=req_type]").on('click', function (){
+    toggle_reqfor_reqtype();
+});
+
+function toggle_reqfor_reqtype(){
+    if(document.getElementById("req_type_ward")){
+        if(document.getElementById("req_type_ward").checked){
+            $('#ReqFor_Bed_div').show();
+            $('#ReqFor_OT_div').hide();
+            let newurl = './wardbook_iframe';
+            let cururl = $('iframe#wardbook_iframe').attr('src');
+    
+            if(newurl != cururl){
+                $('iframe#wardbook_iframe').attr('src',newurl);
+            }
+        }else if(document.getElementById("req_type_ot").checked){
+            $('#ReqFor_Bed_div').hide();
+            $('#ReqFor_OT_div').show();
+            let newurl = './apptrsc_rsc_iframe?mrn='+$('#mrn_requestFor').val()+'&episno='+$('#episno_requestFor').val();
+            let cururl = $('iframe#otbook_iframe').attr('src');
+    
+            if(newurl != cururl){
+                $('iframe#otbook_iframe').attr('src',newurl);
+            }
+        }else{
+            $('#ReqFor_Bed_div,#ReqFor_OT_div').hide();
+            $('iframe#otbook_iframe').attr('src','');
+        }
+    }
+}
+
+var session_field = new session_field();
+function session_field(){
+    this.apptsession;
+    this.interval;
+    this.date_fr;
+    this.day_fr;
+    this.fr_obj;
+    this.fr_start;
+    this.events=[];
+    this.appendto = `<div id="start_time_dialog" title="Pick Start Time"><div id='grid_start_time_c' style="padding:15px 0 15px 0"><table id="grid_start_time" class="table table-striped"></table><div id="grid_start_time_pager"></div></div></div>`;
+
+    this.addSessionInterval = function(interval,apptsession){
+        this.apptsession = apptsession;
+
+        let temp_bussHour=[];
+        this.apptsession.forEach(function( obj ) {
+            var temp_obj = {dow:[],start:obj.timefr1,end:obj.timeto2};
+            switch(obj.days) {
+                case "SUNDAY": temp_obj.dow.push(0); break;
+                case "MONDAY":  temp_obj.dow.push(1); break;
+                case "TUESDAY": temp_obj.dow.push(2); break;
+                case "WEDNESDAY": temp_obj.dow.push(3); break;
+                case "THURSDAY": temp_obj.dow.push(4); break;
+                case "FRIDAY": temp_obj.dow.push(5); break;
+                case "SATURDAY": temp_obj.dow.push(6); break;
+            }
+
+            temp_bussHour.push(temp_obj);
+        });
+
+        this.interval = interval;
+        return this;
+    }
+
+    this.init = function(){
+        $("html").append(this.appendto);
+
+        $("#start_time_dialog").dialog({
+            autoOpen : false, 
+            modal : true,
+            width: 9/10 * $(window).width(),
+            open: function(){
+                $("#grid_start_time").jqGrid ('setGridWidth', Math.floor($("#grid_start_time_c")[0].offsetWidth-$("#grid_start_time_c")[0].offsetLeft));
+            },
+            close:function(){
+            }
+        });
+
+        $("#timefup ~ a").click(function(){
+            // $("#start_time_dialog").dialog("open");
+        });
+
+        $("#grid_start_time").jqGrid({
+            datatype: "local",
+            colModel: [
+                { label: 'timehidden', name: 'timehidden', width: 80, hidden: true },
+                { label: 'Pick time', name: 'time', width: 80, classes: 'pointer' },
+                { label: 'Patient Name', name: 'pat_name', width: 200, classes: 'pointer' },
+                { label: 'Remarks', name: 'remarks', width: 200, classes: 'pointer' },
+            ],
+            autowidth:true,viewrecords:true,loadonce:false,width:200,height:400,owNum:30,
+            // pager: "#grid_start_time_pager",
+            onSelectRow:function(){
+            },
+            ondblClickRow: function(rowid, iRow, iCol, e){
+                let time = selrowData("#grid_start_time").timehidden;
+                $('#timefup').val(time);
+                $('#end_timefup').val(moment($('#datefup').val()+" "+time).add(session_field.interval, 'minutes').format("HH:mm:SS"));
+                $("#start_time_dialog").dialog('close');
+            },
+        });
+
+    }
+
+    this.clear = function(){
+        $("#grid_start_time").jqGrid("clearGridData", true);
+        return this;
+    }
+
+    this.ready = function(){
+
+        this.date_fr = $('#datefup').val();
+        this.day_fr = moment(this.date_fr).format('dddd').toUpperCase();
+        let day_fr = this.day_fr;
+        this.fr_obj = this.apptsession.filter(function( obj ) {
+            return obj.days == day_fr;
+        });
+        this.fr_start = moment(this.date_fr+" "+this.fr_obj[0].timefr1);
+
+        return this;
+    }
+
+    this.set = function(){
+        var fr_start = this.fr_start, date_fr = this.date_fr, fr_obj = this.fr_obj, interval= this.interval, events = this.events;
+
+        var rowid = 0;
+        while(!fr_start.isSameOrAfter(date_fr+" "+fr_obj[0].timeto1)){
+            let time_use = fr_start.format("HH:mm:SS");
+            let objuse = {timehidden:time_use,time:time_use,pat_name:'',remarks:''}
+
+            rowid = rowid+1;
+            $("#grid_start_time").jqGrid('addRowData', rowid,objuse);
+            fr_start.add(interval, 'minutes');
+        }
+
+        fr_start = moment(date_fr+" "+fr_obj[0].timefr2);
+
+        while(!fr_start.isSameOrAfter(moment(date_fr+" "+fr_obj[0].timeto2).add(interval, 'minutes'))){
+            let time_use = fr_start.format("HH:mm:SS");
+            let objuse = {timehidden:time_use,time:time_use,pat_name:'',remarks:''}
+
+            rowid = rowid+1;
+            $("#grid_start_time").jqGrid('addRowData', rowid,objuse);
+            fr_start = fr_start.add(interval, 'minutes');
+        }
+    }
+}
+
+window.message_parent_wardbook = function (data){ // inside the iframe
+    $('#ReqFor_bed').val(data.bednum);
+    $('#ReqFor_ward').val(data.ward);
+    $('#ReqFor_room').val(data.room);
+    $('#ReqFor_bedtype').val(data.bedtype);
+};
