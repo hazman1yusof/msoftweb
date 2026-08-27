@@ -23,8 +23,8 @@ $(document).ready(function (){
         button_state_pivc('wait');
         enableForm('#formPivc');
         rdonly('#formPivc');
-        emptyFormdata_div("#formPivc",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
         $("#practiceDate").val(moment().format('YYYY-MM-DD'));
+        emptyFormdata_div("#formPivc",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
         document.getElementById("idno_pivc").value = "";
     });
     

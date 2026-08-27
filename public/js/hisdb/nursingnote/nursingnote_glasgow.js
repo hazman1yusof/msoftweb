@@ -24,8 +24,8 @@ $(document).ready(function (){
         button_state_glasgow('wait');
         enableForm('#formGlasgow');
         rdonly('#formGlasgow');
-        emptyFormdata_div("#formGlasgow",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
         $("#gcs_date").val(moment().format('YYYY-MM-DD'));
+        emptyFormdata_div("#formGlasgow",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
         document.getElementById("idno_glasgow").value = "";
     });
     
@@ -394,7 +394,10 @@ function saveForm_glasgow(callback){
     $.post("./glasgow/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').fail(function (data){
-        // alert('there is an error');
+        // if(data.responseText !== ''){
+        //     alert(data.responseText);
+        // }
+        // alert('there is an error');        
         callback();
     }).success(function (data){
         callback();

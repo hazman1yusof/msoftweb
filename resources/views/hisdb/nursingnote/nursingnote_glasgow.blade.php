@@ -53,12 +53,11 @@
                         <div class="panel-body" style="padding: 15px 0px;">
                             <div class="form-inline col-md-12" style="padding-bottom: 15px;">
                                 <label class="control-label" for="gcs_date" style="padding-right: 5px;">Date</label>
-                                <input id="gcs_date" name="gcs_date" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>" rdonly>
+                                <input id="gcs_date" name="gcs_date" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>">
                                 
                                 <label class="control-label" for="gcs_time" style="padding-left: 15px; padding-right: 5px;">Time</label>
                                 <input id="gcs_time" name="gcs_time" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                 
-                                <!-- <button class="btn btn-default btn-sm" type="button" id="doctornote_bpgraph" style="float: right; margin-right: 20px;">Chart</button> -->
                             </div>
                             
                             <div class='col-md-12'>

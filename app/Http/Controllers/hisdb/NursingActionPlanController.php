@@ -186,8 +186,14 @@ class NursingActionPlanController extends defaultController
                         ->where('mrn','=',$request->mrn_nursActionPlan)
                         ->where('episno','=',$request->episno_nursActionPlan)
                         ->where('compcode','=',session('compcode'));
+
+            // $header_ = DB::table('nursing.nursactplan_hdr')
+            //             ->where('mrn','=',$request->mrn_nursActionPlan)
+            //             ->where('episno','=',$request->episno_nursActionPlan)                
+            //             ->first();
             
             if($header->exists()){
+                // if($header_->adduser == session('username')){
                 DB::table('nursing.nursactplan_hdr')
                     ->where('mrn','=',$request->mrn_nursActionPlan)
                     ->where('episno','=',$request->episno_nursActionPlan)
@@ -202,6 +208,9 @@ class NursingActionPlanController extends defaultController
                         'upduser'  => session('username'),
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
+                // }else{
+                //     return response('You are not authorized to edit this.', 500);
+                // }
             }else{
                 DB::table('nursing.nursactplan_hdr')
                     ->insert([

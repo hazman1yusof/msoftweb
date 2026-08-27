@@ -83,7 +83,7 @@ $(document).ready(function (){
                      if(!emptyobj_(data.header)){
                         if(!emptyobj_(data.header))autoinsert_rowdata("#formHeader",data.header);
                         if(!emptyobj_(data.episode))autoinsert_rowdata("#formHeader",data.episode);
-                        button_state_header('empty');
+                        button_state_header('edit');
                         
                     }else{
                         button_state_header('add');

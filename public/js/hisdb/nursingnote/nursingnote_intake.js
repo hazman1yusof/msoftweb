@@ -49,8 +49,8 @@ $(document).ready(function (){
         button_state_intake('wait');
         enableForm('#formIntake');
         rdonly('#formIntake');
-        emptyFormdata_div("#formIntake",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
 		$("#recorddate_intake").val(moment().format('YYYY-MM-DD'));
+        emptyFormdata_div("#formIntake",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
 
         document.getElementById("idno_intake").value = "";
         // dialog_mrn_edit.on();
@@ -490,6 +490,7 @@ var tbl_intake_date = $('#tbl_intake_date').DataTable({
         { 'data': 'mrn' },
         { 'data': 'episno' },
         { 'data': 'recorddate', 'width': '25%' },
+		{ 'data': 'adduser', 'width': '25%' },
     ],
     columnDefs: [
         { targets: [0, 1, 2], visible: false },
@@ -644,10 +645,10 @@ function saveForm_intake(callback){
     $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').fail(function (data){
-        if(data.responseText !== ''){
-            // $('#p_error_intake').text(data.responseText);
-            alert(data.responseText);
-        }
+        // if(data.responseText !== ''){
+        //     // $('#p_error_intake').text(data.responseText);
+        //     alert(data.responseText);
+        // }
         
         // alert('there is an error');
         callback();

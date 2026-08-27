@@ -37,8 +37,8 @@ $(document).ready(function (){
         button_state_thrombo('wait');
         enableForm('#formThrombo');
         rdonly('#formThrombo');
-        emptyFormdata_div("#formThrombo",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
         $("#dateInsert").val(moment().format('YYYY-MM-DD'));
+        emptyFormdata_div("#formThrombo",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
         document.getElementById("idno_thrombo").value = "";
         document.getElementById("cannulationNo").value = "";
     });
