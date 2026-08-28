@@ -226,10 +226,10 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/emergency/medicalLetterED.js?v=1.6') }}"></script>
 
     <script type="text/javascript" src="{{ asset('patientcare/js/emergency/nursing/nursing.js?v=1.3') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/nursingnote.js?v=1.3') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/nursingnote_pivc_ED.js?v=1.1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/nursingnote_progressnote_ED.js?v=1.1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/nursingnote_thrombo_ED.js?v=1.1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/emergency/nursingnote.js?v=1.3') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/emergency/nursingnote_pivc_ED.js?v=1.1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/emergency/nursingnote_progressnote_ED.js?v=1.1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/emergency/nursingnote_thrombo_ED.js?v=1.1') }}"></script>
     <!-- <script type="text/javascript" src="{{ asset('patientcare/js/emergency/requestfor.js?v=1.9') }}"></script> -->
     <script type="text/javascript" src="{{ asset('patientcare/js/requestfor_iframe.js')}}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/emergency/admhandover.js?v=1.1') }}"></script>
