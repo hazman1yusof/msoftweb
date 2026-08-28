@@ -23,7 +23,7 @@
                 </div>
 
                 <div class="ui bottom attached tab raised segment" data-tab="progress">
-                    @include('patientcare.nursingnote_progressnote_ED')
+                    @include('patientcare.emergency.nursingnote_progressnote_ED')
                 </div>
                 
                 <div class="ui bottom attached tab raised segment" data-tab="drug">
@@ -176,11 +176,11 @@
                 </div>
 
                 <!-- <div class="ui bottom attached tab raised segment" data-tab="pivc">
-                    @include('patientcare.nursingnote_pivc_ED')
+                    @include('patientcare.emergency.nursingnote_pivc_ED')
                 </div> -->
 
                 <div class="ui bottom attached tab raised segment active" data-tab="thrombo">
-                    @include('patientcare.nursingnote_thrombo_ED')
+                    @include('patientcare.emergency.nursingnote_thrombo_ED')
                 </div>
             </div>
         </div>

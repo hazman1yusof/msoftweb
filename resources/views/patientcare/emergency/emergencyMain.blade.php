@@ -35,7 +35,7 @@
         </div>
 
         <div class="ui bottom attached tab raised segment" data-tab="nursNote">
-                @include('patientcare.nursingnote')
+                @include('patientcare.emergency.nursingnote')
         </div>
 
         <div class="ui bottom attached tab raised segment" data-tab="doctornote">

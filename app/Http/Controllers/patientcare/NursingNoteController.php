@@ -24,7 +24,7 @@ class NursingNoteController extends defaultController
     
     public function show(Request $request)
     {
-        return view('patientcare.nursingnote');
+        return view('patientcare.emergency.nursingnote');
     }
     
     public function table(Request $request)
