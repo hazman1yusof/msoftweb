@@ -48,8 +48,20 @@ $(document).ready(function (){
 
         switch(tab){
             case 'userfile':
-				DataTable_preview.columns.adjust();
-				preview_load_data();
+				// DataTable_preview.columns.adjust();
+				// preview_load_data();
+
+                let param_docImaging = {
+                    mrn: $("#mrn_emergencyMain").val(),
+                    episno: $("#episno_emergencyMain").val(),
+                }
+                
+                let newurl_docImaging = './userfile_iframe'+"?"+$.param(param_docImaging);
+                let cururl_docImaging = $('iframe#userfile_iframe').attr('src');
+                
+                if(newurl_docImaging != cururl_docImaging){
+                    $("iframe#userfile_iframe").attr('src',newurl_docImaging);
+                }
                 break;
             case 'nursing_ed':
                 $("#jqGridAddNotesNursingED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesNursingED_c")[0].offsetWidth-$("#jqGridAddNotesNursingED_c")[0].offsetLeft));
