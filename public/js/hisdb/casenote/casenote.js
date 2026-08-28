@@ -224,6 +224,7 @@ $(document).ready(function (){
 			if(epistycode == 'OP'){
 				if(regdept == 'A&E'){
 					// Emergency
+					window.open('./ptcare_doctornoteED_MR?epistycode='+epistycode+'&curpat=true&PatClass=HIS&mrn='+mrn+'&episno='+episno, '_blank');
 				
 				}else if(regdept == 'PHY'){
 					// Rehabilitation
