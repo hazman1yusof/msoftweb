@@ -2161,3 +2161,22 @@ Route::post('/ptcare_admhandoverAppt_MR/form','patientcare\AdmHandoverApptMRCont
 Route::get('/ptcare_dieteticCareNotes_MR','patientcare\DieteticCareNotesMRController@show');
 Route::get('/ptcare_dieteticCareNotes_MR/table','patientcare\DieteticCareNotesMRController@table');
 Route::post('/ptcare_dieteticCareNotes_MR/form','patientcare\DieteticCareNotesMRController@form');
+
+/////////////////////////////////////EMERGENCY MR//////////////////////
+
+Route::get('/ptcare_doctornoteED_MR','patientcare\DoctornoteEDMRController@index');
+Route::get('/ptcare_doctornoteED_MR/table','patientcare\DoctornoteEDMRController@table');
+Route::post('/ptcare_doctornoteED_MR/form','patientcare\DoctornoteEDMRController@form');
+Route::post('/ptcare_doctornoteED_MR_transaction_save', "patientcare\DoctornoteEDMRController@transaction_save");
+
+Route::get('/ptcare_admhandover_MR','patientcare\AdmHandoverMRController@show');
+Route::get('/ptcare_admhandover_MR/table','patientcare\AdmHandoverMRController@table');
+Route::post('/ptcare_admhandover_MR/form','patientcare\AdmHandoverMRController@form');
+
+Route::get('/ptcare_nursing_MR','patientcare\NursingMRController@show');
+Route::get('/ptcare_nursing_MR/table','patientcare\NursingMRController@table');
+Route::post('/ptcare_nursing_MR/form','patientcare\NursingMRController@form');
+
+Route::get('/ptcare_nursingnote_MR','patientcare\NursingNoteMRController@show');
+Route::get('/ptcare_nursingnote_MR/table','patientcare\NursingNoteMRController@table');
+Route::post('/ptcare_nursingnote_MR/form','patientcare\NursingNoteMRController@form');
