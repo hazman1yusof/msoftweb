@@ -2115,18 +2115,6 @@ Route::post('/endoscopyNotes_MR/form','hisdb\EndoscopyNotesMRController@form');
 Route::get('/endoscopyNotes_MR/endoscopystomach_chart','hisdb\EndoscopyNotesMRController@endoscopystomach_chart');
 Route::get('/endoscopyNotes_MR/endoscopyintestine_chart','hisdb\EndoscopyNotesMRController@endoscopyintestine_chart');
 
-//// OT Status setup MR page ///
-Route::get('/ot_status_MR','hisdb\OTStatusMRController@show');
-Route::get('/ot_status_MR/table','hisdb\OTStatusMRController@table');
-Route::post('/ot_status_MR/form','hisdb\OTStatusMRController@form');
-Route::get('/ot_status_MR/form','hisdb\OTStatusMRController@form');
-
-//// OT Type setup MR page ///
-Route::get('/ot_type_MR','hisdb\OTTypeMRController@show');
-Route::get('/ot_type_MR/table','hisdb\OTTypeMRController@table');
-Route::post('/ot_type_MR/form','hisdb\OTTypeMRController@form');
-Route::get('/ot_type_MR/form','hisdb\OTTypeMRController@form');
-
 //// Operation Record MR page ////
 Route::get('/otmanagement_div_MR','hisdb\OTManagement_divMRController@show');
 Route::get('/otmanagement_div_MR/table','hisdb\OTManagement_divMRController@table');
