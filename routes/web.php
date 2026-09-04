@@ -1955,6 +1955,8 @@ Route::post('/pat_mast_MR/new_relationship_form','hisdb\PatmastMRController@new_
 Route::post('/pat_mast_MR/auto_save','hisdb\PatmastMRController@auto_save');
 Route::get('/pat_mast_MR/patlabel','hisdb\PatmastMRController@patlabel');
 
+Route::get('/pat_mast_iframe_MR','hisdb\PatmastMRController@pat_mast_iframe');
+
 //// Nursing ED MR (Triage Info) page ///
 Route::get('/nursingED_MR','hisdb\NursingEDMRController@show');
 Route::get('/nursingED_MR/table','hisdb\NursingEDMRController@table');
