@@ -2273,6 +2273,7 @@ class OrdcomController extends defaultController
         }
 
         $ivdspdt_arr = [
+            'trandate' => $chargetrx_obj->trxdate,
             'txnqty' => $curr_quan,
             'upduser' => session('username'),
             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),

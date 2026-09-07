@@ -18,7 +18,12 @@ class SessionController extends Controller
     }
 
  	public function create(){
-    	$company = company::all();
+    	// $company = company::all();
+
+        $company = DB::table('sysdb.company')
+                        ->orderBy('idno','asc')
+                        ->get();
+
         $bgpic_ = DB::table('sysdb.sysparam')
                         ->where('compcode','all')
                         ->where('source','def')
