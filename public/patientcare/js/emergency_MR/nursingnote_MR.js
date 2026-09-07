@@ -1,0 +1,780 @@
+$.jgrid.defaults.responsive = false;
+$.jgrid.defaults.styleUI = 'Bootstrap';
+var editedRow = 0;
+
+///////////////////////////////////parameter for jqGridAddNotesDrugAdminED url///////////////////////////////////
+var urlParam_AddNotesDrugAdminED = {
+	action: 'get_table_default',
+	url: './util/get_table_default',
+	field: '',
+	table_name: 'nursing.nursaddnote',
+	table_id: 'idno',
+	filterCol: ['mrn','episno','type'],
+	filterVal: ['','','DRUGADMIN_ED'],
+}
+
+$(document).ready(function (){
+
+    var fdl = new faster_detail_load();
+    
+    disableForm('#formProgress_ED');
+    disableForm('#formDrug');
+    disableForm('#formThrombo_ED');
+
+   $('#nursNote .menu .item').tab({'onVisible': function (){
+        let tab = $(this).data('tab');
+        switch(tab){
+            case 'progress':
+                $("#jqGridAddNotesProgressED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesProgressED_c")[0].offsetWidth-$("#jqGridAddNotesProgressED_c")[0].offsetLeft));
+
+                var urlparam_datetime_ED_tbl = {
+                    action: 'get_table_datetime_ED',
+                    mrn: $("#mrn_emergencyMain").val(),
+                    episno: $("#episno_emergencyMain").val()
+                }
+                
+                datetime_ED_tbl.ajax.url("./ptcare_nursingnote_MR/table?"+$.param(urlparam_datetime_ED_tbl)).load(function (data){
+                    emptyFormdata_div("#formProgress_ED",['#mrn_emergencyMain','#episno_emergencyMain','#doctor_nursNote','#ordcomtt_phar']);
+                    $('#datetime_ED_tbl tbody tr:eq(0)').click();  // to select first row
+                });
+
+                refreshGrid('#jqGridAddNotesProgressED',urlParam_AddNotesProgressED);
+
+                populate_progressnote_ED_getdata();
+
+                break;
+
+            case 'drug':
+                $("#jqGridPatMedic").jqGrid('setGridWidth', Math.floor($("#jqGridPatMedic_c")[0].offsetWidth-$("#jqGridPatMedic_c")[0].offsetLeft));
+                $("#jqGridAddNotesDrugAdminED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesDrugAdminED_c")[0].offsetWidth-$("#jqGridAddNotesDrugAdminED_c")[0].offsetLeft));
+                
+                var urlparam_tbl_prescription = {
+                    action: 'get_prescription',
+                    mrn: $("#mrn_emergencyMain").val(),
+                    episno: $("#episno_emergencyMain").val(),
+                    chggroup: $('#ordcomtt_phar').val(),
+                }
+                
+                tbl_prescription.ajax.url("./ptcare_nursingnote_MR/table?"+$.param(urlparam_tbl_prescription)).load(function (data){
+                    emptyFormdata_div("#formDrug",['#mrn_emergencyMain','#episno_emergencyMain','#doctor_nursNote','#ordcomtt_phar']);
+                    $('#tbl_prescription tbody tr:eq(0)').click();  // to select first row
+                });
+
+                // refreshGrid('#jqGridPatMedic',urlParam_PatMedic);
+			    refreshGrid('#jqGridAddNotesDrugAdminED',urlParam_AddNotesDrugAdminED);
+
+                populate_drugadmin_getdata();
+                break;
+
+            case 'thrombo':
+                $("#jqGridThrombo_ED").jqGrid('setGridWidth', Math.floor($("#jqGridThrombo_ED_c")[0].offsetWidth-$("#jqGridThrombo_ED_c")[0].offsetLeft));
+                $("#jqGridAddNotesThromboED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesThromboED_c")[0].offsetWidth-$("#jqGridAddNotesThromboED_c")[0].offsetLeft));
+                
+                var urlparam_datetimethrombo_ED_tbl = {
+                    action: 'get_table_datetimethrombo_ED',
+                    mrn: $("#mrn_emergencyMain").val(),
+                    episno: $("#episno_emergencyMain").val()
+                }
+                
+                datetimethrombo_ED_tbl.ajax.url("./ptcare_nursingnote_MR/table?"+$.param(urlparam_datetimethrombo_ED_tbl)).load(function (data){
+                    emptyFormdata_div("#formThrombo_ED",['#mrn_emergencyMain','#episno_emergencyMain','#doctor_nursNote','#ordcomtt_phar']);
+                    $('#datetimethrombo_ED_tbl tbody tr:eq(0)').click(); // to select first row
+                });
+
+                refreshGrid('#jqGridThrombo_ED',urlParam_Thrombo_ED);
+                refreshGrid('#jqGridAddNotesThromboED',urlParam_AddNotesThromboED);
+
+                populate_thrombo_ED_getdata();
+                break;
+        }
+    }});
+
+    textarea_init_nursingnote();
+    
+    // disableForm('#formNursNote');
+    
+    /////////////////////////////////////////drug admin starts/////////////////////////////////////////
+    $('#tbl_prescription tbody').on('click', 'tr', function (){
+        var data = tbl_prescription.row( this ).data();
+        
+        if(data == undefined){
+            return;
+        }
+        
+        // to highlight selected row
+        if($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+        }else {
+            tbl_prescription.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+        
+        emptyFormdata_div("#formDrug",['#mrn_emergencyMain','#episno_emergencyMain','#doctor_nursNote','#ordcomtt_phar']);
+        $('#tbl_prescription tbody tr').removeClass('active');
+        $(this).addClass('active');
+        
+        populate_drugadmin_getdata();
+        $("#trx_auditno").val(data.auditno);
+        $("#trx_chgcode").val(data.chgcode);
+        $("#trx_quantity").val(data.quantity);
+        // $("#ftxtdosage").val(data.ftxtdosage);
+        $("#dosage_nursNote").val(data.doscode_desc);
+        $("#frequency_nursNote").val(data.frequency_desc);
+        $("#instruction_nursNote").val(data.addinstruction_desc);
+        $("#drugindicator_nursNote").val(data.drugindicator_desc);
+        $("#doc_name").val($("#doctor_nursNote").val());
+        textarea_init_nursingnote();
+        get_total_qty();
+        
+        // jqGridPatMedic
+        urlParam_PatMedic.filterVal[0] = data.mrn;
+        urlParam_PatMedic.filterVal[1] = data.episno;
+        urlParam_PatMedic.filterVal[2] = data.auditno;
+        urlParam_PatMedic.filterVal[3] = data.chgcode;
+
+        // jqGridAddNotesDrugAdminED
+        urlParam_AddNotesDrugAdminED.filterVal[0] = data.mrn;
+        urlParam_AddNotesDrugAdminED.filterVal[1] = data.episno;
+        urlParam_AddNotesDrugAdminED.filterVal[2] = 'DRUGADMIN_ED';
+        
+        // var saveParam={
+        //     action: 'get_table_drug',
+        // }
+        
+        // var postobj={
+        //     _token: $('#csrf_token').val(),
+        //     mrn: $("#mrn_emergencyMain").val(),
+        //     episno: $("#episno_emergencyMain").val(),
+        //     auditno: $("#trx_auditno").val(),
+        //     chgcode: $("#trx_chgcode").val()
+        // };
+        
+        // $.post("./ptcare_nursingnote_MR/form?"+$.param(saveParam), $.param(postobj), function (data){
+            
+        // },'json').fail(function (data){
+        //     alert('there is an error');
+        // }).success(function (data){
+        //     if(!$.isEmptyObject(data)){
+        //         // autoinsert_rowdata("#formDrug",data.patmedication);
+        //         $("#tot_qty").val(data.total_qty);
+        //     }else{
+                
+        //     }
+        // });
+    });
+    
+    // $("button.tbl_prescription_refresh").click(function (){
+    //     $('#tbl_prescription').DataTable().ajax.reload();
+    // });
+
+    //////////////////////////jqGridPatMedic//////////////////////////
+    var addmore_jqgrid = { more:false,state:false,edit:false }
+    
+    $("#jqGridPatMedic").jqGrid({
+        datatype: "local",
+        editurl: "./ptcare_nursingnote_MR/form",
+        colModel: [
+            { label: 'Date', name: 'entereddate', width: 50, classes: 'wrap', editable: true,
+                formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
+                editoptions: {
+                    dataInit: function (element){
+                        $(element).datepicker({
+                            id: 'entereddate_datePicker',
+                            dateFormat: 'yy-mm-dd',
+                            minDate: "dateToday",
+                            showOn: 'focus',
+                            changeMonth: true,
+                            changeYear: true,
+                            onSelect : function (){
+                                $(this).focus();
+                            }
+                        });
+                    }
+                }
+            },
+            { label: 'Time', name: 'enteredtime', width: 50, classes: 'wrap', editable: true,
+                editrules: { required: false, custom: true, custom_func: cust_rules_nurs },
+                formatter: showdetail_nurs, edittype: 'custom',
+                editoptions: {
+                    custom_element: enteredtimeCustomEdit_nurs,
+                    custom_value: galGridCustomValue_nurs
+                }
+            },
+            { label: 'Failure', name: 'failure', width: 54, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
+                editoptions: {
+                    value: "None:None;Fasting:Fasting;Refused:Refused;OMIT:OMIT;On Home Leave:On Home Leave;Unable to take:Unable to take;Transfer to other ward:Transfer to other ward;Withhold:Withhold"
+                }
+            },
+            { label: 'Remarks', name: 'remarks', classes: 'wrap', width: 70, editable: true, edittype: "textarea",
+                editoptions: {
+                    style: "width: -webkit-fill-available;",
+                    rows: 5
+                }
+            },
+            { label: 'Quantity', name: 'qty', width: 35, editable: true, editrules: { required: true } },
+            { label: 'Entered<br>By', name: 'enteredby', width: 35, editable: false },
+            { label: 'idno', name: 'idno', width: 10, hidden: true, key: true },
+            { label: 'compcode', name: 'compcode', hidden: true },
+            { label: 'mrn', name: 'mrn', hidden: true },
+            { label: 'episno', name: 'episno', hidden: true },
+            { label: 'adduser', name: 'adduser', hidden: true },
+            { label: 'adddate', name: 'adddate', hidden: true },
+            { label: 'auditno', name: 'auditno', hidden: true },
+            { label: 'chgcode', name: 'chgcode', hidden: true },
+        ],
+        autowidth: true,
+        multiSort: true,
+        sortname: 'idno',
+        sortorder: 'desc',
+        viewrecords: true,
+        loadonce: false,
+        width: 800,
+        height: 200,
+        rowNum: 30,
+        pager: "#jqGridPagerPatMedic",
+        loadComplete: function (){
+            if(addmore_jqgrid.more == true){$('#jqGridPatMedic_iladd').click();}
+            else{
+                $('#jqGrid2').jqGrid ('setSelection', "1");
+            }
+            $('.ui-pg-button').prop('disabled',true);
+            addmore_jqgrid.edit = addmore_jqgrid.more = false; // reset
+            
+            // calc_jq_height_onchange("jqGridPatMedic");
+        },
+        ondblClickRow: function (rowid, iRow, iCol, e){
+            $("#jqGridPatMedic_iledit").click();
+        },
+    });
+    
+    ////////////////////myEditOptions_add_PatMedic////////////////////
+    var myEditOptions_add_PatMedic = {
+        keys: true,
+        extraparam: {
+            "_token": $("#_token").val()
+        },
+        oneditfunc: function (rowid){
+            $("#jqGridPagerRefresh_patMedic").hide();
+            
+            $("#jqGridPatMedic input[name='qty']").on('blur',calculate_total_qty);
+            
+            $("input[name='qty']").keydown(function (e){ // when click tab at last column in header, auto save
+                var code = e.keyCode || e.which;
+                if (code == '9')$('#jqGridPatMedic_ilsave').click();
+                // addmore_jqgrid.state = true;
+                // $('#jqGrid_ilsave').click();
+            });
+        },
+        aftersavefunc: function (rowid, response, options){
+            // addmore_jqgrid.more = true; // only addmore after save inline
+            // state true maksudnyer ada isi, tak kosong
+            refreshGrid('#jqGridPatMedic',urlParam_PatMedic,'add');
+            errorField.length = 0;
+            $("#jqGridPagerRefresh_patMedic").show();
+            get_total_qty();
+        },
+        errorfunc: function (rowid,response){
+            $('#p_error').text(response.responseText);
+            refreshGrid('#jqGridPatMedic',urlParam_PatMedic,'add');
+        },
+        beforeSaveRow: function (options, rowid){
+            $('#p_error').text('');
+            
+            var trx_qty = $("#trx_quantity").val();
+            var grid_qty = $("#tot_qty").val();
+            
+            if(parseFloat(grid_qty) > parseFloat(trx_qty)){
+                alert('Please check the quantity.');
+                return false;
+            }
+            
+            let data = $('#jqGridPatMedic').jqGrid ('getRowData', rowid);
+            
+            let editurl = "./ptcare_nursingnote_MR/form?"+
+                $.param({
+                    mrn: $('#mrn_emergencyMain').val(),
+                    episno: $('#episno_emergencyMain').val(),
+                    auditno: $('#trx_auditno').val(),
+                    chgcode: $('#trx_chgcode').val(),
+                    action: 'patMedic_save',
+                });
+            $("#jqGridPatMedic").jqGrid('setGridParam', { editurl: editurl });
+        },
+        afterrestorefunc : function (response){
+            $("#jqGridPagerRefresh_patMedic").show();
+        },
+        errorTextFormat: function (data){
+            alert(data);
+        }
+    };
+    
+    ////////////////////////jqGridPagerPatMedic////////////////////////
+    $("#jqGridPatMedic").inlineNav('#jqGridPagerPatMedic', {
+        add: false,
+        edit: false,
+        cancel: false, save: false,
+        // to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+        restoreAfterSelect: false,
+        addParams: {
+            addRowParams: myEditOptions_add_PatMedic
+        },
+    }).jqGrid('navButtonAdd', "#jqGridPagerPatMedic", {
+        id: "jqGridPagerRefresh_patMedic",
+        caption: "", cursor: "pointer", position: "last",
+        buttonicon: "glyphicon glyphicon-refresh",
+        title: "Refresh Table",
+        onClickButton: function (){
+            refreshGrid("#jqGridPatMedic", urlParam_PatMedic);
+        },
+    });
+    
+    $("#jqGridPatMedic_ilcancel").click(function (){
+        get_total_qty(); // refresh balik total quantity
+    });
+    
+    function calculate_total_qty(){
+        var rowids = $('#jqGridPatMedic').jqGrid('getDataIDs');
+        var total_qty = 0;
+        
+        rowids.forEach(function (e,i){
+            let quantity = $('#jqGridPatMedic input#'+e+'_qty').val();
+            if(quantity != undefined){
+                total_qty = parseFloat(total_qty)+parseFloat(quantity);
+            }else{
+                let rowdata = $('#jqGridPatMedic').jqGrid ('getRowData',e);
+                total_qty = parseFloat(total_qty)+parseFloat(rowdata.qty);
+            }
+        });
+        
+        if(!isNaN(total_qty)){
+            $('#tot_qty').val(numeral(total_qty).format('0,0.00'));
+        }
+    }
+    
+    function get_total_qty(){
+        var saveParam={
+            action: 'get_table_drug',
+        }
+        
+        var postobj={
+            _token: $('#_token').val(),
+            mrn: $("#mrn_emergencyMain").val(),
+            episno: $("#episno_emergencyMain").val(),
+            auditno: $("#trx_auditno").val(),
+            chgcode: $("#trx_chgcode").val()
+        };
+        
+        $.post("./ptcare_nursingnote_MR/form?"+$.param(saveParam), $.param(postobj), function (data){
+            
+        },'json').fail(function (data){
+            alert('there is an error');
+        }).done(function (data){
+            if(!$.isEmptyObject(data)){
+                // autoinsert_rowdata("#formDrug",data.patmedication);
+                $("#tot_qty").val(data.total_qty);
+            }else{
+                
+            }
+        });
+    }
+    //////////////////////////////////////////drug admin ends//////////////////////////////////////////
+
+    //////////////////////////////////////parameter for saving url//////////////////////////////////////
+	var addmore_jqgridDrugAdminED = {more:false,state:false,edit:false}
+	
+	///////////////////////////////////////////jqGridAddNotesDrugAdminED///////////////////////////////////////////
+	$("#jqGridAddNotesDrugAdminED").jqGrid({
+		datatype: "local",
+		editurl: "./ptcare_nursingnote_MR/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		scroll: true,
+		width: 700,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotesDrugAdminED",
+		loadComplete: function (){
+			if(addmore_jqgridDrugAdminED.more == true){$('#jqGridAddNotesDrugAdminED_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid ('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgridDrugAdminED.edit = addmore_jqgridDrugAdminED.more = false; // reset
+		},
+		ondblClickRow: function (rowid, iRow, iCol, e){
+			$("#jqGridAddNotesDrugAdminED_iledit").click();
+		},
+	});
+	
+	////////////////////////////////////////////myEditOptions////////////////////////////////////////////
+	var myEditOptions_addDrugAdminED = {
+		keys: true,
+		extraparam: {
+			"_token": $("#_token").val()
+		},
+		oneditfunc: function (rowid){
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").hide();
+			
+			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotesDrugAdminED_ilsave').click();
+				// addmore_jqgridDrugAdminED.state = true;
+			});
+		},
+		aftersavefunc: function (rowid, response, options){
+			// addmore_jqgridDrugAdminED.more = true; // only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotesDrugAdminED',urlParam_AddNotesDrugAdminED,'add_DrugAdminED');
+			errorField.length = 0;
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+		},
+		errorfunc: function (rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotesDrugAdminED',urlParam_AddNotesDrugAdminED,'add_DrugAdminED');
+		},
+		beforeSaveRow: function (options, rowid){
+			$('#p_error').text('');
+			if(errorField.length > 0)return false;
+			
+			let data = $('#jqGridAddNotesDrugAdminED').jqGrid('getRowData', rowid);
+			
+			let editurl = "./ptcare_nursingnote_MR/form?"+
+				$.param({
+					_token: $('#_token').val(),
+					episno: $('#episno_emergencyMain').val(),
+					mrn: $('#mrn_emergencyMain').val(),
+					action: 'add_DrugAdminED_save',
+				});
+			$("#jqGridAddNotesDrugAdminED").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc : function (response){
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+		},
+		errorTextFormat: function (data){
+			alert(data);
+		}
+	};
+	
+	/////////////////////////////////////////jqGridPagerAddNotesDrugAdminED/////////////////////////////////////////
+	$("#jqGridAddNotesDrugAdminED").inlineNav('#jqGridPagerAddNotesDrugAdminED', {
+		add: false,
+		edit: false,
+		cancel: false, save: false,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_addDrugAdminED
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesDrugAdminED", {
+		id: "jqGridPagerRefresh_addnotes",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function (){
+			refreshGrid("#jqGridAddNotesDrugAdminED", urlParam_AddNotesDrugAdminED);
+		},
+	});
+	///////////////////////////////////////////////end grid///////////////////////////////////////////////
+    
+});
+
+//////////////////////drug admin starts//////////////////////
+var tbl_prescription = $('#tbl_prescription').DataTable({
+    "ajax": "",
+    "sDom": "",
+    "paging": false,
+    "columns": [
+        { 'data': 'auditno' },
+        { 'data': 'mrn' },
+        { 'data': 'episno' },
+        { 'data': 'chgcode', 'width': '25%' },
+        { 'data': 'description', 'width': '65%' },
+        { 'data': 'quantity', 'width': '10%' },
+        { 'data': 'doscode' },
+        { 'data': 'doscode_desc' },
+        { 'data': 'frequency' },
+        { 'data': 'frequency_desc' },
+        { 'data': 'ftxtdosage' },
+        { 'data': 'addinstruction' },
+        { 'data': 'addinstruction_desc' },
+        { 'data': 'drugindicator' },
+        { 'data': 'drugindicator_desc' },
+    ],
+    columnDefs: [
+        { targets: [0, 1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14], visible: false },
+    ],
+    order: [[0, 'desc']],
+    "drawCallback": function (settings){
+        $(this).find('tbody tr')[0].click();
+    }
+});
+///////////////////////drug admin ends///////////////////////
+
+var errorField = [];
+conf = {
+    modules: 'logic',
+    language: {
+        requiredFields: 'You have not answered all required fields'
+    },
+    onValidate: function ($form){
+        if(errorField.length > 0){
+            return {
+                element: $(errorField[0]),
+                message: ''
+            }
+        }
+    },
+};
+
+function empty_nursingnote_ptcare(obj){
+    emptyFormdata_div(errorField,"#formProgress_ED");
+    emptyFormdata_div(errorField,"#formDrug");
+    emptyFormdata_div(errorField,"#formThrombo_ED");
+    
+    // panel header
+    // $('#name_show_nursNote').text('');
+    // $('#mrn_show_nursNote').text('');
+    // $('#sex_show_nursNote').text('');
+    // $('#dob_show_nursNote').text('');
+    // $('#age_show_nursNote').text('');
+    // $('#race_show_nursNote').text('');
+    // $('#religion_show_nursNote').text('');
+    // $('#occupation_show_nursNote').text('');
+    // $('#citizenship_show_nursNote').text('');
+    // $('#area_show_nursNote').text('');
+    
+    // formNursNote
+    $('#mrn_emergencyMain').val('');
+    $("#episno_emergencyMain").val('');
+    $('#ptname_nursNote').val('');
+    $('#preg_nursNote').val('');
+    $('#ic_nursNote').val('');
+    $('#doctorname_nursNote').val('');
+
+    // datetime_ED_tbl.clear().draw();
+}
+
+function populate_nursingnote_ptcare(obj){
+    emptyFormdata(errorField,"#formNursNote");
+
+    // emptyFormdata_div("#formProgress_ED",['#mrn_emergencyMain','#episno_emergencyMain']);
+    // emptyFormdata_div("#formDrug",['#mrn_emergencyMain','#episno_emergencyMain']);
+    // emptyFormdata_div("#formThrombo_ED",['#mrn_emergencyMain','#episno_emergencyMain']);
+
+    // panel header
+    // $('#name_show_nursNote').text(obj.Name);
+    // $('#mrn_show_nursNote').text(("0000000" + obj.MRN).slice(-7));
+    // $('#sex_show_nursNote').text(if_none(obj.Sex).toUpperCase());
+    // $('#dob_show_nursNote').text(dob_chg(obj.DOB));
+    // $('#age_show_nursNote').text(dob_age(obj.DOB)+' (YRS)');
+    // $('#race_show_nursNote').text(if_none(obj.raceDesc).toUpperCase());
+    // $('#religion_show_nursNote').text(if_none(obj.religion).toUpperCase());
+    // $('#occupation_show_nursNote').text(if_none(obj.OccupCode).toUpperCase());
+    // $('#citizenship_show_nursNote').text(if_none(obj.Citizencode).toUpperCase());
+    // $('#area_show_nursNote').text(if_none(obj.AreaCode).toUpperCase());
+    
+    // formNursNote
+    $('#mrn_emergencyMain').val(obj.MRN);
+    $("#episno_emergencyMain").val(obj.Episno);
+    $("#doctor_nursNote").val(dob_age(obj.DOB));
+    $('#ptname_nursNote').val(obj.Name);
+    $('#preg_nursNote').val(obj.pregnant);
+    $('#ic_nursNote').val(obj.Newic);
+    $('#doctorname_nursNote').val(obj.doctorname);
+
+    ////jqGridAddNotesProgressED
+    urlParam_AddNotesProgressED.filterVal[0] = obj.MRN;
+    urlParam_AddNotesProgressED.filterVal[1] = obj.Episno;
+    urlParam_AddNotesProgressED.filterVal[2] = 'PROGRESSNOTE_ED';
+
+    ////jqGridAddNotesDrugAdminED
+    urlParam_AddNotesDrugAdminED.filterVal[0] = obj.MRN;
+    urlParam_AddNotesDrugAdminED.filterVal[1] = obj.Episno;
+    urlParam_AddNotesDrugAdminED.filterVal[2] = 'DRUGADMIN_ED';
+
+    //// jqGridThrombo_ED
+    urlParam_Thrombo_ED.filterVal[0] = obj.MRN;
+    urlParam_Thrombo_ED.filterVal[1] = obj.Episno;
+    urlParam_Thrombo_ED.filterVal[2] = obj.idno;
+
+    //// jqGridAddNotesThromboED
+    urlParam_AddNotesThromboED.filterVal[0] = obj.MRN;
+    urlParam_AddNotesThromboED.filterVal[1] = obj.Episno;
+    urlParam_AddNotesThromboED.filterVal[2] = 'THROMBO';
+
+    $("#tab_nursNote").collapse('hide');
+
+}
+
+function populate_drugadmin_getdata(){
+    emptyFormdata(errorField,"#formDrug",["#mrn_emergencyMain","#episno_emergencyMain","#doctor_nursNote","#ordcomtt_phar"]);
+    
+    textarea_init_nursingnote();
+}
+
+function get_default_progressnote(){
+    emptyFormdata(errorField,"#formProgress_ED",["#mrn_emergencyMain","#episno_emergencyMain","#doctor_nursNote","#ordcomtt_phar"]);
+    
+    var saveParam = {
+        action: 'get_table_progress_ED',
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // idno: $("#idno_radClinic").val(),
+        mrn: $("#mrn_emergencyMain").val(),
+        episno: $("#episno_emergencyMain").val(),
+    };
+    
+    $.get("./ptcare_nursingnote_MR/table?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').done(function (data){
+        if(!$.isEmptyObject(data)){
+            autoinsert_rowdata("#formProgress_ED",data.nurshandover);
+            $("#datetaken").val(data.date);
+
+        }else{
+            
+        }
+        
+    });
+}
+
+function autoinsert_rowdata(form,rowData){
+    $.each(rowData, function (index, value){
+        var input = $(form+" [name='"+index+"']");
+        if(input.is("[type=radio]")){
+            $(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+        }else if(input.is("[type=checkbox]")){
+            if(value == 1){
+                $(form+" [name='"+index+"']").prop('checked', true);
+            }
+        }else if(input.is("textarea")){
+            if(value !== null){
+                let newval = value.replaceAll("</br>",'\n');
+                input.val(newval);
+            }
+        }else{
+            input.val(value);
+        }
+    });
+}
+
+function textarea_init_nursingnote(){
+    $('textarea#airwayfreetext,textarea#frfreetext,textarea#drainfreetext,textarea#ivfreetext,textarea#assesothers,textarea#oraltype1,textarea#oraltype2,textarea#oraltype3,textarea#oraltype4,textarea#oraltype5,textarea#oraltype6,textarea#oraltype7,textarea#oraltype8,textarea#oraltype9,textarea#oraltype10,textarea#oraltype11,textarea#oraltype12,textarea#oraltype13,textarea#oraltype14,textarea#oraltype15,textarea#oraltype16,textarea#oraltype17,textarea#oraltype18,textarea#oraltype19,textarea#oraltype20,textarea#oraltype21,textarea#oraltype22,textarea#oraltype23,textarea#oraltype24,textarea#intratype1,textarea#intratype2,textarea#intratype3,textarea#intratype4,textarea#intratype5,textarea#intratype6,textarea#intratype7,textarea#intratype8,textarea#intratype9,textarea#intratype10,textarea#intratype11,textarea#intratype12,textarea#intratype13,textarea#intratype14,textarea#intratype15,textarea#intratype16,textarea#intratype17,textarea#intratype18,textarea#intratype19,textarea#intratype20,textarea#intratype21,textarea#intratype22,textarea#intratype23,textarea#intratype24,textarea#othertype1,textarea#othertype2,textarea#othertype3,textarea#othertype4,textarea#othertype5,textarea#othertype6,textarea#othertype7,textarea#othertype8,textarea#othertype9,textarea#othertype10,textarea#othertype11,textarea#othertype12,textarea#othertype13,textarea#othertype14,textarea#othertype15,textarea#othertype16,textarea#othertype17,textarea#othertype18,textarea#othertype19,textarea#othertype20,textarea#othertype21,textarea#othertype22,textarea#othertype23,textarea#othertype24,textarea#ftxtdosage,textarea#treatment_remarks,textarea#investigation_remarks,textarea#injection_remarks,textarea#problem,textarea#problemdata,textarea#problemintincome,textarea#nursintervention,textarea#nursevaluation,textarea#fitchart_diag,textarea#circulation_diag,textarea#othersChart1_diag,textarea#othersChart2_diag').each(function () {
+        if(this.value.trim() == ''){
+            this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }else{
+            this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }
+    }).off().on('input', function (){
+        if(this.scrollHeight>40){
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        }else{
+            this.style.height = (40) + 'px';
+        }
+    });
+}
+
+function cust_rules_nurs(value, name){
+    var temp = null;
+    switch(name){
+        case 'Time': temp = $("#jqGridPatMedic input[name='enteredtime']"); break;
+    }
+    if(temp == null) return [true,''];
+    return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
+}
+
+function showdetail_nurs(cellvalue, options, rowObject){
+    // var field, table, case_;
+    // switch(options.colModel.name){
+    //     case 'chgcode': field = ['chgcode','description']; table = "hisdb.chgmast"; case_ = 'chgcode'; break;
+    //     case 'uom': field = ['uomcode','description']; table = "material.uom"; case_ = 'uom'; break;
+    //     case 'uom_recv': field = ['uomcode','description']; table = "material.uom"; case_ = 'uom'; break;
+    //     case 'taxcode': field = ['taxcode','description']; table = "hisdb.taxmast"; case_ = 'taxcode'; break;
+    //     case 'deptcode': field = ['deptcode','description']; table = "sysdb.department"; case_ = 'deptcode'; break;
+    // }
+    // var param = {action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+    
+    // if(cellvalue != null && cellvalue.trim() != ''){
+    //     fdl_ordcom.get_array('ordcom',options,param,case_,cellvalue);
+    // }
+    
+    // if(cellvalue == null)cellvalue = " ";
+    return cellvalue;
+}
+
+function enteredtimeCustomEdit_nurs(val,opt,rowObject){
+    return $(`<div class="input-group"><input autocomplete="off" name="time" type="time" class="form-control input-sm" style="text-transform: uppercase;" value="`+val+`" style="z-index: 0"></div>`);
+}
+
+function galGridCustomValue_nurs(elem, operation, value){
+    if(operation == 'get'){
+        // console.log($(elem).find("input").val());
+        return $(elem).find("input").val();
+    }
+    else if(operation == 'set'){
+        $('input',elem).val(value);
+    }
+}
+
+// $('#tab_nursNote').on('show.bs.collapse', function (){
+// 	return check_if_user_selected();
+// });
+
+$('#tab_nursNote').on('shown.bs.collapse', function (){
+    SmoothScrollTo("#tab_nursNote", 500);
+
+    $('#nursNote .menu .item').tab('change tab','thrombo');
+
+    // var urlparam_datetime_ED_tbl = {
+    //     action: 'get_table_datetime',
+    //     mrn: $("#mrn_emergencyMain").val(),
+    //     episno: $("#episno_emergencyMain").val()
+    // }
+    
+    // datetime_ED_tbl.ajax.url("./ptcare_nursingnote_MR/table?"+$.param(urlparam_datetime_ED_tbl)).load(function (data){
+    //     emptyFormdata_div("#formProgress_ED",['#mrn_emergencyMain','#episno_emergencyMain','#doctor_nursNote','#ordcomtt_phar']);
+    //     $('#datetime_ED_tbl tbody tr:eq(0)').click();  // to select first row
+    // });
+
+    // populate_progressnote_ED_getdata();
+
+    $("#jqGridPatMedic").jqGrid('setGridWidth', Math.floor($("#jqGridPatMedic_c")[0].offsetWidth-$("#jqGridPatMedic_c")[0].offsetLeft-30));
+    $("#jqGridThrombo_ED").jqGrid('setGridWidth', Math.floor($("#jqGridThrombo_ED_c")[0].offsetWidth-$("#jqGridThrombo_ED_c")[0].offsetLeft));
+    if($('#mrn_emergencyMain').val() != ''){
+        populate_progressnote_ED_getdata();
+        populate_drugadmin_getdata();
+        populate_thrombo_ED_getdata();
+    }
+    
+});
+
+$("#tab_nursNote").on("hide.bs.collapse", function (){
+    emptyFormdata_div("#formNursNote",['#mrn_emergencyMain','#episno_emergencyMain']);
+    
+    disableForm('#formProgress_ED');
+    disableForm('#formDrug');
+    disableForm('#formThrombo_ED');
+
+    button_state_progress_ED('empty');
+    button_state_thrombo_ED('empty');
+});
+
+

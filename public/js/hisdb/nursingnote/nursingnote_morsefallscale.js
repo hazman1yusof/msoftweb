@@ -26,8 +26,8 @@ $(document).ready(function (){
         button_state_morsefallscale('wait');
         enableForm('#formMorseFallScale');
         rdonly('#formMorseFallScale');
-        emptyFormdata_div("#formMorseFallScale",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar','#morsefallscale_ward','#morsefallscale_diag','#morsefallscale_admdate']);
         $("#morsefallscale_datetaken").val(moment().format('YYYY-MM-DD'));
+        emptyFormdata_div("#formMorseFallScale",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar','#morsefallscale_ward','#morsefallscale_diag','#morsefallscale_admdate']);
         document.getElementById("idno_morsefallscale").value = "";
         $("#morsefallscale_diag").attr("readonly", true);
         // dialog_mrn_edit.on();
@@ -459,9 +459,9 @@ function saveForm_morsefallscale(callback){
     $.post("./morsefallscale/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').fail(function (data){
-        // $('#p_error_morsefallscale').text(data.responseText);
-        // alert(data.responseText);
-        
+        // if(data.responseText !== ''){
+        //     alert(data.responseText);
+        // }
         // alert('there is an error');
         callback();
     }).success(function (data){

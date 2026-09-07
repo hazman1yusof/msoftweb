@@ -1,0 +1,68 @@
+<!-- <div class="ui segments" style="position: relative;"> -->
+    <div class="ui secondary segment bluecloudsegment" style="display: none;">
+        CLINICAL
+        <div class="ui small blue icon buttons" id="btn_grp_edit_apptMain" style="position: absolute; 
+                    padding: 0 0 0 0; 
+                    right: 40px; 
+                    top: 9px; 
+                    z-index: 2;">
+            <!-- <button class="ui button" id="new_apptMain"><span class="fa fa-plus-square-o"></span>New</button>
+            <button class="ui button" id="edit_apptMain"><span class="fa fa-edit fa-lg"></span>Edit</button>
+            <button class="ui button" id="save_apptMain"><span class="fa fa-save fa-lg"></span>Save</button>
+            <button class="ui button" id="cancel_apptMain"><span class="fa fa-ban fa-lg"></span>Cancel</button> -->
+        </div>
+    </div>
+    
+    <!-- <div class="ui segment"> -->
+        <form id="formApptMain" class="ui form">
+            <div class="ui grid">
+                <!-- <input type="hidden" name="curr_user" id="curr_user_apptMain" value="{{ Auth::user()->username }}"> -->
+                <input name="isdoctor" id="isdoctor" type="hidden" value="{{Auth::user()->doctor}}">
+                <input id="mrn_apptMain" name="mrn_apptMain" type="hidden">
+                <input id="episno_apptMain" name="episno_apptMain" type="hidden">
+                <input id="age_apptMain" name="age_apptMain" type="hidden">
+            </div>
+        </form>
+        
+        <div id="apptMainTabs" class="ui segment">
+            <div class="ui top attached tabular menu">
+                <a class="item apptMainItem" data-tab="docImaging" id="navtab_docImaging">Document Imaging</a>
+                <a class="item apptMainItem active" data-tab="triageInfo" id="navtab_triageInfo">Triage Information</a>
+                <a class="item apptMainItem" data-tab="doctorNote" id="navtab_doctorNote">Doctor Note</a>
+                <a class="item apptMainItem" data-tab="doctorNotePsy" id="navtab_doctorNotePsy">Doctor Note (Psychiatry)</a>
+                <a class="item apptMainItem" data-tab="reqFor" id="navtab_reqFor">Request For</a>
+                <a class="item apptMainItem" data-tab="admHandover" id="navtab_admHandover">Admission Handover</a>
+                <a class="item apptMainItem" data-tab="dietNotes" id="navtab_dietNotes" style="display: none;">Dietetic Care Notes</a>
+            </div>
+            
+            <div class="ui bottom attached tab raised segment" data-tab="docImaging">
+                @include('patientcare.userfile_div_MR')
+            </div>
+            
+            <div class="ui bottom attached tab raised segment active" data-tab="triageInfo">
+                @include('appointment_MR.nursingAppt_MR')
+            </div>
+            
+            <div class="ui bottom attached tab raised segment" data-tab="doctorNote">
+                @include('appointment_MR.doctorNoteAppt_MR')
+            </div>
+            
+            <div class="ui bottom attached tab raised segment" data-tab="doctorNotePsy">
+                @include('patientcare.doctornote_div_MR')
+            </div>
+            
+            <div class="ui bottom attached tab raised segment" data-tab="reqFor">
+                @include('patientcare.requestfor_MR',['phase' => 'CLINIC'])
+                <!-- <iframe style="display:block; border:none; height:95vh; width:95vw;" id="requestfor_iframe"></iframe> -->
+            </div>
+            
+            <div class="ui bottom attached tab raised segment" data-tab="admHandover">
+                @include('appointment_MR.admhandoverAppt_MR')
+            </div>
+            
+            <div class="ui bottom attached tab raised segment" data-tab="dietNotes" style="height: 2510px; display: none;">
+                @include('patientcare.dieteticCareNotes')
+            </div>
+        </div>
+    <!-- </div> -->
+<!-- </div> -->

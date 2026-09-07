@@ -533,11 +533,13 @@ $('#clientprognoteref_date_tbl tbody').on('click', 'tr', function (){
     $('#clientprognoteref_date_tbl tbody tr').removeClass('active');
     $(this).addClass('active');
     
-    if(check_same_usr_edit(data)){
-        button_state_clientProgNoteRef('edit');
-    }else{
-        button_state_clientProgNoteRef('add');
-    }
+    // if(check_same_usr_edit(data)){
+    //     button_state_clientProgNoteRef('edit');
+    // }else{
+    //     button_state_clientProgNoteRef('add');
+    // }
+    
+    check_doctorRef();
     
     $('#mrn_clientProgNoteRef').val(data.mrn);
     $("#episno_clientProgNoteRef").val(data.episno);
@@ -603,7 +605,7 @@ function check_doctorRef(){
         alert('there is an error');
     }).done(function (data){
         if(!$.isEmptyObject(data)){
-            if($('#isdoctor').val() != '1' || data.refdoctor != $('#username_').val()){
+            if($('#isdoctor').val() != '1' || data.refdoctor.toUpperCase() != $('#username_').val().toUpperCase()){
                 button_state_clientProgNoteRef('empty');
                 $('#error_clientProgNoteRef').val("You are not registered as the referral doctor.");
                 $('#error_clientProgNoteRef').show();

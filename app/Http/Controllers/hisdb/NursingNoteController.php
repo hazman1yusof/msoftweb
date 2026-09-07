@@ -115,6 +115,8 @@ class NursingNoteController extends defaultController
                 switch($request->oper){
                     case 'add':
                         return $this->add_careplan($request);
+                    case 'edit':
+                        return $this->edit_careplan($request);
                     default:
                         return 'error happen..';
                 }
@@ -915,48 +917,57 @@ class NursingNoteController extends defaultController
             }
             
             if(!empty($request->idno_progress)){
-                DB::table('nursing.nurshandover')
-                    ->where('idno','=',$request->idno_progress)
-                    // ->where('mrn','=',$request->mrn_nursNote)
-                    // ->where('episno','=',$request->episno_nursNote)
-                    ->update([
-                        'bpsys_stand' => $request->bpsys_stand,
-                        'bpdias_stand' => $request->bpdias_stand,
-                        'bpsys_lieDown' => $request->bpsys_lieDown,
-                        'bpdias_lieDown' => $request->bpdias_lieDown,
-                        'spo2' => $request->spo2,
-                        'hr' => $request->hr,
-                        'gxt' => $request->gxt,
-                        'temp_' => $request->temp_,
-                        'weight' => $request->weight,
-                        'respiration' => $request->respiration,
-                        'height' => $request->height,
-                        'painscore' => $request->painscore,
-                        'roomair' => $request->roomair,
-                        'oxygen' => $request->oxygen,
-                        'airwayfreetext' => $request->airwayfreetext,
-                        'breathnormal' => $request->breathnormal,
-                        'breathdifficult' => $request->breathdifficult,
-                        'circarrythmias' => $request->circarrythmias,
-                        'circlbp' => $request->circlbp,
-                        'circhbp' => $request->circhbp,
-                        'circirregular' => $request->circirregular,
-                        'frhigh' => $request->frhigh,
-                        'frlow' => $request->frlow,
-                        'frfreetext' => $request->frfreetext,
-                        'drainnone' => $request->drainnone,
-                        'draindrainage' => $request->draindrainage,
-                        'drainfreetext' => $request->drainfreetext,
-                        'ivlnone' => $request->ivlnone,
-                        'ivlsite' => $request->ivlsite,
-                        'ivfreetext' => $request->ivfreetext,
-                        'gucontinent' => $request->gucontinent,
-                        'gufoley' => $request->gufoley,
-                        'assesothers' => $request->assesothers,
-                        'plannotes' => $request->plannotes,
-                        'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    ]);
+                $nurshandover = DB::table('nursing.nurshandover')
+                                ->where('idno','=',$request->idno_progress)
+                                ->first();
+                
+                if($nurshandover->adduser == session('username')){
+            
+                    DB::table('nursing.nurshandover')
+                        ->where('idno','=',$request->idno_progress)
+                        // ->where('mrn','=',$request->mrn_nursNote)
+                        // ->where('episno','=',$request->episno_nursNote)
+                        ->update([
+                            'bpsys_stand' => $request->bpsys_stand,
+                            'bpdias_stand' => $request->bpdias_stand,
+                            'bpsys_lieDown' => $request->bpsys_lieDown,
+                            'bpdias_lieDown' => $request->bpdias_lieDown,
+                            'spo2' => $request->spo2,
+                            'hr' => $request->hr,
+                            'gxt' => $request->gxt,
+                            'temp_' => $request->temp_,
+                            'weight' => $request->weight,
+                            'respiration' => $request->respiration,
+                            'height' => $request->height,
+                            'painscore' => $request->painscore,
+                            'roomair' => $request->roomair,
+                            'oxygen' => $request->oxygen,
+                            'airwayfreetext' => $request->airwayfreetext,
+                            'breathnormal' => $request->breathnormal,
+                            'breathdifficult' => $request->breathdifficult,
+                            'circarrythmias' => $request->circarrythmias,
+                            'circlbp' => $request->circlbp,
+                            'circhbp' => $request->circhbp,
+                            'circirregular' => $request->circirregular,
+                            'frhigh' => $request->frhigh,
+                            'frlow' => $request->frlow,
+                            'frfreetext' => $request->frfreetext,
+                            'drainnone' => $request->drainnone,
+                            'draindrainage' => $request->draindrainage,
+                            'drainfreetext' => $request->drainfreetext,
+                            'ivlnone' => $request->ivlnone,
+                            'ivlsite' => $request->ivlsite,
+                            'ivfreetext' => $request->ivfreetext,
+                            'gucontinent' => $request->gucontinent,
+                            'gufoley' => $request->gufoley,
+                            'assesothers' => $request->assesothers,
+                            'plannotes' => $request->plannotes,
+                            'lastuser'  => session('username'),
+                            'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        ]);
+                }else{
+                    return response('You are not authorized to edit this.', 500);
+                }
             }else{
                 DB::table('nursing.nurshandover')
                     ->insert([
@@ -1098,7 +1109,8 @@ class NursingNoteController extends defaultController
                 }
                 $date['idno'] = $value->idno;
                 $date['mrn'] = $value->mrn;
-                $date['episno'] = $value->episno;
+                $date['episno'] = $value->episno;               
+                $date['adduser'] = $value->adduser;
                 
                 array_push($data,$date);
             }
@@ -1401,7 +1413,12 @@ class NursingNoteController extends defaultController
                             ->where('recorddate','=',$request->recorddate);
             
             if(!empty($request->idno_intake)){
-                DB::table('nursing.intakeoutput')
+                // $intakeoutput_ = DB::table('nursing.intakeoutput')
+                //                 ->where('idno','=',$request->idno_intake)
+                //                 ->first();
+                
+                // if($intakeoutput_->adduser == session('username')){
+                    DB::table('nursing.intakeoutput')
                     ->where('idno','=',$request->idno_intake)
                     // ->where('mrn','=',$request->mrn_nursNote)
                     // ->where('episno','=',$request->episno_nursNote)
@@ -1655,6 +1672,9 @@ class NursingNoteController extends defaultController
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'computerid' => session('computerid'),
                     ]);
+                // }else{
+                //     return response('You are not authorized to edit this.', 500);
+                // }
             }else{
                 if($intakeoutput->exists()){
                     // throw new \Exception('Date already exist.', 500);
@@ -2349,11 +2369,11 @@ class NursingNoteController extends defaultController
         try {
             
             if(!empty($request->tr_idno)){
-                // $pattreatment = DB::table('nursing.pattreatment')
-                //                 ->where('idno','=',$request->tr_idno)
-                //                 ->first();
+                $pattreatment = DB::table('nursing.pattreatment')
+                                ->where('idno','=',$request->tr_idno)
+                                ->first();
                 
-                // if($pattreatment->adduser == session('username')){
+                if($pattreatment->adduser == session('username')){
                     DB::table('nursing.pattreatment')
                         ->where('idno','=',$request->tr_idno)
                         ->update([
@@ -2363,9 +2383,9 @@ class NursingNoteController extends defaultController
                             'upduser'  => session('username'),
                             'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
                         ]);
-                // }else{
-                //     return response('You are not authorized to edit this.', 500);
-                // }
+                }else{
+                    return response('You are not authorized to edit this.', 500);
+                }
             }else{
                 DB::table('nursing.pattreatment')
                     ->insert([
@@ -2690,6 +2710,7 @@ class NursingNoteController extends defaultController
                 }else{
                     $date['enteredtime'] =  '-';
                 }
+                $date['adduser'] = $value->adduser;
                 
                 array_push($data,$date);
             }
@@ -2744,9 +2765,68 @@ class NursingNoteController extends defaultController
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'addtime'  => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastuser'  => session('username'),
-                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'lastupdtime'  => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+
+    public function edit_careplan(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            if(!empty($request->idno_careplan)){
+                $nurscareplan_ = DB::table('nursing.nurscareplan')
+                                ->where('idno','=',$request->idno_careplan)
+                                ->first();
+                
+                if($nurscareplan_->adduser == session('username')){
+                    DB::table('nursing.nurscareplan')
+                        ->where('idno','=',$request->idno_careplan)
+                        ->update([
+                            'problem' => $request->problem,
+                            'problemdata' => $request->problemdata,
+                            'problemintincome' => $request->problemintincome,
+                            'nursintervention' => $request->nursintervention,
+                            'nursevaluation' => $request->nursevaluation,
+                            'upduser'  => session('username'),
+                            'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                        ]);
+                }else{
+                    return response('You are not authorized to edit this.', 500);
+                }
+            }else{
+                DB::table('nursing.nurscareplan')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_nursNote,
+                        'episno' => $request->episno_nursNote,
+                        'problem' => $request->problem,
+                        'problemdata' => $request->problemdata,
+                        'problemintincome' => $request->problemintincome,
+                        'nursintervention' => $request->nursintervention,
+                        'nursevaluation' => $request->nursevaluation,
+                        'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'addtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser'  => session('username'),
+                    ]);
+            }
+            
+            $queries = DB::getQueryLog();
+            // dump($queries);
             
             DB::commit();
             

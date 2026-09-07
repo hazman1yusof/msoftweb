@@ -87,7 +87,7 @@
                                     <div class="panel-body" style="padding: 15px 0px;">
                                         <div class="form-inline col-md-12" style="padding-bottom: 15px;">
                                             <label class="control-label" for="morsefallscale_datetaken" style="padding-right: 5px;">Date</label>
-                                            <input id="morsefallscale_datetaken" name="datetaken" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>" rdonly>
+                                            <input id="morsefallscale_datetaken" name="datetaken" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>">
                                             
                                             <label class="control-label" for="morsefallscale_timetaken" style="padding-left: 15px; padding-right: 5px;">Time</label>
                                             <input id="morsefallscale_timetaken" name="timetaken" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information.">

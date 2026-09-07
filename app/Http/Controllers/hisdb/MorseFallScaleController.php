@@ -191,7 +191,12 @@ class MorseFallScaleController extends defaultController
         try {
             
             if(!empty($request->idno_morsefallscale)){
-                DB::table('nursing.morsefallscale')
+                // $morsefallscale_ = DB::table('nursing.morsefallscale')
+                //                 ->where('idno','=',$request->idno_morsefallscale)
+                //                 ->first();
+                
+                // if($morsefallscale_->adduser == session('username')){
+                    DB::table('nursing.morsefallscale')
                     ->where('idno','=',$request->idno_morsefallscale)
                     // ->where('mrn','=',$request->mrn_nursNote)
                     // ->where('episno','=',$request->episno_nursNote)
@@ -212,6 +217,10 @@ class MorseFallScaleController extends defaultController
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'computerid' => session('computerid'),
                     ]);
+                // }else{
+                //     return response('You are not authorized to edit this.', 500);
+                // }            
+                
             }else{
                 DB::table('nursing.morsefallscale')
                     ->insert([

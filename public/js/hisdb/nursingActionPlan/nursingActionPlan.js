@@ -176,6 +176,7 @@ $(document).ready(function (){
     });
     
     $("#edit_header").click(function (){
+        $('#icdbtn').show();
         button_state_header('wait');
         enableForm('#formHeader');
         rdonly('#formHeader');
@@ -256,7 +257,7 @@ $(document).ready(function (){
 			if(!$.isEmptyObject(data)){
                 autoinsert_rowdata("#formHeader",data.episode);
 				autoinsert_rowdata("#formHeader",data.header);
-				button_state_header('empty');
+				button_state_header('edit');
 				textarea_init_nursingActionPlan();
 
 			}else{
@@ -3203,7 +3204,7 @@ function populate_header_getdata(){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formHeader",data.episode);
             autoinsert_rowdata("#formHeader",data.header);
-            button_state_header('empty');
+            button_state_header('edit');
 
         }else{
             button_state_header('add');
@@ -3280,6 +3281,9 @@ function saveForm_header(callback){
     $.post("./nursingActionPlan/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').fail(function (data){
+        // if(data.responseText !== ''){
+        //     alert(data.responseText);
+        // }
         // alert('there is an error');
         callback();
     }).success(function (data){

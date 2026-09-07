@@ -18,12 +18,11 @@
                 <div class="ui top attached tabular menu">
                     <a class="item" data-tab="progress" id="navtab_progress">Progress Note</a>
                     <a class="item" data-tab="drug" id="navtab_drug">Drug Administration</a>
-                    <!-- <a class="item" data-tab="pivc" id="navtab_pivc">PIVC</a> -->
                     <a class="item" data-tab="thrombo" id="navtab_thrombo">Thrombophlebitis</a>
                 </div>
 
                 <div class="ui bottom attached tab raised segment" data-tab="progress">
-                    @include('patientcare.nursingnote_progressnote_ED')
+                    @include('patientcare.emergency_MR.nursingnote_progressnote_ED_MR')
                 </div>
                 
                 <div class="ui bottom attached tab raised segment" data-tab="drug">
@@ -175,12 +174,8 @@
                     </form>
                 </div>
 
-                <!-- <div class="ui bottom attached tab raised segment" data-tab="pivc">
-                    @include('patientcare.nursingnote_pivc_ED')
-                </div> -->
-
                 <div class="ui bottom attached tab raised segment active" data-tab="thrombo">
-                    @include('patientcare.nursingnote_thrombo_ED')
+                    @include('patientcare.emergency_MR.nursingnote_thrombo_ED_MR')
                 </div>
             </div>
         </div>

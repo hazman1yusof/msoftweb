@@ -10,9 +10,9 @@
                 <button type="button" class="btn btn-default" id="new_pivc">
                     <span class="fa fa-plus-square-o"></span> New 
                 </button>
-                <!-- <button type="button" class="btn btn-default" id="edit_pivc">
+                <button type="button" class="btn btn-default" id="edit_pivc">
                     <span class="fa fa-edit fa-lg"></span> Edit 
-                </button> -->
+                </button>
                 <button type="button" class="btn btn-default" data-oper='add' id="save_pivc">
                     <span class="fa fa-save fa-lg"></span> Save 
                 </button>
@@ -24,9 +24,7 @@
                 </button>
             </div>
         </div>
-        
-        <!-- <button class="btn btn-default btn-sm" type="button" id="pivc_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button> -->
-        
+                
         <div class="panel-body" style="padding-right: 0px;">                
             <form class='form-horizontal' style='width: 99%;' id='formPivc'>
             <input id="idno_pivc" name="idno_pivc" type="hidden">
@@ -57,7 +55,7 @@
                             <div class="form-inline col-md-12" style="padding-bottom: 15px;">
 
                                 <label class="control-label" for="practiceDate" style="padding-right: 5px;">Date: </label>
-                                <input id="practiceDate" name="practiceDate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter date." value="<?php echo date("Y-m-d"); ?>" rdonly>
+                                <input id="practiceDate" name="practiceDate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter date." value="<?php echo date("Y-m-d"); ?>">
 
                                 <label class="control-label" for="consultant" style="padding-right: 5px;padding-left: 25px">Consultant: </label>
                                 <input type="text" id="consultant" name="consultant" class="form-control input-sm" size="50">

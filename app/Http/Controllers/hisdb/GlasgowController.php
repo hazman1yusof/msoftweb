@@ -173,7 +173,12 @@ class GlasgowController extends defaultController
         try {
             
             if(!empty($request->idno_glasgow)){
-                DB::table('nursing.glasgowcomascale')
+                // $glasgow_ = DB::table('nursing.glasgowcomascale')
+                //                 ->where('idno','=',$request->idno_glasgow)
+                //                 ->first();
+                
+                // if($glasgow_->adduser == session('username')){
+                    DB::table('nursing.glasgowcomascale')
                     ->where('idno','=',$request->idno_glasgow)
                     // ->where('mrn','=',$request->mrn_nursNote)
                     // ->where('episno','=',$request->episno_nursNote)
@@ -217,6 +222,9 @@ class GlasgowController extends defaultController
                         'upduser'  => session('username'),
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
+                // }else{
+                //     return response('You are not authorized to edit this.', 500);
+                // }
             }else{
                 DB::table('nursing.glasgowcomascale')
                     ->insert([

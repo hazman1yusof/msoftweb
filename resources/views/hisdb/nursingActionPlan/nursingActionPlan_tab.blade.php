@@ -12,9 +12,9 @@
                         <button type="button" class="btn btn-default" id="new_header">
                             <span class="fa fa-plus-square-o"></span> New 
                         </button>
-                        <!-- <button type="button" class="btn btn-default" id="edit_header">
-                            <span class="fa fa-plus-square-o"></span> edit 
-                        </button> -->
+                        <button type="button" class="btn btn-default" id="edit_header">
+                            <span class="fa fa-plus-square-o"></span> Edit 
+                        </button>
                         <button type="button" class="btn btn-default" data-oper='add' id="save_header">
                             <span class="fa fa-save fa-lg"></span> Save 
                         </button>

@@ -10,9 +10,9 @@
                 <button type="button" class="btn btn-default" id="new_intake">
                     <span class="fa fa-plus-square-o"></span> New 
                 </button>
-                <!-- <button type="button" class="btn btn-default" id="edit_intake">
+                <button type="button" class="btn btn-default" id="edit_intake">
                     <span class="fa fa-edit fa-lg"></span> Edit 
-                </button> -->
+                </button>
                 <button type="button" class="btn btn-default" data-oper='add' id="save_intake">
                     <span class="fa fa-save fa-lg"></span> Save 
                 </button>
@@ -36,6 +36,7 @@
                                         <th class="scope">mrn</th>
                                         <th class="scope">episno</th>
                                         <th class="scope">Date</th>
+                                        <th class="scope">Entered By</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -49,7 +50,7 @@
                     </div>
                     <div class="form-inline col-md-12" style="padding-bottom: 15px;">
                         <label class="control-label" for="recorddate" style="padding-right: 5px;">Date</label>
-                        <input id="recorddate_intake" name="recorddate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>" rdonly>
+                        <input id="recorddate_intake" name="recorddate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>">
                         
                         <button class="btn btn-default btn-sm" type="button" id="doctornote_iograph" style="float: right; margin-right: 20px;">Preview</button>
                     </div>

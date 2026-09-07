@@ -212,8 +212,8 @@ $(document).ready(function (){
         button_state_progress('wait');
         enableForm('#formProgress');
         rdonly('#formProgress');
-        emptyFormdata_div("#formProgress",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
         $("#datetaken").val(moment().format('YYYY-MM-DD'));
+        emptyFormdata_div("#formProgress",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
 
         document.getElementById("idno_progress").value = "";
         // dialog_mrn_edit.on();
@@ -264,8 +264,8 @@ $(document).ready(function (){
         button_state_treatmentP('wait');
         enableForm('#formTreatmentP');
         rdonly('#formTreatmentP');
-        emptyFormdata_div("#formTreatmentP",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
         $("#tr_entereddate").val(moment().format('YYYY-MM-DD'));
+        emptyFormdata_div("#formTreatmentP",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
         document.getElementById("tr_idno").value = "";
         document.getElementById("tr_adduser").value = "";
         // dialog_mrn_edit.on();
@@ -275,7 +275,7 @@ $(document).ready(function (){
         button_state_treatmentP('wait');
         enableForm('#formTreatmentP');
         rdonly('#formTreatmentP');
-        $("#tr_entereddate,#treatment_adduser").attr("readonly", true);
+        $("#tr_entereddate,#treatment_adduser,#tr_enteredtime").attr("readonly", true);
         // dialog_mrn_edit.on();
     });
     
@@ -390,14 +390,21 @@ $(document).ready(function (){
         enableForm('#formCarePlan');
         rdonly('#formCarePlan');
         emptyFormdata_div("#formCarePlan",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+        document.getElementById("idno_careplan").value = "";
         // dialog_mrn_edit.on();
+    });
+
+    $("#edit_careplan").click(function (){
+        button_state_careplan('wait');
+        enableForm('#formCarePlan');
+        rdonly('#formCarePlan');
     });
     
     $("#save_careplan").click(function (){
         disableForm('#formCarePlan');
         if($('#formCarePlan').isValid({requiredFields: ''}, conf, true)){
             saveForm_careplan(function (){
-                $("#cancel_careplan").data('oper','add');
+                $("#cancel_careplan").data('oper','edit');
                 $("#cancel_careplan").click();
                 // $("#jqGridPagerRefresh").click();
                 // $('#datetime_tbl').DataTable().ajax.reload();
@@ -1818,10 +1825,10 @@ $(document).ready(function (){
             if(!$.isEmptyObject(data)){
                 autoinsert_rowdata("#formTreatmentP",data.treatment);
                 
-                // button_state_treatmentP('edit');
+                button_state_treatmentP('edit');
                 textarea_init_nursingnote();
             }else{
-                // button_state_treatmentP('add');
+                button_state_treatmentP('add');
                 textarea_init_nursingnote();
             }
         });
@@ -2074,6 +2081,8 @@ $(document).ready(function (){
         $(this).addClass('active');
         
         // populate_careplan_getdata();
+
+        $("#idno_careplan").val(data.idno);
         
         var saveParam = {
             action: 'get_table_careplan',
@@ -2094,7 +2103,7 @@ $(document).ready(function (){
             if(!$.isEmptyObject(data)){
                 autoinsert_rowdata("#formCarePlan",data.nurscareplan);
                 
-                button_state_careplan('add');
+                button_state_careplan('edit');
                 textarea_init_nursingnote();
             }else{
                 button_state_careplan('add');
@@ -5749,6 +5758,7 @@ var tbl_careplan_date = $('#tbl_careplan_date').DataTable({
         { 'data': 'episno' },
         { 'data': 'entereddate', 'width': '25%' },
         { 'data': 'enteredtime', 'width': '25%' },
+        { 'data': 'adduser', 'width': '25%' },
     ],
     columnDefs: [
         { targets: [0, 1, 2], visible: false },
@@ -6122,18 +6132,24 @@ function button_state_careplan(state){
         case 'empty':
             $("#toggle_nursNote").removeAttr('data-toggle');
             $('#cancel_careplan').data('oper','add');
-            $('#new_careplan,#save_careplan,#cancel_careplan').attr('disabled',true);
+            $('#new_careplan,#save_careplan,#cancel_careplan,#edit_careplan').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_nursNote").attr('data-toggle','collapse');
             $('#cancel_careplan').data('oper','add');
             $("#new_careplan").attr('disabled',false);
+            $('#save_careplan,#cancel_careplan,#edit_careplan').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_nursNote").attr('data-toggle','collapse');
+            $('#cancel_careplan').data('oper','edit');
+            $("#cancel_careplan,#edit_careplan").attr('disabled',false);
             $('#save_careplan,#cancel_careplan').attr('disabled',true);
             break;
         case 'wait':
             $("#toggle_nursNote").attr('data-toggle','collapse');
             $("#save_careplan,#cancel_careplan").attr('disabled',false);
-            $('#new_careplan').attr('disabled',true);
+            $('#new_careplan,#edit_careplan').attr('disabled',true);
             break;
     }
 }
@@ -6497,7 +6513,7 @@ function populate_careplan_getdata(){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formCarePlan",data.nurscareplan);
             
-            button_state_careplan('add');
+            button_state_careplan('edit');
             textarea_init_nursingnote();
         }else{
             button_state_careplan('add');
@@ -6813,7 +6829,9 @@ function saveForm_progress(callback){
     $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').fail(function (data){
-        // alert('there is an error');
+        if(data.responseText !== ''){
+            alert(data.responseText);
+        }        
         callback();
     }).success(function (data){
         callback();
@@ -6891,7 +6909,9 @@ function saveForm_treatmentP(callback){
     $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').fail(function (data){
-        // alert('there is an error');
+        if(data.responseText !== ''){
+            alert(data.responseText);
+        }          
         callback();
     }).success(function (data){
         callback();
@@ -7027,6 +7047,7 @@ function saveForm_careplan(callback){
     
     var postobj = {
         _token: $('#csrf_token').val(),
+        idno_careplan: $('#idno_careplan').val(),
         mrn_nursNote: $('#mrn_nursNote').val(),
         episno_nursNote: $('#episno_nursNote').val()
     };
@@ -7071,7 +7092,9 @@ function saveForm_careplan(callback){
     $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').fail(function (data){
-        // alert('there is an error');
+        if(data.responseText !== ''){
+            alert(data.responseText);
+        }
         callback();
     }).success(function (data){
         callback();
@@ -7131,6 +7154,7 @@ function saveForm_othersChart1(callback){
         
     },'json').fail(function (data){
         // alert('there is an error');
+
         callback();
     }).success(function (data){
         callback();

@@ -1955,6 +1955,8 @@ Route::post('/pat_mast_MR/new_relationship_form','hisdb\PatmastMRController@new_
 Route::post('/pat_mast_MR/auto_save','hisdb\PatmastMRController@auto_save');
 Route::get('/pat_mast_MR/patlabel','hisdb\PatmastMRController@patlabel');
 
+Route::get('/pat_mast_iframe_MR','hisdb\PatmastMRController@pat_mast_iframe');
+
 //// Nursing ED MR (Triage Info) page ///
 Route::get('/nursingED_MR','hisdb\NursingEDMRController@show');
 Route::get('/nursingED_MR/table','hisdb\NursingEDMRController@table');
@@ -2115,18 +2117,6 @@ Route::post('/endoscopyNotes_MR/form','hisdb\EndoscopyNotesMRController@form');
 Route::get('/endoscopyNotes_MR/endoscopystomach_chart','hisdb\EndoscopyNotesMRController@endoscopystomach_chart');
 Route::get('/endoscopyNotes_MR/endoscopyintestine_chart','hisdb\EndoscopyNotesMRController@endoscopyintestine_chart');
 
-//// OT Status setup MR page ///
-Route::get('/ot_status_MR','hisdb\OTStatusMRController@show');
-Route::get('/ot_status_MR/table','hisdb\OTStatusMRController@table');
-Route::post('/ot_status_MR/form','hisdb\OTStatusMRController@form');
-Route::get('/ot_status_MR/form','hisdb\OTStatusMRController@form');
-
-//// OT Type setup MR page ///
-Route::get('/ot_type_MR','hisdb\OTTypeMRController@show');
-Route::get('/ot_type_MR/table','hisdb\OTTypeMRController@table');
-Route::post('/ot_type_MR/form','hisdb\OTTypeMRController@form');
-Route::get('/ot_type_MR/form','hisdb\OTTypeMRController@form');
-
 //// Operation Record MR page ////
 Route::get('/otmanagement_div_MR','hisdb\OTManagement_divMRController@show');
 Route::get('/otmanagement_div_MR/table','hisdb\OTManagement_divMRController@table');
@@ -2161,3 +2151,130 @@ Route::post('/ptcare_admhandoverAppt_MR/form','patientcare\AdmHandoverApptMRCont
 Route::get('/ptcare_dieteticCareNotes_MR','patientcare\DieteticCareNotesMRController@show');
 Route::get('/ptcare_dieteticCareNotes_MR/table','patientcare\DieteticCareNotesMRController@table');
 Route::post('/ptcare_dieteticCareNotes_MR/form','patientcare\DieteticCareNotesMRController@form');
+
+/////////////////////////////////////EMERGENCY MR//////////////////////
+
+Route::get('/ptcare_doctornoteED_MR','patientcare\DoctornoteEDMRController@index');
+Route::get('/ptcare_doctornoteED_MR/table','patientcare\DoctornoteEDMRController@table');
+Route::post('/ptcare_doctornoteED_MR/form','patientcare\DoctornoteEDMRController@form');
+Route::post('/ptcare_doctornoteED_MR_transaction_save', "patientcare\DoctornoteEDMRController@transaction_save");
+
+Route::get('/ptcare_admhandover_MR','patientcare\AdmHandoverMRController@show');
+Route::get('/ptcare_admhandover_MR/table','patientcare\AdmHandoverMRController@table');
+Route::post('/ptcare_admhandover_MR/form','patientcare\AdmHandoverMRController@form');
+
+Route::get('/ptcare_nursing_MR','patientcare\NursingMRController@show');
+Route::get('/ptcare_nursing_MR/table','patientcare\NursingMRController@table');
+Route::post('/ptcare_nursing_MR/form','patientcare\NursingMRController@form');
+
+Route::get('/ptcare_nursingnote_MR','patientcare\NursingNoteMRController@show');
+Route::get('/ptcare_nursingnote_MR/table','patientcare\NursingNoteMRController@table');
+Route::post('/ptcare_nursingnote_MR/form','patientcare\NursingNoteMRController@form');
+
+//////////////////////REHAB MR//////////////////////
+Route::get('/rehab_MR','rehab\RehabMRController@index');
+Route::get('/rehab_MR/table','rehab\RehabMRController@table');
+Route::post('/rehab_MR/form','rehab\RehabMRController@form');
+
+//// PERKESO MR page ////
+Route::get('/ptcare_phys_MR','patientcare\physioMRController@show');
+Route::get('/ptcare_phys_MR/table','patientcare\physioMRController@table');
+Route::post('/ptcare_phys_MR/form','patientcare\physioMRController@form');
+Route::get('/ptcare_phys_MR/rehabperkeso_chart','patientcare\physioMRController@rehabperkeso_chart');
+
+//// Neurorobotic MR page ////
+Route::get('/neurorobotic_MR','rehab\NeuroroboticMRController@show');
+Route::get('/neurorobotic_MR/table','rehab\NeuroroboticMRController@table');
+Route::post('/neurorobotic_MR/form','rehab\NeuroroboticMRController@form');
+Route::get('/neurorobotic_MR/neurorobotic_chart','rehab\NeuroroboticMRController@neurorobotic_chart');
+
+//// Physiotherapy MR page ////
+Route::get('/sixMinWalking_MR','rehab\SixMinWalkingMRController@show');
+Route::get('/sixMinWalking_MR/table','rehab\SixMinWalkingMRController@table');
+Route::post('/sixMinWalking_MR/form','rehab\SixMinWalkingMRController@form');
+Route::get('/sixMinWalking_MR/sixminwalking_chart','rehab\SixMinWalkingMRController@sixminwalking_chart');
+
+Route::get('/bergBalanceTest_MR','rehab\BergBalanceTestMRController@show');
+Route::get('/bergBalanceTest_MR/table','rehab\BergBalanceTestMRController@table');
+Route::post('/bergBalanceTest_MR/form','rehab\BergBalanceTestMRController@form');
+Route::get('/bergBalanceTest_MR/bergbalancetest_chart','rehab\BergBalanceTestMRController@bergbalancetest_chart');
+
+Route::get('/musculoAssessment_MR','rehab\MusculoAssessmentMRController@show');
+Route::get('/musculoAssessment_MR/table','rehab\MusculoAssessmentMRController@table');
+Route::post('/musculoAssessment_MR/form','rehab\MusculoAssessmentMRController@form');
+Route::get('/musculoAssessment_MR/musculoassessment_chart','rehab\MusculoAssessmentMRController@musculoassessment_chart');
+
+Route::get('/posturalAssessment_MR','rehab\PosturalAssessmentMRController@show');
+Route::get('/posturalAssessment_MR/table','rehab\PosturalAssessmentMRController@table');
+Route::post('/posturalAssessment_MR/form','rehab\PosturalAssessmentMRController@form');
+Route::get('/posturalAssessment_MR/posturalassessment_chart','rehab\PosturalAssessmentMRController@posturalassessment_chart');
+
+Route::get('/oswestryQuest_MR','rehab\OswestryQuestMRController@show');
+Route::get('/oswestryQuest_MR/table','rehab\OswestryQuestMRController@table');
+Route::post('/oswestryQuest_MR/form','rehab\OswestryQuestMRController@form');
+Route::get('/oswestryQuest_MR/oswestryquest_chart','rehab\OswestryQuestMRController@oswestryquest_chart');
+
+Route::get('/cardiorespAssessment_MR','rehab\CardiorespAssessmentMRController@show');
+Route::get('/cardiorespAssessment_MR/table','rehab\CardiorespAssessmentMRController@table');
+Route::post('/cardiorespAssessment_MR/form','rehab\CardiorespAssessmentMRController@form');
+Route::get('/cardiorespAssessment_MR/cardiorespassessment_chart','rehab\CardiorespAssessmentMRController@cardiorespassessment_chart');
+
+Route::get('/neuroAssessment_MR','rehab\NeuroAssessmentMRController@show');
+Route::get('/neuroAssessment_MR/table','rehab\NeuroAssessmentMRController@table');
+Route::post('/neuroAssessment_MR/form','rehab\NeuroAssessmentMRController@form');
+Route::get('/neuroAssessment_MR/neuroassessment_chart','rehab\NeuroAssessmentMRController@neuroassessment_chart');
+
+Route::get('/motorScale_MR','rehab\MotorScaleMRController@show');
+Route::get('/motorScale_MR/table','rehab\MotorScaleMRController@table');
+Route::post('/motorScale_MR/form','rehab\MotorScaleMRController@form');
+Route::get('/motorScale_MR/motorscale_chart','rehab\MotorScaleMRController@motorscale_chart');
+
+Route::get('/spinalCord_MR','rehab\SpinalCordMRController@show');
+Route::get('/spinalCord_MR/table','rehab\SpinalCordMRController@table');
+Route::post('/spinalCord_MR/form','rehab\SpinalCordMRController@form');
+Route::get('/spinalCord_MR/spinalcord_chart','rehab\SpinalCordMRController@spinalcord_chart');
+
+Route::get('/physioNotes_MR','rehab\PhysioNotesMRController@show');
+Route::get('/physioNotes_MR/table','rehab\PhysioNotesMRController@table');
+Route::post('/physioNotes_MR/form','rehab\PhysioNotesMRController@form');
+Route::get('/physioNotes_MR/physionotes_chart','rehab\PhysioNotesMRController@physionotes_chart');
+
+//// Occuptherapy MR page ////
+Route::get('/occupTherapy_MR','rehab\OccupTherapyMRController@show');
+Route::get('/occupTherapy_MR/table','rehab\OccupTherapyMRController@table');
+Route::post('/occupTherapy_MR/form','rehab\OccupTherapyMRController@form');
+
+Route::get('/occupTherapy_cognitive_MR/table','rehab\OccupTherapyCognitiveMRController@table');
+Route::post('/occupTherapy_cognitive_MR/form','rehab\OccupTherapyCognitiveMRController@form');
+Route::get('/occupTherapy_cognitive_MR/mmse_chart','rehab\OccupTherapyCognitiveMRController@mmse_chart');
+Route::get('/occupTherapy_cognitive_MR/moca_chart','rehab\OccupTherapyCognitiveMRController@moca_chart');
+
+Route::get('/occupTherapy_barthel_MR/table','rehab\OccupTherapyBarthelMRController@table');
+Route::post('/occupTherapy_barthel_MR/form','rehab\OccupTherapyBarthelMRController@form');
+Route::get('/occupTherapy_barthel_MR/barthel_chart','rehab\OccupTherapyBarthelMRController@barthel_chart');
+
+Route::get('/occupTherapy_upperExtremity_MR/table','rehab\OccupTherapyUpperExtremityMRController@table');
+Route::post('/occupTherapy_upperExtremity_MR/form','rehab\OccupTherapyUpperExtremityMRController@form');
+Route::get('/occupTherapy_upperExtremity_MR/upperExtremity_chart','rehab\OccupTherapyUpperExtremityMRController@upperExtremity_chart');
+
+Route::get('/occupTherapy_notes_MR/table','rehab\OccupTherapyNotesMRController@table');
+Route::post('/occupTherapy_notes_MR/form','rehab\OccupTherapyNotesMRController@form');
+Route::get('/occupTherapy_notes_MR/notes_chart','rehab\OccupTherapyNotesMRController@notes_chart');
+
+//// Speech Therapy MR page ////
+Route::get('/speechTherapy_MR','rehab\SpeechTherapyMRController@show');
+Route::get('/speechTherapy_MR/table','rehab\SpeechTherapyMRController@table');
+Route::post('/speechTherapy_MR/form','rehab\SpeechTherapyMRController@form');
+Route::get('/speechTherapy_MR/speechtherapy_chart','rehab\SpeechTherapyMRController@speechtherapy_chart');
+
+//// Psychotherapy MR page ////
+Route::get('/psychotherapy_MR','rehab\PsychotherapyMRController@show');
+Route::get('/psychotherapy_MR/table','rehab\PsychotherapyMRController@table');
+Route::post('/psychotherapy_MR/form','rehab\PsychotherapyMRController@form');
+Route::get('/psychotherapy_MR/psychotherapy_chart','rehab\PsychotherapyMRController@psychotherapy_chart');
+
+//// Dietitian MR page ////
+Route::get('/dietitian_MR','rehab\DietitianMRController@show');
+Route::get('/dietitian_MR/table','rehab\DietitianMRController@table');
+Route::post('/dietitian_MR/form','rehab\DietitianMRController@form');
+Route::get('/dietitian_MR/dietitian_chart','rehab\DietitianMRController@dietitian_chart');

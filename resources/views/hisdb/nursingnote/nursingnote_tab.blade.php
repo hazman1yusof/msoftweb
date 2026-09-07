@@ -49,9 +49,9 @@
                                 <button type="button" class="btn btn-default" id="new_progress">
                                     <span class="fa fa-plus-square-o"></span> New 
                                 </button>
-                                <!-- <button type="button" class="btn btn-default" id="edit_progress">
+                                <button type="button" class="btn btn-default" id="edit_progress">
                                     <span class="fa fa-edit fa-lg"></span> Edit 
-                                </button> -->
+                                </button>
                                 <button type="button" class="btn btn-default" data-oper='add' id="save_progress">
                                     <span class="fa fa-save fa-lg"></span> Save 
                                 </button>
@@ -90,7 +90,7 @@
                                         <div class="panel-body" style="padding: 15px 0px;">
                                             <div class="form-inline col-md-12" style="padding-bottom: 15px;">
                                                 <label class="control-label" for="datetaken" style="padding-right: 5px;">Date</label>
-                                                <input id="datetaken" name="datetaken" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>" rdonly>
+                                                <input id="datetaken" name="datetaken" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>">
                                                 
                                                 <label class="control-label" for="timetaken" style="padding-left: 15px; padding-right: 5px;">Time</label>
                                                 <input id="timetaken" name="timetaken" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information.">
@@ -518,9 +518,9 @@
                                 <button type="button" class="btn btn-default" id="new_treatmentP">
                                     <span class="fa fa-plus-square-o"></span> New 
                                 </button>
-                                <!-- <button type="button" class="btn btn-default" id="edit_treatmentP">
+                                <button type="button" class="btn btn-default" id="edit_treatmentP">
                                     <span class="fa fa-edit fa-lg"></span> Edit 
-                                </button> -->
+                                </button>
                                 <button type="button" class="btn btn-default" data-oper='add' id="save_treatmentP">
                                     <span class="fa fa-save fa-lg"></span> Save 
                                 </button>
@@ -561,7 +561,7 @@
                                             <div class="form-group">
                                                 <label class="col-md-2 control-label" for="tr_entereddate">Date</label>
                                                 <div class="col-md-3">
-                                                    <input id="tr_entereddate" name="tr_entereddate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>" required rdonly>
+                                                    <input id="tr_entereddate" name="tr_entereddate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>" required>
                                                 </div>
                                                 
                                                 <label class="col-md-1 control-label" for="tr_enteredtime">Time</label>
@@ -778,6 +778,9 @@
                                 <button type="button" class="btn btn-default" id="new_careplan">
                                     <span class="fa fa-plus-square-o"></span> New 
                                 </button>
+                                <button type="button" class="btn btn-default" id="edit_careplan">
+                                    <span class="fa fa-edit fa-lg"></span> Edit 
+                                </button>
                                 <button type="button" class="btn btn-default" data-oper='add' id="save_careplan">
                                     <span class="fa fa-save fa-lg"></span> Save 
                                 </button>
@@ -789,7 +792,8 @@
                         
                         <div class="panel-body" style="padding-right: 0px;">
                             <form class='form-horizontal' style='width: 99%;' id='formCarePlan'>
-                                <div class="col-md-2" style="padding: 0 0 0 0;">
+                                <input id="idno_careplan" name="idno_careplan" type="hidden">
+                                <div class="col-md-3" style="padding: 0 0 0 0;">
                                     <div class="panel panel-info">
                                         <div class="panel-body">
                                             <table id="tbl_careplan_date" class="ui celled table" style="width: 100%;">
@@ -800,6 +804,7 @@
                                                         <th class="scope">episno</th>
                                                         <th class="scope">Date</th>
                                                         <th class="scope">Time</th>
+                                                        <th class="scope">Entered By</th>
                                                     </tr>
                                                 </thead>
                                             </table>
@@ -807,7 +812,7 @@
                                     </div>
                                 </div>
                                 
-                                <div class='col-md-10' style="padding-right: 0px;">
+                                <div class='col-md-9' style="padding-right: 0px;">
                                     <div class="panel panel-info">
                                         <div class="panel-body" style="padding-left: 0px; padding-right: 0px;">
                                             <div class='col-md-4' style="padding-left: 0px; padding-right: 0px;">

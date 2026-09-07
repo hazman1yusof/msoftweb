@@ -27,7 +27,7 @@
         </div>
 
         <div class="ui bottom attached tab raised segment" data-tab="userfile">
-                @include('patientcare.emergency.userfile_div')
+                @include('patientcare.userfile_div')
         </div>
         
         <div class="ui bottom attached tab raised segment active" data-tab="nursing_ed">
@@ -35,7 +35,7 @@
         </div>
 
         <div class="ui bottom attached tab raised segment" data-tab="nursNote">
-                @include('patientcare.nursingnote')
+                @include('patientcare.emergency.nursingnote')
         </div>
 
         <div class="ui bottom attached tab raised segment" data-tab="doctornote">
