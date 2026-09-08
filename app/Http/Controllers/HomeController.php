@@ -105,8 +105,9 @@ class HomeController extends Controller
         }
         $dept_desc = $unit_user_->description;
         $shortcut=true;
+        $logout_timer = $this->get_logout_timer();
 
-        return view('init.container',compact('menu','units','unit_user','title','dept_desc','shortcut','logo1'));
+        return view('init.container',compact('menu','units','unit_user','title','dept_desc','shortcut','logo1','logout_timer'));
     }
 
     public function dialysis(){

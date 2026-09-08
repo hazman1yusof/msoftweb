@@ -2193,7 +2193,15 @@ class OrdcomController extends defaultController
             ->where('uomcode','=',$chargetrx_obj->uom_recv)
             ->where('itemcode','=',$chargetrx_obj->chgcode)
             ->where('deptcode','=',$chargetrx_obj->reqdept)
-            ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+            ->where('year','=',defaultController::toYear($chargetrx_obj->trxdate));
+
+        $stockloc_prev = DB::table('material.stockloc')
+            ->where('compcode','=',session('compcode'))
+            // ->where('unit','=',session('unit'))
+            ->where('uomcode','=',$chargetrx_obj->uom_recv)
+            ->where('itemcode','=',$chargetrx_obj->chgcode)
+            ->where('deptcode','=',$chargetrx_obj->reqdept)
+            ->where('year','=',defaultController::toYear($ivdspdt_lama->first()->trandate));
 
         // dapatkan uom conversion factor untuk dapatkan txnqty dgn netprice
         // $convuom_recv = DB::table('material.uom')
@@ -2216,18 +2224,51 @@ class OrdcomController extends defaultController
         $qoh_quan = $stockloc->first()->qtyonhand;
         $new_qoh = floatval($qoh_quan) + floatval($prev_quan) - floatval($curr_quan);
 
+        //previos stockloc
+        if($stockloc_prev->exists()){
+
+            $stockloc_first = $stockloc_prev->first();
+            $stockloc_arr = (array)$stockloc_first;
+
+            $month = defaultController::toMonth($ivdspdt_lama->first()->trandate);
+            $NetMvQty = floatval($stockloc_arr['netmvqty'.$month]) + floatval($prev_quan);
+            $NetMvVal = floatval($stockloc_arr['netmvval'.$month]) + floatval(floatval($prev_netprice) * floatval($prev_quan));
+
+            $stockloc_prev
+                ->update([
+                    'QtyOnHand' => floatval($qoh_quan) + floatval($prev_quan),
+                    'NetMvQty'.$month => $NetMvQty, 
+                    'NetMvVal'.$month => $NetMvVal
+                ]);
+
+            $sumqtyonhand = DB::table('material.stockloc')
+                                ->select(DB::raw('SUM(qtyonhand) AS sum_qtyonhand'))
+                                ->where('compcode','=',session('compcode'))
+                                // ->where('unit','=',session('unit'))
+                                ->where('uomcode','=',$chargetrx_obj->uom_recv)
+                                ->where('itemcode','=',$chargetrx_obj->chgcode)
+                                ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
+                                ->first();
+
+            $product
+                ->update([
+                    'qtyonhand' => $sumqtyonhand->sum_qtyonhand,
+                ]);
+        }
+
+        //current stockloc
         if($stockloc->exists()){
 
             $stockloc_first = $stockloc->first();
             $stockloc_arr = (array)$stockloc_first;
 
             $month = defaultController::toMonth($chargetrx_obj->trxdate);
-            $NetMvQty = floatval($stockloc_arr['netmvqty'.$month]) + floatval($prev_quan) - floatval($curr_quan);
-            $NetMvVal = floatval($stockloc_arr['netmvval'.$month]) + floatval(floatval($prev_netprice) * floatval($prev_quan)) - floatval(floatval($curr_netprice) * floatval($curr_quan));
+            $NetMvQty = floatval($stockloc_arr['netmvqty'.$month]) - floatval($curr_quan);
+            $NetMvVal = floatval($stockloc_arr['netmvval'.$month]) - floatval(floatval($curr_netprice) * floatval($curr_quan));
 
             $stockloc
                 ->update([
-                    'QtyOnHand' => $new_qoh,
+                    'QtyOnHand' => floatval($qoh_quan) - floatval($curr_quan),
                     'NetMvQty'.$month => $NetMvQty, 
                     'NetMvVal'.$month => $NetMvVal
                 ]);
@@ -2247,29 +2288,6 @@ class OrdcomController extends defaultController
                 ]);
 
             $this->betulkan_stockexp($chargetrx_obj->chgcode,$chargetrx_obj->uom_recv,$new_qoh,$chargetrx_obj->reqdept);
-
-            //4. tolak expdate, kalu ada batchno
-            // $expdate_obj = DB::table('material.stockexp')
-            //     ->where('compcode',session('compcode'))
-            //     // ->where('Year','=',defaultController::toYear($chargetrx_obj->trxdate))
-            //     ->where('DeptCode','=',$chargetrx_obj->reqdept)
-            //     ->where('ItemCode','=',$chargetrx_obj->chgcode)
-            //     ->where('UomCode','=',$chargetrx_obj->uom_recv)
-            //     ->orderBy('expdate', 'asc');
-
-            // if($expdate_obj->exists()){
-            //     $expdate_first = $expdate_obj->first();
-            //     $txnqty_ = $curr_quan;
-            //     $balqty = floatval($expdate_first->balqty) + floatval($prev_quan) - floatval($curr_quan);
-            //     $expdate_obj
-            //             ->update([
-            //                 'balqty' => $balqty
-            //             ]);
-
-            // }else{
-            //     throw new \Exception("No stockloc");
-            // }
-
         }
 
         $ivdspdt_arr = [
@@ -2726,7 +2744,7 @@ class OrdcomController extends defaultController
                                 // ->where('unit','=',session('unit'))
                                 ->where('uomcode','=',$my_uom)
                                 ->where('itemcode','=',$my_chgcode)
-                                ->where('year','=',$my_year)
+                                ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
                                 ->first();
 
             DB::table('material.product')
