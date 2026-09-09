@@ -181,6 +181,16 @@ $(document).ready(function () {
 				empty_endoscopyNotes();
 				init_editbtn_top();
 			},
+			loadComplete: function (){
+				if($("#jqGrid_OT").data('lastselrow') == undefined){
+					$("#jqGrid_OT").setSelection($("#jqGrid_OT").getDataIDs()[0]);
+				}else{
+					$("#jqGrid_OT").setSelection($("#jqGrid_OT").data('lastselrow'));
+					delay(function (){
+						$('#jqGrid_OT tr#'+$("#jqGrid_OT").data('lastselrow')).focus();
+					}, 300);
+				}
+			},
 		});
 	}else{
 		$("#jqGrid_OT").jqGrid({
@@ -284,6 +294,16 @@ $(document).ready(function () {
 				init_editbtn_top();
 				if(!$("button#timer_play").hasClass("disabled")){
 					$("#jqGrid_OT").setSelection($("#jqGrid_OT").data('lastidno'));
+				}
+			},
+			loadComplete: function (){
+				if($("#jqGrid_OT").data('lastselrow') == undefined){
+					$("#jqGrid_OT").setSelection($("#jqGrid_OT").getDataIDs()[0]);
+				}else{
+					$("#jqGrid_OT").setSelection($("#jqGrid_OT").data('lastselrow'));
+					delay(function (){
+						$('#jqGrid_OT tr#'+$("#jqGrid_OT").data('lastselrow')).focus();
+					}, 300);
 				}
 			},
 		});
