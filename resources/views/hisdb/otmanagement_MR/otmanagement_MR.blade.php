@@ -1,19 +1,11 @@
-@extends('patientcare.layouts.main')
 
-@section('style')
-@endsection
-
-@section('header')
-@endsection
-
-@section('content')
     <input type="hidden" id="curr_user" value="{{ Auth::user()->username }}">
     <input type="hidden" id="user_groupid" value="{{Auth::user()->groupid}}">
     <input type="hidden" name="mrnMR" id="mrnMR" value="{{request()->get('mrn')}}">
     <input type="hidden" name="episnoMR" id="episnoMR" value="{{request()->get('episno')}}">
     <input name="epistycode" id="epistycode" type="hidden" value="{{request()->get('epistycode')}}">
     
-    <!-- <div class="ui stackable two column grid" style="display: none;">
+    <div class="ui stackable two column grid" style="display: none;">
         <div class="five wide tablet five wide computer column" id="calendar_div">
             <div class="ui orange segment" style="z-index:100">
                 <div id="calendar"></div>
@@ -52,13 +44,13 @@
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
     
     <input id="user_dept" name="user_dept" value="{{ Auth::user()->dept }}" type="hidden">
     <input id="sel_date" name="sel_date" value="{{ \Carbon\Carbon::now()->toDateString() }}" type="hidden">
     <input id="_token" name="_token" value="{{ csrf_token() }}" type="hidden">
     
-    <!-- <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px;" id="otMain_panel">
+    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px;" id="otMain_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_otMain">
             <b>NAME: <span id="name_show_otMain"></span></b> <br>
             <b>MRN:</b> <span id="mrn_show_otMain"></span> &nbsp;
@@ -96,7 +88,7 @@
                 @include('hisdb.otMain_MR.otMain_MR')
             </div>
         </div>
-    </div> -->
+    </div>
     
     <!-- @include('patientcare.itemselector') -->
     
@@ -112,62 +104,3 @@
             </table>
         </div>
     </div>
-    
-@endsection
-
-@section('css')
-    
-    <link rel="stylesheet" href="{{asset('patientcare/css/doctornote.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{{ asset('patientcare/assets/fullcalendar-3.7.0/fullcalendar.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('patientcare/assets/trirand/css/trirand/ui.jqgrid-bootstrap.css') }}" />
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/se/dt-1.11.3/datatables.min.css"/>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-    
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300;500&family=Open+Sans:wght@300;700&family=Syncopate&display=swap" rel="stylesheet">
-    
-@endsection
-
-@section('js')
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
-    <script type="text/ecmascript" src="{{ asset('patientcare/assets/trirand/i18n/grid.locale-en.js') }}"></script>
-    <script type="text/ecmascript" src="{{ asset('patientcare/assets/trirand/jquery.jqGrid.min.js') }}"></script>
-    <script type="text/ecmascript" src="{{ asset('patientcare/assets/fullcalendar-3.7.0/fullcalendar.min.js') }}"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/se/dt-1.11.3/datatables.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script type="text/ecmascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
-    <script type="text/ecmascript" src="{{ asset('patientcare/assets/form-validator/jquery.form-validator.min.js') }}/"></script>
-    <!-- <script type="text/javascript" src="{{ asset('patientcare/js/userfile.js') }}"></script> -->
-    <!-- <script type="text/javascript" src="{{ asset('patientcare/js/transaction.js') }}"></script> -->
-    <!-- <script type="text/javascript" src="{{ asset('patientcare/js/transaction_diet.js') }}"></script> -->
-    <!-- <script type="text/javascript" src="{{ asset('patientcare/js/transaction_phys.js') }}"></script> -->
-    <!-- <script type="text/javascript" src="{{ asset('patientcare/js/doctornote.js') }}"></script> -->
-    <!-- <script type="text/javascript" src="{{ asset('patientcare/js/nursing.js') }}"></script> -->
-    <!-- <script type="text/javascript" src="{{ asset('patientcare/js/dieteticCareNotes.js') }}"></script> -->
-    <!-- <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy_ncase.js') }}"></script> -->
-    <!-- <script type="text/javascript" src="{{ asset('patientcare/js/doctornote_main.js') }}"></script> -->
-    <script type="text/javascript" src="js/myjs/utility.js"></script>
-    <script type="text/javascript" src="js/hisdb/otMain_MR/otMain_MR.js"></script>
-    <script type="text/javascript" src="js/hisdb/otmanagement_MR/otmanagement_main_MR.js"></script>
-    <script type="text/javascript" src="js/hisdb/otmanagement_MR/otmanagement_div_MR.js?v=1.2"></script>
-    <script type="text/javascript" src="js/hisdb/preoperative_MR/preoperative_MR.js?v=1.1"></script>
-    <script type="text/javascript" src="js/hisdb/preoperativeDC_MR/preoperativeDC_MR.js?v=1.2"></script>
-    <script type="text/javascript" src="js/hisdb/oper_team_MR/oper_team_MR.js?v=1.2"></script>
-    <script type="text/javascript" src="js/hisdb/otswab_MR/otswab_MR.js?v=1.1"></script>
-    <script type="text/javascript" src="js/hisdb/ottime_MR/ottime_MR.js?v=1.2"></script>
-    <script type="text/javascript" src="js/hisdb/otdischarge_MR/otdischarge_MR.js?v=1.1"></script>
-    <script type="text/javascript" src="js/hisdb/endoscopyNotes_MR/endoscopyStomach_MR.js?v=1.1"></script>
-    <script type="text/javascript" src="js/hisdb/endoscopyNotes_MR/endoscopyIntestine_MR.js?v=1.1"></script>
-    <script type="text/javascript" src="js/hisdb/endoscopyNotes_MR/endoscopyNotes_MR.js?v=1.2"></script>
-    
-@endsection

@@ -101,14 +101,14 @@ class AppointmentMRController extends defaultController
         //     }
         // }
         $data_send = [];
-
+        
         $apptresrc = DB::table('hisdb.apptresrc')
                         ->where('compcode',session('compcode'))
                         ->where('TYPE','OT')
                         ->first();
-                        
+        
         $data_send['apptresrc_reqfor'] = $apptresrc->resourcecode;
-
+        
         $ordcomtt_phar = DB::table('sysdb.sysparam')
                     ->where('compcode',session('compcode'))
                     ->where('source','=','OE')
@@ -149,7 +149,20 @@ class AppointmentMRController extends defaultController
                     ->where('compcode',session('compcode'))
                     ->where('source','=','OE')
                     ->where('trantype','=','PKG')->first();
-
+        
+        // OT MANAGEMENT
+        $otstatus = DB::table('hisdb.otstatus')
+                    ->select('code','description')
+                    ->where('compcode','=',session('compcode'))
+                    ->get();
+        
+        $otroom = DB::table('hisdb.apptresrc')
+                    ->select('resourcecode','description')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('TYPE','=','OT')
+                    ->get();
+        // OT MANAGEMENT
+        
         $data_send['ordcomtt_phar'] = $ordcomtt_phar->pvalue1;
         $data_send['ordcomtt_disp'] = $ordcomtt_disp->pvalue1;
         $data_send['ordcomtt_rad'] = $ordcomtt_rad->pvalue1;
@@ -160,7 +173,7 @@ class AppointmentMRController extends defaultController
         $data_send['ordcomtt_dfee'] = $ordcomtt_dfee->pvalue1;
         $data_send['ordcomtt_oth'] = $ordcomtt_oth->pvalue1;
         $data_send['ordcomtt_pkg'] = $ordcomtt_pkg->pvalue1;
-
+        
         $data_send['phardept_dflt'] = $ordcomtt_phar->pvalue2;
         $data_send['dispdept_dflt'] = $ordcomtt_phar->pvalue2;
         $data_send['labdept_dflt'] = $ordcomtt_lab->pvalue2;
@@ -170,7 +183,11 @@ class AppointmentMRController extends defaultController
         $data_send['dietdept_dflt'] = $ordcomtt_diet->pvalue2;
         $data_send['pkgdept_dflt'] = session('deptcode');
         $data_send['othdept_dflt'] = session('deptcode');
-
+        // OT MANAGEMENT
+        $data_send['otstatus'] = $otstatus;
+        $data_send['otroom'] = $otroom;
+        // OT MANAGEMENT
+        
         return view('appointment_MR.appointment_MR',$data_send);
     }
     
