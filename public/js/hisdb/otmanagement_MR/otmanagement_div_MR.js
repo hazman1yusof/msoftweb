@@ -204,9 +204,9 @@ $(document).ready(function (){
 	
 	/////////////////////////////////////////jqGridPagerAddNotesOperRec/////////////////////////////////////////
 	$("#jqGridAddNotesOperRec").inlineNav('#jqGridPagerAddNotesOperRec', {
-		add: true,
+		add: false,
 		edit: false,
-		cancel: true,
+		cancel: false, save: false,
 		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
 		addParams: {
