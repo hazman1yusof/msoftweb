@@ -246,49 +246,7 @@ $(document).ready(function () {
 				// { label: 'stats_diet', name: 'stats_diet', hidden: true },
 				// { label: 'doctorname', name: 'doctorname', hidden: true },
 				// { label: ' ', name: ' ' ,formatter: formatter_btn, width: 70},
-				{ label: 'Patient Name', name: 'pat_name', width: 20, classes: 'wrap' },
-				{ label: 'ot_room', name: 'ot_room', hidden: true },
-				{ label: 'OT Room', name: 'ot_description', width: 15, classes: 'wrap' },
-				{ label: 'op_unit', name: 'op_unit', hidden: true },
-				{ label: 'Unit', name: 'unit_description', width: 20, classes: 'wrap', editable:true,
-							edittype:'custom',	editoptions:
-						    {  custom_element:op_unitCustomEdit,
-						       custom_value:galGridCustomValue 	
-						    }, 
-				},
-				{ label: 'Type', name: 'oper_type', width: 13, classes: 'wrap', editable:true,
-							edittype:"select", editoptions:{value:"MAJOR:MAJOR;MINOR:MINOR"}
-				},
-				{ label: 'Height (cm)', name: 'height', width: 12, classes: 'wrap', editable:true,
-							edittype:'custom',	editoptions:
-						    {  custom_element:heightCustomEdit,
-						       custom_value:galGridCustomValue 	
-						    }, 
-				},
-				{ label: 'Weight (kg)', name: 'weight', width: 12, classes: 'wrap', editable:true,
-							edittype:'custom',	editoptions:
-						    {  custom_element:weightCustomEdit,
-						       custom_value:galGridCustomValue 	
-						    }, 
-				},
-				{ label: 'idno', name: 'idno', hidden: true, key:true },
-				{ label: 'icnum', name: 'icnum', hidden: true },
-				{ label: 'mrn', name: 'mrn', width: 7, classes: 'wrap', formatter: padzero, unformat: unpadzero, checked: true, hidden:true },
-				{ label: 'appt_prcdure', name: 'appt_prcdure', hidden: true },
-				{ label: 'appt_diag', name: 'appt_diag', hidden: true },
-				{ label: 'Newic', name: 'Newic', hidden: true },
-				{ label: 'Sex', name: 'Sex', hidden: true },
-				{ label: 'DOB', name: 'DOB', hidden: true },
-				{ label: 'RaceCode', name: 'RaceCode', hidden: true },
-				{ label: 'Religion', name: 'Religion', hidden: true },
-				{ label: 'OccupCode', name: 'OccupCode', hidden: true },
-				{ label: 'Citizencode', name: 'Citizencode', hidden: true },
-				{ label: 'AreaCode', name: 'AreaCode', hidden: true },
-				{ label: 'ot_diag', name: 'ot_diag', hidden: true },
-				{ label: 'ot_prcdure', name: 'ot_prcdure', hidden: true },
-				{ label: 'ward', name: 'ward', hidden: true },
-				{ label: 'bednum', name: 'bednum', hidden: true },
-				{ label: 'latest_episno', name: 'latest_episno', hidden: true },
+				
 			],
 			autowidth: true,
 			shrinkToFit: true,
@@ -328,17 +286,17 @@ $(document).ready(function () {
 				populate_triage_currpt(selrowData('#jqGrid'));
 				populate_userfile(selrowData('#jqGrid'));
 				// populate_phys(selrowData('#jqGrid'));
-				populate_ordcom_currpt(selrowData('#jqGrid'));
-				populate_otMain(selrowData('#jqGrid'));
-				populate_otmgmt_div(selrowData('#jqGrid'));
-				populate_preoperative(selrowData('#jqGrid'));
-				populate_preoperativeDC(selrowData('#jqGrid'));
-				populate_oper_team(selrowData('#jqGrid'));
-				populate_otswab(selrowData('#jqGrid'));
-				populate_ottime(selrowData('#jqGrid'));
-				populate_otdischarge(selrowData('#jqGrid'));
-				populate_endoscopyNotes(selrowData('#jqGrid'));
-				getdata_preoperative();
+				// populate_ordcom_currpt(selrowData('#jqGrid'));
+				// populate_otMain(selrowData('#jqGrid'));
+				// populate_otmgmt_div(selrowData('#jqGrid'));
+				// populate_preoperative(selrowData('#jqGrid'));
+				// populate_preoperativeDC(selrowData('#jqGrid'));
+				// populate_oper_team(selrowData('#jqGrid'));
+				// populate_otswab(selrowData('#jqGrid'));
+				// populate_ottime(selrowData('#jqGrid'));
+				// populate_otdischarge(selrowData('#jqGrid'));
+				// populate_endoscopyNotes(selrowData('#jqGrid'));
+				// getdata_preoperative();
 				
 				// if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
 				// 	$('#checkbox_completed').prop('disabled',true);
