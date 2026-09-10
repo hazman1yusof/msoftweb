@@ -147,12 +147,7 @@
 
                                                 <div class="field five wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                     <label>Status</label>
-                                                    <select name="oper_status" id="oper_status" class="form-control input-sm">
-                                                        <option value=""></option>
-                                                        @foreach($otstatus as $obj)
-                                                            <option value="{{$obj->code}}">{{$obj->description}}</option>
-                                                        @endforeach
-                                                    </select>
+                                                    <input type="text" class="form-control" id="oper_status" name="oper_status">
                                                 </div>
                                             </div>
 

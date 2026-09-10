@@ -311,44 +311,15 @@ $(document).ready(function (){
     
     ////////////////////////////////////////////////jqGridPager////////////////////////////////////////////////
     $("#jqGrid_otswab").inlineNav('#jqGridPager_otswab', {
-        add: true,
-        edit: true,
-        cancel: true,
+        add: false,
+        edit: false,
+        cancel: false, save:false,
         // to prevent the row being edited/added from being automatically cancelled once the user clicks another row
         restoreAfterSelect: false,
         addParams: {
             addRowParams: myEditOptions_add_otswab
         },
         editParams: myEditOptions_edit_otswab
-    }).jqGrid('navButtonAdd', "#jqGridPager_otswab", {
-        id: "jqGridPagerDelete_otswab",
-        caption: "", cursor: "pointer", position: "last",
-        buttonicon: "glyphicon glyphicon-trash",
-        title: "Delete Selected Row",
-        onClickButton: function (){
-            selRowId = $("#jqGrid_otswab").jqGrid('getGridParam', 'selrow');
-            if(!selRowId){
-                alert('Please select row');
-            }else{
-                var result = confirm("Are you sure you want to delete this row?");
-                if(result == true){
-                    param = {
-                        _token: $("#_token").val(),
-                        action: 'addJqgrid_delete',
-                        idno: selrowData('#jqGrid_otswab').idno,
-                    }
-                    $.post("./otswab/form?"+$.param(param),{oper:'del_jqgrid'}, function (data){
-                        
-                    }).fail(function (data){
-                        //////////////////errorText(dialog,data.responseText);
-                    }).done(function (data){
-                        refreshGrid("#jqGrid_otswab", urlParam_otswab);
-                    });
-                }else{
-                    $("#jqGridPagerDelete_otswab,#jqGridPagerRefresh_otswab").show();
-                }
-            }
-        },
     }).jqGrid('navButtonAdd', "#jqGridPager_otswab", {
         id: "jqGridPagerRefresh_otswab",
         caption: "", cursor: "pointer", position: "last",
@@ -521,44 +492,15 @@ $(document).ready(function (){
     
     ////////////////////////////////////////////////jqGridPager////////////////////////////////////////////////
     $("#jqGrid_specimen").inlineNav('#jqGridPager_specimen', {
-        add: true,
-        edit: true,
-        cancel: true,
+        add: false,
+        edit: false,
+        cancel: false, save: false,
         // to prevent the row being edited/added from being automatically cancelled once the user clicks another row
         restoreAfterSelect: false,
         addParams: {
             addRowParams: myEditOptions_add_otspecimen
         },
         editParams: myEditOptions_edit_otspecimen
-    }).jqGrid('navButtonAdd', "#jqGridPager_specimen", {
-        id: "jqGridPagerDelete_otspecimen",
-        caption: "", cursor: "pointer", position: "last",
-        buttonicon: "glyphicon glyphicon-trash",
-        title: "Delete Selected Row",
-        onClickButton: function (){
-            selRowId = $("#jqGrid_specimen").jqGrid('getGridParam', 'selrow');
-            if(!selRowId){
-                alert('Please select row');
-            }else{
-                var result = confirm("Are you sure you want to delete this row?");
-                if(result == true){
-                    param = {
-                        _token: $("#_token").val(),
-                        action: 'addSpecimen_delete',
-                        idno: selrowData('#jqGrid_specimen').idno,
-                    }
-                    $.post("./otswab/form?"+$.param(param),{oper:'del_specimen'}, function (data){
-                        
-                    }).fail(function (data){
-                        //////////////////errorText(dialog,data.responseText);
-                    }).done(function (data){
-                        refreshGrid("#jqGrid_specimen", urlParam_otspecimen);
-                    });
-                }else{
-                    $("#jqGridPagerDelete_otspecimen,#jqGridPagerRefresh_otspecimen").show();
-                }
-            }
-        },
     }).jqGrid('navButtonAdd', "#jqGridPager_specimen", {
         id: "jqGridPagerRefresh_otspecimen",
         caption: "", cursor: "pointer", position: "last",
@@ -662,9 +604,9 @@ $(document).ready(function (){
 	
 	/////////////////////////////////////////jqGridPagerAddNotesOtSwab/////////////////////////////////////////
 	$("#jqGridAddNotesOtSwab").inlineNav('#jqGridPagerAddNotesOtSwab', {
-		add: true,
+		add: false,
 		edit: false,
-		cancel: true,
+		cancel: false, save:false,
 		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
 		addParams: {

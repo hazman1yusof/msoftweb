@@ -217,35 +217,36 @@ $(document).ready(function () {
 			colModel: [
 				{ label: 'MRN', name: 'MRN', width: 85, formatter: padzero, unformat: unpadzero, checked: true },
 				{ label: 'Epis. No', name: 'Episno', align: 'right', hidden: true },
-				{ label: 'Time', name: 'reg_time', width: 85, formatter: timeFormatter, unformat: timeUNFormatter },
+				// { label: 'Time', name: 'reg_time', width: 85, formatter: timeFormatter, unformat: timeUNFormatter },
 				{ label: 'Name', name: 'Name', width: 150, classes: 'wrap' },
 				// { label: 'Payer', name: 'payer', width: 150, classes: 'wrap', formatter: formatterpayer,hidden:true},
-				{ label: 'Dept', name: 'regdept', width: 60 },
-				{ label: 'I/C', name: 'Newic', width: 90 },
-				{ label: 'Rehab', name: 'reff_rehab', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true },
-				{ label: 'Physio', name: 'reff_physio', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true },
-				{ label: 'Diet', name: 'reff_diet', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true},
-				{ label: 'ED', name: 'reff_ed', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true},
-				{ label: 'RAD', name: 'reff_rad', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true},
-				{ label: 'HP', name: 'telhp', width: 80 },
-				{ label: 'Sex', name: 'Sex', width: 40 },
-				{ label: 'Mode', name: 'pyrmode', classes: 'wrap', width: 100 },
-				{ label: 'Discharge', name: 'episstatus', width: 100, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
-				{ label: 'Seen', name: 'doctorstatus', formatter: formatterstatus_tick, hidden: true },
-				{ label: 'idno', name: 'idno', hidden: true, key: true },
-				{ label: 'DOB', name: 'DOB', hidden: true },
-				{ label: 'RaceCode', name: 'RaceCode', hidden: true },
-				{ label: 'raceDesc', name: 'raceDesc', hidden: true },
-				{ label: 'religion', name: 'religion', hidden: true },
-				{ label: 'OccupCode', name: 'OccupCode', hidden: true },
-				{ label: 'Citizencode', name: 'Citizencode', hidden: true },
-				{ label: 'AreaCode', name: 'AreaCode', hidden: true },
-				{ label: 'stats_doctor', name: 'stats_doctor', hidden: true },
-				{ label: 'stats_rehab', name: 'stats_rehab', hidden: true },
-				{ label: 'stats_physio', name: 'stats_physio', hidden: true },
-				{ label: 'stats_diet', name: 'stats_diet', hidden: true },
-				{ label: 'doctorname', name: 'doctorname', hidden: true },
-				{ label: ' ', name: ' ' ,formatter: formatter_btn, width: 70},
+				// { label: 'Dept', name: 'regdept', width: 60 },
+				// { label: 'I/C', name: 'Newic', width: 90 },
+				// { label: 'Rehab', name: 'reff_rehab', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true },
+				// { label: 'Physio', name: 'reff_physio', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true },
+				// { label: 'Diet', name: 'reff_diet', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true},
+				// { label: 'ED', name: 'reff_ed', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true},
+				// { label: 'RAD', name: 'reff_rad', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true},
+				// { label: 'HP', name: 'telhp', width: 80 },
+				// { label: 'Sex', name: 'Sex', width: 40 },
+				// { label: 'Mode', name: 'pyrmode', classes: 'wrap', width: 100 },
+				// { label: 'Discharge', name: 'episstatus', width: 100, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
+				// { label: 'Seen', name: 'doctorstatus', formatter: formatterstatus_tick, hidden: true },
+				// { label: 'idno', name: 'idno', hidden: true, key: true },
+				// { label: 'DOB', name: 'DOB', hidden: true },
+				// { label: 'RaceCode', name: 'RaceCode', hidden: true },
+				// { label: 'raceDesc', name: 'raceDesc', hidden: true },
+				// { label: 'religion', name: 'religion', hidden: true },
+				// { label: 'OccupCode', name: 'OccupCode', hidden: true },
+				// { label: 'Citizencode', name: 'Citizencode', hidden: true },
+				// { label: 'AreaCode', name: 'AreaCode', hidden: true },
+				// { label: 'stats_doctor', name: 'stats_doctor', hidden: true },
+				// { label: 'stats_rehab', name: 'stats_rehab', hidden: true },
+				// { label: 'stats_physio', name: 'stats_physio', hidden: true },
+				// { label: 'stats_diet', name: 'stats_diet', hidden: true },
+				// { label: 'doctorname', name: 'doctorname', hidden: true },
+				// { label: ' ', name: ' ' ,formatter: formatter_btn, width: 70},
+				
 			],
 			autowidth: true,
 			shrinkToFit: true,
@@ -285,7 +286,17 @@ $(document).ready(function () {
 				populate_triage_currpt(selrowData('#jqGrid'));
 				populate_userfile(selrowData('#jqGrid'));
 				// populate_phys(selrowData('#jqGrid'));
-				populate_ordcom_currpt(selrowData('#jqGrid'));
+				// populate_ordcom_currpt(selrowData('#jqGrid'));
+				// populate_otMain(selrowData('#jqGrid'));
+				// populate_otmgmt_div(selrowData('#jqGrid'));
+				// populate_preoperative(selrowData('#jqGrid'));
+				// populate_preoperativeDC(selrowData('#jqGrid'));
+				// populate_oper_team(selrowData('#jqGrid'));
+				// populate_otswab(selrowData('#jqGrid'));
+				// populate_ottime(selrowData('#jqGrid'));
+				// populate_otdischarge(selrowData('#jqGrid'));
+				// populate_endoscopyNotes(selrowData('#jqGrid'));
+				// getdata_preoperative();
 				
 				// if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
 				// 	$('#checkbox_completed').prop('disabled',true);
@@ -595,4 +606,28 @@ function stop_scroll_on(){
 
 function formatterpayer(cellvalue, option, rowObject){
 	return cellvalue.replace(/'/g,'');
+}
+
+function op_unitCustomEdit(val,opt){
+	var val = getEditVal(val);
+	return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="op_unit" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+}
+
+function heightCustomEdit(val,opt){
+	var val = getEditVal(val);
+	return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="height" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value="'+val+'" style="z-index: 0"><span class="input-group-addon" style="padding:2px;">cm</span>');
+}
+
+function weightCustomEdit(val,opt){
+	var val = getEditVal(val);
+	return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="weight" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value="'+val+'" style="z-index: 0"><span class="input-group-addon" style="padding:2px;">kg</span>');
+}
+
+function galGridCustomValue (elem, operation, value){
+	if(operation == 'get') {
+		return $(elem).find("input").val();
+	} 
+	else if(operation == 'set') {
+		$('input',elem).val(value);
+	}
 }

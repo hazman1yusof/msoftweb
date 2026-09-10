@@ -157,6 +157,8 @@
         @include('hisdb.ordcom_MR.ordcom_MR',['phase' => '2'])
     </div>
 
+    @include('hisdb.otmanagement_MR.otmanagement_MR')
+
 @include('hisdb.pat_mgmt.pat_mgmt_iframe',['phase' => 'semantic'])
 @include('patientcare.itemselector')
 @endsection
@@ -252,6 +254,20 @@
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom_MR/ordcom_pkg_MR.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/pat_mgmt/epis_payer.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/pat_mgmt/epis_coverage.js?v=1.2') }}"></script>
+
+    <script type="text/javascript" src="js/hisdb/otMain_MR/otMain_MR.js"></script>
+    <script type="text/javascript" src="js/hisdb/otmanagement_MR/otmanagement_main_MR.js"></script>
+    <script type="text/javascript" src="js/hisdb/otmanagement_MR/otmanagement_div_MR.js?v=1.2"></script>
+    <script type="text/javascript" src="js/hisdb/preoperative_MR/preoperative_MR.js?v=1.1"></script>
+    <script type="text/javascript" src="js/hisdb/preoperativeDC_MR/preoperativeDC_MR.js?v=1.2"></script>
+    <script type="text/javascript" src="js/hisdb/oper_team_MR/oper_team_MR.js?v=1.2"></script>
+    <script type="text/javascript" src="js/hisdb/otswab_MR/otswab_MR.js?v=1.1"></script>
+    <script type="text/javascript" src="js/hisdb/ottime_MR/ottime_MR.js?v=1.2"></script>
+    <script type="text/javascript" src="js/hisdb/otdischarge_MR/otdischarge_MR.js?v=1.1"></script>
+    <script type="text/javascript" src="js/hisdb/endoscopyNotes_MR/endoscopyStomach_MR.js?v=1.1"></script>
+    <script type="text/javascript" src="js/hisdb/endoscopyNotes_MR/endoscopyIntestine_MR.js?v=1.1"></script>
+    <script type="text/javascript" src="js/hisdb/endoscopyNotes_MR/endoscopyNotes_MR.js?v=1.2"></script>
+    
 @endsection
 
 

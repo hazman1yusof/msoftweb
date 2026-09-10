@@ -190,7 +190,7 @@ $(document).ready(function (){
 	$("#jqGridAddNotesPreop").inlineNav('#jqGridPagerAddNotesPreop', {
 		add: false,
 		edit: false,
-		cancel: false,
+		cancel: false, save: false,
 		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
 		addParams: {

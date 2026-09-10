@@ -316,12 +316,7 @@
                                             <td>
                                                 <div class="form-inline"> Operating room no <span style="margin-left: 10px;"> :  &nbsp;
                                                     <div class="form-group">
-                                                        <select name="info_otroom" id="preop_info_otroom" class="form-control input-sm">
-                                                            <option value=""></option>
-                                                            @foreach($otroom as $obj)
-                                                                <option value="{{$obj->resourcecode}}">{{$obj->description}}</option>
-                                                            @endforeach
-                                                        </select>
+                                                        <input type="text" class="form-control" id="preop_info_otroom" name="info_otroom">
                                                     </div>
                                                 </div>
                                             </td>

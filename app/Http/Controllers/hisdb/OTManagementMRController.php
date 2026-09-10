@@ -121,11 +121,11 @@ class OTManagementMRController extends defaultController
                                         // ->where('apptbook.surgery_date' ,'=', $request->filterVal[0]);
         
         if(isset($request->mrn)){
-            $table_patm = $table_patm->where('pat_mast.MRN', $request->mrn);
+            $table_apptbook = $table_apptbook->where('pat_mast.MRN', $request->mrn);
         }
         
         if(isset($request->episno)){
-            $table_patm = $table_patm->where('pat_mast.Episno', $request->episno);
+            $table_apptbook = $table_apptbook->where('pat_mast.Episno', $request->episno);
         }
         
         if(!empty($request->sidx)){

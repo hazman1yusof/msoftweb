@@ -181,6 +181,16 @@ $(document).ready(function () {
 				empty_endoscopyNotes();
 				init_editbtn_top();
 			},
+			loadComplete: function (){
+				if($("#jqGrid_OT").data('lastselrow') == undefined){
+					$("#jqGrid_OT").setSelection($("#jqGrid_OT").getDataIDs()[0]);
+				}else{
+					$("#jqGrid_OT").setSelection($("#jqGrid_OT").data('lastselrow'));
+					delay(function (){
+						$('#jqGrid_OT tr#'+$("#jqGrid_OT").data('lastselrow')).focus();
+					}, 300);
+				}
+			},
 		});
 	}else{
 		$("#jqGrid_OT").jqGrid({
@@ -200,9 +210,9 @@ $(document).ready(function () {
 				{ label: 'Type', name: 'oper_type', width: 13, classes: 'wrap', editable:true,
 							edittype:"select", editoptions:{value:"MAJOR:MAJOR;MINOR:MINOR"}
 				},
-				{ label: 'Status', name: 'oper_status', width: 13, classes: 'wrap', editable:true,
-							edittype:'select', editoptions:getoper_status()
-				},
+				// { label: 'Status', name: 'oper_status', width: 13, classes: 'wrap', editable:true,
+				// 			edittype:'select', editoptions:getoper_status()
+				// },
 				{ label: 'Height (cm)', name: 'height', width: 12, classes: 'wrap', editable:true,
 							edittype:'custom',	editoptions:
 						    {  custom_element:heightCustomEdit,
@@ -286,12 +296,22 @@ $(document).ready(function () {
 					$("#jqGrid_OT").setSelection($("#jqGrid_OT").data('lastidno'));
 				}
 			},
+			loadComplete: function (){
+				if($("#jqGrid_OT").data('lastselrow') == undefined){
+					$("#jqGrid_OT").setSelection($("#jqGrid_OT").getDataIDs()[0]);
+				}else{
+					$("#jqGrid_OT").setSelection($("#jqGrid_OT").data('lastselrow'));
+					delay(function (){
+						$('#jqGrid_OT tr#'+$("#jqGrid_OT").data('lastselrow')).focus();
+					}, 300);
+				}
+			},
 		});
 	}
 
-	
 	$('#otMain_tab .top.menu .item').tab({'onVisible': function (){
         let tab = $(this).data('tab');
+        // console.log(tab);
         switch(tab){
             case 'preoperative':
 				$("#jqGridAddNotesPreop").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesPreop_c")[0].offsetWidth-$("#jqGridAddNotesPreop_c")[0].offsetLeft));
@@ -364,57 +384,17 @@ $(document).ready(function () {
 		        refreshGrid('#jqGridAddNotesOperRec',urlParam_AddNotesOperRec);
                 break;
         }
-
-		
     }});
 
-	// var unsaved = false;
-
-		// 	$(":input").change(function(){ //triggers change in all input fields including text type
-		// 		unsaved = true;
-		// 	});
-					
-		// 	function unloadPage(){ 
-		// 		if(unsaved){
-		// 			return "You have unsaved changes on this page. Do you want to leave this page and discard your changes or stay on this page?";
-		// 		}
-		// 	}
-					
-		// 	window.onbeforeunload = unloadPage;
-	
-	// function alertSave(event, ui){
-	// 	if(button_state_otswab($(this).data('oper','add'))){
-	// 		event.preventDefault();
-	// 		bootbox.confirm({
-	// 			message: "Total Detail Amount is not equal with Invoice Amount. <br> Do you want to proceed?",
-	// 			buttons: { confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
-	// 			},
-	// 			callback: function (result) {
-	// 				if(result == true){
-	// 					alert('true')
-	// 				}else{
-	// 					alert('false')
-	// 				}
-	// 			}
-	// 		});
-	// 	}
-	// }
-	
-	// $("#jqGrid_OT").jqGrid('setGroupHeaders', {
-	// 	useColSpanStyle: true,
-	// 	groupHeaders:[
-	// 		{ startColumnName: 'reff_rehab', numberOfColumns: 3, titleText: '<em>Referral</em>' },
-	// 	]
-	// });
 	addParamField('#jqGrid_OT',true,urlParam_OT,['action']);
 	
 	//////////////////////////////////////////start grid pager//////////////////////////////////////////
-	$("#jqGrid_OT").jqGrid('navGrid', '#jqGridPager_OT', {
-		view: false, edit: false, add: false, del: false, search: false,
-		beforeRefresh: function () {
-			refreshGrid("#jqGrid_OT", urlParam_OT);
-		},
-	});
+	// $("#jqGrid_OT").jqGrid('navGrid', '#jqGridPager_OT', {
+	// 	view: false, edit: false, add: false, del: false, search: false,
+	// 	beforeRefresh: function () {
+	// 		refreshGrid("#jqGrid_OT", urlParam_OT);
+	// 	},
+	// });
 	
 	function formatterstatus_tick(cellvalue, option, rowObject) {
 		if (cellvalue == 'SEEN') {
