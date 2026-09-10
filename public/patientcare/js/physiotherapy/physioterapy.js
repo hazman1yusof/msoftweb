@@ -258,11 +258,11 @@ $(document).ready(function () {
 		$('#tbl_phys_ncase_date tbody tr').removeClass('active');
 		$(this).addClass('active');
 		
-		// if(check_same_usr_edit(data)){
-		//     button_state_phys_ncase('edit');
-		// }else{
+		if(check_same_usr_edit(data)){
+			button_state_phys_ncase('edit');
+		}else{
 			button_state_phys_ncase('add');
-		// }
+		}
 		$('#perkeso_chart').attr('disabled',false);
 		
 		// getdata_physio();
@@ -372,15 +372,15 @@ function getdata_physio(){
 			autoinsert_rowdata_phys_ncase("#formphys_ncase",data.romsoundside);
 			autoinsert_rowdata_phys_ncase("#formphys_ncase",data.musclepower);
 			autoinsert_rowdata_phys_ncase("#formphys_ncase",data.patrehabperkeso);
-			// button_state_phys_ncase('edit');
+			button_state_phys_ncase('edit');
 			$('#perkeso_chart').attr('disabled',false);
 		}else{
 			autoinsert_rowdata_phys_ncase("#formphys_ncase",data.pat_physio);
-			// button_state_phys_ncase('add');
+			button_state_phys_ncase('add');
 			$('#perkeso_chart').attr('disabled',true);
 		}
 		
-		button_state_phys_ncase('add');
+		// button_state_phys_ncase('add');
 	});
 }
 

@@ -3,7 +3,8 @@ $(document).ready(function () {
 	$('#formphys_ncase .ui.checkbox').checkbox();
 	disableForm('#formphys_ncase');
 	var auto_save_background_formphys_ncase = new auto_save_background('#formphys_ncase','rehab_formphys_ncase');
-
+	var auto_save_background_formphys = new auto_save_background('#formphys','rehab_formphys');
+	
 	$("#new_phys_ncase").click(function(){
 		$('#stats_rehab,#stats_physio').text('ATTEND');
 		button_state_phys_ncase('wait');
@@ -14,11 +15,14 @@ $(document).ready(function () {
 		rdonly('#formphys');
 		
 		emptyFormdata_div("#formphys_ncase",['#mrn_rehabMain','#episno_rehabMain']);
-		$("#phys_ncase_entereddate").val(moment().format('YYYY-MM-DD'));
+		// $("#phys_ncase_entereddate").val(moment().format('YYYY-MM-DD'));
 		$("#phys_ncase_enteredtime").val(moment().format('HH:mm:ss'));
-
+		
 		auto_save_background_formphys_ncase.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
 		auto_save_background_formphys_ncase.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+		
+		auto_save_background_formphys.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+		auto_save_background_formphys.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
 	});
 	
 	$("#edit_phys_ncase").click(function(){
@@ -26,14 +30,19 @@ $(document).ready(function () {
 		button_state_phys_ncase('wait');
 		enableForm('#formphys_ncase');
 		rdonly('#formphys_ncase');
-
+		
 		enableForm('#formphys');
 		rdonly('#formphys');
-
+		
+		$('#phys_ncase_entereddate').prop('readonly', true);
+		
 		auto_save_background_formphys_ncase.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
 		auto_save_background_formphys_ncase.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+		
+		auto_save_background_formphys.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+		auto_save_background_formphys.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
 	});
-
+	
 	$(".ui.toggle.button").click(function(){
 		$('.ui.toggle.button').removeClass('active');
 		$(this).addClass('active');
@@ -49,22 +58,23 @@ $(document).ready(function () {
 		// }else 
 		
 		if( $('#formphys_ncase').isValid({requiredFields: ''}, conf, true) ) {
-
 			auto_save_background_formphys_ncase.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+			auto_save_background_formphys.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
 			saveForm_phys_ncase(function(){
 				$("#cancel_phys_ncase").data('oper','edit');
 				$("#cancel_phys_ncase").click();
 				$('#stats_rehab,#stats_physio').text('SEEN');
-				// button_state_phys_ncase('edit');
-				button_state_phys_ncase('add');
+				button_state_phys_ncase('edit');
+				// button_state_phys_ncase('add');
+				
 				var dateParam_phys={
 					action:'get_table_date_phys',
 					type:$("input[type=radio][name=pastcurr]:checked").val(),
 					mrn:$('#mrn_rehabMain').val(),
 					episno_rehabMain:$("#episno_rehabMain").val(),
 				}
-
-			    phys_date_tbl.ajax.url( "./ptcare_phys/table?"+$.param(dateParam_phys) ).load(function(data){
+				
+				phys_date_tbl.ajax.url( "./ptcare_phys/table?"+$.param(dateParam_phys) ).load(function(data){
 					// emptyFormdata_div("#formphys",['#mrn_rehabMain','#episno_rehabMain']);
 					// $('#phys_date_tbl tbody tr:eq(0)').click();	//to select first row
 			    });
@@ -83,8 +93,9 @@ $(document).ready(function () {
 		button_state_phys_ncase($(this).data('oper'));
 		// dialog_mrn_edit.off();
 		$('#tbl_phys_ncase_date').DataTable().ajax.reload();
-
+		
 		auto_save_background_formphys_ncase.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+		auto_save_background_formphys.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
 	});
 	
 	button_state_phys_ncase('empty');

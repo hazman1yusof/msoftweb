@@ -478,6 +478,7 @@ class SpinalCordController extends defaultController
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'entereddate' => $request->entereddate,
+                        'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                         'ltrC2' => $request->ltrC2,
                         'pprC2' => $request->pprC2,
                         'ltrC3' => $request->ltrC3,

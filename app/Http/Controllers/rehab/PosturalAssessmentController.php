@@ -246,6 +246,8 @@ class PosturalAssessmentController extends defaultController
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'entereddate' => $request->entereddate,
+                        'enteredtime' => $request->enteredtime,
+                        // 'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                         'FACToeOutL' => $request->FACToeOutL,
                         'FACToeOutR' => $request->FACToeOutR,
                         'FACToeInL' => $request->FACToeInL,

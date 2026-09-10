@@ -24,7 +24,7 @@
 				top: 14px; 
 				z-index: 2;">
 		<button class="ui button" id="new_phys_ncase"><span class="fa fa-plus-square-o"></span>New</button>
-		<!-- <button class="ui button" id="edit_phys_ncase"><span class="fa fa-edit fa-lg"></span>Edit</button> -->
+		<button class="ui button" id="edit_phys_ncase"><span class="fa fa-edit fa-lg"></span>Edit</button>
 		<button class="ui button" id="save_phys_ncase"><span class="fa fa-save fa-lg"></span>Save</button>
 		<button class="ui button" id="cancel_phys_ncase"><span class="fa fa-ban fa-lg"></span>Cancel</button>
 	</div>
@@ -57,8 +57,8 @@
 		<input id="category_phys_ncase" name="category" type="hidden">
 		<input id="idno_phys_ncase" name="idno_phys_ncase" type="hidden">
 		<input id="datetime_phys_ncase" name="datetime_phys_ncase" type="hidden">
-		<input id="phys_ncase_entereddate" name="entereddate" type="hidden">
-		<input id="phys_ncase_enteredtime" name="enteredtime" type="hidden">
+		<!-- <input id="phys_ncase_entereddate" name="entereddate" type="hidden">
+		<input id="phys_ncase_enteredtime" name="enteredtime" type="hidden"> -->
 		
 		<div class="ui grid">
 			<div class='four wide column'>
@@ -84,6 +84,19 @@
 			</div>
 			
 			<div class='twelve wide column'>
+				<div class="sixteen wide column ui form">
+					<div class="inline fields">
+						<label>Date</label>
+						<div class="field">
+							<input id="phys_ncase_entereddate" name="entereddate" type="date" data-validation="required" data-validation-error-msg-required="Please enter information.">
+						</div>
+						
+						<div class="field" style="display: none;">
+							<input id="phys_ncase_enteredtime" name="enteredtime" type="time">
+						</div>
+					</div>
+				</div>
+				
 				<div id="physioNcaseTabs" class="ui segment">
 					<div class="ui top attached tabular menu">
 						<a class="item" data-tab="physMedCond" id="navtab_physMedCond" style="display: none;">MEDICAL CONDITION</a>

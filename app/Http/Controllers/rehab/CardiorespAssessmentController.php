@@ -168,6 +168,8 @@ class CardiorespAssessmentController extends defaultController
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'entereddate' => $request->entereddate,
+                        'enteredtime' => $request->enteredtime,
+                        // 'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                         'subjectiveAssessmt' => $request->subjectiveAssessmt,
                         'objectiveAssessmt' => $request->objectiveAssessmt,
                         'analysis' => $request->analysis,
