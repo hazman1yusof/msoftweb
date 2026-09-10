@@ -2551,13 +2551,13 @@ function auto_save_background(form,id){
 
 	this.on = function(store_id){
 		clearInterval(this.interval);
-    	this.interval = setInterval(auto_save_func, 3000, this.form, this.id, store_id);
+    this.interval = setInterval(auto_save_func, 3000, this.form, this.id, store_id);
 	}
 
 	this.off = function(store_id){
 		clearInterval(this.interval);
 		let storage_obj = localStorage.getItem('auto_save_'+this.id+'_'+store_id);
-		localStorage.removeItem('auto_save_'+this.id);
+		localStorage.removeItem('auto_save_'+this.id+'_'+store_id);
 	}
 
 	this.check = function(store_id){
