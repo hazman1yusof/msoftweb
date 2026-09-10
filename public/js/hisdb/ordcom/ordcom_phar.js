@@ -272,7 +272,6 @@ $(document).ready(function(){
 
 			write_detail_dosage(selrowdata,false,row_id);
 			
-
 			calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-241);
 		}
     });
@@ -1824,9 +1823,9 @@ function write_detail_dosage(selrowdata,edit=false,rowid){
 		return 0;
 	}
 	if(!edit){
-		$('#dosage_phar_'+rowid+',#frequency_phar_'+rowid+',#instruction_phar_'+rowid+',#drugindicator_phar_'+rowid+',#ftxtdosage_phar_'+rowid).prop('readonly', true);
+		$('#dosage_phar_'+rowid+',#frequency_phar_'+rowid+',#instruction_phar_'+rowid+',#drugindicator_phar_'+rowid+',#ftxtdosage_phar_'+rowid).prop('disabled', true);
 	}else{
-		$('#dosage_phar_'+rowid+',#frequency_phar_'+rowid+',#instruction_phar_'+rowid+',#drugindicator_phar_'+rowid+',#ftxtdosage_phar_'+rowid).prop('readonly', false);
+		$('#dosage_phar_'+rowid+',#frequency_phar_'+rowid+',#instruction_phar_'+rowid+',#drugindicator_phar_'+rowid+',#ftxtdosage_phar_'+rowid).prop('disabled', false);
 	}
 	removeValidationClass(['#dosage_phar_'+rowid,'#frequency_phar_'+rowid,'#instruction_phar_'+rowid,'#drugindicator_phar_'+rowid]);
 	$('#ftxtdosage_phar_'+rowid).val(selrowdata.ftxtdosage);
@@ -1861,6 +1860,12 @@ function ordropdown(id,obj){
 	this.obj=obj;
 	this.on = function(){
 		let self = this;
+		$(self.id).prop("disabled", false);
 		$(self.id).select2(self.obj);
+	}
+
+	this.off = function(){
+		let self = this;
+		$(self.id).prop("disabled", true);
 	}
 }

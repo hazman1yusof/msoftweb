@@ -2,6 +2,7 @@
 $(document).ready(function () {
 	$('#formphys_ncase .ui.checkbox').checkbox();
 	disableForm('#formphys_ncase');
+	var auto_save_background_formphys_ncase = new auto_save_background('#formphys_ncase','rehab_formphys_ncase');
 
 	$("#new_phys_ncase").click(function(){
 		$('#stats_rehab,#stats_physio').text('ATTEND');
@@ -15,6 +16,9 @@ $(document).ready(function () {
 		emptyFormdata_div("#formphys_ncase",['#mrn_rehabMain','#episno_rehabMain']);
 		$("#phys_ncase_entereddate").val(moment().format('YYYY-MM-DD'));
 		$("#phys_ncase_enteredtime").val(moment().format('HH:mm:ss'));
+
+		auto_save_background_formphys_ncase.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+		auto_save_background_formphys_ncase.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
 	});
 	
 	$("#edit_phys_ncase").click(function(){
@@ -25,6 +29,9 @@ $(document).ready(function () {
 
 		enableForm('#formphys');
 		rdonly('#formphys');
+
+		auto_save_background_formphys_ncase.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+		auto_save_background_formphys_ncase.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
 	});
 
 	$(".ui.toggle.button").click(function(){
@@ -42,6 +49,8 @@ $(document).ready(function () {
 		// }else 
 		
 		if( $('#formphys_ncase').isValid({requiredFields: ''}, conf, true) ) {
+
+			auto_save_background_formphys_ncase.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
 			saveForm_phys_ncase(function(){
 				$("#cancel_phys_ncase").data('oper','edit');
 				$("#cancel_phys_ncase").click();
@@ -64,7 +73,6 @@ $(document).ready(function () {
 			enableForm('#formphys_ncase');
 			rdonly('#formphys_ncase');
 		}
-
 	});
 
 	$("#cancel_phys_ncase").click(function(){
@@ -75,6 +83,8 @@ $(document).ready(function () {
 		button_state_phys_ncase($(this).data('oper'));
 		// dialog_mrn_edit.off();
 		$('#tbl_phys_ncase_date').DataTable().ajax.reload();
+
+		auto_save_background_formphys_ncase.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
 	});
 	
 	button_state_phys_ncase('empty');
@@ -284,3 +294,64 @@ function autoinsert_rowdata_phys_ncase(form,rowData){
 		}
 	});
 }
+
+function auto_save_background(form,id){
+	this.form = form;
+	this.id = id;
+	this.interval;
+
+	this.on = function(store_id){
+		clearInterval(this.interval);
+    	this.interval = setInterval(auto_save_func, 3000, this.form, this.id, store_id);
+	}
+
+	this.off = function(store_id){
+		clearInterval(this.interval);
+		let storage_obj = localStorage.getItem('auto_save_'+this.id+'_'+store_id);
+		localStorage.removeItem('auto_save_'+this.id);
+	}
+
+	this.check = function(store_id){
+		var myform = this.form;
+		let storage_obj = localStorage.getItem('auto_save_'+this.id+'_'+store_id);
+		if(storage_obj){
+			var confirm_ = confirm("Do you want to load unsaved data?");
+			if(confirm_){
+				JSON.parse(storage_obj).forEach(function(e,i){
+					$(myform+" [name='"+e.name+"']").val(e.value);
+				});
+			}
+		}
+	}
+
+	function auto_save_func(form,storage_name,store_id){
+		console.log('autosave running...')
+		let form_array = $('form'+form).serializeArray();
+		let form_array_hidden = $('form'+form+' input[type=hidden]').serializeArray();
+
+		form_array_hasval = form_array.filter(function(rowdata,index){
+			if(rowdata.value != ''){
+				return true;
+			}else{
+				return false;
+			}
+		});
+
+		form_array_hasval_nohidden = form_array_hasval.filter(function(rowdata,index){
+			var retval = true;
+			var name = rowdata.name;
+			form_array_hidden.forEach(function(e,i){
+				if(e.name == name){
+					retval = false;
+				}
+			});
+			return retval;
+		});
+
+		if(form_array_hasval_nohidden.length > 0){
+			var json_string = JSON.stringify(form_array_hasval_nohidden);
+			localStorage.setItem('auto_save_'+storage_name+'_'+store_id,json_string);
+		}
+
+	}
+} 
