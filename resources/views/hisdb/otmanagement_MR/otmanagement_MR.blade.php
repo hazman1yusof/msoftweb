@@ -50,7 +50,7 @@
     <input id="sel_date" name="sel_date" value="{{ \Carbon\Carbon::now()->toDateString() }}" type="hidden">
     <input id="_token" name="_token" value="{{ csrf_token() }}" type="hidden">
     
-    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px;" id="otMain_panel">
+    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px; display: none;" id="otMain_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_otMain">
             <b>NAME: <span id="name_show_otMain"></span></b> <br>
             <b>MRN:</b> <span id="mrn_show_otMain"></span> &nbsp;
