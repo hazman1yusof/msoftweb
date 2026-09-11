@@ -2320,7 +2320,7 @@ class RequestForMRController extends defaultController
            $phase = 'CLINICAL';
         }
 
-        return view('patientcare.requestfor_iframe',compact('mrn','episno','phase','pat_mast_data','episode_data'));
+        return view('patientcare.requestfor_iframe_MR',compact('mrn','episno','phase','pat_mast_data','episode_data'));
     }
 
     public function get_table_referralLetterReqfor(Request $request){

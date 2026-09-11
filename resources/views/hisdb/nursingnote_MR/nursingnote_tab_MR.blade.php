@@ -2,7 +2,7 @@
     <div id="jqGridNursNote_paneltab" class='col-md-12' style="padding: 0 0 15px 0;" data-curtype='navtab_invChart'>
         <ul class="nav nav-tabs nav-justified nav-tabs-second" id="jqGridNursNote_panel_tabs">
             @if(request()->get('epistycode') == 'IP')
-                <li><a data-toggle="tab" id="navtab_invChart" href="#tab-invChart" data-type='invChart'>Investigation Chart</a></li>
+                <li class="active"><a data-toggle="tab" id="navtab_invChart" href="#tab-invChart" data-type='invChart'>Investigation Chart</a></li>
                 <li><a data-toggle="tab" id="navtab_progress" href="#tab-progress" data-type='progress'>Progress Note</a></li>
                 <li><a data-toggle="tab" id="navtab_intake" href="#tab-intake" data-type='intake'>Intake Output</a></li>
                 <li><a data-toggle="tab" id="navtab_drug" href="#tab-drug" data-type='drug'>Drug Administration</a></li>
@@ -32,10 +32,10 @@
             <input id="age_nursNote" name="age_nursNote" type="hidden">
             <input type="hidden" id="ordcomtt_phar" value="{{$ordcomtt_phar ?? ''}}">
             
-            <div id="tab-invChart" class="tab-pane fade">
+            <div id="tab-invChart" class="active in tab-pane fade">
                 @include('hisdb.nursingnote_MR.nursingnote_invChart_MR')
             </div>
-            <div id="tab-progress" class="active in tab-pane fade">
+            <div id="tab-progress" class="tab-pane fade">
                 <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                     <div class="panel panel-info">
                         <div class="panel-heading text-center" style="position: sticky; top: 0px; z-index: 3; height: 40px;"></div>

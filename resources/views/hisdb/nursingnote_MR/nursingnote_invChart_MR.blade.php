@@ -29,7 +29,7 @@
                                 
                                 <div class='col-md-6'>
                                     <div class="ui action input">
-                                        <button type="button" id='invChart_click' class='ui icon button'><i class="paperclip icon"></i>Upload File</button>
+                                        <!-- <button type="button" id='invChart_click' class='ui icon button'><i class="paperclip icon"></i>Upload File</button> -->
                                         <input type="file" name="file" id="invChrt_file" accept="audio/*,image/*,video/*,application/pdf" style="display: none;">
                                     </div>
                                     <div class="ui segment" id="invChart_allAttach" style="display: none;"></div>

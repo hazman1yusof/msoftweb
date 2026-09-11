@@ -2044,6 +2044,7 @@ Route::get('/requestfor_MR','hisdb\RequestForMRController@show');
 Route::get('/requestfor_MR/table','hisdb\RequestForMRController@table');
 Route::post('/requestfor_MR/form','hisdb\RequestForMRController@form');
 Route::get('/requestfor_MR/showpdf','hisdb\RequestForMRController@showpdf');
+Route::get('/requestfor_iframe_MR','patientcare\RequestForMRController@requestfor_iframe');
 
 //// Dietetic Care Notes MR page ///
 Route::get('/dieteticCareNotes_MR','hisdb\DieteticCareNotesMRController@show');

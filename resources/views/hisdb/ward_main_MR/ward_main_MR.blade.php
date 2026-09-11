@@ -42,7 +42,7 @@
         <div class="panel-body paneldiv" style="overflow-y: auto;">
             <div class='col-md-12' style="padding: 0 0 15px 0;">
                 <ul class="nav nav-tabs" id="jqGridWardMain_panel_tabs">
-                    <li><a data-toggle="tab" id="navtab_EDAssmtIP" href="#tab-EDAssmtIP" data-type='EDAssmtIP'>Emergency<br>Nursing<br>Assessment</a></li>
+                    <li class="active"><a data-toggle="tab" id="navtab_EDAssmtIP" href="#tab-EDAssmtIP" data-type='EDAssmtIP'>Emergency<br>Nursing<br>Assessment</a></li>
                     <li><a data-toggle="tab" id="navtab_nursActionIP" href="#tab-nursActionIP" data-type='nursActionIP'>Nursing<br>Action Plan</a></li>
                     <li><a data-toggle="tab" id="navtab_nursNoteIP" href="#tab-nursNoteIP" data-type='nursNoteIP'>Nursing Note</a></li>
                     @if(Auth::user()->doctor == 1)
@@ -82,6 +82,10 @@
                     </div>
                     <div id="tab-docNoteRefIP" class="tab-pane fade">
                         @include('hisdb.clientprogressnote_MR.clientprogressnoteref_tab_MR')
+                    </div>
+                    <div id="tab-reqForIP" class="tab-pane fade">
+                        <!-- #include('hisdb.requestfor.requestfor_tab') -->
+                        <iframe id='requestfor_main_iframe_MR' src='' style="height: calc(90vh);width: 100%; border: none;overflow-x: hidden;"></iframe>
                     </div>
                     <div id="tab-dietNoteIP" class="tab-pane fade">
                         @include('hisdb.dieteticCareNotes_MR.dieteticCareNotes_tab_MR')
