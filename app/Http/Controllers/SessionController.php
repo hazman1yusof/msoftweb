@@ -52,16 +52,18 @@ class SessionController extends Controller
 
         if(!$bgpic_->exists()){
             $bgpic = './img/carousel/Supply-Change-Management.jpg';
+            $logo = './img/carousel/selgate/SELGATE_LOGO2.png';
         }else{
             $bgpic = $bgpic_->first()->pvalue1;
+            $logo = $bgpic_->first()->lastuser;
         }
 
-        return view('init.qrcode',compact('bgpic'));
+        return view('init.qrcode',compact('bgpic','logo'));
     }
 
     public function qrcode_gen(){
         $qrurl = \config('get_config.APP_URL')."qrcode";
-        
+
         return view('init.qrcodegen',compact('qrurl'));
     }
 

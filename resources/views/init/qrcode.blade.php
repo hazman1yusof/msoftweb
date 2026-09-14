@@ -68,7 +68,7 @@
               <div class="card-body text-primary">
                     <div class="col-12" style="text-align: center">
                         <a class="navbar-brand" style="padding-top: 0">
-                            <img src="{{asset('/img/logo/logo.jpg')}}" alt="logo" height="90px" width="auto">
+                            <img src="{{$logo}}" alt="logo" height="90px" width="auto">
                         </a>
                         <br/>
                         <p style="color: dimgrey;">Insert patient I/C number and click submit button below</p>
