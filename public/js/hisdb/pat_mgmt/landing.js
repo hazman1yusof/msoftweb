@@ -605,6 +605,7 @@ $(document).ready(function() {
                 let episno = cellvalue.split(',')[1];
                 let apptidno = cellvalue.split(',')[2];
                 let idno = rowObject.idno;
+                let epistycode = $('#epistycode').val();
 
                 let return_val = "";
 
@@ -621,11 +622,11 @@ $(document).ready(function() {
 
                 if(apptidno == 'null' || apptidno == ''){
                     return_val+=`
-                        <button title="Episode" type="button" class="btn btn-xs btn-danger btn-md command-episode preepis_epis" data-mrn=`+mrn+` data-idno=`+idno+` data-episno=`+episno+` data-apptidno=`+apptidno+`><b>&nbsp;WIN&nbsp;</b></button>
+                        <button title="Episode" type="button" class="btn btn-xs btn-danger btn-md command-episode preepis_epis" data-mrn=`+mrn+` data-idno=`+idno+` data-episno=`+episno+` data-apptidno=`+apptidno+`><b>&nbsp;`+epistycode+`&nbsp;</b></button>
                     `;
                 }else{
                    return_val+=`
-                        <button title="Episode" type="button" class="btn btn-xs btn-danger btn-md command-episode preepis_epis" data-mrn=`+mrn+` data-idno=`+idno+` data-episno=`+episno+` data-apptidno=`+apptidno+`><b>APPT</b></button>
+                        <button title="Episode" type="button" class="btn btn-xs btn-danger btn-md command-episode preepis_epis" data-mrn=`+mrn+` data-idno=`+idno+` data-episno=`+episno+` data-apptidno=`+apptidno+`><b>`+epistycode+`</b></button>
                     `; 
                 }
 

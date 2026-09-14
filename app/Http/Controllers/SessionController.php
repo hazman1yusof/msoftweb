@@ -59,6 +59,12 @@ class SessionController extends Controller
         return view('init.qrcode',compact('bgpic'));
     }
 
+    public function qrcode_gen(){
+        $qrurl = \config('get_config.APP_URL')."qrcode";
+        
+        return view('init.qrcodegen',compact('qrurl'));
+    }
+
     public function store(Request $request){
         if(empty(request('computerid'))){
             return back();

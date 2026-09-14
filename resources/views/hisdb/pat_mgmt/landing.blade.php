@@ -112,8 +112,10 @@
 			<button id="btn_mykad" type="button" class="btn btn-default btn-md" >
 			<img src="img/mykad.png" width="35" /> My Kad</button>
 			&nbsp;&nbsp;
-			<button id="btn_biometric" type="button" class="btn btn-default btn-md" >
-			<img src="img/biometric.png" width="22" /> Biometric </button>
+			<!-- <button id="btn_biometric" type="button" class="btn btn-default btn-md" >
+			<img src="img/biometric.png" width="22" /> Biometric </button> -->
+			<button id="btn_qrpreepis" type="button" class="btn btn-default btn-md" style="min-width: 115px;">
+			<img src="img/qrpreepis.png" width="22" /> QR </button>
 			&nbsp;&nbsp;
 			@endif
 			@if (request()->get('curpat') == 'true')
@@ -196,6 +198,7 @@
 		@include('hisdb.pat_mgmt.mdl_episode')
 		@include('hisdb.pat_mgmt.itemselector')
 		@include('hisdb.pat_mgmt.patlabel')
+		@include('hisdb.pat_mgmt.qrgen')
 		
 		@if (request()->get('curpat') == 'true')
 			
@@ -557,6 +560,7 @@
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_emr.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/textfield_modal.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js?v=1.14"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/qrgen.js?v=1"></script>
 	
 	</div>
 

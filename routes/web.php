@@ -29,6 +29,7 @@ Route::get('/login','SessionController@create')->name('login');
 Route::get('/loginappt','SessionController@create2')->name('login2');
 Route::get('/qrcode','SessionController@qrcode');
 Route::post('/qrcode','SessionController@qrcode_prereg');
+Route::get('/qrcode_gen','SessionController@qrcode_gen');
 Route::get('/autologin','SessionController@autologin');
 Route::post('/login','SessionController@store');
 Route::get('/logout','SessionController@destroy')->name('logout');
