@@ -52,7 +52,7 @@
                         
                         <div class="twelve wide column">
                             <div class="field eight wide column">
-                                <textarea id="req_lab_history" name="history" rows="5" data-validation="required"></textarea>
+                                <textarea id="req_lab_history" name="history" rows="5"></textarea>
                             </div>
                         </div>
                         
@@ -64,7 +64,7 @@
                         
                         <div class="twelve wide column">
                             <div class="field eight wide column">
-                                <textarea id="req_lab_clinicfinds" name="clinicfinds" rows="5" data-validation="required"></textarea>
+                                <textarea id="req_lab_clinicfinds" name="clinicfinds" rows="5"></textarea>
                             </div>
                         </div>
                         
@@ -76,7 +76,7 @@
                         
                         <div class="twelve wide column">
                             <div class="field eight wide column">
-                                <textarea id="req_lab_diagnosis" name="diagnosis" rows="5" data-validation="required"></textarea>
+                                <textarea id="req_lab_diagnosis" name="diagnosis" rows="5"></textarea>
                             </div>
                         </div>
 
@@ -195,7 +195,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </form>
             </div>
