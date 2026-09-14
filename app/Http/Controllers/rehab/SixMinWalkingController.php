@@ -236,6 +236,7 @@ class SixMinWalkingController extends defaultController
                         // 'walk' => $request->walk,
                         // 'techID' => $request->techID,
                         'entereddate' => $request->entereddate,
+                        'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                         // 'gender' => $request->gender,
                         // 'age' => $request->age,
                         // 'race' => $request->race,

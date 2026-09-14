@@ -254,17 +254,17 @@ class OccupTherapyCognitiveController extends defaultController
                         'lastcomputerid' => session('computerid'),
                     ]);
             }else{
-
                 if($mmse->exists()){
                     return response('Date already exist.');
                 }
-
+                
                 DB::table('hisdb.ot_mmse')
                     ->insert([
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'dateofexam' => $request->dateofexam,
+                        'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                         'examiner' => strtoupper($request->examiner),
                         'orientation1' => $request->orientation1,
                         'orientation2' => $request->orientation2,
@@ -282,6 +282,8 @@ class OccupTherapyCognitiveController extends defaultController
                         'assess_lvl' => strtoupper($request->assess_lvl),
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'computerid' => session('computerid'),
                     ]);
             }
@@ -385,17 +387,17 @@ class OccupTherapyCognitiveController extends defaultController
                         'computerid' => session('computerid'),
                     ]);
             }else{
-
                 if($moca->exists()){
                     return response('Date already exist.');
                 }
-
+                
                 DB::table('hisdb.ot_moca')
                     ->insert([
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'dateAssessment' => $request->dateAssessment,
+                        'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                         'education' => strtoupper($request->education),
                         'visuospatial' => $request->visuospatial,
                         'naming' => $request->naming,
@@ -410,6 +412,8 @@ class OccupTherapyCognitiveController extends defaultController
                         'tot_moca' => $request->tot_moca,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'computerid' => session('computerid'),
                     ]);
             }

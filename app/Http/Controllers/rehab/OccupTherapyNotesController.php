@@ -160,20 +160,22 @@ class OccupTherapyNotesController extends defaultController
                         'lastcomputerid' => session('computerid'),
                     ]);
             }else{
-
                 if($notes->exists()){
                     return response('Date already exist.');
                 }
-
+                
                 DB::table('hisdb.ot_notes')
                     ->insert([
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'dateNotes' => $request->dateNotes,
+                        'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                         'notes' => $request->notes,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'computerid' => session('computerid'),
                     ]);
             }

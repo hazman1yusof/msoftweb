@@ -180,6 +180,7 @@ class BergBalanceTestController extends defaultController
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'entereddate' => $request->entereddate,
+                        'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                         'sitToStand' => $request->sitToStand,
                         'standUnsupported' => $request->standUnsupported,
                         'sitBackUnsupported' => $request->sitBackUnsupported,

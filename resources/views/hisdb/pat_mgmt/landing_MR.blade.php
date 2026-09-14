@@ -20,6 +20,17 @@
 
     <link rel="stylesheet" href="plugins/css/trirand/ui.jqgrid-bootstrap.css" />
 	<link rel="stylesheet" href="css/landing.css?v=1">
+	<link rel="stylesheet" href="{{asset('patientcare/css/doctornote.css') }}">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
+	<link rel="stylesheet" type="text/css" href="{{ asset('patientcare/assets/fullcalendar-3.7.0/fullcalendar.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('patientcare/assets/trirand/css/trirand/ui.jqgrid-bootstrap.css') }}" />
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300;500&family=Open+Sans:wght@300;700&family=Syncopate&display=swap" rel="stylesheet">
+
 
 	<style>
 		#Dtext_chgcode_dfee {
@@ -261,6 +272,9 @@
 				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 					@include('hisdb.discharge_MR.discharge_MR',['type' => "IP",'type_desc' => "In Patient"])
 				</div>
+
+				@include('hisdb.otmanagement_MR.otmanagement_MR')
+
 			@endif
 			
 		@endif
@@ -299,6 +313,11 @@
 	<script type="text/javascript" src="https://cdn.datatables.net/rowgroup/1.1.2/js/dataTables.rowGroup.min.js"></script>
 	<script type="text/javascript" src="plugins/jquery-validator/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="plugins/jquery-validator/additional-methods.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
+	<script type="text/ecmascript" src="{{ asset('patientcare/assets/fullcalendar-3.7.0/fullcalendar.min.js') }}"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
 	
 	<script type="text/javascript" src="plugins/bootgrid/js/jquery.bootgrid.js"></script>
 	<script type="text/javascript" src="js/myjs/modal-fix.js"></script>
@@ -435,7 +454,7 @@
 				
 				<script type="text/javascript" src="js/hisdb/discharge_MR/discharge_MR.js"></script>
 
-				<!-- <script type="text/javascript" src="js/hisdb/otMain_MR/otMain_MR.js"></script>
+				<script type="text/javascript" src="js/hisdb/otMain_MR/otMain_MR.js"></script>
 				<script type="text/javascript" src="js/hisdb/otmanagement_MR/otmanagement_main_MR.js"></script>
 				<script type="text/javascript" src="js/hisdb/otmanagement_MR/otmanagement_div_MR.js?v=1.2"></script>
 				<script type="text/javascript" src="js/hisdb/preoperative_MR/preoperative_MR.js?v=1.1"></script>
@@ -446,7 +465,7 @@
 				<script type="text/javascript" src="js/hisdb/otdischarge_MR/otdischarge_MR.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/endoscopyNotes_MR/endoscopyStomach_MR.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/endoscopyNotes_MR/endoscopyIntestine_MR.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/endoscopyNotes_MR/endoscopyNotes_MR.js?v=1.2"></script> -->
+				<script type="text/javascript" src="js/hisdb/endoscopyNotes_MR/endoscopyNotes_MR.js?v=1.2"></script>
 
 				<!-- <script type="text/javascript" src="js/hisdb/nursing_MR/nursing_MR.js?v=1.2"></script> -->
 				<!-- <script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script> -->

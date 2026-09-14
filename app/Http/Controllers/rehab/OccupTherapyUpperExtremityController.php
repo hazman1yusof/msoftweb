@@ -270,26 +270,27 @@ class OccupTherapyUpperExtremityController extends defaultController
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'lastcomputerid' => session('computerid'),
                     ]);
-            
             }else{
-
                 if($upperExtremity->exists()){
                     return response('Date already exist.');
                 }
                 
                 DB::table('hisdb.ot_upperextremity')
                     ->insert([
-                            'compcode' => session('compcode'),
-                            'mrn' => $request->mrn,
-                            'episno' => $request->episno,
-                            'dateAssess' => $request->dateAssess,
-                            'occupTherapist' => session('username'),
-                            'handDominant' => $request->handDominant,
-                            'diagnosis' => $request->diagnosis,
-                            'adduser'  => session('username'),
-                            'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
-                            'computerid' => session('computerid'),
-                        ]);
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'dateAssess' => $request->dateAssess,
+                        'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'occupTherapist' => session('username'),
+                        'handDominant' => $request->handDominant,
+                        'diagnosis' => $request->diagnosis,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid' => session('computerid'),
+                    ]);
                 
             }
             

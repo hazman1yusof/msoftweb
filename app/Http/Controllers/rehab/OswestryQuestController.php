@@ -174,6 +174,7 @@ class OswestryQuestController extends defaultController
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'entereddate' => $request->entereddate,
+                        'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                         'painIntensity' => $request->painIntensity,
                         'personalCare' => $request->personalCare,
                         'lifting' => $request->lifting,

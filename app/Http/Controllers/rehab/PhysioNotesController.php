@@ -152,6 +152,7 @@ class PhysioNotesController extends defaultController
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'entereddate' => $request->entereddate,
+                        'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                         'notes' => $request->notes,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),

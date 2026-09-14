@@ -170,6 +170,7 @@ class MotorScaleController extends defaultController
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'entereddate' => $request->entereddate,
+                        'enteredtime' => Carbon::now("Asia/Kuala_Lumpur"),
                         'sideLie' => $request->sideLie,
                         'sitOverBed' => $request->sitOverBed,
                         'balancedSit' => $request->balancedSit,

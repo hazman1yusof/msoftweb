@@ -88,6 +88,8 @@ $(document).ready(function (){
                     }else{
                         button_state_header('add');
                         if(!emptyobj_(data.episode))autoinsert_rowdata("#formHeader",data.episode);
+                        emptyFormdata(errorField,'#formHeader');
+
                     }
                     
                     // autoinsert_rowdata("#formHeader",data.episode);

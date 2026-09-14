@@ -196,14 +196,14 @@ class OccupTherapyBarthelController extends defaultController
                 if($barthel->exists()){
                     return response('Date already exist.');
                 }
-
+                
                 DB::table('hisdb.ot_barthel')
                     ->insert([
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'dateofAssessment' => $request->dateofAssessment,
-                        // 'timeAssessment' => $request->timeAssessment,
+                        'timeAssessment' => Carbon::now("Asia/Kuala_Lumpur"),
                         'chairBedTrf' => $request->chairBedTrf,
                         'ambulation' => $request->ambulation,
                         'ambulationWheelchair' => $request->ambulationWheelchair,
@@ -220,6 +220,8 @@ class OccupTherapyBarthelController extends defaultController
                         'prediction' => $request->prediction,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'computerid' => session('computerid'),
                     ]);
             }

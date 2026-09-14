@@ -8,12 +8,14 @@ $(document).ready(function (){
     $("#jqGridWardMain_panel").on("shown.bs.collapse", function (){
         SmoothScrollTo("#jqGridWardMain_panel", 500);
         
-        let curtype = $("#jqGridWardMain_panel").data('curtype');
-        $('#jqGridWardMain_panel_tabs.nav-tabs a#'+curtype).tab('show');
+        // let curtype = $("#jqGridWardMain_panel").data('curtype');
+        // $('#jqGridWardMain_panel_tabs.nav-tabs a#'+curtype).tab('active');
         
-        $('#jqGridWardMain_panel').find('.nav a:first').tab('show');
+        // $('#jqGridWardMain_panel').find('.nav a:first').tab('active');
 
         $('#wardMain_panel_title').show();
+
+        populate_triageED_currpt_getdata();
 
         $("#jqGridAddNotesNursingED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesNursingED_c")[0].offsetWidth-$("#jqGridAddNotesNursingED_c")[0].offsetLeft-310));
 
@@ -76,8 +78,8 @@ $(document).ready(function (){
                 });
                 
                 // populate_header_getdata();
-                let curtype_nursActionIP = $("#jqGridNursActionPlan_paneltab").data('curtype');
-                $('#jqGridNursActionPlan_panel_tabs.nav-tabs a#'+curtype_nursActionIP).tab('show');
+                // let curtype_nursActionIP = $("#jqGridNursActionPlan_paneltab").data('curtype');
+                // $('#jqGridNursActionPlan_panel_tabs.nav-tabs a#'+curtype_nursActionIP).tab('show');
                 
                 // load tab treatment
                 urlParam_Treatment.filterVal[0] = $("#mrn_nursActionPlan").val();
@@ -222,16 +224,16 @@ $(document).ready(function (){
                 // populate_consentFormReqFor_getdata();
                 var lastrowdata = getrow_bootgrid();
                 
-                var reqForIP_newurl = "./requestfor_iframe?mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno+"&phase=CLINICAL";
-                var reqForIP_cururl = $('iframe#requestfor_main_iframe').attr('src');
+                var reqForIP_newurl = "./requestfor_iframe_MR?mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno+"&phase=CLINICAL";
+                var reqForIP_cururl = $('iframe#requestfor_main_iframe_MR').attr('src');
                 
                 if(reqForIP_cururl != reqForIP_newurl){
-                    $('iframe#requestfor_main_iframe').attr('src',reqForIP_newurl);
+                    $('iframe#requestfor_main_iframe_MR').attr('src',reqForIP_newurl);
                 }
 
                 if(reqForIP_cururl != null){
-                    if(typeof $('iframe#requestfor_main_iframe')[0].contentWindow.populate_otbookReqFor_getdata === 'function'){
-                        $('iframe#requestfor_main_iframe')[0].contentWindow.populate_otbookReqFor_getdata();
+                    if(typeof $('iframe#requestfor_main_iframe_MR')[0].contentWindow.populate_otbookReqFor_getdata === 'function'){
+                        $('iframe#requestfor_main_iframe_MR')[0].contentWindow.populate_otbookReqFor_getdata();
                     }
                 }
                 
