@@ -395,6 +395,7 @@ var myEditOptions_phar = {
 		// $("#jqGrid_phar input[name='quantity']").on('keyup',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
 		$("#jqGrid_phar input[name='quantity']").on('blur',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
 
+		console.log(parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-241);
 		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-241);
 		$("#jqGrid_phar input[name='trxdate']").on('focus',function(){
 			// let focus = $(this).data('focus');
