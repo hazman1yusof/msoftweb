@@ -131,22 +131,29 @@
 		<div class="panel panel-default" style="position: relative;margin: 0 12px 12px 12px">
 	        <div class="panel-heading collapsed" id="toggle_preepis" data-toggle="collapse" data-target="#tabpreepis" style="padding: 20px 20px 25px 20px;">
 
-	        <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px;bottom: 3px;"></i>
-	        <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px;bottom: 3px;"></i >
-	        <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
-	            <h5><strong>PRE EPISODE</strong></h5>
-	        </div> 
+		        <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px;bottom: 3px;"></i>
+		        <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px;bottom: 3px;"></i >
+		        <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
+		            <h5><strong>PRE EPISODE</strong></h5>
+		        </div> 
+		        <div style="position: absolute; padding: 0 0 0 0; right: 50px; top: 8px;">
+		            <h5><strong id='preepis_count' style="padding: 5px;
+						    border: solid 1px darkred;
+						    border-radius: 8px;
+						    background: #ffe6e6;">0</strong> Patients
+					</h5>
+		        </div> 
 	        </div>
 
 	        <div id="tabpreepis" class="panel-collapse collapse">
-	        <div class="panel-body form-horizontal">
-	            <div id="jqGrid_preepis_c">
-	                <div class='col-md-12' style="padding:0 0 15px 0">
-	                    <table id="jqGrid_preepis" class="table table-striped"></table>
-	                    <div id="jqGridPager_preepis"></div>
-	                </div>
-	            </div>
-	        </div>
+		        <div class="panel-body form-horizontal">
+		            <div id="jqGrid_preepis_c">
+		                <div class='col-md-12' style="padding:0 0 15px 0">
+		                    <table id="jqGrid_preepis" class="table table-striped"></table>
+		                    <div id="jqGridPager_preepis"></div>
+		                </div>
+		            </div>
+		        </div>
             </div>
         </div>
         @endif

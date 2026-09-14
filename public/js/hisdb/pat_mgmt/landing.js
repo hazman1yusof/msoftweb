@@ -512,10 +512,12 @@ $(document).ready(function() {
     if($('#curpat').val() == "false" && $("#epistycode").val() == "OP"){ // && $('#isdoctor').val() == 'false' && !Session::has('isdoctor')
         preepisode = new preepisode_init();
         preepisode.makejqgrid();
+        preepisode.timer();
     }
 
     function preepisode_init(){
         this.urlParam_preepis;
+        this.interval;
 
         this.refreshGrid = function(){
             refreshGrid("#jqGrid_preepis", this.urlParam_preepis);
@@ -770,6 +772,29 @@ $(document).ready(function() {
 
                 });
             }
+        }
+
+        this.timer = function(){
+            this.interval = setInterval(check_preepis_count, 5000);
+        }
+
+        function check_preepis_count(){
+            var param={
+                action:'check_preepis_count',
+            };
+
+            $.get( "./pat_mast/table?"+$.param(param), function( data ) {
+
+            },'json').done(function(data) {
+                if(data.records > 0){
+                    $('#preepis_count').text(data.records);
+                }else{
+                    $('#preepis_count').text(0);
+                }
+            }).error(function(data){
+
+            });
+            
         }
     }
 

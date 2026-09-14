@@ -35,6 +35,8 @@ class PatmastController extends defaultController
                 return $this->userfile_iframe($request);
             case 'chk_mykad_exist':
                 return $this->chk_mykad_exist($request);
+            case 'check_preepis_count':
+                return $this->check_preepis_count($request);
         }
     }
 
@@ -4199,6 +4201,30 @@ class PatmastController extends defaultController
         }
         
         echo json_encode($responce, JSON_INVALID_UTF8_SUBSTITUTE);
+    }
+
+    public function check_preepis_count(Request $request){
+        $table=DB::table('hisdb.pre_episode as pre')
+                    ->select('pre.idno','pm.compcode','pm.Name','pm.mrn','pm.episno','pre.apptidno','pm.Newic','pm.telhp','pm.telh','pm.DOB','pm.sex')
+                    ->where('pre.compcode',session('compcode'))
+                    ->whereDate('pre.adddate',Carbon::now("Asia/Kuala_Lumpur"))
+
+                    ->join('hisdb.pat_mast as pm', function($join) use ($request){
+                        $join = $join->on('pm.mrn', '=', 'pre.MRN')
+                                        ->where('pm.compcode','=',session('compcode'))
+                                        ->where('pm.PatStatus','!=','1')
+                                        ->where('pm.Active','=','1');
+                    });
+
+        // dd($this->getQueries($table))
+
+        //////////paginate/////////
+        // $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->records = $table->count();
+
+        return json_encode($responce);
     }
 
     public function userfile_iframe(Request $request){

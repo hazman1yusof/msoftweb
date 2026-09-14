@@ -2601,7 +2601,6 @@ function auto_save_background(form,id){
 			var json_string = JSON.stringify(form_array_hasval_nohidden);
 			localStorage.setItem('auto_save_'+storage_name+'_'+store_id,json_string);
 		}
-
 	}
 } 
 
