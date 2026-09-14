@@ -3714,7 +3714,7 @@ class PatmastController extends defaultController
                                         ->where('pm.Active','=','1');
                     });
 
-        dd($this->getQueries($table))
+        // dd($this->getQueries($table))
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
