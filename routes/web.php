@@ -1774,6 +1774,11 @@ Route::get('/radiology/table','rehab\radiologyController@table');
 Route::post('/radiology/form','rehab\radiologyController@form');
 Route::get('/radiology_iframe','rehab\radiologyController@iframe');
 
+Route::get('/laboratory','rehab\laboratoryController@index');
+Route::get('/laboratory/table','rehab\laboratoryController@table');
+Route::post('/laboratory/form','rehab\laboratoryController@form');
+Route::get('/laboratory_iframe','rehab\laboratoryController@iframe');
+
 // Route::post('/ptcare_doctornote_transaction_save', "rehab\RehabController@transaction_save");
 
 //// Neurorobotic page ////

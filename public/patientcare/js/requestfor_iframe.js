@@ -8,6 +8,7 @@ disableForm('#formDressingReqFor');
 disableForm('#formPhysioReqFor');
 disableForm('#formMRIReqFor');
 disableForm('#formRadClinicReqFor');
+disableForm('#formlabClinicReqFor');
 disableForm('#formOTBookReqFor');
 disableForm('#formRequestFor');
 disableForm('#formreferralLetterReqfor');
@@ -30,6 +31,7 @@ $(document).ready(function (){
     var radbuts_preContrastReqFor = new checkradiobutton(['hisAllergy','feverAllergic','prevReactContrast','prevReactDrug','asthma','heartDisease','veryOldYoung','poorCondition','dehydrated','seriousMedCondition','prevContrastExam','consentProcedure']);
     var radbuts_mriReqFor = new checkradiobutton(['cardiacpacemaker','pros_valve','intraocular','cochlear_imp','neurotransm','bonegrowth','druginfuse','surg_clips','jointlimb_pros','shrapnel','oper_3mth','prev_mri','claustrophobia','dental_imp','frmgnetic_imp','pregnancy','allergy_drug']);
     var radbuts_radClinicReqFor = new checkradiobutton(['pt_condition','rad_pregnant']);
+    var radbuts_labClinicReqFor = new checkradiobutton(['specimenty','fasting','pregnant']);
     var radbuts_referralLetterReqfor = new checkradiobutton(['refto','refprio','reffro']);
     var radbuts_card_noninv = new checkradiobutton(['card_chkty','card_type']);
 
@@ -141,6 +143,52 @@ $(document).ready(function (){
         button_state_radClinicReqFor($(this).data('oper'));
     });
     ////////////////////////////////////////////radClinic ends////////////////////////////////////////////
+
+    ///////////////////////////////////////////labClinic starts///////////////////////////////////////////
+    
+    $("#new_labClinicReqFor").click(function (){
+        radbuts_labClinicReqFor.reset();
+        get_default_labClinicReqFor();
+        $('#cancel_labClinicReqFor').data('oper','add');
+        button_state_labClinicReqFor('wait');
+        enableForm('#formlabClinicReqFor');
+        rdonly('#formlabClinicReqFor');
+        emptyFormdata_div("#formlabClinicReqFor",['#mrn_requestFor','#episno_requestFor']);
+        // $('#ReqFor_clinicaldata').prop('disabled',true);
+    });
+    
+    $("#edit_labClinicReqFor").click(function (){
+        radbuts_labClinicReqFor.reset();
+        button_state_labClinicReqFor('wait');
+        enableForm('#formlabClinicReqFor');
+        rdonly('#formlabClinicReqFor');
+        // $('#ReqFor_clinicaldata').prop('disabled',true);
+    });
+    
+    $("#save_labClinicReqFor").click(function (){
+        if(radbuts_labClinicReqFor.check())return false;
+        disableForm('#formlabClinicReqFor');
+        if($('#formlabClinicReqFor').isValid({requiredFields: ''}, conf, true)){
+            saveForm_labClinicReqFor(function (data){
+                // emptyFormdata_div("#formlabClinicReqFor",['#mrn_requestFor','#episno_requestFor']);
+                // disableForm('#formlabClinicReqFor');
+                $('#cancel_labClinicReqFor').data('oper','edit');
+                $("#cancel_labClinicReqFor").click();
+                populate_labClinicReqFor_getdata();
+            });
+        }else{
+            enableForm('#formlabClinicReqFor');
+            rdonly('#formlabClinicReqFor');
+        }
+    });
+    
+    $("#cancel_labClinicReqFor").click(function (){
+        radbuts_labClinicReqFor.reset();
+        // emptyFormdata_div("#formlabClinicReqFor",['#mrn_requestFor','#episno_requestFor']);
+        disableForm('#formlabClinicReqFor');
+        button_state_labClinicReqFor($(this).data('oper'));
+    });
+    ////////////////////////////////////////////labClinic ends////////////////////////////////////////////
     
     //////////////////////////////////////////////mri starts//////////////////////////////////////////////
     
@@ -586,6 +634,10 @@ $(document).ready(function (){
                 $('#radiology .top.menu .item').tab('change tab','radClinicReqFor');
                 populate_radClinicReqFor_getdata();
                 break;
+            case 'labReqFor':
+                $('#radiology .top.menu .item').tab('change tab','labClinicReqFor');
+                populate_labClinicReqFor_getdata();
+                break;
             case 'physioReqFor':
                 populate_physioReqFor_getdata();
                 // textarea_init_physioReqFor();
@@ -788,6 +840,34 @@ function button_state_radClinicReqFor(state){
             $("#toggle_requestFor").attr('data-toggle','collapse');
             $("#save_radClinicReqFor,#cancel_radClinicReqFor").attr('disabled',false);
             $('#edit_radClinicReqFor,#new_radClinicReqFor').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_labClinicReqFor('empty');
+function button_state_labClinicReqFor(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_requestFor").removeAttr('data-toggle');
+            $('#cancel_labClinicReqFor').data('oper','add');
+            $('#new_labClinicReqFor,#save_labClinicReqFor,#cancel_labClinicReqFor,#edit_labClinicReqFor,#labClinicReqFor_chart').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_labClinicReqFor').data('oper','add');
+            $("#new_labClinicReqFor").attr('disabled',false);
+            $('#save_labClinicReqFor,#cancel_labClinicReqFor,#edit_labClinicReqFor').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_labClinicReqFor').data('oper','edit');
+            $("#edit_labClinicReqFor,#labClinicReqFor_chart").attr('disabled',false);
+            $('#save_labClinicReqFor,#cancel_labClinicReqFor,#new_labClinicReqFor').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $("#save_labClinicReqFor,#cancel_labClinicReqFor").attr('disabled',false);
+            $('#edit_labClinicReqFor,#new_labClinicReqFor').attr('disabled',true);
             break;
     }
 }
@@ -1310,6 +1390,41 @@ function get_default_radClinicReqFor(){
         
         // textarea_init_radClinicReqFor();
     });
+}
+
+function populate_labClinicReqFor_getdata(){
+    emptyFormdata(errorField,"#formlabClinicReqFor",["#mrn_requestFor","#episno_requestFor"]);
+    
+    var saveParam = {
+        action: 'get_table_labClinic',
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // idno: $("#idno_radClinic").val(),
+        mrn: $("#mrn_requestFor").val(),
+        episno: $("#episno_requestFor").val(),
+        // recorddate: $("#recorddate_doctorNote").val(),
+    };
+    
+    $.get("./ptcare_requestfor/table?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').done(function (data){
+        if(!$.isEmptyObject(data)){
+            if(!$.isEmptyObject(data.pat_laboratory)){
+                autoinsert_rowdata("#formlabClinicReqFor",data.pat_laboratory);
+                button_state_labClinicReqFor('edit');
+            }else if(!$.isEmptyObject(data.pat_laboratory_default)){
+                autoinsert_rowdata("#formlabClinicReqFor",data.pat_laboratory_default);
+                button_state_labClinicReqFor('add');
+            }else{
+                button_state_labClinicReqFor('add');
+            }
+        }
+    });
+}
+
+function get_default_labClinicReqFor(){
 }
 
 function populate_mriReqFor_getdata(){
@@ -1952,6 +2067,60 @@ function saveForm_radClinicReqFor(callback){
     });
 }
 
+function saveForm_labClinicReqFor(callback){
+    var saveParam = {
+        action: 'save_labClinic',
+        oper: $("#cancel_labClinicReqFor").data('oper'),
+        mrn: $('#mrn_requestFor').val(),
+        episno: $("#episno_requestFor").val(),
+        // recorddate: $("#recorddate_doctorNote").val(),
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formlabClinicReqFor").serializeArray();
+    
+    values = values.concat(
+        $('#formlabClinicReqFor input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formlabClinicReqFor input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formlabClinicReqFor input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formlabClinicReqFor select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+    }).fail(function (data){
+        callback(data);
+    });
+}
+
 function saveForm_mriReqFor(callback){
     var saveParam = {
         action: 'save_mri',
@@ -2552,6 +2721,23 @@ function textarea_init_otbookReqFor(){
 
 function textarea_init_radClinicReqFor(){
     $('textarea#radReqFor_allergy,textarea#ReqFor_xray_remark,textarea#ReqFor_mri_remark,textarea#ReqFor_angio_remark,textarea#ReqFor_ultrasound_remark,textarea#ReqFor_ct_remark,textarea#ReqFor_fluroscopy_remark,textarea#ReqFor_mammogram_remark,textarea#ReqFor_bmd_remark,textarea#ReqFor_clinicaldata,textarea#ReqFor_rad_note').each(function (){
+        if(this.value.trim() == ''){
+            this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }else{
+            this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }
+    }).off().on('input', function (){
+        if(this.scrollHeight > 40){
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        }else{
+            this.style.height = (40) + 'px';
+        }
+    });
+}
+
+function textarea_init_labClinicReqFor(){
+    $('textarea#req_lab_history,textarea#req_lab_clinicfinds,textarea#req_lab_diagnosis').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{

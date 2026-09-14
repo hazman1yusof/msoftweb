@@ -11,7 +11,7 @@ use Auth;
 use Session;
 use App\Http\Controllers\defaultController;
 
-class radiologyController extends defaultController
+class laboratoryController extends defaultController
 {
     
     public function __construct()
@@ -62,8 +62,8 @@ class radiologyController extends defaultController
     public function iframe(Request $request)
     {
         switch($request->action){
-            case 'radiology_iframe':
-                return $this->radiology_iframe($request);
+            case 'laboratory_iframe':
+                return $this->laboratory_iframe($request);
             
             default:
                 return 'error happen..';
@@ -161,7 +161,7 @@ class radiologyController extends defaultController
         $data_send['pkgdept_dflt'] = session('deptcode');
         $data_send['othdept_dflt'] = session('deptcode');
         
-        return view('hisdb.radiology.radiology',$data_send);
+        return view('hisdb.laboratory.laboratory',$data_send);
     }
     
     public function get_table_doctornote($request){
@@ -187,7 +187,7 @@ class radiologyController extends defaultController
                     $join = $join->where('queue.reg_date','=',$request->filterVal[0]);
                     $join = $join->on('queue.mrn','=','episode.mrn');
                     $join = $join->on('queue.episno','=','episode.episno');
-                    $join = $join->where('queue.deptcode','=','RAD');
+                    $join = $join->where('queue.deptcode','=','LAB');
                     $join = $join->where('queue.compcode','=',session('compcode'));
         });
         
@@ -372,8 +372,7 @@ class radiologyController extends defaultController
             
             return response('Error'.$e, 500);
             
-        }
-        
+        }    
     }
     
     public function submit_patient(Request $request){
@@ -409,8 +408,7 @@ class radiologyController extends defaultController
             
             return response($e->getMessage(), 500);
             
-        }
-        
+        }        
     }
     
     public function get_chgcode(Request $request){
@@ -434,8 +432,7 @@ class radiologyController extends defaultController
         
         $responce = new stdClass();
         $responce->data = $data;
-        return json_encode($responce);
-        
+        return json_encode($responce);        
     }
     
     public function get_drugindcode(Request $request){
@@ -451,8 +448,7 @@ class radiologyController extends defaultController
         
         $responce = new stdClass();
         $responce->data = $data;
-        return json_encode($responce);
-        
+        return json_encode($responce);        
     }
     
     public function get_freqcode(Request $request){
@@ -469,8 +465,7 @@ class radiologyController extends defaultController
         
         $responce = new stdClass();
         $responce->data = $data;
-        return json_encode($responce);
-        
+        return json_encode($responce);        
     }
     
     public function get_dosecode(Request $request){
@@ -487,8 +482,7 @@ class radiologyController extends defaultController
         
         $responce = new stdClass();
         $responce->data = $data;
-        return json_encode($responce);
-        
+        return json_encode($responce);        
     }
     
     public function get_inscode(Request $request){
@@ -505,8 +499,7 @@ class radiologyController extends defaultController
         
         $responce = new stdClass();
         $responce->data = $data;
-        return json_encode($responce);
-        
+        return json_encode($responce);        
     }
     
     public function doctornote_event(Request $request){
@@ -520,7 +513,7 @@ class radiologyController extends defaultController
                         // $join = $join->on('queue.deptcode','=','episode.regdept');
                         $join = $join->on('queue.mrn','=','episode.mrn');
                         $join = $join->on('queue.episno','=','episode.episno');
-                        $join = $join->where('queue.deptcode','=','RAD');
+                        $join = $join->where('queue.deptcode','=','lab');
                         $join = $join->where('queue.compcode','=',session('compcode'));
                         $join = $join->whereRaw(
                         "(queue.reg_date >= ? AND queue.reg_date <= ?)",
@@ -547,7 +540,7 @@ class radiologyController extends defaultController
         return $events = $this->getEvent($emergency);
     }
 
-    public function radiology_iframe(Request $request){
+    public function laboratory_iframe(Request $request){
         $mrn = ltrim($request->mrn, '0');
         $episno = $request->episno;
         $phase = $request->phase;
@@ -595,6 +588,6 @@ class radiologyController extends defaultController
            $phase = 'CLINICAL';
         }
 
-        return view('hisdb.radiology.radiology_iframe',compact('mrn','episno','phase','pat_mast_data','episode_data'));
+        return view('hisdb.laboratory.laboratory_iframe',compact('mrn','episno','phase','pat_mast_data','episode_data'));
     }
 }

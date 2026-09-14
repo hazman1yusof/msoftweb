@@ -11,7 +11,7 @@
 			<span class="fa fa-plus-square-o"></span> Order
 		</button> -->
 	</div>
-	<div class="panel-heading clearfix collapsed position" id="toggle_ordcom" style="height: 75px;" @if($phase != '2') data-toggle="collapse" data-target="#jqGrid_ordcom_panel" @endif>
+	<div class="panel-heading clearfix collapsed position" id="toggle_ordcom" style="height: 75px;" @if($phase == '2' || $phase == '2.lab') @else data-toggle="collapse" data-target="#jqGrid_ordcom_panel" @endif>
 		<span id="ordcom_panel_title" style="display: none;">
 			<b>NAME: <span id="name_show_ordcom"></span></b><br>
 			MRN: <span id="mrn_show_ordcom"></span>
@@ -26,7 +26,7 @@
 			AREA: <span id="area_show_ordcom"></span>
 		</span>
 		
-		@if($phase == '2')
+		@if($phase == '2' || $phase == '2.lab')
 			<input type="hidden" id="ordcom_phase" value="2">
             <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid_ordcom_panel"></i>
             <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid_ordcom_panel" ></i >
@@ -59,7 +59,7 @@
 			<input type="hidden" id="ordcomtt_oth" value="{{$ordcomtt_oth ?? '25,38,39,65,30,35,92,DF,PK'}}">
 			<input type="hidden" id="ordcomtt_pkg" value="{{$ordcomtt_pkg ?? 'PK'}}">
 
-			@if($phase == '2')
+			@if($phase == '2' || $phase == '2.lab')
 	        <input name="phardept_dflt" id="phardept_dflt" type="hidden" value="{{$phardept_dflt ?? 'PHAR'}}">
 	        <input name="dispdept_dflt" id="dispdept_dflt" type="hidden" value="{{$userdeptcode ?? 'PHAR'}}">
 	        <input name="labdept_dflt" id="labdept_dflt" type="hidden" value="{{$labdept_dflt ?? 'LAB'}}">
