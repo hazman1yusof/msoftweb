@@ -1481,6 +1481,7 @@ Route::get('/mohreport/table','hisdb\mohreportController@table');
 Route::post('/mohreport/form','hisdb\mohreportController@form');
 
 Route::get('/drfeesvoucher','hisdb\drfeesvoucherController@show');
+Route::get('/drfeesos','hisdb\drfeesvoucherController@showos');
 Route::get('/drfeesvoucher/table','hisdb\drfeesvoucherController@table');
 Route::post('/drfeesvoucher/form','hisdb\drfeesvoucherController@form');
 
