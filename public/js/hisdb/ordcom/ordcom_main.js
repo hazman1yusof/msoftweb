@@ -78,47 +78,73 @@ $(document).ready(function(){
 
 	$('.nav-tabs a').on('shown.bs.tab', function(e){
 		let ordcomtype = $(this).data('ord_chgtype');
+		let jqgrid_use = '';
+		let jqgrid_pager_use = '';
 		switch(ordcomtype){
 			case 'PHAR':
 				$("#jqGrid_phar").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
 				refreshGrid('#jqGrid_phar',urlParam_phar,'add');
+				jqgrid_use = "#jqGrid_phar";
+				jqgrid_pager_use = '#pg_jqGrid_phar_pager';
 				break;
 			case 'DISP':
 				$("#jqGrid_disp").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
 				refreshGrid('#jqGrid_disp',urlParam_disp,'add');
+				jqgrid_use = "#jqGrid_disp";
+				jqgrid_pager_use = '#pg_jqGrid_disp_pager';
 				break;
 			case 'LAB':
 				$("#jqGrid_lab").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
 				refreshGrid('#jqGrid_lab',urlParam_lab,'add');
+				jqgrid_use = "#jqGrid_lab";
+				jqgrid_pager_use = '#pg_jqGrid_lab_pager';
 				break;
 			case 'RAD':
 				$("#jqGrid_rad").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
 				refreshGrid('#jqGrid_rad',urlParam_rad,'add');
+				jqgrid_use = "#jqGrid_rad";
+				jqgrid_pager_use = '#pg_jqGrid_rad_pager';
 				break;
 			case 'DFEE':
 				$("#jqGrid_dfee").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
 				refreshGrid('#jqGrid_dfee',urlParam_dfee,'add');
+				jqgrid_use = "#jqGrid_dfee";
+				jqgrid_pager_use = '#pg_jqGrid_dfee_pager';
 				break;
 			case 'PHYS':
 				$("#jqGrid_phys").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
 				refreshGrid('#jqGrid_phys',urlParam_phys,'add');
+				jqgrid_use = "#jqGrid_phys";
+				jqgrid_pager_use = '#pg_jqGrid_phys_pager';
 				break;
 			case 'REHAB':
 				$("#jqGrid_rehab").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
 				refreshGrid('#jqGrid_rehab',urlParam_rehab,'add');
+				jqgrid_use = "#jqGrid_rehab";
+				jqgrid_pager_use = '#pg_jqGrid_rehab_pager';
 				break;
 			case 'DIET':
 				$("#jqGrid_diet").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
 				refreshGrid('#jqGrid_diet',urlParam_diet,'add');
+				jqgrid_use = "#jqGrid_diet";
+				jqgrid_pager_use = '#pg_jqGrid_diet_pager';
 				break;
 			case 'OTH':
 				$("#jqGrid_oth").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
 				refreshGrid('#jqGrid_oth',urlParam_oth,'add');
+				jqgrid_use = "#jqGrid_oth";
+				jqgrid_pager_use = '#pg_jqGrid_oth_pager';
 				break;
 			case 'PKG':
 				$("#jqGrid_pkg").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
 				refreshGrid('#jqGrid_pkg',urlParam_pkg,'add');
+				jqgrid_use = "#jqGrid_pkg";
+				jqgrid_pager_use = '#pg_jqGrid_pkg_pager';
 				break;
+		}
+
+		if($('#ordcom_phase').val() == '2.lab'){
+		    $(jqgrid_pager_use+" td[title='Final Bill']").hide();
 		}
 	});
 });
