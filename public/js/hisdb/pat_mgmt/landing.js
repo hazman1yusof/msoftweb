@@ -509,7 +509,7 @@ $(document).ready(function() {
 
     ////////////////habis mykad///////
 
-    if($('#curpat').val() == "true" && $("#epistycode").val() == "OP" && $('#isdoctor').val() == 'false'){
+    if($('#curpat').val() == "false" && $("#epistycode").val() == "OP"){ // && $('#isdoctor').val() == 'false' && !Session::has('isdoctor')
         preepisode = new preepisode_init();
         preepisode.makejqgrid();
     }

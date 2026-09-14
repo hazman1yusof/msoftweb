@@ -1,5 +1,12 @@
 $(document).ready(function () {
 
+    $('#userfile_tab .item').tab({});
+
+    if($('#phase').val() == 'lab' ){
+        $("#userfile_tab_document,#userfile_tab_imaging").hide();
+        $('#userfile_tab .item').tab('change tab','lab');
+    }
+
     $("button.refreshbtn_userfile").click(function(){
         empty_userfile();
         populate_userfile(selrowData('#jqGrid'));
@@ -28,8 +35,6 @@ $(document).ready(function () {
         let filename = $(this).val();
         uploadfile_userfile();
     });
-
-    $('#userfile_tab .item').tab({});
 
     $('#userfile_tab .item').click(function(){
         preview_load_data();

@@ -33,6 +33,8 @@ class RequestForController extends defaultController
                 return $this->get_table_radClinic($request);
             case 'get_table_labClinic':
                 return $this->get_table_labClinic($request);
+            case 'get_datatable_labClinic':
+                return $this->get_datatable_labClinic($request);
             case 'get_table_mri':
                 return $this->get_table_mri($request);
             case 'get_table_physio':
@@ -1060,36 +1062,37 @@ class RequestForController extends defaultController
         
         try {
             
-            $pat_laboratory = DB::table('hisdb.pat_laboratory')
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno)
-                            ->where('compcode','=',session('compcode'));
+            // $pat_laboratory = DB::table('hisdb.pat_laboratory')
+            //                 ->where('mrn','=',$request->mrn)
+            //                 ->where('episno','=',$request->episno)
+            //                 ->where('idno','=',$request->idno)
+            //                 ->where('compcode','=',session('compcode'));
             
-            if($pat_laboratory->exists()){
-                $pat_laboratory
-                    ->update([
-                        'compcode' => session('compcode'),
-                        'mrn' => $request->mrn,
-                        'episno' => $request->episno,
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'addtime' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'labno' => $request->labno,
-                        'status' => $request->status,
-                        'history' => $request->history,
-                        'clinicfinds' => $request->clinicfinds,
-                        'diagnosis' => $request->diagnosis,
-                        'lastdosedate' => $request->lastdosedate,
-                        'lastdosetime' => $request->lastdosetime,
-                        'specimenty' => $request->specimenty,
-                        'specimentytxt' => $request->specimentytxt,
-                        'collectedby' => $request->collectedby,
-                        'specimendate' => $request->specimendate,
-                        'specimentime' => $request->specimentime,
-                        'fasting' => $request->fasting,
-                        'pregnant' => $request->pregnant,
-                        'gestationweek' => $request->gestationweek,
-                    ]);
-            }else{
+            // if($pat_laboratory->exists()){
+            //     $pat_laboratory
+            //         ->update([
+            //             'compcode' => session('compcode'),
+            //             'mrn' => $request->mrn,
+            //             'episno' => $request->episno,
+            //             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            //             'addtime' => Carbon::now("Asia/Kuala_Lumpur"),
+            //             'labno' => $request->labno,
+            //             'status' => $request->status,
+            //             'history' => $request->history,
+            //             'clinicfinds' => $request->clinicfinds,
+            //             'diagnosis' => $request->diagnosis,
+            //             'lastdosedate' => $request->lastdosedate,
+            //             'lastdosetime' => $request->lastdosetime,
+            //             'specimenty' => $request->specimenty,
+            //             'specimentytxt' => $request->specimentytxt,
+            //             'collectedby' => $request->collectedby,
+            //             'specimendate' => $request->specimendate,
+            //             'specimentime' => $request->specimentime,
+            //             'fasting' => $request->fasting,
+            //             'pregnant' => $request->pregnant,
+            //             'gestationweek' => $request->gestationweek,
+            //         ]);
+            // }else{
                 DB::table('hisdb.pat_laboratory')
                     ->insert([
                         'compcode' => session('compcode'),
@@ -1113,7 +1116,7 @@ class RequestForController extends defaultController
                         'pregnant' => $request->pregnant,
                         'gestationweek' => $request->gestationweek,
                     ]);
-            }
+            // }
 
             $this->transfer_to_laboratory($request);
             
@@ -1136,6 +1139,7 @@ class RequestForController extends defaultController
             $pat_laboratory = DB::table('hisdb.pat_laboratory')
                             ->where('mrn','=',$request->mrn)
                             ->where('episno','=',$request->episno)
+                            ->where('idno','=',$request->idno)
                             ->where('compcode','=',session('compcode'));
             
             if($pat_laboratory->exists()){
@@ -1369,7 +1373,8 @@ class RequestForController extends defaultController
                             ->select('lab.compcode','lab.mrn','lab.episno','lab.adddate','lab.addtime','lab.labno','lab.status','lab.history','lab.clinicfinds','lab.diagnosis','lab.lastdosedate','lab.lastdosetime','lab.specimenty','lab.specimentytxt','lab.collectedby','lab.specimendate','lab.specimentime','lab.fasting','lab.pregnant','lab.gestationweek')
                             ->where('lab.compcode','=',session('compcode'))
                             ->where('lab.mrn','=',$request->mrn)
-                            ->where('lab.episno','=',$request->episno);
+                            ->where('lab.episno','=',$request->episno)
+                            ->where('lab.idno','=',$request->idno);
 
         $responce = new stdClass();
         if($pat_laboratory_obj->exists()){
@@ -1377,6 +1382,44 @@ class RequestForController extends defaultController
             $responce->pat_laboratory = $pat_laboratory_obj;
         }else{
             $responce->pat_laboratory_default = [];
+        }
+        
+        return json_encode($responce);  
+    }
+
+    public function get_datatable_labClinic(Request $request){
+        $responce = new stdClass();
+        
+        $pat_laboratory_obj = DB::table('hisdb.pat_laboratory as lab')
+                            ->select('lab.idno','lab.compcode','lab.mrn','lab.episno','lab.adddate','lab.addtime','lab.labno','lab.status','lab.history','lab.clinicfinds','lab.diagnosis','lab.lastdosedate','lab.lastdosetime','lab.specimenty','lab.specimentytxt','lab.collectedby','lab.specimendate','lab.specimentime','lab.fasting','lab.pregnant','lab.gestationweek')
+                            ->where('lab.compcode','=',session('compcode'))
+                            ->where('lab.mrn','=',$request->mrn)
+                            ->where('lab.episno','=',$request->episno)
+                            ->orderBy('lab.idno', 'desc');
+        
+        if($pat_laboratory_obj->exists()){
+            $pat_laboratory_obj = $pat_laboratory_obj->get();
+            
+            $data = [];
+            
+            foreach($pat_laboratory_obj as $key => $value){
+                if(!empty($value->adddate)){
+                    $date['date'] =  Carbon::createFromFormat('Y-m-d', $value->adddate)->format('d-m-Y').' '.Carbon::createFromFormat('H:i:s', $value->addtime)->format('g:i A');
+                }else{
+                    $date['date'] =  '-';
+                }
+                $date['idno'] = $value->idno;
+                $date['mrn'] = $value->mrn;
+                $date['episno'] = $value->episno;
+                $date['adddate'] = $value->adddate;
+                $date['addtime'] = $value->addtime;
+                
+                array_push($data,$date);
+            }
+            
+            $responce->data = $data;
+        }else{
+            $responce->data = [];
         }
         
         return json_encode($responce);  

@@ -454,6 +454,35 @@ $(document).ready(function () {
             }
         });
     }
+
+    $('#labMainTabs.top.menu .item').tab({'onVisible': function (){
+        let tab = $(this).data('tab');
+        // console.log(tab);
+        
+        switch(tab){
+            case 'docImaging':
+                
+                let param_docImaging = {
+                    mrn: $("#mrn_requestFor").val(),
+                    episno: $("#episno_requestFor").val(),
+                    phase: 'lab',
+                }
+                
+                let newurl_docImaging = './userfile_iframe'+"?"+$.param(param_docImaging);
+                let cururl_docImaging = $('iframe#userfile_iframe').attr('src');
+                
+                if(newurl_docImaging != cururl_docImaging){
+                    $("iframe#userfile_iframe").attr('src',newurl_docImaging);
+                }
+                
+                break;
+
+            case 'labClinicReqFor':
+                populate_labClinicReqFor_init();
+                break;
+        }
+    }});
+
 });
 
 function populate_labMain(obj){
@@ -511,5 +540,5 @@ function formatterpayer(cellvalue, option, rowObject){
 $('#tab_labMain').on('shown.bs.collapse', function (){
     SmoothScrollTo('#labMain_panel', 300,75);
     $('#laboratory .top.menu .item').tab('change tab','labClinicReqFor');
-    populate_labClinicReqFor_getdata();
+    populate_labClinicReqFor_init();
 });

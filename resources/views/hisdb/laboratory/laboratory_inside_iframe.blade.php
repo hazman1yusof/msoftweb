@@ -1,5 +1,8 @@
-<div class="ui top attached tabular menu">
+<div class="ui top attached tabular menu" id="labMainTabs">
     <a class="item active" data-tab="labClinicReqFor" id="navtab_labClinicReqFor">Laboratory Form</a>
+    @if($laboratory_inside_iframe_phase == 'laboratory') 
+    <a class="item apptMainItem" data-tab="docImaging" id="navtab_docImaging">Document Imaging</a>
+    @endif
 </div>
 
 <div class="ui bottom attached tab raised segment active" data-tab="labClinicReqFor">
@@ -17,11 +20,30 @@
                 <button class="ui button" id="cancel_labClinicReqFor"><span class="fa fa-ban fa-lg"></span>Cancel</button>
             </div>
         </div>
+
         <div class="ui segment">
+            <div class="three wide column" style="position: absolute;
+                        left: 10px;
+                        top: 30px;">
+                <table id="lab_date_tbl" class="ui celled table" style="min-width: 270px;">
+                    <thead>
+                        <tr>
+                            <th class="scope">idno</th>
+                            <th class="scope">mrn</th>
+                            <th class="scope">episno</th>
+                            <th class="scope">Date / Time</th>
+                            <th class="scope">adddate</th>
+                            <th class="scope">addtime</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+
             <div class="ui grid">
-                <form id="formlabClinicReqFor" class="floated ui form sixteen wide column">
+                <form id="formlabClinicReqFor" class="right floated ui form twelve wide column">
+                    <input type="hidden" id="req_lab_idno" name="idno">
                     <div class='ui grid' style="padding: 15px 30px;">
-                        <div class="sixteen wide column centered grid" style="padding: 14px 14px 0px 150px;">
+                        <div class="sixteen wide column centered grid" style="padding: 14px 14px 0px 14px;">
                             <div class="inline field">
                                 <label>Lab No.</label>
                                 <input type="text" id="req_lab_labno" name="labno">
@@ -44,7 +66,7 @@
                             </div>
                         </div>
                         
-                        <div class="four wide column" style="padding: 14px 14px 14px 150px;">
+                        <div class="four wide column" style="padding: 14px 14px 14px 14px;">
                             <div class="field">
                                 <label>History</label>
                             </div>
@@ -56,7 +78,7 @@
                             </div>
                         </div>
                         
-                        <div class="four wide column" style="padding: 14px 14px 14px 150px;">
+                        <div class="four wide column" style="padding: 14px 14px 14px 14px;">
                             <div class="field">
                                 <label>Clinical Findings</label>
                             </div>
@@ -68,7 +90,7 @@
                             </div>
                         </div>
                         
-                        <div class="four wide column" style="padding: 14px 14px 14px 150px;">
+                        <div class="four wide column" style="padding: 14px 14px 14px 14px;">
                             <div class="field">
                                 <label>Diagnosis</label>
                             </div>
@@ -125,6 +147,8 @@
                                                 <label for="req_lab_Swab">Swab</label>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="inline fields">
                                         <div class="field">
                                             <div class="ui radio checkbox">
                                                 <input type="radio" name="specimenty" value="Others" id="req_lab_Others">
@@ -134,11 +158,6 @@
                                         <div class="field">
                                             <input type="text" id="req_lab_specimentytxt" name="specimentytxt">
                                         </div>
-                                    </div>
-
-                                    <div class="inline field">
-                                        <label>Collected By</label>
-                                        <input type="text" id="req_lab_collectedby" name="collectedby">
                                     </div>
                                 
                                     <label>Specimen Collection</label>
@@ -150,12 +169,17 @@
                                         <label>Time</label>
                                         <input type="time" id="req_lab_specimentime" name="specimentime">
                                     </div>
+                                    
+                                    <div class="inline field">
+                                        <label>Collected By</label>
+                                        <input type="text" id="req_lab_collectedby" name="collectedby">
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="four wide column centered grid" style="padding: 6px; height: stretch;">
                                 <div class="ui segment">
-                                    <h4 class="ui dividing header">Specimen</h4>
+                                    <h4 class="ui dividing header">Other</h4>
                                     <div class="inline fields">
                                         <label>Fasting</label>
                                         <div class="field">
@@ -201,3 +225,9 @@
         </div>
     </div>
 </div>
+
+@if($laboratory_inside_iframe_phase == 'laboratory')     
+<div class="ui bottom attached tab raised segment" data-tab="docImaging">
+    @include('patientcare.userfile_div')
+</div>
+@endif

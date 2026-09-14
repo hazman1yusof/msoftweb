@@ -18,10 +18,10 @@
         <!-- Styles -->
         <style>
             body {
-              background-image:url( {{ asset('img/page-hospital.jpg') }} ) !important;
+              background-image:url('{{$bgpic}}');
               background-repeat: no-repeat !important;
               background-size: cover !important;
-              background-position: bottom !important;
+              background-position: center !important;
               height: 100vh;
               width: 100vw;
             }
@@ -64,7 +64,7 @@
             <div class="row justify-content-center">
             <div class="col-md-5 col-xs-12">
             <div class="card border-primary mt-5">
-              <div class="card-header" style="background-color: #007bff;color: white;"><h5>Patient Registration</h5></div>
+              <div class="card-header" style="background-color: #56a7ff;color: white;"><h5>Patient Registration</h5></div>
               <div class="card-body text-primary">
                     <div class="col-12" style="text-align: center">
                         <a class="navbar-brand" style="padding-top: 0">

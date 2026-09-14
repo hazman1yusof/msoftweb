@@ -125,7 +125,7 @@
 			@endif
 		</div>
 
-		@if (request()->get('epistycode') == 'OP' && !Session::has('isdoctor') && request()->get('curpat') == 'true')
+		@if (request()->get('epistycode') == 'OP' && request()->get('curpat') == 'false')
 		<div class="panel panel-default" style="position: relative;margin: 0 12px 12px 12px">
 	        <div class="panel-heading collapsed" id="toggle_preepis" data-toggle="collapse" data-target="#tabpreepis" style="padding: 20px 20px 25px 20px;">
 

@@ -188,7 +188,7 @@ $(document).ready(function (){
                 break;
             case 'labReqFor':
                 $('#radiology .top.menu .item').tab('change tab','labClinicReqFor');
-                populate_labClinicReqFor_getdata();
+                populate_labClinicReqFor_init();
                 break;
             case 'physioReqFor':
                 populate_physioReqFor_getdata();

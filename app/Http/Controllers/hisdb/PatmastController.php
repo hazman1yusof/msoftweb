@@ -3704,14 +3704,17 @@ class PatmastController extends defaultController
         $table=DB::table('hisdb.pre_episode as pre')
                     ->select('pre.idno','pm.compcode','pm.Name','pm.mrn','pm.episno','pre.apptidno','pm.Newic','pm.telhp','pm.telh','pm.DOB','pm.sex')
                     ->where('pre.compcode',session('compcode'))
-                    ->whereDate('pre.adddate',Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'))
+                    ->whereDate('pre.adddate',Carbon::now("Asia/Kuala_Lumpur"))
 
                     ->join('hisdb.pat_mast as pm', function($join) use ($request){
                         $join = $join->on('pm.mrn', '=', 'pre.MRN')
                                         ->where('pm.compcode','=',session('compcode'))
                                         ->where('pm.PatStatus','!=','1')
+                                        ->orWhere('pm.PatStatus','!=','1')
                                         ->where('pm.Active','=','1');
                     });
+
+        dd($this->getQueries($table))
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
@@ -4201,12 +4204,13 @@ class PatmastController extends defaultController
     public function userfile_iframe(Request $request){
         $mrn = $request->mrn;
         $episno = $request->episno;
+        $phase = $request->phase;
 
         if(empty($mrn) || empty($episno)){
            abort(403,'No MRN or Episno'); 
         }
 
-        return view('hisdb.pat_mgmt.userfile_iframe',compact('mrn','episno'));
+        return view('hisdb.pat_mgmt.userfile_iframe',compact('mrn','episno','phase'));
     }
 
 

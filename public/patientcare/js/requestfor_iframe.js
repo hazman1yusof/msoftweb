@@ -15,6 +15,32 @@ disableForm('#formreferralLetterReqfor');
 disableForm('#formcard_noninv');
 disableForm('#formfollowupReqfor');
 
+//DataTable
+var lab_date_tbl = $('#lab_date_tbl').DataTable({
+        "ajax": "",
+        "sDom": "",
+        ordering: false,
+        "paging": false,
+        "columns": [
+            {'data': 'idno'},
+            {'data': 'mrn'},
+            {'data': 'episno'},
+            {'data': 'date'},
+            {'data': 'adddate'},
+            {'data': 'addtime'},
+        ],
+        columnDefs: [
+            { targets: [0, 1, 2, 4, 5], visible: false },
+        ],
+        "drawCallback": function (settings){
+            if(settings.aoData.length > 0){
+                $(this).find('tbody tr')[0].click();
+            }else{
+                populate_labClinicReqFor_getdata();
+            }
+        }
+    });
+
 $(document).ready(function (){
     $(".preloader").fadeOut();
 
@@ -145,6 +171,15 @@ $(document).ready(function (){
     ////////////////////////////////////////////radClinic ends////////////////////////////////////////////
 
     ///////////////////////////////////////////labClinic starts///////////////////////////////////////////
+
+    $('#lab_date_tbl tbody').on('click', 'tr', function (){
+        var data = lab_date_tbl.row(this).data();
+        $('#lab_date_tbl tbody tr').removeClass('active');
+        $(this).addClass('active');
+
+        $('#req_lab_idno').val(data.idno);
+        populate_labClinicReqFor_getdata();
+    });
     
     $("#new_labClinicReqFor").click(function (){
         // radbuts_labClinicReqFor.reset();
@@ -174,7 +209,7 @@ $(document).ready(function (){
                 // disableForm('#formlabClinicReqFor');
                 $('#cancel_labClinicReqFor').data('oper','edit');
                 $("#cancel_labClinicReqFor").click();
-                populate_labClinicReqFor_getdata();
+                populate_labClinicReqFor_init();
             });
         }else{
             enableForm('#formlabClinicReqFor');
@@ -636,7 +671,7 @@ $(document).ready(function (){
                 break;
             case 'labReqFor':
                 $('#radiology .top.menu .item').tab('change tab','labClinicReqFor');
-                populate_labClinicReqFor_getdata();
+                populate_labClinicReqFor_init();
                 break;
             case 'physioReqFor':
                 populate_physioReqFor_getdata();
@@ -861,8 +896,8 @@ function button_state_labClinicReqFor(state){
         case 'edit':
             $("#toggle_requestFor").attr('data-toggle','collapse');
             $('#cancel_labClinicReqFor').data('oper','edit');
-            $("#edit_labClinicReqFor,#labClinicReqFor_chart").attr('disabled',false);
-            $('#save_labClinicReqFor,#cancel_labClinicReqFor,#new_labClinicReqFor').attr('disabled',true);
+            $("#edit_labClinicReqFor,#labClinicReqFor_chart,#new_labClinicReqFor").attr('disabled',false);
+            $('#save_labClinicReqFor,#cancel_labClinicReqFor').attr('disabled',true);
             break;
         case 'wait':
             $("#toggle_requestFor").attr('data-toggle','collapse');
@@ -1392,8 +1427,22 @@ function get_default_radClinicReqFor(){
     });
 }
 
-function populate_labClinicReqFor_getdata(){
+function populate_labClinicReqFor_init(){
     emptyFormdata(errorField,"#formlabClinicReqFor",["#mrn_requestFor","#episno_requestFor"]);
+
+    var getParam = {
+        action: 'get_datatable_labClinic',
+        mrn: $('#mrn_requestFor').val(),
+        episno: $('#episno_requestFor').val()
+    }
+
+    lab_date_tbl.ajax.url("./ptcare_requestfor/table?"+$.param(getParam)).load(function (data){
+
+    });
+}
+
+function populate_labClinicReqFor_getdata(){
+    emptyFormdata(errorField,"#formlabClinicReqFor",["#mrn_requestFor","#episno_requestFor","#req_lab_idno"]);
     
     var saveParam = {
         action: 'get_table_labClinic',
@@ -1401,7 +1450,7 @@ function populate_labClinicReqFor_getdata(){
     
     var postobj = {
         _token: $('#_token').val(),
-        // idno: $("#idno_radClinic").val(),
+        idno: $("#req_lab_idno").val(),
         mrn: $("#mrn_requestFor").val(),
         episno: $("#episno_requestFor").val(),
         // recorddate: $("#recorddate_doctorNote").val(),

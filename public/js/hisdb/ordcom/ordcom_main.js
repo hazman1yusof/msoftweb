@@ -57,6 +57,7 @@ $(document).ready(function(){
 		    $('#ordcom_navtab_phar,#ordcom_navtab_disp,#ordcom_navtab_rad,#ordcom_navtab_dfee,#ordcom_navtab_phys,#ordcom_navtab_rehab,#ordcom_navtab_diet,#ordcom_navtab_pkg,#ordcom_navtab_oth').hide();
 
 		    $('a#ordcom_navtab_lab').click(); //.tab('show');
+		    $("#ordcom_div_cyclebill,#ordcom_div_label,#ordcom_div_prescription").hide();
 		    
 			// refreshGrid('#jqGrid_lab',urlParam_lab,'add');
 			// $("#jqGrid_lab").jqGrid('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-getrow_offset_()));
