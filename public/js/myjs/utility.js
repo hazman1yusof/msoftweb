@@ -2380,8 +2380,6 @@ function computerid_set(computerid){
 
 function calc_jq_height_onchange(jqgrid,resizeGrid=false,maxHeight=300,always_maxHeight = false){
 	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
-	console.log(scrollHeight);
-	console.log(maxHeight);
 	if(scrollHeight<80){
 		scrollHeight = 80;
 	}else if(scrollHeight>maxHeight){
