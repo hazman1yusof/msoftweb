@@ -27,7 +27,7 @@
 		</span>
 		
 		@if($phase == '2' || $phase == '2.lab')
-			<input type="hidden" id="ordcom_phase" value="2">
+			<input type="hidden" id="ordcom_phase" value="{{$phase}}">
             <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid_ordcom_panel"></i>
             <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid_ordcom_panel" ></i >
 		@else

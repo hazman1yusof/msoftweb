@@ -2,12 +2,14 @@ $(document).ready(function () {
 
 	$("#tab_bloodtest").on("shown.bs.collapse", function(){
 	    $('#bloodtest_panel_title').show();
+	    $('#labMain_panel_title').hide();
 		clear_bloodres();
 		SmoothScrollTo('#tab_bloodtest', 400,75);
 	});
 
 	$("#tab_bloodtest").on("hidden.bs.collapse", function(){
 	    $('#bloodtest_panel_title').hide();
+	    $('#labMain_panel_title').show();
 	});
 
 	$('#month_year_br').calendar({

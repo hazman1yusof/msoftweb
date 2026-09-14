@@ -1216,6 +1216,7 @@ class PatmastController extends defaultController
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'recstatus' => 'A',
                 'Active' => 1,
+                'PatStatus' => 1,
                 'PatientImage' => $PatientImage,
             ];
 
@@ -3710,7 +3711,6 @@ class PatmastController extends defaultController
                         $join = $join->on('pm.mrn', '=', 'pre.MRN')
                                         ->where('pm.compcode','=',session('compcode'))
                                         ->where('pm.PatStatus','!=','1')
-                                        ->orWhere('pm.PatStatus','!=','1')
                                         ->where('pm.Active','=','1');
                     });
 

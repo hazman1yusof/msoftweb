@@ -104,16 +104,18 @@
     
     <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;" id="labMain_panel">
         <div class="panel-heading clearfix collapsed" role="tab" id="toggle_labMain">
-            <b>NAME: <span id="name_show_labMain"></span></b><br>
-            MRN: <span id="mrn_show_labMain"></span>
-            SEX: <span id="sex_show_labMain"></span>
-            DOB: <span id="dob_show_labMain"></span>
-            AGE: <span id="age_show_labMain"></span>
-            RACE: <span id="race_show_labMain"></span>
-            RELIGION: <span id="religion_show_labMain"></span><br>
-            OCCUPATION: <span id="occupation_show_labMain"></span>
-            CITIZENSHIP: <span id="citizenship_show_labMain"></span>
-            AREA: <span id="area_show_labMain"></span>
+            <span id="labMain_panel_title">
+                <b>NAME: <span id="name_show_labMain"></span></b><br>
+                MRN: <span id="mrn_show_labMain"></span>
+                SEX: <span id="sex_show_labMain"></span>
+                DOB: <span id="dob_show_labMain"></span>
+                AGE: <span id="age_show_labMain"></span>
+                RACE: <span id="race_show_labMain"></span>
+                RELIGION: <span id="religion_show_labMain"></span><br>
+                OCCUPATION: <span id="occupation_show_labMain"></span>
+                CITIZENSHIP: <span id="citizenship_show_labMain"></span>
+                AREA: <span id="area_show_labMain"></span>
+            </span>
             
             <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_labMain"></i>
             <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_labMain"></i>
