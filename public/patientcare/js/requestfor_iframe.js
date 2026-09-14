@@ -31,7 +31,7 @@ $(document).ready(function (){
     var radbuts_preContrastReqFor = new checkradiobutton(['hisAllergy','feverAllergic','prevReactContrast','prevReactDrug','asthma','heartDisease','veryOldYoung','poorCondition','dehydrated','seriousMedCondition','prevContrastExam','consentProcedure']);
     var radbuts_mriReqFor = new checkradiobutton(['cardiacpacemaker','pros_valve','intraocular','cochlear_imp','neurotransm','bonegrowth','druginfuse','surg_clips','jointlimb_pros','shrapnel','oper_3mth','prev_mri','claustrophobia','dental_imp','frmgnetic_imp','pregnancy','allergy_drug']);
     var radbuts_radClinicReqFor = new checkradiobutton(['pt_condition','rad_pregnant']);
-    var radbuts_labClinicReqFor = new checkradiobutton(['specimenty','fasting','pregnant']);
+    // var radbuts_labClinicReqFor = new checkradiobutton(['specimenty','fasting','pregnant']);
     var radbuts_referralLetterReqfor = new checkradiobutton(['refto','refprio','reffro']);
     var radbuts_card_noninv = new checkradiobutton(['card_chkty','card_type']);
 
@@ -147,7 +147,7 @@ $(document).ready(function (){
     ///////////////////////////////////////////labClinic starts///////////////////////////////////////////
     
     $("#new_labClinicReqFor").click(function (){
-        radbuts_labClinicReqFor.reset();
+        // radbuts_labClinicReqFor.reset();
         get_default_labClinicReqFor();
         $('#cancel_labClinicReqFor').data('oper','add');
         button_state_labClinicReqFor('wait');
@@ -158,7 +158,7 @@ $(document).ready(function (){
     });
     
     $("#edit_labClinicReqFor").click(function (){
-        radbuts_labClinicReqFor.reset();
+        // radbuts_labClinicReqFor.reset();
         button_state_labClinicReqFor('wait');
         enableForm('#formlabClinicReqFor');
         rdonly('#formlabClinicReqFor');
@@ -166,7 +166,7 @@ $(document).ready(function (){
     });
     
     $("#save_labClinicReqFor").click(function (){
-        if(radbuts_labClinicReqFor.check())return false;
+        // if(radbuts_labClinicReqFor.check())return false;
         disableForm('#formlabClinicReqFor');
         if($('#formlabClinicReqFor').isValid({requiredFields: ''}, conf, true)){
             saveForm_labClinicReqFor(function (data){
@@ -183,7 +183,7 @@ $(document).ready(function (){
     });
     
     $("#cancel_labClinicReqFor").click(function (){
-        radbuts_labClinicReqFor.reset();
+        // radbuts_labClinicReqFor.reset();
         // emptyFormdata_div("#formlabClinicReqFor",['#mrn_requestFor','#episno_requestFor']);
         disableForm('#formlabClinicReqFor');
         button_state_labClinicReqFor($(this).data('oper'));
