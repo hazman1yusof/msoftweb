@@ -414,6 +414,7 @@ class PatmastController extends defaultController
             return json_encode($responce);
 
         }else{
+            $request->rows = $request->rowCount;
 
             // SELECT COUNT(*) FROM 'pat_mast' WHERE idno <= 62863
             // if(!empty($request->lastidno)){
@@ -470,7 +471,7 @@ class PatmastController extends defaultController
             $request->page = $request->current;
 
             //////////paginate/////////
-            $paginate = $table_patm->paginate($request->rowCount);
+            $paginate = $table_patm->paginate($request->rows);
 
             foreach ($paginate->items() as $key => $value) {
                 if($value->PatStatus==1){
@@ -503,8 +504,9 @@ class PatmastController extends defaultController
             $responce->total = $paginate->total();
             $responce->rowCount = $request->rowCount;
             $responce->rows = $paginate->items();
-            $responce->sql = $table_patm->toSql();
-            $responce->sql_bind = $table_patm->getBindings();
+            $responce->query = $this->getQueries($table_patm);
+            // $responce->sql = $table_patm->toSql();
+            // $responce->sql_bind = $table_patm->getBindings();
 
             return json_encode($responce);
 

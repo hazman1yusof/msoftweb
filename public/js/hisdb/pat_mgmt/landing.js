@@ -42,7 +42,7 @@ var grid = $("#grid-command-buttons").bootgrid({
                 lastidno = $("#lastidno").val();
             }
 
-            if(table_status_search!='all'){
+            if(table_status_search!='all' && $('#curpat').val() == 'true'){
                 _page = 1;
             }
 
