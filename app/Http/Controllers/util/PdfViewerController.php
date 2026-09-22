@@ -27,9 +27,9 @@ class PdfViewerController extends defaultController
         $attachment_path = \config('get_config.ATTACHMENT_PATH');
 
         if(Storage::disk('pdfViewer_uploads')->exists('attachment/'.$filename)) {
-            $file_url = '../pdf/attachment/'.$filename;
+            $file_url = 'pdf/attachment/'.$filename;
         }else{
-            $file_url = '../pdf/blank/'.$request->type.'.pdf';
+            $file_url = 'pdf/blank/'.$request->type.'.pdf';
         }
 
         return redirect('/PdfViewer2?file='.$file_url.'&mrn='.$mrn.'&episno='.$episno.'&entereddate='.$entereddate.'&type='.$type);
