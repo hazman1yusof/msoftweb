@@ -1309,7 +1309,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           const response =
               await fetch(
-                  "/PdfViewer/save-pdf?mrn="+mrn+'&episno='+episno+"&type="+type+"&entereddate="+entereddate,
+                  "./PdfViewer/save-pdf?mrn="+mrn+'&episno='+episno+"&type="+type+"&entereddate="+entereddate,
                   {
                       method: "POST",
                       headers: {
