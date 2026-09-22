@@ -1683,6 +1683,11 @@ Route::get('/webservice','util\WebserviceController@page');
 Route::get('/webservice/table','util\WebserviceController@table');
 Route::post('/webservice/form','util\WebserviceController@form');
 
+Route::get('/PdfViewer', 'util\PdfViewerController@page');
+Route::get('/PdfViewer2', 'util\PdfViewerController@redirect');
+Route::post('/PdfViewer/save-pdf', 'util\PdfViewerController@savePdf');
+Route::get('/PdfViewer-png', 'util\PdfViewerController@pngView');
+
 //dari ptcare
 
 //// sysparam ////

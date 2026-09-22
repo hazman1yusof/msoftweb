@@ -62,6 +62,11 @@ return [
         //     'visibility' => 'public',
         // ],
 
+        'pdfViewer_uploads' => [
+            'driver' => 'local',
+            'root'   => env('ATTACHMENT_PATH').'/pdf',
+        ],
+
         'attachment_uploads' => [
             'driver' => 'local',
             'root'   => env('ATTACHMENT_PATH').'/uploads',

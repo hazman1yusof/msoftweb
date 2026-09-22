@@ -91,7 +91,7 @@
 							<input id="phys_ncase_entereddate" name="entereddate" type="date" data-validation="required" data-validation-error-msg-required="Please enter information.">
 						</div>
 						
-						<div class="field" style="display: none;">
+						<div class="field" >
 							<input id="phys_ncase_enteredtime" name="enteredtime" type="time">
 						</div>
 					</div>

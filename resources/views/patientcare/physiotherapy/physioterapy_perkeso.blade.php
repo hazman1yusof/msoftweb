@@ -287,12 +287,12 @@
                                         <div class="ui two cards">
                                             <a class="ui card bodydia_perkeso" data-type='BB_PERKESO'>
                                                 <div class="image">
-                                                    <img src="{{ asset('patientcare/img/bodydiagperkeso4.png') }}">
+                                                    <img src="./PdfViewer-png?type=BB_PERKESO">
                                                 </div>
                                             </a>
                                             <a class="ui card bodydia_perkeso" data-type='BF_PERKESO'>
                                                 <div class="image">
-                                                    <img src="{{ asset('patientcare/img/bodydiagperkeso1.png') }}">
+                                                    <img src="./PdfViewer-png?type=BF_PERKESO">
                                                 </div>
                                             </a>
                                         </div>

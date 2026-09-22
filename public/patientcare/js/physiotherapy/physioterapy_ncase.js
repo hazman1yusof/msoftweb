@@ -23,6 +23,8 @@ $(document).ready(function () {
 		
 		auto_save_background_formphys.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
 		auto_save_background_formphys.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+
+		reloadImage_png("a.ui.card.bodydia_perkeso",['BB_PERKESO','BF_PERKESO']);
 	});
 	
 	$("#edit_phys_ncase").click(function(){
@@ -41,6 +43,14 @@ $(document).ready(function () {
 		
 		auto_save_background_formphys.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
 		auto_save_background_formphys.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+
+		let mrn = $('#mrn_rehabMain').val();
+		let episno = $('#episno_rehabMain').val();
+		let entereddate = $('#phys_ncase_entereddate').val();
+		let enteredtime = $('#phys_ncase_enteredtime').val();
+		console.log(entereddate+' '+enteredtime);
+		let timestamp = moment(entereddate+' '+enteredtime,  'YYYY-MM-DD HH:mm:ss').unix();
+		reloadImage_png("a.ui.card.bodydia_perkeso",['BB_PERKESO','BF_PERKESO'],mrn,episno,timestamp);
 	});
 	
 	$(".ui.toggle.button").click(function(){
@@ -142,13 +152,15 @@ $(document).ready(function () {
 		// 	alert('Edit this patient first');
 		// }
 		else{
-			if(istablet){
-				let filename = type+'_'+mrn+'_.pdf';
-				let url = $('#urltodiagram').val() + filename;
-				var win = window.open(url, '_blank');
-			}else{
-				var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&entereddate='+timestamp+'&type='+type+'&from=rehab', '_blank');
-			}
+			// if(istablet){
+			// 	let filename = type+'_'+mrn+'_.pdf';
+			// 	let url = $('#urltodiagram').val() + filename;
+			// 	var win = window.open(url, '_blank');
+			// }else{
+			// 	var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&entereddate='+timestamp+'&type='+type+'&from=rehab', '_blank');
+			// }
+
+            var win = window.open('./PdfViewer?mrn='+mrn+'&episno='+episno+'&entereddate='+timestamp+'&type='+type+'&from=rehab', '_blank');
 			
 			if(win){
 				win.focus();

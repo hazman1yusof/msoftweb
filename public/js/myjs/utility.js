@@ -2555,6 +2555,7 @@ function auto_save_background(form,id){
 	}
 
 	this.off = function(store_id){
+		console.log('autosave remove')
 		clearInterval(this.interval);
 		let storage_obj = localStorage.getItem('auto_save_'+this.id+'_'+store_id);
 		localStorage.removeItem('auto_save_'+this.id+'_'+store_id);
@@ -2569,6 +2570,9 @@ function auto_save_background(form,id){
 				JSON.parse(storage_obj).forEach(function(e,i){
 					$(myform+" [name='"+e.name+"']").val(e.value);
 				});
+			}else{
+				console.log('autosave remove');
+				localStorage.removeItem('auto_save_'+this.id+'_'+store_id);
 			}
 		}
 	}
@@ -2603,6 +2607,22 @@ function auto_save_background(form,id){
 		}
 	}
 } 
+
+function reloadImage_png(id,array,mrn,episno,entereddate){
+	if(mrn == ''){
+		array.forEach(function(e,i){
+			var new_src = "./PdfViewer-png?type="+e+"&random="+new Date().getTime();
+
+			$(id+"[data-type="+e+"] img").attr('src',new_src);
+		});
+	}else{
+		array.forEach(function(e,i){
+			var new_src = "./PdfViewer-png?mrn="+mrn+"&episno="+episno+"&entereddate="+entereddate+"&type="+e+"&random="+new Date().getTime();
+
+			$(id+"[data-type="+e+"] img").attr('src',new_src);
+		});
+	}
+}
 
 $(document).ready(function () {
 
