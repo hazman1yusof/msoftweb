@@ -18,6 +18,7 @@ $(document).ready(function (){
     textare_init_preoperative();
     
     var fdl = new faster_detail_load();
+    var auto_save_background_form_preoperative = new auto_save_background('#form_preoperative','ot_form_preoperative');
     
     disableForm('#form_preoperative');
     
@@ -27,18 +28,21 @@ $(document).ready(function (){
         enableForm('#form_preoperative');
         rdonly('#form_preoperative');
         // emptyFormdata_div("#form_preoperative",['#mrn_otMain','#episno_otMain']);
-        // dialog_mrn_edit.on();
+        auto_save_background_form_preoperative.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+		auto_save_background_form_preoperative.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     $("#edit_preoperative").click(function (){
         button_state_preoperative('wait');
         enableForm('#form_preoperative');
         rdonly('#form_preoperative');
-        // dialog_mrn_edit.on();
+        auto_save_background_form_preoperative.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+		auto_save_background_form_preoperative.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val())
     });
     
     $("#save_preoperative").click(function (){
         if($('#form_preoperative').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_form_preoperative.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
             saveForm_preoperative(function (data){
                 // emptyFormdata_div("#form_preoperative",['#mrn_otMain','#episno_otMain']);
                 disableForm('#form_preoperative');
@@ -54,7 +58,7 @@ $(document).ready(function (){
         disableForm('#form_preoperative');
         button_state_preoperative($(this).data('oper'));
         getdata_preoperative();
-        // dialog_mrn_edit.off();
+        auto_save_background_form_preoperative.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     // $("#preop_opSite_na").change(function (){
@@ -438,6 +442,8 @@ $('#tab_preoperative').on('hide.bs.collapse', function (){
 });
 
 function getdata_preoperative(){
+    disableForm('#form_preoperative');
+
     var urlparam = {
         action: 'get_table_preoperative',
     }

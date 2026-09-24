@@ -16,6 +16,7 @@ var urlParam_AddNotesOperRec = {
 $(document).ready(function (){
     
     var fdl = new faster_detail_load();
+    var auto_save_background_form_otmgmt_div = new auto_save_background('#form_otmgmt_div','ot_form_otmgmt_div');
     
     disableForm('#form_otmgmt_div');
     
@@ -25,18 +26,21 @@ $(document).ready(function (){
         enableForm('#form_otmgmt_div');
         rdonly('#form_otmgmt_div');
         // emptyFormdata_div("#form_otmgmt_div",['#mrn_otMain','#episno_otMain']);
-        // dialog_mrn_edit.on();
+        auto_save_background_form_otmgmt_div.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+		auto_save_background_form_otmgmt_div.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     $("#edit_otmgmt_div").click(function (){
         button_state_otmgmt_div('wait');
         enableForm('#form_otmgmt_div');
         rdonly('#form_otmgmt_div');
-        // dialog_mrn_edit.on();
+        auto_save_background_form_otmgmt_div.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+		auto_save_background_form_otmgmt_div.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     $("#save_otmgmt_div").click(function (){
         if($('#form_otmgmt_div').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_form_otmgmt_div.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
             saveForm_otmgmt_div(function (data){
                 // emptyFormdata_div("#form_otmgmt_div",['#mrn_otMain','#episno_otMain']);
                 disableForm('#form_otmgmt_div');
@@ -51,8 +55,8 @@ $(document).ready(function (){
         // emptyFormdata_div("#form_otmgmt_div",['#mrn_otMain','#episno_otMain']);
         disableForm('#form_otmgmt_div');
         button_state_otmgmt_div($(this).data('oper'));
-        getdata_otmgmt();
-        // dialog_mrn_edit.off();
+        getdata_otmgmt();            
+        auto_save_background_form_otmgmt_div.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     // to format number input to two decimal places (0.00)
@@ -437,6 +441,8 @@ $('#tab_otmgmt_div').on('hide.bs.collapse', function (){
 });
 
 function getdata_otmgmt(){
+    disableForm('#form_otmgmt_div');
+
     var urlparam = {
         action: 'get_table_otmanage',
     }

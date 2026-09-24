@@ -18,6 +18,7 @@ $(document).ready(function (){
     textarea_init_endoscopyIntestine();
     
     var fdl = new faster_detail_load();
+    var auto_save_background_formEndoscopyIntestine = new auto_save_background('#formEndoscopyIntestine','ot_formEndoscopyIntestine');
     
     disableForm('#formEndoscopyIntestine');
     
@@ -27,18 +28,21 @@ $(document).ready(function (){
         enableForm('#formEndoscopyIntestine');
         rdonly('#formEndoscopyIntestine');
         // emptyFormdata_div("#formEndoscopyIntestine",['#mrn_otMain','#episno_otMain']);
-        // dialog_mrn_edit.on();
+        auto_save_background_formEndoscopyIntestine.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+		auto_save_background_formEndoscopyIntestine.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     $("#edit_endoscopyIntestine").click(function (){
         button_state_endoscopyIntestine('wait');
         enableForm('#formEndoscopyIntestine');
         rdonly('#formEndoscopyIntestine');
-        // dialog_mrn_edit.on();
+        auto_save_background_formEndoscopyIntestine.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+		auto_save_background_formEndoscopyIntestine.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     $("#save_endoscopyIntestine").click(function (){
         if($('#formEndoscopyIntestine').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formEndoscopyIntestine.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());        
             saveForm_endoscopyIntestine(function (data){
                 // emptyFormdata_div("#formEndoscopyIntestine",['#mrn_otMain','#episno_otMain']);
                 disableForm('#formEndoscopyIntestine');
@@ -54,7 +58,7 @@ $(document).ready(function (){
         disableForm('#formEndoscopyIntestine');
         button_state_endoscopyIntestine($(this).data('oper'));
         getdata_endoscopyIntestine();
-        // dialog_mrn_edit.off();
+        auto_save_background_formEndoscopyIntestine.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val()); 
     });
     
     // to format number input to two decimal places (0.00)
@@ -371,6 +375,8 @@ function textarea_init_endoscopyIntestine(){
 }
 
 function getdata_endoscopyIntestine(){
+    disableForm('#formEndoscopyIntestine');
+
     var urlparam = {
         action: 'get_table_endoscopyIntestine',
     }

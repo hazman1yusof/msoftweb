@@ -18,6 +18,7 @@ $(document).ready(function (){
     textarea_init_endoscopyStomach();
     
     var fdl = new faster_detail_load();
+    var auto_save_background_formEndoscopyStomach= new auto_save_background('#formEndoscopyStomach','ot_formEndoscopyStomach');
     
     disableForm('#formEndoscopyStomach');
     
@@ -27,18 +28,21 @@ $(document).ready(function (){
         enableForm('#formEndoscopyStomach');
         rdonly('#formEndoscopyStomach');
         // emptyFormdata_div("#formEndoscopyStomach",['#mrn_otMain','#episno_otMain']);
-        // dialog_mrn_edit.on();
+        auto_save_background_formEndoscopyStomach.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+		auto_save_background_formEndoscopyStomach.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     $("#edit_endoscopyStomach").click(function (){
         button_state_endoscopyStomach('wait');
         enableForm('#formEndoscopyStomach');
         rdonly('#formEndoscopyStomach');
-        // dialog_mrn_edit.on();
+        auto_save_background_formEndoscopyStomach.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+		auto_save_background_formEndoscopyStomach.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     $("#save_endoscopyStomach").click(function (){
         if($('#formEndoscopyStomach').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formEndoscopyStomach.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
             saveForm_endoscopyStomach(function (data){
                 // emptyFormdata_div("#formEndoscopyStomach",['#mrn_otMain','#episno_otMain']);
                 disableForm('#formEndoscopyStomach');
@@ -54,7 +58,7 @@ $(document).ready(function (){
         disableForm('#formEndoscopyStomach');
         button_state_endoscopyStomach($(this).data('oper'));
         getdata_endoscopyStomach();
-        // dialog_mrn_edit.off();
+        auto_save_background_formEndoscopyStomach.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     // to format number input to two decimal places (0.00)
@@ -371,6 +375,8 @@ function textarea_init_endoscopyStomach(){
 }
 
 function getdata_endoscopyStomach(){
+    disableForm('#formEndoscopyStomach');
+
     var urlparam = {
         action: 'get_table_endoscopyStomach',
     }

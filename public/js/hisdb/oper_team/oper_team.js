@@ -18,6 +18,7 @@ $(document).ready(function (){
     // textarea_init_oper_team();
     
     var fdl = new faster_detail_load();
+    var auto_save_background_form_oper_team = new auto_save_background('#form_oper_team','ot_form_oper_team');
     
     disableForm('#form_oper_team');
     
@@ -28,17 +29,21 @@ $(document).ready(function (){
         rdonly('#form_oper_team');
         // emptyFormdata_div("#form_oper_team",['#mrn_otMain','#episno_otMain']);
         // dialog_mrn_edit.on();
+        auto_save_background_form_oper_team.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+		auto_save_background_form_oper_team.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     $("#edit_oper_team").click(function (){
         button_state_oper_team('wait');
         enableForm('#form_oper_team');
         rdonly('#form_oper_team');
-        // dialog_mrn_edit.on();
+        auto_save_background_form_oper_team.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+		auto_save_background_form_oper_team.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     $("#save_oper_team").click(function (){
         if($('#form_oper_team').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_form_oper_team.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
             saveForm_oper_team(function (data){
                 // emptyFormdata_div("#form_oper_team",['#mrn_otMain','#episno_otMain']);
                 disableForm('#form_oper_team');
@@ -54,7 +59,7 @@ $(document).ready(function (){
         disableForm('#form_oper_team');
         button_state_oper_team($(this).data('oper'));
         getdata_oper_team();
-        // dialog_mrn_edit.off();
+        auto_save_background_form_oper_team.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());        
     });
     
     // Op site marked
@@ -562,6 +567,8 @@ $('#tab_oper_team').on('hide.bs.collapse', function (){
 });
 
 function getdata_oper_team(){
+    disableForm('#form_oper_team');
+
     var urlparam = {
         action: 'get_table_oper_team',
     }
