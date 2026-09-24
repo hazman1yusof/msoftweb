@@ -27,6 +27,9 @@ var urlParam_AddNotesThromboED = {
 $(document).ready(function (){
     
     var fdl = new faster_detail_load();
+    
+	var auto_save_background_formThrombo_ED = new auto_save_background('#formThrombo_ED','ed_formThrombo_ED');
+
     /////////////////////////////////////thrombo starts/////////////////////////////////////
     disableForm('#formThrombo_ED');
     
@@ -38,6 +41,8 @@ $(document).ready(function (){
         emptyFormdata_div("#formThrombo_ED",['#mrn_emergencyMain','#episno_emergencyMain','#doctor_nursNote','#ordcomtt_phar']);
         $("#formThrombo_ED :input[name='dateInsert']").val(moment().format('YYYY-MM-DD'));
         document.getElementById("idno_thrombo").value = "";
+        auto_save_background_formThrombo_ED.check($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
+		auto_save_background_formThrombo_ED.on($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
     });
     
     $("#edit_thrombo_ED").click(function (){
@@ -45,11 +50,14 @@ $(document).ready(function (){
         enableForm('#formThrombo_ED');
         rdonly('#formThrombo_ED');
         // $("#formThrombo_ED :input[name='dateInsert']").attr("readonly", true);
+        auto_save_background_formThrombo_ED.check($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
+		auto_save_background_formThrombo_ED.on($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
     });
     
     $("#save_thrombo_ED").click(function (){
         disableForm('#formThrombo_ED');
         if($('#formThrombo_ED').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formThrombo_ED.off($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
             saveForm_thrombo_ED(function (){
                 $("#cancel_thrombo_ED").data('oper','edit');
                 $("#cancel_thrombo_ED").click();
@@ -65,6 +73,7 @@ $(document).ready(function (){
         disableForm('#formThrombo_ED');
         button_state_thrombo_ED($(this).data('oper'));
         $('#datetimethrombo_ED_tbl').DataTable().ajax.reload();
+        auto_save_background_formThrombo_ED.off($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
     });
     //////////////////////////////////////thrombo ends//////////////////////////////////////
     
