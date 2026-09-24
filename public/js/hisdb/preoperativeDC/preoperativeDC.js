@@ -18,6 +18,7 @@ $(document).ready(function (){
     textarea_init_preoperativeDC();
     
     var fdl = new faster_detail_load();
+    var auto_save_background_form_preoperativeDC = new auto_save_background('#form_preoperativeDC','ot_form_preoperativeDC');
     
     disableForm('#form_preoperativeDC');
     
@@ -27,16 +28,21 @@ $(document).ready(function (){
         enableForm('#form_preoperativeDC');
         rdonly('#form_preoperativeDC');
         // emptyFormdata_div("#form_preoperativeDC",['#mrn_otMain','#episno_otMain']);
+        auto_save_background_form_preoperativeDC.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+		auto_save_background_form_preoperativeDC.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     $("#edit_preoperativeDC").click(function (){
         button_state_preoperativeDC('wait');
         enableForm('#form_preoperativeDC');
         rdonly('#form_preoperativeDC');
+        auto_save_background_form_preoperativeDC.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+		auto_save_background_form_preoperativeDC.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     $("#save_preoperativeDC").click(function (){
         if($('#form_preoperativeDC').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_form_preoperativeDC.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
             saveForm_preoperativeDC(function (data){
                 // emptyFormdata_div("#form_preoperativeDC",['#mrn_otMain','#episno_otMain']);
                 disableForm('#form_preoperativeDC');
@@ -52,6 +58,7 @@ $(document).ready(function (){
         disableForm('#form_preoperativeDC');
         button_state_preoperativeDC($(this).data('oper'));
         getdata_preoperativeDC();
+        auto_save_background_form_preoperativeDC.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     // to format number input to two decimal places (0.00)
@@ -421,6 +428,8 @@ $('#tab_preoperativeDC').on('hide.bs.collapse', function (){
 });
 
 function getdata_preoperativeDC(){
+    disableForm('#form_preoperativeDC');
+
     var urlparam = {
         action: 'get_table_preoperativeDC',
     }

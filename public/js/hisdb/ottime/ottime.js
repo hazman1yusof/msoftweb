@@ -18,6 +18,7 @@ $(document).ready(function (){
     // textarea_init_ottime();
     
     var fdl = new faster_detail_load();
+    var auto_save_background_form_ottime = new auto_save_background('#form_ottime','ot_form_ottime');
     
     $('#arrive_time,#in_time,#start_time,#end_time,#recovery_time,#depart_time')
         .calendar({
@@ -36,18 +37,21 @@ $(document).ready(function (){
         enableForm('#form_ottime');
         rdonly('#form_ottime');
         // emptyFormdata_div("#form_ottime",['#mrn_otMain','#episno_otMain']);
-        // dialog_mrn_edit.on();
+        auto_save_background_form_ottime.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+		auto_save_background_form_ottime.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     $("#edit_ottime").click(function (){
         button_state_ottime('wait');
         enableForm('#form_ottime');
         rdonly('#form_ottime');
-        // dialog_mrn_edit.on();
+        auto_save_background_form_ottime.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+		auto_save_background_form_ottime.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     $("#save_ottime").click(function (){
         if($('#form_ottime').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_form_ottime.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
             saveForm_ottime(function (data){
                 // emptyFormdata_div("#form_ottime",['#mrn_otMain','#episno_otMain']);
                 disableForm('#form_ottime');
@@ -63,7 +67,7 @@ $(document).ready(function (){
         disableForm('#form_ottime');
         button_state_ottime($(this).data('oper'));
         getdata_ottime();
-        // dialog_mrn_edit.off();
+        auto_save_background_form_ottime.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     // to format number input to two decimal places (0.00)
@@ -428,6 +432,8 @@ $('#tab_ottime').on('hide.bs.collapse', function (){
 });
 
 function getdata_ottime(){
+    disableForm('#form_ottime');
+
     var urlparam = {
         action: 'get_table_ottime',
     }

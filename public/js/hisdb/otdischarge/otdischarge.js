@@ -18,6 +18,7 @@ $(document).ready(function (){
     textare_init_otdischarge();
     
     var fdl = new faster_detail_load();
+    var auto_save_background_form_otdischarge = new auto_save_background('#form_otdischarge','ot_form_otdischarge');
     
     disableForm('#form_otdischarge');
     
@@ -28,7 +29,8 @@ $(document).ready(function (){
         rdonly('#form_otdischarge');
         // $("#predischg_pat_remark,#predischg_consciouslvl_remark,#predischg_vitalsign_remark,#predischg_checksite_remark,#predischg_checkdrains_remark,#predischg_checkiv_remark,#predischg_blood_remark,#predischg_specimen_remark,#predischg_docs_remark,#predischg_imgstudies_remark,#predischg_painrelief_remark,#predischg_others_remark,#predischg_arterial_remark,#predischg_pcapump_remark,#predischg_addmore1_remark,#predischg_addmore2_remark,#predischg_addmore3_remark,#predischg_addmore4_remark,#predischg_addmore5_remark,#predischg_addmore6_remark").prop("readonly",true);
         // emptyFormdata_div("#form_otdischarge",['#mrn_otMain','#episno_otMain']);
-        // dialog_mrn_edit.on();
+        auto_save_background_form_otdischarge.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+		auto_save_background_form_otdischarge.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     $("#edit_otdischarge").click(function (){
@@ -36,11 +38,13 @@ $(document).ready(function (){
         enableForm('#form_otdischarge');
         rdonly('#form_otdischarge');
         // $("#predischg_pat_remark,#predischg_consciouslvl_remark,#predischg_vitalsign_remark,#predischg_checksite_remark,#predischg_checkdrains_remark,#predischg_checkiv_remark,#predischg_blood_remark,#predischg_specimen_remark,#predischg_docs_remark,#predischg_imgstudies_remark,#predischg_painrelief_remark,#predischg_others_remark,#predischg_arterial_remark,#predischg_pcapump_remark,#predischg_addmore1_remark,#predischg_addmore2_remark,#predischg_addmore3_remark,#predischg_addmore4_remark,#predischg_addmore5_remark,#predischg_addmore6_remark").prop("readonly",true);
-        // dialog_mrn_edit.on();
+        auto_save_background_form_otdischarge.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+		auto_save_background_form_otdischarge.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     $("#save_otdischarge").click(function (){
         if($('#form_otdischarge').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_form_otdischarge.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
             saveForm_otdischarge(function (data){
                 // emptyFormdata_div("#form_otdischarge",['#mrn_otMain','#episno_otMain']);
                 disableForm('#form_otdischarge');
@@ -57,7 +61,7 @@ $(document).ready(function (){
         disableForm('#form_otdischarge');
         button_state_otdischarge($(this).data('oper'));
         getdata_otdischarge();
-        // dialog_mrn_edit.off();
+        auto_save_background_form_otdischarge.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     // to format number input to two decimal places (0.00)
@@ -421,6 +425,8 @@ $('#tab_otdischarge').on('hide.bs.collapse', function (){
 });
 
 function getdata_otdischarge(){
+    disableForm('#form_otdischarge');
+
     var urlparam = {
         action: 'get_table_otdischarge',
     }

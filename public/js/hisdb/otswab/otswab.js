@@ -45,6 +45,8 @@ $(document).ready(function (){
     // textare_init_otswab();
     
     var fdl = new faster_detail_load();
+    var auto_save_background_form_otswab = new auto_save_background('#form_otswab','ot_form_otswab');
+
     unsaved = false;
     $('#starttime,#endtime')
         .calendar({
@@ -63,18 +65,21 @@ $(document).ready(function (){
         enableForm('#form_otswab');
         rdonly('#form_otswab');
         // emptyFormdata_div("#form_otswab",['#mrn_otMain','#episno_otMain']);
-        // dialog_mrn_edit.on();
+        auto_save_background_form_otswab.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+		auto_save_background_form_otswab.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());    
     });
 
     $("#edit_otswab").click(function (){
         button_state_otswab('wait');
         enableForm('#form_otswab');
         rdonly('#form_otswab');
-        // dialog_mrn_edit.on();
+        auto_save_background_form_otswab.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+		auto_save_background_form_otswab.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());       
     });
     
     $("#save_otswab").click(function (){
         if($('#form_otswab').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_form_otswab.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
             saveForm_otswab(function (data){
                 // emptyFormdata_div("#form_otswab",['#mrn_otMain','#episno_otMain']);
                 disableForm('#form_otswab');
@@ -83,19 +88,6 @@ $(document).ready(function (){
             enableForm('#form_otswab');
             rdonly('#form_otswab');
         }
-        // var unsaved = false;
-
-		// 	$(":input").change(function(){ //triggers change in all input fields including text type
-		// 		unsaved = true;
-		// 	});
-					
-		// 	function unloadPage(){ 
-		// 		if(unsaved){
-		// 			return "You have unsaved changes on this page. Do you want to leave this page and discard your changes or stay on this page?";
-		// 		}
-		// 	}
-					
-		// 	window.onbeforeunload = unloadPage;
     });
     
     $("#cancel_otswab").click(function (){
@@ -103,7 +95,7 @@ $(document).ready(function (){
         disableForm('#form_otswab');
         button_state_otswab($(this).data('oper'));
         getdata_otswab();
-        // dialog_mrn_edit.off();
+        auto_save_background_form_otswab.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     // to format number input to two decimal places (0.00)
@@ -1045,6 +1037,8 @@ $('#tab_otswab').on('hide.bs.collapse', function (){
 });
 
 function getdata_otswab(){
+    disableForm('#form_otswab');
+
     var urlparam = {
         action: 'get_table_otswab',
     }
