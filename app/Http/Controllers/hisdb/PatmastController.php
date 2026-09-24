@@ -35,6 +35,8 @@ class PatmastController extends defaultController
                 return $this->userfile_iframe($request);
             case 'chk_mykad_exist':
                 return $this->chk_mykad_exist($request);
+            case 'check_preepis_count':
+                return $this->check_preepis_count($request);
         }
     }
 
@@ -414,6 +416,7 @@ class PatmastController extends defaultController
             return json_encode($responce);
 
         }else{
+            $request->rows = $request->rowCount;
 
             // SELECT COUNT(*) FROM 'pat_mast' WHERE idno <= 62863
             // if(!empty($request->lastidno)){
@@ -470,7 +473,7 @@ class PatmastController extends defaultController
             $request->page = $request->current;
 
             //////////paginate/////////
-            $paginate = $table_patm->paginate($request->rowCount);
+            $paginate = $table_patm->paginate($request->rows);
 
             foreach ($paginate->items() as $key => $value) {
                 if($value->PatStatus==1){
@@ -503,8 +506,9 @@ class PatmastController extends defaultController
             $responce->total = $paginate->total();
             $responce->rowCount = $request->rowCount;
             $responce->rows = $paginate->items();
-            $responce->sql = $table_patm->toSql();
-            $responce->sql_bind = $table_patm->getBindings();
+            $responce->query = $this->getQueries($table_patm);
+            // $responce->sql = $table_patm->toSql();
+            // $responce->sql_bind = $table_patm->getBindings();
 
             return json_encode($responce);
 
@@ -1214,6 +1218,7 @@ class PatmastController extends defaultController
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'recstatus' => 'A',
                 'Active' => 1,
+                'PatStatus' => 1,
                 'PatientImage' => $PatientImage,
             ];
 
@@ -3702,7 +3707,7 @@ class PatmastController extends defaultController
         $table=DB::table('hisdb.pre_episode as pre')
                     ->select('pre.idno','pm.compcode','pm.Name','pm.mrn','pm.episno','pre.apptidno','pm.Newic','pm.telhp','pm.telh','pm.DOB','pm.sex')
                     ->where('pre.compcode',session('compcode'))
-                    ->whereDate('pre.adddate',Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'))
+                    ->whereDate('pre.adddate',Carbon::now("Asia/Kuala_Lumpur"))
 
                     ->join('hisdb.pat_mast as pm', function($join) use ($request){
                         $join = $join->on('pm.mrn', '=', 'pre.MRN')
@@ -3710,6 +3715,8 @@ class PatmastController extends defaultController
                                         ->where('pm.PatStatus','!=','1')
                                         ->where('pm.Active','=','1');
                     });
+
+        // dd($this->getQueries($table))
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
@@ -4196,15 +4203,40 @@ class PatmastController extends defaultController
         echo json_encode($responce, JSON_INVALID_UTF8_SUBSTITUTE);
     }
 
+    public function check_preepis_count(Request $request){
+        $table=DB::table('hisdb.pre_episode as pre')
+                    ->select('pre.idno','pm.compcode','pm.Name','pm.mrn','pm.episno','pre.apptidno','pm.Newic','pm.telhp','pm.telh','pm.DOB','pm.sex')
+                    ->where('pre.compcode',session('compcode'))
+                    ->whereDate('pre.adddate',Carbon::now("Asia/Kuala_Lumpur"))
+
+                    ->join('hisdb.pat_mast as pm', function($join) use ($request){
+                        $join = $join->on('pm.mrn', '=', 'pre.MRN')
+                                        ->where('pm.compcode','=',session('compcode'))
+                                        ->where('pm.PatStatus','!=','1')
+                                        ->where('pm.Active','=','1');
+                    });
+
+        // dd($this->getQueries($table))
+
+        //////////paginate/////////
+        // $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->records = $table->count();
+
+        return json_encode($responce);
+    }
+
     public function userfile_iframe(Request $request){
         $mrn = $request->mrn;
         $episno = $request->episno;
+        $phase = $request->phase;
 
         if(empty($mrn) || empty($episno)){
            abort(403,'No MRN or Episno'); 
         }
 
-        return view('hisdb.pat_mgmt.userfile_iframe',compact('mrn','episno'));
+        return view('hisdb.pat_mgmt.userfile_iframe',compact('mrn','episno','phase'));
     }
 
 

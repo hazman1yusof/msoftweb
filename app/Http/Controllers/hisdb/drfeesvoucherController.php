@@ -26,11 +26,18 @@ class drfeesvoucherController extends defaultController
         return view('hisdb.drfeesvoucher.drfeesvoucher');
     }
 
+    public function showos(Request $request)
+    {  
+        return view('hisdb.drfeesvoucher.drfeesos');
+    }
+
     public function table(Request $request)
     {   
         switch($request->action){
             case 'download_report':
                 return $this->download_report($request);
+            case 'download_report_os':
+                return $this->download_report_os($request);
                 
             default:
                 return 'error happen..';
@@ -45,5 +52,15 @@ class drfeesvoucherController extends defaultController
 
         return Response::download($file_path,$filename);
     }
+
+    public function download_report_os(Request $request){
+        
+        $filename = 'DrOutstanding.xlsx';
+        
+        $file_path = public_path()."\\assets\\mohreport\\".$filename;
+
+        return Response::download($file_path,$filename);
+    }
+
 
 }

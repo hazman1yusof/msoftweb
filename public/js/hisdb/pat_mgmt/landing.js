@@ -42,7 +42,7 @@ var grid = $("#grid-command-buttons").bootgrid({
                 lastidno = $("#lastidno").val();
             }
 
-            if(table_status_search!='all'){
+            if(table_status_search!='all' && $('#curpat').val() == 'true'){
                 _page = 1;
             }
 
@@ -509,13 +509,15 @@ $(document).ready(function() {
 
     ////////////////habis mykad///////
 
-    if($('#curpat').val() == "true" && $("#epistycode").val() == "OP" && $('#isdoctor').val() == 'false'){
+    if($('#curpat').val() == "false" && $("#epistycode").val() == "OP"){ // && $('#isdoctor').val() == 'false' && !Session::has('isdoctor')
         preepisode = new preepisode_init();
         preepisode.makejqgrid();
+        preepisode.timer();
     }
 
     function preepisode_init(){
         this.urlParam_preepis;
+        this.interval;
 
         this.refreshGrid = function(){
             refreshGrid("#jqGrid_preepis", this.urlParam_preepis);
@@ -605,6 +607,7 @@ $(document).ready(function() {
                 let episno = cellvalue.split(',')[1];
                 let apptidno = cellvalue.split(',')[2];
                 let idno = rowObject.idno;
+                let epistycode = $('#epistycode').val();
 
                 let return_val = "";
 
@@ -621,11 +624,11 @@ $(document).ready(function() {
 
                 if(apptidno == 'null' || apptidno == ''){
                     return_val+=`
-                        <button title="Episode" type="button" class="btn btn-xs btn-danger btn-md command-episode preepis_epis" data-mrn=`+mrn+` data-idno=`+idno+` data-episno=`+episno+` data-apptidno=`+apptidno+`><b>&nbsp;WIN&nbsp;</b></button>
+                        <button title="Episode" type="button" class="btn btn-xs btn-danger btn-md command-episode preepis_epis" data-mrn=`+mrn+` data-idno=`+idno+` data-episno=`+episno+` data-apptidno=`+apptidno+`><b>&nbsp;`+epistycode+`&nbsp;</b></button>
                     `;
                 }else{
                    return_val+=`
-                        <button title="Episode" type="button" class="btn btn-xs btn-danger btn-md command-episode preepis_epis" data-mrn=`+mrn+` data-idno=`+idno+` data-episno=`+episno+` data-apptidno=`+apptidno+`><b>APPT</b></button>
+                        <button title="Episode" type="button" class="btn btn-xs btn-danger btn-md command-episode preepis_epis" data-mrn=`+mrn+` data-idno=`+idno+` data-episno=`+episno+` data-apptidno=`+apptidno+`><b>`+epistycode+`</b></button>
                     `; 
                 }
 
@@ -769,6 +772,29 @@ $(document).ready(function() {
 
                 });
             }
+        }
+
+        this.timer = function(){
+            this.interval = setInterval(check_preepis_count, 5000);
+        }
+
+        function check_preepis_count(){
+            var param={
+                action:'check_preepis_count',
+            };
+
+            $.get( "./pat_mast/table?"+$.param(param), function( data ) {
+
+            },'json').done(function(data) {
+                if(data.records > 0){
+                    $('#preepis_count').text(data.records);
+                }else{
+                    $('#preepis_count').text(0);
+                }
+            }).error(function(data){
+
+            });
+            
         }
     }
 

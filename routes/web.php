@@ -29,6 +29,7 @@ Route::get('/login','SessionController@create')->name('login');
 Route::get('/loginappt','SessionController@create2')->name('login2');
 Route::get('/qrcode','SessionController@qrcode');
 Route::post('/qrcode','SessionController@qrcode_prereg');
+Route::get('/qrcode_gen','SessionController@qrcode_gen');
 Route::get('/autologin','SessionController@autologin');
 Route::post('/login','SessionController@store');
 Route::get('/logout','SessionController@destroy')->name('logout');
@@ -1480,6 +1481,7 @@ Route::get('/mohreport/table','hisdb\mohreportController@table');
 Route::post('/mohreport/form','hisdb\mohreportController@form');
 
 Route::get('/drfeesvoucher','hisdb\drfeesvoucherController@show');
+Route::get('/drfeesos','hisdb\drfeesvoucherController@showos');
 Route::get('/drfeesvoucher/table','hisdb\drfeesvoucherController@table');
 Route::post('/drfeesvoucher/form','hisdb\drfeesvoucherController@form');
 
@@ -1681,6 +1683,11 @@ Route::get('/webservice','util\WebserviceController@page');
 Route::get('/webservice/table','util\WebserviceController@table');
 Route::post('/webservice/form','util\WebserviceController@form');
 
+Route::get('/PdfViewer', 'util\PdfViewerController@page');
+Route::get('/PdfViewer2', 'util\PdfViewerController@redirect');
+Route::post('/PdfViewer/save-pdf', 'util\PdfViewerController@savePdf');
+Route::get('/PdfViewer-png', 'util\PdfViewerController@pngView');
+
 //dari ptcare
 
 //// sysparam ////
@@ -1773,6 +1780,11 @@ Route::get('/radiology','rehab\radiologyController@index');
 Route::get('/radiology/table','rehab\radiologyController@table');
 Route::post('/radiology/form','rehab\radiologyController@form');
 Route::get('/radiology_iframe','rehab\radiologyController@iframe');
+
+Route::get('/laboratory','rehab\laboratoryController@index');
+Route::get('/laboratory/table','rehab\laboratoryController@table');
+Route::post('/laboratory/form','rehab\laboratoryController@form');
+Route::get('/laboratory_iframe','rehab\laboratoryController@iframe');
 
 // Route::post('/ptcare_doctornote_transaction_save', "rehab\RehabController@transaction_save");
 

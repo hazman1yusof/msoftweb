@@ -732,13 +732,13 @@ function populate_thrombo_ED_getdata(){
 }
 /////////////////////////////////////////////////////thrombo ends/////////////////////////////////////////////////////
 
-function calc_jq_height_onchange(jqgrid){
-	let offsetWidth = $('#'+jqgrid+'>tbody').prop('offsetWidth');
-	if(offsetWidth<50){
-		offsetWidth = 50;
-	}else if(offsetWidth>1800){
-		offsetWidth = 1800;
-	}
-	// $('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('width',offsetWidth+1);
-    // $('#gview_'+jqgrid+' > div.ui-jqgrid-hdiv').css('width',offsetWidth+1);
-}
+// function calc_jq_height_onchange(jqgrid){
+// 	let offsetWidth = $('#'+jqgrid+'>tbody').prop('offsetWidth');
+// 	if(offsetWidth<50){
+// 		offsetWidth = 50;
+// 	}else if(offsetWidth>1800){
+// 		offsetWidth = 1800;
+// 	}
+// 	// $('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('width',offsetWidth+1);
+//     // $('#gview_'+jqgrid+' > div.ui-jqgrid-hdiv').css('width',offsetWidth+1);
+// }

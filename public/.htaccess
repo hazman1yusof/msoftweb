@@ -1,3 +1,9 @@
+<IfModule mod_mime.c>
+    AddType application/javascript .mjs
+    AddType application/javascript .js
+    AddType application/wasm .wasm
+</IfModule>
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes

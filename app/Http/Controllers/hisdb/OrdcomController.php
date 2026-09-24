@@ -3908,10 +3908,13 @@ class OrdcomController extends defaultController
 
         $chargetrx = $chargetrx->get();
 
+        $invno = '';
         if($chargetrx){
             $invno = $chargetrx->unique('invno')[0]->invno;
-        }else{
-            $invno = '-';
+        }
+
+        if(empty($invno)){
+            $invno = '';
         }
 
 

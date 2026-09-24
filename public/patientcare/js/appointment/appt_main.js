@@ -186,6 +186,10 @@ $(document).ready(function (){
                 $('#radiology .top.menu .item').tab('change tab','radClinicReqFor');
                 populate_radClinicReqFor_getdata();
                 break;
+            case 'labReqFor':
+                $('#radiology .top.menu .item').tab('change tab','labClinicReqFor');
+                populate_labClinicReqFor_init();
+                break;
             case 'physioReqFor':
                 populate_physioReqFor_getdata();
                 // textarea_init_physioReqFor();

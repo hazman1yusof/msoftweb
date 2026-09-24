@@ -59,6 +59,7 @@
 <input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
 <input type="hidden" id="mrn_apptMain" value="{{$mrn}}">
 <input type="hidden" id="episno_apptMain" value="{{$episno}}">
+<input type="hidden" id="phase" value="{{$phase}}">
 
 <div class="ui teal segment" id="allmodal">
     <h4 class="ui header">This user uploaded Files </h4>
@@ -82,9 +83,9 @@
     <!-- <input type='hidden' id="userfile_mrn" name="userfile_mrn"> -->
 
     <div class="ui top attached tabular menu" id="userfile_tab">
-      <a class="active item" data-tab="document">Document</a>
-      <a class="item" data-tab="imaging">Imaging</a>
-      <a class="item" data-tab="lab">Lab Test</a>
+      <a class="active item" data-tab="document" id="userfile_tab_document">Document</a>
+      <a class="item" data-tab="imaging" id="userfile_tab_imaging">Imaging</a>
+      <a class="item" data-tab="lab" id="userfile_tab_lab">Lab Test</a>
     </div>
     <div class="ui tab" data-tab="document"></div>
     <div class="ui tab" data-tab="imaging"></div>

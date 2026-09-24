@@ -112,8 +112,10 @@
 			<button id="btn_mykad" type="button" class="btn btn-default btn-md" >
 			<img src="img/mykad.png" width="35" /> My Kad</button>
 			&nbsp;&nbsp;
-			<button id="btn_biometric" type="button" class="btn btn-default btn-md" >
-			<img src="img/biometric.png" width="22" /> Biometric </button>
+			<!-- <button id="btn_biometric" type="button" class="btn btn-default btn-md" >
+			<img src="img/biometric.png" width="22" /> Biometric </button> -->
+			<button id="btn_qrpreepis" type="button" class="btn btn-default btn-md" style="min-width: 115px;">
+			<img src="img/qrpreepis.png" width="22" /> QR </button>
 			&nbsp;&nbsp;
 			@endif
 			@if (request()->get('curpat') == 'true')
@@ -125,26 +127,33 @@
 			@endif
 		</div>
 
-		@if (request()->get('epistycode') == 'OP' && !Session::has('isdoctor') && request()->get('curpat') == 'true')
+		@if (request()->get('epistycode') == 'OP' && request()->get('curpat') == 'false')
 		<div class="panel panel-default" style="position: relative;margin: 0 12px 12px 12px">
 	        <div class="panel-heading collapsed" id="toggle_preepis" data-toggle="collapse" data-target="#tabpreepis" style="padding: 20px 20px 25px 20px;">
 
-	        <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px;bottom: 3px;"></i>
-	        <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px;bottom: 3px;"></i >
-	        <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
-	            <h5><strong>PRE EPISODE</strong></h5>
-	        </div> 
+		        <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px;bottom: 3px;"></i>
+		        <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px;bottom: 3px;"></i >
+		        <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
+		            <h5><strong>PRE EPISODE</strong></h5>
+		        </div> 
+		        <div style="position: absolute; padding: 0 0 0 0; right: 50px; top: 8px;">
+		            <h5><strong id='preepis_count' style="padding: 5px;
+						    border: solid 1px darkred;
+						    border-radius: 8px;
+						    background: #ffe6e6;">0</strong> Patients
+					</h5>
+		        </div> 
 	        </div>
 
 	        <div id="tabpreepis" class="panel-collapse collapse">
-	        <div class="panel-body form-horizontal">
-	            <div id="jqGrid_preepis_c">
-	                <div class='col-md-12' style="padding:0 0 15px 0">
-	                    <table id="jqGrid_preepis" class="table table-striped"></table>
-	                    <div id="jqGridPager_preepis"></div>
-	                </div>
-	            </div>
-	        </div>
+		        <div class="panel-body form-horizontal">
+		            <div id="jqGrid_preepis_c">
+		                <div class='col-md-12' style="padding:0 0 15px 0">
+		                    <table id="jqGrid_preepis" class="table table-striped"></table>
+		                    <div id="jqGridPager_preepis"></div>
+		                </div>
+		            </div>
+		        </div>
             </div>
         </div>
         @endif
@@ -196,6 +205,7 @@
 		@include('hisdb.pat_mgmt.mdl_episode')
 		@include('hisdb.pat_mgmt.itemselector')
 		@include('hisdb.pat_mgmt.patlabel')
+		@include('hisdb.pat_mgmt.qrgen')
 		
 		@if (request()->get('curpat') == 'true')
 			
@@ -556,7 +566,8 @@
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_emr.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/textfield_modal.js"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js?v=1.13"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js?v=1.14"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/qrgen.js?v=1"></script>
 	
 	</div>
 

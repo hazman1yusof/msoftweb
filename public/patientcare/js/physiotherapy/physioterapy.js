@@ -281,7 +281,8 @@ $(document).ready(function () {
 			entereddate: data.entereddate,
 			enteredtime: data.enteredtime,
 		};
-		
+
+		var _data = data;
 		$.post("./ptcare_phys/form?"+$.param(urlParam), $.param(postobj), function (data){
 			
 		},'json').fail(function (data){
@@ -295,9 +296,15 @@ $(document).ready(function () {
 				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.romsoundside);
 				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.musclepower);
 				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.patrehabperkeso);
+				reloadImage_png("a.ui.card.bodydia_perkeso",
+					['BB_PERKESO','BF_PERKESO'],
+					_data.mrn,
+					_data.episno,
+					moment(_data.recdatetime, 'YYYY-MM-DD HH:mm:ss').unix());
 				// button_state_phys_ncase('edit');
 			}else{
 				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.pat_physio);
+				reloadImage_png("a.ui.card.bodydia_perkeso",['BB_PERKESO','BF_PERKESO']);
 				// button_state_phys_ncase('add');
 			}
 		});

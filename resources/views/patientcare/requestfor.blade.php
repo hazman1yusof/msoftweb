@@ -9,6 +9,7 @@
         <div class="ui top attached tabular menu">
             <a class="item active" data-tab="otbookReqFor" id="navtab_otbookReqFor">Ward @if($phase != "ED"){{"/ OT"}}@endif</a>
             <a class="item" data-tab="radReqFor" id="navtab_radReqFor">Radiology</a>
+            <a class="item" data-tab="labReqFor" id="navtab_labReqFor">Laboratory</a>
             <a class="item" data-tab="physioReqFor" id="navtab_physioReqFor">Rehab</a>
             <a class="item" data-tab="dressingReqFor" id="navtab_dressingReqFor">Dressing</a>
             <a class="item" data-tab="followup_reqfor" id="navtab_followup_reqfor">Follow Up</a>
@@ -268,6 +269,10 @@
         
         <div id="radiology" class="ui bottom attached tab raised segment" data-tab="radReqFor">
             @include('hisdb.radiology.radiology_inside_iframe',['radiology_inside_iframe_phase'=>'requestfor'])
+        </div>
+        
+        <div id="laboratory" class="ui bottom attached tab raised segment" data-tab="labReqFor">
+            @include('hisdb.laboratory.laboratory_inside_iframe',['laboratory_inside_iframe_phase'=>'requestfor'])
         </div>
         
         <div class="ui bottom attached tab raised segment" data-tab="physioReqFor">

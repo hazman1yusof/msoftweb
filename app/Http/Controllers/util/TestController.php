@@ -80,6 +80,8 @@ class TestController extends defaultController
 
     public function table(Request $request){  
         switch($request->action){
+            case 'test_barcode':
+                return $this->test_barcode($request);
             case 'test_yearperiod':
                 return $this->test_yearperiod($request);
             case 'test_email':

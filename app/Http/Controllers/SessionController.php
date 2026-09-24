@@ -45,7 +45,26 @@ class SessionController extends Controller
     }
 
     public function qrcode(){
-        return view('init.qrcode');
+        $bgpic_ = DB::table('sysdb.sysparam')
+                        ->where('compcode','all')
+                        ->where('source','def')
+                        ->where('trantype','loginbg');
+
+        if(!$bgpic_->exists()){
+            $bgpic = './img/carousel/Supply-Change-Management.jpg';
+            $logo = './img/carousel/selgate/SELGATE_LOGO2.png';
+        }else{
+            $bgpic = $bgpic_->first()->pvalue1;
+            $logo = $bgpic_->first()->lastuser;
+        }
+
+        return view('init.qrcode',compact('bgpic','logo'));
+    }
+
+    public function qrcode_gen(){
+        $qrurl = \config('get_config.APP_URL')."qrcode";
+
+        return view('init.qrcodegen',compact('qrurl'));
     }
 
     public function store(Request $request){
@@ -190,8 +209,23 @@ class SessionController extends Controller
         
         try {
 
+            $bgpic_ = DB::table('sysdb.sysparam')
+                            ->where('compcode','all')
+                            ->where('source','def')
+                            ->where('trantype','loginbg');
+
+            $compcode_def = '9B';
+            if($bgpic_->exists()){
+                $compcode_def = $bgpic_->first()->pvalue2;
+            }
+
+            if(empty($compcode_def)){
+                $compcode_def = '9B';
+            }
+
             if($request->select == 'ic'){
                 $pat_mast = DB::table('hisdb.pat_mast')
+                            ->where('compcode',$compcode_def)
                             ->where('Active','1')
                             ->where('Newic','=', $request->ic);
 
@@ -204,6 +238,7 @@ class SessionController extends Controller
                 }
             }else{
                 $pat_mast = DB::table('hisdb.pat_mast')
+                            ->where('compcode',$compcode_def)
                             ->where('Active','1')
                             ->where('idnumber','=', $request->idnumber);
 
@@ -220,19 +255,19 @@ class SessionController extends Controller
             $episno = $pat_mast_obj->Episno;
 
             if(intval($episno) < 1){
-                return redirect()->back()->withErrors('Episode not registered yet, please register at the counter first');
+                // return redirect()->back()->withErrors('Episode not registered yet, please register at the counter first');
             }
 
             //check if date,mrn duplicate
             $pre_episode = DB::table('hisdb.pre_episode')
-                                ->where('compcode',session('compcode'))
+                                ->where('compcode',$compcode_def)
                                 ->where('mrn',$mrn)
                                 ->whereDate('adddate',Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
 
             if(!$pre_episode->exists()){
                 DB::table("hisdb.pre_episode")
                     ->insert([
-                        "compcode" => '9A',
+                        "compcode" => $compcode_def,
                         "mrn" => $mrn,
                         "episno" => 0,
                         "adddate" => Carbon::now("Asia/Kuala_Lumpur"),

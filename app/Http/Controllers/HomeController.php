@@ -381,6 +381,7 @@ class HomeController extends Controller
             $menu.="<li><a style='padding-left:9px;' title='Clinic' class='clickable' programid='clinic' targetURL='./appointment' >Clinic</a></li>";
             $menu.="<li><a style='padding-left:9px;' title='Rehabilitation' class='clickable' programid='rehab' targetURL='rehab' >Rehabilitation</a></li>";
             $menu.="<li><a style='padding-left:9px;' title='Radiology' class='clickable' programid='radiology' targetURL='./radiology' >Radiology</a></li>";
+            $menu.="<li><a style='padding-left:9px;' title='Laboratory' class='clickable' programid='laboratory' targetURL='./laboratory' >Laboratory</a></li>";
 
         // }
         return $menu;
