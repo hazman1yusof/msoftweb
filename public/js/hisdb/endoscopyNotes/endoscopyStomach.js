@@ -9,17 +9,16 @@ var urlParam_AddNotesEndoStomach = {
 	field: '',
 	table_name: 'nursing.nursaddnote',
 	table_id: 'idno',
-	filterCol: ['mrn','episno','type'],
-	filterVal: ['','','ENDO_STOMACH'],
+    filterCol: ['mrn','episno','type'],
+    filterVal: ['','','ENDO_STOMACH'],
 }
 
 $(document).ready(function (){
     
-    textarea_init_endoscopyStomach();
-    
     var fdl = new faster_detail_load();
     var auto_save_background_formEndoscopyStomach= new auto_save_background('#formEndoscopyStomach','ot_formEndoscopyStomach');
     
+    textarea_init_endoscopyStomach();
     disableForm('#formEndoscopyStomach');
     
     $("#new_endoscopyStomach").click(function (){
@@ -28,16 +27,24 @@ $(document).ready(function (){
         enableForm('#formEndoscopyStomach');
         rdonly('#formEndoscopyStomach');
         // emptyFormdata_div("#formEndoscopyStomach",['#mrn_otMain','#episno_otMain']);
+        
         auto_save_background_formEndoscopyStomach.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
-		auto_save_background_formEndoscopyStomach.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+        auto_save_background_formEndoscopyStomach.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+        
+        reloadImage_png("a.ui.card.bodydia_endoscopyStomach",['STOMACH']);
     });
     
     $("#edit_endoscopyStomach").click(function (){
         button_state_endoscopyStomach('wait');
         enableForm('#formEndoscopyStomach');
         rdonly('#formEndoscopyStomach');
+        
         auto_save_background_formEndoscopyStomach.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
-		auto_save_background_formEndoscopyStomach.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+        auto_save_background_formEndoscopyStomach.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+        
+        let mrn = $('#mrn_otMain').val();
+        let episno = $('#episno_otMain').val();
+        reloadImage_png("a.ui.card.bodydia_endoscopyStomach",['STOMACH'],mrn,episno);
     });
     
     $("#save_endoscopyStomach").click(function (){
@@ -58,6 +65,7 @@ $(document).ready(function (){
         disableForm('#formEndoscopyStomach');
         button_state_endoscopyStomach($(this).data('oper'));
         getdata_endoscopyStomach();
+        
         auto_save_background_formEndoscopyStomach.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
@@ -89,16 +97,20 @@ $(document).ready(function (){
         
         if(mrn.trim() == '' || type.trim() == ''){
             alert('Please choose Patient First');
-        }else if($('#save_endoscopyStomach').prop('disabled')){
-            alert('Edit this patient first');
-        }else{
-            if(istablet){
-                let filename = type+'_'+mrn+'_.pdf';
-                let url = $('#urltodiagram').val() + filename;
-                var win = window.open(url, '_blank');
-            }else{
-                var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&type='+type+'&from=endoscopyStomach', '_blank');
-            }
+        }
+        // else if($('#save_endoscopyStomach').prop('disabled')){
+        //     alert('Edit this patient first');
+        // }
+        else{
+            // if(istablet){
+            //     let filename = type+'_'+mrn+'_.pdf';
+            //     let url = $('#urltodiagram').val() + filename;
+            //     var win = window.open(url, '_blank');
+            // }else{
+            //     var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&type='+type+'&from=endoscopyStomach', '_blank');
+            // }
+            
+            var win = window.open('./PdfViewer?mrn='+mrn+'&episno='+episno+'&type='+type+'&from=endoscopyStomach', '_blank');
             
             if(win){
                 win.focus();
@@ -397,10 +409,15 @@ function getdata_endoscopyStomach(){
             button_state_endoscopyStomach('edit');
             refreshGrid('#jqGridAddNotesEndoStomach',urlParam_AddNotesEndoStomach,'add_endoStomach_save');
             $('#endoscopyStomach_chart').attr('disabled',false);
+            reloadImage_png("a.ui.card.bodydia_endoscopyStomach",
+                ['STOMACH'],
+                $('#mrn_otMain').val(),
+                $("#episno_otMain").val());
         }else{
             button_state_endoscopyStomach('add');
             refreshGrid('#jqGridAddNotesEndoStomach',urlParam_AddNotesEndoStomach,'kosongkan');
             $('#endoscopyStomach_chart').attr('disabled',true);
+            reloadImage_png("a.ui.card.bodydia_endoscopyStomach",['STOMACH']);
         }
         
         $("#endoscopyStomach_iPesakit").val(data.iPesakit);

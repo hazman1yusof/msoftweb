@@ -9,17 +9,16 @@ var urlParam_AddNotesEndoIntestine = {
 	field: '',
 	table_name: 'nursing.nursaddnote',
 	table_id: 'idno',
-	filterCol: ['mrn','episno','type'],
-	filterVal: ['','','ENDO_INTESTINE'],
+    filterCol: ['mrn','episno','type'],
+    filterVal: ['','','ENDO_INTESTINE'],
 }
 
 $(document).ready(function (){
     
-    textarea_init_endoscopyIntestine();
-    
     var fdl = new faster_detail_load();
     var auto_save_background_formEndoscopyIntestine = new auto_save_background('#formEndoscopyIntestine','ot_formEndoscopyIntestine');
     
+    textarea_init_endoscopyIntestine();
     disableForm('#formEndoscopyIntestine');
     
     $("#new_endoscopyIntestine").click(function (){
@@ -28,21 +27,29 @@ $(document).ready(function (){
         enableForm('#formEndoscopyIntestine');
         rdonly('#formEndoscopyIntestine');
         // emptyFormdata_div("#formEndoscopyIntestine",['#mrn_otMain','#episno_otMain']);
+        
         auto_save_background_formEndoscopyIntestine.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
-		auto_save_background_formEndoscopyIntestine.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+        auto_save_background_formEndoscopyIntestine.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+        
+        reloadImage_png("a.ui.card.bodydia_endoscopyIntestine",['INTESTINE']);
     });
     
     $("#edit_endoscopyIntestine").click(function (){
         button_state_endoscopyIntestine('wait');
         enableForm('#formEndoscopyIntestine');
         rdonly('#formEndoscopyIntestine');
+        
         auto_save_background_formEndoscopyIntestine.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
-		auto_save_background_formEndoscopyIntestine.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+        auto_save_background_formEndoscopyIntestine.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+        
+        let mrn = $('#mrn_otMain').val();
+        let episno = $('#episno_otMain').val();
+        reloadImage_png("a.ui.card.bodydia_endoscopyIntestine",['INTESTINE'],mrn,episno);
     });
     
     $("#save_endoscopyIntestine").click(function (){
         if($('#formEndoscopyIntestine').isValid({requiredFields: ''}, conf, true)){
-            auto_save_background_formEndoscopyIntestine.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());        
+            auto_save_background_formEndoscopyIntestine.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
             saveForm_endoscopyIntestine(function (data){
                 // emptyFormdata_div("#formEndoscopyIntestine",['#mrn_otMain','#episno_otMain']);
                 disableForm('#formEndoscopyIntestine');
@@ -58,7 +65,8 @@ $(document).ready(function (){
         disableForm('#formEndoscopyIntestine');
         button_state_endoscopyIntestine($(this).data('oper'));
         getdata_endoscopyIntestine();
-        auto_save_background_formEndoscopyIntestine.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val()); 
+        
+        auto_save_background_formEndoscopyIntestine.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     // to format number input to two decimal places (0.00)
@@ -89,16 +97,20 @@ $(document).ready(function (){
         
         if(mrn.trim() == '' || type.trim() == ''){
             alert('Please choose Patient First');
-        }else if($('#save_endoscopyIntestine').prop('disabled')){
-            alert('Edit this patient first');
-        }else{
-            if(istablet){
-                let filename = type+'_'+mrn+'_.pdf';
-                let url = $('#urltodiagram').val() + filename;
-                var win = window.open(url, '_blank');
-            }else{
-                var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&type='+type+'&from=endoscopyIntestine', '_blank');
-            }
+        }
+        // else if($('#save_endoscopyIntestine').prop('disabled')){
+        //     alert('Edit this patient first');
+        // }
+        else{
+            // if(istablet){
+            //     let filename = type+'_'+mrn+'_.pdf';
+            //     let url = $('#urltodiagram').val() + filename;
+            //     var win = window.open(url, '_blank');
+            // }else{
+            //     var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&type='+type+'&from=endoscopyIntestine', '_blank');
+            // }
+            
+            var win = window.open('./PdfViewer?mrn='+mrn+'&episno='+episno+'&type='+type+'&from=endoscopyIntestine', '_blank');
             
             if(win){
                 win.focus();
@@ -397,10 +409,15 @@ function getdata_endoscopyIntestine(){
             button_state_endoscopyIntestine('edit');
             refreshGrid('#jqGridAddNotesEndoIntestine',urlParam_AddNotesEndoIntestine,'add_endoIntestine_save');
             $('#endoscopyIntestine_chart').attr('disabled',false);
+            reloadImage_png("a.ui.card.bodydia_endoscopyIntestine",
+                ['INTESTINE'],
+                $('#mrn_otMain').val(),
+                $("#episno_otMain").val());
         }else{
             button_state_endoscopyIntestine('add');
             refreshGrid('#jqGridAddNotesEndoIntestine',urlParam_AddNotesEndoIntestine,'kosongkan');
             $('#endoscopyIntestine_chart').attr('disabled',true);
+            reloadImage_png("a.ui.card.bodydia_endoscopyIntestine",['INTESTINE']);
         }
         
         $("#endoscopyIntestine_iPesakit").val(data.iPesakit);

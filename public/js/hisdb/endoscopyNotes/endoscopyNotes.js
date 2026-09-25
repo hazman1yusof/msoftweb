@@ -104,6 +104,9 @@ function populate_endoscopyNotes(obj){
     emptyFormdata_div("#formEndoscopyStomach",['#mrn_otMain','#episno_otMain']);
     emptyFormdata_div("#formEndoscopyIntestine",['#mrn_otMain','#episno_otMain']);
     
+    reloadImage_png("a.ui.card.bodydia_endoscopyStomach",['STOMACH']);
+    reloadImage_png("a.ui.card.bodydia_endoscopyIntestine",['INTESTINE']);
+    
     // panel header
     // $('#name_show_endoscopyNotes').text(obj.pat_name);
     // $('#mrn_show_endoscopyNotes').text(("0000000" + obj.mrn).slice(-7));
