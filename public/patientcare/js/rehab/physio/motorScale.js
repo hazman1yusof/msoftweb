@@ -5,10 +5,10 @@ var editedRow = 0;
 
 $(document).ready(function (){
     
-    // textarea_init_motorScale();
-    
     var fdl = new faster_detail_load();
+    var auto_save_background_formMotorScale = new auto_save_background('#formMotorScale','rehab_formMotorScale');
     
+    // textarea_init_motorScale();
     disableForm('#formMotorScale');
     
     $("#new_motorScale").click(function (){
@@ -20,6 +20,9 @@ $(document).ready(function (){
         document.getElementById("idno_motorScale").value = "";
         // dialog_mrn_edit.on();
         $('#movementScore').prop('disabled',true);
+        
+        auto_save_background_formMotorScale.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formMotorScale.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#edit_motorScale").click(function (){
@@ -28,10 +31,14 @@ $(document).ready(function (){
         rdonly('#formMotorScale');
         // dialog_mrn_edit.on();
         $('#movementScore').prop('disabled',true);
+        
+        auto_save_background_formMotorScale.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formMotorScale.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#save_motorScale").click(function (){
         if($('#formMotorScale').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formMotorScale.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_motorScale(function (data){
                 $("#cancel_motorScale").data('oper','edit');
                 $("#cancel_motorScale").click();
@@ -45,12 +52,14 @@ $(document).ready(function (){
     });
     
     $("#cancel_motorScale").click(function (){
-        // emptyFormdata_div("#formMotorScale",['#mrn_rehabMain','#episno_rehabMain']);
+        emptyFormdata_div("#formMotorScale",['#mrn_rehabMain','#episno_rehabMain']);
         disableForm('#formMotorScale');
         button_state_motorScale($(this).data('oper'));
         $('#tbl_motorScale_date').DataTable().ajax.reload();
         getdata_motorScale();
         // dialog_mrn_edit.off();
+        
+        auto_save_background_formMotorScale.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     // to format number input to two decimal places (0.00)

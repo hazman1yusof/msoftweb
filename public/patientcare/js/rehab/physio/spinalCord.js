@@ -5,10 +5,10 @@ var editedRow = 0;
 
 $(document).ready(function (){
     
-    // textarea_init_spinalCord();
-    
     var fdl = new faster_detail_load();
+    var auto_save_background_formSpinalCord = new auto_save_background('#formSpinalCord','rehab_formSpinalCord');
     
+    // textarea_init_spinalCord();
     disableForm('#formSpinalCord');
     
     $("#new_spinalCord").click(function (){
@@ -20,6 +20,9 @@ $(document).ready(function (){
         document.getElementById("idno_spinalCord").value = "";
         // dialog_mrn_edit.on();
         // $('#movementScore').prop('disabled',true);
+        
+        auto_save_background_formSpinalCord.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formSpinalCord.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#edit_spinalCord").click(function (){
@@ -28,10 +31,14 @@ $(document).ready(function (){
         rdonly('#formSpinalCord');
         // dialog_mrn_edit.on();
         // $('#movementScore').prop('disabled',true);
+        
+        auto_save_background_formSpinalCord.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formSpinalCord.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#save_spinalCord").click(function (){
         if($('#formSpinalCord').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formSpinalCord.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_spinalCord(function (data){
                 $("#cancel_spinalCord").data('oper','edit');
                 $("#cancel_spinalCord").click();
@@ -45,12 +52,14 @@ $(document).ready(function (){
     });
     
     $("#cancel_spinalCord").click(function (){
-        // emptyFormdata_div("#formSpinalCord",['#mrn_rehabMain','#episno_rehabMain']);
+        emptyFormdata_div("#formSpinalCord",['#mrn_rehabMain','#episno_rehabMain']);
         disableForm('#formSpinalCord');
         button_state_spinalCord($(this).data('oper'));
         $('#tbl_spinalCord_date').DataTable().ajax.reload();
         getdata_spinalCord();
         // dialog_mrn_edit.off();
+        
+        auto_save_background_formSpinalCord.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     // to format number input to two decimal places (0.00)

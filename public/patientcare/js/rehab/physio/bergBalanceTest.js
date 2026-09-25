@@ -4,10 +4,10 @@ var editedRow = 0;
 
 $(document).ready(function (){
     
-    // textarea_init_bergBalanceTest();
-    
     var fdl = new faster_detail_load();
+    var auto_save_background_formBergBalanceTest = new auto_save_background('#formBergBalanceTest','rehab_formBergBalanceTest');
     
+    // textarea_init_bergBalanceTest();
     disableForm('#formBergBalanceTest');
     
     $("#new_bergBalanceTest").click(function (){
@@ -19,6 +19,9 @@ $(document).ready(function (){
         document.getElementById("idno_bergBalanceTest").value = "";
         // dialog_mrn_edit.on();
         $('#bergBalanceTest_totalScore').prop('disabled',true);
+        
+        auto_save_background_formBergBalanceTest.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formBergBalanceTest.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#edit_bergBalanceTest").click(function (){
@@ -27,10 +30,14 @@ $(document).ready(function (){
         rdonly('#formBergBalanceTest');
         // dialog_mrn_edit.on();
         $('#bergBalanceTest_totalScore').prop('disabled',true);
+        
+        auto_save_background_formBergBalanceTest.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formBergBalanceTest.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#save_bergBalanceTest").click(function (){
         if($('#formBergBalanceTest').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formBergBalanceTest.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_bergBalanceTest(function (data){
                 $("#cancel_bergBalanceTest").data('oper','edit');
                 $("#cancel_bergBalanceTest").click();
@@ -44,12 +51,14 @@ $(document).ready(function (){
     });
     
     $("#cancel_bergBalanceTest").click(function (){
-        // emptyFormdata_div("#formBergBalanceTest",['#mrn_rehabMain','#episno_rehabMain']);
+        emptyFormdata_div("#formBergBalanceTest",['#mrn_rehabMain','#episno_rehabMain']);
         disableForm('#formBergBalanceTest');
         button_state_bergBalanceTest($(this).data('oper'));
         $('#tbl_bergBalanceTest_date').DataTable().ajax.reload();
         getdata_bergBalanceTest();
         // dialog_mrn_edit.off();
+        
+        auto_save_background_formBergBalanceTest.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     // to format number input to two decimal places (0.00)
