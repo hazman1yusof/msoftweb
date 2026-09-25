@@ -5,10 +5,10 @@ var editedRow = 0;
 
 $(document).ready(function (){
     
-    // textarea_init_neurorobotic();
-    
     var fdl = new faster_detail_load();
+    var auto_save_background_formNeurorobotic = new auto_save_background('#formNeurorobotic','rehab_formNeurorobotic');
     
+    // textarea_init_neurorobotic();
     disableForm('#formNeurorobotic');
     
     $("#new_neurorobotic").click(function (){
@@ -20,6 +20,9 @@ $(document).ready(function (){
         emptyFormdata_div("#formNeurorobotic",['#mrn_rehabMain','#episno_rehabMain']);
         document.getElementById("idno_neurorobotic").value = "";
         // dialog_mrn_edit.on();
+        
+        auto_save_background_formNeurorobotic.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val()+'_'+timestamp);
+        auto_save_background_formNeurorobotic.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val()+'_'+timestamp);
     });
     
     $("#edit_neurorobotic").click(function (){
@@ -27,10 +30,14 @@ $(document).ready(function (){
         enableForm('#formNeurorobotic');
         rdonly('#formNeurorobotic');
         // dialog_mrn_edit.on();
+        
+        auto_save_background_formNeurorobotic.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val()+'_'+timestamp);
+        auto_save_background_formNeurorobotic.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val()+'_'+timestamp);
     });
     
     $("#save_neurorobotic").click(function (){
         if($('#formNeurorobotic').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formNeurorobotic.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val()+'_'+timestamp);
             saveForm_neurorobotic(function (data){
                 $("#cancel_neurorobotic").data('oper','edit');
                 $("#cancel_neurorobotic").click();
@@ -44,12 +51,14 @@ $(document).ready(function (){
     });
     
     $("#cancel_neurorobotic").click(function (){
-        // emptyFormdata_div("#formNeurorobotic",['#mrn_rehabMain','#episno_rehabMain']);
+        emptyFormdata_div("#formNeurorobotic",['#mrn_rehabMain','#episno_rehabMain']);
         disableForm('#formNeurorobotic');
         button_state_neurorobotic($(this).data('oper'));
         $('#tbl_neurorobotic_date').DataTable().ajax.reload();
         getdata_neurorobotic();
         // dialog_mrn_edit.off();
+        
+        auto_save_background_formNeurorobotic.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val()+'_'+timestamp);
     });
     
     // to format number input to two decimal places (0.00)

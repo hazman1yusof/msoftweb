@@ -5,10 +5,10 @@ var editedRow = 0;
 
 $(document).ready(function (){
     
-    // textarea_init_psychotherapy();
-    
     var fdl = new faster_detail_load();
+    var auto_save_background_formPsychotherapy = new auto_save_background('#formPsychotherapy','rehab_formPsychotherapy');
     
+    // textarea_init_psychotherapy();
     disableForm('#formPsychotherapy');
     
     $("#new_psychotherapy").click(function (){
@@ -20,6 +20,9 @@ $(document).ready(function (){
         emptyFormdata_div("#formPsychotherapy",['#mrn_rehabMain','#episno_rehabMain']);
         document.getElementById("idno_psychotherapy").value = "";
         // dialog_mrn_edit.on();
+        
+        auto_save_background_formPsychotherapy.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formPsychotherapy.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#edit_psychotherapy").click(function (){
@@ -27,10 +30,14 @@ $(document).ready(function (){
         enableForm('#formPsychotherapy');
         rdonly('#formPsychotherapy');
         // dialog_mrn_edit.on();
+        
+        auto_save_background_formPsychotherapy.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formPsychotherapy.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#save_psychotherapy").click(function (){
         if($('#formPsychotherapy').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formPsychotherapy.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_psychotherapy(function (data){
                 $("#cancel_psychotherapy").data('oper','edit');
                 $("#cancel_psychotherapy").click();
@@ -44,12 +51,14 @@ $(document).ready(function (){
     });
     
     $("#cancel_psychotherapy").click(function (){
-        // emptyFormdata_div("#formPsychotherapy",['#mrn_rehabMain','#episno_rehabMain']);
+        emptyFormdata_div("#formPsychotherapy",['#mrn_rehabMain','#episno_rehabMain']);
         disableForm('#formPsychotherapy');
         button_state_psychotherapy($(this).data('oper'));
         $('#tbl_psychotherapy_date').DataTable().ajax.reload();
         getdata_psychotherapy();
         // dialog_mrn_edit.off();
+        
+        auto_save_background_formPsychotherapy.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     // to format number input to two decimal places (0.00)

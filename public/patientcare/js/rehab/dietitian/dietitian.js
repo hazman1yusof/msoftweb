@@ -5,10 +5,10 @@ var editedRow = 0;
 
 $(document).ready(function (){
     
-    // textarea_init_dietitian();
-    
     var fdl = new faster_detail_load();
+    var auto_save_background_formDietitian = new auto_save_background('#formDietitian','rehab_formDietitian');
     
+    // textarea_init_dietitian();
     disableForm('#formDietitian');
     
     $("#new_dietitian").click(function (){
@@ -20,6 +20,9 @@ $(document).ready(function (){
         emptyFormdata_div("#formDietitian",['#mrn_rehabMain','#episno_rehabMain']);
         document.getElementById("idno_dietitian").value = "";
         // dialog_mrn_edit.on();
+        
+        auto_save_background_formDietitian.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formDietitian.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#edit_dietitian").click(function (){
@@ -27,10 +30,14 @@ $(document).ready(function (){
         enableForm('#formDietitian');
         rdonly('#formDietitian');
         // dialog_mrn_edit.on();
+        
+        auto_save_background_formDietitian.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formDietitian.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#save_dietitian").click(function (){
         if($('#formDietitian').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formDietitian.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_dietitian(function (data){
                 $("#cancel_dietitian").data('oper','edit');
                 $("#cancel_dietitian").click();
@@ -44,12 +51,14 @@ $(document).ready(function (){
     });
     
     $("#cancel_dietitian").click(function (){
-        // emptyFormdata_div("#formDietitian",['#mrn_rehabMain','#episno_rehabMain']);
+        emptyFormdata_div("#formDietitian",['#mrn_rehabMain','#episno_rehabMain']);
         disableForm('#formDietitian');
         button_state_dietitian($(this).data('oper'));
         $('#tbl_dietitian_date').DataTable().ajax.reload();
         getdata_dietitian();
         // dialog_mrn_edit.off();
+        
+        auto_save_background_formDietitian.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     // to format number input to two decimal places (0.00)
