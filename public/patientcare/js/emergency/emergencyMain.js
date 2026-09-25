@@ -98,6 +98,8 @@ $(document).ready(function (){
                 }
                 break;
 			case 'doctornote':
+                // populate_doctornote_getdata();
+
                 $('div#docnote_date_tbl_sticky').show();
                 $("#jqGrid_trans").jqGrid('setGridWidth', Math.floor($("#jqGrid_trans_c")[0].offsetWidth-$("#jqGrid_trans_c")[0].offsetLeft-14));
                 $("#jqGridAddNotes").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotes_c")[0].offsetWidth-$("#jqGridAddNotes_c")[0].offsetLeft));
@@ -110,7 +112,6 @@ $(document).ready(function (){
                 refreshGrid("#jqGrid_trans", urlParam_trans);
 			    refreshGrid('#jqGridAddNotes',urlParam_AddNotes);
 
-                populate_doctornote_getdata();
                 break;
             case 'requestFor':
                 $('#requestFor .menu .item').tab('change tab','otbookReqFor');

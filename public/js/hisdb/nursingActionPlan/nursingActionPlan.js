@@ -160,6 +160,7 @@ var urlParam_AddNotesNursActPlanProcedure = {
 $(document).ready(function (){
     
     var fdl = new faster_detail_load();
+    var auto_save_background_formHeader = new auto_save_background('#formHeader','ward_formHeader');
     
     textarea_init_nursingActionPlan();
 
@@ -173,6 +174,8 @@ $(document).ready(function (){
         button_state_header('wait');
         enableForm('#formHeader');
         rdonly('#formHeader');
+        auto_save_background_formHeader.check($('#mrn_nursActionPlan').val()+'_'+$('#episno_nursActionPlan').val());
+		auto_save_background_formHeader.on($('#mrn_nursActionPlan').val()+'_'+$('#episno_nursActionPlan').val());
     });
     
     $("#edit_header").click(function (){
@@ -180,11 +183,14 @@ $(document).ready(function (){
         button_state_header('wait');
         enableForm('#formHeader');
         rdonly('#formHeader');
+        auto_save_background_formHeader.check($('#mrn_nursActionPlan').val()+'_'+$('#episno_nursActionPlan').val());
+		auto_save_background_formHeader.on($('#mrn_nursActionPlan').val()+'_'+$('#episno_nursActionPlan').val());
     });
     
     $("#save_header").click(function (){
         disableForm('#formHeader');
         if($('#formHeader').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formHeader.off($('#mrn_nursActionPlan').val()+'_'+$('#episno_nursActionPlan').val());
             saveForm_header(function (){
                 $("#cancel_header").data('oper','edit');
                 $("#cancel_header").click();
@@ -200,7 +206,7 @@ $(document).ready(function (){
         disableForm('#formHeader');
         $('#icdbtn').hide();
         button_state_header($(this).data('oper'));
-
+        auto_save_background_formHeader.off($('#mrn_nursActionPlan').val()+'_'+$('#episno_nursActionPlan').val());
     });
     //////////////////////////////////////header ends//////////////////////////////////////
     
@@ -3185,15 +3191,16 @@ function populate_nursingActionPlan(obj){
 
 function populate_header_getdata(){
     emptyFormdata(errorField,"#formHeader");
-    
+    disableForm('#formHeader');
+
     var saveParam = {
         action: 'get_table_formHeader',
     }
     
     var postobj = {
         _token: $('#csrf_token').val(),
-        mrn: $("#mrn_nursActionPlan").val(),
-        episno: $("#episno_nursActionPlan").val()
+        mrn_nursActionPlan: $("#mrn_wardMain").val(),
+        episno_nursActionPlan: $("#episno_wardMain").val(),
     };
     
     $.post("./nursingActionPlan/form?"+$.param(saveParam), $.param(postobj), function (data){
@@ -3201,15 +3208,19 @@ function populate_header_getdata(){
     },'json').fail(function (data){
         alert('there is an error');
     }).success(function (data){
-        if(!$.isEmptyObject(data)){
-            autoinsert_rowdata("#formHeader",data.episode);
-            autoinsert_rowdata("#formHeader",data.header);
+            if(!emptyobj_(data.header)){
+            if(!emptyobj_(data.header))autoinsert_rowdata("#formHeader",data.header);
+            if(!emptyobj_(data.episode))autoinsert_rowdata("#formHeader",data.episode);
             button_state_header('edit');
-
         }else{
             button_state_header('add');
-
+            if(!emptyobj_(data.episode))autoinsert_rowdata("#formHeader",data.episode);
+            emptyFormdata(errorField,'#formHeader');
         }
+        
+        if(!emptyobj_(data.episode))autoinsert_rowdata("#formHeader",data.episode);
+        // button_state_header('empty');
+        textarea_init_nursingActionPlan();
     });
 }
 

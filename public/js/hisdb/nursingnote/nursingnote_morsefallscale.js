@@ -15,7 +15,8 @@ var urlParam_AddNotesMorseFallScale = {
 $(document).ready(function (){
     
     var fdl = new faster_detail_load();
-    
+    var auto_save_background_formMorseFallScale = new auto_save_background('#formMorseFallScale','ward_formMorseFallScale');
+
     textarea_init_morsefallscale();
     
     /////////////////////////////////////morsefallscale starts/////////////////////////////////////
@@ -30,7 +31,8 @@ $(document).ready(function (){
         emptyFormdata_div("#formMorseFallScale",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar','#morsefallscale_ward','#morsefallscale_diag','#morsefallscale_admdate']);
         document.getElementById("idno_morsefallscale").value = "";
         $("#morsefallscale_diag").attr("readonly", true);
-        // dialog_mrn_edit.on();
+        auto_save_background_formMorseFallScale.check($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
+		auto_save_background_formMorseFallScale.on($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     
     $("#edit_morsefallscale").click(function (){
@@ -38,12 +40,14 @@ $(document).ready(function (){
         enableForm('#formMorseFallScale');
         rdonly('#formMorseFallScale');
         $("#morsefallscale_diag,#morsefallscale_datetaken").attr("readonly", true);
-        // dialog_mrn_edit.on();
+        auto_save_background_formMorseFallScale.check($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
+		auto_save_background_formMorseFallScale.on($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     
     $("#save_morsefallscale").click(function (){
         disableForm('#formMorseFallScale');
         if($('#formMorseFallScale').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formMorseFallScale.off($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
             saveForm_morsefallscale(function (){
                 $("#cancel_morsefallscale").data('oper','edit');
                 $("#cancel_morsefallscale").click();
@@ -59,7 +63,7 @@ $(document).ready(function (){
         disableForm('#formMorseFallScale');
         button_state_morsefallscale($(this).data('oper'));
         $('#tbl_morsefallscale_date').DataTable().ajax.reload();
-        // dialog_mrn_edit.off();
+        auto_save_background_formMorseFallScale.off($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     //////////////////////////////////////morsefallscale ends//////////////////////////////////////
     

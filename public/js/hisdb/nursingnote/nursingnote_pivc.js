@@ -15,6 +15,7 @@ var urlParam_AddNotesPivc = {
 $(document).ready(function (){
     
     var fdl = new faster_detail_load();
+    var auto_save_background_formPivc = new auto_save_background('#formPivc','ward_formPivc');
         
     /////////////////////////////////////pivc starts/////////////////////////////////////
     disableForm('#formPivc');
@@ -26,6 +27,8 @@ $(document).ready(function (){
         $("#practiceDate").val(moment().format('YYYY-MM-DD'));
         emptyFormdata_div("#formPivc",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
         document.getElementById("idno_pivc").value = "";
+        auto_save_background_formPivc.check($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
+		auto_save_background_formPivc.on($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     
     $("#edit_pivc").click(function (){
@@ -33,11 +36,14 @@ $(document).ready(function (){
         enableForm('#formPivc');
         rdonly('#formPivc');
         $("#practiceDate").attr("readonly", true);
+        auto_save_background_formPivc.check($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
+		auto_save_background_formPivc.on($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     
     $("#save_pivc").click(function (){
         disableForm('#formPivc');
         if($('#formPivc').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formPivc.off($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
             saveForm_pivc(function (){
                 $("#cancel_pivc").data('oper','edit');
                 $("#cancel_pivc").click();
@@ -53,6 +59,7 @@ $(document).ready(function (){
         disableForm('#formPivc');
         button_state_pivc($(this).data('oper'));
         $('#datetimepivc_tbl').DataTable().ajax.reload();
+        auto_save_background_formPivc.off($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     //////////////////////////////////////pivc ends//////////////////////////////////////
     

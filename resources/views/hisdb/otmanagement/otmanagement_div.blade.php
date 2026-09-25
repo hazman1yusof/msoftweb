@@ -198,7 +198,7 @@
                                                     <div class="ui cards">
                                                         <a class="ui card oper_rec" data-type='drawing'>
                                                             <div class="image">
-                                                                <img src="{{ asset('img/oper_rec.png') }}">
+                                                                <img src="./PdfViewer-png?type=drawing">
                                                             </div>
                                                         </a>
                                                     </div>

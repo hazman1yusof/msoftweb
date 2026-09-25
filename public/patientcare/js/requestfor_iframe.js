@@ -82,8 +82,8 @@ $(document).ready(function (){
 	var auto_save_background_formreferralLetter_freetextReqfor = new auto_save_background('#formreferralLetter_freetextReqfor','ward_formreferralLetter_freetextReqfor');
 	var auto_save_background_formcard_noninv = new auto_save_background('#formcard_noninv','ward_formcard_noninv');
 	var auto_save_background_formRequestFor = new auto_save_background('#formRequestFor','ward_formRequestFor');
+	var auto_save_background_formlabClinicReqFor= new auto_save_background('#formlabClinicReqFor','ward_formlabClinicReqFor');
 
-    
     ////////////////////////////////////////////otbook starts////////////////////////////////////////////
     
     $("#new_otbookReqFor").click(function (){
@@ -216,6 +216,8 @@ $(document).ready(function (){
         rdonly('#formlabClinicReqFor');
         emptyFormdata_div("#formlabClinicReqFor",['#mrn_requestFor','#episno_requestFor']);
         // $('#ReqFor_clinicaldata').prop('disabled',true);
+        auto_save_background_formlabClinicReqFor.check($('#mrn_requestFor').val()+'_'+$('#episno_requestFor').val());
+		auto_save_background_formlabClinicReqFor.on($('#mrn_requestFor').val()+'_'+$('#episno_requestFor').val());
     });
     
     $("#edit_labClinicReqFor").click(function (){
@@ -224,6 +226,8 @@ $(document).ready(function (){
         enableForm('#formlabClinicReqFor');
         rdonly('#formlabClinicReqFor');
         // $('#ReqFor_clinicaldata').prop('disabled',true);
+        auto_save_background_formlabClinicReqFor.check($('#mrn_requestFor').val()+'_'+$('#episno_requestFor').val());
+		auto_save_background_formlabClinicReqFor.on($('#mrn_requestFor').val()+'_'+$('#episno_requestFor').val());
     });
     
     $("#save_labClinicReqFor").click(function (){
@@ -231,6 +235,7 @@ $(document).ready(function (){
         disableForm('#formlabClinicReqFor');
         if($('#formlabClinicReqFor').isValid({requiredFields: ''}, conf, true)){
             saveForm_labClinicReqFor(function (data){
+                auto_save_background_formlabClinicReqFor.off($('#mrn_requestFor').val()+'_'+$('#episno_requestFor').val());
                 // emptyFormdata_div("#formlabClinicReqFor",['#mrn_requestFor','#episno_requestFor']);
                 // disableForm('#formlabClinicReqFor');
                 $('#cancel_labClinicReqFor').data('oper','edit');
@@ -248,6 +253,7 @@ $(document).ready(function (){
         // emptyFormdata_div("#formlabClinicReqFor",['#mrn_requestFor','#episno_requestFor']);
         disableForm('#formlabClinicReqFor');
         button_state_labClinicReqFor($(this).data('oper'));
+        auto_save_background_formlabClinicReqFor.off($('#mrn_requestFor').val()+'_'+$('#episno_requestFor').val());
     });
     ////////////////////////////////////////////labClinic ends////////////////////////////////////////////
     

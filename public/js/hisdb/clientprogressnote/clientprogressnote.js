@@ -18,7 +18,8 @@ $(document).ready(function (){
 	// textarea_init_clientProgNote();
 	
 	var fdl = new faster_detail_load();
-	
+	var auto_save_background_formClientProgNote = new auto_save_background('#formClientProgNote','ward_formClientProgNote');
+
 	disableForm('#formClientProgNote');
 	
 	$("#new_clientProgNote").click(function (){
@@ -30,6 +31,8 @@ $(document).ready(function (){
 		emptyFormdata_div("#formClientProgNote",['#mrn_clientProgNote','#episno_clientProgNote','#datetime_clientProgNote','#epistycode_clientProgNote']);
 		$("#clientProgNote_datetaken").val(moment().format('YYYY-MM-DD'));
 		// $('#clientProgNote_datetaken').prop('disabled',false);
+		auto_save_background_formClientProgNote.check($('#mrn_clientProgNote').val()+'_'+$('#episno_clientProgNote').val());
+		auto_save_background_formClientProgNote.on($('#mrn_clientProgNote').val()+'_'+$('#episno_clientProgNote').val());
 	});
 	
 	$("#edit_clientProgNote").click(function (){
@@ -37,6 +40,8 @@ $(document).ready(function (){
 		enableForm('#formClientProgNote');
 		rdonly('#formClientProgNote');
 		// $('#clientProgNote_datetaken').prop('disabled',true);
+		auto_save_background_formClientProgNote.check($('#mrn_clientProgNote').val()+'_'+$('#episno_clientProgNote').val());
+		auto_save_background_formClientProgNote.on($('#mrn_clientProgNote').val()+'_'+$('#episno_clientProgNote').val());
 	});
 	
 	$("#save_clientProgNote").click(function (){
@@ -44,6 +49,7 @@ $(document).ready(function (){
 		if($('#formClientProgNote').isValid({requiredFields: ''}, conf, true)){
 			saveForm_clientProgNote(function (data){
 				// $("#cancel_clientProgNote").click();
+				auto_save_background_formClientProgNote.off($('#mrn_clientProgNote').val()+'_'+$('#episno_clientProgNote').val());
 				clientprognote_date_tbl.ajax.url("./clientprogressnote/table?"+$.param(dateParam_clientprognote)).load(function (){
 					clientprognote_date_tbl.rows().every(function (rowIdx, tableLoop, rowLoop){
 						var currow = this.data();
@@ -66,6 +72,7 @@ $(document).ready(function (){
 		disableForm('#formClientProgNote');
 		button_state_clientProgNote($(this).data('oper'));
 		$('#clientprognote_date_tbl tbody tr:eq(0)').click(); // to select first row
+		auto_save_background_formClientProgNote.off($('#mrn_clientProgNote').val()+'_'+$('#episno_clientProgNote').val());
 	});
 	
 	///////////////////////////////////////////Referral Letter///////////////////////////////////////////

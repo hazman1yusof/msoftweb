@@ -338,7 +338,12 @@ class PatmastMRController extends defaultController
                             });
             // }
 
-
+            if(isset($request->mrn)){
+                $table_patm = $table_patm->where('pat_mast.MRN', $request->mrn);
+            }
+            if(isset($request->episno)){
+                $table_patm = $table_patm->where('pat_mast.Episno', $request->episno);
+            }
                             
             // if($sel_epistycode == 'IP'){
             //     $table_patm = $table_patm->leftJoin('hisdb.bedalloc', function($join) use ($request){

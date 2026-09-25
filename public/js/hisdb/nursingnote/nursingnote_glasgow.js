@@ -16,6 +16,7 @@ var urlParam_AddNotesGlasgow = {
 $(document).ready(function (){
     
     var fdl = new faster_detail_load();
+    var auto_save_background_formGlasgow = new auto_save_background('#formGlasgow','ward_formGlasgow');
         
     /////////////////////////////////////Glasgow Coma Scale starts/////////////////////////////////////
     disableForm('#formGlasgow');
@@ -27,6 +28,8 @@ $(document).ready(function (){
         $("#gcs_date").val(moment().format('YYYY-MM-DD'));
         emptyFormdata_div("#formGlasgow",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
         document.getElementById("idno_glasgow").value = "";
+        auto_save_background_formGlasgow.check($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
+		auto_save_background_formGlasgow.on($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     
     $("#edit_glasgow").click(function (){
@@ -34,11 +37,14 @@ $(document).ready(function (){
         enableForm('#formGlasgow');
         rdonly('#formGlasgow');
         $("#gcs_date,#gcs_time").attr("readonly", true);
+        auto_save_background_formGlasgow.check($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
+		auto_save_background_formGlasgow.on($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     
     $("#save_glasgow").click(function (){
         disableForm('#formGlasgow');
         if($('#formGlasgow').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formGlasgow.off($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
             saveForm_glasgow(function (){
                 $("#cancel_glasgow").data('oper','edit');
                 $("#cancel_glasgow").click();
@@ -54,6 +60,7 @@ $(document).ready(function (){
         disableForm('#formGlasgow');
         button_state_glasgow($(this).data('oper'));
         $('#datetimegcs_tbl').DataTable().ajax.reload();
+        auto_save_background_formGlasgow.off($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     //////////////////////////////////////Glasgow Coma Scale ends//////////////////////////////////////
     

@@ -39,7 +39,8 @@ var urlParam_AddNotesIntake3 = {
 $(document).ready(function (){
     
     var fdl = new faster_detail_load();
-    
+	var auto_save_background_formIntake = new auto_save_background('#formIntake','ward_formIntake');
+
     textarea_init_intake();
     
     /////////////////////////////////////intakeoutput starts/////////////////////////////////////
@@ -51,9 +52,9 @@ $(document).ready(function (){
         rdonly('#formIntake');
 		$("#recorddate_intake").val(moment().format('YYYY-MM-DD'));
         emptyFormdata_div("#formIntake",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
-
         document.getElementById("idno_intake").value = "";
-        // dialog_mrn_edit.on();
+		auto_save_background_formIntake.check($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
+		auto_save_background_formIntake.on($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     
     $("#edit_intake").click(function (){
@@ -62,12 +63,14 @@ $(document).ready(function (){
         rdonly('#formIntake');
         // mycurrency_nursing.formatOnBlur();
         $("#recorddate_intake").attr("readonly", true);
-        // dialog_mrn_edit.on();
+		auto_save_background_formIntake.check($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
+		auto_save_background_formIntake.on($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     
     $("#save_intake").click(function (){
         disableForm('#formIntake');
         if($('#formIntake').isValid({requiredFields: ''}, conf, true)){
+			auto_save_background_formIntake.off($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
             // mycurrency_nursing.formatOff();
             saveForm_intake(function (){
                 $("#cancel_intake").data('oper','edit');
@@ -85,7 +88,7 @@ $(document).ready(function (){
         disableForm('#formIntake');
         button_state_intake($(this).data('oper'));
         $('#tbl_intake_date').DataTable().ajax.reload();
-        // dialog_mrn_edit.off();
+		auto_save_background_formIntake.off($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     //////////////////////////////////////intakeoutput ends//////////////////////////////////////
     

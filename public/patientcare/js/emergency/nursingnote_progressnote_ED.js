@@ -15,6 +15,8 @@ var urlParam_AddNotesProgressED = {
 $(document).ready(function (){
     
     var fdl = new faster_detail_load();
+
+    var auto_save_background_formProgress_ED = new auto_save_background('#formProgress_ED','ed_formProgress_ED');
         
     ////////////////////////////////////////////progressnote starts////////////////////////////////////////////
     disableForm('#formProgress_ED');
@@ -25,8 +27,9 @@ $(document).ready(function (){
         rdonly('#formProgress_ED');
         emptyFormdata_div("#formProgress_ED",['#mrn_emergencyMain','#episno_emergencyMain','#doctor_nursNote','#ordcomtt_phar']);
         $("#formProgress_ED :input[name='datetaken']").val(moment().format('YYYY-MM-DD'));
-
         document.getElementById("idno_progress_ED").value = "";
+        auto_save_background_formProgress_ED.check($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
+		auto_save_background_formProgress_ED.on($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
     });
     
     $("#edit_progress_ED").click(function (){
@@ -34,11 +37,14 @@ $(document).ready(function (){
         enableForm('#formProgress_ED');
         rdonly('#formProgress_ED');
         // $("#formProgress_ED :input[name='datetaken'],#formProgress_ED :input[name='timetaken']").attr("readonly", true);
+        auto_save_background_formProgress_ED.check($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
+		auto_save_background_formProgress_ED.on($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
     });
 
     $("#save_progress_ED").click(function (){
         disableForm('#formProgress_ED');
         if($('#formProgress_ED').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formProgress_ED.off($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
             saveForm_progress_ED(function (){
                 $("#cancel_progress_ED").data('oper','edit');
                 $("#cancel_progress_ED").click();
@@ -55,6 +61,7 @@ $(document).ready(function (){
         disableForm('#formProgress_ED');
         button_state_progress_ED($(this).data('oper'));
         $('#datetime_ED_tbl').DataTable().ajax.reload();
+        auto_save_background_formProgress_ED.off($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
     });
     //////////////////////////////////////////////progressnote ends//////////////////////////////////////////////  
 

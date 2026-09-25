@@ -51,6 +51,9 @@ $(document).ready(function () {
 	});
 
 	var fdl = new faster_detail_load();
+	var auto_save_background_formAntenatal = new auto_save_background('#formAntenatal','ward_formAntenatal');
+	var auto_save_background_formPregnancy = new auto_save_background('#formPregnancy','ward_formPregnancy');
+	var auto_save_background_formUltrasound = new auto_save_background('#formUltrasound','ward_formUltrasound');
 
 	$('#jqGridAntenatal_panel').on('shown.bs.collapse', function () {
 		SmoothScrollTo("#jqGridAntenatal_panel", 500)
@@ -65,19 +68,23 @@ $(document).ready(function () {
 		button_state_antenatal('wait_antenatal');
 		enableForm('#formAntenatal');
 		rdonly('#formAntenatal');
-		
+		auto_save_background_formAntenatal.check($('#mrn_antenatal').val()+'_'+$('#episno_antenatal').val());
+		auto_save_background_formAntenatal.on($('#mrn_antenatal').val()+'_'+$('#episno_antenatal').val());
+	
 	});
 
 	$("#edit_antenatal").click(function(){
 		button_state_antenatal('wait_antenatal');
 		enableForm('#formAntenatal');
 		rdonly('#formAntenatal');
-		
+		auto_save_background_formAntenatal.check($('#mrn_antenatal').val()+'_'+$('#episno_antenatal').val());
+		auto_save_background_formAntenatal.on($('#mrn_antenatal').val()+'_'+$('#episno_antenatal').val());
 	});
 
 	$("#save_antenatal").click(function(){
 		disableForm('#formAntenatal');
 		if( $('#formAntenatal').isValid({requiredFields: ''}, conf, true) ) {
+			auto_save_background_formAntenatal.off($('#mrn_antenatal').val()+'_'+$('#episno_antenatal').val());
 			saveForm_antenatal(function(){
 				$("#cancel_antenatal").data('oper','edit_antenatal');
 				$("#cancel_antenatal").click();
@@ -92,7 +99,7 @@ $(document).ready(function () {
 	$("#cancel_antenatal").click(function(){
 		disableForm('#formAntenatal');
 		button_state_antenatal($(this).data('oper'));
-
+		auto_save_background_formAntenatal.off($('#mrn_antenatal').val()+'_'+$('#episno_antenatal').val());
 	});
 
 	// formPregnancy
@@ -102,19 +109,22 @@ $(document).ready(function () {
 		$("#cancel_pregnancy").data('oper','add_pregnancy');
 		enableForm('#formPregnancy');
 		rdonly('#formPregnancy');
-		
+		auto_save_background_formPregnancy.check($('#mrn_pregnancy').val()+'_'+$('#episno_pregnancy').val());
+		auto_save_background_formPregnancy.on($('#mrn_pregnancy').val()+'_'+$('#episno_pregnancy').val());
 	});
 
 	$("#edit_pregnancy").click(function(){
 		button_state_antenatal('wait_pregnancy');
 		enableForm('#formPregnancy');
 		rdonly('#formPregnancy');
-		
+		auto_save_background_formPregnancy.check($('#mrn_pregnancy').val()+'_'+$('#episno_pregnancy').val());
+		auto_save_background_formPregnancy.on($('#mrn_pregnancy').val()+'_'+$('#episno_pregnancy').val());
 	});
 
 	$("#save_pregnancy").click(function(){
 		disableForm('#formPregnancy');
 		if( $('#formPregnancy').isValid({requiredFields: ''}, conf, true) ) {
+			auto_save_background_formPregnancy.off($('#mrn_pregnancy').val()+'_'+$('#episno_pregnancy').val());
 			saveForm_pregnancy(function(data){
 				$("#cancel_pregnancy").data('oper','edit_pregnancy');
 				$("#cancel_pregnancy").click();
@@ -132,7 +142,7 @@ $(document).ready(function () {
 	$("#cancel_pregnancy").click(function(){
 		disableForm('#formPregnancy');
 		button_state_antenatal($(this).data('oper'));
-
+		auto_save_background_formPregnancy.off($('#mrn_ultrasound').val()+'_'+$('#episno_pregnancy').val());
 	});
 
 	// formUltrasound
@@ -140,19 +150,22 @@ $(document).ready(function () {
 		button_state_antenatal('wait_ultrasound');
 		enableForm('#formUltrasound');
 		rdonly('#formUltrasound');
-		
+		auto_save_background_formUltrasound.check($('#mrn_ultrasound').val()+'_'+$('#episno_ultrasound').val());
+		auto_save_background_formUltrasound.on($('#mrn_ultrasound').val()+'_'+$('#episno_ultrasound').val());
 	});
 
 	$("#edit_ultrasound").click(function(){
 		button_state_antenatal('wait_ultrasound');
 		enableForm('#formUltrasound');
 		rdonly('#formUltrasound');
-		
+		auto_save_background_formUltrasound.check($('#mrn_ultrasound').val()+'_'+$('#episno_ultrasound').val());
+		auto_save_background_formUltrasound.on($('#mrn_ultrasound').val()+'_'+$('#episno_ultrasound').val());
 	});
 
 	$("#save_ultrasound").click(function(){
 		disableForm('#formUltrasound');
 		if( $('#formUltrasound').isValid({requiredFields: ''}, conf, true) ) {
+			auto_save_background_formUltrasound.off($('#mrn_ultrasound').val()+'_'+$('#episno_ultrasound').val());
 			saveForm_ultrasound(function(){
 				$("#cancel_ultrasound").data('oper','edit_ultrasound');
 				$("#cancel_ultrasound").click();
@@ -167,7 +180,7 @@ $(document).ready(function () {
 	$("#cancel_ultrasound").click(function(){
 		disableForm('#formUltrasound');
 		button_state_antenatal($(this).data('oper'));
-
+		auto_save_background_formUltrasound.off($('#mrn_ultrasound').val()+'_'+$('#episno_ultrasound').val());
 	});
 
 	// to format number input to two decimal places (0.00)
@@ -1918,6 +1931,7 @@ function populate_antenatal(obj){
 }
 
 function populate_ultrasound(obj){
+	disableForm('#formUltrasound');
 	emptyFormdata(errorField,"#formUltrasound");
 
 	$('#mrn_ultrasound').val(obj.mrn);

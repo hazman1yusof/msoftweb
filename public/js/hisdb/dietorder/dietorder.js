@@ -21,6 +21,8 @@ $(document).ready(function (){
 	// 	this.style.height = 'auto';
 	// 	this.style.height = (this.scrollHeight) + 'px';
 	// });
+
+	var auto_save_background_formDietOrder = new auto_save_background('#formDietOrder','ward_formDietOrder');
 	
 	disableForm('#formDietOrder');
 	
@@ -28,19 +30,22 @@ $(document).ready(function (){
 		button_state_dietOrder('wait');
 		enableForm('#formDietOrder');
 		rdonly('#formDietOrder');
-		// dialog_mrn_edit.on();
+		auto_save_background_formDietOrder.check($('#mrn_dietOrder').val()+'_'+$('#episno_dietOrder').val());
+		auto_save_background_formDietOrder.on($('#mrn_dietOrder').val()+'_'+$('#episno_dietOrder').val());	
 	});
 	
 	$("#edit_dietOrder").click(function (){
 		button_state_dietOrder('wait');
 		enableForm('#formDietOrder');
 		rdonly('#formDietOrder');
-		// dialog_mrn_edit.on();
+		auto_save_background_formDietOrder.check($('#mrn_dietOrder').val()+'_'+$('#episno_dietOrder').val());
+		auto_save_background_formDietOrder.on($('#mrn_dietOrder').val()+'_'+$('#episno_dietOrder').val());
 	});
 	
 	$("#save_dietOrder").click(function (){
 		disableForm('#formDietOrder');
 		if($('#formDietOrder').isValid({requiredFields: ''}, conf, true)){
+			auto_save_background_formDietOrder.off($('#mrn_dietOrder').val()+'_'+$('#episno_dietOrder').val());
 			saveForm_dietOrder(function (){
 				$("#cancel_dietOrder").data('oper','edit');
 				$("#cancel_dietOrder").click();
@@ -55,7 +60,7 @@ $(document).ready(function (){
 	$("#cancel_dietOrder").click(function (){
 		disableForm('#formDietOrder');
 		button_state_dietOrder($(this).data('oper'));
-		// dialog_mrn_edit.off();
+		auto_save_background_formDietOrder.off($('#mrn_dietOrder').val()+'_'+$('#episno_dietOrder').val());
 	});
 	
 	// Mode of Feeding
@@ -396,8 +401,9 @@ function populate_dietOrder_currpt(obj){
 }
 
 function populate_dietOrder_getdata(obj){
+	disableForm('#formDietOrder');
 	emptyFormdata(errorField,"#formDietOrder");
-	
+
 	var saveParam = {
 		action: 'get_table_dietorder',
 	}
