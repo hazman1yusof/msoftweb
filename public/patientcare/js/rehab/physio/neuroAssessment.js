@@ -5,10 +5,10 @@ var editedRow = 0;
 
 $(document).ready(function (){
     
-    // textarea_init_neuroAssessment();
-    
     var fdl = new faster_detail_load();
+    var auto_save_background_formNeuroAssessment = new auto_save_background('#formNeuroAssessment','rehab_formNeuroAssessment');
     
+    // textarea_init_neuroAssessment();
     disableForm('#formNeuroAssessment');
     
     $("#new_neuroAssessment").click(function (){
@@ -23,6 +23,11 @@ $(document).ready(function (){
         document.getElementById("idno_romsoundside").value = "";
         document.getElementById("idno_musclepower").value = "";
         // dialog_mrn_edit.on();
+        
+        auto_save_background_formNeuroAssessment.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formNeuroAssessment.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        
+        reloadImage_png("a.ui.card.bodydia_neuro",['BB_NEURO','BF_NEURO']);
     });
     
     $("#edit_neuroAssessment").click(function (){
@@ -30,10 +35,21 @@ $(document).ready(function (){
         enableForm('#formNeuroAssessment');
         rdonly('#formNeuroAssessment');
         // dialog_mrn_edit.on();
+        
+        auto_save_background_formNeuroAssessment.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formNeuroAssessment.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        
+        let mrn = $('#mrn_rehabMain').val();
+        let episno = $('#episno_rehabMain').val();
+        let entereddate = $('#neuroAssessment_entereddate').val();
+        let enteredtime = $('#neuroAssessment_enteredtime').val();
+        let timestamp = moment(entereddate+' '+enteredtime,  'YYYY-MM-DD HH:mm:ss').unix();
+        reloadImage_png("a.ui.card.bodydia_neuro",['BB_NEURO','BF_NEURO'],mrn,episno,timestamp);
     });
     
     $("#save_neuroAssessment").click(function (){
         if($('#formNeuroAssessment').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formNeuroAssessment.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_neuroAssessment(function (data){
                 $("#cancel_neuroAssessment").data('oper','edit');
                 $("#cancel_neuroAssessment").click();
@@ -47,12 +63,14 @@ $(document).ready(function (){
     });
     
     $("#cancel_neuroAssessment").click(function (){
-        // emptyFormdata_div("#formNeuroAssessment",['#mrn_rehabMain','#episno_rehabMain']);
+        emptyFormdata_div("#formNeuroAssessment",['#mrn_rehabMain','#episno_rehabMain']);
         disableForm('#formNeuroAssessment');
         button_state_neuroAssessment($(this).data('oper'));
         $('#tbl_neuroAssessment_date').DataTable().ajax.reload();
         getdata_neuroAssessment();
         // dialog_mrn_edit.off();
+        
+        auto_save_background_formNeuroAssessment.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     // to format number input to two decimal places (0.00)
@@ -121,6 +139,8 @@ $(document).ready(function (){
             m_idno: data.m_idno,
         };
         
+        var _data = data;
+        
         $.post("./neuroAssessment/form?"+$.param(saveParam), $.param(postobj), function (data){
             
         },'json').fail(function (data){
@@ -131,8 +151,14 @@ $(document).ready(function (){
                 autoinsert_rowdata("#formNeuroAssessment",data.romaffectedside);
                 autoinsert_rowdata("#formNeuroAssessment",data.romsoundside);
                 autoinsert_rowdata("#formNeuroAssessment",data.musclepower);
+                reloadImage_png("a.ui.card.bodydia_neuro",
+                    ['BB_NEURO','BF_NEURO'],
+                    _data.mrn,
+                    _data.episno,
+                    moment(_data.dt, 'YYYY-MM-DD HH:mm:ss').unix());
                 // button_state_neuroAssessment('edit');
             }else{
+                reloadImage_png("a.ui.card.bodydia_neuro",['BB_NEURO','BF_NEURO']);
                 // button_state_neuroAssessment('add');
             }
             
@@ -160,13 +186,15 @@ $(document).ready(function (){
         else if(entereddate == ''){
             alert('Please enter date first');
         }else{
-            if(istablet){
-                let filename = type+'_'+mrn+'_.pdf';
-                let url = $('#urltodiagram').val() + filename;
-                var win = window.open(url, '_blank');
-            }else{
-                var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&entereddate='+timestamp+'&type='+type+'&from=neuroAssessment', '_blank');
-            }
+            // if(istablet){
+            //     let filename = type+'_'+mrn+'_.pdf';
+            //     let url = $('#urltodiagram').val() + filename;
+            //     var win = window.open(url, '_blank');
+            // }else{
+            //     var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&entereddate='+timestamp+'&type='+type+'&from=neuroAssessment', '_blank');
+            // }
+            
+            var win = window.open('./PdfViewer?mrn='+mrn+'&episno='+episno+'&entereddate='+timestamp+'&type='+type+'&from=neuroAssessment', '_blank');
             
             if(win){
                 win.focus();

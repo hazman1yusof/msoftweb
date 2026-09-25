@@ -113,7 +113,8 @@
         <div class="ui two cards">
             <a class="ui card bodydia_physio" data-type='BF_PHYSIO' style="height: 500px;">
                 <div class="image">
-                    <img src="{{ asset('patientcare/img/bodydia5.png') }}" style="height: 500px;">
+                    <img src="./PdfViewer-png?type=BF_PHYSIO">
+                    <!-- <img src="{{ asset('patientcare/img/bodydia5.png') }}" style="height: 500px;"> -->
                 </div>
             </a>
             <!-- <a class="ui card bodydia_physio" data-type='BR_PHYSIO'>
@@ -128,7 +129,8 @@
             </a> -->
             <a class="ui card bodydia_physio" data-type='BB_PHYSIO' style="height: 500px;">
                 <div class="image">
-                    <img src="{{ asset('patientcare/img/bodydia8.png') }}" style="height: 500px;">
+                    <img src="./PdfViewer-png?type=BB_PHYSIO">
+                    <!-- <img src="{{ asset('patientcare/img/bodydia8.png') }}" style="height: 500px;"> -->
                 </div>
             </a>
         </div>
