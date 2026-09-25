@@ -2357,7 +2357,6 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function (){
 		
 	},'json').done(function (data){
 		if(!$.isEmptyObject(data)){
-			console.log("test");
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.episode);
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathealth);
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathistory);
@@ -2371,7 +2370,7 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function (){
 				['DOCNOTE_BF','DOCNOTE_BR','DOCNOTE_BL','DOCNOTE_BB'],
 				_data.mrn,
 				_data.episno,
-				moment(_data.date, 'YYYY-MM-DD HH:mm:ss').unix());
+				moment(_data.date, 'DD-MM-YYYY HH:mm:ss').unix());
 				
 			// if(data.pathealth == undefined){
 			// 	button_state_doctorNote('add');
