@@ -246,22 +246,26 @@
                                     <div class="ui four cards">
                                         <a class="ui card bodydia_doctornote" data-type='DOCNOTE_BF'>
                                             <div class="image">
-                                                <img src="{{ asset('img/bodydia1.png') }}">
+                                                <img src="./PdfViewer-png?type=DOCNOTE_BF">
+                                                <!-- <img src="{{ asset('img/bodydia1.png') }}"> -->
                                             </div>
                                         </a>
                                         <a class="ui card bodydia_doctornote" data-type='DOCNOTE_BR'>
                                             <div class="image">
-                                                <img src="{{ asset('img/bodydia2.png') }}">
+                                                <img src="./PdfViewer-png?type=DOCNOTE_BR">
+                                                <!-- <img src="{{ asset('img/bodydia2.png') }}"> -->
                                             </div>
                                         </a>
                                         <a class="ui card bodydia_doctornote" data-type='DOCNOTE_BL'>
                                             <div class="image">
-                                                <img src="{{ asset('img/bodydia3.png') }}">
+                                                <img src="./PdfViewer-png?type=DOCNOTE_BL">
+                                                <!-- <img src="{{ asset('img/bodydia3.png') }}"> -->
                                             </div>
                                         </a>
                                         <a class="ui card bodydia_doctornote" data-type='DOCNOTE_BB'>
                                             <div class="image">
-                                                <img src="{{ asset('img/bodydia4.png') }}">
+                                                <img src="./PdfViewer-png?type=DOCNOTE_BB">
+                                                <!-- <img src="{{ asset('img/bodydia4.png') }}"> -->
                                             </div>
                                         </a>
                                     </div>
