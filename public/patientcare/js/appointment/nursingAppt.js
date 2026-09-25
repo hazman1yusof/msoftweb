@@ -36,17 +36,17 @@ var urlParam_AddNotesTriage = {
 }
 
 $(document).ready(function () {
-
+	
 	var fdl = new faster_detail_load();
 	var radbuts = new checkradiobutton(['lvl_conscious','mental_stat','emotional_stat']);
-
-
+	var auto_save_background_formTriageInfo = new auto_save_background('#formTriageInfo','clinic_formTriageInfo');
+	
 	// disableForm('#formTriageInfo, #formActDaily, #formTriPhysical');
-
+	
 	$('#tab_triage').on('show.bs.collapse', function () {
 		return check_if_user_selected();
 	});
-
+	
 	$('#tab_triage').on('shown.bs.collapse', function () {
 		SmoothScrollTo('#tab_triage', 300);
 		$("#jqGridExamTriage").jqGrid ('setGridWidth', Math.floor($("#jqGridExamTriage_c")[0].offsetWidth-$("#jqGridExamTriage_c")[0].offsetLeft-14));
@@ -87,27 +87,31 @@ $(document).ready(function () {
 		
 		});
 	});
-
+	
 	disableForm('#formTriageInfo');
-
+	
 	$("#new_ti").click(function(){
 		button_state_ti('wait');
 		enableForm('#formTriageInfo');
 		rdonly('#formTriageInfo');
-
+		
 		// dialog_mrn_edit.on();
 		
+		auto_save_background_formTriageInfo.check($('#mrn_ti').val()+'_'+$('#episno_ti').val());
+		auto_save_background_formTriageInfo.on($('#mrn_ti').val()+'_'+$('#episno_ti').val());
 	});
-
+	
 	$("#edit_ti").click(function(){
 		button_state_ti('wait');
 		enableForm('#formTriageInfo');
 		rdonly('#formTriageInfo');
-
+		
 		// dialog_mrn_edit.on();
 		
+		auto_save_background_formTriageInfo.check($('#mrn_ti').val()+'_'+$('#episno_ti').val());
+		auto_save_background_formTriageInfo.on($('#mrn_ti').val()+'_'+$('#episno_ti').val());
 	});
-
+	
 	$('#formTriageInfo').form({
 	    fields: {
 			admwardtime : 'empty',
@@ -115,10 +119,11 @@ $(document).ready(function () {
 			admreason : 'empty'
 	    }
 	});
-
+	
 	$("#save_ti").click(function(){
 		radbuts.check();
 		if( $('#formTriageInfo').isValid({requiredFields: ''}, conf, true) ) {
+			auto_save_background_formTriageInfo.off($('#mrn_ti').val()+'_'+$('#episno_ti').val());
 			readonlyForm('#formTriageInfo');
 			saveForm_ti(function(){
 				unreadonlyForm('#formTriageInfo');
@@ -126,24 +131,24 @@ $(document).ready(function () {
 				$("#cancel_ti").data('oper','edit');
 				$("#cancel_ti").click();
 			});
-
 		}
-
 	});
-
+	
 	$("#cancel_ti").click(function(){
+		emptyFormdata_div("#formTriageInfo",['#mrn_ti','#episno_ti']);
 		disableForm('#formTriageInfo');
 		button_state_ti($(this).data('oper'));
 		radbuts.reset();
 		// dialog_mrn_edit.off();
-
+		
+		auto_save_background_formTriageInfo.off($('#mrn_ti').val()+'_'+$('#episno_ti').val());
 	});
-
+	
 	// to format number input to two decimal places (0.00)
 	$(".floatNumberField").change(function() {
 		$(this).val(parseFloat($(this).val()).toFixed(2));
-	});	
-
+	});
+	
 	// to autocheck the checkbox bila fill in textarea
 	$("#drugs_remarks").on("keyup blur", function () {
         $("#allergydrugs").prop("checked", this.value !== "");

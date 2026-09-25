@@ -15,6 +15,8 @@ var urlParam_NoteAdmHandover = {
 
 $(document).ready(function (){
 	
+	var auto_save_background_formAdmHandoverAppt = new auto_save_background('#formAdmHandoverAppt','clinic_formAdmHandoverAppt');
+	
 	$('#tab_admHandoverAppt').on('show.bs.collapse', function (){
 		return check_if_user_selected();
 	});
@@ -63,16 +65,23 @@ $(document).ready(function (){
 		button_state_admHandoverAppt('wait');
 		enableForm('#formAdmHandoverAppt');
 		rdonly('#formAdmHandoverAppt');
+		
+		auto_save_background_formAdmHandoverAppt.check($('#mrn_admHandover').val()+'_'+$('#episno_admHandover').val());
+		auto_save_background_formAdmHandoverAppt.on($('#mrn_admHandover').val()+'_'+$('#episno_admHandover').val());
 	});
 	
 	$("#edit_admHandoverAppt").click(function (){
 		button_state_admHandoverAppt('wait');
 		enableForm('#formAdmHandoverAppt');
 		rdonly('#formAdmHandoverAppt');
+		
+		auto_save_background_formAdmHandoverAppt.check($('#mrn_admHandover').val()+'_'+$('#episno_admHandover').val());
+		auto_save_background_formAdmHandoverAppt.on($('#mrn_admHandover').val()+'_'+$('#episno_admHandover').val());
 	});
 	
 	$("#save_admHandoverAppt").click(function (){
 		if( $('#formAdmHandoverAppt').isValid({requiredFields: ''}, conf, true) ) {
+			auto_save_background_formAdmHandoverAppt.off($('#mrn_admHandover').val()+'_'+$('#episno_admHandover').val());
 			readonlyForm('#formAdmHandoverAppt');
 			saveForm_admHandoverAppt(function (){
 				$("#cancel_admHandoverAppt").data('oper','edit');
@@ -87,6 +96,8 @@ $(document).ready(function (){
 	$("#cancel_admHandoverAppt").click(function (){
 		disableForm('#formAdmHandoverAppt');
 		button_state_admHandoverAppt($(this).data('oper'));
+		
+		auto_save_background_formAdmHandoverAppt.off($('#mrn_admHandover').val()+'_'+$('#episno_admHandover').val());
 	});
 	
 	// to format number input to two decimal places (0.00)
