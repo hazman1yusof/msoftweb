@@ -4,10 +4,10 @@ var editedRow = 0;
 
 $(document).ready(function (){
     
-    // textarea_init_sixMinWalking();
-    
     var fdl = new faster_detail_load();
+    var auto_save_background_formSixMinWalking = new auto_save_background('#formSixMinWalking','rehab_formSixMinWalking');
     
+    // textarea_init_sixMinWalking();
     disableForm('#formSixMinWalking');
     
     $("#new_sixMinWalking").click(function (){
@@ -19,6 +19,9 @@ $(document).ready(function (){
         emptyFormdata_div("#formSixMinWalking",['#mrn_rehabMain','#episno_rehabMain']);
         document.getElementById("idno_sixMinWalking").value = "";
         // dialog_mrn_edit.on();
+        
+        auto_save_background_formSixMinWalking.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formSixMinWalking.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#edit_sixMinWalking").click(function (){
@@ -26,10 +29,14 @@ $(document).ready(function (){
         enableForm('#formSixMinWalking');
         rdonly('#formSixMinWalking');
         // dialog_mrn_edit.on();
+        
+        auto_save_background_formSixMinWalking.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formSixMinWalking.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#save_sixMinWalking").click(function (){
         if($('#formSixMinWalking').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formSixMinWalking.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_sixMinWalking(function (data){
                 $("#cancel_sixMinWalking").data('oper','edit');
                 $("#cancel_sixMinWalking").click();
@@ -43,12 +50,14 @@ $(document).ready(function (){
     });
     
     $("#cancel_sixMinWalking").click(function (){
-        // emptyFormdata_div("#formSixMinWalking",['#mrn_rehabMain','#episno_rehabMain']);
+        emptyFormdata_div("#formSixMinWalking",['#mrn_rehabMain','#episno_rehabMain']);
         disableForm('#formSixMinWalking');
         button_state_sixMinWalking($(this).data('oper'));
         $('#tbl_sixMinWalking_date').DataTable().ajax.reload();
         getdata_sixMinWalking();
         // dialog_mrn_edit.off();
+        
+        auto_save_background_formSixMinWalking.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     // to format number input to two decimal places (0.00)

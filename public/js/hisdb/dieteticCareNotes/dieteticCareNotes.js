@@ -14,7 +14,8 @@ var urlParam_AddNotesDieteticCareNotes = {
 }
 
 $(document).ready(function (){
-    
+    var auto_save_background_formDieteticCareNotes = new auto_save_background('#formDieteticCareNotes','ward_formDieteticCareNotes');
+
     //////////////////////////////////////dietNote starts//////////////////////////////////////
 
     disableForm('#formDieteticCareNotes');
@@ -23,20 +24,25 @@ $(document).ready(function (){
         button_state_dieteticCareNotes('wait');
         enableForm('#formDieteticCareNotes');
         rdonly('#formDieteticCareNotes');
-        emptyFormdata_div("#formDieteticCareNotes",['#mrn_wardMain','#episno_wardMain']);
         $("#dietNote_datetaken").val(moment().format('YYYY-MM-DD'));
+        emptyFormdata_div("#formDieteticCareNotes",['#mrn_wardMain','#episno_wardMain']);
         document.getElementById("idno_dieteticCareNotes").value = "";
+        auto_save_background_formDieteticCareNotes.check($('#mrn_wardMain').val()+'_'+$('#episno_wardMain').val());
+		auto_save_background_formDieteticCareNotes.on($('#mrn_wardMain').val()+'_'+$('#episno_wardMain').val());
     });
     
     $("#edit_dieteticCareNotes").click(function (){
         button_state_dieteticCareNotes('wait');
         enableForm('#formDieteticCareNotes');
         rdonly('#formDieteticCareNotes');
+        auto_save_background_formDieteticCareNotes.check($('#mrn_wardMain').val()+'_'+$('#episno_wardMain').val());
+		auto_save_background_formDieteticCareNotes.on($('#mrn_wardMain').val()+'_'+$('#episno_wardMain').val());
     });
     
     $("#save_dieteticCareNotes").click(function (){
         disableForm('#formDieteticCareNotes');
         if($('#formDieteticCareNotes').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formDieteticCareNotes.off($('#mrn_wardMain').val()+'_'+$('#episno_wardMain').val());
             saveForm_dieteticCareNotes(function (data){
                 $("#cancel_dieteticCareNotes").data('oper','edit');
                 $("#cancel_dieteticCareNotes").click();
@@ -50,7 +56,8 @@ $(document).ready(function (){
     $("#cancel_dieteticCareNotes").click(function (){
         disableForm('#formDieteticCareNotes');
         button_state_dieteticCareNotes($(this).data('oper'));
-        $('#dietNote_date_tbl').DataTable().ajax.reload();            
+        $('#dietNote_date_tbl').DataTable().ajax.reload();
+        auto_save_background_formDieteticCareNotes.off($('#mrn_wardMain').val()+'_'+$('#episno_wardMain').val());     
     });
 
     //////////////////////////////////////dietNote ends//////////////////////////////////////
@@ -410,6 +417,7 @@ function saveForm_dieteticCareNotes(callback){
 
 function getdata_dietNote(){
     // console.log('populate');
+    disableForm('#formDieteticCareNotes');
     emptyFormdata(errorField,"#formDieteticCareNotes",["#mrn_wardMain","#episno_wardMain"]);
 
     var urlparam = {

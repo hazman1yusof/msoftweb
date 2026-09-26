@@ -5,10 +5,10 @@ var editedRow = 0;
 
 $(document).ready(function (){
     
-    // textarea_init_oswestryQuest();
-    
     var fdl = new faster_detail_load();
+    var auto_save_background_formOswestryQuest = new auto_save_background('#formOswestryQuest','rehab_formOswestryQuest');
     
+    // textarea_init_oswestryQuest();
     disableForm('#formOswestryQuest');
     
     $("#new_oswestryQuest").click(function (){
@@ -21,6 +21,9 @@ $(document).ready(function (){
         // dialog_mrn_edit.on();
         $('#oswestryQuest_totalScore').prop('disabled',true);
         $('#formOswestryQuest span#oswestryQuest_disabilityLevel').text('');
+        
+        auto_save_background_formOswestryQuest.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formOswestryQuest.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#edit_oswestryQuest").click(function (){
@@ -29,10 +32,14 @@ $(document).ready(function (){
         rdonly('#formOswestryQuest');
         // dialog_mrn_edit.on();
         $('#oswestryQuest_totalScore').prop('disabled',true);
+        
+        auto_save_background_formOswestryQuest.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formOswestryQuest.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#save_oswestryQuest").click(function (){
         if($('#formOswestryQuest').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formOswestryQuest.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_oswestryQuest(function (data){
                 $("#cancel_oswestryQuest").data('oper','edit');
                 $("#cancel_oswestryQuest").click();
@@ -46,12 +53,14 @@ $(document).ready(function (){
     });
     
     $("#cancel_oswestryQuest").click(function (){
-        // emptyFormdata_div("#formOswestryQuest",['#mrn_rehabMain','#episno_rehabMain']);
+        emptyFormdata_div("#formOswestryQuest",['#mrn_rehabMain','#episno_rehabMain']);
         disableForm('#formOswestryQuest');
         button_state_oswestryQuest($(this).data('oper'));
         $('#tbl_oswestryQuest_date').DataTable().ajax.reload();
         getdata_oswestryQuest();
         // dialog_mrn_edit.off();
+        
+        auto_save_background_formOswestryQuest.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     // to format number input to two decimal places (0.00)

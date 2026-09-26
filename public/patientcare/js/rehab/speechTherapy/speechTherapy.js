@@ -5,10 +5,10 @@ var editedRow = 0;
 
 $(document).ready(function (){
     
-    // textarea_init_speechTherapy();
-    
     var fdl = new faster_detail_load();
+    var auto_save_background_formSpeechTherapy = new auto_save_background('#formSpeechTherapy','rehab_formSpeechTherapy');
     
+    // textarea_init_speechTherapy();
     disableForm('#formSpeechTherapy');
     
     $("#new_speechTherapy").click(function (){
@@ -20,6 +20,9 @@ $(document).ready(function (){
         emptyFormdata_div("#formSpeechTherapy",['#mrn_rehabMain','#episno_rehabMain']);
         document.getElementById("idno_speechTherapy").value = "";
         // dialog_mrn_edit.on();
+        
+        auto_save_background_formSpeechTherapy.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formSpeechTherapy.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#edit_speechTherapy").click(function (){
@@ -27,10 +30,14 @@ $(document).ready(function (){
         enableForm('#formSpeechTherapy');
         rdonly('#formSpeechTherapy');
         // dialog_mrn_edit.on();
+        
+        auto_save_background_formSpeechTherapy.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formSpeechTherapy.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#save_speechTherapy").click(function (){
         if($('#formSpeechTherapy').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formSpeechTherapy.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_speechTherapy(function (data){
                 $("#cancel_speechTherapy").data('oper','edit');
                 $("#cancel_speechTherapy").click();
@@ -44,12 +51,14 @@ $(document).ready(function (){
     });
     
     $("#cancel_speechTherapy").click(function (){
-        // emptyFormdata_div("#formSpeechTherapy",['#mrn_rehabMain','#episno_rehabMain']);
+        emptyFormdata_div("#formSpeechTherapy",['#mrn_rehabMain','#episno_rehabMain']);
         disableForm('#formSpeechTherapy');
         button_state_speechTherapy($(this).data('oper'));
         $('#tbl_speechTherapy_date').DataTable().ajax.reload();
         getdata_speechTherapy();
         // dialog_mrn_edit.off();
+        
+        auto_save_background_formSpeechTherapy.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     // to format number input to two decimal places (0.00)

@@ -28,6 +28,7 @@ $(document).ready(function (){
         // emptyFormdata_div("#form_otmgmt_div",['#mrn_otMain','#episno_otMain']);
         auto_save_background_form_otmgmt_div.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
 		auto_save_background_form_otmgmt_div.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+        reloadImage_png("a.ui.card.oper_rec",['drawing']);
     });
     
     $("#edit_otmgmt_div").click(function (){
@@ -36,6 +37,9 @@ $(document).ready(function (){
         rdonly('#form_otmgmt_div');
         auto_save_background_form_otmgmt_div.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
 		auto_save_background_form_otmgmt_div.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+        let mrn = $('#mrn_otMain').val();
+		let episno = $('#episno_otMain').val();
+        reloadImage_png("a.ui.card.oper_rec",['drawing'],mrn,episno);
     });
     
     $("#save_otmgmt_div").click(function (){
@@ -96,17 +100,19 @@ $(document).ready(function (){
         
         if(mrn.trim() == '' || episno.trim() == '' || type.trim() == ''){
             alert('Please choose Patient First');
-        }else if($('#save_otmgmt_div').prop('disabled')){
-            alert('Edit this patient first');
+        // }else if($('#save_otmgmt_div').prop('disabled')){
+        //     alert('Edit this patient first');
         }else{
-            if(istablet){
-                let filename = type+'_'+mrn+'_'+episno+'.pdf';
-                let url = $('#urltodiagram').val() + filename;
-                var win = window.open(url, '_blank');
-            }else{
-                var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&type='+type+'&from=otmgmt_div', '_blank');
-            }
+            // if(istablet){
+            //     let filename = type+'_'+mrn+'_'+episno+'.pdf';
+            //     let url = $('#urltodiagram').val() + filename;
+            //     var win = window.open(url, '_blank');
+            // }else{
+            //     var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&type='+type+'&from=otmgmt_div', '_blank');
+            // }
             
+            var win = window.open('./PdfViewer?mrn='+mrn+'&episno='+episno+'&type='+type+'&from=otmgmt_div', '_blank');
+
             if(win){
                 win.focus();
             }else{
@@ -442,6 +448,7 @@ $('#tab_otmgmt_div').on('hide.bs.collapse', function (){
 
 function getdata_otmgmt(){
     disableForm('#form_otmgmt_div');
+    reloadImage_png("a.ui.card.oper_rec",['drawing']);
 
     var urlparam = {
         action: 'get_table_otmanage',
@@ -452,7 +459,7 @@ function getdata_otmgmt(){
         mrn: $('#mrn_otMain').val(),
         episno: $("#episno_otMain").val()
     };
-    
+    	
     $.post("./otmanagement_div/form?"+$.param(urlparam), $.param(postobj), function (data){
         
     },'json').fail(function (data){
@@ -461,6 +468,7 @@ function getdata_otmgmt(){
         if(!$.isEmptyObject(data.otmanage)){
             button_state_otmgmt_div('edit');
             autoinsert_rowdata("#form_otmgmt_div",data.otmanage);
+            reloadImage_png("a.ui.card.oper_rec",['drawing'],$('#mrn_otMain').val(),$("#episno_otMain").val());
             refreshGrid('#jqGridAddNotesOperRec',urlParam_AddNotesOperRec,'add_operRec_save');
             // autoinsert_rowdata("#form_otmgmt_div",data.apptbook);
             // autoinsert_rowdata("#form_otmgmt_div",data.episode);
@@ -470,6 +478,7 @@ function getdata_otmgmt(){
             // $('#form_otmgmt_div textarea#diagnosis').val(data.apptbook.diagnosis);
         }else{
             button_state_otmgmt_div('add');
+            reloadImage_png("a.ui.card.oper_rec",['drawing']);
             refreshGrid('#jqGridAddNotesOperRec',urlParam_AddNotesOperRec,'kosongkan');
             // $('#form_otmgmt_div textarea#procedure').val(data.apptbook.procedure);
             // $('#form_otmgmt_div textarea#diagnosis').val(data.apptbook.diagnosis);

@@ -19,9 +19,10 @@ $(document).ready(function (){
     textarea_init_clientProgNoteRef();
     
     var fdl = new faster_detail_load();
-    
+    var auto_save_background_formClientProgNoteRef = new auto_save_background('#formClientProgNoteRef','ward_formClientProgNoteRef');
+
     disableForm('#formClientProgNoteRef');
-    
+
     $("#new_clientProgNoteRef").click(function (){
         // $('#docalloc_tbl tbody tr').removeClass('active');
         $('#clientprognoteref_date_tbl tbody tr').removeClass('active');
@@ -32,6 +33,8 @@ $(document).ready(function (){
         emptyFormdata_div("#formClientProgNoteRef",['#mrn_clientProgNoteRef','#episno_clientProgNoteRef','#datetime_clientProgNoteRef','#epistycode_clientProgNoteRef','#refdoctor_clientProgNoteRef']);
         $("#clientProgNoteRef_datetaken").val(moment().format('YYYY-MM-DD'));
         // $('#clientProgNoteRef_datetaken').prop('disabled',false);
+        auto_save_background_formClientProgNoteRef.check($('#mrn_clientProgNoteRef').val()+'_'+$('#episno_clientProgNoteRef').val());
+		auto_save_background_formClientProgNoteRef.on($('#mrn_clientProgNoteRef').val()+'_'+$('#episno_clientProgNoteRef').val());
     });
     
     $("#edit_clientProgNoteRef").click(function (){
@@ -39,6 +42,8 @@ $(document).ready(function (){
         enableForm('#formClientProgNoteRef');
         rdonly('#formClientProgNoteRef');
         // $('#clientProgNoteRef_datetaken').prop('disabled',true);
+        auto_save_background_formClientProgNoteRef.check($('#mrn_clientProgNoteRef').val()+'_'+$('#episno_clientProgNoteRef').val());
+		auto_save_background_formClientProgNoteRef.on($('#mrn_clientProgNoteRef').val()+'_'+$('#episno_clientProgNoteRef').val());
     });
     
     $("#save_clientProgNoteRef").click(function (){
@@ -46,6 +51,7 @@ $(document).ready(function (){
         if($('#formClientProgNoteRef').isValid({requiredFields: ''}, conf, true)){
             saveForm_clientProgNoteRef(function (data){
                 // $("#cancel_clientProgNoteRef").click();
+                auto_save_background_formClientProgNoteRef.off($('#mrn_clientProgNoteRef').val()+'_'+$('#episno_clientProgNoteRef').val());
                 clientprognoteref_date_tbl.ajax.url("./clientprogressnoteref/table?"+$.param(dateParam_clientprognoteref)).load(function (){
                     clientprognoteref_date_tbl.rows().every(function (rowIdx, tableLoop, rowLoop){
                         var currow = this.data();
@@ -69,6 +75,7 @@ $(document).ready(function (){
         button_state_clientProgNoteRef($(this).data('oper'));
         // $('#docalloc_tbl tbody tr:eq(0)').click(); // to select first row
         $('#clientprognoteref_date_tbl tbody tr:eq(0)').click(); // to select first row
+        auto_save_background_formClientProgNoteRef.off($('#mrn_clientProgNoteRef').val()+'_'+$('#episno_clientProgNoteRef').val());
     });
     
     //////////////////////////////////////parameter for saving url//////////////////////////////////////

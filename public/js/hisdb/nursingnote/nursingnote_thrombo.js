@@ -25,6 +25,7 @@ var urlParam_AddNotesThrombo = {
 $(document).ready(function (){
     
     var fdl = new faster_detail_load();
+    var auto_save_background_formThrombo = new auto_save_background('#formThrombo','ward_formThrombo');
 
     textarea_init_thrombo();
     refreshGrid('#jqGridThrombo',urlParam_Thrombo);
@@ -41,6 +42,8 @@ $(document).ready(function (){
         emptyFormdata_div("#formThrombo",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
         document.getElementById("idno_thrombo").value = "";
         document.getElementById("cannulationNo").value = "";
+        auto_save_background_formThrombo.check($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
+		auto_save_background_formThrombo.on($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     
     $("#edit_thrombo").click(function (){
@@ -48,11 +51,14 @@ $(document).ready(function (){
         enableForm('#formThrombo');
         rdonly('#formThrombo');
         $("#dateInsert,#timeInsert").attr("readonly", true);
+        auto_save_background_formThrombo.check($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
+		auto_save_background_formThrombo.on($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     
     $("#save_thrombo").click(function (){
         disableForm('#formThrombo');
         if($('#formThrombo').isValid({requiredFields: ''}, conf, true)){
+		    auto_save_background_formThrombo.off($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
             saveForm_thrombo(function (){
                 $("#cancel_thrombo").data('oper','edit');
                 $("#cancel_thrombo").click();
@@ -68,6 +74,7 @@ $(document).ready(function (){
         disableForm('#formThrombo');
         button_state_thrombo($(this).data('oper'));
         $('#datetimethrombo_tbl').DataTable().ajax.reload();
+		auto_save_background_formThrombo.off($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     //////////////////////////////////////thrombo ends//////////////////////////////////////
     

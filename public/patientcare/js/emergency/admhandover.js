@@ -21,6 +21,8 @@ $(document).ready(function (){
     // });
     // populate_admhandover_currpt(selrowData('#jqGrid'));
 
+	var auto_save_background_formAdmHandover = new auto_save_background('#formAdmHandover','ed_formAdmHandover');
+
     disableForm('#formAdmHandover');
 
     // $("#new_admHandover").click(function (){
@@ -33,16 +35,18 @@ $(document).ready(function (){
 		button_state_admHandover('wait');
 		enableForm('#formAdmHandover');
 		rdonly('#formAdmHandover');
+		auto_save_background_formAdmHandover.check($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
+		auto_save_background_formAdmHandover.on($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
 	});
 
     $("#save_admHandover").click(function (){
 		disableForm('#formAdmHandover');
 		if($('#formAdmHandover').isValid({requiredFields: ''}, conf, true)){
+			auto_save_background_formAdmHandover.off($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
 			saveForm_admHandover(function (){
 				$("#cancel_admHandover").data('oper','edit');
 				$("#cancel_admHandover").click();
 				button_state_admHandover('edit');
-
 			});
 		}
 	});
@@ -50,6 +54,7 @@ $(document).ready(function (){
     $("#cancel_admHandover").click(function (){
 		disableForm('#formAdmHandover');
 		button_state_admHandover($(this).data('oper'));
+		auto_save_background_formAdmHandover.off($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
 	});
 
 	// to format number input to two decimal places (0.00)
@@ -328,6 +333,7 @@ function populate_admhandover_currpt(obj){
 }
 
 function populate_admhandover_getdata(){
+	disableForm('#formAdmHandover');
     emptyFormdata(errorField,"#formAdmHandover",["#mrn_emergencyMain","#episno_emergencyMain"]);
     
     var saveParam = {

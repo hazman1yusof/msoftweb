@@ -281,8 +281,9 @@ $(document).ready(function () {
 			entereddate: data.entereddate,
 			enteredtime: data.enteredtime,
 		};
-
+		
 		var _data = data;
+		
 		$.post("./ptcare_phys/form?"+$.param(urlParam), $.param(postobj), function (data){
 			
 		},'json').fail(function (data){

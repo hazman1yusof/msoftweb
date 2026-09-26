@@ -201,22 +201,25 @@ var urlParam_AddNotesBladder3 = {
 $(document).ready(function (){
     
     var fdl = new faster_detail_load();
+    var auto_save_background_formProgress = new auto_save_background('#formProgress','ward_formProgress');
+    var auto_save_background_formTreatmentP = new auto_save_background('#formTreatmentP','ward_formTreatmentP');
+    var auto_save_background_formCarePlan = new auto_save_background('#formCarePlan','ward_formCarePlan');
     
     textarea_init_nursingnote();
     textarea_init_intake();
     
     /////////////////////////////////////progressnote starts/////////////////////////////////////
     disableForm('#formProgress');
-    
+
     $("#new_progress").click(function (){
         button_state_progress('wait');
         enableForm('#formProgress');
         rdonly('#formProgress');
         $("#datetaken").val(moment().format('YYYY-MM-DD'));
         emptyFormdata_div("#formProgress",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
-
         document.getElementById("idno_progress").value = "";
-        // dialog_mrn_edit.on();
+        auto_save_background_formProgress.check($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
+		auto_save_background_formProgress.on($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     
     $("#edit_progress").click(function (){
@@ -224,12 +227,14 @@ $(document).ready(function (){
         enableForm('#formProgress');
         rdonly('#formProgress');
         $("#datetaken,#timetaken").attr("readonly", true);
-        // dialog_mrn_edit.on();
+        auto_save_background_formProgress.check($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
+		auto_save_background_formProgress.on($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     
     $("#save_progress").click(function (){
         disableForm('#formProgress');
         if($('#formProgress').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formProgress.off($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
             saveForm_progress(function (){
                 $("#cancel_progress").data('oper','edit');
                 $("#cancel_progress").click();
@@ -246,7 +251,7 @@ $(document).ready(function (){
         disableForm('#formProgress');
         button_state_progress($(this).data('oper'));
         $('#datetime_tbl').DataTable().ajax.reload();
-        // dialog_mrn_edit.off();
+        auto_save_background_formProgress.off($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     //////////////////////////////////////progressnote ends//////////////////////////////////////
     
@@ -268,7 +273,8 @@ $(document).ready(function (){
         emptyFormdata_div("#formTreatmentP",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
         document.getElementById("tr_idno").value = "";
         document.getElementById("tr_adduser").value = "";
-        // dialog_mrn_edit.on();
+        auto_save_background_formTreatmentP.check($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
+		auto_save_background_formTreatmentP.on($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     
     $("#edit_treatmentP").click(function (){
@@ -276,12 +282,14 @@ $(document).ready(function (){
         enableForm('#formTreatmentP');
         rdonly('#formTreatmentP');
         $("#tr_entereddate,#treatment_adduser,#tr_enteredtime").attr("readonly", true);
-        // dialog_mrn_edit.on();
+        auto_save_background_formTreatmentP.check($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
+		auto_save_background_formTreatmentP.on($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     
     $("#save_treatmentP").click(function (){
         disableForm('#formTreatmentP');
         if($('#formTreatmentP').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formTreatmentP.off($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
             saveForm_treatmentP(function (){
                 $("#cancel_treatmentP").data('oper','edit');
                 $("#cancel_treatmentP").click();
@@ -298,7 +306,7 @@ $(document).ready(function (){
         disableForm('#formTreatmentP');
         button_state_treatmentP($(this).data('oper'));
         $('#tbl_treatmentP').DataTable().ajax.reload();
-        // dialog_mrn_edit.off();
+        auto_save_background_formTreatmentP.off($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     
     $("#new_investigation").click(function (){
@@ -391,18 +399,22 @@ $(document).ready(function (){
         rdonly('#formCarePlan');
         emptyFormdata_div("#formCarePlan",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
         document.getElementById("idno_careplan").value = "";
-        // dialog_mrn_edit.on();
+        auto_save_background_formCarePlan.check($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
+		auto_save_background_formCarePlan.on($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
 
     $("#edit_careplan").click(function (){
         button_state_careplan('wait');
         enableForm('#formCarePlan');
         rdonly('#formCarePlan');
+        auto_save_background_formCarePlan.check($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
+		auto_save_background_formCarePlan.on($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     
     $("#save_careplan").click(function (){
         disableForm('#formCarePlan');
         if($('#formCarePlan').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formCarePlan.off($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
             saveForm_careplan(function (){
                 $("#cancel_careplan").data('oper','edit');
                 $("#cancel_careplan").click();
@@ -419,7 +431,7 @@ $(document).ready(function (){
         disableForm('#formCarePlan');
         button_state_careplan($(this).data('oper'));
         $('#tbl_careplan_date').DataTable().ajax.reload();
-        // dialog_mrn_edit.off();
+        auto_save_background_formCarePlan.off($('#mrn_nursNote').val()+'_'+$('#episno_nursNote').val());
     });
     ///////////////////////////////////////careplan ends///////////////////////////////////////
     

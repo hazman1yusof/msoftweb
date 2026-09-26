@@ -4,9 +4,11 @@ var editedRow = 0;
 
 $(document).ready(function (){
     
+    var auto_save_background_formOccupTherapyBarthel = new auto_save_background('#formOccupTherapyBarthel','rehab_formOccupTherapyBarthel');
+    
     //////////////////////////////////////barthel starts//////////////////////////////////////
     // textarea_init_barthel();
-
+    
     disableForm('#formOccupTherapyBarthel');
     
     $("#new_barthel").click(function (){
@@ -14,8 +16,11 @@ $(document).ready(function (){
         enableForm('#formOccupTherapyBarthel');
         rdonly('#formOccupTherapyBarthel');
         emptyFormdata_div("#formOccupTherapyBarthel",['#mrn_rehabMain','#episno_rehabMain']);
-
+        
         document.getElementById("idno_barthel").value = "";
+        
+        auto_save_background_formOccupTherapyBarthel.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formOccupTherapyBarthel.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#edit_barthel").click(function (){
@@ -23,12 +28,15 @@ $(document).ready(function (){
         enableForm('#formOccupTherapyBarthel');
         rdonly('#formOccupTherapyBarthel');
         $("#dateofAssessment, #timeAssessment").attr("readonly", true);
-
+        
+        auto_save_background_formOccupTherapyBarthel.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formOccupTherapyBarthel.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#save_barthel").click(function (){
         disableForm('#formOccupTherapyBarthel');
         if($('#formOccupTherapyBarthel').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formOccupTherapyBarthel.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_barthel(function (data){
                 $("#cancel_barthel").data('oper','edit');
                 $("#cancel_barthel").click();
@@ -40,13 +48,15 @@ $(document).ready(function (){
     });
     
     $("#cancel_barthel").click(function (){
+        emptyFormdata_div("#formOccupTherapyBarthel",['#mrn_rehabMain','#episno_rehabMain']);
         disableForm('#formOccupTherapyBarthel');
         button_state_barthel($(this).data('oper'));
-        $('#datetimeBarthel_tbl').DataTable().ajax.reload();            
+        $('#datetimeBarthel_tbl').DataTable().ajax.reload();
+        
+        auto_save_background_formOccupTherapyBarthel.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
-
     //////////////////////////////////////barthel ends//////////////////////////////////////
-
+    
     /////////////////////////////////////////print button starts/////////////////////////////////////////
     $("#barthel_chart").click(function (){
         window.open('./occupTherapy_barthel/barthel_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&dateofAssessment='+$("#dateofAssessment").val()+'&timeAssessment='+$("#timeAssessment").val(), '_blank');

@@ -28,6 +28,7 @@ var urlParam_AddNotesAppt = {
 $(document).ready(function (){
     
     var fdl = new faster_detail_load();
+    var auto_save_background_formDoctorNoteAppt = new auto_save_background('#formDoctorNoteAppt','clinic_formDoctorNoteAppt');
     
     disableForm('#formDoctorNoteAppt',['toggle_type_docNoteAppt']);
     
@@ -42,16 +43,23 @@ $(document).ready(function (){
         enableForm('#formDoctorNoteAppt');
         rdonly('#formDoctorNoteAppt');
         emptyFormdata_div("#formDoctorNoteAppt",['#mrn_doctorNoteAppt','#episno_doctorNoteAppt']);
+        
+        auto_save_background_formDoctorNoteAppt.check($('#mrn_doctorNoteAppt').val()+'_'+$('#episno_doctorNoteAppt').val());
+        auto_save_background_formDoctorNoteAppt.on($('#mrn_doctorNoteAppt').val()+'_'+$('#episno_doctorNoteAppt').val());
     });
     
     $("#edit_doctorNoteAppt").click(function (){
         button_state_doctorNoteAppt('wait');
         enableForm('#formDoctorNoteAppt');
         rdonly('#formDoctorNoteAppt');
+        
+        auto_save_background_formDoctorNoteAppt.check($('#mrn_doctorNoteAppt').val()+'_'+$('#episno_doctorNoteAppt').val());
+        auto_save_background_formDoctorNoteAppt.on($('#mrn_doctorNoteAppt').val()+'_'+$('#episno_doctorNoteAppt').val());
     });
     
     $("#save_doctorNoteAppt").click(function (){
         if($('#formDoctorNoteAppt').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formDoctorNoteAppt.off($('#mrn_doctorNoteAppt').val()+'_'+$('#episno_doctorNoteAppt').val());
             saveForm_doctorNoteAppt(function (data){
                 emptyFormdata_div("#formDoctorNoteAppt",['#mrn_doctorNoteAppt','#episno_doctorNoteAppt']);
                 disableForm('#formDoctorNoteAppt',['toggle_type_docNoteAppt']);
@@ -70,6 +78,8 @@ $(document).ready(function (){
         disableForm('#formDoctorNoteAppt',['toggle_type_docNoteAppt']);
         button_state_doctorNoteAppt($(this).data('oper'));
         $('#docNoteAppt_date_tbl tbody tr:eq(0)').click(); // to select first row
+        
+        auto_save_background_formDoctorNoteAppt.off($('#mrn_doctorNoteAppt').val()+'_'+$('#episno_doctorNoteAppt').val());
     });
     
     // to format number input to two decimal places (0.00)

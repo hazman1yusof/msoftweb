@@ -18,6 +18,7 @@ $(document).ready(function (){
 	textare_init_triageED();
 	
 	var fdl = new faster_detail_load();
+	var auto_save_background_formTriageInfoED = new auto_save_background('#formTriageInfoED','ward_formTriageInfoED');
 	
 	disableForm('#formTriageInfoED');
 	
@@ -25,6 +26,8 @@ $(document).ready(function (){
 		button_state_tiED('wait');
 		enableForm('#formTriageInfoED');
 		rdonly('#formTriageInfoED');
+		auto_save_background_formTriageInfoED.check($('#mrn_tiED').val()+'_'+$('#episno_tiED').val());
+		auto_save_background_formTriageInfoED.on($('#mrn_tiED').val()+'_'+$('#episno_tiED').val());
 	});
 	
 	$("#edit_tiED").click(function (){
@@ -32,11 +35,14 @@ $(document).ready(function (){
 		enableForm('#formTriageInfoED');
 		rdonly('#formTriageInfoED');
 		$("#admwardtime, #nursesign, #eduser, #warduser").attr("readonly", true);
+		auto_save_background_formTriageInfoED.check($('#mrn_tiED').val()+'_'+$('#episno_tiED').val());
+		auto_save_background_formTriageInfoED.on($('#mrn_tiED').val()+'_'+$('#episno_tiED').val());
 	});
 	
 	$("#save_tiED").click(function (){
 		disableForm('#formTriageInfoED');
 		if($('#formTriageInfoED').isValid({requiredFields: ''}, conf, true)){
+			auto_save_background_formTriageInfoED.off($('#mrn_tiED').val()+'_'+$('#episno_tiED').val());
             saveForm_tiED(function (){
                 $("#cancel_tiED").data('oper','edit');
                 $("#cancel_tiED").click();
@@ -50,6 +56,7 @@ $(document).ready(function (){
 	$("#cancel_tiED").click(function (){
 		disableForm('#formTriageInfoED');
 		button_state_tiED($(this).data('oper'));
+		auto_save_background_formTriageInfoED.off($('#mrn_tiED').val()+'_'+$('#episno_tiED').val());
 	});
 	
 	// to format number input to two decimal places (0.00)
@@ -417,6 +424,7 @@ function populate_triageED_currpt(obj){
 }
 
 function populate_triageED_currpt_getdata(){
+	disableForm('#formTriageInfoED');
 	emptyFormdata(errorField,"#formTriageInfoED",["#mrn_tiED","#episno_tiED"]);
 	$(dialog_tri_colED.textfield).removeClass("red").removeClass("yellow").removeClass("green");
 	$(dialog_tri_colED.textfield).next().removeClass("red").removeClass("yellow").removeClass("green");
@@ -427,7 +435,6 @@ function populate_triageED_currpt_getdata(){
 	$("#formTriageInfoED input[name=vs_bp_sys1]").next().removeClass("red");
 	$("#formTriageInfoED input[name=vs_bp_dias2]").next().removeClass("red");
 
-	
 	var urlparam = {
 		action: 'get_table_triageED',
 	}

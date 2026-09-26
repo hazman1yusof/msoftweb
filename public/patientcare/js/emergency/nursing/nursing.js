@@ -17,6 +17,7 @@ $(document).ready(function () {
 	
 	var fdl = new faster_detail_load();
 	var radbuts = new checkradiobutton(['gsc_eye','gsc_verbal','gsc_motor','painscore']);
+	var auto_save_background_formTriageInfo = new auto_save_background('#formTriageInfo','ed_formTriageInfo');
 
 	$('#tab_triage').on('show.bs.collapse', function () {
 		return check_if_user_selected();
@@ -34,14 +35,16 @@ $(document).ready(function () {
 		button_state_ti('wait');
 		enableForm('#formTriageInfo');
 		rdonly('#formTriageInfo');
-		
+		auto_save_background_formTriageInfo.check($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
+		auto_save_background_formTriageInfo.on($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
 	});
 
 	$("#edit_ti").click(function(){
 		button_state_ti('wait');
 		enableForm('#formTriageInfo');
 		rdonly('#formTriageInfo');
-		
+		auto_save_background_formTriageInfo.check($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
+		auto_save_background_formTriageInfo.on($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
 	});
 
 	$('#formTriageInfo').form({
@@ -55,6 +58,7 @@ $(document).ready(function () {
 	$("#save_ti").click(function(){
 		radbuts.check();
 		if( $('#formTriageInfo').isValid({requiredFields: ''}, conf, true) ) {
+			auto_save_background_formTriageInfo.off($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
 			readonlyForm('#formTriageInfo');
 			saveForm_ti(function(){
 				unreadonlyForm('#formTriageInfo');
@@ -70,6 +74,7 @@ $(document).ready(function () {
 		disableForm('#formTriageInfo');
 		button_state_ti($(this).data('oper'));
 		radbuts.reset();
+		auto_save_background_formTriageInfo.off($('#mrn_emergencyMain').val()+'_'+$('#episno_emergencyMain').val());
 	});
 
 	// to format number input to two decimal places (0.00)
@@ -488,6 +493,7 @@ function saveForm_ti(callback){
 }
 
 function getdata_nursing(){
+	disableForm('#formTriageInfo');
 
 	var saveParam={
 		action:'get_table_triage',

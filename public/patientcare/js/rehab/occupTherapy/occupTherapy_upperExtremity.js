@@ -28,13 +28,21 @@ var urlParam_hand = {
 }
 
 $(document).ready(function (){
-
+    
     textarea_init_upperExtremity();
-
+    
     var fdl = new faster_detail_load();
+    var auto_save_background_formOccupTherapyUpperExtremity = new auto_save_background('#formOccupTherapyUpperExtremity','rehab_formOccupTherapyUpperExtremity');
+    var auto_save_background_formROF = new auto_save_background('#formROF','rehab_formROF');
+    var auto_save_background_formHand = new auto_save_background('#formHand','rehab_formHand');
+    var auto_save_background_formStrength = new auto_save_background('#formStrength','rehab_formStrength');
+    var auto_save_background_formSensation = new auto_save_background('#formSensation','rehab_formSensation');
+    var auto_save_background_formPrehensive = new auto_save_background('#formPrehensive','rehab_formPrehensive');
+    var auto_save_background_formSkin = new auto_save_background('#formSkin','rehab_formSkin');
+    var auto_save_background_formEdema = new auto_save_background('#formEdema','rehab_formEdema');
+    var auto_save_background_formFunctional = new auto_save_background('#formFunctional','rehab_formFunctional');
     
     //////////////////////////////////////upperExtremity starts//////////////////////////////////////
-
     disableForm('#formOccupTherapyUpperExtremity');
     
     $("#new_upperExtremity").click(function (){
@@ -42,8 +50,11 @@ $(document).ready(function (){
         enableForm('#formOccupTherapyUpperExtremity');
         rdonly('#formOccupTherapyUpperExtremity');
         emptyFormdata_div("#formOccupTherapyUpperExtremity",['#mrn_rehabMain','#episno_rehabMain','#idno_upperExtremity']);
-
+        
         document.getElementById("idno_upperExtremity").value = "";
+        
+        auto_save_background_formOccupTherapyUpperExtremity.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formOccupTherapyUpperExtremity.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#edit_upperExtremity").click(function (){
@@ -51,11 +62,15 @@ $(document).ready(function (){
         enableForm('#formOccupTherapyUpperExtremity');
         rdonly('#formOccupTherapyUpperExtremity');
         $("#dateofexam").attr("readonly", true);
+        
+        auto_save_background_formOccupTherapyUpperExtremity.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formOccupTherapyUpperExtremity.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#save_upperExtremity").click(function (){
         disableForm('#formOccupTherapyUpperExtremity');
         if($('#formOccupTherapyUpperExtremity').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formOccupTherapyUpperExtremity.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_upperExtremity(function (data){
                 $("#cancel_upperExtremity").data('oper','edit');
                 $("#cancel_upperExtremity").click();
@@ -67,15 +82,16 @@ $(document).ready(function (){
     });
     
     $("#cancel_upperExtremity").click(function (){
+        emptyFormdata_div("#formOccupTherapyUpperExtremity",['#mrn_rehabMain','#episno_rehabMain','#idno_upperExtremity']);
         disableForm('#formOccupTherapyUpperExtremity');
         button_state_upperExtremity($(this).data('oper'));
-        $('#datetimeUpperExtremity_tbl').DataTable().ajax.reload();            
+        $('#datetimeUpperExtremity_tbl').DataTable().ajax.reload();
+        
+        auto_save_background_formOccupTherapyUpperExtremity.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
-
     //////////////////////////////////////upperExtremity ends//////////////////////////////////////
-
+    
     //////////////////////////////////////rof starts//////////////////////////////////////
-
     disableForm('#formROF');
     
     $("#new_rof").click(function (){
@@ -85,24 +101,30 @@ $(document).ready(function (){
         enableForm('#formROF');
         rdonly('#formROF');
         emptyFormdata_div("#formROF",['#mrn_rehabMain','#episno_rehabMain','#idno_rof','#rof_impressions']);
-
+        
         // document.getElementById("idno_rof").value = "";
         document.getElementById("idno_upperExtremity").value = "";
-
+        
+        auto_save_background_formROF.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formROF.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#edit_rof").click(function (){
         button_state_rof('wait');
         enableForm('#formROF');
         rdonly('#formROF');
+        
+        auto_save_background_formROF.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formROF.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#save_rof").click(function (){
         disableForm('#formROF');
         if($('#formROF').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formROF.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_rof(function (data){
                 $("#cancel_rof").data('oper','edit');
-                $("#cancel_rof").click();          
+                $("#cancel_rof").click();
             });
         }else{
             enableForm('#formROF');
@@ -111,14 +133,15 @@ $(document).ready(function (){
     });
     
     $("#cancel_rof").click(function (){
-        // emptyFormdata_div("#formROF",['#mrn_rehabMain','#episno_rehabMain','#idno_rof']);
+        emptyFormdata_div("#formROF",['#mrn_rehabMain','#episno_rehabMain','#idno_rof']);
         disableForm('#formROF');
         button_state_rof($(this).data('oper'));
+        
+        auto_save_background_formROF.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     //////////////////////////////////////rof ends//////////////////////////////////////
-
+    
     //////////////////////////////////////hand starts//////////////////////////////////////
-
     disableForm('#formHand');
     
     $("#new_hand").click(function (){
@@ -128,24 +151,30 @@ $(document).ready(function (){
         enableForm('#formHand');
         rdonly('#formHand');
         emptyFormdata_div("#formHand",['#mrn_rehabMain','#episno_rehabMain','#idno_hand','#hand_impressions']);
-
+        
         // document.getElementById("idno_hand").value = "";
         document.getElementById("idno_upperExtremity").value = "";
-
+        
+        auto_save_background_formHand.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formHand.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#edit_hand").click(function (){
         button_state_hand('wait');
         enableForm('#formHand');
         rdonly('#formHand');
+        
+        auto_save_background_formHand.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formHand.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#save_hand").click(function (){
         disableForm('#formHand');
         if($('#formHand').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formHand.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_hand(function (data){
                 $("#cancel_hand").data('oper','edit');
-                $("#cancel_hand").click();          
+                $("#cancel_hand").click();
             });
         }else{
             enableForm('#formHand');
@@ -154,14 +183,15 @@ $(document).ready(function (){
     });
     
     $("#cancel_hand").click(function (){
-        // emptyFormdata_div("#formHand",['#mrn_rehabMain','#episno_rehabMain','#idno_hand']);
+        emptyFormdata_div("#formHand",['#mrn_rehabMain','#episno_rehabMain','#idno_hand']);
         disableForm('#formHand');
         button_state_hand($(this).data('oper'));
+        
+        auto_save_background_formHand.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     //////////////////////////////////////hand ends//////////////////////////////////////
-
+    
     //////////////////////////////////////strength starts//////////////////////////////////////
-
     disableForm('#formStrength');
     
     $("#new_strength").click(function (){
@@ -171,24 +201,30 @@ $(document).ready(function (){
         enableForm('#formStrength');
         rdonly('#formStrength');
         emptyFormdata_div("#formStrength",['#mrn_rehabMain','#episno_rehabMain','#idno_strength']);
-
+        
         // document.getElementById("idno_strength").value = "";
         document.getElementById("idno_upperExtremity").value = "";
-
+        
+        auto_save_background_formStrength.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formStrength.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#edit_strength").click(function (){
         button_state_strength('wait');
         enableForm('#formStrength');
         rdonly('#formStrength');
+        
+        auto_save_background_formStrength.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formStrength.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#save_strength").click(function (){
         disableForm('#formStrength');
         if($('#formStrength').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formStrength.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_strength(function (data){
                 $("#cancel_strength").data('oper','edit');
-                $("#cancel_strength").click();          
+                $("#cancel_strength").click();
             });
         }else{
             enableForm('#formStrength');
@@ -197,14 +233,15 @@ $(document).ready(function (){
     });
     
     $("#cancel_strength").click(function (){
-        // emptyFormdata_div("#formStrength",['#mrn_rehabMain','#episno_rehabMain','#idno_strength']);
+        emptyFormdata_div("#formStrength",['#mrn_rehabMain','#episno_rehabMain','#idno_strength']);
         disableForm('#formStrength');
         button_state_strength($(this).data('oper'));
+        
+        auto_save_background_formStrength.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     //////////////////////////////////////strength ends//////////////////////////////////////
-
+    
     //////////////////////////////////////sensation starts//////////////////////////////////////
-
     disableForm('#formSensation');
     
     $("#new_sensation").click(function (){
@@ -214,24 +251,30 @@ $(document).ready(function (){
         enableForm('#formSensation');
         rdonly('#formSensation');
         emptyFormdata_div("#formSensation",['#mrn_rehabMain','#episno_rehabMain','#idno_sensation']);
-
+        
         // document.getElementById("idno_sensation").value = "";
         document.getElementById("idno_upperExtremity").value = "";
-
+        
+        auto_save_background_formSensation.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formSensation.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#edit_sensation").click(function (){
         button_state_sensation('wait');
         enableForm('#formSensation');
         rdonly('#formSensation');
+        
+        auto_save_background_formSensation.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formSensation.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#save_sensation").click(function (){
         disableForm('#formSensation');
         if($('#formSensation').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formSensation.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_sensation(function (data){
                 $("#cancel_sensation").data('oper','edit');
-                $("#cancel_sensation").click();          
+                $("#cancel_sensation").click();
             });
         }else{
             enableForm('#formSensation');
@@ -240,14 +283,15 @@ $(document).ready(function (){
     });
     
     $("#cancel_sensation").click(function (){
-        // emptyFormdata_div("#formSensation",['#mrn_rehabMain','#episno_rehabMain','#idno_sensation']);
+        emptyFormdata_div("#formSensation",['#mrn_rehabMain','#episno_rehabMain','#idno_sensation']);
         disableForm('#formSensation');
         button_state_sensation($(this).data('oper'));
+        
+        auto_save_background_formSensation.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     //////////////////////////////////////sensation ends//////////////////////////////////////
-
+    
     //////////////////////////////////////prehensive starts//////////////////////////////////////
-
     disableForm('#formPrehensive');
     
     $("#new_prehensive").click(function (){
@@ -257,24 +301,30 @@ $(document).ready(function (){
         enableForm('#formPrehensive');
         rdonly('#formPrehensive');
         emptyFormdata_div("#formPrehensive",['#mrn_rehabMain','#episno_rehabMain','#idno_prehensive']);
-
+        
         // document.getElementById("idno_prehensive").value = "";
         document.getElementById("idno_upperExtremity").value = "";
-
+        
+        auto_save_background_formPrehensive.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formPrehensive.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#edit_prehensive").click(function (){
         button_state_prehensive('wait');
         enableForm('#formPrehensive');
         rdonly('#formPrehensive');
+        
+        auto_save_background_formPrehensive.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formPrehensive.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#save_prehensive").click(function (){
         disableForm('#formPrehensive');
         if($('#formPrehensive').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formPrehensive.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_prehensive(function (data){
                 $("#cancel_prehensive").data('oper','edit');
-                $("#cancel_prehensive").click();          
+                $("#cancel_prehensive").click();
             });
         }else{
             enableForm('#formPrehensive');
@@ -283,14 +333,15 @@ $(document).ready(function (){
     });
     
     $("#cancel_prehensive").click(function (){
-        // emptyFormdata_div("#formPrehensive",['#mrn_rehabMain','#episno_rehabMain','#idno_prehensive]);
+        emptyFormdata_div("#formPrehensive",['#mrn_rehabMain','#episno_rehabMain','#idno_prehensive']);
         disableForm('#formPrehensive');
         button_state_prehensive($(this).data('oper'));
+        
+        auto_save_background_formPrehensive.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     //////////////////////////////////////prehensive ends//////////////////////////////////////
-
+    
     //////////////////////////////////////skin starts//////////////////////////////////////
-
     disableForm('#formSkin');
     
     $("#new_skin").click(function (){
@@ -300,23 +351,30 @@ $(document).ready(function (){
         enableForm('#formSkin');
         rdonly('#formSkin');
         emptyFormdata_div("#formSkin",['#mrn_rehabMain','#episno_rehabMain','#idno_skin']);
-
+        
         // document.getElementById("idno_skin").value = "";
         document.getElementById("idno_upperExtremity").value = "";
+        
+        auto_save_background_formSkin.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formSkin.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#edit_skin").click(function (){
         button_state_skin('wait');
         enableForm('#formSkin');
         rdonly('#formSkin');
+        
+        auto_save_background_formSkin.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formSkin.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#save_skin").click(function (){
         disableForm('#formSkin');
         if($('#formSkin').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formSkin.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_skin(function (data){
                 $("#cancel_skin").data('oper','edit');
-                $("#cancel_skin").click();          
+                $("#cancel_skin").click();
             });
         }else{
             enableForm('#formSkin');
@@ -325,14 +383,15 @@ $(document).ready(function (){
     });
     
     $("#cancel_skin").click(function (){
-        // emptyFormdata_div("#formSkin",['#mrn_rehabMain','#episno_rehabMain','#idno_skin']);
+        emptyFormdata_div("#formSkin",['#mrn_rehabMain','#episno_rehabMain','#idno_skin']);
         disableForm('#formSkin');
         button_state_skin($(this).data('oper'));
+        
+        auto_save_background_formSkin.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     //////////////////////////////////////skin ends//////////////////////////////////////
-
+    
     //////////////////////////////////////edema starts//////////////////////////////////////
-
     disableForm('#formEdema');
     
     $("#new_edema").click(function (){
@@ -342,24 +401,30 @@ $(document).ready(function (){
         enableForm('#formEdema');
         rdonly('#formEdema');
         emptyFormdata_div("#formEdema",['#mrn_rehabMain','#episno_rehabMain','#idno_edema']);
-
+        
         // document.getElementById("idno_edema").value = "";
         document.getElementById("idno_upperExtremity").value = "";
-
+        
+        auto_save_background_formEdema.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formEdema.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#edit_edema").click(function (){
         button_state_edema('wait');
         enableForm('#formEdema');
         rdonly('#formEdema');
+        
+        auto_save_background_formEdema.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formEdema.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#save_edema").click(function (){
         disableForm('#formEdema');
         if($('#formEdema').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formEdema.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_edema(function (data){
                 $("#cancel_edema").data('oper','edit');
-                $("#cancel_edema").click();          
+                $("#cancel_edema").click();
             });
         }else{
             enableForm('#formEdema');
@@ -368,14 +433,15 @@ $(document).ready(function (){
     });
     
     $("#cancel_edema").click(function (){
-        // emptyFormdata_div("#formEdema",['#mrn_rehabMain','#episno_rehabMain','#idno_edema']);
+        emptyFormdata_div("#formEdema",['#mrn_rehabMain','#episno_rehabMain','#idno_edema']);
         disableForm('#formEdema');
         button_state_edema($(this).data('oper'));
+        
+        auto_save_background_formEdema.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     //////////////////////////////////////edema ends//////////////////////////////////////
-
+    
     //////////////////////////////////////functional starts//////////////////////////////////////
-
     disableForm('#formFunctional');
     
     $("#new_functional").click(function (){
@@ -385,24 +451,30 @@ $(document).ready(function (){
         enableForm('#formFunctional');
         rdonly('#formFunctional');
         emptyFormdata_div("#formFunctional",['#mrn_rehabMain','#episno_rehabMain','#idno_func']);
-
+        
         // document.getElementById("idno_func").value = "";
         document.getElementById("idno_upperExtremity").value = "";
-
+        
+        auto_save_background_formFunctional.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formFunctional.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#edit_functional").click(function (){
         button_state_func('wait');
         enableForm('#formFunctional');
         rdonly('#formFunctional');
+        
+        auto_save_background_formFunctional.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formFunctional.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#save_functional").click(function (){
         disableForm('#formFunctional');
         if($('#formFunctional').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formFunctional.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_func(function (data){
                 $("#cancel_functional").data('oper','edit');
-                $("#cancel_functional").click();          
+                $("#cancel_functional").click();
             });
         }else{
             enableForm('#formFunctional');
@@ -411,9 +483,11 @@ $(document).ready(function (){
     });
     
     $("#cancel_functional").click(function (){
-        // emptyFormdata_div("#formFunctional",['#mrn_rehabMain','#episno_rehabMain','#idno_func']);
+        emptyFormdata_div("#formFunctional",['#mrn_rehabMain','#episno_rehabMain','#idno_func']);
         disableForm('#formFunctional');
         button_state_func($(this).data('oper'));
+        
+        auto_save_background_formFunctional.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     //////////////////////////////////////functional ends//////////////////////////////////////
     

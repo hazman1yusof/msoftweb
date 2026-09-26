@@ -65,40 +65,7 @@ $(document).ready(function (){
                 
             //     break;
             case 'nursActionIP':
-                var saveParam = {
-                    action: 'get_table_formHeader',
-                }
-                
-                var postobj = {
-                    _token: $('#csrf_token').val(),
-                    mrn_nursActionPlan: $("#mrn_wardMain").val(),
-                    episno_nursActionPlan: $("#episno_wardMain").val(),
-                };
-                
-                $.post("./nursingActionPlan/form?"+$.param(saveParam), $.param(postobj), function (data){
-                    
-                },'json').fail(function (data){
-                    alert('there is an error');
-                }).success(function (data){
-                     if(!emptyobj_(data.header)){
-                        if(!emptyobj_(data.header))autoinsert_rowdata("#formHeader",data.header);
-                        if(!emptyobj_(data.episode))autoinsert_rowdata("#formHeader",data.episode);
-                        button_state_header('edit');
-                        
-                    }else{
-                        button_state_header('add');
-                        if(!emptyobj_(data.episode))autoinsert_rowdata("#formHeader",data.episode);
-                        emptyFormdata(errorField,'#formHeader');
-
-                    }
-                    
-                    // autoinsert_rowdata("#formHeader",data.episode);
-                    // button_state_header('empty');
-                    textarea_init_nursingActionPlan();
-
-                });
-                
-                // populate_header_getdata();
+                populate_header_getdata();
                 let curtype_nursActionIP = $("#jqGridNursActionPlan_paneltab").data('curtype');
                 $('#jqGridNursActionPlan_panel_tabs.nav-tabs a#'+curtype_nursActionIP).tab('show');
                 
@@ -139,6 +106,10 @@ $(document).ready(function (){
                 $('#addNotesFBC_title').text('ADDITIONAL NOTES FOR FBC');
                 break;
             case 'antenatalIP':
+                disableForm('#formAntenatal');
+                disableForm('#formPregnancy');
+                disableForm('#formUltrasound');
+                
                 var saveParam = {
                     action: 'get_table_antenatal',
                 }

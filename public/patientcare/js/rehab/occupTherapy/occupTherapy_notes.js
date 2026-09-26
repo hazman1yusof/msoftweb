@@ -4,8 +4,10 @@ var editedRow = 0;
 
 $(document).ready(function (){
     
+    var auto_save_background_formOccupTherapyNotes = new auto_save_background('#formOccupTherapyNotes','rehab_formOccupTherapyNotes');
+    
     //////////////////////////////////////notes starts//////////////////////////////////////
-
+    
     disableForm('#formOccupTherapyNotes');
     
     $("#new_notes").click(function (){
@@ -13,8 +15,11 @@ $(document).ready(function (){
         enableForm('#formOccupTherapyNotes');
         rdonly('#formOccupTherapyNotes');
         emptyFormdata_div("#formOccupTherapyNotes",['#mrn_rehabMain','#episno_rehabMain']);
-
+        
         document.getElementById("idno_notes").value = "";
+        
+        auto_save_background_formOccupTherapyNotes.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formOccupTherapyNotes.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#edit_notes").click(function (){
@@ -22,12 +27,15 @@ $(document).ready(function (){
         enableForm('#formOccupTherapyNotes');
         rdonly('#formOccupTherapyNotes');
         $("#dateNotes").attr("readonly", true);
-
+        
+        auto_save_background_formOccupTherapyNotes.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formOccupTherapyNotes.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#save_notes").click(function (){
         disableForm('#formOccupTherapyNotes');
         if($('#formOccupTherapyNotes').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formOccupTherapyNotes.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_notes(function (data){
                 $("#cancel_notes").data('oper','edit');
                 $("#cancel_notes").click();
@@ -39,13 +47,16 @@ $(document).ready(function (){
     });
     
     $("#cancel_notes").click(function (){
+        emptyFormdata_div("#formOccupTherapyNotes",['#mrn_rehabMain','#episno_rehabMain']);
         disableForm('#formOccupTherapyNotes');
         button_state_notes($(this).data('oper'));
-        $('#datetimeNotes_tbl').DataTable().ajax.reload();            
+        $('#datetimeNotes_tbl').DataTable().ajax.reload();
+        
+        auto_save_background_formOccupTherapyNotes.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
-
+    
     //////////////////////////////////////notes ends//////////////////////////////////////
-
+    
     /////////////////////////////////////////print button starts/////////////////////////////////////////
     $("#notes_chart").click(function (){
         window.open('./occupTherapy_notes/notes_chart?mrn='+$('#mrn_rehabMain').val()+'&episno='+$("#episno_rehabMain").val()+'&dateNotes='+$("#dateNotes").val()+'&enteredtime='+$("#notes_enteredtime").val(), '_blank');

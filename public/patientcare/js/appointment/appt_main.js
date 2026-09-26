@@ -277,6 +277,8 @@ function empty_apptMain(){
 function populate_apptMain(obj){
     emptyFormdata_div("#formTriageInfo",['#mrn_ti','#episno_ti']);
     
+    reloadImage_png("a.ui.card.bodydia_doctornote",['DOCNOTE_BF','DOCNOTE_BR','DOCNOTE_BL','DOCNOTE_BB']);
+    
     // panel header
     $('#name_show_apptMain').text(obj.Name);
     $('#mrn_show_apptMain').text(("0000000" + obj.MRN).slice(-7));

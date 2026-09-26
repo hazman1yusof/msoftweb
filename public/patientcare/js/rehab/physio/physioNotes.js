@@ -5,10 +5,10 @@ var editedRow = 0;
 
 $(document).ready(function (){
     
-    // textarea_init_physioNotes();
-    
     var fdl = new faster_detail_load();
+    var auto_save_background_formPhysioNotes = new auto_save_background('#formPhysioNotes','rehab_formPhysioNotes');
     
+    // textarea_init_physioNotes();
     disableForm('#formPhysioNotes');
     
     $("#new_physioNotes").click(function (){
@@ -20,6 +20,9 @@ $(document).ready(function (){
         emptyFormdata_div("#formPhysioNotes",['#mrn_rehabMain','#episno_rehabMain']);
         document.getElementById("idno_physioNotes").value = "";
         // dialog_mrn_edit.on();
+        
+        auto_save_background_formPhysioNotes.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formPhysioNotes.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#edit_physioNotes").click(function (){
@@ -27,10 +30,14 @@ $(document).ready(function (){
         enableForm('#formPhysioNotes');
         rdonly('#formPhysioNotes');
         // dialog_mrn_edit.on();
+        
+        auto_save_background_formPhysioNotes.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formPhysioNotes.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     $("#save_physioNotes").click(function (){
         if($('#formPhysioNotes').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formPhysioNotes.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_physioNotes(function (data){
                 $("#cancel_physioNotes").data('oper','edit');
                 $("#cancel_physioNotes").click();
@@ -44,12 +51,14 @@ $(document).ready(function (){
     });
     
     $("#cancel_physioNotes").click(function (){
-        // emptyFormdata_div("#formPhysioNotes",['#mrn_rehabMain','#episno_rehabMain']);
+        emptyFormdata_div("#formPhysioNotes",['#mrn_rehabMain','#episno_rehabMain']);
         disableForm('#formPhysioNotes');
         button_state_physioNotes($(this).data('oper'));
         $('#tbl_physioNotes_date').DataTable().ajax.reload();
         getdata_physioNotes();
         // dialog_mrn_edit.off();
+        
+        auto_save_background_formPhysioNotes.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     // to format number input to two decimal places (0.00)
