@@ -145,6 +145,7 @@ $(document).ready(function () {
                 // urlParam_trans_diet.episno = selrowData('#jqGrid').Episno;
                 
                 populate_radMain(selrowData('#jqGrid'));
+                populate_ordcom_currpt(selrowData('#jqGrid'));
                 
                 // if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
                 //  $('#checkbox_completed').prop('disabled',true);
@@ -249,6 +250,7 @@ $(document).ready(function () {
                 // refreshGrid("#jqGrid_trans_diet", urlParam_trans_diet);
                 // refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
                 populate_radMain(selrowData('#jqGrid'));
+                populate_ordcom_currpt(selrowData('#jqGrid'));
                 // populate_phys(selrowData('#jqGrid'));
                 // populate_ordcom_currpt(selrowData('#jqGrid'));
                 // populate_physio(selrowData('#jqGrid'));

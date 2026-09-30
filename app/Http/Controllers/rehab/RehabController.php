@@ -159,7 +159,7 @@ class RehabController extends defaultController
         
         $table_patm = $table_patm->join('hisdb.episode', function ($join) use ($request){
                     $join = $join->on('episode.mrn','=','pat_mast.MRN');
-                    $join = $join->where('episode.epistycode','=','OP');
+                    // $join = $join->where('episode.epistycode','=','OP');
                     // $join = $join->whereIn('episode.regdept',['A&E','PHY','XRAY','DIET']);
                     // $join = $join->whereIn('episode.regdept',['ALL']);
                     // $join = $join->where(
@@ -172,6 +172,7 @@ class RehabController extends defaultController
         });
         
         $table_patm = $table_patm->join('hisdb.queue', function ($join) use ($request){
+                    $join = $join->where('queue.reg_date','=',$request->filterVal[0]);
                     $join = $join->on('queue.mrn','=','episode.mrn');
                     $join = $join->on('queue.episno','=','episode.episno');
                     $join = $join->where('queue.deptcode','=','PHY');
@@ -188,8 +189,8 @@ class RehabController extends defaultController
                     $join = $join->where('racecode.compcode','=',session('compcode'));
         });
         
-        $table_patm = $table_patm->where('pat_mast.compcode','=',session('compcode'))
-                                ->where('episode.reg_date','=',$request->filterVal[0]);
+        $table_patm = $table_patm->where('pat_mast.compcode','=',session('compcode'));
+                                // ->where('episode.reg_date','=',$request->filterVal[0]);
         
         if(!empty($request->sidx)){
             $table_patm = $table_patm->orderBy($request->sidx,$request->sord);
@@ -497,17 +498,24 @@ class RehabController extends defaultController
     public function doctornote_event(Request $request){
         
         $emergency = DB::table('hisdb.episode')
-                    ->select('episode.reg_date')
+                    ->select('queue.reg_date')
                     ->where('episode.compcode','=',session('compcode'))
                     // ->whereIn('episode.regdept',['A&E','PHY','XRAY','DIET'])
-                    // ->whereIn('episode.regdept',['PHY'])
-                    ->whereRaw(
-                        "(episode.reg_date >= ? AND episode.reg_date <= ?)",
+                    // ->whereIn('episode.regdept',['RAD'])
+                    ->join('hisdb.queue', function ($join) use ($request){
+                        // $join = $join->on('queue.deptcode','=','episode.regdept');
+                        $join = $join->on('queue.mrn','=','episode.mrn');
+                        $join = $join->on('queue.episno','=','episode.episno');
+                        $join = $join->where('queue.deptcode','=','PHY');
+                        $join = $join->where('queue.compcode','=',session('compcode'));
+                        $join = $join->whereRaw(
+                        "(queue.reg_date >= ? AND queue.reg_date <= ?)",
                         [
                             $request->start,
                             $request->end
-                        ])
-                        ->where('episode.epistycode','=','OP')
+                        ]);
+                    })
+                        // ->where('episode.epistycode','=','OP')
                         // ->whereIn('episode.episstatus',[null,'C','B'])
                         // ->whereNull('episode.episstatus')
                         // ->orWhere('episode.episstatus','!=','C')
@@ -518,12 +526,6 @@ class RehabController extends defaultController
                                         ->orWhere('episode.episstatus','!=','C');
                             }
                         )
-                    ->join('hisdb.queue', function ($join) use ($request){
-                        $join = $join->where('queue.deptcode','=','PHY');
-                        $join = $join->on('queue.mrn','=','episode.mrn');
-                        $join = $join->on('queue.episno','=','episode.episno');
-                        $join = $join->where('queue.compcode','=',session('compcode'));
-                    })
                     ->get();
         
         return $events = $this->getEvent($emergency);

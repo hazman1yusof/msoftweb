@@ -136,6 +136,7 @@ class DischargeController extends defaultController
 
         $queue = DB::table('hisdb.queue')
                         ->where('compcode','=',session('compcode'))
+                        ->where('deptcode','=','ALL')
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno);
 
@@ -182,6 +183,7 @@ class DischargeController extends defaultController
             if($queue->exists()){
                 DB::table('hisdb.queue')
                         ->where('compcode','=',session('compcode'))
+                        ->where('deptcode','=','ALL')
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno)
                         ->update(['compcode' => 'xx']);

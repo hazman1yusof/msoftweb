@@ -686,7 +686,7 @@ span.error_pkgmast {
 			
 		});
 	</script>
-	<script src="js/setup/chargemaster/chargemaster.js?v=1.3"></script>
+	<script src="js/setup/chargemaster/chargemaster.js?v=1.4"></script>
 	
 @endsection
 

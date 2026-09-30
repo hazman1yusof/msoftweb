@@ -18,7 +18,7 @@ var conf_ordco = {
 function getrow_bootgrid_(){
 	if($('#ordcom_phase').val() == '3'){
 		return pat_mast_data;
-	}else if($('#ordcom_phase').val() == '2' || $('#ordcom_phase').val() == '2.lab'){
+	}else if($('#ordcom_phase').val() == '2' || $('#ordcom_phase').val() == '2.lab' || $('#ordcom_phase').val() == '2.rad' || $('#ordcom_phase').val() == '2.rehab'){
 		return selrowData('#jqGrid');
 	}else{
 		return getrow_bootgrid();
@@ -28,7 +28,7 @@ function getrow_bootgrid_(){
 function getrow_offset_(){
 	if($('#ordcom_phase').val() == '3'){
 		return pat_mast_data;
-	}else if($('#ordcom_phase').val() == '2' || $('#ordcom_phase').val() == '2.lab'){
+	}else if($('#ordcom_phase').val() == '2' || $('#ordcom_phase').val() == '2.lab' || $('#ordcom_phase').val() == '2.rad' || $('#ordcom_phase').val() == '2.rehab'){
 		return 12
 	}else{
 		return 32
@@ -59,6 +59,18 @@ $(document).ready(function(){
 		    $('a#ordcom_navtab_lab').click(); //.tab('show');
 		    $("#ordcom_div_cyclebill,#ordcom_div_label,#ordcom_div_prescription").hide();
 		    $('#labMain_panel_title').hide();
+		}else if($('#ordcom_phase').val() == '2.rad'){
+		    $('#ordcom_navtab_phar,#ordcom_navtab_disp,#ordcom_navtab_lab,#ordcom_navtab_dfee,#ordcom_navtab_phys,#ordcom_navtab_rehab,#ordcom_navtab_diet,#ordcom_navtab_pkg,#ordcom_navtab_oth').hide();
+
+		    $('a#ordcom_navtab_rad').click(); //.tab('show');
+		    $("#ordcom_div_cyclebill,#ordcom_div_label,#ordcom_div_prescription").hide();
+		    $('#radMain_panel_title').hide();
+		}else if($('#ordcom_phase').val() == '2.rehab'){
+		    $('#ordcom_navtab_phar,#ordcom_navtab_disp,#ordcom_navtab_lab,#ordcom_navtab_dfee,#ordcom_navtab_phys,#ordcom_navtab_rad,#ordcom_navtab_diet,#ordcom_navtab_pkg,#ordcom_navtab_oth').hide();
+
+		    $('a#ordcom_navtab_rehab').click(); //.tab('show');
+		    $("#ordcom_div_cyclebill,#ordcom_div_label,#ordcom_div_prescription").hide();
+		    $('#rehabMain_panel_title').hide();
 		}else{
 			$('a#ordcom_navtab_phar').tab('show');
 			refreshGrid('#jqGrid_phar',urlParam_phar,'add');
@@ -73,6 +85,10 @@ $(document).ready(function(){
 		}
 		if($('#ordcom_phase').val() == '2.lab'){
 		    $('#labMain_panel_title').show();
+		}else if($('#ordcom_phase').val() == '2.rad'){
+		    $('#radMain_panel_title').show();
+		}else if($('#ordcom_phase').val() == '2.rehab'){
+		    $('#rehabMain_panel_title').show();
 		}
 	});
 
@@ -143,7 +159,7 @@ $(document).ready(function(){
 				break;
 		}
 
-		if($('#ordcom_phase').val() == '2.lab'){
+		if($('#ordcom_phase').val() == '2.lab' || $('#ordcom_phase').val() == '2.rad' || $('#ordcom_phase').val() == '2.rehab'){
 		    $(jqgrid_pager_use+" td[title='Final Bill']").hide();
 		}
 	});
@@ -164,7 +180,7 @@ function populate_ordcom_currpt(obj){
 	$('#citizenship_show_ordcom').text(if_none(obj.cityDesc).toUpperCase());
 	$('#area_show_ordcom').text(if_none(obj.areaDesc).toUpperCase());
 
-	if($('#ordcom_phase').val() == '2' || $('#ordcom_phase').val() == '2.lab'){
+	if($('#ordcom_phase').val() == '2' || $('#ordcom_phase').val() == '2.lab' || $('#ordcom_phase').val() == '2.rad' || $('#ordcom_phase').val() == '2.rehab'){
 		get_ordcom_totamount();
 	}else{
 		set_ordcom_totamount(obj.totamount);
@@ -397,7 +413,7 @@ function final_bill(grid,param){
 			$('#tabcoverage').collapse('hide');
 			refreshGrid(grid, param);
 		}).done(function (data) {
-			if($('#ordcom_phase').val() == '2' || $('#ordcom_phase').val() == '2.lab'){
+			if($('#ordcom_phase').val() == '2' || $('#ordcom_phase').val() == '2.lab' || $('#ordcom_phase').val() == '2.rad' || $('#ordcom_phase').val() == '2.rehab'){
 				window.open(url, '_blank').focus();
 				get_ordcom_totamount();
 			}else{

@@ -158,6 +158,7 @@ $(document).ready(function () {
                 // populate_ordcom_currpt(selrowData('#jqGrid'));
                 populate_physio(selrowData('#jqGrid'));
                 populate_occupTherapy(selrowData('#jqGrid'));
+                populate_ordcom_currpt(selrowData('#jqGrid'));
                 
                 // if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
                 // 	$('#checkbox_completed').prop('disabled',true);
@@ -266,6 +267,7 @@ $(document).ready(function () {
                 // populate_ordcom_currpt(selrowData('#jqGrid'));
                 populate_physio(selrowData('#jqGrid'));
                 populate_occupTherapy(selrowData('#jqGrid'));
+                populate_ordcom_currpt(selrowData('#jqGrid'));
 
                 // if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
                 // 	$('#checkbox_completed').prop('disabled',true);
@@ -462,6 +464,8 @@ $(document).ready(function () {
         }else if(cellvalue != null && cellvalue.toUpperCase() == 'YES'){
             return '<span class="fa fa-check" ></span>';
         }else if(cellvalue != null && cellvalue.toUpperCase() == '1'){
+            return '<span class="fa fa-check" ></span>';
+        }else if(cellvalue != null && cellvalue.toUpperCase() == 'DISCHARGE'){
             return '<span class="fa fa-check" ></span>';
         }else{
             return "";
@@ -687,3 +691,7 @@ function stop_scroll_on(){
 function formatterpayer(cellvalue, option, rowObject){
     return cellvalue.replace(/'/g,'');
 }
+
+$('#tab_rehabMain').on('shown.bs.collapse', function (){
+    SmoothScrollTo('#rehabMain_panel', 300,50);
+});
