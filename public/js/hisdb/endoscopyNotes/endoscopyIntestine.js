@@ -417,7 +417,7 @@ function getdata_endoscopyIntestine(){
             button_state_endoscopyIntestine('add');
             refreshGrid('#jqGridAddNotesEndoIntestine',urlParam_AddNotesEndoIntestine,'kosongkan');
             $('#endoscopyIntestine_chart').attr('disabled',true);
-            reloadImage_png("a.ui.card.bodydia_endoscopyIntestine",['INTESTINE']);
+            reloadImage_png("a.ui.card.bodydia_endoscopyIntestine",['INTESTINE'],$('#mrn_otMain').val(),$("#episno_otMain").val());
         }
         
         $("#endoscopyIntestine_iPesakit").val(data.iPesakit);

@@ -2617,7 +2617,11 @@ function reloadImage_png(id,array,mrn,episno,entereddate){
 		});
 	}else{
 		array.forEach(function(e,i){
-			var new_src = "./PdfViewer-png?mrn="+mrn+"&episno="+episno+"&entereddate="+entereddate+"&type="+e+"&random="+new Date().getTime();
+			if(!entereddate){
+				var new_src = "./PdfViewer-png?mrn="+mrn+"&episno="+episno+"&type="+e+"&random="+new Date().getTime();
+			}else{
+				var new_src = "./PdfViewer-png?mrn="+mrn+"&episno="+episno+"&entereddate="+entereddate+"&type="+e+"&random="+new Date().getTime();
+			}
 
 			$(id+"[data-type="+e+"] img").attr('src',new_src);
 		});

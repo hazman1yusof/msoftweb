@@ -478,7 +478,7 @@ function getdata_otmgmt(){
             // $('#form_otmgmt_div textarea#diagnosis').val(data.apptbook.diagnosis);
         }else{
             button_state_otmgmt_div('add');
-            reloadImage_png("a.ui.card.oper_rec",['drawing']);
+            reloadImage_png("a.ui.card.oper_rec",['drawing'],$('#mrn_otMain').val(),$("#episno_otMain").val());
             refreshGrid('#jqGridAddNotesOperRec',urlParam_AddNotesOperRec,'kosongkan');
             // $('#form_otmgmt_div textarea#procedure').val(data.apptbook.procedure);
             // $('#form_otmgmt_div textarea#diagnosis').val(data.apptbook.diagnosis);

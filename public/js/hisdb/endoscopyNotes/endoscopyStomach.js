@@ -417,7 +417,7 @@ function getdata_endoscopyStomach(){
             button_state_endoscopyStomach('add');
             refreshGrid('#jqGridAddNotesEndoStomach',urlParam_AddNotesEndoStomach,'kosongkan');
             $('#endoscopyStomach_chart').attr('disabled',true);
-            reloadImage_png("a.ui.card.bodydia_endoscopyStomach",['STOMACH']);
+            reloadImage_png("a.ui.card.bodydia_endoscopyStomach",['STOMACH'],$('#mrn_otMain').val(),$("#episno_otMain").val());
         }
         
         $("#endoscopyStomach_iPesakit").val(data.iPesakit);
