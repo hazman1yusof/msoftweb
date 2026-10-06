@@ -1663,6 +1663,22 @@ function toggle_reqfor_reqtype(){
     }
 }
 
+function onshown_reqForOP(){
+    var lastrowdata = getrow_bootgrid();
+    
+    var reqForIP_newurl = "./requestfor_iframe?mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno+"&phase=CLINICAL";
+    var reqForIP_cururl = $('iframe#requestfor_main_iframe').attr('src');
+    
+    if(reqForIP_cururl != reqForIP_newurl){
+        $('iframe#requestfor_main_iframe').attr('src',reqForIP_newurl);
+    }
+
+    if(reqForIP_cururl != null){
+        if(typeof $('iframe#requestfor_main_iframe')[0].contentWindow.populate_otbookReqFor_getdata === 'function'){
+            $('iframe#requestfor_main_iframe')[0].contentWindow.populate_otbookReqFor_getdata();
+        }
+    }
+}
 // function calc_jq_height_onchange(jqgrid){
 //     let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
 //     if(scrollHeight < 50){

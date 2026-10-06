@@ -64,7 +64,6 @@ var grid = $("#grid-command-buttons").bootgrid({
             "col_add": function (column,row) {
                 var retval = "<button title='Address' type='button' class='btn btn-xs btn-default btn-md command-add' data-row-id=\"" + row.MRN + "\"  name=\"cmd_add" + row.MRN + "\" data-telhp=\"" + row.telhp + "\"data-telh=\"" + row.telh + "\"data-Address1=\"" + row.Address1 + "\"data-Address2=\"" + row.Address2 + "\"data-Address3=\"" + row.Address3 + "\"data-Postcode=\"" + row.Postcode + "\"data-OffAdd1=\"" + row.OffAdd1 + "\"data-OffAdd2=\"" + row.OffAdd2 + "\"data-OffAdd3=\"" + row.OffAdd3 + "\"data-OffPostcode=\"" + row.OffPostcode + "\"data-pAdd1=\"" + row.pAdd1 + "\"data-pAdd2=\"" + row.pAdd2 + "\"data-pAdd3=\"" + row.pAdd3 + "\"data-pPostCode=\"" + row.pPostCode + "\" ><span class=\"glyphicon glyphicon-home\" aria-hidden=\"true\"></span></button>";
                 if($('#curpat').val() == 'false'){
-                    console.log(row)
                     if(row.PatStatus == 1 && row.q_epistycode=='IP'){
                         retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/warded.png' width='16' title='In Patient'></a>";
                     }else if(row.PatStatus == 1 && row.q_epistycode=='OP'){
@@ -74,7 +73,7 @@ var grid = $("#grid-command-buttons").bootgrid({
                 return retval;
             },
             "col_mrn": function (column,row) {
-                return ('0000000' + row.MRN).slice(-7);
+                return ('0000000' + row.MRN).slice(-7) +"<span class='episno_span'>"+ row.Episno +"</span>";
             },
             "col_dob": function (column,row) {
                 var birthday = new Date(row.DOB);
@@ -316,27 +315,29 @@ grid.on("click.rs.jquery.bootgrid", function (e,c,r){
     hide_all_panel();
     if($('#curpat').val() == 'true'){
         if($('#epistycode').val() == 'OP'){
+            populate_wardMain(lastrowdata);
+
             if($('#user_doctor').val() == '1'){
-                // populate_triage_currpt(lastrowdata);
+                populate_triage_currpt(lastrowdata);
                 populate_antenatal(lastrowdata);
                 populate_paediatric(lastrowdata);
                 populate_nursingnote(lastrowdata);
                 populate_clientProgNote_currpt(lastrowdata);
                 populate_clientProgNoteRef_currpt(lastrowdata);
-                populate_doctorNote_currpt(lastrowdata);
                 populate_requestFor_currpt(lastrowdata);
-                populate_admHandover_currpt(lastrowdata);
-                populate_dieteticCareNotes_currpt(lastrowdata);
+                // populate_doctorNote_currpt(lastrowdata);
+                // populate_admHandover_currpt(lastrowdata);
+                // populate_dieteticCareNotes_currpt(lastrowdata);
                 // populate_dietOrder_currpt(lastrowdata);
             }else if($('#user_nurse').val() == '1'){
-                // populate_triage_currpt(lastrowdata);
+                populate_triage_currpt(lastrowdata);
                 populate_nursingnote(lastrowdata);
                 populate_clientProgNote_currpt(lastrowdata);
                 populate_clientProgNoteRef_currpt(lastrowdata);
-                populate_doctorNote_currpt(lastrowdata);
                 populate_requestFor_currpt(lastrowdata);
-                populate_admHandover_currpt(lastrowdata);
-                populate_dieteticCareNotes_currpt(lastrowdata);
+                // populate_doctorNote_currpt(lastrowdata);
+                // populate_admHandover_currpt(lastrowdata);
+                // populate_dieteticCareNotes_currpt(lastrowdata);
                 // populate_dietOrder_currpt(lastrowdata);
             }
             
@@ -345,7 +346,8 @@ grid.on("click.rs.jquery.bootgrid", function (e,c,r){
             }
             
             if(lastrowdata.PatStatus == 1 ){
-                populate_endConsult_currpt(lastrowdata);
+                // populate_endConsult_currpt(lastrowdata);
+                populate_discharge_currpt(lastrowdata);
             }
 
             populate_discharge_currpt(lastrowdata);

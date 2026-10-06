@@ -7532,6 +7532,24 @@ function check_same_usr_edit(data){
     return same;
 }
 
+function onshown_nursingnoteOP(){
+    populate_progressnote_getdata();
+    
+    var urlparam_datetime_tbl = {
+        action: 'get_table_datetime',
+        mrn: $("#mrn_nursNote").val(),
+        episno: $("#episno_nursNote").val()
+    }
+    
+    datetime_tbl.ajax.url("./nursingnote/table?"+$.param(urlparam_datetime_tbl)).load(function (data){
+        emptyFormdata_div("#formProgress",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+        $('#datetime_tbl tbody tr:eq(0)').click(); // to select first row
+    });
+    
+    $("#jqGridAddNotesProgressIP").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesProgressIP_c")[0].offsetWidth-$("#jqGridAddNotesProgressIP_c")[0].offsetLeft-30));
+    refreshGrid('#jqGridAddNotesProgressIP',urlParam_AddNotesProgressIP,'add_notesProgressIP');
+}
+
 // function calc_jq_height_onchange(jqgrid){
 //     let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
 //     if(scrollHeight < 50){

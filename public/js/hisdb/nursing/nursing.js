@@ -898,6 +898,23 @@ function populate_triage_currpt(obj){
 	// document.getElementById('showTriage_curpt').style.display = 'inline';
 }
 
+function hide_triageOP(){
+	$('#navtab_triageOP').hide();
+	$('#tab-triageOP').hide();
+}
+
+function show_triageOP(){
+	$('#navtab_triageOP').show();
+	$('#tab-triageOP').show();
+}
+
+function onshown_triageOP(){
+	$("#jqGridExamTriage").jqGrid('setGridWidth', Math.floor($("#jqGridWardMain_panel")[0].offsetWidth-$("#jqGridWardMain_panel")[0].offsetLeft-248));
+	$("#jqGridAddNotesTriage").jqGrid('setGridWidth', Math.floor($("#jqGridWardMain_panel")[0].offsetWidth-$("#jqGridWardMain_panel")[0].offsetLeft-248));
+
+	populate_triage_currpt_getdata();
+}
+
 function populate_triage_currpt_getdata(){
 	emptyFormdata(errorField,"#formTriageInfo",["#mrn_ti","#episno_ti","#epistycode_ti"]);
 	$(dialog_tri_col.textfield).removeClass("red").removeClass("yellow").removeClass("green");

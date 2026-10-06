@@ -461,3 +461,21 @@ function check_same_usr_edit(data){
     
     return same;
 }
+
+function onshown_dietNoteOP(){
+    getdata_dietNote();
+                    
+    var urlparam_dietNote_date_tbl = {
+        action: 'get_table_datetimeDietNote',
+        mrn: $("#mrn_wardMain").val(),
+        episno: $("#episno_wardMain").val()
+    }
+    
+    dietNote_date_tbl.ajax.url("./dieteticCareNotes/table?"+$.param(urlparam_dietNote_date_tbl)).load(function (data){
+        emptyFormdata_div("#formDieteticCareNotes",['#mrn_wardMain','#episno_wardMain','#idno_dieteticCareNotes']);
+        $('#dietNote_date_tbl tbody tr:eq(0)').click(); // to select first row
+    });
+    
+    refreshGrid('#jqGridAddNotesDieteticCareNotes',urlParam_AddNotesDieteticCareNotes,'add_notesDieteticCareNotes');
+    $("#jqGridAddNotesDieteticCareNotes").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesDieteticCareNotes_c")[0].offsetWidth-$("#jqGridAddNotesDieteticCareNotes_c")[0].offsetLeft-30));
+} 

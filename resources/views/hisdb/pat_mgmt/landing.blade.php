@@ -59,6 +59,10 @@
 		.wrap-text{
 			white-space: break-spaces !important;;
 		}
+		span.episno_span{
+			float: right;
+    		padding-right: 5px;
+		}
 	</style>
 	
 </head>
@@ -172,20 +176,22 @@
                 <thead>
                 <tr>
                 	<th data-column-id="idno" data-identifier="true" data-visible="false" data-width="0%"></th>
-                	<th data-column-id="no" data-formatter="col_add" data-width="4%">#</th>
+                	<th data-column-id="no" data-formatter="col_add" data-width="2%">#</th>
                     @if (request()->get('curpat') == 'true')
                     <!-- <th data-column-id="QueueNo" data-width="3%">Queue</th> -->
                     <th data-column-id="reg_date" data-width="7%">Reg Date</th>
+                    <th data-column-id="regdept" data-width="5%">Dept</th>
 					@endif
-                    <th data-column-id="MRN" data-type="numeric" data-formatter="col_mrn" data-width="5%">MRN</th>
-                    <th data-column-id="Episno" data-type="numeric" data-width="5%">Episode</th>
-                    <th data-style="dropDownItem" data-column-id="Name" data-formatter="col_name" data-width="15%" data-css-class="wrap-text">Name</th>
+                    <th data-column-id="MRN" data-type="numeric" data-formatter="col_mrn" data-width="7%">MRN &nbsp;&nbsp;&nbsp; Epis</th>
+                    <!-- <th data-column-id="Episno" data-type="numeric" data-width="5%">Episno</th> -->
+                    <th data-style="dropDownItem" data-column-id="Name" data-formatter="col_name" data-width="13%" data-css-class="wrap-text">Name</th>
                     @if (request()->get('curpat') == 'true')
                     <th data-column-id="payername" data-width="13%" data-css-class="wrap-text">Payer</th>
                     <th data-column-id="q_doctorname" data-width="13%" data-css-class="wrap-text">Doctor</th>
+                    <th data-column-id="dis_desc" data-width="6%">Discipline</th>
 	                    @if (request()->get('epistycode') == 'IP')
 	                    <th data-column-id="ward" data-width="6%">Ward</th>
-	                    <th data-column-id="ward_dischargedt" data-width="9%" data-formatter="col_disc">Discharge</th>
+	                    <th data-column-id="ward_dischargedt" data-width="7%" data-formatter="col_disc">Discharge</th>
 	                    <th data-column-id="bednum" data-width="4%">Bed No.</th>
 	                	<th data-column-id="pregnant" data-formatter="col_preg" data-width="4%"></th>
 						@endif
@@ -194,7 +200,7 @@
                     <th data-column-id="telhp" data-width="8%">H/P</th>
                     <th data-column-id="DOB" data-formatter="col_dob" data-width="6%">DOB</th>
                     <th data-column-id="Sex" data-width="2%">Sex</th>
-                    <th data-column-id="col_age" data-formatter="col_age" data-sortable="false" data-width="2%">Age</th>
+                    <!-- <th data-column-id="col_age" data-formatter="col_age" data-sortable="false" data-width="2%">Age</th> -->
 					<th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="7%"> </th>
 				</tr>
 				</thead>
@@ -210,102 +216,110 @@
 		@if (request()->get('curpat') == 'true')
 			
 			@if (request()->get('epistycode') == 'OP')
-				@if (Auth::user()->doctor == 1)
+				<!-- #if (Auth::user()->doctor == 1)
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="nursing_row">
-						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
+						#include('hisdb.nursing.nursing',['page_screen' => "patmast"])
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="antenatal_row">
-						@include('hisdb.antenatal.antenatal')
+						#include('hisdb.antenatal.antenatal')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.paediatric.paediatric')
+						#include('hisdb.paediatric.paediatric')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.nursingnote.nursingnote')
+						#include('hisdb.nursingnote.nursingnote')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.clientprogressnote.clientprogressnote')
+						#include('hisdb.clientprogressnote.clientprogressnote')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.clientprogressnote.clientprogressnoteref')
+						#include('hisdb.clientprogressnote.clientprogressnoteref')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.doctornote.doctornote')
+						#include('hisdb.doctornote.doctornote')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.requestfor.requestfor')
+						#include('hisdb.requestfor.requestfor')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.admhandover.admhandover')
+						#include('hisdb.admhandover.admhandover')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.dieteticCareNotes.dieteticCareNotes')
-					</div>
-					
-					<!-- <div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.dietorder.dietorder')
-					</div> -->
-				@elseif (Auth::user()->nurse == 1)
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
+						#include('hisdb.dieteticCareNotes.dieteticCareNotes')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.nursingnote.nursingnote')
+						#include('hisdb.dietorder.dietorder')
+					</div>
+				#elseif (Auth::user()->nurse == 1)
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						#include('hisdb.nursing.nursing',['page_screen' => "patmast"])
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.clientprogressnote.clientprogressnote')
+						#include('hisdb.nursingnote.nursingnote')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.clientprogressnote.clientprogressnoteref')
+						#include('hisdb.clientprogressnote.clientprogressnote')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.doctornote.doctornote')
+						#include('hisdb.clientprogressnote.clientprogressnoteref')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.requestfor.requestfor')
+						#include('hisdb.doctornote.doctornote')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.admhandover.admhandover')
+						#include('hisdb.requestfor.requestfor')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.dieteticCareNotes.dieteticCareNotes')
+						#include('hisdb.admhandover.admhandover')
 					</div>
 					
-					<!-- <div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.dietorder.dietorder')
-					</div> -->
-				@endif
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						#include('hisdb.dieteticCareNotes.dieteticCareNotes')
+					</div>
+					
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						#include('hisdb.dietorder.dietorder')
+					</div>
+				#endif -->
+
+				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+					@include('hisdb.ward_main.ward_main',['phase' => 'OP'])
+				</div>
 				
 				@if (Auth::user()->billing == 1)
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.ordcom.ordcom',['phase' => '1'])
 					</div>
 				@endif
-				
+
 				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-					@include('hisdb.endConsult.endConsult',['type' => "OP",'type_desc' => "Out Patient"])
+					@include('hisdb.discharge.discharge',['type' => "IP",'type_desc' => "In Patient"])
 				</div>
+
+				<!-- <div class='row' style="position: relative;margin: 0 12px 12px 12px">
+					#include('hisdb.endConsult.endConsult',['type' => "OP",'type_desc' => "Out Patient"])
+				</div> -->
 			@endif
 			
 			@if (request()->get('epistycode') == 'IP' || request()->get('epistycode') == 'DP')
 				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-					@include('hisdb.ward_main.ward_main')
+					@include('hisdb.ward_main.ward_main',['phase' => 'IP'])
 				</div>
 				
 				<!-- include panel yang lama ada dalam ni -->
@@ -400,10 +414,11 @@
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_glasgow.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_pivc.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_morsefallscale.js?v=1.2"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_thrombo.js?v=1"></script>
 				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnote.js"></script>
 				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnoteref.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.6"></script>
+				<!-- <script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.6"></script> -->
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
 				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js?v=1.6"></script>
@@ -426,10 +441,11 @@
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_glasgow.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_pivc.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_morsefallscale.js?v=1.2"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_thrombo.js?v=1"></script>
 				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnote.js"></script>
 				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnoteref.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.6"></script>
+				<!-- <script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.6"></script> -->
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
 				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js?v=1.6"></script>
@@ -440,15 +456,6 @@
 			
 			@if (Auth::user()->billing == 1)
 				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_main.js?v=1.3"></script>
-					<!-- <script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rehab_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_diet_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth_doc.js"></script> -->
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp.js?v=1.1"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab.js"></script>
@@ -460,8 +467,11 @@
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_pkg.js"></script>
 			@endif
+
+			<script type="text/javascript" src="js/hisdb/discharge/discharge.js?v=1.1"></script>
+			<script type="text/javascript" src="js/hisdb/ward_main/ward_main.js?v=1.2"></script>
 			
-			<script type="text/javascript" src="js/hisdb/endConsult/endConsult.js"></script>
+			<!-- <script type="text/javascript" src="js/hisdb/endConsult/endConsult.js"></script> -->
 		@endif
 		
 		@if (request()->get('epistycode') == 'IP' || request()->get('epistycode') == 'DP')

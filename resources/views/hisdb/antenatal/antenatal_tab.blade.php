@@ -21,7 +21,7 @@
 
                     <div class='col-md-12'>
                         <div class="panel panel-info">
-                            <div class="panel-heading text-center" style="height:40px">	
+                            <div class="panel-heading text-center" style="position: sticky; top: 0px; z-index: 3;height:40px">	
 
                                 <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                     id="btn_grp_edit_antenatal"
@@ -411,7 +411,7 @@
 
                     <div class='col-md-12'>
                         <div class="panel panel-info">
-                            <div class="panel-heading text-center" style="height:40px">	
+                            <div class="panel-heading text-center" style="position: sticky; top: 0px; z-index: 3;height:40px">	
 
                                 <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                     id="btn_grp_edit_pregnancy"
@@ -545,7 +545,7 @@
 
                     <div class='col-md-12'>
                         <div class="panel panel-info">
-                            <div class="panel-heading text-center">DETAILED SCAN
+                            <div class="panel-heading text-center" style="position: sticky; top: 0px; z-index: 3;">DETAILED SCAN
 
                                 <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                     id="btn_grp_edit_ultrasound"

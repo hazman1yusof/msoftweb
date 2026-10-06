@@ -820,6 +820,17 @@ function textarea_init_clientProgNote(){
 	});
 }
 
+function onshown_docNoteOP(){
+    check_doctor();
+    sticky_clientprognotetbl(on = true);
+    clientprognote_date_tbl.ajax.url("./clientprogressnote/table?"+$.param(dateParam_clientprognote)).load(function (data){
+        emptyFormdata_div("#formClientProgNote",['#mrn_clientProgNote','#episno_clientProgNote','#datetime_clientProgNote','#epistycode_clientProgNote']);
+        $('#clientprognote_date_tbl tbody tr:eq(0)').click(); // to select first row
+    });
+    refreshGrid('#jqGridAddNotesClientProgNote',urlParam_AddNotesClientProgNote,'add_notesClientProgNote');
+    $("#jqGridAddNotesClientProgNote").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesClientProgNote_c")[0].offsetWidth-$("#jqGridAddNotesClientProgNote_c")[0].offsetLeft-30));
+}
+
 // function calc_jq_height_onchange(jqgrid){
 // 	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
 // 	if(scrollHeight < 50){

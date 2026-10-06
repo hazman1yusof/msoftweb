@@ -410,7 +410,7 @@ var dialog_bloodgroup_mother= new ordialog(
 );
 dialog_bloodgroup_mother.makedialog(true);
 
-// button_state_paediatric('empty');
+button_state_paediatric('empty');
 function button_state_paediatric(state){
 	switch(state){
 		case 'empty':
@@ -438,6 +438,20 @@ function button_state_paediatric(state){
 			$('#edit_paediatric,#new_paediatric').attr('disabled',true);
 			break;
 	}
+}
+
+function hide_paediatricOP(){
+	$('#navtab_paediatricOP').hide();
+	$('#tab-paediatricOP').hide();
+}
+
+function show_paediatricOP(){
+	$('#navtab_paediatricOP').show();
+	$('#tab-paediatricOP').show();
+}
+
+function onshown_paediatricOP(){
+
 }
 
 //screen current patient//
