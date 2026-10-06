@@ -20,13 +20,15 @@ $(document).ready(function (){
         }else if($('#ward_main_phase').val() == 'OP'){
             var lastrowdata = getrow_bootgrid();
             if($.inArray(lastrowdata.regdept,['A&E','ED']) == -1){
-                $('#jqGridWardMain_panel_tabs.nav-tabs a#navtab_nursingnoteOP').tab('show');
                 hide_triageOP();
+                show_nursingnoteOP();
                 onshown_nursingnoteOP();
+                $('#jqGridWardMain_panel_tabs.nav-tabs a#navtab_nursingnoteOP').tab('show');
             }else{
-                $('#jqGridWardMain_panel_tabs.nav-tabs a#navtab_triageOP').tab('show');
+                hide_nursingnoteOP()
                 show_triageOP();
                 onshown_triageOP();
+                $('#jqGridWardMain_panel_tabs.nav-tabs a#navtab_triageOP').tab('show');
             }
 
             if(lastrowdata.dis_code == 'PAE'){

@@ -7532,6 +7532,16 @@ function check_same_usr_edit(data){
     return same;
 }
 
+function hide_nursingnoteOP(){
+    $('#navtab_nursingnoteOP').hide();
+    $('#tab-nursingnoteOP').hide();
+}
+
+function show_nursingnoteOP(){
+    $('#navtab_nursingnoteOP').show();
+    $('#tab-nursingnoteOP').show();
+}
+
 function onshown_nursingnoteOP(){
     populate_progressnote_getdata();
     
