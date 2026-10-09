@@ -75,6 +75,31 @@ var grid = $("#grid-command-buttons").bootgrid({
             "col_mrn": function (column,row) {
                 return ('0000000' + row.MRN).slice(-7) +"<span class='episno_span'>"+ row.Episno +"</span>";
             },
+            "col_reg": function (column,row) {
+                var retval = `<div style="padding-bottom:20px">`+row.reg_date+`</div>`;
+
+                if($('#curpat').val() == 'true'){
+
+                    retval = retval+`<div class='dv1'>
+                        <span class="st1">
+                            <i data-lucide="circle-minus" width="15" height="15" color="grey"></i>
+                            <small>lab</small>
+                        </span>
+                        <span class="st1">
+                            <i data-lucide="circle-check" width="15" height="15" color="darkgreen"></i>
+                            <small>rad</small>
+                        </span>
+                        <span class="st1">
+                            <i data-lucide="circle-x" width="15" height="15" color="darkred"></i>
+                            <small>phy</small>
+                        </span>
+                        <span class="st1">
+                            <i data-lucide="circle-x" width="15" height="15" color="darkred"></i>
+                            <small>diet</small>
+                        </span>
+                    </div>`;
+                }
+            },
             "col_dob": function (column,row) {
                 var birthday = new Date(row.DOB);
                 return (isNaN(birthday.getFullYear()) ? '' : moment(birthday).format('DD/MM/YYYY'));
@@ -305,6 +330,8 @@ grid.on("loaded.rs.jquery.bootgrid", function(){
         $("#grid-command-buttons-header select.search").css("width","35%").addClass('search2');
         $("#grid-command-buttons-header div.actions.btn-group").css("margin-top","2%").addClass('search2');
     }
+
+    lucide.createIcons();
 });
 
 grid.on("click.rs.jquery.bootgrid", function (e,c,r){

@@ -59,9 +59,30 @@
 		.wrap-text{
 			white-space: break-spaces !important;;
 		}
+		.pos-rel{
+			position: relative;
+		}
 		span.episno_span{
 			float: right;
     		padding-right: 5px;
+		}
+		div.dv1{
+			position: absolute;
+			bottom: 0px;
+			display: flex;
+    		flex-direction: row;
+		}
+		table#grid-command-buttons tr{
+			position: relative;
+			min-height: 22px;
+		}
+		span.st1{
+			display: flex;
+    		flex-direction: column;
+    		padding: 0px 2px;
+		}
+		span.st1 small{
+			font-size: 70%;
 		}
 	</style>
 	
@@ -179,7 +200,7 @@
                 	<th data-column-id="no" data-formatter="col_add" data-width="2%">#</th>
                     @if (request()->get('curpat') == 'true')
                     <!-- <th data-column-id="QueueNo" data-width="3%">Queue</th> -->
-                    <th data-column-id="reg_date" data-width="7%">Reg Date</th>
+                    <th data-column-id="reg_date" data-formatter="col_reg" data-width="7%" >Reg Date</th>
                     <th data-column-id="regdept" data-width="5%">Dept</th>
 					@endif
                     <th data-column-id="MRN" data-type="numeric" data-formatter="col_mrn" data-width="7%">MRN &nbsp;&nbsp;&nbsp; Epis</th>
@@ -365,6 +386,7 @@
     <script type="text/ecmascript" src="plugins/numeral.min.js"></script>
 	<script type="text/ecmascript" src="plugins/moment.js"></script>
 	<script type="text/javascript" src="js/myjs/utility.js"></script>
+	<script type="text/javascript" src="https://unpkg.com/lucide@1.52.0"></script>
 	
 	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
