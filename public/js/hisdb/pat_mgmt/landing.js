@@ -99,6 +99,8 @@ var grid = $("#grid-command-buttons").bootgrid({
                         </span>
                     </div>`;
                 }
+
+                return retval;
             },
             "col_dob": function (column,row) {
                 var birthday = new Date(row.DOB);
