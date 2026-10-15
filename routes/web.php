@@ -49,6 +49,8 @@ Route::post('/mykadfp_store','util\MycardController@mykadfp_store');
 Route::get('/get_mykad_local','util\MycardController@get_mykad_local');
 Route::get('/save_mykad_local','util\MycardController@save_mykad_local');
 Route::post('/save_mykad_local','util\MycardController@save_mykad_local');
+Route::get('/icd11/token','hisdb\Icd11Controller@token')->name('icd11.token');
+Route::get('/icd11','hisdb\Icd11Controller@show');
 
 /// announcement thingy ///
 Route::get('/announcement/generate','setup\AnnouncementController@generate');

@@ -127,7 +127,7 @@
                         <input id="isPregnant_wardMain" name="isPregnant_wardMain" type="hidden">
                         <input type="hidden" id="ordcomtt_phar" value="{{$ordcomtt_phar ?? ''}}">
                         
-                        <div id="tab-triageOP" class="active in tab-pane fade">
+                        <div id="tab-triageOP" class="tab-pane fade">
                             @include('hisdb.OutPatient.triageOP')
                         </div>
                         <div id="tab-nursingnoteOP" class="tab-pane fade">

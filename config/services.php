@@ -30,4 +30,14 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'who_icd' => [
+        'client_id' => env('WHO_ICD_CLIENT_ID'),
+        'client_secret' => env('WHO_ICD_CLIENT_SECRET'),
+        'token_url' => env(
+            'WHO_ICD_TOKEN_URL',
+            'https://icdaccessmanagement.who.int/connect/token'
+        ),
+        'api_url' => env('WHO_ICD_API_URL', 'https://id.who.int'),
+    ],
+
 ];

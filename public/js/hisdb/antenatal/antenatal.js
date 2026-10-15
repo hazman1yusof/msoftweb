@@ -1828,12 +1828,12 @@ function button_state_antenatal(state){
 
 function hide_antenatalOP(){
 	$('#navtab_antenatalOP').hide();
-	$('#tab-antenatalOP').hide();
+	// $('#tab-antenatalOP').hide();
 }
 
 function show_antenatalOP(){
 	$('#navtab_antenatalOP').show();
-	$('#tab-antenatalOP').show();
+	// $('#tab-antenatalOP').show();
 }
 
 function onshown_antenatalOP(){

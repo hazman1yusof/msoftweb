@@ -900,12 +900,12 @@ function populate_triage_currpt(obj){
 
 function hide_triageOP(){
 	$('#navtab_triageOP').hide();
-	$('#tab-triageOP').hide();
+	// $('#tab-triageOP').hide();
 }
 
 function show_triageOP(){
 	$('#navtab_triageOP').show();
-	$('#tab-triageOP').show();
+	// $('#tab-triageOP').show();
 }
 
 function onshown_triageOP(){
