@@ -267,6 +267,11 @@ function populate_physio(obj){
     emptyFormdata_div("#formSpinalCord",['#mrn_rehabMain','#episno_rehabMain']);
     emptyFormdata_div("#formPhysioNotes",['#mrn_rehabMain','#episno_rehabMain']);
     
+    reloadImage_png("a.ui.card.bodydia_musculoskeletal",['DIAG_MUSCULOSKELETAL']);
+    reloadImage_png("a.ui.card.bodydia_physio",['BF_PHYSIO','BB_PHYSIO']);
+    reloadImage_png("a.ui.card.bodydia_cardio",['DIAG_CARDIO']);
+    reloadImage_png("a.ui.card.bodydia_neuro",['BB_NEURO','BF_NEURO']);
+    
     // panel header
     // $('#name_show_physio').text(obj.Name);
     // $('#mrn_show_physio').text(("0000000" + obj.MRN).slice(-7));

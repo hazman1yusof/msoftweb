@@ -5,10 +5,10 @@ var editedRow = 0;
 
 $(document).ready(function (){
     
-    // textarea_init_musculoAssessment();
-    
     var fdl = new faster_detail_load();
+    var auto_save_background_formMusculoAssessment = new auto_save_background('#formMusculoAssessment','rehab_formMusculoAssessment');
     
+    // textarea_init_musculoAssessment();
     disableForm('#formMusculoAssessment');
     
     $("#new_musculoAssessment").click(function (){
@@ -23,6 +23,11 @@ $(document).ready(function (){
         document.getElementById("idno_soundside").value = "";
         document.getElementById("idno_musclepwr").value = "";
         // dialog_mrn_edit.on();
+        
+        auto_save_background_formMusculoAssessment.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formMusculoAssessment.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        
+        reloadImage_png("a.ui.card.bodydia_musculoskeletal",['DIAG_MUSCULOSKELETAL']);
     });
     
     $("#edit_musculoAssessment").click(function (){
@@ -30,10 +35,21 @@ $(document).ready(function (){
         enableForm('#formMusculoAssessment');
         rdonly('#formMusculoAssessment');
         // dialog_mrn_edit.on();
+        
+        auto_save_background_formMusculoAssessment.check($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        auto_save_background_formMusculoAssessment.on($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
+        
+        let mrn = $('#mrn_rehabMain').val();
+        let episno = $('#episno_rehabMain').val();
+        let entereddate = $('#musculoAssessment_entereddate').val();
+        let enteredtime = $('#musculoAssessment_enteredtime').val();
+        let timestamp = moment(entereddate+' '+enteredtime,  'YYYY-MM-DD HH:mm:ss').unix();
+        reloadImage_png("a.ui.card.bodydia_musculoskeletal",['DIAG_MUSCULOSKELETAL'],mrn,episno,timestamp);
     });
     
     $("#save_musculoAssessment").click(function (){
         if($('#formMusculoAssessment').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formMusculoAssessment.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
             saveForm_musculoAssessment(function (data){
                 $("#cancel_musculoAssessment").data('oper','edit');
                 $("#cancel_musculoAssessment").click();
@@ -47,12 +63,14 @@ $(document).ready(function (){
     });
     
     $("#cancel_musculoAssessment").click(function (){
-        // emptyFormdata_div("#formMusculoAssessment",['#mrn_rehabMain','#episno_rehabMain']);
+        emptyFormdata_div("#formMusculoAssessment",['#mrn_rehabMain','#episno_rehabMain']);
         disableForm('#formMusculoAssessment');
         button_state_musculoAssessment($(this).data('oper'));
         $('#tbl_musculoAssessment_date').DataTable().ajax.reload();
         getdata_musculoAssessment();
         // dialog_mrn_edit.off();
+        
+        auto_save_background_formMusculoAssessment.off($('#mrn_rehabMain').val()+'_'+$('#episno_rehabMain').val());
     });
     
     // to format number input to two decimal places (0.00)
@@ -121,6 +139,8 @@ $(document).ready(function (){
             m_idno: data.m_idno,
         };
         
+        var _data = data;
+        
         $.post("./musculoAssessment/form?"+$.param(saveParam), $.param(postobj), function (data){
             
         },'json').fail(function (data){
@@ -131,8 +151,14 @@ $(document).ready(function (){
                 autoinsert_rowdata("#formMusculoAssessment",data.romaffectedside);
                 autoinsert_rowdata("#formMusculoAssessment",data.romsoundside);
                 autoinsert_rowdata("#formMusculoAssessment",data.musclepower);
+                reloadImage_png("a.ui.card.bodydia_musculoskeletal",
+                    ['DIAG_MUSCULOSKELETAL'],
+                    _data.mrn,
+                    _data.episno,
+                    moment(_data.dt, 'YYYY-MM-DD HH:mm:ss').unix());
                 // button_state_musculoAssessment('edit');
             }else{
+                reloadImage_png("a.ui.card.bodydia_musculoskeletal",['DIAG_MUSCULOSKELETAL']);
                 // button_state_musculoAssessment('add');
             }
             
@@ -160,13 +186,15 @@ $(document).ready(function (){
         else if(entereddate == ''){
             alert('Please enter date first');
         }else{
-            if(istablet){
-                let filename = type+'_'+mrn+'_.pdf';
-                let url = $('#urltodiagram').val() + filename;
-                var win = window.open(url, '_blank');
-            }else{
-                var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&entereddate='+timestamp+'&type='+type+'&from=musculoAssessment', '_blank');
-            }
+            // if(istablet){
+            //     let filename = type+'_'+mrn+'_.pdf';
+            //     let url = $('#urltodiagram').val() + filename;
+            //     var win = window.open(url, '_blank');
+            // }else{
+            //     var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&entereddate='+timestamp+'&type='+type+'&from=musculoAssessment', '_blank');
+            // }
+            
+            var win = window.open('./PdfViewer?mrn='+mrn+'&episno='+episno+'&entereddate='+timestamp+'&type='+type+'&from=musculoAssessment', '_blank');
             
             if(win){
                 win.focus();

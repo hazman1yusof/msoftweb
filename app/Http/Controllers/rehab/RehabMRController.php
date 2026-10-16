@@ -159,7 +159,7 @@ class RehabMRController extends defaultController
         
         $table_patm = $table_patm->join('hisdb.episode', function ($join) use ($request){
                     $join = $join->on('episode.mrn','=','pat_mast.MRN');
-                    $join = $join->where('episode.epistycode','=','OP');
+                    // $join = $join->where('episode.epistycode','=','OP');
                     $join = $join->where('episode.compcode','=',session('compcode'));
                     // $join = $join->whereIn('episode.regdept',['A&E','PHY','XRAY','DIET']);
                     // $join = $join->whereIn('episode.regdept',['ALL']);
