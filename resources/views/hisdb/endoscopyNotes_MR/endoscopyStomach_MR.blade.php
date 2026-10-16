@@ -65,7 +65,8 @@
                                         <div class="ui cards">
                                             <a class="ui card bodydia_endoscopyStomach" data-type='STOMACH'>
                                                 <div class="image">
-                                                    <img src="{{ asset('img/stomachdiag.png') }}">
+                                                    <img src="./PdfViewer-png?type=STOMACH">
+                                                    <!-- <img src="{{ asset('img/stomachdiag.png') }}"> -->
                                                 </div>
                                             </a>
                                         </div>
