@@ -13,25 +13,26 @@
 
     <!-- <h3>ICD-11 Coding Tool</h3> -->
     <div class="ui segments" style="position: relative; margin: 5px;">
-        <div class="ui secondary segment bluecloudsegment" style="height: 50px;">
-            ICD-11 Search Engine
+        <div class="ui secondary segment bluecloudsegment" style="position: sticky; top: 0px; z-index: 3; height: 65px;">
+            <div class="ui fluid right labeled action input">
+                <button class="ui teal labeled icon button" type="button" style="margin-right: 5px;">
+                     Code : <b id="code_b" style="margin-left: 5px;"></b>
+                     <i class="eye icon"></i>
+                </button>
+                <input type="text" autocomplete="off" id="selected" style="background: teal; color: white;">
+
+                <button class="ui green button " type="button" id="goback">
+                     Select
+                </button>
+            </div>
         </div>
         <div class="ui segment">
             <input type="hidden" id="thecode">
             <input type="hidden" id="thedesc">
 
-            <form class="ui form">
-                <label>Selected Code</label>
-                <div class="ui fluid left action input">
-                    <button class="ui teal labeled icon button" type="button" id="goback">
-                         Use this code <b id="code_b"></b>
-                         <i class="eye icon"></i>
-                    </button>
-                    <input type="text" autocomplete="off" id="selected" readonly>
-                </div>
-                <br>
+            <form class="ui form" autofocus>
                 <label>Type to search ICD-11 code:</label>
-                <input type="text" class="ctw-input" autocomplete="off" data-ctw-ino="1">
+                <input type="text" class="ctw-input" autocomplete="off" data-ctw-ino="1" id="thesearch" autofocus >
             </form>
 
             <div class="ctw-window" data-ctw-ino="1"></div>
@@ -92,8 +93,8 @@
 
                 thecode.value = code;
                 thedesc.value = description;
-                thedesc.textContent  = code;
-                thedesc.selected = description;
+                code_b.textContent  = code;
+                selected.value = description;
 
             }
         };
@@ -101,9 +102,17 @@
         ECT.Handler.configure(mySettings, myCallbacks);
 
         $(document).ready(function () {
+            $('#thesearch').focus();
             $('#goback').click(function(){
-                console.log($('#thecode').val());
-                console.log($('#thedesc').val());
+                if($('#thecode').val() == ''){
+                    alert('Please search for the code first');
+                    $('#thesearch').click().focus();
+                }else{
+                    let thecode = $('#thecode').val();
+                    let thedesc = $('#thedesc').val();
+
+                    alert('code: '+thecode+' -> '+thedesc);
+                }
             });
         });
     </script>
