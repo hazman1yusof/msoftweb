@@ -4,21 +4,21 @@ var editedRow = 0;
 
 ///////////////////////////////////parameter for jqGridAddNotesEndoIntestine url///////////////////////////////////
 var urlParam_AddNotesEndoIntestine = {
-	action: 'get_table_default',
-	url: './util/get_table_default',
-	field: '',
-	table_name: 'nursing.nursaddnote',
-	table_id: 'idno',
-	filterCol: ['mrn','episno','type'],
-	filterVal: ['','','ENDO_INTESTINE'],
+    action: 'get_table_default',
+    url: './util/get_table_default',
+    field: '',
+    table_name: 'nursing.nursaddnote',
+    table_id: 'idno',
+    filterCol: ['mrn','episno','type'],
+    filterVal: ['','','ENDO_INTESTINE'],
 }
 
 $(document).ready(function (){
     
-    textarea_init_endoscopyIntestine();
-    
     var fdl = new faster_detail_load();
+    var auto_save_background_formEndoscopyIntestine = new auto_save_background('#formEndoscopyIntestine','ot_formEndoscopyIntestine');
     
+    textarea_init_endoscopyIntestine();
     disableForm('#formEndoscopyIntestine');
     
     $("#new_endoscopyIntestine").click(function (){
@@ -27,18 +27,29 @@ $(document).ready(function (){
         enableForm('#formEndoscopyIntestine');
         rdonly('#formEndoscopyIntestine');
         // emptyFormdata_div("#formEndoscopyIntestine",['#mrn_otMain','#episno_otMain']);
-        // dialog_mrn_edit.on();
+        
+        auto_save_background_formEndoscopyIntestine.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+        auto_save_background_formEndoscopyIntestine.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+        
+        reloadImage_png("a.ui.card.bodydia_endoscopyIntestine",['INTESTINE']);
     });
     
     $("#edit_endoscopyIntestine").click(function (){
         button_state_endoscopyIntestine('wait');
         enableForm('#formEndoscopyIntestine');
         rdonly('#formEndoscopyIntestine');
-        // dialog_mrn_edit.on();
+        
+        auto_save_background_formEndoscopyIntestine.check($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+        auto_save_background_formEndoscopyIntestine.on($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
+        
+        let mrn = $('#mrn_otMain').val();
+        let episno = $('#episno_otMain').val();
+        reloadImage_png("a.ui.card.bodydia_endoscopyIntestine",['INTESTINE'],mrn,episno);
     });
     
     $("#save_endoscopyIntestine").click(function (){
         if($('#formEndoscopyIntestine').isValid({requiredFields: ''}, conf, true)){
+            auto_save_background_formEndoscopyIntestine.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
             saveForm_endoscopyIntestine(function (data){
                 // emptyFormdata_div("#formEndoscopyIntestine",['#mrn_otMain','#episno_otMain']);
                 disableForm('#formEndoscopyIntestine');
@@ -54,7 +65,8 @@ $(document).ready(function (){
         disableForm('#formEndoscopyIntestine');
         button_state_endoscopyIntestine($(this).data('oper'));
         getdata_endoscopyIntestine();
-        // dialog_mrn_edit.off();
+        
+        auto_save_background_formEndoscopyIntestine.off($('#mrn_otMain').val()+'_'+$('#episno_otMain').val());
     });
     
     // to format number input to two decimal places (0.00)
@@ -85,16 +97,20 @@ $(document).ready(function (){
         
         if(mrn.trim() == '' || type.trim() == ''){
             alert('Please choose Patient First');
-        }else if($('#save_endoscopyIntestine').prop('disabled')){
-            alert('Edit this patient first');
-        }else{
-            if(istablet){
-                let filename = type+'_'+mrn+'_.pdf';
-                let url = $('#urltodiagram').val() + filename;
-                var win = window.open(url, '_blank');
-            }else{
-                var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&type='+type+'&from=endoscopyIntestine', '_blank');
-            }
+        }
+        // else if($('#save_endoscopyIntestine').prop('disabled')){
+        //     alert('Edit this patient first');
+        // }
+        else{
+            // if(istablet){
+            //     let filename = type+'_'+mrn+'_.pdf';
+            //     let url = $('#urltodiagram').val() + filename;
+            //     var win = window.open(url, '_blank');
+            // }else{
+            //     var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&type='+type+'&from=endoscopyIntestine', '_blank');
+            // }
+            
+            var win = window.open('./PdfViewer?mrn='+mrn+'&episno='+episno+'&type='+type+'&from=endoscopyIntestine', '_blank');
             
             if(win){
                 win.focus();
@@ -110,116 +126,116 @@ $(document).ready(function (){
     });
     
     //////////////////////////////////////parameter for saving url//////////////////////////////////////
-	var addmore_jqgridEndoIntestine = {more:false,state:false,edit:false}
-	
-	///////////////////////////////////////////jqGridAddNotesEndoIntestine///////////////////////////////////////////
-	$("#jqGridAddNotesEndoIntestine").jqGrid({
-		datatype: "local",
-		editurl: "./endoscopyNotes/form",
-		colModel: [
-			{ label: 'compcode', name: 'compcode', hidden: true },
-			{ label: 'mrn', name: 'mrn', hidden: true },
-			{ label: 'episno', name: 'episno', hidden: true },
-			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
-			{ label: 'type', name: 'type', hidden: true },
-			{ label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
-			{ label: 'Entered by', name: 'adduser', width: 50, hidden: false },
-			{ label: 'Date', name: 'adddate', width: 50, hidden: false },
-		],
-		autowidth: true,
-		multiSort: true,
-		sortname: 'idno',
-		sortorder: 'desc',
-		viewrecords: true,
-		loadonce: false,
-		scroll: true,
-		width: 700,
-		height: 200,
-		rowNum: 30,
-		pager: "#jqGridPagerAddNotesEndoIntestine",
-		loadComplete: function (){
-			if(addmore_jqgridEndoIntestine.more == true){$('#jqGridAddNotesEndoIntestine_iladd').click();}
-			else{
-				$('#jqGrid2').jqGrid ('setSelection', "1");
-			}
-			$('.ui-pg-button').prop('disabled',true);
-			addmore_jqgridEndoIntestine.edit = addmore_jqgridEndoIntestine.more = false; // reset
-		},
-		ondblClickRow: function (rowid, iRow, iCol, e){
-			$("#jqGridAddNotesEndoIntestine_iledit").click();
-		},
-	});
-	
-	////////////////////////////////////////////myEditOptions////////////////////////////////////////////
-	var myEditOptions_addEndoIntestine = {
-		keys: true,
-		extraparam: {
-			"_token": $("#_token").val()
-		},
-		oneditfunc: function (rowid){
-			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").hide();
-			
-			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
-				var code = e.keyCode || e.which;
-				if (code == '9')$('#jqGridAddNotesEndoIntestine_ilsave').click();
-				// addmore_jqgridEndoIntestine.state = true;
-			});
-		},
-		aftersavefunc: function (rowid, response, options){
-			// addmore_jqgridEndoIntestine.more = true; // only addmore after save inline
-			// state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGridAddNotesEndoIntestine',urlParam_AddNotesEndoIntestine,'add_endoIntestine_save');
-			errorField.length = 0;
-			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
-		},
-		errorfunc: function (rowid,response){
-			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGridAddNotesEndoIntestine',urlParam_AddNotesEndoIntestine,'add_endoIntestine_save');
-		},
-		beforeSaveRow: function (options, rowid){
-			$('#p_error').text('');
-			if(errorField.length > 0)return false;
-			
-			let data = $('#jqGridAddNotesEndoIntestine').jqGrid('getRowData', rowid);
-			
-			let editurl = "./endoscopyNotes/form?"+
-				$.param({
-					_token: $('#_token').val(),
-					episno: $('#episno_otMain').val(),
-					mrn: $('#mrn_otMain').val(),
-					action: 'add_endoIntestine_save',
-				});
-			$("#jqGridAddNotesEndoIntestine").jqGrid('setGridParam', { editurl: editurl });
-		},
-		afterrestorefunc : function (response){
-			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
-		},
-		errorTextFormat: function (data){
-			alert(data);
-		}
-	};
-	
-	/////////////////////////////////////////jqGridPagerAddNotesEndoIntestine/////////////////////////////////////////
-	$("#jqGridAddNotesEndoIntestine").inlineNav('#jqGridPagerAddNotesEndoIntestine', {
-		add: false,
-		edit: false,
-		cancel: false, save: false,
-		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
-		restoreAfterSelect: false,
-		addParams: {
-			addRowParams: myEditOptions_addEndoIntestine
-		},
-		// editParams: myEditOptions_edit
-	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesEndoIntestine", {
-		id: "jqGridPagerRefresh_addnotes",
-		caption: "", cursor: "pointer", position: "last",
-		buttonicon: "glyphicon glyphicon-refresh",
-		title: "Refresh Table",
-		onClickButton: function (){
-			refreshGrid("#jqGridAddNotesEndoIntestine", urlParam_AddNotesEndoIntestine);
-		},
-	});
-	///////////////////////////////////////////////end grid///////////////////////////////////////////////
+    var addmore_jqgridEndoIntestine = {more:false,state:false,edit:false}
+    
+    ///////////////////////////////////////////jqGridAddNotesEndoIntestine///////////////////////////////////////////
+    $("#jqGridAddNotesEndoIntestine").jqGrid({
+        datatype: "local",
+        editurl: "./endoscopyNotes/form",
+        colModel: [
+            { label: 'compcode', name: 'compcode', hidden: true },
+            { label: 'mrn', name: 'mrn', hidden: true },
+            { label: 'episno', name: 'episno', hidden: true },
+            { label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+            { label: 'type', name: 'type', hidden: true },
+            { label: 'Note', name: 'note', classes: 'wrap', width: 100, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+            { label: 'Entered by', name: 'adduser', width: 50, hidden: false },
+            { label: 'Date', name: 'adddate', width: 50, hidden: false },
+        ],
+        autowidth: true,
+        multiSort: true,
+        sortname: 'idno',
+        sortorder: 'desc',
+        viewrecords: true,
+        loadonce: false,
+        scroll: true,
+        width: 700,
+        height: 200,
+        rowNum: 30,
+        pager: "#jqGridPagerAddNotesEndoIntestine",
+        loadComplete: function (){
+            if(addmore_jqgridEndoIntestine.more == true){$('#jqGridAddNotesEndoIntestine_iladd').click();}
+            else{
+                $('#jqGrid2').jqGrid ('setSelection', "1");
+            }
+            $('.ui-pg-button').prop('disabled',true);
+            addmore_jqgridEndoIntestine.edit = addmore_jqgridEndoIntestine.more = false; // reset
+        },
+        ondblClickRow: function (rowid, iRow, iCol, e){
+            $("#jqGridAddNotesEndoIntestine_iledit").click();
+        },
+    });
+    
+    ////////////////////////////////////////////myEditOptions////////////////////////////////////////////
+    var myEditOptions_addEndoIntestine = {
+        keys: true,
+        extraparam: {
+            "_token": $("#_token").val()
+        },
+        oneditfunc: function (rowid){
+            $("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").hide();
+            
+            $("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
+                var code = e.keyCode || e.which;
+                if (code == '9')$('#jqGridAddNotesEndoIntestine_ilsave').click();
+                // addmore_jqgridEndoIntestine.state = true;
+            });
+        },
+        aftersavefunc: function (rowid, response, options){
+            // addmore_jqgridEndoIntestine.more = true; // only addmore after save inline
+            // state true maksudnyer ada isi, tak kosong
+            refreshGrid('#jqGridAddNotesEndoIntestine',urlParam_AddNotesEndoIntestine,'add_endoIntestine_save');
+            errorField.length = 0;
+            $("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+        },
+        errorfunc: function (rowid,response){
+            $('#p_error').text(response.responseText);
+            refreshGrid('#jqGridAddNotesEndoIntestine',urlParam_AddNotesEndoIntestine,'add_endoIntestine_save');
+        },
+        beforeSaveRow: function (options, rowid){
+            $('#p_error').text('');
+            if(errorField.length > 0)return false;
+            
+            let data = $('#jqGridAddNotesEndoIntestine').jqGrid('getRowData', rowid);
+            
+            let editurl = "./endoscopyNotes/form?"+
+                $.param({
+                    _token: $('#_token').val(),
+                    episno: $('#episno_otMain').val(),
+                    mrn: $('#mrn_otMain').val(),
+                    action: 'add_endoIntestine_save',
+                });
+            $("#jqGridAddNotesEndoIntestine").jqGrid('setGridParam', { editurl: editurl });
+        },
+        afterrestorefunc : function (response){
+            $("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+        },
+        errorTextFormat: function (data){
+            alert(data);
+        }
+    };
+    
+    /////////////////////////////////////////jqGridPagerAddNotesEndoIntestine/////////////////////////////////////////
+    $("#jqGridAddNotesEndoIntestine").inlineNav('#jqGridPagerAddNotesEndoIntestine', {
+        add: false,
+        edit: false,
+        cancel: false, save: false,
+        // to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+        restoreAfterSelect: false,
+        addParams: {
+            addRowParams: myEditOptions_addEndoIntestine
+        },
+        // editParams: myEditOptions_edit
+    }).jqGrid('navButtonAdd', "#jqGridPagerAddNotesEndoIntestine", {
+        id: "jqGridPagerRefresh_addnotes",
+        caption: "", cursor: "pointer", position: "last",
+        buttonicon: "glyphicon glyphicon-refresh",
+        title: "Refresh Table",
+        onClickButton: function (){
+            refreshGrid("#jqGridAddNotesEndoIntestine", urlParam_AddNotesEndoIntestine);
+        },
+    });
+    ///////////////////////////////////////////////end grid///////////////////////////////////////////////
     
 });
 
@@ -371,6 +387,8 @@ function textarea_init_endoscopyIntestine(){
 }
 
 function getdata_endoscopyIntestine(){
+    disableForm('#formEndoscopyIntestine');
+    
     var urlparam = {
         action: 'get_table_endoscopyIntestine',
     }
@@ -391,10 +409,15 @@ function getdata_endoscopyIntestine(){
             button_state_endoscopyIntestine('edit');
             refreshGrid('#jqGridAddNotesEndoIntestine',urlParam_AddNotesEndoIntestine,'add_endoIntestine_save');
             $('#endoscopyIntestine_chart').attr('disabled',false);
+            reloadImage_png("a.ui.card.bodydia_endoscopyIntestine",
+                ['INTESTINE'],
+                $('#mrn_otMain').val(),
+                $("#episno_otMain").val());
         }else{
             button_state_endoscopyIntestine('add');
             refreshGrid('#jqGridAddNotesEndoIntestine',urlParam_AddNotesEndoIntestine,'kosongkan');
             $('#endoscopyIntestine_chart').attr('disabled',true);
+            reloadImage_png("a.ui.card.bodydia_endoscopyIntestine",['INTESTINE'],$('#mrn_otMain').val(),$("#episno_otMain").val());
         }
         
         $("#endoscopyIntestine_iPesakit").val(data.iPesakit);

@@ -91,7 +91,8 @@
                                             <div class="ui card" style="margin: 14px 150px;">
                                                 <a class="ui card bodydia_cardio" data-type='DIAG_CARDIO'>
                                                     <div class="image">
-                                                        <img src="{{ asset('patientcare/img/bodydiagcardio.png') }}">
+                                                        <img src="./PdfViewer-png?type=DIAG_CARDIO">
+                                                        <!-- <img src="{{ asset('patientcare/img/bodydiagcardio.png') }}"> -->
                                                     </div>
                                                 </a>
                                             </div>

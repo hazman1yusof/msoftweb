@@ -74,12 +74,14 @@
                                                 <div class="ui two cards">
                                                     <a class="ui card bodydia_neuro" data-type='BB_NEURO'>
                                                         <div class="image">
-                                                            <img src="{{ asset('patientcare/img/bodydiagneuro4.png') }}">
+                                                            <img src="./PdfViewer-png?type=BB_NEURO">
+                                                            <!-- <img src="{{ asset('patientcare/img/bodydiagneuro4.png') }}"> -->
                                                         </div>
                                                     </a>
                                                     <a class="ui card bodydia_neuro" data-type='BF_NEURO'>
                                                         <div class="image">
-                                                            <img src="{{ asset('patientcare/img/bodydiagneuro1.png') }}">
+                                                            <img src="./PdfViewer-png?type=BF_NEURO">
+                                                            <!-- <img src="{{ asset('patientcare/img/bodydiagneuro1.png') }}"> -->
                                                         </div>
                                                     </a>
                                                 </div>
