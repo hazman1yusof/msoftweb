@@ -3,7 +3,6 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
 
 $(document).ready(function (){
-    // $('.menu .item').tab();
     
     var fdl = new faster_detail_load();
 
@@ -39,9 +38,9 @@ $(document).ready(function (){
         }, 0);
     });
 
-    $('#emergencyMain_tab .menu .item').tab({'onVisible': function (){
+    $('#emergencyMain_tab .item').tab({'onVisible': function (){
         let tab = $(this).data('tab');
-        // console.log(tab);
+        console.log(tab);
 
         switch(tab){
             case 'userfile':
@@ -79,7 +78,7 @@ $(document).ready(function (){
                     episno: $("#episno_emergencyMain").val()
                 }
                 
-                datetimethrombo_ED_tbl.ajax.url("./ptcare_nursingnote/table?"+$.param(urlparam_datetimethrombo_ED_tbl)).load(function (data){
+                datetimethrombo_ED_tbl.ajax.url("./ptcare_nursingnote_MR/table?"+$.param(urlparam_datetimethrombo_ED_tbl)).load(function (data){
                     emptyFormdata_div("#formThrombo_ED",['#mrn_emergencyMain','#episno_emergencyMain','#doctor_nursNote','#ordcomtt_phar']);
                     $('#datetimethrombo_ED_tbl tbody tr:eq(0)').click(); // to select first row
                 });
@@ -149,41 +148,41 @@ conf = {
 function empty_emergencyMain(){
     emptyFormdata_div("#formEmergencyMain");
     emptyFormdata_div("#formTriageInfo");
-    // emptyFormdata_div("#formProgress_ED");
-    // emptyFormdata_div("#formDrug");
-    // emptyFormdata_div("#formThrombo_ED");
-    // emptyFormdata_div("#formOTBookReqFor");
-    // emptyFormdata_div("#formRadClinicReqFor");
-    // emptyFormdata_div("#formMRIReqFor");
-    // emptyFormdata_div("#formPhysioReqFor");
-    // emptyFormdata_div("#formDressingReqFor");
-    // emptyFormdata_div("#formPreContrastReqFor");
-    // emptyFormdata_div("#formConsentFormReqFor");
-    // emptyFormdata_div("#formAdmHandover");
+    emptyFormdata_div("#formProgress_ED");
+    emptyFormdata_div("#formDrug");
+    emptyFormdata_div("#formThrombo_ED");
+    emptyFormdata_div("#formOTBookReqFor");
+    emptyFormdata_div("#formRadClinicReqFor");
+    emptyFormdata_div("#formMRIReqFor");
+    emptyFormdata_div("#formPhysioReqFor");
+    emptyFormdata_div("#formDressingReqFor");
+    emptyFormdata_div("#formPreContrastReqFor");
+    emptyFormdata_div("#formConsentFormReqFor");
+    emptyFormdata_div("#formAdmHandover");
 
     button_state_ti('empty');
-    // button_state_progress_ED('empty');
-    // button_state_thrombo_ED('empty');
-    // button_state_otbookReqFor('empty');
-    // button_state_radClinicReqFor('empty');
-    // button_state_mriReqFor('empty');
-    // button_state_physioReqFor('empty');
-    // button_state_dressingReqFor('empty');
-    // button_state_preContrastReqFor('empty');
-    // button_state_consentFormReqFor('empty');
-    // button_state_admHandover('empty');
+    button_state_progress_ED('empty');
+    button_state_thrombo_ED('empty');
+    button_state_otbookReqFor('empty');
+    button_state_radClinicReqFor('empty');
+    button_state_mriReqFor('empty');
+    button_state_physioReqFor('empty');
+    button_state_dressingReqFor('empty');
+    button_state_preContrastReqFor('empty');
+    button_state_consentFormReqFor('empty');
+    button_state_admHandover('empty');
 
     // panel header
-    $('#name_show_emergencyMain').text('');
-    $('#mrn_show_emergencyMain').text('');
-    $('#sex_show_emergencyMain').text('');
-    $('#dob_show_emergencyMain').text('');
-    $('#age_show_emergencyMain').text('');
-    $('#race_show_emergencyMain').text('');
-    $('#religion_show_emergencyMain').text('');
-    $('#occupation_show_emergencyMain').text('');
-    $('#citizenship_show_emergencyMain').text('');
-    $('#area_show_emergencyMain').text('');
+    $('#name_show_emergency').text('');
+    $('#mrn_show_emergency').text('');
+    $('#sex_show_emergency').text('');
+    $('#dob_show_emergency').text('');
+    $('#age_show_emergency').text('');
+    $('#race_show_emergency').text('');
+    $('#religion_show_emergency').text('');
+    $('#occupation_show_emergency').text('');
+    $('#citizenship_show_emergency').text('');
+    $('#area_show_emergency').text('');
     
     // formEmergencyMain
     $('#mrn_emergencyMain').val('');
@@ -194,29 +193,30 @@ function empty_emergencyMain(){
 function populate_emergencyMain(obj){
 
     emptyFormdata_div("#formTriageInfo",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formProgress_ED",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formDrug",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formThrombo_ED",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formOTBookReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formRadClinicReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formMRIReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formPhysioReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formDressingReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formPreContrastReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formConsentFormReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formAdmHandover",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formProgress_ED",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formDrug",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formThrombo_ED",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formOTBookReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formRadClinicReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formMRIReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formPhysioReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formDressingReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formPreContrastReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formConsentFormReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formAdmHandover",['#mrn_emergencyMain','#episno_emergencyMain']);
 
     // panel header
-    $('#name_show_emergencyMain').text(obj.Name);
-	$('#mrn_show_emergencyMain').text(("0000000" + obj.MRN).slice(-7));
-	$('#sex_show_emergencyMain').text(if_none(obj.Sex).toUpperCase());
-	$('#dob_show_emergencyMain').text(dob_chg(obj.DOB));
-	$('#age_show_emergencyMain').text(dob_age(obj.DOB)+' (YRS)');
-	$('#race_show_emergencyMain').text(if_none(obj.raceDesc).toUpperCase());
-	$('#religion_show_emergencyMain').text(if_none(obj.religion).toUpperCase());
-	$('#occupation_show_emergencyMain').text(if_none(obj.OccupCode).toUpperCase());
-	$('#citizenship_show_emergencyMain').text(if_none(obj.Citizencode).toUpperCase());
-	$('#area_show_emergencyMain').text(if_none(obj.AreaCode).toUpperCase());
+    $('#name_show_emergency').text(obj.Name);
+	$('#mrn_show_emergency').text(("0000000" + obj.MRN).slice(-7));
+	$('#sex_show_emergency').text(if_none(obj.Sex).toUpperCase());
+	$('#dob_show_emergency').text(dob_chg(obj.DOB));
+	$('#age_show_emergency').text(dob_age(obj.DOB)+' (YRS)');
+	$('#race_show_emergency').text(if_none(obj.raceDesc).toUpperCase());
+	$('#religion_show_emergency').text(if_none(obj.religion).toUpperCase());
+	$('#occupation_show_emergency').text(if_none(obj.OccupCode).toUpperCase());
+	$('#citizenship_show_emergency').text(if_none(obj.Citizencode).toUpperCase());
+	$('#area_show_emergency').text(if_none(obj.AreaCode).toUpperCase());
+   
    
     // formEmergencyMain
     $('#mrn_emergencyMain').val(obj.MRN);
@@ -268,18 +268,18 @@ $('#tab_emergencyMain').on('shown.bs.collapse', function (){
 $('#tab_emergencyMain').on('hide.bs.collapse', function (){
     emptyFormdata_div("#formEmergencyMain",['#mrn_emergencyMain','#episno_emergencyMain']);
 
-    // emptyFormdata_div("#formTriageInfo",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formProgress_ED",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formDrug",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formThrombo_ED",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formOTBookReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formRadClinicReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formMRIReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formPhysioReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formDressingReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formPreContrastReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formConsentFormReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
-    // emptyFormdata_div("#formAdmHandover",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formTriageInfo",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formProgress_ED",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formDrug",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formThrombo_ED",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formOTBookReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formRadClinicReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formMRIReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formPhysioReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formDressingReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formPreContrastReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formConsentFormReqFor",['#mrn_emergencyMain','#episno_emergencyMain']);
+    emptyFormdata_div("#formAdmHandover",['#mrn_emergencyMain','#episno_emergencyMain']);
 
     // panel header
     $('#emergencyMain_tab .menu .item').tab('change tab','nursing_ed');

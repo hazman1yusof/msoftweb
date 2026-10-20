@@ -114,16 +114,16 @@
     <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="emergencyMain_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_emergencyMain" >
 
-        <b>NAME: <span id="name_show_emergencyMain"></span></b><br>
-        MRN: <span id="mrn_show_emergencyMain"></span>
-        SEX: <span id="sex_show_emergencyMain"></span>
-        DOB: <span id="dob_show_emergencyMain"></span>
-        AGE: <span id="age_show_emergencyMain"></span>
-        RACE: <span id="race_show_emergencyMain"></span>
-        RELIGION: <span id="religion_show_emergencyMain"></span><br>
-        OCCUPATION: <span id="occupation_show_emergencyMain"></span>
-        CITIZENSHIP: <span id="citizenship_show_emergencyMain"></span>
-        AREA: <span id="area_show_emergencyMain"></span> 
+        <b>NAME: <span id="name_show_emergency"></span></b><br>
+        MRN: <span id="mrn_show_emergency"></span>
+        SEX: <span id="sex_show_emergency"></span>
+        DOB: <span id="dob_show_emergency"></span>
+        AGE: <span id="age_show_emergency"></span>
+        RACE: <span id="race_show_emergency"></span>
+        RELIGION: <span id="religion_show_emergency"></span><br>
+        OCCUPATION: <span id="occupation_show_emergency"></span>
+        CITIZENSHIP: <span id="citizenship_show_emergency"></span>
+        AREA: <span id="area_show_emergency"></span> 
 
         <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_emergencyMain"></i>
         <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_emergencyMain"></i >  
@@ -188,8 +188,10 @@
 
 @section('css')
     <link rel="stylesheet" href="{{asset('patientcare/css/doctornote.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="plugins/bootstrap-3.3.5-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="plugins/bootstrap-3.3.5-dist/css/bootstrap-theme.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('patientcare/assets/fullcalendar-3.7.0/fullcalendar.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('patientcare/assets/trirand/css/trirand/ui.jqgrid-bootstrap.css') }}" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
@@ -198,17 +200,18 @@
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-	<link rel="stylesheet" href="plugins/bootgrid/css/jquery.bootgrid.css">
+	<!-- <link rel="stylesheet" href="plugins/bootgrid/css/jquery.bootgrid.css"> -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300;500&family=Open+Sans:wght@300;700&family=Syncopate&display=swap" rel="stylesheet">
 @endsection
 
 @section('js')
-    <script type="text/javascript" src="{{ asset('js/myjs/utility.js') }}?v=1.2"></script>
-	<script type="text/javascript" src="plugins/bootgrid/js/jquery.bootgrid.js"></script>
+     <script type="text/javascript" src="{{ asset('js/myjs/utility.js') }}?v=1.2"></script>
+	<!-- <script type="text/javascript" src="plugins/bootgrid/js/jquery.bootgrid.js"></script> -->
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script> -->
+    <script type="text/ecmascript" src="plugins/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
     <script type="text/ecmascript" src="{{ asset('patientcare/assets/trirand/i18n/grid.locale-en.js') }}"></script>
     <script type="text/ecmascript" src="{{ asset('patientcare/assets/trirand/jquery.jqGrid.min.js') }}"></script>
     <script type="text/ecmascript" src="{{ asset('patientcare/assets/fullcalendar-3.7.0/fullcalendar.min.js') }}"></script>

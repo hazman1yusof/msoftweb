@@ -234,6 +234,8 @@ $(document).ready(function (){
 					window.open('./appointment_MR?epistycode='+epistycode+'&curpat=true&PatClass=HIS&mrn='+mrn+'&episno='+episno, '_blank');
 				}
 			}else if(epistycode == 'IP'){
+				disableForm('#frm_patient_info_MR');
+
 				window.open('./pat_mast_MR?epistycode='+epistycode+'&curpat=true&PatClass=HIS&mrn='+mrn+'&episno='+episno, '_blank');
 			}
 		});

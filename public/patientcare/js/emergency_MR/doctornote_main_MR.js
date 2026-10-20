@@ -219,33 +219,33 @@ $(document).ready(function () {
 				{ label: 'Epis. No', name: 'Episno', align: 'right', hidden: true },
 				// { label: 'Time', name: 'reg_time', width: 85, formatter: timeFormatter, unformat: timeUNFormatter },
 				{ label: 'Name', name: 'Name', width: 150, classes: 'wrap' },
-				// { label: 'Payer', name: 'payer', width: 150, classes: 'wrap', formatter: formatterpayer,hidden:true},
-				// { label: 'Dept', name: 'regdept', width: 60 },
-				// { label: 'I/C', name: 'Newic', width: 90 },
-				// { label: 'Rehab', name: 'reff_rehab', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true },
-				// { label: 'Physio', name: 'reff_physio', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true },
-				// { label: 'Diet', name: 'reff_diet', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true},
-				// { label: 'ED', name: 'reff_ed', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true},
-				// { label: 'RAD', name: 'reff_rad', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true},
-				// { label: 'HP', name: 'telhp', width: 80 },
-				// { label: 'Sex', name: 'Sex', width: 40 },
-				// { label: 'Mode', name: 'pyrmode', classes: 'wrap', width: 100 },
-				// { label: 'Discharge', name: 'episstatus', width: 100, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
-				// { label: 'Seen', name: 'doctorstatus', formatter: formatterstatus_tick, hidden: true },
-				// { label: 'idno', name: 'idno', hidden: true, key: true },
-				// { label: 'DOB', name: 'DOB', hidden: true },
-				// { label: 'RaceCode', name: 'RaceCode', hidden: true },
-				// { label: 'raceDesc', name: 'raceDesc', hidden: true },
-				// { label: 'religion', name: 'religion', hidden: true },
-				// { label: 'OccupCode', name: 'OccupCode', hidden: true },
-				// { label: 'Citizencode', name: 'Citizencode', hidden: true },
-				// { label: 'AreaCode', name: 'AreaCode', hidden: true },
-				// { label: 'stats_doctor', name: 'stats_doctor', hidden: true },
-				// { label: 'stats_rehab', name: 'stats_rehab', hidden: true },
-				// { label: 'stats_physio', name: 'stats_physio', hidden: true },
-				// { label: 'stats_diet', name: 'stats_diet', hidden: true },
-				// { label: 'doctorname', name: 'doctorname', hidden: true },
-				// { label: ' ', name: ' ' ,formatter: formatter_btn, width: 70},
+				{ label: 'Payer', name: 'payer', width: 150, classes: 'wrap', formatter: formatterpayer,hidden:true},
+				{ label: 'Dept', name: 'regdept', width: 60 },
+				{ label: 'I/C', name: 'Newic', width: 90 },
+				{ label: 'Rehab', name: 'reff_rehab', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true },
+				{ label: 'Physio', name: 'reff_physio', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true },
+				{ label: 'Diet', name: 'reff_diet', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true},
+				{ label: 'ED', name: 'reff_ed', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true},
+				{ label: 'RAD', name: 'reff_rad', width: 50, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2, hidden: true},
+				{ label: 'HP', name: 'telhp', width: 80 },
+				{ label: 'Sex', name: 'Sex', width: 40 },
+				{ label: 'Mode', name: 'pyrmode', classes: 'wrap', width: 100 },
+				{ label: 'Discharge', name: 'episstatus', width: 100, formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
+				{ label: 'Seen', name: 'doctorstatus', formatter: formatterstatus_tick, hidden: true },
+				{ label: 'idno', name: 'idno', hidden: true, key: true },
+				{ label: 'DOB', name: 'DOB', hidden: true },
+				{ label: 'RaceCode', name: 'RaceCode', hidden: true },
+				{ label: 'raceDesc', name: 'raceDesc', hidden: true },
+				{ label: 'religion', name: 'religion', hidden: true },
+				{ label: 'OccupCode', name: 'OccupCode', hidden: true },
+				{ label: 'Citizencode', name: 'Citizencode', hidden: true },
+				{ label: 'AreaCode', name: 'AreaCode', hidden: true },
+				{ label: 'stats_doctor', name: 'stats_doctor', hidden: true },
+				{ label: 'stats_rehab', name: 'stats_rehab', hidden: true },
+				{ label: 'stats_physio', name: 'stats_physio', hidden: true },
+				{ label: 'stats_diet', name: 'stats_diet', hidden: true },
+				{ label: 'doctorname', name: 'doctorname', hidden: true },
+				{ label: ' ', name: ' ' ,formatter: formatter_btn, width: 70},
 				
 			],
 			autowidth: true,
@@ -263,8 +263,8 @@ $(document).ready(function () {
 				// empty_userfile();
 				$('button#timer_stop').click();
 				$('#_patName').val(selrowData('#jqGrid').Name);
-				// $('#mrnMR').val(selrowData('#jqGrid').MRN);
-				// $('#episnoMR').val(selrowData('#jqGrid').Episno);
+				$('#mrnMR').val(selrowData('#jqGrid').MRN);
+				$('#episnoMR').val(selrowData('#jqGrid').Episno);
     			$('#emergencyMain_tab .menu .item').tab('change tab','nursing_ed');
 				urlParam_trans.mrn = selrowData('#jqGrid').MRN;
 				urlParam_trans.episno = selrowData('#jqGrid').Episno;
@@ -285,18 +285,7 @@ $(document).ready(function () {
 				populate_admhandover_currpt(selrowData('#jqGrid'));
 				populate_triage_currpt(selrowData('#jqGrid'));
 				populate_userfile(selrowData('#jqGrid'));
-				// populate_phys(selrowData('#jqGrid'));
-				// populate_ordcom_currpt(selrowData('#jqGrid'));
-				// populate_otMain(selrowData('#jqGrid'));
-				// populate_otmgmt_div(selrowData('#jqGrid'));
-				// populate_preoperative(selrowData('#jqGrid'));
-				// populate_preoperativeDC(selrowData('#jqGrid'));
-				// populate_oper_team(selrowData('#jqGrid'));
-				// populate_otswab(selrowData('#jqGrid'));
-				// populate_ottime(selrowData('#jqGrid'));
-				// populate_otdischarge(selrowData('#jqGrid'));
-				// populate_endoscopyNotes(selrowData('#jqGrid'));
-				// getdata_preoperative();
+				populate_ordcom_currpt(selrowData('#jqGrid'));
 				
 				// if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
 				// 	$('#checkbox_completed').prop('disabled',true);

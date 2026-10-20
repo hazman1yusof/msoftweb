@@ -1,5 +1,5 @@
 
-<div class="panel panel-default" style="margin-bottom: 7px;">
+<div class="panel panel-default" style="margin-bottom: 7px; display:none">
     <div class="panel-heading">
         <b>NAME: <span id="name_show_wardMain"></span></b><br>
         MRN: <span id="mrn_show_wardMain"></span>
@@ -14,7 +14,7 @@
     </div>
 </div>
 
-<div class="panel panel-default" style="position: relative;margin-bottom: 0px;" id="jqGridWardMain_c">
+<div class="panel panel-default" id="jqGridWardMain_c">
     <input type="hidden" name="curr_user" id="curr_user" value="{{ Auth::user()->username }}">
     
     <div class="panel-heading clearfix collapsed position" id="toggle_wardMain" style="position: sticky; top: 0px; z-index: 3; height: 65px;">

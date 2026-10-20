@@ -113,7 +113,7 @@
         <input name="pkgdept_dflt" id="pkgdept_dflt" type="hidden" value="{{$pkgdept_dflt ?? 'PHAR'}}">
         <input name="othdept_dflt" id="othdept_dflt" type="hidden" value="{{$othdept_dflt ?? 'PHAR'}}">
 
-        <div id="info"></div>
+        <!-- <div id="info"></div> -->
 
 		<div class="panel panel-primary" style="position: relative;margin: 0 12px 12px 12px;display: none;">
 			<div  class="panel-heading clearfix">
@@ -157,7 +157,6 @@
 			</table>
 		</div>
 		
-		@include('hisdb.pat_mgmt.mdl_patient_MR')
 		@include('hisdb.pat_mgmt.mdl_episode')
 		@include('hisdb.pat_mgmt.itemselector_MR')
 		@include('hisdb.pat_mgmt.patlabel')
@@ -258,8 +257,10 @@
 				</div>
 			@endif
 			
+			@include('hisdb.pat_mgmt.mdl_patient_MR_profile')
+
 			@if (request()->get('epistycode') == 'IP' || request()->get('epistycode') == 'DP')
-				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+				<div class='row' style="position: relative;static: 0 12px 12px 12px">
 					@include('hisdb.ward_main_MR.ward_main_MR')
 				</div>
 
