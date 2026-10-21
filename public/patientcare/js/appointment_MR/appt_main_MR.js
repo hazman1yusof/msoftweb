@@ -31,7 +31,8 @@ $(document).ready(function (){
         }, 0);
     });
     
-    $('#apptMainTabs .top.menu .item').tab({'onVisible': function (){
+    // $('#apptMainTabs .top.menu .item').tab({'onVisible': function (){
+    $('#apptMainTabs .top.menu .item').on('click', function (){
         let tab = $(this).data('tab');
         // console.log(tab);
         
@@ -127,9 +128,11 @@ $(document).ready(function (){
                 getdata_dietNotes();
                 break;
         }
-    }});
+    });
+    // }});
     
-    $('#doctor_requestFor .top.menu .item').tab({'onVisible': function (){
+    // $('#doctor_requestFor .top.menu .item').tab({'onVisible': function (){
+    $('#doctor_requestFor .top.menu .item').on('click', function (){
         let tab = $(this).data('tab');
         // console.log(tab);
         
@@ -149,9 +152,11 @@ $(document).ready(function (){
                 // textarea_init_dressing();
                 break;
         }
-    }});
+    });
+    // }});
     
-    $('#doctor_radiology .top.menu .item').tab({'onVisible': function (){
+    // $('#doctor_radiology .top.menu .item').tab({'onVisible': function (){
+    $('#doctor_radiology .top.menu .item').on('click', function (){
         let tab = $(this).data('tab');
         // console.log(tab);
         
@@ -171,9 +176,11 @@ $(document).ready(function (){
                 populate_consentForm_getdata();
                 break;
         }
-    }});
+    });
+    // }});
     
-    $('#requestFor .top.menu .item').tab({'onVisible': function (){
+    // $('#requestFor .top.menu .item').tab({'onVisible': function (){
+    $('#requestFor .top.menu .item').on('click', function (){
         let tab = $(this).data('tab');
         // console.log(tab);
         
@@ -204,9 +211,11 @@ $(document).ready(function (){
                 populate_followupReqfor_getdata();
                 break;
         }
-    }});
+    });
+    // }});
     
-    $('#radiology .top.menu .item').tab({'onVisible': function (){
+    // $('#radiology .top.menu .item').tab({'onVisible': function (){
+    $('#radiology .top.menu .item').on('click', function(){
         let tab = $(this).data('tab');
         // console.log(tab);
         
@@ -226,7 +235,8 @@ $(document).ready(function (){
                 populate_consentFormReqFor_getdata();
                 break;
         }
-    }});
+    });
+    // }});
     
 });
 
@@ -333,9 +343,18 @@ $('#tab_apptMain').on('shown.bs.collapse', function (){
     radbuts.reset();
     getdata_triageAppt();
     
+    $("#jqGridAddNotesAppt").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesAppt_c")[0].offsetWidth-$("#jqGridAddNotesAppt_c")[0].offsetLeft-14));
+    $("#jqGrid_trans").jqGrid('setGridWidth', Math.floor($("#jqGrid_trans_c")[0].offsetWidth-$("#jqGrid_trans_c")[0].offsetLeft-14));
+    $("#jqGridAddNotes").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotes_c")[0].offsetWidth-$("#jqGridAddNotes_c")[0].offsetLeft-14));
+    $("#jqGridNoteAdmHandover").jqGrid('setGridWidth', Math.floor($("#jqGridNoteAdmHandover_c")[0].offsetWidth-$("#jqGridNoteAdmHandover_c")[0].offsetLeft-14));
+    
     // if($('#mrn_apptMain').val() != ''){
     //     getdata_triageAppt();
     // }
+    
+    $('#apptMain_panel_title').show();
+    $('#clinical_title').hide();
+    $("#clinical_div").css("top", "48px");
 });
 
 $('#tab_apptMain').on('hide.bs.collapse', function (){
@@ -346,6 +365,10 @@ $('#tab_apptMain').on('hide.bs.collapse', function (){
 $('#tab_apptMain').on('hidden.bs.collapse', function (){
     $('#apptMainTabs .top.menu .item').tab('change tab','triageInfo');
     refreshGrid("#jqGrid", urlParam);
+    
+    $('#apptMain_panel_title').hide();
+    $('#clinical_title').show();
+    $("#clinical_div").css("top", "18px");
 });
 
 function check_same_usr_edit(data){

@@ -52,34 +52,38 @@
     
     <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px; display: none;" id="otMain_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_otMain">
-            <b>NAME: <span id="name_show_otMain"></span></b> <br>
-            <b>MRN:</b> <span id="mrn_show_otMain"></span> &nbsp;
-            <b>IC NO./PASSPORT:</b> <span id="icpssprt_show_otMain"></span> &nbsp;
-            <b>SEX:</b> <span id="sex_show_otMain"></span> &nbsp;
-            <b>HEIGHT:</b> <span id="height_show_otMain"></span> &nbsp;
-            <b>WEIGHT:</b> <span id="weight_show_otMain"></span> &nbsp;
-            <b>DOB:</b> <span id="dob_show_otMain"></span> &nbsp;
-            <b>AGE:</b> <span id="age_show_otMain"></span> &nbsp;
-            <b>RACE:</b> <span id="race_show_otMain"></span> &nbsp;
-            <b>RELIGION:</b> <span id="religion_show_otMain"></span> <br>
-            <b>OCCUPATION:</b> <span id="occupation_show_otMain"></span> &nbsp;
-            <b>CITIZENSHIP:</b> <span id="citizenship_show_otMain"></span> &nbsp;
-            <b>AREA:</b> <span id="area_show_otMain"></span> &nbsp;
-            <b>WARD / BED:</b> <span id="ward_show_preoperative"></span> / <span id="bednum_show_otMain"></span> &nbsp;
-            <b>OP ROOM:</b> <span id="oproom_show_otMain"></span> <br>
-            <b>DIAGNOSIS:</b> <span id="diagnosis_show_otMain"></span> &nbsp;
-            <b>PLANNED PROCEDURE:</b> <span id="procedure_show_otMain"></span> &nbsp;
-            <b>UNIT/DISCIPLINE:</b> <span id="unit_show_otMain"></span> &nbsp;
-            <b>OPERATION TYPE:</b> <span id="type_show_otMain"></span> &nbsp;
+            <span id="otMain_panel_title" style="display: none;">
+                <b>NAME: <span id="name_show_otMain"></span></b> <br>
+                <b>MRN:</b> <span id="mrn_show_otMain"></span> &nbsp;
+                <b>IC NO./PASSPORT:</b> <span id="icpssprt_show_otMain"></span> &nbsp;
+                <b>SEX:</b> <span id="sex_show_otMain"></span> &nbsp;
+                <b>HEIGHT:</b> <span id="height_show_otMain"></span> &nbsp;
+                <b>WEIGHT:</b> <span id="weight_show_otMain"></span> &nbsp;
+                <b>DOB:</b> <span id="dob_show_otMain"></span> &nbsp;
+                <b>AGE:</b> <span id="age_show_otMain"></span> &nbsp;
+                <b>RACE:</b> <span id="race_show_otMain"></span> &nbsp;
+                <b>RELIGION:</b> <span id="religion_show_otMain"></span> <br>
+                <b>OCCUPATION:</b> <span id="occupation_show_otMain"></span> &nbsp;
+                <b>CITIZENSHIP:</b> <span id="citizenship_show_otMain"></span> &nbsp;
+                <b>AREA:</b> <span id="area_show_otMain"></span> &nbsp;
+                <b>WARD / BED:</b> <span id="ward_show_preoperative"></span> / <span id="bednum_show_otMain"></span> &nbsp;
+                <b>OP ROOM:</b> <span id="oproom_show_otMain"></span> <br>
+                <b>DIAGNOSIS:</b> <span id="diagnosis_show_otMain"></span> &nbsp;
+                <b>PLANNED PROCEDURE:</b> <span id="procedure_show_otMain"></span> &nbsp;
+                <b>UNIT/DISCIPLINE:</b> <span id="unit_show_otMain"></span> &nbsp;
+                <b>OPERATION TYPE:</b> <span id="type_show_otMain"></span> &nbsp;
+            </span>
             
-            <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_otMain"></i>
-            <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_otMain"></i>
-            <div style="position: absolute;
-                            padding: 0 0 0 0;
-                            right: 50px;
-                            top: 48px;">
-                <h5><strong>OT Management</strong>&nbsp;&nbsp;
-                    <span class="metal"></span></h5>
+            <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 12px 0 12px;" data-toggle="collapse" data-target="#tab_otMain"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 12px 0 12px;" data-toggle="collapse" data-target="#tab_otMain"></i>
+            
+            <div style="position: absolute; 
+                        padding: 0 0 0 0; 
+                        left: 40px;" id="OTManagement_div">
+                <span id="OTManagement_title">
+                    <h5><strong>OT Management</strong>&nbsp;&nbsp;
+                        <span class="metal"></span></h5>
+                </span>
             </div>
         </div>
         

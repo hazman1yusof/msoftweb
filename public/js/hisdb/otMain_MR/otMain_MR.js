@@ -249,16 +249,26 @@ function autoinsert_rowdata(form,rowData){
 $('#tab_otMain').on('shown.bs.collapse', function (){
     SmoothScrollTo('#tab_otMain', 300, 114);
     $("#jqGridAddNotesPreop").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesPreop_c")[0].offsetWidth-$("#jqGridAddNotesPreop_c")[0].offsetLeft));
-
-        if($('#mrn_otMain').val() != ''){
-            getdata_preoperative();	
-        }  	
-
-        refreshGrid('#jqGridAddNotesPreop',urlParam_AddNotesPreop);
-   
+    
+    if($('#mrn_otMain').val() != ''){
+        getdata_preoperative();
+    }
+    
+    refreshGrid('#jqGridAddNotesPreop',urlParam_AddNotesPreop);
+    
+    $('#otMain_panel_title').show();
+    $('#OTManagement_title').hide();
+    $("#OTManagement_div").css("top", "48px");
 });
 
 $('#tab_otMain').on('hide.bs.collapse', function (){
+    
+});
+
+$('#tab_otMain').on('hidden.bs.collapse', function (){
+    $('#otMain_panel_title').hide();
+    $('#OTManagement_title').show();
+    $("#OTManagement_div").css("top", "18px");
 });
 
 function check_same_usr_edit(data){

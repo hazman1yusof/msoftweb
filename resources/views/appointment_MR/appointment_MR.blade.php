@@ -117,21 +117,25 @@
     <input id="_token" name="_token" value="{{ csrf_token() }}" type="hidden">
     <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
     
+    @include('hisdb.pat_mgmt.mdl_patprofile_MR')
+    
     <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;" id="apptMain_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_apptMain">
-            <b>NAME: <span id="name_show_apptMain"></span></b><br>
-            MRN: <span id="mrn_show_apptMain"></span>
-            SEX: <span id="sex_show_apptMain"></span>
-            DOB: <span id="dob_show_apptMain"></span>
-            AGE: <span id="age_show_apptMain"></span>
-            RACE: <span id="race_show_apptMain"></span>
-            RELIGION: <span id="religion_show_apptMain"></span><br>
-            OCCUPATION: <span id="occupation_show_apptMain"></span>
-            CITIZENSHIP: <span id="citizenship_show_apptMain"></span>
-            AREA: <span id="area_show_apptMain"></span>
+            <span id="apptMain_panel_title" style="display: none;">
+                <b>NAME: <span id="name_show_apptMain"></span></b><br>
+                MRN: <span id="mrn_show_apptMain"></span>
+                SEX: <span id="sex_show_apptMain"></span>
+                DOB: <span id="dob_show_apptMain"></span>
+                AGE: <span id="age_show_apptMain"></span>
+                RACE: <span id="race_show_apptMain"></span>
+                RELIGION: <span id="religion_show_apptMain"></span><br>
+                OCCUPATION: <span id="occupation_show_apptMain"></span>
+                CITIZENSHIP: <span id="citizenship_show_apptMain"></span>
+                AREA: <span id="area_show_apptMain"></span>
+            </span>
             
-            <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_apptMain"></i>
-            <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_apptMain"></i>
+            <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 12px 0 12px;" data-toggle="collapse" data-target="#tab_apptMain"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 12px 0 12px;" data-toggle="collapse" data-target="#tab_apptMain"></i>
             
             <div style="position: absolute; 
                         padding: 0 0 0 0; 
@@ -145,10 +149,11 @@
             
             <div style="position: absolute; 
                         padding: 0 0 0 0; 
-                        right: 50px; 
-                        top: 48px;">
-                <h5><strong>Clinical</strong>&nbsp;&nbsp;
-                    <span class="metal"></span></h5>
+                        left: 40px;" id="clinical_div">
+                <span id="clinical_title">
+                    <h5><strong>Clinical</strong>&nbsp;&nbsp;
+                        <span class="metal"></span></h5>
+                </span>
             </div>
         </div>
         
