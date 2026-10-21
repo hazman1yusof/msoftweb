@@ -119,8 +119,8 @@
             CITIZENSHIP: <span id="citizenship_show_rehabMain"></span>
             AREA: <span id="area_show_rehabMain"></span>
             
-            <!-- <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_phys"></i>
-            <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_phys"></i> -->
+            <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_rehabMain"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_rehabMain"></i>
             
             <!-- <div style="position: absolute; 
                         padding: 0 0 0 0; 
@@ -141,11 +141,15 @@
             </div> -->
         </div>
         
-        <div id="tab_rehabMain" class="panel-collapse">
+        <div id="tab_rehabMain" class="panel-collapse collapse">
             <div class="panel-body paneldiv">
                 @include('rehab_MR.rehabMain_MR.rehabMain_MR')
             </div>
         </div>
+    </div>
+    
+    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;" id="ordcom_panel">
+        @include('hisdb.ordcom_MR.ordcom_MR',['phase' => '2.rehab'])
     </div>
     
     @include('hisdb.pat_mgmt.pat_mgmt_iframe',['phase' => 'semantic'])
@@ -212,4 +216,18 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab_MR/speechTherapy_MR/speechTherapy_MR.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab_MR/psychotherapy_MR/psychotherapy_MR.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab_MR/dietitian_MR/dietitian_MR.js?v=1.1') }}"></script>
+    
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom_MR/ordcom_main_MR.js?v=1.3') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom_MR/ordcom_phar_MR.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom_MR/ordcom_disp_MR.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom_MR/ordcom_lab_MR.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom_MR/ordcom_rad_MR.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom_MR/ordcom_dfee_MR.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom_MR/ordcom_phys_MR.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom_MR/ordcom_rehab_MR.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom_MR/ordcom_diet_MR.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom_MR/ordcom_oth_MR.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom_MR/ordcom_pkg_MR.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/pat_mgmt/epis_payer.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/pat_mgmt/epis_coverage.js?v=1.2') }}"></script>
 @endsection

@@ -156,7 +156,7 @@ $(document).ready(function () {
                 // refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
                 refreshGrid("#jqGrid_rof", urlParam_rof);
                 populate_phys(selrowData('#jqGrid'));
-                // populate_ordcom_currpt(selrowData('#jqGrid'));
+                populate_ordcom_currpt(selrowData('#jqGrid'));
                 populate_physio(selrowData('#jqGrid'));
                 populate_occupTherapy(selrowData('#jqGrid'));
                 
@@ -274,10 +274,10 @@ $(document).ready(function () {
                 // refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
                 populate_rehabMain(selrowData('#jqGrid'));
                 populate_phys(selrowData('#jqGrid'));
-                // populate_ordcom_currpt(selrowData('#jqGrid'));
+                populate_ordcom_currpt(selrowData('#jqGrid'));
                 populate_physio(selrowData('#jqGrid'));
                 populate_occupTherapy(selrowData('#jqGrid'));
-
+                
                 // if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
                 // 	$('#checkbox_completed').prop('disabled',true);
                 // 	$('#checkbox_completed').prop('checked', true);
@@ -483,6 +483,8 @@ $(document).ready(function () {
         }else if(cellvalue != null && cellvalue.toUpperCase() == 'YES'){
             return '<span class="fa fa-check" ></span>';
         }else if(cellvalue != null && cellvalue.toUpperCase() == '1'){
+            return '<span class="fa fa-check" ></span>';
+        }else if(cellvalue != null && cellvalue.toUpperCase() == 'DISCHARGE'){
             return '<span class="fa fa-check" ></span>';
         }else{
             return "";
@@ -708,3 +710,7 @@ function stop_scroll_on(){
 function formatterpayer(cellvalue, option, rowObject){
     return cellvalue.replace(/'/g,'');
 }
+
+$('#tab_rehabMain').on('shown.bs.collapse', function (){
+    SmoothScrollTo('#rehabMain_panel', 300,50);
+});
