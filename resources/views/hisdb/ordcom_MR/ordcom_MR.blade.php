@@ -11,7 +11,7 @@
 			<span class="fa fa-plus-square-o"></span> Order
 		</button> -->
 	</div>
-	<div class="panel-heading clearfix collapsed position" id="toggle_ordcom" style="height: 75px;" @if($phase != '2') data-toggle="collapse" data-target="#jqGrid_ordcom_panel" @endif>
+	<div class="panel-heading clearfix collapsed position" id="toggle_ordcom" style="height: 60px;" @if($phase == '2' || $phase == '2.lab' || $phase == '2.rad' || $phase == '2.rehab') @else data-toggle="collapse" data-target="#jqGrid_ordcom_panel" @endif>
 		<span id="ordcom_panel_title" style="display: none;">
 			<b>NAME: <span id="name_show_ordcom"></span></b><br>
 			MRN: <span id="mrn_show_ordcom"></span>
@@ -26,21 +26,24 @@
 			AREA: <span id="area_show_ordcom"></span>
 		</span>
 		
-		@if($phase == '2')
-			<input type="hidden" id="ordcom_phase" value="2">
-            <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid_ordcom_panel"></i>
-            <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid_ordcom_panel" ></i >
+		@if($phase == '2' || $phase == '2.lab' || $phase == '2.rad' || $phase == '2.rehab')
+			<input type="hidden" id="ordcom_phase" value="{{$phase}}">
+			<i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 12px 0 12px" data-toggle="collapse" data-target="#jqGrid_ordcom_panel"></i>
+			<i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 12px 0 12px" data-toggle="collapse" data-target="#jqGrid_ordcom_panel" ></i >
 		@else
 			<input type="hidden" id="ordcom_phase" value="0">
-			<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-			<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+			<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 12px 0 12px"></i>
+			<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 12px 0 12px"></i>
 		@endif
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 100px; top: 5px;">
+		<div class="pull-left" style="position: absolute; padding: 0 0 0 0; left: 40px; top: 20px;" id="orderEntry_title">
 			<h5 style="margin-bottom: 5px;">Order Entry</h5>
+		</div>
+		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 100px; top: 5px;">
+			<!-- <h5 style="margin-bottom: 5px;">Order Entry</h5> -->
 			<span><b>Total Amount : </b></span>
 			<span id="cyclebill_totmat"></span>
 			<br><span id="cyclebill_invno"></span>
-		</div>				
+		</div>
 	</div>
 	<div id="jqGrid_ordcom_panel" class="panel-collapse collapse">
 		<div class="panel-body paneldiv" id="jqGrid_ordcom_c" style="padding-top: 0px; width: 100%; padding: 0px 10px !important;">
@@ -59,7 +62,7 @@
 			<input type="hidden" id="ordcomtt_oth" value="{{$ordcomtt_oth ?? '25,38,39,65,30,35,92,DF,PK'}}">
 			<input type="hidden" id="ordcomtt_pkg" value="{{$ordcomtt_pkg ?? 'PK'}}">
 
-			@if($phase == '2')
+			@if($phase == '2' || $phase == '2.lab' || $phase == '2.rad' || $phase == '2.rehab')
 	        <input name="phardept_dflt" id="phardept_dflt" type="hidden" value="{{$phardept_dflt ?? 'PHAR'}}">
 	        <input name="dispdept_dflt" id="dispdept_dflt" type="hidden" value="{{$userdeptcode ?? 'PHAR'}}">
 	        <input name="labdept_dflt" id="labdept_dflt" type="hidden" value="{{$labdept_dflt ?? 'LAB'}}">
@@ -128,6 +131,7 @@
 	                                <small for="payercode_epno_coverage">Payer Code</small>
 	                                <div class='input-group'>
 	                                    <input id="payercode_epno_coverage" name="payercode" type="text" class="form-control uppercase" data-validation="required" >
+	                                    <a class='input-group-addon btn btn-info'><span class='fa fa-ellipsis-h'></span></a>
 	                                </div>
 	                            </div>
 
@@ -166,6 +170,7 @@
 	                                <small for="refno_epno_coverage">Reference No</small>
 	                                <div class='input-group'>
 	                                    <input id="refno_epno_coverage" name="refno" type="text" class="form-control uppercase">
+	                                    <a class='input-group-addon btn btn-info' id="refno_epno_coverage_btn"><span class='fa fa-ellipsis-h'></span></a>
 	                                </div>
 	                                <span class="help-block"></span>
 	                            </div>
