@@ -22,15 +22,13 @@
             <a class="item" data-tab="doctornote" id="navtab_doctornote">Doctor Note</a>
             <a class="item" data-tab="requestFor" id="navtab_requestFor">Request For</a>
             <a class="item" data-tab="admHandover" id="navtab_admHandover">Admission Handover</a>
-            <!-- <a class="item" data-tab="diet" id="navtab_diet">Dietetic Care Notes</a> -->
-
         </div>
 
         <div class="ui bottom attached tab raised segment" data-tab="userfile">
                 @include('patientcare.userfile_div_MR')
         </div>
         
-        <div class="ui bottom attached tab raised segment active" data-tab="nursing_ed">
+        <div class="ui bottom attached active tab raised segment" data-tab="nursing_ed">
                 @include('patientcare.emergency_MR.nursing_MR')
         </div>
 

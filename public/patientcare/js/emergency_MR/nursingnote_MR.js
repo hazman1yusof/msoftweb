@@ -21,10 +21,13 @@ $(document).ready(function (){
     disableForm('#formDrug');
     disableForm('#formThrombo_ED');
 
-   $('#nursNote .menu .item').tab({'onVisible': function (){
+   $('#nursNote .menu .item').on('click', function (){
         let tab = $(this).data('tab');
+        console.log(tab);
         switch(tab){
             case 'progress':
+                $('#nursNote .menu .item').tab('change tab','progress');
+
                 $("#jqGridAddNotesProgressED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesProgressED_c")[0].offsetWidth-$("#jqGridAddNotesProgressED_c")[0].offsetLeft));
 
                 var urlparam_datetime_ED_tbl = {
@@ -45,6 +48,8 @@ $(document).ready(function (){
                 break;
 
             case 'drug':
+                $('#nursNote .menu .item').tab('change tab','drug');
+
                 $("#jqGridPatMedic").jqGrid('setGridWidth', Math.floor($("#jqGridPatMedic_c")[0].offsetWidth-$("#jqGridPatMedic_c")[0].offsetLeft));
                 $("#jqGridAddNotesDrugAdminED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesDrugAdminED_c")[0].offsetWidth-$("#jqGridAddNotesDrugAdminED_c")[0].offsetLeft));
                 
@@ -87,7 +92,7 @@ $(document).ready(function (){
                 populate_thrombo_ED_getdata();
                 break;
         }
-    }});
+    });
 
     textarea_init_nursingnote();
     

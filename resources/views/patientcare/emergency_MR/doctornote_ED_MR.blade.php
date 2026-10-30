@@ -141,25 +141,25 @@
                                 <div class="ui secondary segment">Physical Examination</div>
                                 <div class="ui segment">
                                     <!-- <textarea id="examination" name="examination" type="text" rows="3"></textarea> -->
-                                    <div class="ui four cards">
+                                     <div class="ui four cards">
                                         <a class="ui card bodydia_doctornote" data-type='DOCNOTE_BF_ED'>
                                             <div class="image">
-                                                <img src="{{ asset('img/bodydia1.png') }}">
+                                                <img src="./PdfViewer-png?type=DOCNOTE_BF_ED">
                                             </div>
                                         </a>
                                         <a class="ui card bodydia_doctornote" data-type='DOCNOTE_BR_ED'>
                                             <div class="image">
-                                                <img src="{{ asset('img/bodydia2.png') }}">
+                                                <img src="./PdfViewer-png?type=DOCNOTE_BR_ED">
                                             </div>
                                         </a>
                                         <a class="ui card bodydia_doctornote" data-type='DOCNOTE_BL_ED'>
                                             <div class="image">
-                                                <img src="{{ asset('img/bodydia3.png') }}">
+                                                <img src="./PdfViewer-png?type=DOCNOTE_BL_ED">
                                             </div>
                                         </a>
                                         <a class="ui card bodydia_doctornote" data-type='DOCNOTE_BB_ED'>
                                             <div class="image">
-                                                <img src="{{ asset('img/bodydia4.png') }}">
+                                                <img src="./PdfViewer-png?type=DOCNOTE_BB_ED">
                                             </div>
                                         </a>
                                     </div>

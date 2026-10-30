@@ -136,7 +136,7 @@ $(document).ready(function (){
 			
 			$("textarea[name='note']").keydown(function (e){ // when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
-				if (code == '9')$('#jqGridAddNotes_ilsave').click();
+				if (code == '9')$('#jqGridAddNotesProgressED_ilsave').click();
 				// addmore_jqgridProgressED.state = true;
 			});
 		},

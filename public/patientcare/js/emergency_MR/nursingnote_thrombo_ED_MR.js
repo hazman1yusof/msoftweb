@@ -482,48 +482,16 @@ $(document).ready(function (){
 	
 	/////////////////////////////////////////jqGridPagerAddNotesThromboED/////////////////////////////////////////
 	$("#jqGridAddNotesThromboED").inlineNav('#jqGridPagerAddNotesThromboED', {
-		add: true,
+		add: false,
 		edit: false,
-		cancel: true,
+		cancel: false, save:false,
 		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
 		addParams: {
 			addRowParams: myEditOptions_addThromboED
 		},
 		// editParams: myEditOptions_edit
-	})
-	// .jqGrid('navButtonAdd', "#jqGridPagerAddNotesThromboED", {
-	// 	id: "jqGridPagerDelete",
-	// 	caption: "", cursor: "pointer", position: "last",
-	// 	buttonicon: "glyphicon glyphicon-trash",
-	// 	title: "Delete Selected Row",
-	// 	onClickButton: function (){
-	// 		selRowId = $("#jqGridAddNotesThromboED").jqGrid('getGridParam', 'selrow');
-	// 		if(!selRowId){
-	// 			alert('Please select row');
-	// 		}else{
-	// 			var result = confirm("Are you sure you want to delete this row?");
-	// 			if(result == true){
-	// 				param = {
-	// 					_token: $("#csrf_token").val(),
-	// 					action: 'addNotes_save',
-	// 					idno: selrowData('#jqGridAddNotesThromboED').idno,
-	// 				}
-					
-	// 				$.post("/doctornote/form?"+$.param(param), {oper:'del'}, function (data){
-						
-	// 				}).fail(function (data){
-	// 					//////////////////errorText(dialog,data.responseText);
-	// 				}).done(function (data){
-	// 					refreshGrid("#jqGridAddNotesThromboED", urlParam_AddNotesThromboED);
-	// 				});
-	// 			}else{
-	// 				$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
-	// 			}
-	// 		}
-	// 	},
-	// })
-	.jqGrid('navButtonAdd', "#jqGridPagerAddNotesThromboED", {
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotesThromboED", {
 		id: "jqGridPagerRefresh_addnotes",
 		caption: "", cursor: "pointer", position: "last",
 		buttonicon: "glyphicon glyphicon-refresh",
@@ -719,6 +687,11 @@ function populate_thrombo_ED_getdata(){
             refreshGrid('#jqGridThrombo_ED',urlParam_Thrombo_ED,'kosongkan');
             refreshGrid('#jqGridAddNotesThromboED',urlParam_AddNotesThromboED,'kosongkan');
         }
+
+        $("#jqGridThrombo_ED").jqGrid('setGridWidth', Math.floor($("#jqGridThrombo_ED_c")[0].offsetWidth-$("#jqGridThrombo_ED_c")[0].offsetLeft));
+        $("#jqGridAddNotesThromboED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesThromboED_c")[0].offsetWidth-$("#jqGridAddNotesThromboED_c")[0].offsetLeft));
+        refreshGrid("#jqGridThrombo_ED", urlParam_Thrombo_ED);
+        refreshGrid("#jqGridAddNotesThromboED", urlParam_AddNotesThromboED);
     });
 }
 /////////////////////////////////////////////////////thrombo ends/////////////////////////////////////////////////////

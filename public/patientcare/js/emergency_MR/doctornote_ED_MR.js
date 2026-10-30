@@ -247,16 +247,18 @@ $(document).ready(function (){
 		if(mrn.trim() == '' || type.trim() == ''){
 			alert('Please choose Patient First');
 		}else if($('#adddate').val()=='' || $('#recordtime').val()==''){
-			alert('Edit this patient first');
+			alert('Please key in Date');
 		}else{
-			if(istablet){
-				let filename = type+'_'+mrn+'_.pdf';
-				let url = $('#urltodiagram').val() + filename;
-				var win = window.open(url, '_blank');
-			}else{
-				var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&entereddate='+timestamp+'&type='+type+'&from=doctornote', '_blank');
-			}
+			// if(istablet){
+			// 	let filename = type+'_'+mrn+'_.pdf';
+			// 	let url = $('#urltodiagram').val() + filename;
+			// 	var win = window.open(url, '_blank');
+			// }else{
+			// 	var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&entereddate='+timestamp+'&type='+type+'&from=doctornote', '_blank');
+			// }
 			
+			var win = window.open('./PdfViewer?mrn='+mrn+'&episno='+episno+'&entereddate='+timestamp+'&type='+type+'&from=doctornote', '_blank');
+
 			if(win){
 				win.focus();
 			}else{
@@ -662,6 +664,7 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function (){
 	$('#episno_emergencyMain_past').val(data.episno);
 	$('#recorddate_emergencyMain').val(data.date);
 	
+	var _data = data;
 	$.get("./ptcare_doctornoteED_MR/table?"+$.param(doctornote_docnote), function (data){
 		
 	},'json').done(function (data){
@@ -674,6 +677,11 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function (){
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.nursaddnote);
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.nursassessment);
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.nurshistory);
+			reloadImage_png("a.ui.card.bodydia_doctornote",
+					['DOCNOTE_BF_ED','DOCNOTE_BR_ED','DOCNOTE_BL_ED','DOCNOTE_BB_ED'],
+					_data.mrn,
+					_data.episno,
+					moment(_data.date, 'DD-MM-YYYY HH:mm:ss').unix());
 			
 			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add_notes');
 			getBMI();
@@ -683,8 +691,10 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function (){
 				autoinsert_rowdata_doctorNote("#formDoctorNote",data.nursassessment);
 				autoinsert_rowdata_doctorNote("#formDoctorNote",data.nurshistory);
 			}else{
-				// button_state_doctorNote('edit');
+				// button_state_doctorNote('empty');
 			}
+		}else{
+			reloadImage_png("a.ui.card.bodydia_doctornote",['DOCNOTE_BF_ED','DOCNOTE_BR_ED','DOCNOTE_BL_ED','DOCNOTE_BB_ED']);
 		}
 		
 		if($('.pastcurr').find('[name="toggle_type"]:checked').val() == 'past'){
@@ -733,7 +743,8 @@ function toggle_reqtype(){
 
 function populate_doctornote_getdata(){
     emptyFormdata(errorField,"#formDoctorNote",["#mrn_emergencyMain","#episno_emergencyMain"]);
-    
+	reloadImage_png("a.ui.card.bodydia_doctornote",['DOCNOTE_BF_ED','DOCNOTE_BR_ED','DOCNOTE_BL_ED','DOCNOTE_BB_ED']);
+
     var saveParam = {
         action: 'get_table_doctornote_div',
     }

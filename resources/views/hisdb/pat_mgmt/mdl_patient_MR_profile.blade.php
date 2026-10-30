@@ -1,7 +1,7 @@
 <!-- Large modal -->
 <!-- <div id="mdl_patient_info_MR" data-keyboard="false" class="modal fade ba" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" style="display: none; z-index: 100; padding-left: 0px !important;"> -->
     <!-- <div class="modal-dialog modal-lg" style="width: 750px;"> -->
-        <div class="panel-body paneldiv" style="overflow-y: auto;" id="mdl_patient_info_MR">
+        <div class="panel-body paneldiv" style="overflow-y: auto; auto; height: 430px;" id="mdl_patient_info_MR">
             <form id="frm_patient_info_MR" class="form-horizontal" autocomplete="off">
                 <input type="hidden" name="idno" id="txt_pat_idno_MR">
                 <input name="pat_mrn" id="pat_mrn_MR" type="hidden">
@@ -9,7 +9,7 @@
                 <input name="func_after" id="func_after_pat_MR" type="hidden">
                 <input name="apptidno" id="apptidno_pat_MR" type="hidden">
 
-                <div class="modal-content" style="overflow-y: auto; height:420px;">
+                <div class="modal-content" style="overflow-y: auto;">
                     <!-- <div id="mdl_patient_header_MR" class="modal-header label-info" style="position: sticky;top: 0px;z-index: 3;">
                         <button type="button" class="" data-dismiss="modal" aria-label="Close" style="float: right;
                                 color: white;

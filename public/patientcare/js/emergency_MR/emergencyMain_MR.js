@@ -38,7 +38,7 @@ $(document).ready(function (){
         }, 0);
     });
 
-    $('#emergencyMain_tab .item').tab({'onVisible': function (){
+    $('#emergencyMain_tab .top.menu .item').on('click', function (){
         let tab = $(this).data('tab');
         console.log(tab);
 
@@ -93,6 +93,8 @@ $(document).ready(function (){
                 }
                 break;
 			case 'doctornote':
+                $('#emergencyMain_tab .menu .item').tab('change tab','doctornote');
+
                 $('div#docnote_date_tbl_sticky').show();
                 $("#jqGrid_trans").jqGrid('setGridWidth', Math.floor($("#jqGrid_trans_c")[0].offsetWidth-$("#jqGrid_trans_c")[0].offsetLeft-14));
                 $("#jqGridAddNotes").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotes_c")[0].offsetWidth-$("#jqGridAddNotes_c")[0].offsetLeft));
@@ -113,6 +115,7 @@ $(document).ready(function (){
                 populate_radClinicReqFor_getdata();
                 break;
             case 'admHandover':
+                $('#emergencyMain_tab .menu .item').tab('change tab','admHandover');
                 populate_admhandover_getdata();
                 disableOtherField();
                 rdonly('#formAdmHandover');
@@ -123,7 +126,114 @@ $(document).ready(function (){
 
                 break;
         }
-    }});
+    });
+
+     // $('#doctor_requestFor .top.menu .item').tab({'onVisible': function (){
+    $('#doctor_requestFor .top.menu .item').on('click', function (){
+        let tab = $(this).data('tab');
+        // console.log(tab);
+        
+        switch(tab){
+            case 'otbook':
+                populate_otbook_getdata();
+                // textarea_init_otbook();
+                break;
+            case 'rad':
+                break;
+            case 'physio':
+                populate_physio_getdata();
+                // textarea_init_physio();
+                break;
+            case 'dressing':
+                populate_dressing_getdata();
+                // textarea_init_dressing();
+                break;
+        }
+    });
+    // }});
+    
+    // $('#doctor_radiology .top.menu .item').tab({'onVisible': function (){
+    $('#doctor_radiology .top.menu .item').on('click', function (){
+        let tab = $(this).data('tab');
+        // console.log(tab);
+        
+        switch(tab){
+            case 'radClinic':
+                populate_radClinic_getdata();
+                // textarea_init_radClinic();
+                break;
+            case 'mri':
+                populate_mri_getdata();
+                // textarea_init_mri();
+                break;
+            case 'preContrast':
+                populate_preContrast_getdata();
+                break;
+            case 'consent':
+                populate_consentForm_getdata();
+                break;
+        }
+    });
+    // }});
+    
+    // $('#requestFor .top.menu .item').tab({'onVisible': function (){
+    $('#requestFor .top.menu .item').on('click', function (){
+        let tab = $(this).data('tab');
+        // console.log(tab);
+        
+        switch(tab){
+            case 'otbookReqFor':
+                populate_otbookReqFor_getdata();
+                // textarea_init_otbookReqFor();
+                break;
+            case 'radReqFor':
+                $('#radiology .top.menu .item').tab('change tab','radClinicReqFor');
+                populate_radClinicReqFor_getdata();
+                break;
+            case 'physioReqFor':
+                populate_physioReqFor_getdata();
+                // textarea_init_physioReqFor();
+                break;
+            case 'dressingReqFor':
+                populate_dressingReqFor_getdata();
+                // textarea_init_dressingReqFor();
+                break;
+            case 'referral_letter_reqfor':
+                populate_referralLetterReqfor_getdata();
+                break;
+            case 'card_noninv_reqfor':
+                populate_card_noninv_getdata();
+                break;
+            case 'followup_reqfor':
+                populate_followupReqfor_getdata();
+                break;
+        }
+    });
+    // }});
+    
+    // $('#radiology .top.menu .item').tab({'onVisible': function (){
+    $('#radiology .top.menu .item').on('click', function(){
+        let tab = $(this).data('tab');
+        // console.log(tab);
+        
+        switch(tab){
+            case 'radClinicReqFor':
+                populate_radClinicReqFor_getdata();
+                // textarea_init_radClinicReqFor();
+                break;
+            case 'mriReqFor':
+                populate_mriReqFor_getdata();
+                // textarea_init_mriReqFor();
+                break;
+            case 'preContrastReqFor':
+                populate_preContrastReqFor_getdata();
+                break;
+            case 'consentReqFor':
+                populate_consentFormReqFor_getdata();
+                break;
+        }
+    });
+    // }});
     
 });
 
@@ -257,12 +367,16 @@ function autoinsert_rowdata(form,rowData){
 }
 
 $('#tab_emergencyMain').on('shown.bs.collapse', function (){
-    SmoothScrollTo('#tab_emergencyMain', 500);
+    SmoothScrollTo('#tab_emergencyMain', 300, 114);
     $('#emergencyMain_tab .menu .item').tab('change tab','nursing_ed');
     $("#jqGridAddNotesNursingED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesNursingED_c")[0].offsetWidth-$("#jqGridAddNotesNursingED_c")[0].offsetLeft));
     getdata_nursing();
     tri_color_set();
 	changeTextInputColor();
+
+    $('#emergencyMain_panel_title').show();
+    $('#clinical_title').hide();
+    $("#clinical_div").css("top", "48px");
 });
 
 $('#tab_emergencyMain').on('hide.bs.collapse', function (){
@@ -310,6 +424,15 @@ $('#tab_emergencyMain').on('hide.bs.collapse', function (){
     // button_state_consentFormReqFor('empty');
     // button_state_admHandover('empty');
 
+});
+
+$('#tab_emergencyMain').on('hidden.bs.collapse', function (){
+    $('#emergencyMain_tab .top.menu .item').tab('change tab','nursing_ed');
+    refreshGrid("#jqGrid", urlParam);
+    
+    $('#emergencyMain_panel_title').hide();
+    $('#clinical_title').show();
+    $("#clinical_div").css("top", "18px");
 });
 
 function check_same_usr_edit(data){
