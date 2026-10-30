@@ -351,35 +351,6 @@ $(document).ready(function (){
         },
         editParams: myEditOptions_edit_thrombo_ED
     }).jqGrid('navButtonAdd', "#jqGridPagerThrombo_ED", {
-        id: "jqGridPagerDelete_thrombo_ED",
-        caption: "", cursor: "pointer", position: "last",
-        buttonicon: "glyphicon glyphicon-trash",
-        title: "Delete Selected Row",
-        onClickButton: function (){
-            selRowId = $("#jqGridThrombo_ED").jqGrid('getGridParam', 'selrow');
-            if(!selRowId){
-                alert('Please select row');
-            }else{
-                var result = confirm("Are you sure you want to delete this row?");
-                if(result == true){
-                    param = {
-                        _token: $("#_token").val(),
-                        action: 'thrombo_ED_del',
-                        idno: selrowData('#jqGridThrombo_ED').idno,
-                    }
-                    $.post("./ptcare_nursingnote_MR/form?"+$.param(param),{oper:'del_thrombojqgrid_ED'}, function (data){
-                        
-                    }).fail(function (data){
-                        //////////////////errorText(dialog,data.responseText);
-                    }).done(function (data){
-                        refreshGrid("#jqGridThrombo_ED", urlParam_Thrombo_ED);
-                    });
-                }else{
-                    $("#jqGridPagerDelete_thrombo_ED,#jqGridPagerRefresh_thrombo_ED").show();
-                }
-            }
-        },
-    }).jqGrid('navButtonAdd', "#jqGridPagerThrombo_ED", {
         id: "jqGridPagerRefresh_thrombo_ED",
         caption: "", cursor: "pointer", position: "last",
         buttonicon: "glyphicon glyphicon-refresh",
