@@ -5,7 +5,7 @@ var editedRow = 0;
 
 $(document).ready(function (){
     
-    $('.menu .item').tab();
+    // $('#apptMainTabs.top.menu .item.apptMainItem').tab();
     
     var fdl = new faster_detail_load();
     // var radbuts = new checkradiobutton(['lvl_conscious','mental_stat','emotional_stat']);
@@ -31,10 +31,9 @@ $(document).ready(function (){
         }, 0);
     });
     
-    // $('#apptMainTabs .top.menu .item').tab({'onVisible': function (){
-    $('#apptMainTabs .top.menu .item').on('click', function (){
+    $('#apptMainTabs.top.menu .item.apptMainItem').tab({'onVisible': function (){
+    // $('#apptMainTabs .top.menu .item').on('click', function (){
         let tab = $(this).data('tab');
-        // console.log(tab);
         
         switch(tab){
             case 'docImaging':
@@ -128,8 +127,8 @@ $(document).ready(function (){
                 getdata_dietNotes();
                 break;
         }
-    });
-    // }});
+    // });
+    }});
     
     // $('#doctor_requestFor .top.menu .item').tab({'onVisible': function (){
     $('#doctor_requestFor .top.menu .item').on('click', function (){

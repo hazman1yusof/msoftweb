@@ -159,6 +159,10 @@ $(document).ready(function() {
             $('#pageDimmer').removeClass('active');
         });
     });
+    
+    if(hide_close == 'true'){
+        $('#close_iframe').hide();
+    }
 
     if(pat_mast_data != null){
         populate_patient(pat_mast_data);

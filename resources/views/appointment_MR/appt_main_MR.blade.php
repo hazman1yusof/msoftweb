@@ -24,8 +24,8 @@
             </div>
         </form>
         
-        <div id="apptMainTabs" class="ui segment">
-            <div class="ui top attached tabular menu">
+        <div class="ui segment">
+            <div class="ui top attached tabular menu" id="apptMainTabs">
                 <a class="item apptMainItem" data-tab="docImaging" id="navtab_docImaging">Document Imaging</a>
                 <a class="item apptMainItem active" data-tab="triageInfo" id="navtab_triageInfo">Triage Information</a>
                 <a class="item apptMainItem" data-tab="doctorNote" id="navtab_doctorNote">Doctor Note</a>

@@ -40,6 +40,7 @@
 <script>
     var src_from = "{{$src_from}}";
     var src_idno = "{{$src_idno}}";
+    var hide_close = "{{request()->get('hide_close')}}";
 
     @if(empty($pat_mast_data))
         var pat_mast_data = null;

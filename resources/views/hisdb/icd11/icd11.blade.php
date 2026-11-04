@@ -11,6 +11,8 @@
 </head>
 <body>
 
+
+    <input type="hidden" id="fromty" value="{{request()->get('fromty')}}">
     <!-- <h3>ICD-11 Coding Tool</h3> -->
     <div class="ui segments" style="position: relative; margin: 5px;">
         <div class="ui secondary segment bluecloudsegment" style="position: sticky; top: 0px; z-index: 3; height: 65px;">
@@ -30,13 +32,23 @@
             <input type="hidden" id="thecode">
             <input type="hidden" id="thedesc">
 
-            <form class="ui form" autofocus>
+            <!-- <form class="ui form" autofocus>
                 <label>Type to search ICD-11 code:</label>
                 <input type="text" class="ctw-input" autocomplete="off" data-ctw-ino="1" id="thesearch" autofocus >
-            </form>
+            </form> -->
 
-            <div class="ctw-window" data-ctw-ino="1"></div>
+            <!-- <div class="ctw-window" data-ctw-ino="1"></div> -->
+
+            <form class="ui form" autofocus>
+                <div class="ctw-eb-window" data-ctw-ino="1"></div>
+            </form>
         </div>
+    </div>
+
+    <div class="ui basic modal" id="read">
+      <div class="ui icon header">
+        <span id="msg">Loading...</span>
+      </div>
     </div>
 
     <script src="https://icdcdn.who.int/embeddedct/icd11ect-1.8.js"></script>
@@ -110,10 +122,32 @@
                 }else{
                     let thecode = $('#thecode').val();
                     let thedesc = $('#thedesc').val();
-
-                    alert('code: '+thecode+' -> '+thedesc);
+                    if($('#fromty').val() == 'local'){
+                        save_to_local(thecode,thedesc)
+                    }else{
+                        alert('code: '+thecode+' -> '+thedesc);
+                    }
                 }
             });
+
+
+            function save_to_local(thecode,thedesc){
+                $('.ui.basic.modal#read').modal({closable: false,transition:{
+                    showMethod   : 'fade',
+                    showDuration : 200,
+                    hideMethod   : 'fade',
+                    hideDuration : 200,}
+                }).modal('show');
+
+                $.ajaxSetup({async: false,crossDomain:true});
+                $.get( "http://127.0.0.1:5011/icd11save?code="+thecode+"&desc="+thedesc, function( data ) {
+                    
+                },'json').done(function( data ) {
+                    $('.ui.basic.modal#read').modal('hide');
+                }).fail(function() {
+                    $('.ui.basic.modal#read').modal('hide');
+                });
+            }
         });
     </script>
 

@@ -10,7 +10,7 @@ var urlParam_OT = {
 }
 
 $(document).ready(function () {
-	$('.menu .item').tab();
+	// $('.menu .item').tab();
 	stop_scroll_on();
 	$('#calendar').fullCalendar({
 		// events: events,
@@ -745,7 +745,7 @@ function getoper_status(){
 function stop_scroll_on(){
     $('div.paneldiv').on('mouseenter',function(){
         let parentdiv = $(this).parent('div.panel-collapse').attr('id');
-        SmoothScrollTo('#'+parentdiv, 300,114);
+        SmoothScrollTo('#'+parentdiv, 300,65);
         $('body').addClass('stop-scrolling');
     });
 

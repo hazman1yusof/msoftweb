@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\hisdb;
 
 use Illuminate\Http\Request;
+use stdClass;
 use App\Http\Controllers\defaultController;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +20,17 @@ class Icd11Controller extends defaultController
 
     public function show(Request $request){
         return view('hisdb.icd11.icd11');
+    }
+
+    public function givereturn(Request $request){
+        $code = $request->code;
+        $desc = $request->desc;
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        
+        return json_encode($responce, JSON_INVALID_UTF8_SUBSTITUTE);
     }
 
     private function getWhoToken()
