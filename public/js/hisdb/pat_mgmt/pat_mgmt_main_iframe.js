@@ -53,7 +53,7 @@ window.open_iframe_close = function (data){ // inside the iframe
     $('#mdl_episode_info').modal('hide');
 };
 
-if(window.location.pathname == '/appointment_MR' || window.location.pathname == '/pat_mast_MR'){
+if(window.location.pathname == '/appointment_MR' || window.location.pathname == '/pat_mast_MR' || window.location.pathname == '/ptcare_doctornoteED_MR'){
 	var url = './pat_mast_iframe?mrn='+$('#mrnMR').val()+'&episno='+$('#episnoMR').val()+'&hide_close=true';
     $("#mdl_patient_iframe").attr('src',url);
 }
