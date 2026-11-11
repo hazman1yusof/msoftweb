@@ -32,7 +32,6 @@ $(document).ready(function (){
     });
     
     $('#apptMainTabs.top.menu .item.apptMainItem').tab({'onVisible': function (){
-    // $('#apptMainTabs .top.menu .item').on('click', function (){
         let tab = $(this).data('tab');
         
         switch(tab){
@@ -127,11 +126,9 @@ $(document).ready(function (){
                 getdata_dietNotes();
                 break;
         }
-    // });
     }});
     
-    // $('#doctor_requestFor .top.menu .item').tab({'onVisible': function (){
-    $('#doctor_requestFor .top.menu .item').on('click', function (){
+    $('#doctor_requestFor .top.menu .item').tab({'onVisible': function (){
         let tab = $(this).data('tab');
         // console.log(tab);
         
@@ -151,11 +148,9 @@ $(document).ready(function (){
                 // textarea_init_dressing();
                 break;
         }
-    });
-    // }});
+    }});
     
-    // $('#doctor_radiology .top.menu .item').tab({'onVisible': function (){
-    $('#doctor_radiology .top.menu .item').on('click', function (){
+    $('#doctor_radiology .top.menu .item').tab({'onVisible': function (){
         let tab = $(this).data('tab');
         // console.log(tab);
         
@@ -175,11 +170,9 @@ $(document).ready(function (){
                 populate_consentForm_getdata();
                 break;
         }
-    });
-    // }});
+    }});
     
-    // $('#requestFor .top.menu .item').tab({'onVisible': function (){
-    $('#requestFor .top.menu .item').on('click', function (){
+    $('#requestFor .top.menu .item').tab({'onVisible': function (){
         let tab = $(this).data('tab');
         // console.log(tab);
         
@@ -210,11 +203,9 @@ $(document).ready(function (){
                 populate_followupReqfor_getdata();
                 break;
         }
-    });
-    // }});
+    }});
     
-    // $('#radiology .top.menu .item').tab({'onVisible': function (){
-    $('#radiology .top.menu .item').on('click', function(){
+    $('#radiology .top.menu .item').tab({'onVisible': function (){
         let tab = $(this).data('tab');
         // console.log(tab);
         
@@ -234,8 +225,7 @@ $(document).ready(function (){
                 populate_consentFormReqFor_getdata();
                 break;
         }
-    });
-    // }});
+    }});
     
 });
 

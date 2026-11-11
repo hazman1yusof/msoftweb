@@ -50,7 +50,7 @@
         border-color: green !important;
         background-color: green !important;
     }
-
+    
     .container_sem{
         padding-top: 15px !important
     }
@@ -120,7 +120,7 @@
     <input id="sel_date" name="sel_date" value="{{ \Carbon\Carbon::now()->toDateString() }}" type="hidden">
     <input id="_token" name="_token" value="{{ csrf_token() }}" type="hidden">
     <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
-
+    
     <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;" id="biodata_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_biodata">
             <span id="biodata_panel_title" style="display: none;">
@@ -151,7 +151,7 @@
         
         <div id="tab_biodata" class="panel-collapse collapse">
             <div class="panel-body paneldiv" style="overflow-x: hidden;">
-                <iframe style="display:block; border:none; height:98vh; width:98vw;" id="mdl_patient_iframe"></iframe>
+                <iframe style="display: block; border: none; height: 98vh; width: 98vw;" id="mdl_patient_iframe"></iframe>
             </div>
         </div>
     </div>

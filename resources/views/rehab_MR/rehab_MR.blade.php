@@ -105,22 +105,59 @@
     <input id="_token" name="_token" value="{{ csrf_token() }}" type="hidden">
     <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
     
+    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;" id="biodata_panel">
+        <div class="panel-heading clearfix collapsed" id="toggle_biodata">
+            <span id="biodata_panel_title" style="display: none;">
+                <b>NAME: <span id="name_show_biodata"></span></b><br>
+                MRN: <span id="mrn_show_biodata"></span>
+                SEX: <span id="sex_show_biodata"></span>
+                DOB: <span id="dob_show_biodata"></span>
+                AGE: <span id="age_show_biodata"></span>
+                RACE: <span id="race_show_biodata"></span>
+                RELIGION: <span id="religion_show_biodata"></span><br>
+                OCCUPATION: <span id="occupation_show_biodata"></span>
+                CITIZENSHIP: <span id="citizenship_show_biodata"></span>
+                AREA: <span id="area_show_biodata"></span>
+            </span>
+            
+            <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 12px 0 12px;" data-toggle="collapse" data-target="#tab_biodata"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 12px 0 12px;" data-toggle="collapse" data-target="#tab_biodata"></i>
+            
+            <div style="position: absolute; 
+                        padding: 0 0 0 0; 
+                        left: 40px;" id="biodata_div">
+                <span id="biodata_title">
+                    <h5><strong>Patient Biodata</strong>&nbsp;&nbsp;
+                        <span class="metal"></span></h5>
+                </span>
+            </div>
+        </div>
+        
+        <div id="tab_biodata" class="panel-collapse collapse">
+            <div class="panel-body paneldiv" style="overflow-x: hidden;">
+                <iframe style="display: block; border: none; height: 98vh; width: 98vw;" id="mdl_patient_iframe"></iframe>
+            </div>
+        </div>
+    </div>
+    
     <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;" id="rehabMain_panel">
         <div class="panel-heading clearfix collapsed" role="tab" id="toggle_rehabMain">
-            <b>NAME: <span id="name_show_rehabMain"></span></b><br>
-            MRN: <span id="mrn_show_rehabMain"></span>
-            IC: <span id="ic_show_rehabMain"></span>
-            SEX: <span id="sex_show_rehabMain"></span>
-            DOB: <span id="dob_show_rehabMain"></span>
-            AGE: <span id="age_show_rehabMain"></span>
-            RACE: <span id="race_show_rehabMain"></span><br>
-            RELIGION: <span id="religion_show_rehabMain"></span>
-            OCCUPATION: <span id="occupation_show_rehabMain"></span>
-            CITIZENSHIP: <span id="citizenship_show_rehabMain"></span>
-            AREA: <span id="area_show_rehabMain"></span>
+            <span id="rehab_panel_title" style="display: none;">
+                <b>NAME: <span id="name_show_rehabMain"></span></b><br>
+                MRN: <span id="mrn_show_rehabMain"></span>
+                IC: <span id="ic_show_rehabMain"></span>
+                SEX: <span id="sex_show_rehabMain"></span>
+                DOB: <span id="dob_show_rehabMain"></span>
+                AGE: <span id="age_show_rehabMain"></span>
+                RACE: <span id="race_show_rehabMain"></span><br>
+                RELIGION: <span id="religion_show_rehabMain"></span>
+                OCCUPATION: <span id="occupation_show_rehabMain"></span>
+                CITIZENSHIP: <span id="citizenship_show_rehabMain"></span>
+                AREA: <span id="area_show_rehabMain"></span>
+            </span>
             
-            <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_rehabMain"></i>
-            <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_rehabMain"></i>
+            <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 12px 0 12px;" data-toggle="collapse" data-target="#tab_rehabMain"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 12px 0 12px;" data-toggle="collapse" data-target="#tab_rehabMain"></i>
             
             <!-- <div style="position: absolute; 
                         padding: 0 0 0 0; 
@@ -130,15 +167,16 @@
                 <button class="ui icon tertiary button refreshbtn_phys">
                     <i class="sync alternate icon"></i>
                 </button>
-            </div>
+            </div> -->
             
             <div style="position: absolute; 
                         padding: 0 0 0 0; 
-                        right: 50px; 
-                        top: 48px;">
-                <h5><strong>Rehabilitation</strong>&nbsp;&nbsp;
-                    <span class="metal"></span></h5>
-            </div> -->
+                        left: 40px;" id="rehab_div">
+                <span id="rehab_title">
+                    <h5><strong>Rehabilitation</strong>&nbsp;&nbsp;
+                        <span class="metal"></span></h5>
+                </span>
+            </div>
         </div>
         
         <div id="tab_rehabMain" class="panel-collapse collapse">
@@ -152,7 +190,7 @@
         @include('hisdb.ordcom_MR.ordcom_MR',['phase' => '2.rehab'])
     </div>
     
-    @include('hisdb.pat_mgmt.pat_mgmt_iframe',['phase' => 'semantic'])
+    <!-- #include('hisdb.pat_mgmt.pat_mgmt_iframe',['phase' => 'semantic']) -->
     @include('patientcare.itemselector')
 @endsection
 

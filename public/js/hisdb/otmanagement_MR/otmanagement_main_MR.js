@@ -727,7 +727,7 @@ function weightCustomEdit(val,opt){
 function galGridCustomValue (elem, operation, value){
 	if(operation == 'get') {
 		return $(elem).find("input").val();
-	} 
+	}
 	else if(operation == 'set') {
 		$('input',elem).val(value);
 	}
@@ -743,13 +743,13 @@ function getoper_status(){
 }
 
 function stop_scroll_on(){
-    $('div.paneldiv').on('mouseenter',function(){
-        let parentdiv = $(this).parent('div.panel-collapse').attr('id');
-        SmoothScrollTo('#'+parentdiv, 300,65);
-        $('body').addClass('stop-scrolling');
-    });
-
-    $('div.paneldiv').on('mouseleave',function(){
-        $('body').removeClass('stop-scrolling')
-    });
+	$('div.paneldiv').on('mouseenter',function(){
+		let parentdiv = $(this).parent('div.panel-collapse').attr('id');
+		SmoothScrollTo('#'+parentdiv, 300,65);
+		$('body').addClass('stop-scrolling');
+	});
+	
+	$('div.paneldiv').on('mouseleave',function(){
+		$('body').removeClass('stop-scrolling')
+	});
 }

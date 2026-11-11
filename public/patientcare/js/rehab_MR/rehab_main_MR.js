@@ -713,4 +713,14 @@ function formatterpayer(cellvalue, option, rowObject){
 
 $('#tab_rehabMain').on('shown.bs.collapse', function (){
     SmoothScrollTo('#rehabMain_panel', 300,50);
+    
+    $('#rehab_panel_title').show();
+    $('#rehab_title').hide();
+    $("#rehab_div").css("top", "48px");
+});
+
+$('#tab_rehabMain').on('hidden.bs.collapse', function (){
+    $('#rehab_panel_title').hide();
+    $('#rehab_title').show();
+    $("#rehab_div").css("top", "18px");
 });
