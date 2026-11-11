@@ -197,7 +197,7 @@
                                                 <input class="form-control" name="Email" id="txt_pat_email_MR" placeholder="" type="email" disabled>
                                             </div>
                                             <div class="col-md-4">
-                                                <small for="txt_pat_loginid_MR">login id</small>
+                                                <small for="txt_pat_loginid_MR">Login ID</small>
                                                 <input class="form-control" name="loginid" id="txt_pat_loginid_MR" placeholder="" type="text" disabled>
                                             </div>
                                             <div class="col-md-4">
