@@ -14,12 +14,24 @@
             CITIZENSHIP: <span id="citizenship_show_wardMain_2"></span>
             AREA: <span id="area_show_wardMain_2"></span>
         </span>
-        
-        <i class="arrow fa fa-angle-double-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#jqGridWardMain_panel"></i>
-        <i class="arrow fa fa-angle-double-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#jqGridWardMain_panel"></i>
-        <div style="position: absolute; padding: 0 0 0 0; right: 50px; top: 25px;">
-            <h5>Clinical</h5>
-        </div>
+
+        <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 12px 0 12px" data-toggle="collapse" data-target="#jqGridWardMain_panel"></i>
+        <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 20px 0 12px" data-toggle="collapse" data-target="#jqGridWardMain_panel"></i >  
+
+        <div style="position: absolute;
+                        padding: 0 0 0 0;
+                        right: 0px;
+                        top: 0px;
+                        z-index: 1000;">
+        </div> 
+        <div style="position: absolute;
+                        padding: 0 0 0 0;
+                        left: 40px;" id="clinical_div">
+                <span id="clinical_title">
+                    <h5><strong>Clinical</strong>&nbsp;&nbsp;
+                        <span class="metal"></span></h5>
+                </span>
+        </div> 
     </div>
     
     <div id="jqGridWardMain_panel" class="panel-collapse collapse" data-curtype='navtab_EDAssmtIP'>

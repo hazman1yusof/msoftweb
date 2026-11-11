@@ -53,7 +53,9 @@ $(document).ready(function () {
 	});
 
 	$("#jqGrid_discharge_panel").on("shown.bs.collapse", function (){
-        $('#discharge_panel_title').show();
+		$('#discharge_panel_title').show();
+		$('#clinical_title').hide();
+		$("#clinical_div").css("top", "48px");
 
 		var saveParam = {
 			action: 'get_table_discharge',
@@ -93,8 +95,10 @@ $(document).ready(function () {
 		refreshGrid("#jqGrid_doctor_disc", urlParam_doctor_disc);
 	});
 	
-	$("#jqGrid_discharge_panel").on("hide.bs.collapse", function (){
-        $('#discharge_panel_title').hide();
+	$("#jqGrid_discharge_panel").on("hidden.bs.collapse", function (){
+		$('#discharge_panel_title').hide();
+		$('#clinical_title').hide();
+		$("#clinical_div").css("top", "48px");		
 		button_state_discharge('empty');
 		disableForm('#form_discharge');
 	});

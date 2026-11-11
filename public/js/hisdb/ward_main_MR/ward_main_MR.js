@@ -14,6 +14,8 @@ $(document).ready(function (){
         // $('#jqGridWardMain_panel').find('.nav a:first').tab('active');
 
         $('#wardMain_panel_title').show();
+        $('#clinical_title').hide();
+        $("#clinical_div").css("top", "48px");
 
         populate_triageED_currpt_getdata();
 
@@ -29,6 +31,8 @@ $(document).ready(function (){
         $("#jqGridWardMain_panel #jqGridWardMain_panel_tabs li").removeClass('active');
 
         $('#wardMain_panel_title').hide();
+        $('#clinical_title').show();
+        $("#clinical_div").css("top", "18px");
     });
     
     $("#jqGridWardMain_panel").on("show.bs.collapse", function (){
