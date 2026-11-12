@@ -257,7 +257,7 @@
 				</div>
 			@endif
 			
-		    <div class='row' style="position: relative;margin: 0 12px 12px 12px">
+		    <div class='row' style="position: relative;margin: 20px 12px 12px 12px">
 			    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;" id="biodata_panel">
 			        <div class="panel-heading clearfix collapsed" id="toggle_biodata">
 			            <span id="biodata_panel_title" style="display: none;">
@@ -296,21 +296,21 @@
 
 			@if (request()->get('epistycode') == 'IP' || request()->get('epistycode') == 'DP')
 
-				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+				<div class='row' style="position: relative;margin: 0px 12px 3px 12px;">
 					@include('hisdb.ward_main_MR.ward_main_MR')
 				</div>
 
 				@if (Auth::user()->billing == 1)
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+					<div class='row' style="position: relative;margin: 0px 12px 18px 12px;">
 						@include('hisdb.ordcom_MR.ordcom_MR',['phase' => '1'])
 					</div>
 				@endif
 
-				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+				<div class='row' style="position: relative;margin: 0px 12px 0px 12px;">
 					@include('hisdb.discharge_MR.discharge_MR',['type' => "IP",'type_desc' => "In Patient"])
 				</div>
 
-				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+				<div class='row' style="position: relative;margin: 0px 12px 12px 12px;">
 					@include('hisdb.otmanagement_MR.otmanagement_MR')
 				</div>
 

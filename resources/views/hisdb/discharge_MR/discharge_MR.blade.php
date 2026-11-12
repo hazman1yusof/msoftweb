@@ -14,7 +14,7 @@
 			AREA: <span id="area_show_discharge"></span>
 		</span>
 		
-		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid_discharge_panel"></i>
+		<!-- <i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid_discharge_panel"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid_discharge_panel"></i>
 		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right:40px; top: 25px;">
 			<h5>Discharge Summary</h5>
@@ -26,7 +26,24 @@
 				    right: 40px;
 				    top: 18px;" 
 
-		>
+		> -->
+		<i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 12px 0 12px" data-toggle="collapse" data-target="#jqGrid_discharge_panel"></i>
+        <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 20px 0 12px" data-toggle="collapse" data-target="#jqGrid_discharge_panel"></i >  
+
+        <div style="position: absolute;
+                        padding: 0 0 0 0;
+                        right: 0px;
+                        top: 0px;
+                        z-index: 1000;">
+        </div> 
+        <div style="position: absolute;
+                        padding: 0 0 0 0;
+                        left: 40px;" id="clinical_div">
+                <span id="clinical_title">
+                    <h5><strong>Discharge Summary</strong>&nbsp;&nbsp;
+                        <span class="metal"></span></h5>
+                </span>
+        </div> 
 			<!-- <div class="btn-group">
 			  <button type="button" class="btn btn-default" id="cancel_epis_btn">Cancel Episode</button>
 			  <button type="button" class="btn btn-default" id="cancel_disc_btn">Cancel Discharge</button>
