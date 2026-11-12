@@ -232,6 +232,20 @@
 
 												<label class="control-label" for="followup" style="padding:15px 1px 0px 1px">Follow Up</label>
 												<textarea id="followup" name="followup" type="text" class="form-control input-sm" rows="5" rdonly></textarea>
+
+												<span style="position:relative;">
+													<label class="control-label" for="icd11" style="padding:15px 1px 0px 1px">ICD 11 </label>
+													<span id="icd11_btn" 
+														style="border: 1px solid grey;
+														    display: inline-block;
+														    padding: 3px 3px 0px 3px;
+														    margin-bottom: 2px;
+														    border-radius: 4px;
+														    cursor: pointer;
+														    background: ghostwhite;" 
+													><i data-lucide="folder-open" width="20" height="20" color="darkgrey"></i></span>
+													<textarea id="icd11" name="icd11" type="text" class="form-control input-sm" rows="5" rdonly></textarea>
+												</span>
 											</div>
 
 

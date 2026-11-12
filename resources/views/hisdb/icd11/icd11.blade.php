@@ -12,6 +12,7 @@
 <body>
 
 
+    <input type="hidden" id="callback_param" value="{{request()->get('callback_param')}}">
     <input type="hidden" id="fromty" value="{{request()->get('fromty')}}">
     <!-- <h3>ICD-11 Coding Tool</h3> -->
     <div class="ui segments" style="position: relative; margin: 5px;">
@@ -21,7 +22,7 @@
                      Code : <b id="code_b" style="margin-left: 5px;"></b>
                      <i class="eye icon"></i>
                 </button>
-                <input type="text" autocomplete="off" id="selected" style="background: teal; color: white;">
+                <input type="text" autocomplete="off" id="selected" style="background: teal; color: white;" readonly>
 
                 <button class="ui green button " type="button" id="goback">
                      Select
@@ -125,7 +126,12 @@
                     if($('#fromty').val() == 'local'){
                         save_to_local(thecode,thedesc)
                     }else{
-                        alert('code: '+thecode+' -> '+thedesc);
+                        if (window.opener && !window.opener.closed) {
+                            window.opener.icd11_callback($('#callback_param').val(),{code:$('#thecode').val(),desc:$('#thedesc').val()});
+                            window.close();
+                        }else{
+                            alert('code: '+thecode+' -> '+thedesc);
+                        }
                     }
                 }
             });

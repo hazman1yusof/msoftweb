@@ -288,8 +288,20 @@ $(document).ready(function () {
 	});
 
 	addParamField('#jqGrid_doctor_disc', false, urlParam_doctor_disc);
-		
+
+	$('#icd11_btn').click(function(){
+		window.open('./icd11?callback_param=discharge', '_blank');
+	});
+
 });
+
+function icd11_callback(callback_param,icdobj){
+	console.log(callback_param);
+	console.log(icdobj);
+	if(callback_param == 'discharge'){
+		$('#icd11').val(icdobj.code+' - '+icdobj.desc);
+	}
+}
 
 button_state_discharge('empty');
 	function button_state_discharge(state){
@@ -469,7 +481,7 @@ button_state_discharge('empty');
 	}
 	
 	function textarea_init_discharge(){
-		$('textarea#diagfinal,textarea#patologist,textarea#clinicalnote,textarea#phyexam,textarea#diagprov,textarea#treatment,textarea#summary,textarea#followup').each(function (){
+		$('textarea#diagfinal,textarea#patologist,textarea#clinicalnote,textarea#phyexam,textarea#diagprov,textarea#treatment,textarea#summary,textarea#followup,textarea#icd11').each(function (){
 			if(this.value.trim() == ''){
 				this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
 			}else{
