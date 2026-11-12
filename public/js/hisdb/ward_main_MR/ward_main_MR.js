@@ -336,6 +336,8 @@ function populate_wardMain(obj){
     $("#bednum_wardMain").val(obj.bednum);
     $("#age_wardMain").val(dob_age(obj.DOB));
     $("#isPregnant_wardMain").val(obj.pregnant);
+    $("#adm_date").text(moment(obj.reg_date).format('DD/MM/YYYY'));
+    $("#epistype").text(obj.desc);
 }
 
 function autoinsert_rowdata(form,rowData){

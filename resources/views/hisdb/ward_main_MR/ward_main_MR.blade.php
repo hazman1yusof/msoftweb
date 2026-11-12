@@ -25,13 +25,19 @@
                         z-index: 1000;">
         </div> 
         <div style="position: absolute;
-                        padding: 0 0 0 0;
-                        left: 40px;" id="clinical_div">
-                <span id="clinical_title">
-                    <h5><strong>Clinical</strong>&nbsp;&nbsp;
-                        <span class="metal"></span></h5>
-                </span>
-        </div> 
+                    padding: 0 0 0 0;
+                    left: 40px;" id="clinical_div">
+            <span id="clinical_title">
+                <h5><strong>Clinical</strong>&nbsp;&nbsp;
+                    <span class="metal"></span></h5>
+            </span>
+        </div>
+        <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 100px; top: 5px;">
+			<span><b>Admission Date : </b></span>
+			<span id="adm_date"></span>
+			<br><span><b>Episode Type : </b></span>
+            <span id="epistype"></span>
+		</div>
     </div>
     
     <div id="jqGridWardMain_panel" class="panel-collapse collapse" data-curtype='navtab_EDAssmtIP'>
