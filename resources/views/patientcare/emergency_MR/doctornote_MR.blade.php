@@ -176,7 +176,13 @@
                         <h5><strong>Clinical</strong>&nbsp;&nbsp;
                             <span class="metal"></span></h5>
                     </span>
-            </div> 
+            </div>
+            <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 100px; top: 5px;">
+                <span><b>Registered Date : </b></span>
+                <span id="reg_date"></span>
+                <br><span><b>Episode Type : </b></span>
+                <span id="epistype"></span>
+            </div>
         </div>
 
         <div id="tab_emergencyMain" class="panel-collapse collapse">

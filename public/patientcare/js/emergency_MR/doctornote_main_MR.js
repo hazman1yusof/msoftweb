@@ -246,6 +246,8 @@ $(document).ready(function () {
 				{ label: 'stats_diet', name: 'stats_diet', hidden: true },
 				{ label: 'doctorname', name: 'doctorname', hidden: true },
 				{ label: ' ', name: ' ' ,formatter: formatter_btn, width: 70},
+				{ label: 'regDate', name: 'regDate', hidden: true },
+				{ label: 'desc', name: 'desc', hidden: true },
 				
 			],
 			autowidth: true,

@@ -327,6 +327,8 @@ function populate_emergencyMain(obj){
 	$('#citizenship_show_emergency').text(if_none(obj.Citizencode).toUpperCase());
 	$('#area_show_emergency').text(if_none(obj.AreaCode).toUpperCase());
    
+    $("#reg_date").text(moment(obj.regDate).format('DD/MM/YYYY'));
+    $("#epistype").text(obj.desc);
    
     // formEmergencyMain
     $('#mrn_emergencyMain').val(obj.MRN);
