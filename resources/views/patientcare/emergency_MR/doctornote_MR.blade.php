@@ -177,7 +177,7 @@
                             <span class="metal"></span></h5>
                     </span>
             </div>
-            <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 100px; top: 5px;">
+            <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 100px; top: 5px;display:none;" id="regdate_title">
                 <span><b>Registered Date : </b></span>
                 <span id="reg_date"></span>
                 <br><span><b>Episode Type : </b></span>
