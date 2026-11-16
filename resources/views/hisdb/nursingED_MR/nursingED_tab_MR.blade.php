@@ -3,7 +3,7 @@
         <form class='form-horizontal' style='width: 99%;' id='formTriageInfoED'>
             <div class='col-md-12'>
                 <div class="panel panel-default">
-                    <div class="panel-heading text-center" style="position: sticky; top: 0px; z-index: 3;">EMERGENCY NURSING ASSESSMENT</div>
+                    <div class="panel-heading text-center" style="position: static; top: 0px; z-index: 3;">EMERGENCY NURSING ASSESSMENT</div>
                     <div class="panel-body">
                         <div class='col-md-6'>
                             <div class="panel panel-info">
