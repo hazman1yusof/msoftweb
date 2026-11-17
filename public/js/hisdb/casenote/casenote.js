@@ -46,7 +46,8 @@ $(document).ready(function (){
 		colModel: [
 			{ label: 'MRN', name: 'MRN', width: 30, canSearch: true, hidden: true },
 			{ label: 'Episode', name: 'ep_episno', width: 30, canSearch: false },
-			{ label: 'Type', name: 'ep_epistycode', width: 30 },
+			{ label: 'Type', name: 'ep_epistycode', width: 30, hidden: true },
+			{ label: 'Type', name: 'epistycodeDesc', width: 30 },
 			{ label: 'Reg Date', name: 'ep_regdate', width: 50, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'Case', name: 'case_description', width: 50, editoptions: { style: "text-transform: uppercase" } },
 			{ label: 'Pt Visit', name: 'ep_regdept', width: 30 },
