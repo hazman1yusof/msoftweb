@@ -264,6 +264,9 @@ function empty_apptMain(){
     $('#citizenship_show_apptMain').text('');
     $('#area_show_apptMain').text('');
     
+    $('#regdate_show_apptMain').text('');
+    $('#epistycode_show_apptMain').text('');
+    
     // formApptMain
     $('#mrn_apptMain').val('');
     $("#episno_apptMain").val('');
@@ -285,6 +288,9 @@ function populate_apptMain(obj){
     $('#occupation_show_apptMain').text(if_none(obj.OccupCode).toUpperCase());
     $('#citizenship_show_apptMain').text(if_none(obj.Citizencode).toUpperCase());
     $('#area_show_apptMain').text(if_none(obj.AreaCode).toUpperCase());
+    
+    $('#regdate_show_apptMain').text(obj.ep_regdate);
+    $('#epistycode_show_apptMain').text(obj.epistycodeDesc);
     
     // formApptMain
     $('#mrn_apptMain').val(obj.MRN);
@@ -341,7 +347,7 @@ $('#tab_apptMain').on('shown.bs.collapse', function (){
     //     getdata_triageAppt();
     // }
     
-    $('#apptMain_panel_title').show();
+    $('#apptMain_panel_title, #clinical_div2').show();
     $('#clinical_title').hide();
     $("#clinical_div").css("top", "48px");
 });
@@ -355,7 +361,7 @@ $('#tab_apptMain').on('hidden.bs.collapse', function (){
     $('#apptMainTabs .top.menu .item').tab('change tab','triageInfo');
     refreshGrid("#jqGrid", urlParam);
     
-    $('#apptMain_panel_title').hide();
+    $('#apptMain_panel_title, #clinical_div2').hide();
     $('#clinical_title').show();
     $("#clinical_div").css("top", "18px");
 });

@@ -132,6 +132,8 @@ $(document).ready(function () {
 				{ label: 'stats_physio', name: 'stats_physio', hidden: true },
 				{ label: 'stats_diet', name: 'stats_diet', hidden: true },
 				{ label: 'doctorname', name: 'doctorname', hidden: true },
+				{ label: 'ep_regdate', name: 'ep_regdate', formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd/m/Y' }, hidden: true },
+				{ label: 'epistycodeDesc', name: 'epistycodeDesc', hidden: true },
 			],
 			autowidth: false,
 			viewrecords: true,
@@ -258,7 +260,8 @@ $(document).ready(function () {
 				{ label: ' ', name: ' ' ,formatter: formatter_btn, width: 70},
 				{ label: 'billtype', name: 'billtype', hidden: true },
 				{ label: 'billtypeDesc', name: 'billtypeDesc', hidden: true },
-
+				{ label: 'ep_regdate', name: 'ep_regdate', formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd/m/Y' }, hidden: true },
+				{ label: 'epistycodeDesc', name: 'epistycodeDesc', hidden: true },
 			],
 			autowidth: true,
 			shrinkToFit: true,
