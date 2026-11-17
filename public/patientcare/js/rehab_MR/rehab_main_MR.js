@@ -128,7 +128,9 @@ $(document).ready(function () {
                 { label: 'stats_physio', name: 'stats_physio', hidden: true },
                 { label: 'stats_diet', name: 'stats_diet', hidden: true },
                 { label: 'doctorname', name: 'doctorname', hidden: true },
-                { label: ' ', name: ' ' ,formatter: formatter_btn, width: 70},
+                { label: ' ', name: ' ', formatter: formatter_btn, width: 70 },
+                { label: 'ep_regdate', name: 'ep_regdate', formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd/m/Y' }, hidden: true },
+                { label: 'epistycodeDesc', name: 'epistycodeDesc', hidden: true },
             ],
             autowidth: false,
             viewrecords: true,
@@ -243,7 +245,9 @@ $(document).ready(function () {
                 { label: 'stats_physio', name: 'stats_physio', hidden: true },
                 { label: 'stats_diet', name: 'stats_diet', hidden: true },
                 { label: 'doctorname', name: 'doctorname', hidden: true },
-                { label: ' ', name: ' ' ,formatter: formatter_btn, width: 70},
+                { label: ' ', name: ' ', formatter: formatter_btn, width: 70 },
+                { label: 'ep_regdate', name: 'ep_regdate', formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd/m/Y' }, hidden: true },
+                { label: 'epistycodeDesc', name: 'epistycodeDesc', hidden: true },
             ],
             autowidth: true,
             shrinkToFit: true,
@@ -714,13 +718,13 @@ function formatterpayer(cellvalue, option, rowObject){
 $('#tab_rehabMain').on('shown.bs.collapse', function (){
     SmoothScrollTo('#rehabMain_panel', 300,50);
     
-    $('#rehab_panel_title').show();
+    $('#rehab_panel_title, #rehab_div2').show();
     $('#rehab_title').hide();
     $("#rehab_div").css("top", "48px");
 });
 
 $('#tab_rehabMain').on('hidden.bs.collapse', function (){
-    $('#rehab_panel_title').hide();
+    $('#rehab_panel_title, #rehab_div2').hide();
     $('#rehab_title').show();
     $("#rehab_div").css("top", "18px");
 });

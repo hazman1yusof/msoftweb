@@ -177,6 +177,13 @@
                         <span class="metal"></span></h5>
                 </span>
             </div>
+            
+            <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 100px; top: 5px; display: none;" id="rehab_div2">
+                <span><b>Registered Date : </b></span>
+                <span id="regdate_show_rehabMain"></span>
+                <br><span><b>Episode Type : </b></span>
+                <span id="epistycode_show_rehabMain"></span>
+            </div>
         </div>
         
         <div id="tab_rehabMain" class="panel-collapse collapse">

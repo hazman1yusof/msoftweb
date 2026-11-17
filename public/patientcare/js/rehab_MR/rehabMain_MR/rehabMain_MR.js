@@ -46,7 +46,6 @@ conf = {
 };
 
 function empty_rehabMain(){
-
     // panel header
     $('#name_show_rehabMain').text('');
     $('#mrn_show_rehabMain').text('');
@@ -60,6 +59,9 @@ function empty_rehabMain(){
     $('#citizenship_show_rehabMain').text('');
     $('#area_show_rehabMain').text('');
     
+    $('#regdate_show_rehabMain').text('');
+    $('#epistycode_show_rehabMain').text('');
+    
     // formRehabMain
     $('#mrn_rehabMain').val('');
     $("#episno_rehabMain").val('');
@@ -67,8 +69,6 @@ function empty_rehabMain(){
 }
 
 function populate_rehabMain(obj){
-   
-
     // panel header
     $('#name_show_rehabMain').text(obj.Name);
     $('#mrn_show_rehabMain').text(("0000000" + obj.MRN).slice(-7));
@@ -79,16 +79,18 @@ function populate_rehabMain(obj){
 	$('#race_show_rehabMain').text(if_none(obj.raceDesc).toUpperCase());
 	$('#religion_show_rehabMain').text(if_none(obj.religion).toUpperCase());
 	$('#occupation_show_rehabMain').text(if_none(obj.OccupCode).toUpperCase());
-	$('#citizenship_show_rehabMain').text(if_none(obj.Citizencode).toUpperCase());
-	$('#area_show_rehabMain').text(if_none(obj.AreaCode).toUpperCase());
-   
+    $('#citizenship_show_rehabMain').text(if_none(obj.Citizencode).toUpperCase());
+    $('#area_show_rehabMain').text(if_none(obj.AreaCode).toUpperCase());
+    
+    $('#regdate_show_rehabMain').text(obj.ep_regdate);
+    $('#epistycode_show_rehabMain').text(obj.epistycodeDesc);
+    
     // formOccupTherapy
     $('#mrn_rehabMain').val(obj.MRN);
     $("#episno_rehabMain").val(obj.Episno);
     $("#age_rehabMain").val(dob_age(obj.DOB));
 
     // $("#tab_occupTherapy").collapse('hide');
-
 }
 
 function autoinsert_rowdata(form,rowData){
