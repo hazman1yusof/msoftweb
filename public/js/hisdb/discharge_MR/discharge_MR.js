@@ -88,7 +88,7 @@ $(document).ready(function () {
 		SmoothScrollTo("#jqGrid_discharge_panel", 500);
 		
 		$('#discharge_panel_title').show();
-		$('#dishcarge_title').hide();
+		$('#discharge_title').hide();
 		$("#discharge_div").css("top", "48px");
 
 		$("#jqGrid_doctor_disc").jqGrid ('setGridWidth', Math.floor($("#jqGrid_doctor_disc_c")[0].offsetWidth-$("#jqGrid_doctor_disc_c")[0].offsetLeft-0));
@@ -99,8 +99,8 @@ $(document).ready(function () {
 	
 	$("#jqGrid_discharge_panel").on("hidden.bs.collapse", function (){
 		$('#discharge_panel_title').hide();
-		$('#dishcarge_title').show();
-		$("#discharge_div").css("top", "48px");		
+		$('#discharge_title').show();
+		$("#discharge_div").css("top", "18px");		
 		button_state_discharge('empty');
 		disableForm('#form_discharge');
 	});

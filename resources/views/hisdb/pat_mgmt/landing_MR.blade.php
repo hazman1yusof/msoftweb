@@ -306,7 +306,7 @@
 					</div>
 				@endif
 
-				<div class='row' style="position: relative;margin: 0px 12px 0px 12px;">
+				<div class='row' style="position: relative;margin: 0px 12px 3px 12px;">
 					@include('hisdb.discharge_MR.discharge_MR',['type' => "IP",'type_desc' => "In Patient"])
 				</div>
 

@@ -26,7 +26,7 @@
         <div style="position: absolute;
                         padding: 0 0 0 0;
                         left: 40px;" id="discharge_div">
-                <span id="dishcarge_title">
+                <span id="discharge_title">
                     <h5><strong>Discharge Summary</strong>&nbsp;&nbsp;
                         <span class="metal"></span></h5>
                 </span>
