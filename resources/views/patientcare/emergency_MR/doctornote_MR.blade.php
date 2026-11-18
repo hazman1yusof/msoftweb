@@ -110,8 +110,8 @@
     <input id="_token" name="_token" value="{{ csrf_token() }}" type="hidden">
     <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
 
-   <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;" id="biodata_panel">
-        <div class="panel-heading clearfix collapsed" id="toggle_biodata">
+   <div class="panel panel-default" style="z-index: 100; position: relative; margin: -15px 5px 10px 0px;" id="biodata_panel">
+        <div class="panel-heading clearfix" id="toggle_biodata">
             <span id="biodata_panel_title" style="display: none;">
                 <b>NAME: <span id="name_show_biodata"></span></b><br>
                 MRN: <span id="mrn_show_biodata"></span>
@@ -138,14 +138,14 @@
             </div>
         </div>
         
-        <div id="tab_biodata" class="panel-collapse collapse">
-            <div class="panel-body paneldiv" style="overflow-x: hidden;">
+        <div id="tab_biodata" class="panel-collapse active">
+            <div class="panel-body paneldiv" style="overflow-x: hidden;height: calc(70vh - 60px);">
                 <iframe style="display:block; border:none; height:98vh; width:98vw;" id="mdl_patient_iframe"></iframe>
             </div>
         </div>
     </div>
 
-    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="emergencyMain_panel">
+    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 5px 10px 0px" id="emergencyMain_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_emergencyMain" >
             <span id="emergencyMain_panel_title" style="display: none;">
                 <b>NAME: <span id="name_show_emergency"></span></b><br>
@@ -192,7 +192,7 @@
         </div>
     </div>
 
-    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px;" id="ordcom_panel">
+    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 5px 10px 0px;" id="ordcom_panel">
         @include('hisdb.ordcom_MR.ordcom_MR',['phase' => '2'])
     </div>
 
