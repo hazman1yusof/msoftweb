@@ -519,7 +519,7 @@ $('#tab_doctornote').on('show.bs.collapse', function (){
 });
 
 $('#tab_doctornote').on('shown.bs.collapse', function (){
-    SmoothScrollTo('#tab_doctornote', 200);
+    SmoothScrollTo('#tab_doctornote', 300,78);
     $('div#docNoteAppt_date_tbl_sticky').show();
     
     docNoteAppt_date_tbl.ajax.url("./doctorNoteAppt_MR/table?"+$.param(dateParam_docNoteAppt)).load(function (data){

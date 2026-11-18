@@ -11,7 +11,7 @@ var urlParam_OT = {
 
 $(document).ready(function () {
 	// $('.menu .item').tab();
-	stop_scroll_on();
+	// stop_scroll_on();
 	$('#calendar').fullCalendar({
 		// events: events,
 		defaultView: 'month',
@@ -742,14 +742,14 @@ function getoper_status(){
 	return {value:"MAJOR:MAJOR;MINOR:MINOR"};
 }
 
-function stop_scroll_on(){
-	$('div.paneldiv').on('mouseenter',function(){
-		let parentdiv = $(this).parent('div.panel-collapse').attr('id');
-		SmoothScrollTo('#'+parentdiv, 300,65);
-		$('body').addClass('stop-scrolling');
-	});
+// function stop_scroll_on(){
+// 	$('div.paneldiv').on('mouseenter',function(){
+// 		let parentdiv = $(this).parent('div.panel-collapse').attr('id');
+// 		SmoothScrollTo('#'+parentdiv, 300,65);
+// 		$('body').addClass('stop-scrolling');
+// 	});
 	
-	$('div.paneldiv').on('mouseleave',function(){
-		$('body').removeClass('stop-scrolling')
-	});
-}
+// 	$('div.paneldiv').on('mouseleave',function(){
+// 		$('body').removeClass('stop-scrolling')
+// 	});
+// }

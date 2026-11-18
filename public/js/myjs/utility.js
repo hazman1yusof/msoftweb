@@ -2242,7 +2242,8 @@ function ret_parsefloat(int){
 	}
 }
 
-function SmoothScrollTo(id_or_Name, timelength,minustop=50,callback){
+function SmoothScrollTo(id_or_Name, timelength,minustop=78,callback){
+	console.log(minustop);
   var timelength = timelength || 500;
   if($(id_or_Name).offset() != undefined){
 	  $('html, body').animate({

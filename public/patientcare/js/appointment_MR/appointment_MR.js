@@ -592,7 +592,7 @@ function stop_scroll_on(){
         let parentdiv = $(this).parent('div.panel-collapse').attr('id');
         switch(parentdiv){
             case 'jqGrid_ordcom_panel': SmoothScrollTo('#'+parentdiv, 300,70);break;
-            default : SmoothScrollTo('#'+parentdiv, 300);break;
+            default : SmoothScrollTo('#'+parentdiv, 300,78); console.log('sini'); break;
         }
 
         $('body').addClass('stop-scrolling');

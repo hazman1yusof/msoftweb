@@ -321,7 +321,7 @@ function autoinsert_rowdata(form,rowData){
 }
 
 $('#tab_apptMain').on('shown.bs.collapse', function (){
-    SmoothScrollTo('#tab_apptMain', 300, 114);
+    SmoothScrollTo('#tab_apptMain', 300, 10);
     $('#apptMainTabs .top.menu .item').tab('change tab','triageInfo');
     // $('#apptMainTabs .ui.menu').find('.item').tab('change tab', 'triageInfo');
     
