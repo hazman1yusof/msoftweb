@@ -376,7 +376,7 @@ $('#tab_emergencyMain').on('shown.bs.collapse', function (){
     tri_color_set();
 	changeTextInputColor();
 
-    $('#emergencyMain_panel_title').show();
+    $('#emergencyMain_panel_title, #regdate_title').show();
     $('#clinical_title').hide();
     $("#clinical_div").css("top", "48px");
 });
@@ -432,7 +432,7 @@ $('#tab_emergencyMain').on('hidden.bs.collapse', function (){
     $('#emergencyMain_tab .top.menu .item').tab('change tab','nursing_ed');
     refreshGrid("#jqGrid", urlParam);
     
-    $('#emergencyMain_panel_title').hide();
+    $('#emergencyMain_panel_title, #regdate_title').hide();
     $('#clinical_title').show();
     $("#clinical_div").css("top", "18px");
 });

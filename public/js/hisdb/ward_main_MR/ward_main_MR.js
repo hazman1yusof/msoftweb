@@ -13,7 +13,7 @@ $(document).ready(function (){
         
         // $('#jqGridWardMain_panel').find('.nav a:first').tab('active');
 
-        $('#wardMain_panel_title').show();
+        $('#wardMain_panel_title, #admdate_title').show();
         $('#clinical_title').hide();
         $("#clinical_div").css("top", "48px");
 
@@ -30,7 +30,7 @@ $(document).ready(function (){
         $("#jqGridWardMain_panel > div").scrollTop(0);
         $("#jqGridWardMain_panel #jqGridWardMain_panel_tabs li").removeClass('active');
 
-        $('#wardMain_panel_title').hide();
+        $('#wardMain_panel_title, #admdate_title').hide();
         $('#clinical_title').show();
         $("#clinical_div").css("top", "18px");
     });

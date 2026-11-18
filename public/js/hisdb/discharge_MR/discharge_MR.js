@@ -53,9 +53,6 @@ $(document).ready(function () {
 	});
 
 	$("#jqGrid_discharge_panel").on("shown.bs.collapse", function (){
-		$('#discharge_panel_title').show();
-		$('#clinical_title').hide();
-		$("#clinical_div").css("top", "48px");
 
 		var saveParam = {
 			action: 'get_table_discharge',
@@ -89,6 +86,11 @@ $(document).ready(function () {
 		});
 		
 		SmoothScrollTo("#jqGrid_discharge_panel", 500);
+		
+		$('#discharge_panel_title').show();
+		$('#discharge_title').hide();
+		$("#discharge_div").css("top", "48px");
+
 		$("#jqGrid_doctor_disc").jqGrid ('setGridWidth', Math.floor($("#jqGrid_doctor_disc_c")[0].offsetWidth-$("#jqGrid_doctor_disc_c")[0].offsetLeft-0));
 		urlParam_doctor_disc.filterCol = ['da.compcode','da.episno','da.mrn'],
 		urlParam_doctor_disc.filterVal = ['session.compcode',$("#episno_discharge").val(),$("#mrn_discharge").val()]
@@ -97,8 +99,8 @@ $(document).ready(function () {
 	
 	$("#jqGrid_discharge_panel").on("hidden.bs.collapse", function (){
 		$('#discharge_panel_title').hide();
-		$('#clinical_title').hide();
-		$("#clinical_div").css("top", "48px");		
+		$('#discharge_title').show();
+		$("#discharge_div").css("top", "18px");		
 		button_state_discharge('empty');
 		disableForm('#form_discharge');
 	});

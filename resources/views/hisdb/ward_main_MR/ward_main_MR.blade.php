@@ -32,7 +32,7 @@
                     <span class="metal"></span></h5>
             </span>
         </div>
-        <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 100px; top: 5px;">
+        <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 100px; top: 5px;display:none;" id="admdate_title">
 			<span><b>Admission Date : </b></span>
 			<span id="adm_date"></span>
 			<br><span><b>Episode Type : </b></span>
