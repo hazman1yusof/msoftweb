@@ -6,11 +6,11 @@
     <input name="epistycode" id="epistycode" type="hidden" value="{{request()->get('epistycode')}}">
     
     <div class="ui stackable two column grid" style="display: none;">
-        <div class="five wide tablet five wide computer column" id="calendar_div">
+        <!-- <div class="five wide tablet five wide computer column" id="calendar_div">
             <div class="ui orange segment" style="z-index:100">
                 <div id="calendar"></div>
             </div>
-        </div>
+        </div> -->
         
         <div class="eleven wide tablet eleven wide computer right floated column" style="margin:0px;" id="jqgrid_OT_div">
             <div class="ui segment jqgridsegment" style="padding-bottom: 40px;">

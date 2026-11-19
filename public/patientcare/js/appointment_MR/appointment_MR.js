@@ -12,91 +12,91 @@ var urlParam = {
 $(document).ready(function () {
     stop_scroll_on();
 
-	$('#calendar').fullCalendar({
-		// events: events,
-  		defaultView: 'month',
-  		header: {
-			left: 'prev,next today',
-			center: 'title',
-			right: 'month,listMonth'
-		},
-		buttonText:{
-			today: "Today"
-		},
-		contentHeight:"auto",
-		dayClick: function(date, allDay, jsEvent, view) {
-			$( ".fc-bg td.fc-day" ).removeClass( "selected_day" );
-			$(this).addClass( "selected_day" );
+	// $('#calendar').fullCalendar({
+	// 	// events: events,
+  	// 	defaultView: 'month',
+  	// 	header: {
+	// 		left: 'prev,next today',
+	// 		center: 'title',
+	// 		right: 'month,listMonth'
+	// 	},
+	// 	buttonText:{
+	// 		today: "Today"
+	// 	},
+	// 	contentHeight:"auto",
+	// 	dayClick: function(date, allDay, jsEvent, view) {
+	// 		$( ".fc-bg td.fc-day" ).removeClass( "selected_day" );
+	// 		$(this).addClass( "selected_day" );
 
-			urlParam.filterVal[0] = date.format('YYYY-MM-DD');
+	// 		urlParam.filterVal[0] = date.format('YYYY-MM-DD');
 
-			$('#sel_date').val(date.format('YYYY-MM-DD'));
-			refreshGrid("#jqGrid", urlParam);
+	// 		$('#sel_date').val(date.format('YYYY-MM-DD'));
+	// 		refreshGrid("#jqGrid", urlParam);
 
-		},
-		eventRender: function(eventObj, $el) {
-			$(".fc-today-button").html('<small class="mysmall">'+moment().format('ddd')+'</small><br/><b class="myb">'+moment().format('DD')+'</b>');
-			// $('div.fc-right').append('<p>sdssd</p>').insertAfter
-		},
-		eventAfterRender: function(event, element, view){
-			let d1 = new Date(event.start.format('YYYY-MM-DD'));
-			let d2 = new Date($('#sel_date').val());
-			if(d1.getTime() === d2.getTime()){
-				$('#no_of_pat').text(event.title.split(" ")[0]);
-			}
-		},
-		eventClick: function(event) {
-			var view = $('#calendar').fullCalendar('getView');
-			if(view.type == 'listMonth'){
-				urlParam.filterVal[0] = event.start.format('YYYY-MM-DD');
-				refreshGrid("#jqGrid", urlParam);
-			}
-		},
-		eventSources: [
-			{	
-				id: 'doctornote_event',
-				url: './appointment_MR/table',
-				type: 'GET',
-				data: {
-					type: 'apptbook',
-					action: 'doctornote_event'
-				}
-			},
-	    ]
-	});
+	// 	},
+	// 	eventRender: function(eventObj, $el) {
+	// 		$(".fc-today-button").html('<small class="mysmall">'+moment().format('ddd')+'</small><br/><b class="myb">'+moment().format('DD')+'</b>');
+	// 		// $('div.fc-right').append('<p>sdssd</p>').insertAfter
+	// 	},
+	// 	eventAfterRender: function(event, element, view){
+	// 		let d1 = new Date(event.start.format('YYYY-MM-DD'));
+	// 		let d2 = new Date($('#sel_date').val());
+	// 		if(d1.getTime() === d2.getTime()){
+	// 			$('#no_of_pat').text(event.title.split(" ")[0]);
+	// 		}
+	// 	},
+	// 	eventClick: function(event) {
+	// 		var view = $('#calendar').fullCalendar('getView');
+	// 		if(view.type == 'listMonth'){
+	// 			urlParam.filterVal[0] = event.start.format('YYYY-MM-DD');
+	// 			refreshGrid("#jqGrid", urlParam);
+	// 		}
+	// 	},
+	// 	eventSources: [
+	// 		{	
+	// 			id: 'doctornote_event',
+	// 			url: './appointment_MR/table',
+	// 			type: 'GET',
+	// 			data: {
+	// 				type: 'apptbook',
+	// 				action: 'doctornote_event'
+	// 			}
+	// 		},
+	//     ]
+	// });
 
-	$('#refresh_main').click(function(){
-		$('#calendar').fullCalendar( 'refetchEventSources', 'doctornote_event' );
-		refreshGrid("#jqGrid", urlParam);
-	});
+	// $('#refresh_main').click(function(){
+	// 	$('#calendar').fullCalendar( 'refetchEventSources', 'doctornote_event' );
+	// 	refreshGrid("#jqGrid", urlParam);
+	// });
 
 	var istablet = $(window).width() <= 1024;
 	// istablet =  true;
 
 	if(istablet){
-		$('#calendar_div').hide();
+		// $('#calendar_div').hide();
 		$('.if_tablet').show();
 
 		$('#jqgrid_div').removeClass('eleven wide tablet eleven wide computer');
 		$('#jqgrid_div').addClass('sixteen wide tablet sixteen wide computer');
 
-		$('#button_calendar').calendar({
-			type: 'date',
-			today: true,
-			onChange: function(date){
-			},
-			onSelect: function(date,mode){
+		// $('#button_calendar').calendar({
+		// 	type: 'date',
+		// 	today: true,
+		// 	onChange: function(date){
+		// 	},
+		// 	onSelect: function(date,mode){
 
-				let new_date = date.toISOString().split('T')[0];
+		// 		let new_date = date.toISOString().split('T')[0];
 
-				urlParam.filterVal[0] = new_date;
+		// 		urlParam.filterVal[0] = new_date;
 
-				$('#sel_date').val(new_date);
-				refreshGrid("#jqGrid", urlParam);
-				$('#sel_date_span').text(new_date);
-			}
+		// 		$('#sel_date').val(new_date);
+		// 		refreshGrid("#jqGrid", urlParam);
+		// 		$('#sel_date_span').text(new_date);
+		// 	}
 
-		});
+		// });
 
 		$("#jqGrid").jqGrid({
 			datatype: "local",
@@ -420,92 +420,92 @@ $(document).ready(function () {
 
 	}
 
-	$('button#timer_play').click(function(){
-		timer_start_tbl();
-		$('button#timer_play').addClass('disabled');
-		$('button#timer_stop').removeClass('disabled');
-	});
+	// $('button#timer_play').click(function(){
+	// 	timer_start_tbl();
+	// 	$('button#timer_play').addClass('disabled');
+	// 	$('button#timer_stop').removeClass('disabled');
+	// });
 
-	$('button#timer_stop').click(function(){
-		timer_stop_tbl();
-		$('button#timer_play').removeClass('disabled');
-		$('button#timer_stop').addClass('disabled');
-	});
+	// $('button#timer_stop').click(function(){
+	// 	timer_stop_tbl();
+	// 	$('button#timer_play').removeClass('disabled');
+	// 	$('button#timer_stop').addClass('disabled');
+	// });
 
-	var fetch_tbl,fetch_evt;
-	// timer_start_tbl();
-	// timer_start_evt();
+	// var fetch_tbl,fetch_evt;
+	// // timer_start_tbl();
+	// // timer_start_evt();
 
-	function timer_start_tbl(){
-		fetch_tbl = setInterval(function(){
-			$('.jqgridsegment').addClass('loading');
-			refreshGrid("#jqGrid", urlParam);
-		}, 5000);
-	}
+	// function timer_start_tbl(){
+	// 	fetch_tbl = setInterval(function(){
+	// 		$('.jqgridsegment').addClass('loading');
+	// 		refreshGrid("#jqGrid", urlParam);
+	// 	}, 5000);
+	// }
 
-	function timer_start_evt(){
-		fetch_evt = setInterval(function(){
-			$('#calendar').fullCalendar( 'refetchEventSources', 'doctornote_event' );
-		}, 5000);
-	}
+	// function timer_start_evt(){
+	// 	fetch_evt = setInterval(function(){
+	// 		$('#calendar').fullCalendar( 'refetchEventSources', 'doctornote_event' );
+	// 	}, 5000);
+	// }
 
-	function timer_stop_tbl(){
-	  	clearInterval(fetch_tbl);
-	  	clearInterval(fetch_evt);
-	}
+	// function timer_stop_tbl(){
+	//   	clearInterval(fetch_tbl);
+	//   	clearInterval(fetch_evt);
+	// }
 
-	function ordercompleteInit(){
+	// function ordercompleteInit(){
 
-		$('input[type=checkbox].checkbox_completed').on('change',function(e){
-			let cont = visiblecancel();
+	// 	$('input[type=checkbox].checkbox_completed').on('change',function(e){
+	// 		let cont = visiblecancel();
 
-			if(cont ==  false){
-				$.alert({
-				    title: 'Alert',
-				    content: 'Please enter charges',
-				});
-				$(this).prop('checked', false);
-			}else{
-				let self = this;
-				let rowid = $(this).data('rowid');
-				let rowdata = $('#jqGrid').jqGrid ('getRowData', rowid);
+	// 		if(cont ==  false){
+	// 			$.alert({
+	// 			    title: 'Alert',
+	// 			    content: 'Please enter charges',
+	// 			});
+	// 			$(this).prop('checked', false);
+	// 		}else{
+	// 			let self = this;
+	// 			let rowid = $(this).data('rowid');
+	// 			let rowdata = $('#jqGrid').jqGrid ('getRowData', rowid);
 
-				$.confirm({
-				    title: 'Confirm',
-				    content: 'Do you want to complete all entries?',
-				    buttons: {
-				        Yes:{
-				        	btnClass: 'btn-blue',
-				        	action: function () {
-					        	var param = {
-									_token: $("#_token").val(),
-									action: 'change_status',
-									mrn: rowdata.mrn,
-									episno: rowdata.episno,
-								}
+	// 			$.confirm({
+	// 			    title: 'Confirm',
+	// 			    content: 'Do you want to complete all entries?',
+	// 			    buttons: {
+	// 			        Yes:{
+	// 			        	btnClass: 'btn-blue',
+	// 			        	action: function () {
+	// 				        	var param = {
+	// 								_token: $("#_token").val(),
+	// 								action: 'change_status',
+	// 								mrn: rowdata.mrn,
+	// 								episno: rowdata.episno,
+	// 							}
 
-								$.post( "./ptcare_change_status?"+$.param(param),{}, function( data ){
-									if(data.success == 'success'){
-										toastr.success('Patient status completed',{timeOut: 1000})
-										refreshGrid("#jqGrid", urlParam);
-									}
-								},'json');
-					         }
+	// 							$.post( "./ptcare_change_status?"+$.param(param),{}, function( data ){
+	// 								if(data.success == 'success'){
+	// 									toastr.success('Patient status completed',{timeOut: 1000})
+	// 									refreshGrid("#jqGrid", urlParam);
+	// 								}
+	// 							},'json');
+	// 				         }
 
-				        },
-				        No: {
-				        	action: function () {
-								$(self).prop('checked', false);
-					        },
-				        }
-				    }
+	// 			        },
+	// 			        No: {
+	// 			        	action: function () {
+	// 							$(self).prop('checked', false);
+	// 				        },
+	// 			        }
+	// 			    }
 
-				});
+	// 			});
 
-			}
-		});
+	// 		}
+	// 	});
 		
-	}
+	// }
 
 	function checkifedited(){
 		if(!$('#save_doctorNote').is(':disabled')){

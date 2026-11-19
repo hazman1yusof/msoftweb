@@ -174,7 +174,7 @@
             <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 12px 0 12px;" data-toggle="collapse" data-target="#tab_apptMain"></i>
             <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 12px 0 12px;" data-toggle="collapse" data-target="#tab_apptMain"></i>
             
-            <div style="position: absolute; 
+            <!-- <div style="position: absolute; 
                         padding: 0 0 0 0; 
                         right: 0px; 
                         top: 0px; 
@@ -182,7 +182,7 @@
                 <button class="ui icon tertiary button refreshbtn_apptMain">
                     <i class="sync alternate icon"></i>
                 </button>
-            </div>
+            </div> -->
             
             <div style="position: absolute; 
                         padding: 0 0 0 0; 
@@ -212,7 +212,7 @@
         @include('hisdb.ordcom_MR.ordcom_MR',['phase' => '2'])
     </div>
     
-    @include('hisdb.otmanagement_MR.otmanagement_MR')
+    <!-- #include('hisdb.otmanagement_MR.otmanagement_MR') -->
     
 <!-- #include('hisdb.pat_mgmt.pat_mgmt_iframe',['phase' => 'semantic']) -->
 @include('patientcare.itemselector')
@@ -257,7 +257,7 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/appointment_MR/appointment_MR.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/emergency/medicalLetterED.js?v=1.6') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/userfile.js?v=1.1') }}"></script>
-    <script type="text/javascript" src="{{asset('patientcare/js/requestfor_iframe_MR.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/requestfor_iframe_MR.js')}}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/transaction.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/transaction_diet.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/transaction_phys.js') }}"></script>
