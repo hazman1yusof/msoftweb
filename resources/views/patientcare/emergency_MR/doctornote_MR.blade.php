@@ -110,7 +110,7 @@
     <input id="_token" name="_token" value="{{ csrf_token() }}" type="hidden">
     <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
 
-   <div class="panel panel-default" style="z-index: 100; position: relative; margin: -15px 5px 10px 0px;" id="biodata_panel">
+   <div class="panel panel-default" style="z-index: 100; position: relative; margin: -45px 5px 10px 0px;" id="biodata_panel">
         <div class="panel-heading clearfix" id="toggle_biodata">
             <span id="biodata_panel_title" style="display: none;">
                 <b>NAME: <span id="name_show_biodata"></span></b><br>
