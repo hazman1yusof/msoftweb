@@ -699,8 +699,8 @@ function stop_scroll_on(){
     $('div.paneldiv').on('mouseenter',function (){
         let parentdiv = $(this).parent('div.panel-collapse').attr('id');
         switch(parentdiv){
-            case 'jqGrid_ordcom_panel': SmoothScrollTo('#'+parentdiv, 300,70);break;
-            default : SmoothScrollTo('#'+parentdiv, 300);break;
+            case 'jqGrid_ordcom_panel': SmoothScrollTo('#'+parentdiv, 300, 70); break;
+            default: SmoothScrollTo('#'+parentdiv, 300, 78); break;
         }
         
         $('body').addClass('stop-scrolling');
@@ -716,7 +716,7 @@ function formatterpayer(cellvalue, option, rowObject){
 }
 
 $('#tab_rehabMain').on('shown.bs.collapse', function (){
-    SmoothScrollTo('#rehabMain_panel', 300,50);
+    SmoothScrollTo('#rehabMain_panel', 300, 10);
     
     $('#rehab_panel_title, #rehab_div2').show();
     $('#rehab_title').hide();
