@@ -303,9 +303,9 @@
 
 			@if (request()->get('epistycode') == 'IP' || request()->get('epistycode') == 'DP')
 
-				<div class='row' style="position: relative;margin: 0px 12px 3px 12px;">
-					@include('hisdb.ward_main_MR.ward_main_MR')
-				</div>
+				<!-- <div class='row' style="position: relative;margin: 0px 12px 3px 12px;">
+					#include('hisdb.ward_main_MR.ward_main_MR')
+				</div> -->
 
 				@if (Auth::user()->billing == 1)
 					<div class='row' style="position: relative;margin: -15px 12px 10px 12px;">
@@ -460,7 +460,7 @@
 		
 		@if (request()->get('epistycode') == 'IP' || request()->get('epistycode') == 'DP')
 				<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script>
-				<script type="text/javascript" src="js/hisdb/ward_main_MR/ward_main_MR.js?v=1.1"></script>
+				<!-- <script type="text/javascript" src="js/hisdb/ward_main_MR/ward_main_MR.js?v=1.1"></script> -->
 				<script type="text/javascript" src="js/hisdb/nursingED_MR/nursingED_MR.js?v=1.3"></script>
 				<script type="text/javascript" src="js/hisdb/nursingActionPlan_MR/nursingActionPlan_MR.js?v=1.4"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote_MR/nursingnote_intake_MR.js?v=1.1"></script>
