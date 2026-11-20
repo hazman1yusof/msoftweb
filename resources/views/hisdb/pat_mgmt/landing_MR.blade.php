@@ -317,9 +317,9 @@
 					@include('hisdb.discharge_MR.discharge_MR',['type' => "IP",'type_desc' => "In Patient"])
 				</div>
 
-				<div class='row' style="position: relative;margin: -15px 12px 12px 12px;">
-					@include('hisdb.otmanagement_MR.otmanagement_MR')
-				</div>
+				<!-- <div class='row' style="position: relative;margin: -15px 12px 12px 12px;">
+					#include('hisdb.otmanagement_MR.otmanagement_MR')
+				</div> -->
 
 			@endif
 			
@@ -500,7 +500,7 @@
 				
 				<script type="text/javascript" src="js/hisdb/discharge_MR/discharge_MR.js"></script>
 
-				<script type="text/javascript" src="js/hisdb/otMain_MR/otMain_MR.js"></script>
+				<!-- <script type="text/javascript" src="js/hisdb/otMain_MR/otMain_MR.js"></script>
 				<script type="text/javascript" src="js/hisdb/otmanagement_MR/otmanagement_main_MR.js"></script>
 				<script type="text/javascript" src="js/hisdb/otmanagement_MR/otmanagement_div_MR.js?v=1.2"></script>
 				<script type="text/javascript" src="js/hisdb/preoperative_MR/preoperative_MR.js?v=1.1"></script>
@@ -511,7 +511,7 @@
 				<script type="text/javascript" src="js/hisdb/otdischarge_MR/otdischarge_MR.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/endoscopyNotes_MR/endoscopyStomach_MR.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/endoscopyNotes_MR/endoscopyIntestine_MR.js?v=1.1"></script>
-				<script type="text/javascript" src="js/hisdb/endoscopyNotes_MR/endoscopyNotes_MR.js?v=1.2"></script>
+				<script type="text/javascript" src="js/hisdb/endoscopyNotes_MR/endoscopyNotes_MR.js?v=1.2"></script> -->
 
 				<!-- <script type="text/javascript" src="js/hisdb/nursing_MR/nursing_MR.js?v=1.2"></script> -->
 				<!-- <script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script> -->
