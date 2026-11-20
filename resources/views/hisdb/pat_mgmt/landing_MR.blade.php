@@ -275,7 +275,14 @@
 			            
 			            <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 12px 0 12px;" data-toggle="collapse" data-target="#tab_biodata"></i>
 			            <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 12px 0 12px;" data-toggle="collapse" data-target="#tab_biodata"></i>
-			            
+
+		                <button type="button" id="go_back" class="ui icon button" style="background: none;
+						    padding: 0px;
+						    font-size: large;
+						    position: absolute;">
+		                    <i class="arrow alternate circle left icon"></i>
+		                </button>
+
 			            <div style="position: absolute; 
 			                        padding: 0 0 0 0; 
 			                        left: 40px;" id="biodata_div">

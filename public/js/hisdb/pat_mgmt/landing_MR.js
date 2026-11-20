@@ -352,6 +352,11 @@ grid.bootgrid("reload");
 $(document).ready(function() {
     stop_scroll_on();
 
+    $('#go_back').on('click', function() {
+        sessionStorage.setItem('msoftweb_history_back', '1');
+        window.history.back();
+    });
+
     $('#tab_patient_info a:last').hide();    // hide Medical Info tab
     jQuery.validator.setDefaults({
       debug: true,

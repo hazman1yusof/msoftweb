@@ -2,6 +2,17 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
 
+function history_back() {
+	$('#patient_search').trigger('tab');
+}
+
+window.addEventListener('pageshow', function() {
+	if (sessionStorage.getItem('msoftweb_history_back') === '1') {
+		sessionStorage.removeItem('msoftweb_history_back');
+		history_back();
+	}
+});
+
 $(document).ready(function (){
 	$("body").show();
 	/////////////////////////////////////////validation/////////////////////////////////////////
@@ -225,19 +236,19 @@ $(document).ready(function (){
 			if(epistycode == 'OP'){
 				if(regdept == 'A&E'){
 					// Emergency
-					window.open('./ptcare_doctornoteED_MR?epistycode='+epistycode+'&curpat=true&PatClass=HIS&mrn='+mrn+'&episno='+episno, '_blank');
+					window.location.href = './ptcare_doctornoteED_MR?epistycode='+epistycode+'&curpat=true&PatClass=HIS&mrn='+mrn+'&episno='+episno;
 				}else if(regdept == 'PHY'){
 					// Rehabilitation
-					window.open('./rehab_MR?epistycode='+epistycode+'&curpat=true&PatClass=HIS&mrn='+mrn+'&episno='+episno, '_blank');
+					window.location.href = './rehab_MR?epistycode='+epistycode+'&curpat=true&PatClass=HIS&mrn='+mrn+'&episno='+episno;
 				}else{
 					// TH2, EYE, BEACON
 					// Appointment clinic
-					window.open('./appointment_MR?epistycode='+epistycode+'&curpat=true&PatClass=HIS&mrn='+mrn+'&episno='+episno, '_blank');
+					window.location.href = './appointment_MR?epistycode='+epistycode+'&curpat=true&PatClass=HIS&mrn='+mrn+'&episno='+episno;
 				}
 			}else if(epistycode == 'IP'){
 				disableForm('#frm_patient_info_MR');
 
-				window.open('./pat_mast_MR?epistycode='+epistycode+'&curpat=true&PatClass=HIS&mrn='+mrn+'&episno='+episno, '_blank');
+				window.location.href = './pat_mast_MR?epistycode='+epistycode+'&curpat=true&PatClass=HIS&mrn='+mrn+'&episno='+episno;
 			}
 		});
 	}
