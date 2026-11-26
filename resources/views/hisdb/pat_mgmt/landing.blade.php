@@ -309,36 +309,28 @@
 				</div>
 				
 				@if($mr_flag == 1)
-					<div class='row' style="position: relative; margin: 20px 12px 12px 12px;">
-						<div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 5px 10px 0px;" id="icdprocedure_panel">
-							<div class="panel-heading clearfix collapsed" role="tab" id="toggle_icdprocedure">
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						<div class="panel panel-default" style="position: relative;">
+							<div class="panel-heading clearfix collapsed position" id="toggle_icdprocedure" style="position: sticky; top: 0px; z-index: 3; height: 65px;">
 								<span id="icdprocedure_panel_title" style="display: none;">
 									<b>NAME: <span id="name_show_icdprocedure"></span></b><br>
 									MRN: <span id="mrn_show_icdprocedure"></span>
-									IC: <span id="ic_show_icdprocedure"></span>
 									SEX: <span id="sex_show_icdprocedure"></span>
 									DOB: <span id="dob_show_icdprocedure"></span>
 									AGE: <span id="age_show_icdprocedure"></span>
-									RACE: <span id="race_show_icdprocedure"></span><br>
-									RELIGION: <span id="religion_show_icdprocedure"></span>
+									RACE: <span id="race_show_icdprocedure"></span>
+									RELIGION: <span id="religion_show_icdprocedure"></span><br>
 									OCCUPATION: <span id="occupation_show_icdprocedure"></span>
 									CITIZENSHIP: <span id="citizenship_show_icdprocedure"></span>
 									AREA: <span id="area_show_icdprocedure"></span>
 								</span>
 								
-								<i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 12px 0 12px;" data-toggle="collapse" data-target="#tab_icdprocedure"></i>
-								<i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 12px 0 12px;" data-toggle="collapse" data-target="#tab_icdprocedure"></i>
-								
-								<div style="position: absolute; 
-											padding: 0 0 0 0; 
-											left: 40px;" id="icdprocedure_div">
-									<span id="icdprocedure_title">
-										<h5><strong>Medical Record ICD & Procedure</strong>&nbsp;&nbsp;
-											<span class="metal"></span></h5>
-									</span>
-								</div>
+								<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_icdprocedure"></i>
+								<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_icdprocedure"></i>
+								<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right:40px; top: 25px;">
+									<h5>Medical Record ICD & Procedure</h5>
+								</div>			
 							</div>
-							
 							<div id="tab_icdprocedure" class="panel-collapse collapse">
 								<div class="panel-body paneldiv">
 									@include('hisdb.icdprocedure_MR.icdprocedure_MR')
