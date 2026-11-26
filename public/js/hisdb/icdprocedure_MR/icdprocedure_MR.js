@@ -104,10 +104,6 @@ $(document).ready(function (){
         },
     });
     
-    $('#jqGridFinalDiag_iladd').click(function(){
-        window.open('./icd11?callback_param=discharge', '_blank');
-    });
-    
     //////////////////////////////////////////////myEditOptions//////////////////////////////////////////////
     var myEditOptions_addFinalDiag = {
         keys: true,
@@ -115,6 +111,8 @@ $(document).ready(function (){
             "_token": $("#_token").val()
         },
         oneditfunc: function (rowid){
+            window.open('./icd11?callback_param=icdprocedure', '_blank');
+
             $("#jqGridPagerDelete_FinalDiag,#jqGridPagerRefresh_FinalDiag").hide();
             
             $("textarea[name='description']").keydown(function (e){ // when click tab at last column in header, auto save
@@ -456,4 +454,10 @@ function check_same_usr_edit(data){
     }
     
     return same;
+}
+
+function icd11_callback(callback_param,icdobj){
+    if(callback_param == 'icdprocedure'){
+        $('input[type=text][name=icdcode]').val(icdobj.code+' - '+icdobj.desc);
+    }
 }
