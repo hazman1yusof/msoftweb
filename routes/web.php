@@ -2082,6 +2082,11 @@ Route::get('/discharge_MR/table','hisdb\DischargeMRController@table');
 Route::post('/discharge_MR/form','hisdb\DischargeMRController@form');
 Route::get('/discharge_MR/showpdf','hisdb\DischargeMRController@showpdf');
 
+//// Medical Record ICD & Procedure page ///
+Route::get('/icdprocedure_MR','hisdb\ICDProcedureMRController@show');
+Route::get('/icdprocedure_MR/table','hisdb\ICDProcedureMRController@table');
+Route::post('/icdprocedure_MR/form','hisdb\ICDProcedureMRController@form');
+
 ////////// EMERGENCY MR //////////////////////
 Route::get('/ptcare_nursing_MR','patientcare\NursingMRController@show');
 Route::get('/ptcare_nursing_MR/table','patientcare\NursingMRController@table');

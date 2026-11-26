@@ -323,6 +323,44 @@
 
 			@endif
 			
+			<div class='row' style="position: relative; margin: 20px 12px 12px 12px;">
+				<div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 5px 10px 0px;" id="icdprocedure_panel">
+					<div class="panel-heading clearfix collapsed" role="tab" id="toggle_icdprocedure">
+						<span id="icdprocedure_panel_title" style="display: none;">
+							<b>NAME: <span id="name_show_icdprocedure"></span></b><br>
+							MRN: <span id="mrn_show_icdprocedure"></span>
+							IC: <span id="ic_show_icdprocedure"></span>
+							SEX: <span id="sex_show_icdprocedure"></span>
+							DOB: <span id="dob_show_icdprocedure"></span>
+							AGE: <span id="age_show_icdprocedure"></span>
+							RACE: <span id="race_show_icdprocedure"></span><br>
+							RELIGION: <span id="religion_show_icdprocedure"></span>
+							OCCUPATION: <span id="occupation_show_icdprocedure"></span>
+							CITIZENSHIP: <span id="citizenship_show_icdprocedure"></span>
+							AREA: <span id="area_show_icdprocedure"></span>
+						</span>
+						
+						<i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 12px 0 12px;" data-toggle="collapse" data-target="#tab_icdprocedure"></i>
+						<i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 12px 0 12px;" data-toggle="collapse" data-target="#tab_icdprocedure"></i>
+						
+						<div style="position: absolute; 
+									padding: 0 0 0 0; 
+									left: 40px;" id="icdprocedure_div">
+							<span id="icdprocedure_title">
+								<h5><strong>Medical Record ICD & Procedure</strong>&nbsp;&nbsp;
+									<span class="metal"></span></h5>
+							</span>
+						</div>
+					</div>
+					
+					<div id="tab_icdprocedure" class="panel-collapse collapse">
+						<div class="panel-body paneldiv">
+							@include('hisdb.icdprocedure_MR.icdprocedure_MR')
+						</div>
+					</div>
+				</div>
+			</div>
+			
 		@endif
 		
 	<script type="text/javascript">
@@ -536,6 +574,7 @@
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_emr_MR.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/textfield_modal_MR.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing_MR.js?v=1.10"></script>
+	<script type="text/javascript" src="js/hisdb/icdprocedure_MR/icdprocedure_MR.js"></script>
 	
 	</div>
 

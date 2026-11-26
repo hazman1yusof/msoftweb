@@ -327,6 +327,8 @@ grid.on("click.rs.jquery.bootgrid", function (e,c,r){
             }
             
             populate_discharge_currpt(lastrowdata);
+            populate_icdprocedure(lastrowdata);
+            
             // if(lastrowdata.PatStatus == 1 ){
             // }
         }
