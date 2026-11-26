@@ -104,6 +104,10 @@ $(document).ready(function (){
         },
     });
     
+    $('#jqGridFinalDiag_iladd').click(function(){
+        window.open('./icd11?callback_param=discharge', '_blank');
+    });
+    
     //////////////////////////////////////////////myEditOptions//////////////////////////////////////////////
     var myEditOptions_addFinalDiag = {
         keys: true,
