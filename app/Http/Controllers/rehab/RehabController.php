@@ -79,7 +79,27 @@ class RehabController extends defaultController
         //         Auth::login($user->first());
         //     }
         // }
-        $data_send = [];
+        $data_send = [
+                'mr_flag' => 0,
+                'mr_flag_mrn' => 0,
+                'mr_flag_episno' => 0
+            ];
+
+        if($request->mr_flag == 1){
+            $data_send['mr_flag'] = 1;
+            $data_send['mr_flag_mrn'] = $request->mr_flag_mrn;
+            $data_send['mr_flag_episno'] = $request->mr_flag_episno;
+
+            if(empty($request->mr_flag_mrn) || empty($request->mr_flag_episno)){
+               abort(403,'MRN doest Exists'); 
+            }
+
+            $lastrowdata = $this->get_lastrowdata($request->mr_flag_mrn,$request->mr_flag_episno);
+
+            // dd($lastrowdata);
+
+            $data_send['lastrowdata'] = $lastrowdata;
+        }
         
         $apptresrc = DB::table('hisdb.apptresrc')
                     ->where('compcode',session('compcode'))
@@ -530,6 +550,59 @@ class RehabController extends defaultController
         
         return $events = $this->getEvent($emergency);
         
+    }
+
+    public function get_lastrowdata($mrn,$episno){
+
+        $select_array = ['pat_mast.idno as p_idno','pat_mast.CompCode','pat_mast.MRN','pat_mast.Name','pat_mast.Call_Name','pat_mast.addtype','pat_mast.Address1','pat_mast.Address2','pat_mast.Address3','pat_mast.Postcode','pat_mast.citycode','pat_mast.AreaCode','pat_mast.StateCode','pat_mast.CountryCode','pat_mast.telh','pat_mast.telhp','pat_mast.telo','pat_mast.Tel_O_Ext','pat_mast.ptel','pat_mast.ptel_hp','pat_mast.ID_Type','pat_mast.idnumber','pat_mast.Newic','pat_mast.Oldic','pat_mast.icolor','pat_mast.Sex','pat_mast.DOB','pat_mast.Religion','pat_mast.AllergyCode1','pat_mast.AllergyCode2','pat_mast.Century','pat_mast.Citizencode','pat_mast.OccupCode','pat_mast.Staffid','pat_mast.MaritalCode','pat_mast.LanguageCode','pat_mast.TitleCode','pat_mast.RaceCode','pat_mast.bloodgrp','pat_mast.Accum_chg','pat_mast.Accum_Paid','pat_mast.first_visit_date','pat_mast.last_visit_date','pat_mast.last_episno','pat_mast.PatStatus','pat_mast.Confidential','pat_mast.Active','pat_mast.FirstIpEpisNo','pat_mast.FirstOpEpisNo','pat_mast.AddUser','pat_mast.AddDate','pat_mast.Lastupdate','pat_mast.LastUser','pat_mast.OffAdd1','pat_mast.OffAdd2','pat_mast.OffAdd3','pat_mast.OffPostcode','pat_mast.MRFolder','pat_mast.MRLoc','pat_mast.MRActive','pat_mast.OldMrn','pat_mast.NewMrn','pat_mast.Remarks','pat_mast.RelateCode','pat_mast.ChildNo','pat_mast.CorpComp','pat_mast.Email','pat_mast.Email_official','pat_mast.CurrentEpis','pat_mast.NameSndx','pat_mast.BirthPlace','pat_mast.TngID','pat_mast.PatientImage','pat_mast.pAdd1','pat_mast.pAdd2','pat_mast.pAdd3','pat_mast.pPostCode','pat_mast.DeptCode','pat_mast.DeceasedDate','pat_mast.PatientCat','pat_mast.PatType','pat_mast.PatClass','pat_mast.upduser','pat_mast.upddate','pat_mast.recstatus','pat_mast.loginid','pat_mast.pat_category','pat_mast.idnumber_exp','pat_mast.PatientImage','episode.idno','episode.bed as bednum','episode.newcaseP','episode.followupP','pat_mast.iPesakit','doctor.doctorname as q_doctorname','epispayer.payercode','debtormast.name as payername','episode.billtype','billtymst.description as billtypeDesc','episode.epistycode','episode.ward','episode.ward_dischargedt','episode.ward_dischargetm','episode.ward_dischargeusr','episode.complete_notedt','episode.complete_notetm','episode.complete_noteusr','episode.regdept','department.description as regdept_desc','dis.description as dis_desc','dis.code as dis_code','episode.episno as Episno'];
+
+        $table_patm = DB::table('hisdb.pat_mast') //ambil dari patmast balik
+                            ->select($select_array)
+                            ->where('pat_mast.compcode','=',session('compcode'))
+                            ->where('pat_mast.mrn','=',$mrn);
+
+        $table_patm = $table_patm
+                        ->leftJoin('hisdb.epispayer', function($join) use ($mrn,$episno){
+                            $join = $join->where('epispayer.compcode','=',session('compcode'))
+                                            ->where('epispayer.mrn', '=', $mrn)
+                                            ->where('epispayer.episno','=',$episno)
+                                            ->where('epispayer.lineno','=','1');
+                        })
+                        ->leftJoin('hisdb.episode', function($join) use ($mrn,$episno){
+                            $join = $join->where('episode.mrn', '=', $mrn)
+                                            ->where('episode.episno','=',$episno)
+                                            ->where('episode.compcode','=',session('compcode'));
+                        })
+                        ->leftJoin('sysdb.department', function($join){
+                            $join = $join->on('department.deptcode', '=', 'episode.regdept')
+                                            ->where('episode.compcode','=',session('compcode'));
+                        })
+                        ->leftJoin('debtor.debtormast', function($join){
+                            $join = $join->where('debtormast.compcode','=',session('compcode'))
+                                            ->on('debtormast.debtorcode', '=', 'epispayer.payercode');
+                        })
+                        ->leftJoin('hisdb.billtymst', function($join){
+                            $join = $join->where('billtymst.compcode','=',session('compcode'))
+                                            ->on('billtymst.billtype', '=', 'episode.billtype');
+                        })
+                        ->leftJoin('hisdb.doctor', function($join){
+                            $join = $join->on('doctor.doctorcode', '=', 'episode.admdoctor')
+                                        ->where('doctor.compcode','=',session('compcode'));
+                        })
+                        ->leftjoin('hisdb.discipline as dis', function($join){
+                            $join = $join->where('dis.compcode', session('compcode'));
+                            $join = $join->on('dis.code', 'doctor.disciplinecode');
+                        })
+                        ->first();
+
+
+        if($table_patm->newcaseP == 1 || $table_patm->followupP == 1){
+            $table_patm->pregnant = 1;
+        }else{
+            $table_patm->pregnant = 0;
+        }
+
+        return $table_patm;
     }
     
 }

@@ -53,7 +53,7 @@ window.open_iframe_close = function (data){ // inside the iframe
     $('#mdl_episode_info').modal('hide');
 };
 
-const patient_iframeRoutes = ['/appointment_MR', '/pat_mast_MR', '/ptcare_doctornoteED_MR', '/rehab_MR'];
+const patient_iframeRoutes = ['/appointment', '/pat_mast', '/ptcare_doctornoteED', '/rehab'];
 const ispatient_iframe = patient_iframeRoutes.some(route => window.location.pathname.includes(route));
 
 if(ispatient_iframe){

@@ -16,6 +16,11 @@ var conf_ordco = {
 };
 
 function getrow_bootgrid_(){
+
+	if($('#mr_flag').val() == '1'){
+		return mr_flag_lastrowdata;
+	}
+
 	if($('#ordcom_phase').val() == '3'){
 		return pat_mast_data;
 	}else if($('#ordcom_phase').val() == '2' || $('#ordcom_phase').val() == '2.lab' || $('#ordcom_phase').val() == '2.rad' || $('#ordcom_phase').val() == '2.rehab'){

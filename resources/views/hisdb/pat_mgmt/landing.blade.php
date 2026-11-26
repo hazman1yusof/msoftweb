@@ -85,6 +85,21 @@
 			font-size: 70%;
 		}
 	</style>
+
+	<script>
+		var mr_flag = {{ $mr_flag }};
+		var mr_flag_mrn = {{ $mr_flag_mrn }};
+		var mr_flag_episno = {{ $mr_flag_episno }};
+
+		@if($mr_flag == 1)
+			var mr_flag_lastrowdata = {
+				@foreach($lastrowdata as $key => $val) 
+					'{{$key}}' :  `{!!str_replace('`', '', $val)!!}`,
+				@endforeach 
+			};
+		@endif
+
+	</script>
 	
 </head>
 
@@ -105,6 +120,11 @@
 		@else
         <input name="epistycode2" id="epistycode2" type="hidden" value="OTC">
 		@endif
+
+        <input name="mr_flag" id="mr_flag" type="hidden" value="{{$mr_flag}}">
+        <input name="mr_flag_mrn" id="mr_flag_mrn" type="hidden" value="{{$mr_flag_mrn}}">
+        <input name="mr_flag_episno" id="mr_flag_episno" type="hidden" value="{{$mr_flag_episno}}">
+
         <input name="curpat" id="curpat" type="hidden" value="{{request()->get('curpat')}}">
         <input name="username_" id="username_" type="hidden" value="{{Auth::user()->username}}">
         <input name="lastrowid" id="lastrowid" type="hidden">
@@ -127,197 +147,129 @@
         <input name="pkgdept_dflt" id="pkgdept_dflt" type="hidden" value="{{$pkgdept_dflt ?? 'PHAR'}}">
         <input name="othdept_dflt" id="othdept_dflt" type="hidden" value="{{$othdept_dflt ?? 'PHAR'}}">
 
-        <div id="info"></div>
+        @if($mr_flag == 0)
 
-		<div class="panel" style="padding: 5px;">
-			&nbsp;&nbsp;
-			@if (request()->get('curpat') == 'false')
-			<button id="patientBox" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-inbox" aria-hidden="true"> </span> Register New</button>
-			&nbsp;&nbsp;
-			<button id="btn_mykad" type="button" class="btn btn-default btn-md" >
-			<img src="img/mykad.png" width="35" /> My Kad</button>
-			&nbsp;&nbsp;
-			<!-- <button id="btn_biometric" type="button" class="btn btn-default btn-md" >
-			<img src="img/biometric.png" width="22" /> Biometric </button> -->
-			<button id="btn_qrpreepis" type="button" class="btn btn-default btn-md" style="min-width: 115px;">
-			<img src="img/qrpreepis.png" width="22" /> QR </button>
-			&nbsp;&nbsp;
-			@endif
-			@if (request()->get('curpat') == 'true')
-			<button id="btn_patlabel" type="button" class="btn btn-default btn-md" >
-			<img src="img/labelprinter.png" width="22" />Patient Label</button>
+	        <div id="info"></div>
 
-			<button id="btn_labelform" type="button" class="btn btn-default btn-md" >
-			<img src="img/labelform.png" width="22" />Patient Form</button>
-			@endif
-		</div>
+			<div class="panel" style="padding: 5px;">
+				&nbsp;&nbsp;
+				@if (request()->get('curpat') == 'false')
+				<button id="patientBox" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-inbox" aria-hidden="true"> </span> Register New</button>
+				&nbsp;&nbsp;
+				<button id="btn_mykad" type="button" class="btn btn-default btn-md" >
+				<img src="img/mykad.png" width="35" /> My Kad</button>
+				&nbsp;&nbsp;
+				<!-- <button id="btn_biometric" type="button" class="btn btn-default btn-md" >
+				<img src="img/biometric.png" width="22" /> Biometric </button> -->
+				<button id="btn_qrpreepis" type="button" class="btn btn-default btn-md" style="min-width: 115px;">
+				<img src="img/qrpreepis.png" width="22" /> QR </button>
+				&nbsp;&nbsp;
+				@endif
+				@if (request()->get('curpat') == 'true')
+				<button id="btn_patlabel" type="button" class="btn btn-default btn-md" >
+				<img src="img/labelprinter.png" width="22" />Patient Label</button>
 
-		@if (request()->get('epistycode') == 'OP' && request()->get('curpat') == 'false')
-		<div class="panel panel-default" style="position: relative;margin: 0 12px 12px 12px">
-	        <div class="panel-heading collapsed" id="toggle_preepis" data-toggle="collapse" data-target="#tabpreepis" style="padding: 20px 20px 25px 20px;">
-
-		        <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px;bottom: 3px;"></i>
-		        <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px;bottom: 3px;"></i >
-		        <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
-		            <h5><strong>PRE EPISODE</strong></h5>
-		        </div> 
-		        <div style="position: absolute; padding: 0 0 0 0; right: 50px; top: 8px;">
-		            <h5><strong id='preepis_count' style="padding: 5px;
-						    border: solid 1px darkred;
-						    border-radius: 8px;
-						    background: #ffe6e6;">0</strong> Patients
-					</h5>
-		        </div> 
-	        </div>
-
-	        <div id="tabpreepis" class="panel-collapse collapse">
-		        <div class="panel-body form-horizontal">
-		            <div id="jqGrid_preepis_c">
-		                <div class='col-md-12' style="padding:0 0 15px 0">
-		                    <table id="jqGrid_preepis" class="table table-striped"></table>
-		                    <div id="jqGridPager_preepis"></div>
-		                </div>
-		            </div>
-		        </div>
-            </div>
-        </div>
-        @endif
-
-		<div class="panel panel-primary" style="position: relative;margin: 0 12px 12px 12px">
-			<div  class="panel-heading clearfix">
-				<h5><strong>
-					@if (request()->get('curpat') == 'true' && request()->get('epistycode') == 'IP'){{'CURRENT IN-PATIENT'}}
-					@elseif (request()->get('curpat') == 'true' && request()->get('epistycode') == 'OP'){{'CURRENT OUT-PATIENT'}}
-					@elseif (request()->get('curpat') == 'true' && request()->get('epistycode') == 'DP'){{'CURRENT DAY-PATIENT'}}
-					@else {{'PATIENT LIST'}}
-					@endif
-				</strong></h5>
+				<button id="btn_labelform" type="button" class="btn btn-default btn-md" >
+				<img src="img/labelform.png" width="22" />Patient Form</button>
+				@endif
 			</div>
-			<table id="grid-command-buttons" class="table table-condensed table-hover table-striped" width="100%" data-ajax="true">
-                <thead>
-                <tr>
-                	<th data-column-id="idno" data-identifier="true" data-visible="false" data-width="0%"></th>
-                	<th data-column-id="no" data-formatter="col_add" data-width="2%">#</th>
-                    @if (request()->get('curpat') == 'true')
-                    <!-- <th data-column-id="QueueNo" data-width="3%">Queue</th> -->
-                    <th data-column-id="reg_date" data-formatter="col_reg" data-width="7%" >Reg Date</th>
-                    <th data-column-id="regdept" data-width="5%">Dept</th>
-					@endif
-                    <th data-column-id="MRN" data-type="numeric" data-formatter="col_mrn" data-width="7%">MRN &nbsp;&nbsp;&nbsp; Epis</th>
-                    <!-- <th data-column-id="Episno" data-type="numeric" data-width="5%">Episno</th> -->
-                    <th data-style="dropDownItem" data-column-id="Name" data-formatter="col_name" data-width="13%" data-css-class="wrap-text">Name</th>
-                    @if (request()->get('curpat') == 'true')
-                    <th data-column-id="payername" data-width="13%" data-css-class="wrap-text">Payer</th>
-                    <th data-column-id="q_doctorname" data-width="13%" data-css-class="wrap-text">Doctor</th>
-                    <th data-column-id="dis_desc" data-width="6%">Discipline</th>
-	                    @if (request()->get('epistycode') == 'IP')
-	                    <th data-column-id="ward" data-width="6%">Ward</th>
-	                    <th data-column-id="ward_dischargedt" data-width="7%" data-formatter="col_disc">Discharge</th>
-	                    <th data-column-id="bednum" data-width="4%">Bed No.</th>
-	                	<th data-column-id="pregnant" data-formatter="col_preg" data-width="4%"></th>
+
+			@if (request()->get('epistycode') == 'OP' && request()->get('curpat') == 'false')
+			<div class="panel panel-default" style="position: relative;margin: 0 12px 12px 12px">
+		        <div class="panel-heading collapsed" id="toggle_preepis" data-toggle="collapse" data-target="#tabpreepis" style="padding: 20px 20px 25px 20px;">
+
+			        <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px;bottom: 3px;"></i>
+			        <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px;bottom: 3px;"></i >
+			        <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
+			            <h5><strong>PRE EPISODE</strong></h5>
+			        </div> 
+			        <div style="position: absolute; padding: 0 0 0 0; right: 50px; top: 8px;">
+			            <h5><strong id='preepis_count' style="padding: 5px;
+							    border: solid 1px darkred;
+							    border-radius: 8px;
+							    background: #ffe6e6;">0</strong> Patients
+						</h5>
+			        </div> 
+		        </div>
+
+		        <div id="tabpreepis" class="panel-collapse collapse">
+			        <div class="panel-body form-horizontal">
+			            <div id="jqGrid_preepis_c">
+			                <div class='col-md-12' style="padding:0 0 15px 0">
+			                    <table id="jqGrid_preepis" class="table table-striped"></table>
+			                    <div id="jqGridPager_preepis"></div>
+			                </div>
+			            </div>
+			        </div>
+	            </div>
+	        </div>
+	        @endif
+
+			<div class="panel panel-primary" style="position: relative;margin: 0 12px 12px 12px">
+				<div  class="panel-heading clearfix">
+					<h5><strong>
+						@if (request()->get('curpat') == 'true' && request()->get('epistycode') == 'IP'){{'CURRENT IN-PATIENT'}}
+						@elseif (request()->get('curpat') == 'true' && request()->get('epistycode') == 'OP'){{'CURRENT OUT-PATIENT'}}
+						@elseif (request()->get('curpat') == 'true' && request()->get('epistycode') == 'DP'){{'CURRENT DAY-PATIENT'}}
+						@else {{'PATIENT LIST'}}
 						@endif
-					@endif
-                    <th data-column-id="Newic" data-width="8%">New IC</th>
-                    <th data-column-id="telhp" data-width="8%">H/P</th>
-                    <th data-column-id="DOB" data-formatter="col_dob" data-width="6%">DOB</th>
-                    <th data-column-id="Sex" data-width="2%">Sex</th>
-                    <!-- <th data-column-id="col_age" data-formatter="col_age" data-sortable="false" data-width="2%">Age</th> -->
-					<th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="7%"> </th>
-				</tr>
-				</thead>
-			</table>
-		</div>
+					</strong></h5>
+				</div>
+				<table id="grid-command-buttons" class="table table-condensed table-hover table-striped" width="100%" data-ajax="true">
+	                <thead>
+	                <tr>
+	                	<th data-column-id="idno" data-identifier="true" data-visible="false" data-width="0%"></th>
+	                	<th data-column-id="no" data-formatter="col_add" data-width="2%">#</th>
+	                    @if (request()->get('curpat') == 'true')
+	                    <!-- <th data-column-id="QueueNo" data-width="3%">Queue</th> -->
+	                    <th data-column-id="reg_date" data-formatter="col_reg" data-width="7%" >Reg Date</th>
+	                    <th data-column-id="regdept" data-width="5%">Dept</th>
+						@endif
+	                    <th data-column-id="MRN" data-type="numeric" data-formatter="col_mrn" data-width="7%">MRN &nbsp;&nbsp;&nbsp; Epis</th>
+	                    <!-- <th data-column-id="Episno" data-type="numeric" data-width="5%">Episno</th> -->
+	                    <th data-style="dropDownItem" data-column-id="Name" data-formatter="col_name" data-width="13%" data-css-class="wrap-text">Name</th>
+	                    @if (request()->get('curpat') == 'true')
+	                    <th data-column-id="payername" data-width="13%" data-css-class="wrap-text">Payer</th>
+	                    <th data-column-id="q_doctorname" data-width="13%" data-css-class="wrap-text">Doctor</th>
+	                    <th data-column-id="dis_desc" data-width="6%">Discipline</th>
+		                    @if (request()->get('epistycode') == 'IP')
+		                    <th data-column-id="ward" data-width="6%">Ward</th>
+		                    <th data-column-id="ward_dischargedt" data-width="7%" data-formatter="col_disc">Discharge</th>
+		                    <th data-column-id="bednum" data-width="4%">Bed No.</th>
+		                	<th data-column-id="pregnant" data-formatter="col_preg" data-width="4%"></th>
+							@endif
+						@endif
+	                    <th data-column-id="Newic" data-width="8%">New IC</th>
+	                    <th data-column-id="telhp" data-width="8%">H/P</th>
+	                    <th data-column-id="DOB" data-formatter="col_dob" data-width="6%">DOB</th>
+	                    <th data-column-id="Sex" data-width="2%">Sex</th>
+	                    <!-- <th data-column-id="col_age" data-formatter="col_age" data-sortable="false" data-width="2%">Age</th> -->
+						<th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="7%"> </th>
+					</tr>
+					</thead>
+				</table>
+			</div>
+
+				@include('hisdb.pat_mgmt.mdl_patient')
+				@include('hisdb.pat_mgmt.mdl_episode')
+				@include('hisdb.pat_mgmt.itemselector')
+				@include('hisdb.pat_mgmt.patlabel')
+				@include('hisdb.pat_mgmt.qrgen')
+
+		@elseif($mr_flag == 1)
+			<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+				<div class="panel panel-default" style="margin-bottom: 7px;">
+					<div class="panel-body" style="overflow-y: auto; height: 66vh;">
+						@include('hisdb.pat_mgmt.pat_mgmt_iframe',['phase' => 'mr'])
+					</div>
+				</div>
+			</div>
+		@endif
 		
-		@include('hisdb.pat_mgmt.mdl_patient')
-		@include('hisdb.pat_mgmt.mdl_episode')
-		@include('hisdb.pat_mgmt.itemselector')
-		@include('hisdb.pat_mgmt.patlabel')
-		@include('hisdb.pat_mgmt.qrgen')
 		
 		@if (request()->get('curpat') == 'true')
 			
 			@if (request()->get('epistycode') == 'OP')
-				<!-- #if (Auth::user()->doctor == 1)
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="nursing_row">
-						#include('hisdb.nursing.nursing',['page_screen' => "patmast"])
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="antenatal_row">
-						#include('hisdb.antenatal.antenatal')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						#include('hisdb.paediatric.paediatric')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						#include('hisdb.nursingnote.nursingnote')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						#include('hisdb.clientprogressnote.clientprogressnote')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						#include('hisdb.clientprogressnote.clientprogressnoteref')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						#include('hisdb.doctornote.doctornote')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						#include('hisdb.requestfor.requestfor')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						#include('hisdb.admhandover.admhandover')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						#include('hisdb.dieteticCareNotes.dieteticCareNotes')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						#include('hisdb.dietorder.dietorder')
-					</div>
-				#elseif (Auth::user()->nurse == 1)
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						#include('hisdb.nursing.nursing',['page_screen' => "patmast"])
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						#include('hisdb.nursingnote.nursingnote')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						#include('hisdb.clientprogressnote.clientprogressnote')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						#include('hisdb.clientprogressnote.clientprogressnoteref')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						#include('hisdb.doctornote.doctornote')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						#include('hisdb.requestfor.requestfor')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						#include('hisdb.admhandover.admhandover')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						#include('hisdb.dieteticCareNotes.dieteticCareNotes')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						#include('hisdb.dietorder.dietorder')
-					</div>
-				#endif -->
 
 				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 					@include('hisdb.ward_main.ward_main',['phase' => 'OP'])
@@ -415,8 +367,6 @@
 	
 	@if (request()->get('curpat') == 'true')
 		
-		<!-- <script type="text/javascript" src="js/hisdb/discharge/discharge.js"></script> -->
-		
 		@if (request()->get('epistycode') == 'OP')
 			@if (Auth::user()->doctor == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.2"></script>
@@ -499,7 +449,9 @@
 		@endif
 		
 		@if (request()->get('epistycode') == 'IP' || request()->get('epistycode') == 'DP')
-			<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js?v=1.3"></script>
+			@if($mr_flag == 0)
+				<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js?v=1.3"></script>
+			@endif
 			
 			@if (Auth::user()->doctor == 1)
 				<script type="text/javascript" src="js/hisdb/nursingED/nursingED.js?v=1.3"></script>
@@ -591,17 +543,21 @@
 		
 	@endif
 	
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/patlabel.js?v=1.2"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_doctor.js?v=1"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js?v=1.2"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_payer.js?v=1.3"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_coverage.js?v=1.1"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_deposit.js"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_nok.js"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_emr.js"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/textfield_modal.js"></script>
+	@if($mr_flag == 0)
+		<script type="text/javascript" src="js/hisdb/pat_mgmt/patlabel.js?v=1.2"></script>
+		<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_doctor.js?v=1"></script>
+		<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js?v=1.2"></script>
+		<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_payer.js?v=1.3"></script>
+		<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_coverage.js?v=1.1"></script>
+		<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_deposit.js"></script>
+		<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_nok.js"></script>
+		<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_emr.js"></script>
+		<script type="text/javascript" src="js/hisdb/pat_mgmt/textfield_modal.js"></script>
+		<script type="text/javascript" src="js/hisdb/pat_mgmt/qrgen.js?v=1"></script>
+	@elseif($mr_flag == 1)
+    	<script type="text/javascript" src="{{ asset('js/hisdb/pat_mgmt/pat_mgmt_main_iframe.js?v=1.2') }}"></script>
+	@endif
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js?v=1.14"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/qrgen.js?v=1"></script>
 	
 	</div>
 

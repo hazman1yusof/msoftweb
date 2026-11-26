@@ -2,346 +2,450 @@ var preepisode;
 $(".preloader").fadeOut();
 
 var bootgrid_last_rowid = 0;
-var grid = $("#grid-command-buttons").bootgrid({
-        selection: false,
-        rowSelect: true,
-        columnSelection: false,
-        ajax: true,
-        ajaxSettings: {
-            method: "GET",
-            cache: false
-        },
-        multiSelect: false,
-        searchSettings: {
-            delay: 350,
-            characters: 1
-        },
-        post: function ()
-        {    
-            Stext = $('.search-field').val();
-            Scol = $('#Scol').val();
-            table_status_search =  $('input:radio[name=table_status_search]:checked').val();
 
-            if(Stext.trim() != ''){
+if(mr_flag == 0){
+    var grid = $("#grid-command-buttons").bootgrid({
+            selection: false,
+            rowSelect: true,
+            columnSelection: false,
+            ajax: true,
+            ajaxSettings: {
+                method: "GET",
+                cache: false
+            },
+            multiSelect: false,
+            searchSettings: {
+                delay: 350,
+                characters: 1
+            },
+            post: function ()
+            {    
+                Stext = $('.search-field').val();
+                Scol = $('#Scol').val();
+                table_status_search =  $('input:radio[name=table_status_search]:checked').val();
 
-                var split = Stext.split(" "),_searchCol=[],_searchVal=[];
-                $.each(split, function( index, value ) {
-                    _searchCol.push(Scol);
-                    _searchVal.push('%'+value+'%');
-                });
+                if(Stext.trim() != ''){
 
-            }
+                    var split = Stext.split(" "),_searchCol=[],_searchVal=[];
+                    $.each(split, function( index, value ) {
+                        _searchCol.push(Scol);
+                        _searchVal.push('%'+value+'%');
+                    });
 
-            let _page = $("#grid-command-buttons").bootgrid("getCurrentPage");
-            let lastMrn = null;
-            let lastidno = null;
+                }
 
-            if($("#load_from_addupd").data('info') == "true" && $("#load_from_addupd").data('oper') == "add"){
-                _page = 1;
-                lastMrn = $("#lastMrn").val();
-                lastidno = $("#lastidno").val();
-            }
+                let _page = $("#grid-command-buttons").bootgrid("getCurrentPage");
+                let lastMrn = null;
+                let lastidno = null;
 
-            if(table_status_search!='all' && $('#curpat').val() == 'true'){
-                _page = 1;
-            }
+                if($("#load_from_addupd").data('info') == "true" && $("#load_from_addupd").data('oper') == "add"){
+                    _page = 1;
+                    lastMrn = $("#lastMrn").val();
+                    lastidno = $("#lastidno").val();
+                }
 
-            return {
-                lastMrn:lastMrn,
-                lastidno:lastidno,
-                page: _page,
-                searchCol:_searchCol,
-                searchVal:_searchVal,
-                table_status_search:table_status_search,
-                table_name:'hisdb.pat_mast',
-                field:'*',
-                _token: $('#csrf_token').val(),
-            };
-        },
-        // url:undefined,
-        url: "pat_mast/post_entry?action=get_patient_list&epistycode="+$("#epistycode").val()+"&curpat="+$("#curpat").val()+"&PatClass="+$("#PatClass").val(),
-        formatters: {
-            "col_add": function (column,row) {
-                var retval = "<button title='Address' type='button' class='btn btn-xs btn-default btn-md command-add' data-row-id=\"" + row.MRN + "\"  name=\"cmd_add" + row.MRN + "\" data-telhp=\"" + row.telhp + "\"data-telh=\"" + row.telh + "\"data-Address1=\"" + row.Address1 + "\"data-Address2=\"" + row.Address2 + "\"data-Address3=\"" + row.Address3 + "\"data-Postcode=\"" + row.Postcode + "\"data-OffAdd1=\"" + row.OffAdd1 + "\"data-OffAdd2=\"" + row.OffAdd2 + "\"data-OffAdd3=\"" + row.OffAdd3 + "\"data-OffPostcode=\"" + row.OffPostcode + "\"data-pAdd1=\"" + row.pAdd1 + "\"data-pAdd2=\"" + row.pAdd2 + "\"data-pAdd3=\"" + row.pAdd3 + "\"data-pPostCode=\"" + row.pPostCode + "\" ><span class=\"glyphicon glyphicon-home\" aria-hidden=\"true\"></span></button>";
-                if($('#curpat').val() == 'false'){
-                    if(row.PatStatus == 1 && row.q_epistycode=='IP'){
-                        retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/warded.png' width='16' title='In Patient'></a>";
-                    }else if(row.PatStatus == 1 && row.q_epistycode=='OP'){
-                        retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/op.png' width='15' title='Out Patient'></a>";
+                if(table_status_search!='all' && $('#curpat').val() == 'true'){
+                    _page = 1;
+                }
+
+                return {
+                    lastMrn:lastMrn,
+                    lastidno:lastidno,
+                    page: _page,
+                    searchCol:_searchCol,
+                    searchVal:_searchVal,
+                    table_status_search:table_status_search,
+                    table_name:'hisdb.pat_mast',
+                    field:'*',
+                    _token: $('#csrf_token').val(),
+                };
+            },
+            // url:undefined,
+            url: "pat_mast/post_entry?action=get_patient_list&epistycode="+$("#epistycode").val()+"&curpat="+$("#curpat").val()+"&PatClass="+$("#PatClass").val(),
+            formatters: {
+                "col_add": function (column,row) {
+                    var retval = "<button title='Address' type='button' class='btn btn-xs btn-default btn-md command-add' data-row-id=\"" + row.MRN + "\"  name=\"cmd_add" + row.MRN + "\" data-telhp=\"" + row.telhp + "\"data-telh=\"" + row.telh + "\"data-Address1=\"" + row.Address1 + "\"data-Address2=\"" + row.Address2 + "\"data-Address3=\"" + row.Address3 + "\"data-Postcode=\"" + row.Postcode + "\"data-OffAdd1=\"" + row.OffAdd1 + "\"data-OffAdd2=\"" + row.OffAdd2 + "\"data-OffAdd3=\"" + row.OffAdd3 + "\"data-OffPostcode=\"" + row.OffPostcode + "\"data-pAdd1=\"" + row.pAdd1 + "\"data-pAdd2=\"" + row.pAdd2 + "\"data-pAdd3=\"" + row.pAdd3 + "\"data-pPostCode=\"" + row.pPostCode + "\" ><span class=\"glyphicon glyphicon-home\" aria-hidden=\"true\"></span></button>";
+                    if($('#curpat').val() == 'false'){
+                        if(row.PatStatus == 1 && row.q_epistycode=='IP'){
+                            retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/warded.png' width='16' title='In Patient'></a>";
+                        }else if(row.PatStatus == 1 && row.q_epistycode=='OP'){
+                            retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/op.png' width='15' title='Out Patient'></a>";
+                        }
                     }
-                }
-                return retval;
-            },
-            "col_mrn": function (column,row) {
-                return ('0000000' + row.MRN).slice(-7) +"<span class='episno_span'>"+ row.Episno +"</span>";
-            },
-            "col_reg": function (column,row) {
-                var retval = `<div style="padding-bottom:20px">`+row.reg_date+`</div>`;
+                    return retval;
+                },
+                "col_mrn": function (column,row) {
+                    return ('0000000' + row.MRN).slice(-7) +"<span class='episno_span'>"+ row.Episno +"</span>";
+                },
+                "col_reg": function (column,row) {
+                    var retval = `<div style="padding-bottom:20px">`+row.reg_date+`</div>`;
 
-                if($('#curpat').val() == 'true'){
+                    if($('#curpat').val() == 'true'){
 
-                    retval = retval+`<div class='dv1'>
-                        <span class="st1">
-                            <i data-lucide="circle-minus" width="15" height="15" color="grey"></i>
-                            <small>lab</small>
-                        </span>
-                        <span class="st1">
-                            <i data-lucide="circle-check" width="15" height="15" color="darkgreen"></i>
-                            <small>rad</small>
-                        </span>
-                        <span class="st1">
-                            <i data-lucide="circle-x" width="15" height="15" color="darkred"></i>
-                            <small>phy</small>
-                        </span>
-                        <span class="st1">
-                            <i data-lucide="circle-x" width="15" height="15" color="darkred"></i>
-                            <small>diet</small>
-                        </span>
-                    </div>`;
-                }
+                        retval = retval+`<div class='dv1'>
+                            <span class="st1">
+                                <i data-lucide="circle-minus" width="15" height="15" color="grey"></i>
+                                <small>lab</small>
+                            </span>
+                            <span class="st1">
+                                <i data-lucide="circle-check" width="15" height="15" color="darkgreen"></i>
+                                <small>rad</small>
+                            </span>
+                            <span class="st1">
+                                <i data-lucide="circle-x" width="15" height="15" color="darkred"></i>
+                                <small>phy</small>
+                            </span>
+                            <span class="st1">
+                                <i data-lucide="circle-x" width="15" height="15" color="darkred"></i>
+                                <small>diet</small>
+                            </span>
+                        </div>`;
+                    }
 
-                return retval;
-            },
-            "col_dob": function (column,row) {
-                var birthday = new Date(row.DOB);
-                return (isNaN(birthday.getFullYear()) ? '' : moment(birthday).format('DD/MM/YYYY'));
-            },
-            "col_age": function (column,row) {
-                var birthday = new Date(row.DOB);
-                return (isNaN(birthday)) ? '' : moment().diff(birthday, 'years',false);;
-            },
-            "col_disc": function (column,row) {
-                var retval;
-                if(row.ward_dischargedt != null){
-                    retval="&nbsp;<a class=''><img src='img/warddisc.png' width='35' title='In Patient'></a>";
-                }else{
-                    retval="";
-                }
-                return retval;
-            },
-            "col_preg": function (column,row) {
-                var retval;
-                if(row.pregnant == 1){
-                    retval="&nbsp;<a class='btn btn-xs btn-default'><img src='img/pregnant.png' width='25' title='In Patient'></a>";
-                }else{
-                    retval="";
-                }
-                return retval;
-            },
-            "commands": function (column,row) {
-                let rowid = row.idno;//just for specify each row
-                let retval = '';
-                // if(row.q_epistycode == '' || row.q_epistycode == undefined){
-
-                if($('#curpat').val() == 'false'){
-                    retval = "<span style='float: right;'><button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button> " +
-                           "<div class='btn-group'><button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" data-patstatus=\"" + row.PatStatus + "\"  id=\"cmd_history" + row.MRN + "\"><b>"+$("#epistycode_label").val()+"</b></button>"; 
-                           // +
-
-                           // "<button title='OTC Episode' type='button' class='btn btn-xs btn-danger btn-md command-otc-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" id=\"cmd_otc" + row.MRN + "\"><b>"+$("#epistycode2").val()+"</b></button></div></span>";
-
-                }else{
-                    if(row.q_epistycode == $("#epistycode").val() && $('#curpat').val() == 'true'){
-                        retval = "<span style='float: right;'><button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button> " +
-                           "<button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" data-patstatus=\"" + row.PatStatus + "\"  id=\"cmd_history" + row.MRN + "\"><b>"+$("#epistycode_label").val()+"</b></button></span>";
-                    }else if(row.q_epistycode == 'DP' && $('#curpat').val() == 'true'){
-                        retval = "<span style='float: right;'><button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button> " +
-                           "<button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" data-patstatus=\"" + row.PatStatus + "\"  id=\"cmd_history" + row.MRN + "\"><b>"+$("#epistycode_label").val()+"</b></button></span>";
+                    return retval;
+                },
+                "col_dob": function (column,row) {
+                    var birthday = new Date(row.DOB);
+                    return (isNaN(birthday.getFullYear()) ? '' : moment(birthday).format('DD/MM/YYYY'));
+                },
+                "col_age": function (column,row) {
+                    var birthday = new Date(row.DOB);
+                    return (isNaN(birthday)) ? '' : moment().diff(birthday, 'years',false);;
+                },
+                "col_disc": function (column,row) {
+                    var retval;
+                    if(row.ward_dischargedt != null){
+                        retval="&nbsp;<a class=''><img src='img/warddisc.png' width='35' title='In Patient'></a>";
                     }else{
-                        retval = "<span style='float: right;'><button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button></span>";
+                        retval="";
                     }
-                }
+                    return retval;
+                },
+                "col_preg": function (column,row) {
+                    var retval;
+                    if(row.pregnant == 1){
+                        retval="&nbsp;<a class='btn btn-xs btn-default'><img src='img/pregnant.png' width='25' title='In Patient'></a>";
+                    }else{
+                        retval="";
+                    }
+                    return retval;
+                },
+                "commands": function (column,row) {
+                    let rowid = row.idno;//just for specify each row
+                    let retval = '';
+                    // if(row.q_epistycode == '' || row.q_epistycode == undefined){
 
-                if(mql.matches){
-                    retval += `
-                        <span class='m_span'><b>MRN :</b>`+show_field(row.MRN)+`</span>
-                        <span class='m_span'><b>Episode :</b>`+show_field(row.Episno)+`</span>
-                        <span class='m_span'><b>Name :</b>`+show_field(row.Name)+`</span>
-                        <span class='m_span'><b>Doctor :</b>`+show_field(row.q_doctorname)+`</span>
-                        <span class='m_span'><b>I/C :</b>`+show_field(row.Newic)+`</span>
-                        <span class='m_span'><b>H/P :</b>`+show_field(row.telhp)+`</span>
-                        <span class='m_span'><b>DOB :</b>`+show_field(row.DOB)+`</span>
-                        <span class='m_span'><b>Sex :</b>`+show_field(row.Sex)+`</span>
-                    `;
-                }
+                    if($('#curpat').val() == 'false'){
+                        retval = "<span style='float: right;'><button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button> " +
+                               "<div class='btn-group'><button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" data-patstatus=\"" + row.PatStatus + "\"  id=\"cmd_history" + row.MRN + "\"><b>"+$("#epistycode_label").val()+"</b></button>"; 
+                               // +
 
-                return retval;
+                               // "<button title='OTC Episode' type='button' class='btn btn-xs btn-danger btn-md command-otc-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" id=\"cmd_otc" + row.MRN + "\"><b>"+$("#epistycode2").val()+"</b></button></div></span>";
+
+                    }else{
+                        if(row.q_epistycode == $("#epistycode").val() && $('#curpat').val() == 'true'){
+                            retval = "<span style='float: right;'><button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button> " +
+                               "<button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" data-patstatus=\"" + row.PatStatus + "\"  id=\"cmd_history" + row.MRN + "\"><b>"+$("#epistycode_label").val()+"</b></button></span>";
+                        }else if(row.q_epistycode == 'DP' && $('#curpat').val() == 'true'){
+                            retval = "<span style='float: right;'><button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button> " +
+                               "<button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" data-patstatus=\"" + row.PatStatus + "\"  id=\"cmd_history" + row.MRN + "\"><b>"+$("#epistycode_label").val()+"</b></button></span>";
+                        }else{
+                            retval = "<span style='float: right;'><button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button></span>";
+                        }
+                    }
+
+                    if(mql.matches){
+                        retval += `
+                            <span class='m_span'><b>MRN :</b>`+show_field(row.MRN)+`</span>
+                            <span class='m_span'><b>Episode :</b>`+show_field(row.Episno)+`</span>
+                            <span class='m_span'><b>Name :</b>`+show_field(row.Name)+`</span>
+                            <span class='m_span'><b>Doctor :</b>`+show_field(row.q_doctorname)+`</span>
+                            <span class='m_span'><b>I/C :</b>`+show_field(row.Newic)+`</span>
+                            <span class='m_span'><b>H/P :</b>`+show_field(row.telhp)+`</span>
+                            <span class='m_span'><b>DOB :</b>`+show_field(row.DOB)+`</span>
+                            <span class='m_span'><b>Sex :</b>`+show_field(row.Sex)+`</span>
+                        `;
+                    }
+
+                    return retval;
+                }
+            }
+        });
+
+    grid.on("loaded.rs.jquery.bootgrid", function(){
+
+        if(!$("#Scol").length){ //tambah search col kat atas utk search by field
+            if(mql.matches){
+                $(".actionBar").prepend(`
+                    <select id='Scol' class='search form-group form-control'>
+                        <option value='MRN'>MRN</option>
+                        <option selected='true' value='Name'>Name</option>
+                        <option value='Newic'>Newic</option>
+                        <option value='Staffid'>Staffid</option>
+                        <option value='telhp'>Handphone</option>
+                        <option value='doctor'>Doctor</option>
+                    </select>`);
+            }else{
+                $(".actionBar").prepend(`
+                    <select id='Scol' class='search form-group form-control' style='width: fit-content !important;'>
+                        <option value='MRN'>MRN</option>
+                        <option selected='true' value='Name'>Name</option>
+                        <option value='Newic'>Newic</option>
+                        <option value='Staffid'>Staffid</option>
+                        <option value='telhp'>Handphone</option>
+                        <option value='doctor'>Doctor</option>
+                    </select>`);
+            }
+
+            if($('#curpat').val() == 'true'){
+                $(".actionBar").prepend(`
+                    <label style="padding-right: 15px;">Status :</label>
+                    <label style="padding-right: 15px;"><input type="radio" name="table_status_search" value="disc"> Discharge</label>
+                    <label style="padding-right: 15px;"><input type="radio" name="table_status_search" value="all" checked> All</label>`);
+
+                $('input:radio[name=table_status_search]').off('change');
+                $('input:radio[name=table_status_search]').on('change',function(){
+                    $("#grid-command-buttons").bootgrid('reload');
+                });
             }
         }
-    });
 
-grid.on("loaded.rs.jquery.bootgrid", function(){
+        var detailRows = '';
 
-    if(!$("#Scol").length){ //tambah search col kat atas utk search by field
-        if(mql.matches){
-            $(".actionBar").prepend(`
-                <select id='Scol' class='search form-group form-control'>
-                    <option value='MRN'>MRN</option>
-                    <option selected='true' value='Name'>Name</option>
-                    <option value='Newic'>Newic</option>
-                    <option value='Staffid'>Staffid</option>
-                    <option value='telhp'>Handphone</option>
-                    <option value='doctor'>Doctor</option>
-                </select>`);
-        }else{
-            $(".actionBar").prepend(`
-                <select id='Scol' class='search form-group form-control' style='width: fit-content !important;'>
-                    <option value='MRN'>MRN</option>
-                    <option selected='true' value='Name'>Name</option>
-                    <option value='Newic'>Newic</option>
-                    <option value='Staffid'>Staffid</option>
-                    <option value='telhp'>Handphone</option>
-                    <option value='doctor'>Doctor</option>
-                </select>`);
-        }
+        /* Executes after data is loaded and rendered */
+        grid.find(".command-edit").on("click", function(e){
+            let rowid = $(this).data("rowId");
+            $('#lastrowid').val(rowid);
 
-        if($('#curpat').val() == 'true'){
-            $(".actionBar").prepend(`
-                <label style="padding-right: 15px;">Status :</label>
-                <label style="padding-right: 15px;"><input type="radio" name="table_status_search" value="disc"> Discharge</label>
-                <label style="padding-right: 15px;"><input type="radio" name="table_status_search" value="all" checked> All</label>`);
+            let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
+            var rowdata = getrow_bootgrid(rowid,rows);
 
-            $('input:radio[name=table_status_search]').off('change');
-            $('input:radio[name=table_status_search]').on('change',function(){
-                $("#grid-command-buttons").bootgrid('reload');
+            populate_patient(rowdata);
+            $('#mdl_patient_info').modal({backdrop: "static"});
+            $("#btn_register_patient").data("oper","edit");
+            $("#btn_register_patient").data("idno",rowid);
+            if(rowdata.ward != ''){
+                $("#dispdept_dflt").val(rowdata.ward);
+                $("#pkgdept_dflt").val(rowdata.ward);
+            }
+            
+            desc_show.write_desc();
+        }).end().find(".command-episode").on("click", function(e) {
+            let rowid = $(this).data("rowId");
+            $('#lastrowid').val(rowid);
+
+            let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
+            var rowdata = getrow_bootgrid(rowid,rows);
+
+            populate_episode(rowid,rowdata);
+            $('#editEpisode').modal({backdrop: "static"});
+        }).end().find(".command-add").on("click", function(e) {
+            var html = '';
+
+            html = html + '<table class=\"table table-bordered\">';
+
+            html = html + '<tr>';
+            html = html + '<th width=\"25%\">Contact No</th>';
+            html = html + '<th width=\"25%\">Current Address</th>';
+            html = html + '<th width=\"25%\">Office Address</th>';
+            html = html + '<th width=\"25%\">Home Address</th>';
+            html = html + '</tr>';
+
+            html = html + '<tr>';
+            html = html + '<td valign=\"top\" align=\"left\">';
+            html = html + 'Phone (Mobile): 0' + $(this).data("telhp") + '<BR/>';
+            html = html + 'Phone (House): 0' + $(this).data("telh") + '<BR/>';
+            html = html + '</td>';
+
+            html = html + '<td valign=\"top\" align=\"text-left\">';
+            html = html + $(this).data("address1") + '<BR/>';
+            html = html + $(this).data("address2") + '<BR/>';
+            html = html + $(this).data("address3") + '<BR/>';
+            html = html + $(this).data("postcode");
+            html = html + '</td>';
+
+            html = html + '<td valign=\"top\" align=\"left\">';
+            html = html + $(this).data("offadd1") + '<BR/>';
+            html = html + $(this).data("offadd2") + '<BR/>';
+            html = html + $(this).data("offadd3") + '<BR/>';
+            html = html + $(this).data("offpostcode");
+            html = html + '</td>';
+
+            html = html + '<td valign=\"top\" align=\"left\">';
+            html = html + $(this).data("padd1") + '<BR/>';
+            html = html + $(this).data("padd2") + '<BR/>';
+            html = html + $(this).data("padd3") + '<BR/>';
+            html = html + $(this).data("ppostcode");
+            html = html + '</td>';
+
+            html = html + '</tr>';
+            html = html + '</table>';
+
+            detailRows = html;
+
+            var tr = $(this).closest('tr');
+            var childID = $(this).data("rowId");
+            var childName = "cmd_add" + childID;
+            $('[name='+childName+']').hide();
+
+            var addDetail='';
+            addDetail = '<tr ><td><a href="javascript:void(0);" class="remCF btn btn-xs btn-primary btn-md"> <span class=\"glyphicon glyphicon-minus\" aria-hidden=\"true\"></span> </a></td><td colspan=\"10\">';
+            addDetail = addDetail + detailRows;
+            addDetail = addDetail + '<td></tr>';
+
+            tr.after(addDetail);
+
+            $(".remCF").on('click',function(){
+                $('[name='+childName+']').show();
+                $(this).parent().parent().remove();
             });
-        }
-    }
-
-    var detailRows = '';
-
-    /* Executes after data is loaded and rendered */
-    grid.find(".command-edit").on("click", function(e){
-        let rowid = $(this).data("rowId");
-        $('#lastrowid').val(rowid);
-
-        let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
-        var rowdata = getrow_bootgrid(rowid,rows);
-
-        populate_patient(rowdata);
-        $('#mdl_patient_info').modal({backdrop: "static"});
-        $("#btn_register_patient").data("oper","edit");
-        $("#btn_register_patient").data("idno",rowid);
-        if(rowdata.ward != ''){
-            $("#dispdept_dflt").val(rowdata.ward);
-            $("#pkgdept_dflt").val(rowdata.ward);
-        }
-        
-        desc_show.write_desc();
-    }).end().find(".command-episode").on("click", function(e) {
-        let rowid = $(this).data("rowId");
-        $('#lastrowid').val(rowid);
-
-        let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
-        var rowdata = getrow_bootgrid(rowid,rows);
-
-        populate_episode(rowid,rowdata);
-        $('#editEpisode').modal({backdrop: "static"});
-    }).end().find(".command-add").on("click", function(e) {
-        var html = '';
-
-        html = html + '<table class=\"table table-bordered\">';
-
-        html = html + '<tr>';
-        html = html + '<th width=\"25%\">Contact No</th>';
-        html = html + '<th width=\"25%\">Current Address</th>';
-        html = html + '<th width=\"25%\">Office Address</th>';
-        html = html + '<th width=\"25%\">Home Address</th>';
-        html = html + '</tr>';
-
-        html = html + '<tr>';
-        html = html + '<td valign=\"top\" align=\"left\">';
-        html = html + 'Phone (Mobile): 0' + $(this).data("telhp") + '<BR/>';
-        html = html + 'Phone (House): 0' + $(this).data("telh") + '<BR/>';
-        html = html + '</td>';
-
-        html = html + '<td valign=\"top\" align=\"text-left\">';
-        html = html + $(this).data("address1") + '<BR/>';
-        html = html + $(this).data("address2") + '<BR/>';
-        html = html + $(this).data("address3") + '<BR/>';
-        html = html + $(this).data("postcode");
-        html = html + '</td>';
-
-        html = html + '<td valign=\"top\" align=\"left\">';
-        html = html + $(this).data("offadd1") + '<BR/>';
-        html = html + $(this).data("offadd2") + '<BR/>';
-        html = html + $(this).data("offadd3") + '<BR/>';
-        html = html + $(this).data("offpostcode");
-        html = html + '</td>';
-
-        html = html + '<td valign=\"top\" align=\"left\">';
-        html = html + $(this).data("padd1") + '<BR/>';
-        html = html + $(this).data("padd2") + '<BR/>';
-        html = html + $(this).data("padd3") + '<BR/>';
-        html = html + $(this).data("ppostcode");
-        html = html + '</td>';
-
-        html = html + '</tr>';
-        html = html + '</table>';
-
-        detailRows = html;
-
-        var tr = $(this).closest('tr');
-        var childID = $(this).data("rowId");
-        var childName = "cmd_add" + childID;
-        $('[name='+childName+']').hide();
-
-        var addDetail='';
-        addDetail = '<tr ><td><a href="javascript:void(0);" class="remCF btn btn-xs btn-primary btn-md"> <span class=\"glyphicon glyphicon-minus\" aria-hidden=\"true\"></span> </a></td><td colspan=\"10\">';
-        addDetail = addDetail + detailRows;
-        addDetail = addDetail + '<td></tr>';
-
-        tr.after(addDetail);
-
-        $(".remCF").on('click',function(){
-            $('[name='+childName+']').show();
-            $(this).parent().parent().remove();
+        }).end().find("tr").on("click", function(e) {
+            $("#grid-command-buttons tr").removeClass( "justbc" );
+            $(e.currentTarget).addClass( "justbc" );
         });
-    }).end().find("tr").on("click", function(e) {
-        $("#grid-command-buttons tr").removeClass( "justbc" );
-        $(e.currentTarget).addClass( "justbc" );
-    });
 
-    if($("#load_from_addupd").data('info') == "true"){
-        if($("#load_from_addupd").data('oper') == "add"){
-            $("table#grid-command-buttons tr:nth-child(1)").click();
+        if($("#load_from_addupd").data('info') == "true"){
+            if($("#load_from_addupd").data('oper') == "add"){
+                $("table#grid-command-buttons tr:nth-child(1)").click();
+            }else{
+                $("table#grid-command-buttons tr[data-row-id='"+bootgrid_last_rowid+"']").eq(0).click();
+            }
         }else{
-            $("table#grid-command-buttons tr[data-row-id='"+bootgrid_last_rowid+"']").eq(0).click();
-        }
-    }else{
-        if($("#lastrowid").val() != ''){
-            let gotidno = false
-            $("#grid-command-buttons").bootgrid("getCurrentRows").forEach(function(e,i,a){
-                if(e.idno == bootgrid_last_rowid){
-                    gotidno = true;
+            if($("#lastrowid").val() != ''){
+                let gotidno = false
+                $("#grid-command-buttons").bootgrid("getCurrentRows").forEach(function(e,i,a){
+                    if(e.idno == bootgrid_last_rowid){
+                        gotidno = true;
+                    }
+                });
+                if(gotidno){
+                    $("table#grid-command-buttons tr[data-row-id='"+$("#lastrowid").val()+"']").eq(0).click();
+                }else{
+                    $("table#grid-command-buttons tr:nth-child(1)").click();
                 }
-            });
-            if(gotidno){
-                $("table#grid-command-buttons tr[data-row-id='"+$("#lastrowid").val()+"']").eq(0).click();
             }else{
                 $("table#grid-command-buttons tr:nth-child(1)").click();
             }
-        }else{
-            $("table#grid-command-buttons tr:nth-child(1)").click();
         }
-    }
-    $("#load_from_addupd").data('info','false');
+        $("#load_from_addupd").data('info','false');
 
-    if(mql.matches){ // utk mobile
-        $("#grid-command-buttons-header div.search").css("width","58%").addClass('search2');
-        $("#grid-command-buttons-header select.search").css("width","35%").addClass('search2');
-        $("#grid-command-buttons-header div.actions.btn-group").css("margin-top","2%").addClass('search2');
-    }
+        if(mql.matches){ // utk mobile
+            $("#grid-command-buttons-header div.search").css("width","58%").addClass('search2');
+            $("#grid-command-buttons-header select.search").css("width","35%").addClass('search2');
+            $("#grid-command-buttons-header div.actions.btn-group").css("margin-top","2%").addClass('search2');
+        }
 
-    lucide.createIcons();
-});
+        lucide.createIcons();
+    });
 
-grid.on("click.rs.jquery.bootgrid", function (e,c,r){
-    bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
-    let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
-    var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
-    $('#lastrowid').val(bootgrid_last_rowid);
-    hide_all_panel();
+    grid.on("click.rs.jquery.bootgrid", function (e,c,r){
+        bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
+        let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
+        var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
+        $('#lastrowid').val(bootgrid_last_rowid);
+        hide_all_panel();
+        if($('#curpat').val() == 'true'){
+            if($('#epistycode').val() == 'OP'){
+                populate_wardMain(lastrowdata);
+
+                if($('#user_doctor').val() == '1'){
+                    populate_triage_currpt(lastrowdata);
+                    populate_antenatal(lastrowdata);
+                    populate_paediatric(lastrowdata);
+                    populate_nursingnote(lastrowdata);
+                    populate_clientProgNote_currpt(lastrowdata);
+                    populate_clientProgNoteRef_currpt(lastrowdata);
+                    populate_requestFor_currpt(lastrowdata);
+                    // populate_doctorNote_currpt(lastrowdata);
+                    // populate_admHandover_currpt(lastrowdata);
+                    // populate_dieteticCareNotes_currpt(lastrowdata);
+                    // populate_dietOrder_currpt(lastrowdata);
+                }else if($('#user_nurse').val() == '1'){
+                    populate_triage_currpt(lastrowdata);
+                    populate_nursingnote(lastrowdata);
+                    populate_clientProgNote_currpt(lastrowdata);
+                    populate_clientProgNoteRef_currpt(lastrowdata);
+                    populate_requestFor_currpt(lastrowdata);
+                    // populate_doctorNote_currpt(lastrowdata);
+                    // populate_admHandover_currpt(lastrowdata);
+                    // populate_dieteticCareNotes_currpt(lastrowdata);
+                    // populate_dietOrder_currpt(lastrowdata);
+                }
+                
+                if($('#user_billing').val() == '1'){
+                    populate_ordcom_currpt(lastrowdata);
+                }
+                
+                if(lastrowdata.PatStatus == 1 ){
+                    // populate_endConsult_currpt(lastrowdata);
+                    populate_discharge_currpt(lastrowdata);
+                }
+
+                populate_discharge_currpt(lastrowdata);
+            }else if($('#epistycode').val() == 'IP' || $('#epistycode').val() == 'DP'){
+                populate_wardMain(lastrowdata);
+                
+                if($('#user_doctor').val() == '1'){
+                    populate_triageED_currpt(lastrowdata);
+                    populate_nursingActionPlan(lastrowdata);
+                    populate_nursingnote(lastrowdata);
+                    populate_antenatal(lastrowdata);
+                    populate_clientProgNote_currpt(lastrowdata);
+                    populate_clientProgNoteRef_currpt(lastrowdata);
+                    populate_requestFor_currpt(lastrowdata);
+                    // populate_triage_currpt(lastrowdata);
+                    // populate_nursAssessment_currpt(lastrowdata);
+                    // populate_header_getdata(lastrowdata);
+                    // populate_invHeader_getdata(lastrowdata);
+                    // populate_doctorNote_currpt(lastrowdata);
+                    // populate_dieteticCareNotes_currpt(lastrowdata);
+                    // populate_dietOrder_currpt(lastrowdata);
+                }else if($('#user_nurse').val() == '1'){
+                    populate_triageED_currpt(lastrowdata);
+                    populate_nursingActionPlan(lastrowdata);
+                    populate_nursingnote(lastrowdata);
+                    populate_clientProgNote_currpt(lastrowdata);
+                    populate_clientProgNoteRef_currpt(lastrowdata);
+                    populate_requestFor_currpt(lastrowdata);
+                    // populate_triage_currpt(lastrowdata);
+                    // populate_nursAssessment_currpt(lastrowdata);
+                    // populate_header_getdata(lastrowdata);
+                    // populate_invHeader_getdata(lastrowdata);
+                    // populate_doctorNote_currpt(lastrowdata);
+                    // populate_dieteticCareNotes_currpt(lastrowdata);
+                    // populate_dietOrder_currpt(lastrowdata);
+                }
+                
+                if($('#user_billing').val() == '1'){
+                    populate_ordcom_currpt(lastrowdata);
+                }
+                
+                populate_discharge_currpt(lastrowdata);
+                // if(lastrowdata.PatStatus == 1 ){
+                // }
+            }
+            
+            if(lastrowdata.pregnant == 1){
+                $('#antenatal_row,#jqGridAntenatal_c').show();
+                $('#nursing_row,#jqGridTriageInfo_c').hide();
+            }else{
+                $('#nursing_row,#jqGridTriageInfo_c').show();
+                $('#antenatal_row,#jqGridAntenatal_c').hide();
+            }
+            
+            // if((lastrowdata.ward == null || lastrowdata.ward == "") && (lastrowdata.bednum == null || lastrowdata.bednum == "")){
+            //     $('#progressnote_row,#jqGridProgress_c').hide();
+            // }else{
+            //     $('#progressnote_row,#jqGridProgress_c').show();
+            // }
+        }
+    });
+
+    grid.bootgrid("reload");
+}else if(mr_flag == 1){
+    var lastrowdata = getrow_bootgrid();
+    populate_patient(lastrowdata);
+
     if($('#curpat').val() == 'true'){
         if($('#epistycode').val() == 'OP'){
             populate_wardMain(lastrowdata);
@@ -437,9 +541,7 @@ grid.on("click.rs.jquery.bootgrid", function (e,c,r){
         //     $('#progressnote_row,#jqGridProgress_c').show();
         // }
     }
-});
-
-grid.bootgrid("reload");
+}
 
 $(document).ready(function() {
     stop_scroll_on();
@@ -843,6 +945,11 @@ $(document).ready(function() {
         var lastrowdata = getrow_bootgrid();
         window.open('./iograph?mrn='+lastrowdata.MRN+'&episno='+lastrowdata.Episno, '_blank');
     });
+
+    if(mr_flag == 1){
+        $('div.btn-group.btn-group-sm').hide();
+        $('table.ui-pager-table').hide();
+    }
 });
 
 function initGrid(){
@@ -950,42 +1057,44 @@ function randomString(length, chars) {
     return result;
 }
 
-var textfield_modal = new textfield_modal();
-textfield_modal.ontabbing();
-textfield_modal.checking();
-textfield_modal.clicking();
+if(mr_flag == 0){
+    var textfield_modal = new textfield_modal();
+    textfield_modal.ontabbing();
+    textfield_modal.checking();
+    textfield_modal.clicking();
 
-if($('#epistycode').val() == 'OP'){
-    var epis_desc_show = new loading_desc_epis([
-        {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
-        {code:'#hid_epis_source',desc:'#txt_epis_source',id:'regsource'},
-        {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
-        {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
-        {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
-        {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
-        {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'},
-        {code:'#hid_newgl_occupcode',desc:'#txt_newgl_occupcode',id:'newgl_occupcode'},
-        {code:'#hid_newgl_relatecode',desc:'#txt_newgl_relatecode',id:'newgl_relatecode'}
-    ]);
-}else if($('#epistycode').val() == 'IP' || $('#epistycode').val() == 'DP'){
-    var epis_desc_show = new loading_desc_epis([
-        {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
-        {code:'#hid_epis_source',desc:'#txt_epis_source',id:'regsource'},
-        {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
-        {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
-        {code:'#hid_epis_bed',desc:'#txt_epis_bed',id:'epis_bed'},//ada bed pada IP
-        {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
-        {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
-        {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'},
-        {code:'#hid_newgl_occupcode',desc:'#txt_newgl_occupcode',id:'newgl_occupcode'},
-        {code:'#hid_newgl_relatecode',desc:'#txt_newgl_relatecode',id:'newgl_relatecode'},
-        {code:'#hid_newgl_corpcomp',desc:'#txt_newgl_corpcomp',id:'newgl_corpcomp'}
-        // {code:'',desc:'',id:'bed_dept'},
-        // {code:'',desc:'',id:'bed_ward'}
-    ]);
+    if($('#epistycode').val() == 'OP'){
+        var epis_desc_show = new loading_desc_epis([
+            {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
+            {code:'#hid_epis_source',desc:'#txt_epis_source',id:'regsource'},
+            {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
+            {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
+            {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
+            {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
+            {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'},
+            {code:'#hid_newgl_occupcode',desc:'#txt_newgl_occupcode',id:'newgl_occupcode'},
+            {code:'#hid_newgl_relatecode',desc:'#txt_newgl_relatecode',id:'newgl_relatecode'}
+        ]);
+    }else if($('#epistycode').val() == 'IP' || $('#epistycode').val() == 'DP'){
+        var epis_desc_show = new loading_desc_epis([
+            {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
+            {code:'#hid_epis_source',desc:'#txt_epis_source',id:'regsource'},
+            {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
+            {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
+            {code:'#hid_epis_bed',desc:'#txt_epis_bed',id:'epis_bed'},//ada bed pada IP
+            {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
+            {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
+            {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'},
+            {code:'#hid_newgl_occupcode',desc:'#txt_newgl_occupcode',id:'newgl_occupcode'},
+            {code:'#hid_newgl_relatecode',desc:'#txt_newgl_relatecode',id:'newgl_relatecode'},
+            {code:'#hid_newgl_corpcomp',desc:'#txt_newgl_corpcomp',id:'newgl_corpcomp'}
+            // {code:'',desc:'',id:'bed_dept'},
+            // {code:'',desc:'',id:'bed_ward'}
+        ]);
+    }
+
+    epis_desc_show.load_desc();
 }
-
-epis_desc_show.load_desc();
 
 function hide_all_panel(){
     $('div.panel-collapse:not(#tabBio,#tabAddr,#tabEpisode)').collapse('hide');
@@ -1011,6 +1120,11 @@ function getrow_bootgrid(
         bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id"),
         rows = $("#grid-command-buttons").bootgrid("getCurrentRows")
     ){
+
+    if(mr_flag == 1){
+        return mr_flag_lastrowdata;
+    }
+
         var retval=[];
         rows.forEach(function(e,i,a){
             if(e.idno == bootgrid_last_rowid){

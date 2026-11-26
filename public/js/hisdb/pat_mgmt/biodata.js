@@ -101,6 +101,10 @@ $(document).ready(function() {
     $('#btn_register_patient').on('click',default_click_register);
 
     $('#btn_reg_proceed').on('click',default_click_proceed);
+    
+    if($('#mr_flag').val() == 1){
+        disableForm('#frm_patient_info_mr');
+    }
 
 });
 

@@ -161,7 +161,7 @@ $(document).ready(function() {
     });
     
     if(hide_close == 'true'){
-        $('#close_iframe').hide();
+        $('#close_iframe,#btn_register_close,#btn_register_patient').hide();
     }
 
     if(pat_mast_data != null){

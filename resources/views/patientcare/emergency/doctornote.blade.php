@@ -53,7 +53,28 @@
 
 @endsection
 
+@section('header')
+    <script>
+        var mr_flag = {{ $mr_flag }};
+        var mr_flag_mrn = {{ $mr_flag_mrn }};
+        var mr_flag_episno = {{ $mr_flag_episno }};
+
+        @if($mr_flag == 1)
+            var mr_flag_lastrowdata = {
+                @foreach($lastrowdata as $key => $val) 
+                    '{{$key}}' :  `{!!str_replace('`', '', $val)!!}`,
+                @endforeach 
+            };
+        @endif
+
+    </script>
+@endsection
+
 @section('content')
+
+    <input name="mr_flag" id="mr_flag" type="hidden" value="{{$mr_flag}}">
+    <input name="mr_flag_mrn" id="mr_flag_mrn" type="hidden" value="{{$mr_flag_mrn}}">
+    <input name="mr_flag_episno" id="mr_flag_episno" type="hidden" value="{{$mr_flag_episno}}">
 
     <input type="hidden" id="curr_user" value="{{ Auth::user()->username }}">
     <input type="hidden" id="user_groupid" value="{{Auth::user()->groupid}}">
@@ -61,6 +82,7 @@
     <input type="hidden" id="_MRN" value="">
     <input type="hidden" id="_Episno" value="">
 
+    @if($mr_flag == 0)
     <div class="ui stackable two column grid">
         <div class="five wide tablet five wide computer column" id="calendar_div">
             <div class="ui orange segment" style="z-index:100">
@@ -103,6 +125,15 @@
             </div>
         </div>
     </div>
+    @elseif($mr_flag == 1)
+        <div class='row' style="position: relative;margin: 0 12px 12px 12px">
+            <div class="panel panel-default" style="margin-bottom: 7px;">
+                <div class="panel-body" style="overflow: hidden; height: 66vh;padding: 0px;">
+                    @include('hisdb.pat_mgmt.pat_mgmt_iframe',['phase' => 'mr_iframe'])
+                </div>
+            </div>
+        </div>
+    @endif
 
     <input id="user_dept" name="user_dept" value="{{ Auth::user()->dept }}" type="hidden">
     <input id="sel_date" name="sel_date" value="{{ \Carbon\Carbon::now()->toDateString() }}" type="hidden">
@@ -155,8 +186,11 @@
         @include('hisdb.ordcom.ordcom',['phase' => '2'])
     </div>
 
-    @include('hisdb.pat_mgmt.pat_mgmt_iframe',['phase' => 'semantic'])
-    @include('patientcare.itemselector')
+    @if($mr_flag == 0)
+        @include('hisdb.pat_mgmt.pat_mgmt_iframe',['phase' => 'semantic'])
+        @include('patientcare.itemselector')
+    @endif
+
     @include('patientcare.emergency.medicalLetterED')
 
     <div id="PIVCDialog_ED" title="PIVC" style="display:none;">
@@ -255,6 +289,13 @@
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_pkg.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/pat_mgmt/epis_payer.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/pat_mgmt/epis_coverage.js?v=1.2') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('div.bluecloudsegment div.ui.small.blue.icon.buttons').hide();
+            $('table.ui-pager-table').hide();
+        });
+    </script>
 @endsection
 
 
