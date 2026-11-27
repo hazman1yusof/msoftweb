@@ -13,7 +13,9 @@ $(document).ready(function (){
         
         $('#jqGridWardMain_panel').find('.nav a:first').tab('show');
 
-        $('#wardMain_panel_title').show();
+        $('#wardMain_panel_title, #admdate_title').show();
+        $('#clinical_title').hide();
+        $("#clinical_div").css("top", "48px");
 
         if($('#ward_main_phase').val() == 'IP'){
             $("#jqGridAddNotesNursingED").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotesNursingED_c")[0].offsetWidth-$("#jqGridAddNotesNursingED_c")[0].offsetLeft-310));
@@ -53,8 +55,9 @@ $(document).ready(function (){
         $("#jqGridWardMain_panel > div").scrollTop(0);
         $("#jqGridWardMain_panel #jqGridWardMain_panel_tabs li").removeClass('active');
 
-        $('#wardMain_panel_title').hide();
-    });
+        $('#wardMain_panel_title, #admdate_title').hide();
+        $('#clinical_title').show();
+        $("#clinical_div").css("top", "18px");    });
     
     $("#jqGridWardMain_panel").on("show.bs.collapse", function (){
         if($('#isPregnant_wardMain').val() == '1'){
@@ -424,6 +427,8 @@ function populate_wardMain(obj){
     $("#bednum_wardMain").val(obj.bednum);
     $("#age_wardMain").val(dob_age(obj.DOB));
     $("#isPregnant_wardMain").val(obj.pregnant);
+    $("#adm_date").text(moment(obj.reg_date).format('DD/MM/YYYY'));
+    $("#epistype").text(obj.desc);
 }
 
 function autoinsert_rowdata(form,rowData){

@@ -34,9 +34,27 @@
         
         <i class="arrow fa fa-angle-double-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#jqGridWardMain_panel"></i>
         <i class="arrow fa fa-angle-double-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#jqGridWardMain_panel"></i>
+        
+        @if($mr_flag == 0)
         <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 25px;">
-            <h5>Clinical</h5>
+           <h5>Clinical</h5>
         </div>
+        @endif
+
+        @if($mr_flag == 1)
+        <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 25px;" id="clinical_div">
+           <span id="clinical_title">
+                <h5>Clinical</h5>
+            </span>
+        </div>
+        
+        <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 100px; top: 5px;display:none;" id="admdate_title">
+			<span><b>Admission Date : </b></span>
+			<span id="adm_date"></span>
+			<br><span><b>Episode Type : </b></span>
+            <span id="epistype"></span>
+		</div>
+        @endif
     </div>
 
     @if($phase == 'IP')
