@@ -236,7 +236,7 @@ $(document).ready(function (){
 			if(epistycode == 'OP'){
 				if(regdept == 'A&E'){
 					// Emergency
-					window.location.href = './ptcare_doctornote_MR?mr_flag=1&mr_flag_mrn='+mrn+'&mr_flag_episno='+episno;
+					window.location.href = './ptcare_doctornoteED?mr_flag=1&mr_flag_mrn='+mrn+'&mr_flag_episno='+episno;
 				}else if(regdept == 'PHY'){
 					// Rehabilitation
 					window.location.href = './rehab?mr_flag=1&mr_flag_mrn='+mrn+'&mr_flag_episno='+episno;
