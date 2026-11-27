@@ -308,6 +308,39 @@
 				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 					@include('hisdb.discharge.discharge',['type' => "IP",'type_desc' => "In Patient"])
 				</div>
+				
+				@if($mr_flag == 1)
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						<div class="panel panel-default" style="position: relative;">
+							<div class="panel-heading clearfix collapsed position" id="toggle_icdprocedure" style="position: sticky; top: 0px; z-index: 3; height: 65px;">
+								<span id="icdprocedure_panel_title" style="display: none;">
+									<b>NAME: <span id="name_show_icdprocedure"></span></b><br>
+									MRN: <span id="mrn_show_icdprocedure"></span>
+									SEX: <span id="sex_show_icdprocedure"></span>
+									DOB: <span id="dob_show_icdprocedure"></span>
+									AGE: <span id="age_show_icdprocedure"></span>
+									RACE: <span id="race_show_icdprocedure"></span>
+									RELIGION: <span id="religion_show_icdprocedure"></span><br>
+									OCCUPATION: <span id="occupation_show_icdprocedure"></span>
+									CITIZENSHIP: <span id="citizenship_show_icdprocedure"></span>
+									AREA: <span id="area_show_icdprocedure"></span>
+								</span>
+								
+								<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_icdprocedure"></i>
+								<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_icdprocedure"></i>
+								<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right:40px; top: 25px;">
+									<h5>Medical Record ICD & Procedure</h5>
+								</div>			
+							</div>
+							<div id="tab_icdprocedure" class="panel-collapse collapse">
+								<div class="panel-body paneldiv">
+									@include('hisdb.icdprocedure_MR.icdprocedure_MR')
+								</div>
+							</div>
+						</div>
+					</div>
+				@endif
+			
 			@endif
 			
 		@endif
@@ -540,6 +573,7 @@
 			
 			<script type="text/javascript" src="js/hisdb/discharge/discharge.js?v=1.1"></script>
 			<script type="text/javascript" src="js/hisdb/ward_main/ward_main.js?v=1.2"></script>
+			<script type="text/javascript" src="js/hisdb/icdprocedure_MR/icdprocedure_MR.js"></script>
 		@endif
 		
 	@endif

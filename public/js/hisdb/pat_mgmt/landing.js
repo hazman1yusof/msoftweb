@@ -486,6 +486,7 @@ if(mr_flag == 0){
             populate_discharge_currpt(lastrowdata);
         }else if($('#epistycode').val() == 'IP' || $('#epistycode').val() == 'DP'){
             populate_wardMain(lastrowdata);
+            populate_icdprocedure(lastrowdata);
             
             if($('#user_doctor').val() == '1'){
                 populate_triageED_currpt(lastrowdata);

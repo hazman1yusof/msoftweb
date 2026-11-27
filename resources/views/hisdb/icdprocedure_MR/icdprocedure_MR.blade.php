@@ -1,45 +1,55 @@
-<div class="ui segments" style="position: relative; padding: 10px">
-    <form id="formIcdProcedure" class="ui form">
-        <div class="ui grid">
-            <input id="mrn_icdprocedure" name="mrn_icdprocedure" type="hidden">
-            <input id="episno_icdprocedure" name="episno_icdprocedure" type="hidden">
-            
-            <div class="sixteen wide column">
-                <div class="ui segments">
-                    <div class="ui secondary segment">Final Diagnosis</div>
-                    <div class="ui segment" id="jqGridFinalDiag_c">
-                        <table id="jqGridFinalDiag" class="table table-striped"></table>
-                        <div id="jqGridPagerFinalDiag"></div>
+<div class='col-md-12' style="padding:0 0 15px 0">
+    <form class='form-horizontal' style='width:99%' id='formIcdProcedure'>
+        <div class='col-md-12'>
+            <div class="panel-body">
+                <input id="mrn_icdprocedure" name="mrn_icdprocedure" type="hidden">
+                <input id="episno_icdprocedure" name="episno_icdprocedure" type="hidden">
+
+                <div class='col-md-12'>
+                    <div class="panel panel-info" id="jqGridFinalDiag_c">
+                        <div class="panel-heading text-center">FINAL DIAGNOSIS</div>
+                        <div class="panel-body">
+                            <div class='col-md-12' style="padding:0 0 13px 0">
+                                <table id="jqGridFinalDiag" class="table table-striped"></table>
+                                <div id="jqGridPagerFinalDiag"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="sixteen wide column">
-                <div class="ui segments">
-                    <div class="ui secondary segment">External Cause</div>
-                    <div class="ui segment" id="jqGridExternalCause_c">
-                        <table id="jqGridExternalCause" class="table table-striped"></table>
-                        <div id="jqGridPagerExternalCause"></div>
+
+                <div class='col-md-12'>
+                    <div class="panel panel-info" id="jqGridExternalCause_c">
+                        <div class="panel-heading text-center">EXTERNAL CAUSE</div>
+                        <div class="panel-body">
+                            <div class='col-md-12' style="padding:0 0 13px 0">
+                                <table id="jqGridExternalCause" class="table table-striped"></table>
+                                <div id="jqGridPagerExternalCause"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="sixteen wide column">
-                <div class="ui segments">
-                    <div class="ui secondary segment">Underlying Cause</div>
-                    <div class="ui segment" id="jqGridUnderCause_c">
-                        <table id="jqGridUnderCause" class="table table-striped"></table>
-                        <div id="jqGridPagerUnderCause"></div>
+
+                <div class='col-md-12'>
+                    <div class="panel panel-info" id="jqGridUnderCause_c">
+                        <div class="panel-heading text-center">UNDERLYING CAUSE</div>
+                        <div class="panel-body">
+                            <div class='col-md-12' style="padding:0 0 13px 0">
+                                <table id="jqGridUnderCause" class="table table-striped"></table>
+                                <div id="jqGridPagerUnderCause"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="sixteen wide column">
-                <div class="ui segments">
-                    <div class="ui secondary segment">Procedure</div>
-                    <div class="ui segment" id="jqGridProcedure_c">
-                        <table id="jqGridProcedure" class="table table-striped"></table>
-                        <div id="jqGridPagerProcedure"></div>
+
+                <div class='col-md-12'>
+                    <div class="panel panel-info" id="jqGridProcedure_c">
+                        <div class="panel-heading text-center">PROCEDURE</div>
+                        <div class="panel-body">
+                            <div class='col-md-12' style="padding:0 0 13px 0">
+                                <table id="jqGridProcedure" class="table table-striped"></table>
+                                <div id="jqGridPagerProcedure"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
