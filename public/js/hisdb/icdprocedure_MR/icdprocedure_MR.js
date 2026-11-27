@@ -56,7 +56,7 @@ var urlParam_UnderCause = {
     episno: $('#episno_icdprocedure').val(),
 }
 
-//////////////////////////////////////parameter for jqGridProcedure url//////////////////////////////////////
+//////////////////////////////////////parameter for jqGridProcedureIcd url//////////////////////////////////////
 // var urlParam_Procedure = {
 //     action: 'get_table_default',
 //     url: 'util/get_table_default',
@@ -687,8 +687,8 @@ $(document).ready(function (){
     });
     //////////////////////////////////////////////////end grid//////////////////////////////////////////////////
     
-    ///////////////////////////////////////////////jqGridProcedure///////////////////////////////////////////////
-    $("#jqGridProcedure").jqGrid({
+    ///////////////////////////////////////////////jqGridProcedureIcd///////////////////////////////////////////////
+    $("#jqGridProcedureIcd").jqGrid({
         datatype: "local",
         editurl: "./icdprocedure_MR/form",
         colModel: [
@@ -711,7 +711,7 @@ $(document).ready(function (){
         width: 900,
         height: 200,
         rowNum: 30,
-        pager: "#jqGridPagerProcedure",
+        pager: "#jqGridPagerProcedureIcd",
         loadComplete: function (){
             if(addmore_jqgrid.more == true){$('#jqGridProcedure_iladd').click();}
             else{
@@ -746,19 +746,19 @@ $(document).ready(function (){
         aftersavefunc: function (rowid, response, options){
             // addmore_jqgrid.more = true; // only addmore after save inline
             // state true maksudnyer ada isi, tak kosong
-            refreshGrid('#jqGridProcedure',urlParam_Procedure,'add_Procedure');
+            refreshGrid('#jqGridProcedureIcd',urlParam_Procedure,'add_Procedure');
             errorField.length = 0;
             $("#jqGridPagerDelete_Procedure,#jqGridPagerRefresh_Procedure").show();
         },
         errorfunc: function (rowid,response){
             $('#p_error').text(response.responseText);
-            refreshGrid('#jqGridProcedure',urlParam_Procedure,'add_Procedure');
+            refreshGrid('#jqGridProcedureIcd',urlParam_Procedure,'add_Procedure');
         },
         beforeSaveRow: function (options, rowid){
             $('#p_error').text('');
             if(errorField.length > 0)return false;
             
-            let data = $('#jqGridProcedure').jqGrid('getRowData', rowid);
+            let data = $('#jqGridProcedureIcd').jqGrid('getRowData', rowid);
             
             let editurl = "./icdprocedure_MR/form?"+
                 $.param({
@@ -767,7 +767,7 @@ $(document).ready(function (){
                     episno: $('#episno_icdprocedure').val(),
                     action: 'procedure_save',
                 });
-            $("#jqGridProcedure").jqGrid('setGridParam', { editurl: editurl });
+            $("#jqGridProcedureIcd").jqGrid('setGridParam', { editurl: editurl });
         },
         afterrestorefunc : function (response){
             $("#jqGridPagerDelete_Procedure,#jqGridPagerRefresh_Procedure").show();
@@ -798,19 +798,19 @@ $(document).ready(function (){
         aftersavefunc: function (rowid, response, options){
             if(addmore_jqgrid.state == true)addmore_jqgrid.more = true; // only addmore after save inline
             // state true maksudnyer ada isi, tak kosong
-            refreshGrid('#jqGridProcedure',urlParam_Procedure,'add_Procedure');
+            refreshGrid('#jqGridProcedureIcd',urlParam_Procedure,'add_Procedure');
             errorField.length = 0;
             $("#jqGridPagerDelete_Procedure,#jqGridPagerRefresh_Procedure").show();
         },
         errorfunc: function(rowid,response){
             $('#p_error').text(response.responseText);
-            refreshGrid('#jqGridProcedure',urlParam_Procedure,'add_Procedure');
+            refreshGrid('#jqGridProcedureIcd',urlParam_Procedure,'add_Procedure');
         },
         beforeSaveRow: function (options, rowid){
             $('#p_error').text('');
             // if(errorField.length > 0){console.log(errorField);return false;}
             
-            let data = $('#jqGridProcedure').jqGrid('getRowData', rowid);
+            let data = $('#jqGridProcedureIcd').jqGrid('getRowData', rowid);
             // console.log(data);
             
             let editurl = "./icdprocedure_MR/form?"+
@@ -820,7 +820,7 @@ $(document).ready(function (){
                     episno: $('#episno_icdprocedure').val(),
                     action: 'procedure_edit',
                 });
-            $("#jqGridProcedure").jqGrid('setGridParam', { editurl: editurl });
+            $("#jqGridProcedureIcd").jqGrid('setGridParam', { editurl: editurl });
         },
         afterrestorefunc: function (response){
             $("#jqGridPagerDelete_Procedure,#jqGridPagerRefresh_Procedure").show();
@@ -830,8 +830,8 @@ $(document).ready(function (){
         }
     };
     
-    ////////////////////////////////////////////jqGridPagerProcedure////////////////////////////////////////////
-    $("#jqGridProcedure").inlineNav('#jqGridPagerProcedure', {
+    ////////////////////////////////////////////jqGridPagerProcedureIcd////////////////////////////////////////////
+    $("#jqGridProcedureIcd").inlineNav('#jqGridPagerProcedureIcd', {
         add: true,
         edit: false,
         cancel: true,
@@ -841,13 +841,13 @@ $(document).ready(function (){
             addRowParams: myEditOptions_addProcedure
         },
         editParams: myEditOptions_editProcedure
-    }).jqGrid('navButtonAdd', "#jqGridPagerProcedure", {
+    }).jqGrid('navButtonAdd', "#jqGridPagerProcedureIcd", {
         id: "jqGridPagerDelete_Procedure",
         caption: "", cursor: "pointer", position: "last",
         buttonicon: "glyphicon glyphicon-trash",
         title: "Delete Selected Row",
         onClickButton: function (){
-            selRowId = $("#jqGridProcedure").jqGrid('getGridParam', 'selrow');
+            selRowId = $("#jqGridProcedureIcd").jqGrid('getGridParam', 'selrow');
             if(!selRowId){
                 alert('Please select row');
             }else{
@@ -856,7 +856,7 @@ $(document).ready(function (){
                     param = {
                         _token: $("#csrf_token").val(),
                         action: 'procedure_del',
-                        seq: selrowData('#jqGridProcedure').seq,
+                        seq: selrowData('#jqGridProcedureIcd').seq,
                     }
                     
                     $.post("./icdprocedure_MR/form?"+$.param(param), {oper:'del'}, function (data){
@@ -864,20 +864,20 @@ $(document).ready(function (){
                     }).fail(function (data){
                         //////////////////errorText(dialog,data.responseText);
                     }).done(function (data){
-                        refreshGrid("#jqGridProcedure", urlParam_Procedure);
+                        refreshGrid("#jqGridProcedureIcd", urlParam_Procedure);
                     });
                 }else{
                     $("#jqGridPagerDelete_Procedure,#jqGridPagerRefresh_Procedure").show();
                 }
             }
         },
-    }).jqGrid('navButtonAdd', "#jqGridPagerProcedure", {
+    }).jqGrid('navButtonAdd', "#jqGridPagerProcedureIcd", {
         id: "jqGridPagerRefresh_Procedure",
         caption: "", cursor: "pointer", position: "last",
         buttonicon: "glyphicon glyphicon-refresh",
         title: "Refresh Table",
         onClickButton: function (){
-            refreshGrid("#jqGridProcedure", urlParam_Procedure);
+            refreshGrid("#jqGridProcedureIcd", urlParam_Procedure);
         },
     });
     //////////////////////////////////////////////////end grid//////////////////////////////////////////////////
@@ -963,12 +963,12 @@ $('#tab_icdprocedure').on('shown.bs.collapse', function (){
     $("#jqGridFinalDiag").jqGrid('setGridWidth', Math.floor($("#jqGridFinalDiag_c")[0].offsetWidth-$("#jqGridFinalDiag_c")[0].offsetLeft-14));
     $("#jqGridExternalCause").jqGrid('setGridWidth', Math.floor($("#jqGridExternalCause_c")[0].offsetWidth-$("#jqGridExternalCause_c")[0].offsetLeft-14));
     $("#jqGridUnderCause").jqGrid('setGridWidth', Math.floor($("#jqGridUnderCause_c")[0].offsetWidth-$("#jqGridUnderCause_c")[0].offsetLeft-14));
-    $("#jqGridProcedure").jqGrid('setGridWidth', Math.floor($("#jqGridProcedure_c")[0].offsetWidth-$("#jqGridProcedure_c")[0].offsetLeft-14));
+    $("#jqGridProcedureIcd").jqGrid('setGridWidth', Math.floor($("#jqGridProcedureIcd_c")[0].offsetWidth-$("#jqGridProcedureIcd_c")[0].offsetLeft-14));
     
     refreshGrid("#jqGridFinalDiag", urlParam_FinalDiag);
     refreshGrid("#jqGridExternalCause", urlParam_ExternalCause);
     refreshGrid("#jqGridUnderCause", urlParam_UnderCause);
-    refreshGrid("#jqGridProcedure", urlParam_Procedure);
+    refreshGrid("#jqGridProcedureIcd", urlParam_Procedure);
     
     $('#icdprocedure_panel_title').show();
     $('#icdprocedure_title').hide();
