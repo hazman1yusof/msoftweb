@@ -57,7 +57,7 @@ var urlParam_UnderCause = {
 }
 
 //////////////////////////////////////parameter for jqGridProcedureIcd url//////////////////////////////////////
-// var urlParam_Procedure = {
+// var urlParam_ProcedureIcd = {
 //     action: 'get_table_default',
 //     url: 'util/get_table_default',
 //     field: '',
@@ -67,7 +67,7 @@ var urlParam_UnderCause = {
 //     filterVal: ['',''],
 // }
 
-var urlParam_Procedure = {
+var urlParam_ProcedureIcd = {
     action: 'get_table_procedure',
     url: './icdprocedure_MR/table',
     mrn: $('#mrn_icdprocedure').val(),
@@ -713,7 +713,7 @@ $(document).ready(function (){
         rowNum: 30,
         pager: "#jqGridPagerProcedureIcd",
         loadComplete: function (){
-            if(addmore_jqgrid.more == true){$('#jqGridProcedure_iladd').click();}
+            if(addmore_jqgrid.more == true){$('#jqGridProcedureIcd_iladd').click();}
             else{
                 $('#jqGrid2').jqGrid ('setSelection', "1");
             }
@@ -734,25 +734,25 @@ $(document).ready(function (){
         oneditfunc: function (rowid){
             window.open('./icd11?callback_param=icdprocedure', '_blank');
             
-            $("#jqGridPagerDelete_Procedure,#jqGridPagerRefresh_Procedure").hide();
+            $("#jqGridPagerDelete_ProcedureIcd,#jqGridPagerRefresh_ProcedureIcd").hide();
             
             $("textarea[name='description']").keydown(function (e){ // when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
-                if (code == '9')$('#jqGridProcedure_ilsave').click();
+                if (code == '9')$('#jqGridProcedureIcd_ilsave').click();
                 // addmore_jqgrid.state = true;
-                // $('#jqGridProcedure_ilsave').click();
+                // $('#jqGridProcedureIcd_ilsave').click();
             });
         },
         aftersavefunc: function (rowid, response, options){
             // addmore_jqgrid.more = true; // only addmore after save inline
             // state true maksudnyer ada isi, tak kosong
-            refreshGrid('#jqGridProcedureIcd',urlParam_Procedure,'add_Procedure');
+            refreshGrid('#jqGridProcedureIcd',urlParam_ProcedureIcd,'add_Procedure');
             errorField.length = 0;
-            $("#jqGridPagerDelete_Procedure,#jqGridPagerRefresh_Procedure").show();
+            $("#jqGridPagerDelete_ProcedureIcd,#jqGridPagerRefresh_ProcedureIcd").show();
         },
         errorfunc: function (rowid,response){
             $('#p_error').text(response.responseText);
-            refreshGrid('#jqGridProcedureIcd',urlParam_Procedure,'add_Procedure');
+            refreshGrid('#jqGridProcedureIcd',urlParam_ProcedureIcd,'add_Procedure');
         },
         beforeSaveRow: function (options, rowid){
             $('#p_error').text('');
@@ -770,7 +770,7 @@ $(document).ready(function (){
             $("#jqGridProcedureIcd").jqGrid('setGridParam', { editurl: editurl });
         },
         afterrestorefunc : function (response){
-            $("#jqGridPagerDelete_Procedure,#jqGridPagerRefresh_Procedure").show();
+            $("#jqGridPagerDelete_ProcedureIcd,#jqGridPagerRefresh_ProcedureIcd").show();
         },
         errorTextFormat: function (data){
             alert(data);
@@ -786,25 +786,25 @@ $(document).ready(function (){
         oneditfunc: function (rowid){
             window.open('./icd11?callback_param=icdprocedure', '_blank');
             
-            $("#jqGridPagerDelete_Procedure,#jqGridPagerRefresh_Procedure").hide();
+            $("#jqGridPagerDelete_ProcedureIcd,#jqGridPagerRefresh_ProcedureIcd").hide();
             
             $("textarea[name='description']").keydown(function (e){ // when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
-                if (code == '9')$('#jqGridProcedure_ilsave').click();
+                if (code == '9')$('#jqGridProcedureIcd_ilsave').click();
                 // addmore_jqgrid.state = true;
-                // $('#jqGridProcedure_ilsave').click();
+                // $('#jqGridProcedureIcd_ilsave').click();
             });
         },
         aftersavefunc: function (rowid, response, options){
             if(addmore_jqgrid.state == true)addmore_jqgrid.more = true; // only addmore after save inline
             // state true maksudnyer ada isi, tak kosong
-            refreshGrid('#jqGridProcedureIcd',urlParam_Procedure,'add_Procedure');
+            refreshGrid('#jqGridProcedureIcd',urlParam_ProcedureIcd,'add_Procedure');
             errorField.length = 0;
-            $("#jqGridPagerDelete_Procedure,#jqGridPagerRefresh_Procedure").show();
+            $("#jqGridPagerDelete_ProcedureIcd,#jqGridPagerRefresh_ProcedureIcd").show();
         },
         errorfunc: function(rowid,response){
             $('#p_error').text(response.responseText);
-            refreshGrid('#jqGridProcedureIcd',urlParam_Procedure,'add_Procedure');
+            refreshGrid('#jqGridProcedureIcd',urlParam_ProcedureIcd,'add_Procedure');
         },
         beforeSaveRow: function (options, rowid){
             $('#p_error').text('');
@@ -823,7 +823,7 @@ $(document).ready(function (){
             $("#jqGridProcedureIcd").jqGrid('setGridParam', { editurl: editurl });
         },
         afterrestorefunc: function (response){
-            $("#jqGridPagerDelete_Procedure,#jqGridPagerRefresh_Procedure").show();
+            $("#jqGridPagerDelete_ProcedureIcd,#jqGridPagerRefresh_ProcedureIcd").show();
         },
         errorTextFormat: function (data){
             alert(data);
@@ -842,7 +842,7 @@ $(document).ready(function (){
         },
         editParams: myEditOptions_editProcedure
     }).jqGrid('navButtonAdd', "#jqGridPagerProcedureIcd", {
-        id: "jqGridPagerDelete_Procedure",
+        id: "jqGridPagerDelete_ProcedureIcd",
         caption: "", cursor: "pointer", position: "last",
         buttonicon: "glyphicon glyphicon-trash",
         title: "Delete Selected Row",
@@ -864,20 +864,20 @@ $(document).ready(function (){
                     }).fail(function (data){
                         //////////////////errorText(dialog,data.responseText);
                     }).done(function (data){
-                        refreshGrid("#jqGridProcedureIcd", urlParam_Procedure);
+                        refreshGrid("#jqGridProcedureIcd", urlParam_ProcedureIcd);
                     });
                 }else{
-                    $("#jqGridPagerDelete_Procedure,#jqGridPagerRefresh_Procedure").show();
+                    $("#jqGridPagerDelete_ProcedureIcd,#jqGridPagerRefresh_ProcedureIcd").show();
                 }
             }
         },
     }).jqGrid('navButtonAdd', "#jqGridPagerProcedureIcd", {
-        id: "jqGridPagerRefresh_Procedure",
+        id: "jqGridPagerRefresh_ProcedureIcd",
         caption: "", cursor: "pointer", position: "last",
         buttonicon: "glyphicon glyphicon-refresh",
         title: "Refresh Table",
         onClickButton: function (){
-            refreshGrid("#jqGridProcedureIcd", urlParam_Procedure);
+            refreshGrid("#jqGridProcedureIcd", urlParam_ProcedureIcd);
         },
     });
     //////////////////////////////////////////////////end grid//////////////////////////////////////////////////
@@ -968,7 +968,7 @@ $('#tab_icdprocedure').on('shown.bs.collapse', function (){
     refreshGrid("#jqGridFinalDiag", urlParam_FinalDiag);
     refreshGrid("#jqGridExternalCause", urlParam_ExternalCause);
     refreshGrid("#jqGridUnderCause", urlParam_UnderCause);
-    refreshGrid("#jqGridProcedureIcd", urlParam_Procedure);
+    refreshGrid("#jqGridProcedureIcd", urlParam_ProcedureIcd);
     
     $('#icdprocedure_panel_title').show();
     $('#icdprocedure_title').hide();
