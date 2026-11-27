@@ -75,7 +75,7 @@ if(mr_flag == 0){
                     return retval;
                 },
                 "col_mrn": function (column,row) {
-                    return ('0000000' + row.MRN).slice(-7) +"<span class='episno_span'>"+ row.Episno +"</span>";
+                    return ('000000' + row.MRN).slice(-7); // +"<span class='episno_span'>"+ row.Episno +"</span>"
                 },
                 "col_reg": function (column,row) {
                     var retval = `<div style="padding-bottom:20px">`+row.reg_date+`</div>`;

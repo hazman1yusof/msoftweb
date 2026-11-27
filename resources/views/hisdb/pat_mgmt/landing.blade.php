@@ -225,12 +225,12 @@
 	                    <th data-column-id="reg_date" data-formatter="col_reg" data-width="7%" >Reg Date</th>
 	                    <th data-column-id="regdept" data-width="5%">Dept</th>
 						@endif
-	                    <th data-column-id="MRN" data-type="numeric" data-formatter="col_mrn" data-width="7%">MRN &nbsp;&nbsp;&nbsp; Epis</th>
-	                    <!-- <th data-column-id="Episno" data-type="numeric" data-width="5%">Episno</th> -->
-	                    <th data-style="dropDownItem" data-column-id="Name" data-formatter="col_name" data-width="13%" data-css-class="wrap-text">Name</th>
+	                    <th data-column-id="MRN" data-type="numeric" data-formatter="col_mrn" data-width="6%">MRN </th>
+	                    <!-- <th data-column-id="Episno" data-type="numeric" data-width="5%">Episno</th> &nbsp;&nbsp;&nbsp; Epis-->
+	                    <th data-style="dropDownItem" data-column-id="Name" data-formatter="col_name" data-width="12%" data-css-class="wrap-text">Name</th>
 	                    @if (request()->get('curpat') == 'true')
-	                    <th data-column-id="payername" data-width="13%" data-css-class="wrap-text">Payer</th>
-	                    <th data-column-id="q_doctorname" data-width="13%" data-css-class="wrap-text">Doctor</th>
+	                    <th data-column-id="payername" data-width="12%" data-css-class="wrap-text">Payer</th>
+	                    <th data-column-id="q_doctorname" data-width="12%" data-css-class="wrap-text">Doctor</th>
 	                    <th data-column-id="dis_desc" data-width="6%">Discipline</th>
 		                    @if (request()->get('epistycode') == 'IP')
 		                    <th data-column-id="ward" data-width="6%">Ward</th>
@@ -241,7 +241,8 @@
 						@endif
 	                    <th data-column-id="Newic" data-width="8%">New IC</th>
 	                    <th data-column-id="telhp" data-width="8%">H/P</th>
-	                    <th data-column-id="DOB" data-formatter="col_dob" data-width="6%">DOB</th>
+	                    <th data-column-id="DOB" data-formatter="col_dob" data-width="8%">DOB</th>
+	                    <th data-column-id="age" data-width="2%" data-formatter="col_age">Age</th>
 	                    <th data-column-id="Sex" data-width="2%">Sex</th>
 	                    <!-- <th data-column-id="col_age" data-formatter="col_age" data-sortable="false" data-width="2%">Age</th> -->
 						<th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="7%"> </th>
