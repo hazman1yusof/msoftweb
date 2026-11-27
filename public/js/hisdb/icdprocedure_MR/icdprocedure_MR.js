@@ -98,7 +98,35 @@ $(document).ready(function (){
             }
         }, 0);
     });
-    
+
+    $('#jqGridIcdProcedure_panel_tabs.nav-tabs a').on('shown.bs.tab', function (e){
+        let type = $(this).data('type');
+        let id = $(this).attr('id');
+        $("#jqGridIcdProcedure_panel").data('curtype',id);
+        console.log(type);
+        switch(type){
+            case 'FinalDiag':
+                $("#jqGridFinalDiag").jqGrid('setGridWidth', Math.floor($("#jqGridFinalDiag_c")[0].offsetWidth-$("#jqGridFinalDiag_c")[0].offsetLeft-14));
+                refreshGrid("#jqGridFinalDiag", urlParam_FinalDiag, 'add_FinalDiag');
+                break;
+
+            case 'ExternalCause':
+                $("#jqGridExternalCause").jqGrid('setGridWidth', Math.floor($("#jqGridExternalCause_c")[0].offsetWidth-$("#jqGridExternalCause_c")[0].offsetLeft-14));
+                refreshGrid("#jqGridExternalCause", urlParam_ExternalCause, 'add_ExternalCause');
+                break;
+
+            case 'UnderCause':
+                $("#jqGridUnderCause").jqGrid('setGridWidth', Math.floor($("#jqGridUnderCause_c")[0].offsetWidth-$("#jqGridUnderCause_c")[0].offsetLeft-14));
+                refreshGrid("#jqGridUnderCause", urlParam_UnderCause, 'add_UnderCause');
+                break;
+
+            case 'ProcedureIcd':
+                $("#jqGridProcedureIcd").jqGrid('setGridWidth', Math.floor($("#jqGridProcedureIcd_c")[0].offsetWidth-$("#jqGridProcedureIcd_c")[0].offsetLeft-14));
+                refreshGrid("#jqGridProcedureIcd", urlParam_ProcedureIcd, 'add_Procedure');
+                break;
+        }
+    });
+
     ////////////////////////////////////////parameter for saving url////////////////////////////////////////
     var addmore_jqgrid = {more:false,state:false,edit:false}
     
@@ -958,24 +986,27 @@ function autoinsert_rowdata(form,rowData){
     });
 }
 
-$('#tab_icdprocedure').on('shown.bs.collapse', function (){
-    SmoothScrollTo('#tab_icdprocedure', 300, 114);
+$('#jqGridIcdProcedure_panel').on('shown.bs.collapse', function (){
+    SmoothScrollTo('#jqGridIcdProcedure_panel', 300, 114);
+
+    let curtype = $("#jqGridIcdProcedure_panel").data('curtype');
+    $('#jqGridIcdProcedure_panel.nav-tabs a#'+curtype).tab('show');
+    
+    $('#jqGridIcdProcedure_panel').find('.nav a:first').tab('show');
+
     $("#jqGridFinalDiag").jqGrid('setGridWidth', Math.floor($("#jqGridFinalDiag_c")[0].offsetWidth-$("#jqGridFinalDiag_c")[0].offsetLeft-14));
-    $("#jqGridExternalCause").jqGrid('setGridWidth', Math.floor($("#jqGridExternalCause_c")[0].offsetWidth-$("#jqGridExternalCause_c")[0].offsetLeft-14));
-    $("#jqGridUnderCause").jqGrid('setGridWidth', Math.floor($("#jqGridUnderCause_c")[0].offsetWidth-$("#jqGridUnderCause_c")[0].offsetLeft-14));
-    $("#jqGridProcedureIcd").jqGrid('setGridWidth', Math.floor($("#jqGridProcedureIcd_c")[0].offsetWidth-$("#jqGridProcedureIcd_c")[0].offsetLeft-14));
     
     refreshGrid("#jqGridFinalDiag", urlParam_FinalDiag);
-    refreshGrid("#jqGridExternalCause", urlParam_ExternalCause);
-    refreshGrid("#jqGridUnderCause", urlParam_UnderCause);
-    refreshGrid("#jqGridProcedureIcd", urlParam_ProcedureIcd);
     
     $('#icdprocedure_panel_title').show();
     $('#icdprocedure_title').hide();
     $("#icdprocedure_div").css("top", "48px");
 });
 
-$('#tab_icdprocedure').on('hidden.bs.collapse', function (){
+$('#jqGridIcdProcedure_panel').on('hidden.bs.collapse', function (){
+    $("#jqGridIcdProcedure_panel > div").scrollTop(0);
+    $("#jqGridIcdProcedure_panel #jqGridIcdProcedure_panel li").removeClass('active');
+
     $('#icdprocedure_panel_title').hide();
     $('#icdprocedure_title').show();
     $("#icdprocedure_div").css("top", "18px");
