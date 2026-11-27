@@ -441,7 +441,7 @@ if(mr_flag == 0){
         }
     });
 
-    grid.bootgrid("reload");
+    // grid.bootgrid("reload");
 }else if(mr_flag == 1){
     var lastrowdata = getrow_bootgrid();
     populate_patient(lastrowdata);
