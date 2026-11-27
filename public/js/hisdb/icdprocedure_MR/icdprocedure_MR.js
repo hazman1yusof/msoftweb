@@ -98,7 +98,7 @@ $(document).ready(function (){
             }
         }, 0);
     });
-
+    
     $('#jqGridIcdProcedure_panel_tabs.nav-tabs a').on('shown.bs.tab', function (e){
         let type = $(this).data('type');
         let id = $(this).attr('id');
@@ -109,24 +109,21 @@ $(document).ready(function (){
                 $("#jqGridFinalDiag").jqGrid('setGridWidth', Math.floor($("#jqGridFinalDiag_c")[0].offsetWidth-$("#jqGridFinalDiag_c")[0].offsetLeft-14));
                 refreshGrid("#jqGridFinalDiag", urlParam_FinalDiag, 'add_FinalDiag');
                 break;
-
             case 'ExternalCause':
                 $("#jqGridExternalCause").jqGrid('setGridWidth', Math.floor($("#jqGridExternalCause_c")[0].offsetWidth-$("#jqGridExternalCause_c")[0].offsetLeft-14));
                 refreshGrid("#jqGridExternalCause", urlParam_ExternalCause, 'add_ExternalCause');
                 break;
-
             case 'UnderCause':
                 $("#jqGridUnderCause").jqGrid('setGridWidth', Math.floor($("#jqGridUnderCause_c")[0].offsetWidth-$("#jqGridUnderCause_c")[0].offsetLeft-14));
                 refreshGrid("#jqGridUnderCause", urlParam_UnderCause, 'add_UnderCause');
                 break;
-
             case 'ProcedureIcd':
                 $("#jqGridProcedureIcd").jqGrid('setGridWidth', Math.floor($("#jqGridProcedureIcd_c")[0].offsetWidth-$("#jqGridProcedureIcd_c")[0].offsetLeft-14));
                 refreshGrid("#jqGridProcedureIcd", urlParam_ProcedureIcd, 'add_Procedure');
                 break;
         }
     });
-
+    
     ////////////////////////////////////////parameter for saving url////////////////////////////////////////
     var addmore_jqgrid = {more:false,state:false,edit:false}
     
@@ -276,7 +273,7 @@ $(document).ready(function (){
     ///////////////////////////////////////////jqGridPagerFinalDiag///////////////////////////////////////////
     $("#jqGridFinalDiag").inlineNav('#jqGridPagerFinalDiag', {
         add: true,
-        edit: false,
+        edit: true,
         cancel: true,
         // to prevent the row being edited/added from being automatically cancelled once the user clicks another row
         restoreAfterSelect: false,
@@ -471,7 +468,7 @@ $(document).ready(function (){
     //////////////////////////////////////////jqGridPagerExternalCause//////////////////////////////////////////
     $("#jqGridExternalCause").inlineNav('#jqGridPagerExternalCause', {
         add: true,
-        edit: false,
+        edit: true,
         cancel: true,
         // to prevent the row being edited/added from being automatically cancelled once the user clicks another row
         restoreAfterSelect: false,
@@ -666,7 +663,7 @@ $(document).ready(function (){
     ////////////////////////////////////////////jqGridPagerUnderCause////////////////////////////////////////////
     $("#jqGridUnderCause").inlineNav('#jqGridPagerUnderCause', {
         add: true,
-        edit: false,
+        edit: true,
         cancel: true,
         // to prevent the row being edited/added from being automatically cancelled once the user clicks another row
         restoreAfterSelect: false,
@@ -715,7 +712,7 @@ $(document).ready(function (){
     });
     //////////////////////////////////////////////////end grid//////////////////////////////////////////////////
     
-    ///////////////////////////////////////////////jqGridProcedureIcd///////////////////////////////////////////////
+    /////////////////////////////////////////////jqGridProcedureIcd/////////////////////////////////////////////
     $("#jqGridProcedureIcd").jqGrid({
         datatype: "local",
         editurl: "./icdprocedure_MR/form",
@@ -858,10 +855,10 @@ $(document).ready(function (){
         }
     };
     
-    ////////////////////////////////////////////jqGridPagerProcedureIcd////////////////////////////////////////////
+    //////////////////////////////////////////jqGridPagerProcedureIcd//////////////////////////////////////////
     $("#jqGridProcedureIcd").inlineNav('#jqGridPagerProcedureIcd', {
         add: true,
-        edit: false,
+        edit: true,
         cancel: true,
         // to prevent the row being edited/added from being automatically cancelled once the user clicks another row
         restoreAfterSelect: false,
@@ -964,6 +961,22 @@ function populate_icdprocedure(obj){
     // formIcdProcedure
     $('#mrn_icdprocedure').val(obj.MRN);
     $("#episno_icdprocedure").val(obj.Episno);
+    
+    // table jqGridFinalDiag
+    urlParam_FinalDiag.mrn = obj.MRN;
+    urlParam_FinalDiag.episno = obj.Episno;
+    
+    // table jqGridExternalCause
+    urlParam_ExternalCause.mrn = obj.MRN;
+    urlParam_ExternalCause.episno = obj.Episno;
+    
+    // table jqGridUnderCause
+    urlParam_UnderCause.mrn = obj.MRN;
+    urlParam_UnderCause.episno = obj.Episno;
+    
+    // table jqGridProcedureIcd
+    urlParam_ProcedureIcd.mrn = obj.MRN;
+    urlParam_ProcedureIcd.episno = obj.Episno;
 }
 
 function autoinsert_rowdata(form,rowData){
@@ -988,14 +1001,14 @@ function autoinsert_rowdata(form,rowData){
 
 $('#jqGridIcdProcedure_panel').on('shown.bs.collapse', function (){
     SmoothScrollTo('#jqGridIcdProcedure_panel', 300, 114);
-
+    $('#pg_jqGridPagerFinalDiag table.ui-pager-table, #pg_jqGridPagerExternalCause table.ui-pager-table, #pg_jqGridPagerUnderCause table.ui-pager-table, #pg_jqGridPagerProcedureIcd table.ui-pager-table').show();
+    
     let curtype = $("#jqGridIcdProcedure_panel").data('curtype');
     $('#jqGridIcdProcedure_panel.nav-tabs a#'+curtype).tab('show');
     
     $('#jqGridIcdProcedure_panel').find('.nav a:first').tab('show');
-
-    $("#jqGridFinalDiag").jqGrid('setGridWidth', Math.floor($("#jqGridFinalDiag_c")[0].offsetWidth-$("#jqGridFinalDiag_c")[0].offsetLeft-14));
     
+    $("#jqGridFinalDiag").jqGrid('setGridWidth', Math.floor($("#jqGridFinalDiag_c")[0].offsetWidth-$("#jqGridFinalDiag_c")[0].offsetLeft-14));
     refreshGrid("#jqGridFinalDiag", urlParam_FinalDiag);
     
     $('#icdprocedure_panel_title').show();
@@ -1006,7 +1019,7 @@ $('#jqGridIcdProcedure_panel').on('shown.bs.collapse', function (){
 $('#jqGridIcdProcedure_panel').on('hidden.bs.collapse', function (){
     $("#jqGridIcdProcedure_panel > div").scrollTop(0);
     $("#jqGridIcdProcedure_panel #jqGridIcdProcedure_panel li").removeClass('active');
-
+    
     $('#icdprocedure_panel_title').hide();
     $('#icdprocedure_title').show();
     $("#icdprocedure_div").css("top", "18px");
