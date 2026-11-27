@@ -42,12 +42,12 @@
                 </div>
 
                 <div class='col-md-12'>
-                    <div class="panel panel-info" id="jqGridProcedure_c">
+                    <div class="panel panel-info" id="jqGridProcedureIcd_c">
                         <div class="panel-heading text-center">PROCEDURE</div>
                         <div class="panel-body">
                             <div class='col-md-12' style="padding:0 0 13px 0">
-                                <table id="jqGridProcedure" class="table table-striped"></table>
-                                <div id="jqGridPagerProcedure"></div>
+                                <table id="jqGridProcedureIcd" class="table table-striped"></table>
+                                <div id="jqGridPagerProcedureIcd"></div>
                             </div>
                         </div>
                     </div>
